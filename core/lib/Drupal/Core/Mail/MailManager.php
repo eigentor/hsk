@@ -1,12 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Mail\MailManager.
- */
-
 namespace Drupal\Core\Mail;
 
+use Drupal\Component\Render\PlainTextOutput;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Cache\CacheBackendInterface;
@@ -222,6 +218,12 @@ class MailManager extends DefaultPluginManager implements MailManagerInterface {
       }
       // Sending was originally requested and was not canceled.
       else {
+        // Ensure that subject is plain text. By default translated and
+        // formatted strings are prepared for the HTML context and email
+        // subjects are plain strings.
+        if ($message['subject']) {
+          $message['subject'] = PlainTextOutput::renderFromHtml($message['subject']);
+        }
         $message['result'] = $system->mail($message);
         // Log errors.
         if (!$message['result']) {

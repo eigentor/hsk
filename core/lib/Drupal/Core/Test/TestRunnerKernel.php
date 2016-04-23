@@ -1,16 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Test\TestRunnerKernel.
- */
-
 namespace Drupal\Core\Test;
 
 use Drupal\Core\DrupalKernel;
 use Drupal\Core\Extension\Extension;
-use Drupal\Core\Installer\InstallerServiceProvider;
-use Composer\Autoload\ClassLoader;
 use Drupal\Core\Site\Settings;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -42,8 +35,8 @@ class TestRunnerKernel extends DrupalKernel {
       'simpletest' => 0,
     );
     $this->moduleData = array(
-      'system' => new Extension(DRUPAL_ROOT, 'module', 'core/modules/system/system.info.yml', 'system.module'),
-      'simpletest' => new Extension(DRUPAL_ROOT, 'module', 'core/modules/simpletest/simpletest.info.yml', 'simpletest.module'),
+      'system' => new Extension($this->root, 'module', 'core/modules/system/system.info.yml', 'system.module'),
+      'simpletest' => new Extension($this->root, 'module', 'core/modules/simpletest/simpletest.info.yml', 'simpletest.module'),
     );
   }
 

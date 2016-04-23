@@ -1,13 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\Core\KeyValueStore\KeyValueExpirableFactory.
- */
-
 namespace Drupal\Core\KeyValueStore;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines the key/value store factory.

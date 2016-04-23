@@ -1,13 +1,8 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\file\Tests\FileFieldDisplayTest.
- */
-
 namespace Drupal\file\Tests;
 
-use Drupal\node\Entity\Node;
+use Drupal\file\Entity\File;
 
 /**
  * Ensure that files added to nodes appear correctly in RSS feeds.
@@ -30,15 +25,8 @@ class FileFieldRSSContentTest extends FileFieldTestBase {
     $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $field_name = strtolower($this->randomMachineName());
     $type_name = 'article';
-    $field_settings = array(
-      'display_field' => '1',
-      'display_default' => '1',
-    );
-    $field_settings = array(
-      'description_field' => '1',
-    );
-    $widget_settings = array();
-    $this->createFileField($field_name, 'node', $type_name, $field_settings, $field_settings, $widget_settings);
+
+    $this->createFileField($field_name, 'node', $type_name);
 
     // RSS display must be added manually.
     $this->drupalGet("admin/structure/types/manage/$type_name/display");
@@ -63,7 +51,7 @@ class FileFieldRSSContentTest extends FileFieldTestBase {
     // Get the uploaded file from the node.
     $node_storage->resetCache(array($nid));
     $node = $node_storage->load($nid);
-    $node_file = file_load($node->{$field_name}->target_id);
+    $node_file = File::load($node->{$field_name}->target_id);
 
     // Check that the RSS enclosure appears in the RSS feed.
     $this->drupalGet('rss.xml');

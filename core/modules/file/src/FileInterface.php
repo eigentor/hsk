@@ -1,16 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\file\Entity\FileInterface.
- */
-
 namespace Drupal\file;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\user\EntityOwnerInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
-use Drupal\user\UserInterface;
 
 /**
  * Defines getter and setter methods for file entity base fields.
@@ -113,10 +107,10 @@ interface FileInterface extends ContentEntityInterface, EntityChangedInterface, 
   public function setTemporary();
 
   /**
-   * Returns the node creation timestamp.
+   * Returns the file entity creation timestamp.
    *
    * @return int
-   *   Creation timestamp of the node.
+   *   Creation timestamp of the file entity.
    */
   public function getCreatedTime();
 }

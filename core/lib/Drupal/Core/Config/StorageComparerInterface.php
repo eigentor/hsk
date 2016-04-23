@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Config\StorageComparerInterface.
- */
-
 namespace Drupal\Core\Config;
 
 /**
@@ -109,7 +104,7 @@ interface StorageComparerInterface {
    *
    * @return array
    *   An associative array of configuration names. The array keys are
-   *   'old_name' and and 'new_name' representing the old and name configuration
+   *   'old_name' and 'new_name' representing the old and new configuration
    *   object names during a rename operation.
    *
    * @see \Drupal\Core\Config\StorageComparer::createRenameNames()

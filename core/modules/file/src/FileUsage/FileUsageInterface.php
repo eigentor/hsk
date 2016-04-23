@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\file\FileUsage\FileUsageInterface.
- */
-
 namespace Drupal\file\FileUsage;
 
 use Drupal\file\FileInterface;

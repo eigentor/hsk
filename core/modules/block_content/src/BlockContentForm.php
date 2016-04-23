@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\block_content\BlockContentForm.
- */
-
 namespace Drupal\block_content;
 
 use Drupal\Component\Utility\Html;
@@ -16,7 +11,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Form controller for the custom block edit forms.
+ * Form handler for the custom block edit forms.
  */
 class BlockContentForm extends ContentEntityForm {
 
@@ -217,20 +212,6 @@ class BlockContentForm extends ContentEntityForm {
       // rebuilt and block form redisplayed.
       drupal_set_message($this->t('The block could not be saved.'), 'error');
       $form_state->setRebuild();
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    if ($this->entity->isNew()) {
-      $exists = $this->blockContentStorage->loadByProperties(array('info' => $form_state->getValue(['info', 0, 'value'])));
-      if (!empty($exists)) {
-        $form_state->setErrorByName('info', $this->t('A block with description %name already exists.', array(
-          '%name' => $form_state->getValue(array('info', 0, 'value')),
-        )));
-      }
     }
   }
 

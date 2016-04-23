@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\views\ViewEntityInterface.
- */
-
 namespace Drupal\views;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;

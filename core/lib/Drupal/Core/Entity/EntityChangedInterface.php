@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Entity\EntityChangedInterface.
- */
-
 namespace Drupal\Core\Entity;
 
 /**
@@ -28,6 +23,16 @@ interface EntityChangedInterface {
    *   The timestamp of the last entity save operation.
    */
   public function getChangedTime();
+
+  /**
+   * Sets the timestamp of the last entity change for the current translation.
+   *
+   * @param int $timestamp
+   *   The timestamp of the last entity save operation.
+   *
+   * @return $this
+   */
+  public function setChangedTime($timestamp);
 
   /**
    * Gets the timestamp of the last entity change across all translations.

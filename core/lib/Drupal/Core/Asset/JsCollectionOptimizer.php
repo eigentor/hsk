@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Contains \Drupal\Core\Asset\JsCollectionOptimizer.
- */
-
 namespace Drupal\Core\Asset;
 
 use Drupal\Core\State\StateInterface;

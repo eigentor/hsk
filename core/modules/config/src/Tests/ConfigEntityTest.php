@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\config\Tests\ConfigEntityTest.
- */
-
 namespace Drupal\config\Tests;
 
 use Drupal\Component\Utility\SafeMarkup;

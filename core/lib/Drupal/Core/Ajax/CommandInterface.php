@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Core\Ajax\CommandInterface.
- */
-
 namespace Drupal\Core\Ajax;
 
 /**

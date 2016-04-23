@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\system\MachineNameController.
- */
-
 namespace Drupal\system;
 
 use Drupal\Component\Transliteration\TransliterationInterface;
@@ -67,7 +62,9 @@ class MachineNameController implements ContainerInjectionInterface {
       $transliterated = Unicode::strtolower($transliterated);
     }
     if(isset($replace_pattern) && isset($replace)) {
-      $transliterated = preg_replace('@' . $replace_pattern . '@', $replace, $transliterated);
+      // Quote the pattern delimiter and remove null characters to avoid the e
+      // or other modifiers being injected.
+      $transliterated = preg_replace('@' . strtr($replace_pattern, ['@' => '\@', chr(0) => '']) . '@', $replace, $transliterated);
     }
     return new JsonResponse($transliterated);
   }

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\action\Tests\ConfigurationTest.
- */
-
 namespace Drupal\action\Tests;
 
 use Drupal\Component\Utility\Crypt;

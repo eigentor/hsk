@@ -9,10 +9,8 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Component\PhpStorage\FileStorage;
 use Drupal\Component\Utility\Bytes;
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\File\FileSystem;
 use Drupal\Core\StreamWrapper\PublicStream;
-use Drupal\Core\StreamWrapper\StreamWrapperInterface;
 use Drupal\Core\StreamWrapper\PrivateStream;
 
 /**
@@ -90,49 +88,6 @@ const FILE_EXISTS_ERROR = 2;
 const FILE_STATUS_PERMANENT = 1;
 
 /**
- * Provides Drupal stream wrapper registry.
- *
- * @param int $filter
- *   (Optional) Filters out all types except those with an on bit for each on
- *   bit in $filter. For example, if $filter is
- *   StreamWrapperInterface::WRITE_VISIBLE, which is equal to
- *   (StreamWrapperInterface::READ | StreamWrapperInterface::WRITE |
- *   StreamWrapperInterface::VISIBLE), then only stream wrappers with all three
- *   of these bits set are returned. Defaults to StreamWrapperInterface::ALL,
- *   which returns all registered stream wrappers.
- *
- * @return array
- *   An array keyed by scheme, with values containing an array of information
- *   about the stream wrapper, as returned by hook_stream_wrappers(). If $filter
- *   is omitted or set to StreamWrapperInterface::ALL, the entire Drupal stream
- *   wrapper registry is returned. Otherwise only the stream wrappers whose
- *   'type' bitmask has an on bit for each bit specified in $filter are
- *   returned.
- *
- * @deprecated in Drupal 8.x-dev, will be removed before Drupal 8.0.
- *   Use \Drupal::service('stream_wrapper_manager')->getWrappers().
- */
-function file_get_stream_wrappers($filter = StreamWrapperInterface::ALL) {
-  return \Drupal::service('stream_wrapper_manager')->getWrappers($filter);
-}
-
-/**
- * Returns the stream wrapper class name for a given scheme.
- *
- * @param string $scheme
- *   Stream scheme.
- *
- * @return string|bool
- *   Return string if a scheme has a registered handler, or FALSE.
- *
- * @deprecated in Drupal 8.x-dev, will be removed before Drupal 8.0.
- *   Use \Drupal::service('stream_wrapper_manager')->getClass().
- */
-function file_stream_wrapper_get_class($scheme) {
-  return \Drupal::service('stream_wrapper_manager')->getClass($scheme);
-}
-
-/**
  * Returns the scheme of a URI (e.g. a stream).
  *
  * @deprecated in Drupal 8.0.x-dev, will be removed before Drupal 9.0.0.
@@ -201,7 +156,7 @@ function file_default_scheme() {
  *   The normalized URI.
  */
 function file_stream_wrapper_uri_normalize($uri) {
-  $scheme = file_uri_scheme($uri);
+  $scheme = \Drupal::service('file_system')->uriScheme($uri);
 
   if (file_stream_wrapper_valid_scheme($scheme)) {
     $target = file_uri_target($uri);
@@ -212,55 +167,6 @@ function file_stream_wrapper_uri_normalize($uri) {
   }
 
   return $uri;
-}
-
-/**
- * Returns a reference to the stream wrapper class responsible for a given URI.
- *
- * The scheme determines the stream wrapper class that should be
- * used by consulting the stream wrapper registry.
- *
- * @param string $uri
- *   A stream, referenced as "scheme://target".
- *
- * @return \Drupal\Core\StreamWrapper\StreamWrapperInterface|bool
- *   Returns a new stream wrapper object appropriate for the given URI or FALSE
- *   if no registered handler could be found. For example, a URI of
- *   "private://example.txt" would return a new private stream wrapper object
- *   (Drupal\Core\StreamWrapper\PrivateStream).
- *
- * * @deprecated in Drupal 8.x-dev, will be removed before Drupal 8.0.
- *   Use \Drupal::service('stream_wrapper_manager')->getViaUri().
- */
-function file_stream_wrapper_get_instance_by_uri($uri) {
-  return \Drupal::service('stream_wrapper_manager')->getViaUri($uri);
-}
-
-/**
- * Returns a reference to the stream wrapper class responsible for a scheme.
- *
- * This helper method returns a stream instance using a scheme. That is, the
- * passed string does not contain a "://". For example, "public" is a scheme
- * but "public://" is a URI (stream). This is because the later contains both
- * a scheme and target despite target being empty.
- *
- * Note: the instance URI will be initialized to "scheme://" so that you can
- * make the customary method calls as if you had retrieved an instance by URI.
- *
- * @param string $scheme
- *   If the stream was "public://target", "public" would be the scheme.
- *
- * @return \Drupal\Core\StreamWrapper\StreamWrapperInterface|bool
- *   Returns a new stream wrapper object appropriate for the given $scheme.
- *   For example, for the public scheme a stream wrapper object
- *   (Drupal\Core\StreamWrapper\PublicStream).
- *   FALSE is returned if no registered handler could be found.
- *
- * @deprecated in Drupal 8.x-dev, will be removed before Drupal 8.0.
- *   Use \Drupal::service('stream_wrapper_manager')->getViaScheme().
- */
-function file_stream_wrapper_get_instance_by_scheme($scheme) {
-  return \Drupal::service('stream_wrapper_manager')->getViaScheme($scheme);
 }
 
 /**
@@ -293,7 +199,7 @@ function file_create_url($uri) {
   // file server.
   \Drupal::moduleHandler()->alter('file_url', $uri);
 
-  $scheme = file_uri_scheme($uri);
+  $scheme = \Drupal::service('file_system')->uriScheme($uri);
 
   if (!$scheme) {
     // Allow for:
@@ -331,7 +237,7 @@ function file_create_url($uri) {
   }
   else {
     // Attempt to return an external URL using the appropriate wrapper.
-    if ($wrapper = file_stream_wrapper_get_instance_by_uri($uri)) {
+    if ($wrapper = \Drupal::service('stream_wrapper_manager')->getViaUri($uri)) {
       return $wrapper->getExternalUrl();
     }
     else {
@@ -360,7 +266,6 @@ function file_url_transform_relative($file_url) {
   // Unfortunately, we pretty much have to duplicate Symfony's
   // Request::getHttpHost() method because Request::getPort() may return NULL
   // instead of a port number.
-  $http_host = '';
   $request = \Drupal::request();
   $host = $request->getHost();
   $scheme = $request->getScheme();
@@ -394,7 +299,7 @@ function file_url_transform_relative($file_url) {
  *   otherwise.
  */
 function file_prepare_directory(&$directory, $options = FILE_MODIFY_PERMISSIONS) {
-  if (!file_stream_wrapper_valid_scheme(file_uri_scheme($directory))) {
+  if (!file_stream_wrapper_valid_scheme(\Drupal::service('file_system')->uriScheme($directory))) {
     // Only trim if we're not dealing with a stream.
     $directory = rtrim($directory, '/\\');
   }
@@ -427,8 +332,7 @@ function file_ensure_htaccess() {
     file_save_htaccess('private://', TRUE);
   }
   file_save_htaccess('temporary://', TRUE);
-  file_save_htaccess(config_get_config_directory(), TRUE);
-  file_save_htaccess(config_get_config_directory(CONFIG_STAGING_DIRECTORY), TRUE);
+  file_save_htaccess(config_get_config_directory(CONFIG_SYNC_DIRECTORY), TRUE);
 }
 
 /**
@@ -444,7 +348,7 @@ function file_ensure_htaccess() {
  *   if one is already present. Defaults to FALSE.
  */
 function file_save_htaccess($directory, $private = TRUE, $force_overwrite = FALSE) {
-  if (file_uri_scheme($directory)) {
+  if (\Drupal::service('file_system')->uriScheme($directory)) {
     $htaccess_path = file_stream_wrapper_uri_normalize($directory . '/.htaccess');
   }
   else {
@@ -463,8 +367,8 @@ function file_save_htaccess($directory, $private = TRUE, $force_overwrite = FALS
     return drupal_chmod($htaccess_path, 0444);
   }
   else {
-    $variables = array('%directory' => $directory, '!htaccess' => '<br />' . nl2br(SafeMarkup::checkPlain($htaccess_lines)));
-    \Drupal::logger('security')->error("Security warning: Couldn't write .htaccess file. Please create a .htaccess file in your %directory directory which contains the following lines: <code>!htaccess</code>", $variables);
+    $variables = array('%directory' => $directory, '@htaccess' => $htaccess_lines);
+    \Drupal::logger('security')->error("Security warning: Couldn't write .htaccess file. Please create a .htaccess file in your %directory directory which contains the following lines: <pre><code>@htaccess</code></pre>", $variables);
     return FALSE;
   }
 }
@@ -502,7 +406,7 @@ function file_htaccess_lines($private = TRUE) {
  */
 function file_valid_uri($uri) {
   // Assert that the URI has an allowed scheme. Bare paths are not allowed.
-  $uri_scheme = file_uri_scheme($uri);
+  $uri_scheme = \Drupal::service('file_system')->uriScheme($uri);
   if (!file_stream_wrapper_valid_scheme($uri_scheme)) {
     return FALSE;
   }
@@ -726,7 +630,8 @@ function file_munge_filename($filename, $extensions, $alerts = TRUE) {
 
   // Allow potentially insecure uploads for very savvy users and admin
   if (!\Drupal::config('system.file')->get('allow_insecure_uploads')) {
-    // Remove any null bytes. See http://php.net/manual/en/security.filesystem.nullbytes.php
+    // Remove any null bytes. See
+    // http://php.net/manual/security.filesystem.nullbytes.php
     $filename = str_replace(chr(0), '', $filename);
 
     $whitelist = array_unique(explode(' ', strtolower(trim($extensions))));

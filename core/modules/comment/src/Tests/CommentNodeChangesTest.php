@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\comment\Tests\CommentNodeChangesTest.
- */
-
 namespace Drupal\comment\Tests;
 
 use Drupal\comment\Entity\Comment;

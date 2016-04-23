@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Controller\ControllerBase.
- */
-
 namespace Drupal\Core\Controller;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -33,7 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @see \Drupal\Core\DependencyInjection\ContainerInjectionInterface
  *
- * @ingroup menu
+ * @ingroup routing
  */
 abstract class ControllerBase implements ContainerInjectionInterface {
 
@@ -48,6 +43,13 @@ abstract class ControllerBase implements ContainerInjectionInterface {
    * @var \Drupal\Core\Entity\EntityManagerInterface
    */
   protected $entityManager;
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
   /**
    * The entity form builder.
@@ -106,6 +108,13 @@ abstract class ControllerBase implements ContainerInjectionInterface {
   protected $formBuilder;
 
   /**
+   * The logger factory.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $loggerFactory;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -117,12 +126,29 @@ abstract class ControllerBase implements ContainerInjectionInterface {
    *
    * @return \Drupal\Core\Entity\EntityManagerInterface
    *   The entity manager service.
+   *
+   * @deprecated in Drupal 8.0.0, will be removed before Drupal 9.0.0.
+   *   Most of the time static::entityTypeManager() is supposed to be used
+   *   instead.
    */
   protected function entityManager() {
     if (!$this->entityManager) {
       $this->entityManager = $this->container()->get('entity.manager');
     }
     return $this->entityManager;
+  }
+
+  /**
+   * Retrieves the entity type manager.
+   *
+   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
+   *   The entity type manager.
+   */
+  protected function entityTypeManager() {
+    if (!isset($this->entityTypeManager)) {
+      $this->entityTypeManager = $this->container()->get('entity_type.manager');
+    }
+    return $this->entityTypeManager;
   }
 
   /**
@@ -256,6 +282,23 @@ abstract class ControllerBase implements ContainerInjectionInterface {
       $this->languageManager = $this->container()->get('language_manager');
     }
     return $this->languageManager;
+  }
+
+  /**
+   * Returns a channel logger object.
+   *
+   * @param string $channel
+   *   The name of the channel. Can be any string, but the general practice is
+   *   to use the name of the subsystem calling this.
+   *
+   * @return \Psr\Log\LoggerInterface
+   *   The logger for this channel.
+   */
+  protected function getLogger($channel) {
+    if (!$this->loggerFactory) {
+      $this->loggerFactory = $this->container()->get('logger.factory');
+    }
+    return $this->loggerFactory->get($channel);
   }
 
   /**

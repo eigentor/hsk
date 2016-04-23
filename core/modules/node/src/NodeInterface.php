@@ -1,16 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\node\NodeInterface.
- */
-
 namespace Drupal\node;
 
 use Drupal\user\EntityOwnerInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\user\UserInterface;
 
 /**
  * Provides an interface defining a node entity.
@@ -159,13 +153,5 @@ interface NodeInterface extends ContentEntityInterface, EntityChangedInterface, 
    *   The called node entity.
    */
   public function setRevisionAuthorId($uid);
-
-  /**
-   * Prepares the langcode for a node.
-   *
-   * @return string
-   *   The langcode for this node.
-   */
-  public function prepareLangcode();
 
 }

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\action\ActionListBuilder.
- */
-
 namespace Drupal\action;
 
 use Drupal\Core\Action\ActionManager;
@@ -80,7 +75,7 @@ class ActionListBuilder extends ConfigEntityListBuilder {
    */
   public function buildRow(EntityInterface $entity) {
     $row['type'] = $entity->getType();
-    $row['label'] = $this->getLabel($entity);
+    $row['label'] = $entity->label();
     if ($this->hasConfigurableActions) {
       $row += parent::buildRow($entity);
     }

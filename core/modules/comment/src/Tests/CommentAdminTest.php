@@ -1,13 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\comment\Tests\CommentAdminTest.
- */
-
 namespace Drupal\comment\Tests;
 
 use Drupal\user\RoleInterface;
+use Drupal\comment\Entity\Comment;
 
 /**
  * Tests comment approval functionality.
@@ -15,6 +11,13 @@ use Drupal\user\RoleInterface;
  * @group comment
  */
 class CommentAdminTest extends CommentTestBase {
+
+  protected function setUp() {
+    parent::setUp();
+
+    $this->drupalPlaceBlock('page_title_block');
+  }
+
   /**
    * Test comment approval functionality through admin/content/comment.
    */
@@ -43,7 +46,7 @@ class CommentAdminTest extends CommentTestBase {
     // Get unapproved comment id.
     $this->drupalLogin($this->adminUser);
     $anonymous_comment4 = $this->getUnapprovedComment($subject);
-    $anonymous_comment4 = entity_create('comment', array(
+    $anonymous_comment4 = Comment::create(array(
       'cid' => $anonymous_comment4,
       'subject' => $subject,
       'comment_body' => $body,
@@ -120,7 +123,7 @@ class CommentAdminTest extends CommentTestBase {
     // Get unapproved comment id.
     $this->drupalLogin($this->adminUser);
     $anonymous_comment4 = $this->getUnapprovedComment($subject);
-    $anonymous_comment4 = entity_create('comment', array(
+    $anonymous_comment4 = Comment::create(array(
       'cid' => $anonymous_comment4,
       'subject' => $subject,
       'comment_body' => $body,

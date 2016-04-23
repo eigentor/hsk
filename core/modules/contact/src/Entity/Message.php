@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\contact\Entity\Message.
- */
-
 namespace Drupal\contact\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
@@ -29,7 +24,8 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   admin_permission = "administer contact forms",
  *   entity_keys = {
  *     "bundle" = "contact_form",
- *     "uuid" = "uuid"
+ *     "uuid" = "uuid",
+ *     "langcode" = "langcode"
  *   },
  *   bundle_entity_type = "contact_form",
  *   field_ui_base_route = "entity.contact_form.edit_form",

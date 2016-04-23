@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\locale\LocalProjectStorageInterface.
- */
-
 namespace Drupal\locale;
 
 /**

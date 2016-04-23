@@ -1,12 +1,6 @@
 <?php
 
-/**
- * Contains \Drupal\Core\Asset\JsCollectionGrouper.
- */
-
 namespace Drupal\Core\Asset;
-
-use Drupal\Core\Asset\AssetCollectionGrouperInterface;
 
 /**
  * Groups JavaScript assets.
@@ -44,9 +38,8 @@ class JsCollectionGrouper implements AssetCollectionGrouperInterface {
         case 'file':
           // Group file items if their 'preprocess' flag is TRUE.
           // Help ensure maximum reuse of aggregate files by only grouping
-          // together items that share the same 'group' value and 'every_page'
-          // flag.
-          $group_keys = $item['preprocess'] ? array($item['type'], $item['group'], $item['every_page'], $item['browsers']) : FALSE;
+          // together items that share the same 'group' value.
+          $group_keys = $item['preprocess'] ? array($item['type'], $item['group'], $item['browsers']) : FALSE;
           break;
 
         case 'external':

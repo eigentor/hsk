@@ -1,12 +1,7 @@
 <?php
 
-/**
- * Contains \Drupal\Core\Asset\JsOptimizer.
- */
-
 namespace Drupal\Core\Asset;
 
-use Drupal\Core\Asset\AssetOptimizerInterface;
 use Drupal\Component\Utility\Unicode;
 
 /**

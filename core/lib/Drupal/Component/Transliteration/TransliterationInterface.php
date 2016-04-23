@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of \Drupal\Component\Transliteration\TransliterationInterface.
- */
-
 namespace Drupal\Component\Transliteration;
 
 /**
@@ -37,7 +32,7 @@ interface TransliterationInterface {
    *   The string to transliterate.
    * @param string $langcode
    *   (optional) The language code of the language the string is in. Defaults
-   *   to 'en' if not provided.
+   *   to 'en' if not provided. Warning: this can be unfiltered user input.
    * @param string $unknown_character
    *   (optional) The character to substitute for characters in $string without
    *   transliterated equivalents. Defaults to '?'.

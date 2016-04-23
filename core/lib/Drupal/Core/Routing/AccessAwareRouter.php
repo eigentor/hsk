@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Routing\Router.
- */
-
 namespace Drupal\Core\Routing;
 
 use Drupal\Core\Access\AccessManagerInterface;

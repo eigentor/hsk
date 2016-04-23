@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Core\Database\Database
- */
-
 namespace Drupal\Core\Database;
 
 /**

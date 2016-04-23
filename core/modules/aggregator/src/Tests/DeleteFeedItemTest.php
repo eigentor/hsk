@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\aggregator\Tests\DeleteFeedItemTest.
- */
-
 namespace Drupal\aggregator\Tests;
 
 /**

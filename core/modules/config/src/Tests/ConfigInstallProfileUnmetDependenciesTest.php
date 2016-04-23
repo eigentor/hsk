@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\config\Tests\ConfigInstallProfileUnmetDependenciesTest.
- */
-
 namespace Drupal\config\Tests;
 
 use Drupal\Component\Serialization\Yaml;
@@ -95,6 +90,7 @@ class ConfigInstallProfileUnmetDependenciesTest extends InstallerTestBase {
     else {
       $this->fail('Expected Drupal\Core\Config\UnmetDependenciesException exception thrown');
     }
+    $this->assertErrorLogged('Configuration objects (system.action.user_block_user_action) provided by user have unmet dependencies in');
   }
 
 }

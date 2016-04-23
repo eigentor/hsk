@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\book\BookManagerInterface.
- */
-
 namespace Drupal\book;
 
 use Drupal\Core\Form\FormStateInterface;
@@ -255,8 +250,7 @@ interface BookManagerInterface {
    * @return array
    *   A structured array to be rendered by drupal_render().
    *
-   * @todo This was copied from menu_tree_output() but with some changes that
-   *   may be obsolete. Attempt to resolve the differences.
+   * @see \Drupal\Core\Menu\MenuLinkTree::build
    */
   public function bookTreeOutput(array $tree);
 

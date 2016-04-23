@@ -1,18 +1,22 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Extension\ExtensionDiscovery.
- */
-
 namespace Drupal\Core\Extension;
 
 use Drupal\Component\FileCache\FileCacheFactory;
+use Drupal\Core\DrupalKernel;
 use Drupal\Core\Extension\Discovery\RecursiveExtensionFilterIterator;
 use Drupal\Core\Site\Settings;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Discovers available extensions in the filesystem.
+ *
+ * To also discover test modules, add
+ * @code
+ * $settings['extension_discovery_scan_tests'] = TRUE;
+ * @encode
+ * to your settings.php.
+ *
  */
 class ExtensionDiscovery {
 
@@ -89,14 +93,29 @@ class ExtensionDiscovery {
   protected $fileCache;
 
   /**
+   * The site path.
+   *
+   * @var string
+   */
+  protected $sitePath;
+
+  /**
    * Constructs a new ExtensionDiscovery object.
    *
    * @param string $root
    *   The app root.
+   * @param bool $use_file_cache
+   *   Whether file cache should be used.
+   * @param string[] $profile_directories
+   *   The available profile directories
+   * @param string $site_path
+   *   The path to the site.
    */
-  public function __construct($root) {
+  public function __construct($root, $use_file_cache = TRUE, $profile_directories = NULL, $site_path = NULL) {
     $this->root = $root;
-    $this->fileCache = FileCacheFactory::get('extension_discovery');
+    $this->fileCache = $use_file_cache ? FileCacheFactory::get('extension_discovery') : NULL;
+    $this->profileDirectories = $profile_directories;
+    $this->sitePath = $site_path;
   }
 
   /**
@@ -116,6 +135,12 @@ class ExtensionDiscovery {
    * - the legacy site-wide directory; i.e., /sites/all
    * - the site-wide directory; i.e., /
    * - the site-specific directory; e.g., /sites/example.com
+   *
+   * To also find test modules, add
+   * @code
+   * $settings['extension_discovery_scan_tests'] = TRUE;
+   * @encode
+   * to your settings.php.
    *
    * The information is returned in an associative array, keyed by the extension
    * name (without .info.yml extension). Extensions found later in the search
@@ -162,15 +187,23 @@ class ExtensionDiscovery {
       $searchdirs[static::ORIGIN_PARENT_SITE] = $parent_site;
     }
 
-    // Search the site-specific directory.
-    $searchdirs[static::ORIGIN_SITE] = conf_path();
+    // Find the site-specific directory to search. Since we are using this
+    // method to discover extensions including profiles, we might be doing this
+    // at install time. Therefore Kernel service is not always available, but is
+    // preferred.
+    if (\Drupal::hasService('kernel')) {
+      $searchdirs[static::ORIGIN_SITE] = \Drupal::service('site.path');
+    }
+    else {
+      $searchdirs[static::ORIGIN_SITE] = $this->sitePath ?: DrupalKernel::findSitePath(Request::createFromGlobals());
+    }
 
     // Unless an explicit value has been passed, manually check whether we are
     // in a test environment, in which case test extensions must be included.
     // Test extensions can also be included for debugging purposes by setting a
     // variable in settings.php.
     if (!isset($include_tests)) {
-      $include_tests = drupal_valid_test_ua() || Settings::get('extension_discovery_scan_tests');
+      $include_tests = Settings::get('extension_discovery_scan_tests') || drupal_valid_test_ua();
     }
 
     $files = array();
@@ -417,7 +450,7 @@ class ExtensionDiscovery {
         continue;
       }
 
-      if ($cached_extension = $this->fileCache->get($fileinfo->getPathName())) {
+      if ($this->fileCache && $cached_extension = $this->fileCache->get($fileinfo->getPathName())) {
         $files[$cached_extension->getType()][$key] = $cached_extension;
         continue;
       }
@@ -457,7 +490,10 @@ class ExtensionDiscovery {
       $extension->origin = $dir;
 
       $files[$type][$key] = $extension;
-      $this->fileCache->set($fileinfo->getPathName(), $extension);
+
+      if ($this->fileCache) {
+        $this->fileCache->set($fileinfo->getPathName(), $extension);
+      }
     }
     return $files;
   }

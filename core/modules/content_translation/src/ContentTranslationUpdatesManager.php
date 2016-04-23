@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Contains \Drupal\content_translation\ContentTranslationUpdatesManager.
- */
-
 namespace Drupal\content_translation;
 
 use Drupal\Core\Config\ConfigEvents;
@@ -61,7 +57,7 @@ class ContentTranslationUpdatesManager implements EventSubscriberInterface {
         foreach (array_diff_key($storage_definitions, $installed_storage_definitions) as $storage_definition) {
           /** @var $storage_definition \Drupal\Core\Field\FieldStorageDefinitionInterface */
           if ($storage_definition->getProvider() == 'content_translation') {
-            $this->entityManager->onFieldStorageDefinitionCreate($storage_definition);
+            $this->updateManager->installFieldStorageDefinition($storage_definition->getName(), $entity_type_id, 'content_translation', $storage_definition);
           }
         }
       }

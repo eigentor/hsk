@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\ban\Tests\IpAddressBlockingTest.
- */
-
 namespace Drupal\ban\Tests;
 
 use Drupal\simpletest\WebTestBase;

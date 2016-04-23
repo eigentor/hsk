@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Core\StreamWrapper\TemporaryStream.
- */
-
 namespace Drupal\Core\StreamWrapper;
 
 use \Drupal\Core\Url;
@@ -39,14 +34,14 @@ class TemporaryStream extends LocalStream {
   }
 
   /**
-   * Implements Drupal\Core\StreamWrapper\LocalStream::getDirectoryPath()
+   * {@inheritdoc}
    */
   public function getDirectoryPath() {
     return file_directory_temp();
   }
 
   /**
-   * Implements Drupal\Core\StreamWrapper\StreamWrapperInterface::getExternalUrl().
+   * {@inheritdoc}
    */
   public function getExternalUrl() {
     $path = str_replace('\\', '/', $this->getTarget());

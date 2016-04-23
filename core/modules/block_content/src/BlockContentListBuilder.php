@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\block_content\BlockContentListBuilder.
- */
-
 namespace Drupal\block_content;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -29,7 +24,7 @@ class BlockContentListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    $row['label'] = $this->getLabel($entity);
+    $row['label'] = $entity->label();
     return $row + parent::buildRow($entity);
   }
 

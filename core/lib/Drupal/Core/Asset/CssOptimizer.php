@@ -1,12 +1,7 @@
 <?php
 
-/**
- * Contains \Drupal\Core\Asset\CssOptimizer.
- */
-
 namespace Drupal\Core\Asset;
 
-use Drupal\Core\Asset\AssetOptimizerInterface;
 use Drupal\Component\Utility\Unicode;
 
 /**
@@ -176,8 +171,7 @@ class CssOptimizer implements AssetOptimizerInterface {
     $directory = $directory == '.' ? '' : $directory .'/';
 
     // Alter all internal url() paths. Leave external paths alone. We don't need
-    // to normalize absolute paths here (i.e. remove folder/... segments)
-    // because that will be done later.
+    // to normalize absolute paths here because that will be done later.
     return preg_replace('/url\(\s*([\'"]?)(?![a-z]+:|\/+)([^\'")]+)([\'"]?)\s*\)/i', 'url(\1' . $directory . '\2\3)', $file);
   }
 
@@ -266,7 +260,7 @@ class CssOptimizer implements AssetOptimizerInterface {
       $last = $path;
       $path = preg_replace('`(^|/)(?!\.\./)([^/]+)/\.\./`', '$1', $path);
     }
-    return 'url(' . file_create_url($path) . ')';
+    return 'url(' . file_url_transform_relative(file_create_url($path)) . ')';
   }
 
 }

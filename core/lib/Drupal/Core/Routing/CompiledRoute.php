@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Core\Routing\CompiledRoute.
- */
-
 namespace Drupal\Core\Routing;
 
 use Symfony\Component\Routing\CompiledRoute as SymfonyCompiledRoute;

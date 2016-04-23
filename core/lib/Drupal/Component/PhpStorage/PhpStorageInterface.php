@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Component\PhpStorage\PhpStorageInterface.
- */
-
 namespace Drupal\Component\PhpStorage;
 
 /**
@@ -98,5 +93,12 @@ interface PhpStorageInterface {
    *   Array of filenames.
    */
   public function listAll();
+
+  /**
+   * Performs garbage collection on the storage.
+   *
+   * The storage may choose to delete expired or invalidated items.
+   */
+  public function garbageCollection();
 
 }

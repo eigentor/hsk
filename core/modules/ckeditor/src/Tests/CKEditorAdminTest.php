@@ -1,15 +1,12 @@
 <?php
 
-/**
- * @file
- * Definition of \Drupal\ckeditor\Tests\CKEditorAdminTest.
- */
-
 namespace Drupal\ckeditor\Tests;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\editor\Entity\Editor;
 use Drupal\filter\FilterFormatInterface;
 use Drupal\simpletest\WebTestBase;
+use Drupal\filter\Entity\FilterFormat;
 
 /**
  * Tests administration of CKEditor.
@@ -36,7 +33,7 @@ class CKEditorAdminTest extends WebTestBase {
     parent::setUp();
 
     // Create text format.
-    $filtered_html_format = entity_create('filter_format', array(
+    $filtered_html_format = FilterFormat::create(array(
       'format' => 'filtered_html',
       'name' => 'Filtered HTML',
       'weight' => 0,
@@ -86,36 +83,48 @@ class CKEditorAdminTest extends WebTestBase {
           // Button groups
           array(
             array(
-              'name' => t('Formatting'),
+              'name' => 'Formatting',
               'items' => array('Bold', 'Italic',),
             ),
             array(
-              'name' => t('Links'),
+              'name' => 'Links',
               'items' => array('DrupalLink', 'DrupalUnlink',),
             ),
             array(
-              'name' => t('Lists'),
+              'name' => 'Lists',
               'items' => array('BulletedList', 'NumberedList',),
             ),
             array(
-              'name' => t('Media'),
+              'name' => 'Media',
               'items' => array('Blockquote', 'DrupalImage',),
             ),
             array(
-              'name' => t('Tools'),
+              'name' => 'Tools',
               'items' => array('Source',),
             ),
           ),
         ),
       ),
-      'plugins' => array(),
+      'plugins' => ['language' => ['language_list' => 'un']],
     );
-    $this->assertIdentical($ckeditor->getDefaultSettings(), $expected_default_settings);
+    $this->assertIdentical($this->castSafeStrings($ckeditor->getDefaultSettings()), $expected_default_settings);
 
     // Keep the "CKEditor" editor selected and click the "Configure" button.
     $this->drupalPostAjaxForm(NULL, $edit, 'editor_configure');
     $editor = entity_load('editor', 'filtered_html');
     $this->assertFalse($editor, 'No Editor config entity exists yet.');
+
+    // Ensure that drupalSettings is correct.
+    $ckeditor_settings_toolbar = array(
+      '#theme' => 'ckeditor_settings_toolbar',
+      '#editor' => Editor::create(['editor' => 'ckeditor']),
+      '#plugins' => $this->container->get('plugin.manager.ckeditor.plugin')->getButtons(),
+    );
+    $this->assertEqual(
+      $this->drupalSettings['ckeditor']['toolbarAdmin'],
+      $this->container->get('renderer')->renderPlain($ckeditor_settings_toolbar),
+      'CKEditor toolbar settings are rendered as part of drupalSettings.'
+    );
 
     // Ensure the toolbar buttons configuration value is initialized to the
     // expected default value.
@@ -135,7 +144,7 @@ class CKEditorAdminTest extends WebTestBase {
     $expected_settings['plugins']['stylescombo']['styles'] = '';
     $editor = entity_load('editor', 'filtered_html');
     $this->assertTrue($editor instanceof Editor, 'An Editor config entity exists now.');
-    $this->assertIdentical($expected_settings, $editor->getSettings(), 'The Editor config entity has the correct settings.');
+    $this->assertEqual($expected_settings, $editor->getSettings(), 'The Editor config entity has the correct settings.');
 
     // Configure the Styles plugin, and ensure the updated settings are saved.
     $this->drupalGet('admin/config/content/formats/manage/filtered_html');
@@ -146,7 +155,7 @@ class CKEditorAdminTest extends WebTestBase {
     $expected_settings['plugins']['stylescombo']['styles'] = "h1.title|Title\np.callout|Callout\n\n";
     $editor = entity_load('editor', 'filtered_html');
     $this->assertTrue($editor instanceof Editor, 'An Editor config entity exists.');
-    $this->assertIdentical($expected_settings, $editor->getSettings(), 'The Editor config entity has the correct settings.');
+    $this->assertEqual($expected_settings, $editor->getSettings(), 'The Editor config entity has the correct settings.');
 
     // Change the buttons that appear on the toolbar (in JavaScript, this is
     // done via drag and drop, but here we can only emulate the end result of
@@ -162,7 +171,23 @@ class CKEditorAdminTest extends WebTestBase {
     $this->drupalPostForm(NULL, $edit, t('Save configuration'));
     $editor = entity_load('editor', 'filtered_html');
     $this->assertTrue($editor instanceof Editor, 'An Editor config entity exists.');
-    $this->assertIdentical($expected_settings, $editor->getSettings(), 'The Editor config entity has the correct settings.');
+    $this->assertEqual($expected_settings, $editor->getSettings(), 'The Editor config entity has the correct settings.');
+
+    // Check that the markup we're setting for the toolbar buttons (actually in
+    // JavaScript's drupalSettings, and Unicode-escaped) is correctly rendered.
+    $this->drupalGet('admin/config/content/formats/manage/filtered_html');
+    // Create function to encode HTML as we expect it in drupalSettings.
+    $json_encode = function($html) {
+      return trim(Json::encode($html), '"');
+    };
+    // Check the Button separator.
+    $this->assertRaw($json_encode('<li data-drupal-ckeditor-button-name="-" class="ckeditor-button-separator ckeditor-multiple-button" data-drupal-ckeditor-type="separator"><a href="#" role="button" aria-label="Button separator" class="ckeditor-separator"></a></li>'));
+    // Check the Format dropdown.
+    $this->assertRaw($json_encode('<li data-drupal-ckeditor-button-name="Format" class="ckeditor-button"><a href="#" role="button" aria-label="Format"><span class="ckeditor-button-dropdown">Format<span class="ckeditor-button-arrow"></span></span></a></li>'));
+    // Check the Styles dropdown.
+    $this->assertRaw($json_encode('<li data-drupal-ckeditor-button-name="Styles" class="ckeditor-button"><a href="#" role="button" aria-label="Styles"><span class="ckeditor-button-dropdown">Styles<span class="ckeditor-button-arrow"></span></span></a></li>'));
+    // Check strikethrough.
+    $this->assertRaw($json_encode('<li data-drupal-ckeditor-button-name="Strike" class="ckeditor-button"><a href="#" class="cke-icon-only cke_ltr" role="button" title="strike" aria-label="strike"><span class="cke_button_icon cke_button__strike_icon">strike</span></a></li>'));
 
     // Now enable the ckeditor_test module, which provides one configurable
     // CKEditor plugin — this should not affect the Editor config entity.
@@ -174,7 +199,7 @@ class CKEditorAdminTest extends WebTestBase {
     $this->assertTrue(count($ultra_llama_mode_checkbox) === 1, 'The "Ultra llama mode" checkbox exists and is not checked.');
     $editor = entity_load('editor', 'filtered_html');
     $this->assertTrue($editor instanceof Editor, 'An Editor config entity exists.');
-    $this->assertIdentical($expected_settings, $editor->getSettings(), 'The Editor config entity has the correct settings.');
+    $this->assertEqual($expected_settings, $editor->getSettings(), 'The Editor config entity has the correct settings.');
 
     // Finally, check the "Ultra llama mode" checkbox.
     $this->drupalGet('admin/config/content/formats/manage/filtered_html');
@@ -188,7 +213,7 @@ class CKEditorAdminTest extends WebTestBase {
     $expected_settings['plugins']['llama_contextual_and_button']['ultra_llama_mode'] = TRUE;
     $editor = entity_load('editor', 'filtered_html');
     $this->assertTrue($editor instanceof Editor, 'An Editor config entity exists.');
-    $this->assertIdentical($expected_settings, $editor->getSettings());
+    $this->assertEqual($expected_settings, $editor->getSettings());
   }
 
   /**
@@ -232,6 +257,9 @@ class CKEditorAdminTest extends WebTestBase {
     $expected_buttons_value = json_encode($default_settings['toolbar']['rows']);
     $this->assertFieldByName('editor[settings][toolbar][button_groups]', $expected_buttons_value);
 
+    // Regression test for https://www.drupal.org/node/2606460.
+    $this->assertTrue(strpos($this->drupalSettings['ckeditor']['toolbarAdmin'], '<li data-drupal-ckeditor-button-name="Bold" class="ckeditor-button"><a href="#" class="cke-icon-only cke_ltr" role="button" title="bold" aria-label="bold"><span class="cke_button_icon cke_button__bold_icon">bold</span></a></li>') !== FALSE);
+
     // Ensure the styles textarea exists and is initialized empty.
     $styles_textarea = $this->xpath('//textarea[@name="editor[settings][plugins][stylescombo][styles]"]');
     $this->assertFieldByXPath('//textarea[@name="editor[settings][plugins][stylescombo][styles]"]', '', 'The styles textarea exists and is empty.');
@@ -250,7 +278,7 @@ class CKEditorAdminTest extends WebTestBase {
     $expected_settings['plugins']['stylescombo']['styles'] = '';
     $editor = entity_load('editor', 'amazing_format');
     $this->assertTrue($editor instanceof Editor, 'An Editor config entity exists now.');
-    $this->assertIdentical($expected_settings, $editor->getSettings(), 'The Editor config entity has the correct settings.');
+    $this->assertEqual($this->castSafeStrings($expected_settings), $this->castSafeStrings($editor->getSettings()), 'The Editor config entity has the correct settings.');
   }
 
 }

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Routing\UrlGeneratorTrait.
- */
-
 namespace Drupal\Core\Routing;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,6 +11,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * classes that would implement ContainerInjectionInterface. Services registered
  * in the Container should not use this trait but inject the appropriate service
  * directly for easier testing.
+ *
+ * @deprecated in Drupal 8.0.0 and will be removed before Drupal 9.0.0.
+ *   Use \Drupal\Core\Url instead.
  */
 trait UrlGeneratorTrait {
 
@@ -34,6 +32,9 @@ trait UrlGeneratorTrait {
    *
    * @return string
    *   The generated URL for the given route.
+   *
+   * @deprecated in Drupal 8.0.0 and will be removed before Drupal 9.0.0.
+   *   Use \Drupal\Core\Url instead.
    */
   protected function url($route_name, $route_parameters = array(), $options = array()) {
     return $this->getUrlGenerator()->generateFromRoute($route_name, $route_parameters, $options);

@@ -1,15 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\config_translation\Access\ConfigTranslationFormAccess.
- */
-
 namespace Drupal\config_translation\Access;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Symfony\Component\Routing\Route;
 
 /**
  * Checks access for displaying the translation add, edit, and delete forms.
@@ -19,10 +14,10 @@ class ConfigTranslationFormAccess extends ConfigTranslationOverviewAccess {
   /**
    * {@inheritdoc}
    */
-  public function access(Route $route, AccountInterface $account, $langcode = NULL) {
+  public function access(RouteMatchInterface $route_match, AccountInterface $account, $langcode = NULL) {
     // For the translation forms we have a target language, so we need some
     // checks in addition to the checks performed for the translation overview.
-    $base_access = parent::access($route, $account);
+    $base_access = parent::access($route_match, $account);
     if ($base_access->isAllowed()) {
       $target_language = $this->languageManager->getLanguage($langcode);
 

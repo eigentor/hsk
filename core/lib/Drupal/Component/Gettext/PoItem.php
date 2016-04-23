@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Component\Gettext\PoItem.
- */
-
 namespace Drupal\Component\Gettext;
 
 /**
@@ -147,7 +142,7 @@ class PoItem {
   /**
    * Get if the translation has plural values.
    *
-   * @return boolean $plural
+   * @return bool
    */
   function isPlural() {
     return $this->_plural;
@@ -193,7 +188,7 @@ class PoItem {
         strpos($this->_source, LOCALE_PLURAL_DELIMITER) !== FALSE) {
       $this->setSource(explode(LOCALE_PLURAL_DELIMITER, $this->_source));
       $this->setTranslation(explode(LOCALE_PLURAL_DELIMITER, $this->_translation));
-      $this->setPlural(count($this->_translation) > 1);
+      $this->setPlural(count($this->_source) > 1);
     }
   }
 

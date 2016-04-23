@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Component\Graph\Graph.
- */
-
 namespace Drupal\Component\Graph;
 
 /**

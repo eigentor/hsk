@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\comment\Tests\CommentTypeTest.
- */
-
 namespace Drupal\comment\Tests;
 use Drupal\comment\Entity\Comment;
 use Drupal\comment\Entity\CommentType;
@@ -43,6 +38,9 @@ class CommentTypeTest extends CommentTestBase {
    */
   protected function setUp() {
     parent::setUp();
+
+    $this->drupalPlaceBlock('page_title_block');
+
     $this->adminUser = $this->drupalCreateUser($this->permissions);
   }
 

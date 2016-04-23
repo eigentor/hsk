@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\StackMiddleware\KernelBoot.
- */
-
 namespace Drupal\Core\StackMiddleware;
 
 use Drupal\Core\DrupalKernelInterface;

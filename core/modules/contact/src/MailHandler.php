@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\contact\MailHandler.
- */
-
 namespace Drupal\contact;
 
 use Drupal\Core\Entity\EntityManagerInterface;
@@ -91,7 +86,7 @@ class MailHandler implements MailHandlerInterface {
 
       // For the email message, clarify that the sender name is not verified; it
       // could potentially clash with a username on this site.
-      $sender_cloned->name = $this->t('!name (not verified)', array('!name' => $message->getSenderName()));
+      $sender_cloned->name = $this->t('@name (not verified)', array('@name' => $message->getSenderName()));
     }
 
     // Build email parameters.

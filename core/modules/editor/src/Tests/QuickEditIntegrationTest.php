@@ -1,21 +1,20 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\editor\Tests\QuickEditIntegrationTest.
- */
-
 namespace Drupal\editor\Tests;
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\EventSubscriber\AjaxResponseSubscriber;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\quickedit\EditorSelector;
+use Drupal\editor\Entity\Editor;
+use Drupal\entity_test\Entity\EntityTest;
 use Drupal\quickedit\MetadataGenerator;
-use Drupal\quickedit\Plugin\InPlaceEditorManager;
 use Drupal\quickedit\Tests\QuickEditTestBase;
 use Drupal\quickedit_test\MockEditEntityFieldAccessCheck;
 use Drupal\editor\EditorController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Drupal\filter\Entity\FilterFormat;
 
 /**
  * Tests Edit module integration (Editor module's inline editing support).
@@ -68,7 +67,6 @@ class QuickEditIntegrationTest extends QuickEditTestBase {
     parent::setUp();
 
     // Install the Filter module.
-    $this->installSchema('system', 'url_alias');
 
     // Create a field.
     $this->fieldName = 'field_textarea';
@@ -85,7 +83,7 @@ class QuickEditIntegrationTest extends QuickEditTestBase {
     );
 
     // Create text format.
-    $full_html_format = entity_create('filter_format', array(
+    $full_html_format = FilterFormat::create(array(
       'format' => 'full_html',
       'name' => 'Full HTML',
       'weight' => 1,
@@ -94,14 +92,14 @@ class QuickEditIntegrationTest extends QuickEditTestBase {
     $full_html_format->save();
 
     // Associate text editor with text format.
-    $editor = entity_create('editor', array(
+    $editor = Editor::create([
       'format' => $full_html_format->id(),
       'editor' => 'unicorn',
-    ));
+    ]);
     $editor->save();
 
     // Also create a text format without an associated text editor.
-    entity_create('filter_format', array(
+    FilterFormat::create(array(
       'format' => 'no_editor',
       'name' => 'No Text Editor',
       'weight' => 2,
@@ -110,11 +108,21 @@ class QuickEditIntegrationTest extends QuickEditTestBase {
   }
 
   /**
-   * Returns the in-place editor that Edit selects.
+   * Returns the in-place editor that quickedit selects.
+   *
+   * @param int $entity_id
+   *   An entity ID.
+   * @param string $field_name
+   *   A field name.
+   * @param string $view_mode
+   *   A view mode.
+   *
+   * @return string
+   *   Returns the selected in-place editor.
    */
   protected function getSelectedEditor($entity_id, $field_name, $view_mode = 'default') {
     $entity = entity_load('entity_test', $entity_id, TRUE);
-    $items = $entity->getTranslation(LanguageInterface::LANGCODE_NOT_SPECIFIED)->get($field_name);
+    $items = $entity->get($field_name);
     $options = entity_get_display('entity_test', 'entity_test', $view_mode)->getComponent($field_name);
     return $this->editorSelector->getEditor($options['type'], $items);
   }
@@ -131,7 +139,7 @@ class QuickEditIntegrationTest extends QuickEditTestBase {
     $this->editorSelector = $this->container->get('quickedit.editor.selector');
 
     // Create an entity with values for this text field.
-    $entity = entity_create('entity_test');
+    $entity = EntityTest::create();
     $entity->{$this->fieldName}->value = 'Hello, world!';
     $entity->{$this->fieldName}->format = 'filtered_html';
     $entity->save();
@@ -160,20 +168,19 @@ class QuickEditIntegrationTest extends QuickEditTestBase {
     $this->metadataGenerator = new MetadataGenerator($this->accessChecker, $this->editorSelector, $this->editorManager);
 
     // Create an entity with values for the field.
-    $entity = entity_create('entity_test');
+    $entity = EntityTest::create();
     $entity->{$this->fieldName}->value = 'Test';
     $entity->{$this->fieldName}->format = 'full_html';
     $entity->save();
     $entity = entity_load('entity_test', $entity->id());
 
     // Verify metadata.
-    $items = $entity->getTranslation(LanguageInterface::LANGCODE_NOT_SPECIFIED)->get($this->fieldName);
+    $items = $entity->get($this->fieldName);
     $metadata = $this->metadataGenerator->generateFieldMetadata($items, 'default');
     $expected = array(
       'access' => TRUE,
       'label' => 'Long text field',
       'editor' => 'editor',
-      'aria' => 'Entity entity_test 1, field Long text field',
       'custom' => array(
         'format' => 'full_html',
         'formatHasTransformations' => FALSE,
@@ -198,7 +205,7 @@ class QuickEditIntegrationTest extends QuickEditTestBase {
    */
   public function testGetUntransformedTextCommand() {
     // Create an entity with values for the field.
-    $entity = entity_create('entity_test');
+    $entity = EntityTest::create();
     $entity->{$this->fieldName}->value = 'Test';
     $entity->{$this->fieldName}->format = 'full_html';
     $entity->save();
@@ -207,14 +214,25 @@ class QuickEditIntegrationTest extends QuickEditTestBase {
     // Verify AJAX response.
     $controller = new EditorController();
     $request = new Request();
-    $response = $controller->getUntransformedText($entity, $this->fieldName, LanguageInterface::LANGCODE_NOT_SPECIFIED, 'default');
+    $response = $controller->getUntransformedText($entity, $this->fieldName, LanguageInterface::LANGCODE_DEFAULT, 'default');
     $expected = array(
       array(
         'command' => 'editorGetUntransformedText',
         'data' => 'Test',
       )
     );
-    $this->assertEqual(Json::encode($expected), $response->prepare($request)->getContent(), 'The GetUntransformedTextCommand AJAX command works correctly.');
+
+    $ajax_response_attachments_processor = \Drupal::service('ajax_response.attachments_processor');
+    $subscriber = new AjaxResponseSubscriber($ajax_response_attachments_processor);
+    $event = new FilterResponseEvent(
+      \Drupal::service('http_kernel'),
+      $request,
+      HttpKernelInterface::MASTER_REQUEST,
+      $response
+    );
+    $subscriber->onResponse($event);
+
+    $this->assertEqual(Json::encode($expected), $response->getContent(), 'The GetUntransformedTextCommand AJAX command works correctly.');
   }
 
 }

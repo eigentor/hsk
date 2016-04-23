@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_ui\Tests\EntityDisplayModeTest.
- */
-
 namespace Drupal\field_ui\Tests;
 
 use Drupal\simpletest\WebTestBase;
@@ -19,9 +14,19 @@ class EntityDisplayModeTest extends WebTestBase {
   /**
    * Modules to enable.
    *
-   * @var array
+   * @var string[]
    */
-  public static $modules = array('entity_test', 'field_ui');
+  public static $modules = ['block', 'entity_test', 'field_ui'];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
+    parent::setUp();
+
+    $this->drupalPlaceBlock('local_actions_block');
+    $this->drupalPlaceBlock('page_title_block');
+  }
 
   /**
    * Tests the EntityViewMode user interface.

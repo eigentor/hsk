@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\file\Entity\File.
- */
-
 namespace Drupal\file\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
@@ -70,6 +65,8 @@ class File extends ContentEntityBase implements FileInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @see file_url_transform_relative()
    */
   public function url($rel = 'canonical', $options = array()) {
     return file_create_url($this->getFileUri());
@@ -108,13 +105,6 @@ class File extends ContentEntityBase implements FileInterface {
    */
   public function getCreatedTime() {
     return $this->get('created')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getChangedTime() {
-    return $this->get('changed')->value;
   }
 
   /**
@@ -252,7 +242,8 @@ class File extends ContentEntityBase implements FileInterface {
       ->setLabel(t('URI'))
       ->setDescription(t('The URI to access the file (either local or remote).'))
       ->setSetting('max_length', 255)
-      ->setSetting('case_sensitive', TRUE);
+      ->setSetting('case_sensitive', TRUE)
+      ->addConstraint('FileUriUnique');
 
     $fields['filemime'] = BaseFieldDefinition::create('string')
       ->setLabel(t('File MIME type'))

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\menu_ui\MenuForm.
- */
-
 namespace Drupal\menu_ui;
 
 use Drupal\Component\Utility\NestedArray;
@@ -13,12 +8,12 @@ use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Routing\UrlGeneratorTrait;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\LinkGeneratorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -276,8 +271,8 @@ class MenuForm extends EntityForm {
       ),
     );
 
-    $form['links']['#empty'] = $this->t('There are no menu links yet. <a href="@url">Add link</a>.', [
-      '@url' => $this->url('entity.menu.add_link_form', ['menu' => $this->entity->id()], [
+    $form['links']['#empty'] = $this->t('There are no menu links yet. <a href=":url">Add link</a>.', [
+      ':url' => $this->url('entity.menu.add_link_form', ['menu' => $this->entity->id()], [
         'query' => ['destination' => $this->entity->url('edit-form')],
       ]),
     ]);
@@ -291,8 +286,6 @@ class MenuForm extends EntityForm {
         // TableDrag: Mark the table row as draggable.
         $form['links'][$id]['#attributes'] = $element['#attributes'];
         $form['links'][$id]['#attributes']['class'][] = 'draggable';
-
-        $form['links'][$id]['#item'] = $element['#item'];
 
         // TableDrag: Sort the table row according to its existing/configured weight.
         $form['links'][$id]['#weight'] = $element['#item']->link->getWeight();
@@ -353,12 +346,17 @@ class MenuForm extends EntityForm {
         $id = 'menu_plugin_id:' . $link->getPluginId();
         $form[$id]['#item'] = $element;
         $form[$id]['#attributes'] = $link->isEnabled() ? array('class' => array('menu-enabled')) : array('class' => array('menu-disabled'));
-        $form[$id]['title']['#markup'] = $this->linkGenerator->generate($link->getTitle(), $link->getUrlObject());
+        $form[$id]['title'] = Link::fromTextAndUrl($link->getTitle(), $link->getUrlObject())->toRenderable();
         if (!$link->isEnabled()) {
-          $form[$id]['title']['#markup'] .= ' (' . $this->t('disabled') . ')';
+          $form[$id]['title']['#suffix'] = ' (' . $this->t('disabled') . ')';
         }
+        // @todo Remove this in https://www.drupal.org/node/2568785.
+        elseif ($id === 'menu_plugin_id:user.logout') {
+          $form[$id]['title']['#suffix'] = ' (' . $this->t('<q>Log in</q> for anonymous users') . ')';
+        }
+        // @todo Remove this in https://www.drupal.org/node/2568785.
         elseif (($url = $link->getUrlObject()) && $url->isRouted() && $url->getRouteName() == 'user.page') {
-          $form[$id]['title']['#markup'] .= ' (' . $this->t('logged in users only') . ')';
+          $form[$id]['title']['#suffix'] = ' (' . $this->t('logged in users only') . ')';
         }
 
         $form[$id]['enabled'] = array(

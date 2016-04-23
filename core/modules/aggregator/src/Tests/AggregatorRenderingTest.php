@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\aggregator\Tests\AggregatorRenderingTest.
- */
-
 namespace Drupal\aggregator\Tests;
 
 use Drupal\Component\Utility\SafeMarkup;
@@ -22,6 +17,12 @@ class AggregatorRenderingTest extends AggregatorTestBase {
    * @var array
    */
   public static $modules = array('block', 'test_page_test');
+
+  protected function setUp() {
+    parent::setUp();
+
+    $this->drupalPlaceBlock('page_title_block');
+  }
 
   /**
    * Adds a feed block to the page and checks its links.

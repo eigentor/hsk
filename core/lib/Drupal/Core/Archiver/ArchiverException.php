@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Core\Archiver\ArchiverException.
- */
-
 namespace Drupal\Core\Archiver;
 
 /**

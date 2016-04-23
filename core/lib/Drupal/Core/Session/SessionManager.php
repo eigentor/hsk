@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Session\SessionManager.
- */
-
 namespace Drupal\Core\Session;
 
 use Drupal\Component\Utility\Crypt;
@@ -152,7 +147,7 @@ class SessionManager extends NativeSessionStorage implements SessionManagerInter
   /**
    * Forcibly start a PHP session.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the session is started.
    */
   protected function startNow() {
@@ -331,8 +326,7 @@ class SessionManager extends NativeSessionStorage implements SessionManagerInter
    * Migrates the current session to a new session id.
    *
    * @param string $old_session_id
-   *   The old session id. The new session id is $this->getId() unless
-   *   $new_insecure_session_id is not empty.
+   *   The old session ID. The new session ID is $this->getId().
    */
   protected function migrateStoredSession($old_session_id) {
     $fields = array('sid' => Crypt::hashBase64($this->getId()));

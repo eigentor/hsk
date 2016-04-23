@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\comment\Tests\CommentInterfaceTest.
- */
-
 namespace Drupal\comment\Tests;
 
 use Drupal\comment\CommentManagerInterface;
@@ -23,9 +18,15 @@ class CommentInterfaceTest extends CommentTestBase {
   /**
    * Set up comments to have subject and preview disabled.
    */
-  public function setUp() {
+  protected function setUp() {
     parent::setUp();
     $this->drupalLogin($this->adminUser);
+    // Make sure that comment field title is not displayed when there's no
+    // comments posted.
+    $this->drupalGet($this->node->urlInfo());
+    $this->assertNoPattern('@<h2[^>]*>Comments</h2>@', 'Comments title is not displayed.');
+
+    // Set comments to have subject and preview disabled.
     $this->setCommentPreview(DRUPAL_DISABLED);
     $this->setCommentForm(TRUE);
     $this->setCommentSubject(FALSE);
@@ -43,6 +44,10 @@ class CommentInterfaceTest extends CommentTestBase {
     $comment_text = $this->randomMachineName();
     $comment = $this->postComment($this->node, $comment_text);
     $this->assertTrue($this->commentExists($comment), 'Comment found.');
+
+    // Test the comment field title is displayed when there's comments.
+    $this->drupalGet($this->node->urlInfo());
+    $this->assertPattern('@<h2[^>]*>Comments</h2>@', 'Comments title is displayed.');
 
     // Set comments to have subject and preview to required.
     $this->drupalLogout();
@@ -70,6 +75,12 @@ class CommentInterfaceTest extends CommentTestBase {
     $this->drupalGet('node/' . $this->node->id());
     $this->assertText($subject_text, 'Individual comment subject found.');
     $this->assertText($comment_text, 'Individual comment body found.');
+    $arguments = [
+      ':link' => base_path() . 'comment/' . $comment->id() . '#comment-' . $comment->id(),
+    ];
+    $pattern_permalink = '//footer[contains(@class,"comment__meta")]/a[contains(@href,:link) and text()="Permalink"]';
+    $permalink = $this->xpath($pattern_permalink, $arguments);
+    $this->assertTrue(!empty($permalink), 'Permalink link found.');
 
     // Set comments to have subject and preview to optional.
     $this->drupalLogout();
@@ -83,7 +94,7 @@ class CommentInterfaceTest extends CommentTestBase {
     )));
 
     // Test changing the comment author to "Anonymous".
-    $comment = $this->postComment(NULL, $comment->comment_body->value, $comment->getSubject(), array('name' => ''));
+    $comment = $this->postComment(NULL, $comment->comment_body->value, $comment->getSubject(), array('uid' => ''));
     $this->assertTrue($comment->getAuthorName() == t('Anonymous') && $comment->getOwnerId() == 0, 'Comment author successfully changed to anonymous.');
 
     // Test changing the comment author to an unverified user.
@@ -95,7 +106,7 @@ class CommentInterfaceTest extends CommentTestBase {
 
     // Test changing the comment author to a verified user.
     $this->drupalGet('comment/' . $comment->id() . '/edit');
-    $comment = $this->postComment(NULL, $comment->comment_body->value, $comment->getSubject(), array('name' => $this->webUser->getUsername()));
+    $comment = $this->postComment(NULL, $comment->comment_body->value, $comment->getSubject(), array('uid' => $this->webUser->getUsername() . ' (' . $this->webUser->id() . ')'));
     $this->assertTrue($comment->getAuthorName() == $this->webUser->getUsername() && $comment->getOwnerId() == $this->webUser->id(), 'Comment author successfully changed to a registered user.');
 
     $this->drupalLogout();

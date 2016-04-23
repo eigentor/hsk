@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\contact\Entity\ContactForm.
- */
-
 namespace Drupal\contact\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
@@ -36,6 +31,7 @@ use Drupal\contact\ContactFormInterface;
  *     "delete-form" = "/admin/structure/contact/manage/{contact_form}/delete",
  *     "edit-form" = "/admin/structure/contact/manage/{contact_form}",
  *     "collection" = "/admin/structure/contact",
+ *     "canonical" = "/contact/{contact_form}",
  *   },
  *   config_export = {
  *     "id",

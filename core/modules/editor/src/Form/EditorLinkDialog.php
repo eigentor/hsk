@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\editor\Form\EditorLinkDialog.
- */
-
 namespace Drupal\editor\Form;
 
 use Drupal\Core\Form\FormBase;
@@ -51,13 +46,6 @@ class EditorLinkDialog extends FormBase {
       '#type' => 'textfield',
       '#default_value' => isset($input['href']) ? $input['href'] : '',
       '#maxlength' => 2048,
-    );
-
-    $form['attributes']['target'] = array(
-      '#title' => $this->t('Open in new window'),
-      '#type' => 'checkbox',
-      '#default_value' => !empty($input['target']),
-      '#return_value' => '_blank',
     );
 
     $form['actions'] = array(

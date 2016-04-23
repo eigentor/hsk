@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Core\Cache\CacheBackendInterface.
- */
-
 namespace Drupal\Core\Cache;
 
 /**

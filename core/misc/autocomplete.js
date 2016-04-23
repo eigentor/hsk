@@ -1,15 +1,24 @@
+/**
+ * @file
+ * Autocomplete based on jQuery UI.
+ */
+
 (function ($, Drupal) {
 
-  "use strict";
+  'use strict';
 
   var autocomplete;
 
   /**
    * Helper splitting terms from the autocomplete value.
    *
-   * @param {String} value
+   * @function Drupal.autocomplete.splitValues
+   *
+   * @param {string} value
+   *   The value being entered by the user.
    *
    * @return {Array}
+   *   Array of values, split by comma.
    */
   function autocompleteSplitValues(value) {
     // We will match the value against comma-separated terms.
@@ -43,9 +52,13 @@
   /**
    * Returns the last value of an multi-value textfield.
    *
-   * @param {String} terms
+   * @function Drupal.autocomplete.extractLastTerm
    *
-   * @return {String}
+   * @param {string} terms
+   *   The value of the field.
+   *
+   * @return {string}
+   *   The last value of the input field.
    */
   function extractLastTerm(terms) {
     return autocomplete.splitValues(terms).pop();
@@ -54,9 +67,13 @@
   /**
    * The search handler is called before a search is performed.
    *
-   * @param {Object} event
+   * @function Drupal.autocomplete.options.search
    *
-   * @return {Boolean}
+   * @param {object} event
+   *   The event triggered.
+   *
+   * @return {bool}
+   *   Whether to perform a search or not.
    */
   function searchHandler(event) {
     var options = autocomplete.options;
@@ -70,10 +87,12 @@
   }
 
   /**
-   * jQuery UI autocomplete source callback.
+   * JQuery UI autocomplete source callback.
    *
-   * @param {Object} request
-   * @param {Function} response
+   * @param {object} request
+   *   The request object.
+   * @param {function} response
+   *   The function to call with the response.
    */
   function sourceData(request, response) {
     var elementId = this.element.attr('id');
@@ -86,7 +105,8 @@
      * Filter through the suggestions removing all terms already tagged and
      * display the available terms to the user.
      *
-     * @param {Object} suggestions
+     * @param {object} suggestions
+     *   Suggestions returned by the server.
      */
     function showSuggestions(suggestions) {
       var tagged = autocomplete.splitValues(request.term);
@@ -103,7 +123,8 @@
     /**
      * Transforms the data object into an array and update autocomplete results.
      *
-     * @param {Object} data
+     * @param {object} data
+     *   The data sent back from the server.
      */
     function sourceCallbackHandler(data) {
       autocomplete.cache[elementId][term] = data;
@@ -128,7 +149,8 @@
   /**
    * Handles an autocompletefocus event.
    *
-   * @return {Boolean}
+   * @return {bool}
+   *   Always returns false.
    */
   function focusHandler() {
     return false;
@@ -137,17 +159,20 @@
   /**
    * Handles an autocompleteselect event.
    *
-   * @param {Object} event
-   * @param {Object} ui
+   * @param {jQuery.Event} event
+   *   The event triggered.
+   * @param {object} ui
+   *   The jQuery UI settings object.
    *
-   * @return {Boolean}
+   * @return {bool}
+   *   Returns false to indicate the event status.
    */
   function selectHandler(event, ui) {
     var terms = autocomplete.splitValues(event.target.value);
     // Remove the current input.
     terms.pop();
     // Add the selected item.
-    if (ui.item.value.search(",") > 0) {
+    if (ui.item.value.search(',') > 0) {
       terms.push('"' + ui.item.value + '"');
     }
     else {
@@ -161,19 +186,29 @@
   /**
    * Override jQuery UI _renderItem function to output HTML by default.
    *
-   * @param {Object} ul
-   * @param {Object} item
+   * @param {jQuery} ul
+   *   jQuery collection of the ul element.
+   * @param {object} item
+   *   The list item to append.
    *
-   * @return {Object}
+   * @return {jQuery}
+   *   jQuery collection of the ul element.
    */
   function renderItem(ul, item) {
-    return $("<li>")
-      .append($("<a>").html(item.label))
+    return $('<li>')
+      .append($('<a>').html(item.label))
       .appendTo(ul);
   }
 
   /**
    * Attaches the autocomplete behavior to all required fields.
+   *
+   * @type {Drupal~behavior}
+   *
+   * @prop {Drupal~behaviorAttach} attach
+   *   Attaches the autocomplete behaviors.
+   * @prop {Drupal~behaviorDetach} detach
+   *   Detaches the autocomplete behaviors.
    */
   Drupal.behaviors.autocomplete = {
     attach: function (context) {
@@ -187,8 +222,9 @@
         });
         // Use jQuery UI Autocomplete on the textfield.
         $autocomplete.autocomplete(autocomplete.options)
-          .data("ui-autocomplete")
-          ._renderItem = autocomplete.options.renderItem;
+          .each(function() {
+            $(this).data('ui-autocomplete')._renderItem = autocomplete.options.renderItem;
+          });
       }
     },
     detach: function (context, settings, trigger) {
@@ -202,6 +238,8 @@
 
   /**
    * Autocomplete object implementation.
+   *
+   * @namespace Drupal.autocomplete
    */
   autocomplete = {
     cache: {},
@@ -209,6 +247,12 @@
     splitValues: autocompleteSplitValues,
     extractLastTerm: extractLastTerm,
     // jQuery UI autocomplete options.
+
+    /**
+     * JQuery UI option object.
+     *
+     * @name Drupal.autocomplete.options
+     */
     options: {
       source: sourceData,
       focus: focusHandler,

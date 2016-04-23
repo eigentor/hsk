@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Theme\ThemeManagerInterface.
- */
-
 namespace Drupal\Core\Theme;
 
 /**
@@ -26,8 +21,8 @@ interface ThemeManagerInterface {
    * @param array $variables
    *   An associative array of theme variables.
    *
-   * @return string
-   *   The rendered output.
+   * @return string|\Drupal\Component\Render\MarkupInterface
+   *   The rendered output, or a Markup object.
    */
   public function render($hook, array $variables);
 

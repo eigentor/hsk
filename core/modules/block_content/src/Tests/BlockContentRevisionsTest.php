@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\block_content\Tests\BlockContentRevisionsTest.
- */
-
 namespace Drupal\block_content\Tests;
 
 use Drupal\block_content\Entity\BlockContent;
@@ -69,8 +64,8 @@ class BlockContentRevisionsTest extends BlockContentTestBase {
       // Confirm the correct revision text appears.
       $loaded = entity_revision_load('block_content', $revision_id);
       // Verify revision log is the same.
-      $this->assertEqual($loaded->getRevisionLog(), $logs[$delta], format_string('Correct log message found for revision !revision', array(
-        '!revision' => $loaded->getRevisionId(),
+      $this->assertEqual($loaded->getRevisionLog(), $logs[$delta], format_string('Correct log message found for revision @revision', array(
+        '@revision' => $loaded->getRevisionId(),
       )));
     }
 

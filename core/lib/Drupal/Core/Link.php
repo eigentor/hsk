@@ -1,19 +1,18 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Link.
- */
-
 namespace Drupal\Core;
 
+use Drupal\Core\Render\RenderableInterface;
 use Drupal\Core\Routing\LinkGeneratorTrait;
 
 /**
  * Defines an object that holds information about a link.
  */
-class Link {
+class Link implements RenderableInterface {
 
+  /**
+   * @deprecated in Drupal 8.0.x-dev, will be removed before Drupal 9.0.0.
+   */
   use LinkGeneratorTrait;
 
   /**
@@ -44,7 +43,7 @@ class Link {
   }
 
   /**
-   * Creates a link object from a given route name and parameters.
+   * Creates a Link object from a given route name and parameters.
    *
    * @param string $text
    *   The text of the link.
@@ -73,6 +72,20 @@ class Link {
    */
   public static function createFromRoute($text, $route_name, $route_parameters = array(), $options = array()) {
     return new static($text, new Url($route_name, $route_parameters, $options));
+  }
+
+  /**
+   * Creates a Link object from a given Url object.
+   *
+   * @param string $text
+   *   The text of the link.
+   * @param \Drupal\Core\Url $url
+   *   The Url to create the link for.
+   *
+   * @return static
+   */
+  public static function fromTextAndUrl($text, Url $url) {
+    return new static($text, $url);
   }
 
   /**
@@ -122,17 +135,29 @@ class Link {
   /**
    * Generates the HTML for this Link object.
    *
-   * @param bool $collect_cacheability_metadata
-   *   (optional) Defaults to FALSE. When TRUE, both the generated link and its
-   *   associated cacheability metadata are returned.
+   * Do not use this method to render a link in an HTML context. In an HTML
+   * context, self::toRenderable() should be used so that render cache
+   * information is maintained. However, there might be use cases such as tests
+   * and non-HTML contexts where calling this method directly makes sense.
    *
-   * @return string|\Drupal\Core\GeneratedLink
+   * @return \Drupal\Core\GeneratedLink
    *   The link HTML markup.
-   *   When $collect_cacheability_metadata is TRUE, a GeneratedLink object is
-   *   returned, containing the generated link plus cacheability metadata.
+   *
+   * @see \Drupal\Core\Link::toRenderable()
    */
-  public function toString($collect_cacheability_metadata = FALSE) {
-    return $this->getLinkGenerator()->generateFromLink($this, $collect_cacheability_metadata);
+  public function toString() {
+    return $this->getLinkGenerator()->generateFromLink($this);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function toRenderable() {
+    return [
+      '#type' => 'link',
+      '#url' => $this->url,
+      '#title' => $this->text,
+    ];
   }
 
 }
