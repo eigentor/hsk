@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\views\Plugin\views\pager\Some.
- */
-
 namespace Drupal\views\Plugin\views\pager;
 
 use Drupal\Core\Form\FormStateInterface;

@@ -1,20 +1,19 @@
 <?php
-/**
- * @file
- * Provides Configuration Management destination plugin.
- */
 
 namespace Drupal\migrate\Plugin\migrate\destination;
 
+use Drupal\Component\Plugin\DependentPluginInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\DependencyTrait;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\migrate\Entity\MigrationInterface;
-use Drupal\migrate\MigrateException;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Config\Config as ConfigObject;
 
 /**
+ * Provides Configuration Management destination plugin.
+ *
  * Persist data to the config system.
  *
  * When a property is NULL, the default is used unless the configuration option
@@ -24,7 +23,9 @@ use Drupal\Core\Config\Config as ConfigObject;
  *   id = "config"
  * )
  */
-class Config extends DestinationBase implements ContainerFactoryPluginInterface {
+class Config extends DestinationBase implements ContainerFactoryPluginInterface, DependentPluginInterface {
+
+  use DependencyTrait;
 
   /**
    * The config object.
@@ -32,6 +33,13 @@ class Config extends DestinationBase implements ContainerFactoryPluginInterface 
    * @var \Drupal\Core\Config\Config
    */
   protected $config;
+
+  /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $language_manager;
 
   /**
    * Constructs a Config destination object.
@@ -42,14 +50,17 @@ class Config extends DestinationBase implements ContainerFactoryPluginInterface 
    *   The plugin ID for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\migrate\Entity\MigrationInterface $migration
+   * @param \Drupal\migrate\Plugin\MigrationInterface $migration
    *   The migration entity.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory.
+   * @param \Drupal\Core\Language\ConfigurableLanguageManagerInterface $language_manager
+   *   The language manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, ConfigFactoryInterface $config_factory) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, ConfigFactoryInterface $config_factory, LanguageManagerInterface $language_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
     $this->config = $config_factory->getEditable($configuration['config_name']);
+    $this->language_manager = $language_manager;
   }
 
   /**
@@ -61,7 +72,8 @@ class Config extends DestinationBase implements ContainerFactoryPluginInterface 
       $plugin_id,
       $plugin_definition,
       $migration,
-      $container->get('config.factory')
+      $container->get('config.factory'),
+      $container->get('language_manager')
     );
   }
 
@@ -69,25 +81,17 @@ class Config extends DestinationBase implements ContainerFactoryPluginInterface 
    * {@inheritdoc}
    */
   public function import(Row $row, array $old_destination_id_values = array()) {
+    if ($row->hasDestinationProperty('langcode')) {
+      $this->config = $this->language_manager->getLanguageConfigOverride($row->getDestinationProperty('langcode'), $this->config->getName());
+    }
+
     foreach ($row->getRawDestination() as $key => $value) {
       if (isset($value) || !empty($this->configuration['store null'])) {
         $this->config->set(str_replace(Row::PROPERTY_SEPARATOR, '.', $key), $value);
       }
     }
     $this->config->save();
-    return TRUE;
-  }
-
-  /**
-   * Throw an exception because config can not be rolled back.
-   *
-   * @param array $destination_keys
-   *   The array of destination ids to roll back.
-   *
-   * @throws \Drupal\migrate\MigrateException
-   */
-  public function rollbackMultiple(array $destination_keys) {
-    throw new MigrateException('Configuration can not be rolled back');
+    return [$this->config->getName()];
   }
 
   /**
@@ -101,7 +105,17 @@ class Config extends DestinationBase implements ContainerFactoryPluginInterface 
    * {@inheritdoc}
    */
   public function getIds() {
-    return array();
+    $ids['config_name']['type'] = 'string';
+    return $ids;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function calculateDependencies() {
+    $provider = explode('.', $this->config->getName(), 2)[0];
+    $this->addDependency('module', $provider);
+    return $this->dependencies;
   }
 
 }

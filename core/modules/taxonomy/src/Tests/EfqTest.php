@@ -1,13 +1,6 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\taxonomy\Tests\EfqTest.
- */
-
 namespace Drupal\taxonomy\Tests;
-
-use Drupal\Core\Entity\Query\QueryFactory;
 
 /**
  * Verifies operation of a taxonomy-based Entity Query.

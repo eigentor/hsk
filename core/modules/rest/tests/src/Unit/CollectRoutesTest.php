@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\rest\Unit\CollectRoutesTest.
- */
-
 namespace Drupal\Tests\rest\Unit;
 
 use Drupal\Tests\UnitTestCase;
@@ -49,7 +44,10 @@ class CollectRoutesTest extends UnitTestCase {
       'view',
     ));
 
-    $view_executable = $this->getMock('\Drupal\views\ViewExecutable', array('initHandlers'), array(), '', FALSE);
+    $view_executable = $this->getMock('\Drupal\views\ViewExecutable', array('initHandlers', 'getTitle'), array(), '', FALSE);
+    $view_executable->expects($this->any())
+      ->method('getTitle')
+      ->willReturn('View title');
 
     $view_executable->storage = $this->view;
     $view_executable->argument = array();

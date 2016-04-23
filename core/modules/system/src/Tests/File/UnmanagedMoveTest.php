@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\File\UnmanagedMoveTest.
- */
-
 namespace Drupal\system\Tests\File;
 
 use Drupal\Core\Site\Settings;

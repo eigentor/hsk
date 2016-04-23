@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Entity\QueryInterface.
- */
-
 namespace Drupal\Core\Entity\Query;
 
 use Drupal\Core\Database\Query\AlterableInterface;

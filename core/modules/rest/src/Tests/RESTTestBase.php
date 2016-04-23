@@ -1,17 +1,9 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\rest\test\RESTTestBase.
- */
-
 namespace Drupal\rest\Tests;
 
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\simpletest\WebTestBase;
-use Drupal\user\UserInterface;
 
 /**
  * Test helper class that provides a REST client method to send HTTP requests.
@@ -45,6 +37,14 @@ abstract class RESTTestBase extends WebTestBase {
    * @var array
    */
   protected $defaultAuth;
+
+
+  /**
+   * The raw response body from http request operations.
+   *
+   * @var array
+   */
+  protected $responseBody;
 
   /**
    * Modules to install.
@@ -88,6 +88,7 @@ abstract class RESTTestBase extends WebTestBase {
 
     $url = $this->buildUrl($url);
 
+    $curl_options = array();
     switch ($method) {
       case 'GET':
         // Set query if there are additional GET parameters.
@@ -99,6 +100,16 @@ abstract class RESTTestBase extends WebTestBase {
           CURLOPT_HTTPHEADER => array('Accept: ' . $mime_type),
         );
         break;
+
+        case 'HEAD':
+          $curl_options = array(
+            CURLOPT_HTTPGET => FALSE,
+            CURLOPT_CUSTOMREQUEST => 'HEAD',
+            CURLOPT_URL => $url,
+            CURLOPT_NOBODY => TRUE,
+            CURLOPT_HTTPHEADER => array('Accept: ' . $mime_type),
+          );
+          break;
 
       case 'POST':
         $curl_options = array(
@@ -153,7 +164,7 @@ abstract class RESTTestBase extends WebTestBase {
         break;
     }
 
-    $response = $this->curlExec($curl_options);
+    $this->responseBody = $this->curlExec($curl_options);
 
     // Ensure that any changes to variables in the other thread are picked up.
     $this->refreshVariables();
@@ -163,9 +174,9 @@ abstract class RESTTestBase extends WebTestBase {
     $this->verbose($method . ' request to: ' . $url .
       '<hr />Code: ' . curl_getinfo($this->curlHandle, CURLINFO_HTTP_CODE) .
       '<hr />Response headers: ' . nl2br(print_r($headers, TRUE)) .
-      '<hr />Response body: ' . $response);
+      '<hr />Response body: ' . $this->responseBody);
 
-    return $response;
+    return $this->responseBody;
   }
 
   /**
@@ -178,7 +189,9 @@ abstract class RESTTestBase extends WebTestBase {
    *   The new entity object.
    */
   protected function entityCreate($entity_type) {
-    return entity_create($entity_type, $this->entityValues($entity_type));
+    return $this->container->get('entity_type.manager')
+      ->getStorage($entity_type)
+      ->create($this->entityValues($entity_type));
   }
 
   /**
@@ -213,6 +226,17 @@ abstract class RESTTestBase extends WebTestBase {
         );
       case 'user':
         return array('name' => $this->randomMachineName());
+
+      case 'comment':
+        return [
+          'subject' => $this->randomMachineName(),
+          'entity_type' => 'node',
+          'comment_type' => 'comment',
+          'comment_body' => $this->randomString(),
+          'entity_id' => 'invalid',
+          'field_name' => 'comment',
+        ];
+
       default:
         return array();
     }
@@ -258,29 +282,6 @@ abstract class RESTTestBase extends WebTestBase {
   protected function rebuildCache() {
     // Rebuild routing cache, so that the REST API paths are available.
     $this->container->get('router.builder')->rebuild();
-  }
-
-  /**
-   * Check if a HTTP response header exists and has the expected value.
-   *
-   * @param string $header
-   *   The header key, example: Content-Type
-   * @param string $value
-   *   The header value.
-   * @param string $message
-   *   (optional) A message to display with the assertion.
-   * @param string $group
-   *   (optional) The group this message is in, which is displayed in a column
-   *   in test output. Use 'Debug' to indicate this is debugging output. Do not
-   *   translate this string. Defaults to 'Other'; most tests do not override
-   *   this default.
-   *
-   * @return bool
-   *   TRUE if the assertion succeeded, FALSE otherwise.
-   */
-  protected function assertHeader($header, $value, $message = '', $group = 'Browser') {
-    $header_value = $this->drupalGetHeader($header);
-    return $this->assertTrue($header_value == $value, $message ? $message : 'HTTP response header ' . $header . ' with value ' . $value . ' found.', $group);
   }
 
   /**
@@ -336,6 +337,22 @@ abstract class RESTTestBase extends WebTestBase {
             return array('delete any resttest content');
         }
 
+      case 'comment':
+        switch ($operation) {
+          case 'view':
+            return ['access comments'];
+
+          case 'create':
+            return ['post comments', 'skip comment approval'];
+
+          case 'update':
+            return ['edit own comments'];
+
+          case 'delete':
+            return ['administer comments'];
+        }
+        break;
+
       case 'user':
         switch ($operation) {
           case 'view':
@@ -379,9 +396,33 @@ abstract class RESTTestBase extends WebTestBase {
     $node->set('promote', NULL);
     $node->set('sticky', NULL);
     $node->set('revision_timestamp', NULL);
+    $node->set('revision_log', NULL);
     $node->set('uid', NULL);
 
     return $node;
   }
 
+  /**
+   * Check to see if the HTTP request response body is identical to the expected
+   * value.
+   *
+   * @param $expected
+   *   The first value to check.
+   * @param $message
+   *   (optional) A message to display with the assertion. Do not translate
+   *   messages: use \Drupal\Component\Utility\SafeMarkup::format() to embed
+   *   variables in the message text, not t(). If left blank, a default message
+   *   will be displayed.
+   * @param $group
+   *   (optional) The group this message is in, which is displayed in a column
+   *   in test output. Use 'Debug' to indicate this is debugging output. Do not
+   *   translate this string. Defaults to 'Other'; most tests do not override
+   *   this default.
+   *
+   * @return bool
+   *   TRUE if the assertion succeeded, FALSE otherwise.
+   */
+  protected function assertResponseBody($expected, $message = '', $group = 'REST Response') {
+    return $this->assertIdentical($expected, $this->responseBody, $message ? $message : strtr('Response body @expected (expected) is equal to @response (actual).', array('@expected' => var_export($expected, TRUE), '@response' => var_export($this->responseBody, TRUE))), $group);
+  }
 }

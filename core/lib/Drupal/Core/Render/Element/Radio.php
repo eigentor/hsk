@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Render\Element\Radio.
- */
-
 namespace Drupal\Core\Render\Element;
 
 use Drupal\Core\Render\Element;
@@ -12,7 +7,11 @@ use Drupal\Core\Render\Element;
 /**
  * Provides a form element for a single radio button.
  *
+ * This is an internal element that is primarily used to render the radios form
+ * element. Refer to \Drupal\Core\Render\Element\Radios for more documentation.
+ *
  * @see \Drupal\Core\Render\Element\Radios
+ * @see \Drupal\Core\Render\Element\Checkbox
  *
  * @FormElement("radio")
  */

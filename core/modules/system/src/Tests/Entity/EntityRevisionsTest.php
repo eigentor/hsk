@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\Entity\EntityRevisionsTest.
- */
-
 namespace Drupal\system\Tests\Entity;
 
 use Drupal\simpletest\WebTestBase;
@@ -37,6 +32,7 @@ class EntityRevisionsTest extends WebTestBase {
     // Create and login user.
     $this->webUser = $this->drupalCreateUser(array(
       'administer entity_test content',
+      'view test entity',
     ));
     $this->drupalLogin($this->webUser);
   }
@@ -61,10 +57,12 @@ class EntityRevisionsTest extends WebTestBase {
   protected function runRevisionsTests($entity_type) {
 
     // Create initial entity.
-    $entity = entity_create($entity_type, array(
-      'name' => 'foo',
-      'user_id' => $this->webUser->id(),
-    ));
+    $entity = $this->container->get('entity_type.manager')
+      ->getStorage($entity_type)
+      ->create(array(
+        'name' => 'foo',
+        'user_id' => $this->webUser->id(),
+      ));
     $entity->field_test_text->value = 'bar';
     $entity->save();
 
@@ -110,7 +108,7 @@ class EntityRevisionsTest extends WebTestBase {
 
     // Confirm the correct revision text appears in the edit form.
     $entity = entity_load($entity_type, $entity->id->value);
-    $this->drupalGet($entity_type . '/manage/' . $entity->id->value);
+    $this->drupalGet($entity_type . '/manage/' . $entity->id->value . '/edit');
     $this->assertFieldById('edit-name-0-value', $entity->name->value, format_string('%entity_type: Name matches in UI.', array('%entity_type' => $entity_type)));
     $this->assertFieldById('edit-field-test-text-0-value', $entity->field_test_text->value, format_string('%entity_type: Text matches in UI.', array('%entity_type' => $entity_type)));
   }

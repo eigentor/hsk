@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\update\Tests\UpdateCoreTest.
- */
-
 namespace Drupal\update\Tests;
 
 use Drupal\Core\Url;
@@ -22,12 +17,13 @@ class UpdateCoreTest extends UpdateTestBase {
    *
    * @var array
    */
-  public static $modules = array('update_test', 'update', 'language');
+  public static $modules = ['update_test', 'update', 'language', 'block'];
 
   protected function setUp() {
     parent::setUp();
     $admin_user = $this->drupalCreateUser(array('administer site configuration', 'administer modules', 'administer themes'));
     $this->drupalLogin($admin_user);
+    $this->drupalPlaceBlock('local_actions_block');
   }
 
   /**
@@ -175,7 +171,7 @@ class UpdateCoreTest extends UpdateTestBase {
     $system_info = array(
       '#all' => array(
         // We need to think we're running a -dev snapshot to see dates.
-        'version' => '8.0.0-dev',
+        'version' => '8.1.0-dev',
         'datestamp' => time(),
       ),
       'block' => array(

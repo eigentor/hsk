@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\user\Tests\UserPasswordResetTest.
- */
-
 namespace Drupal\user\Tests;
 
 use Drupal\system\Tests\Cache\PageCacheTagsTestBase;
@@ -79,7 +74,7 @@ class UserPasswordResetTest extends PageCacheTagsTestBase {
     $edit = array('name' => $this->randomMachineName(32));
     $this->drupalPostForm(NULL, $edit, t('Submit'));
 
-    $this->assertText(t('Sorry, @name is not recognized as a username or an email address.', array('@name' => $edit['name'])), 'Validation error message shown when trying to request password for invalid account.');
+    $this->assertText(t('@name is not recognized as a username or an email address.', array('@name' => $edit['name'])), 'Validation error message shown when trying to request password for invalid account.');
     $this->assertEqual(count($this->drupalGetMails(array('id' => 'user_password_reset'))), 0, 'No email was sent when requesting a password for an invalid account.');
 
     // Reset the password by username via the password reset page.
@@ -140,18 +135,27 @@ class UserPasswordResetTest extends PageCacheTagsTestBase {
     $this->drupalPostForm(NULL, $edit, t('Submit'));
     $this->assertTrue( count($this->drupalGetMails(array('id' => 'user_password_reset'))) === $before + 1, 'Email sent when requesting password reset using email address.');
 
+    // Visit the user edit page without pass-reset-token and make sure it does
+    // not cause an error.
+    $resetURL = $this->getResetURL();
+    $this->drupalGet($resetURL);
+    $this->drupalPostForm(NULL, NULL, t('Log in'));
+    $this->drupalGet('user/' . $this->account->id() . '/edit');
+    $this->assertNoText('Expected user_string to be a string, NULL given');
+    $this->drupalLogout();
+
     // Create a password reset link as if the request time was 60 seconds older than the allowed limit.
     $timeout = $this->config('user.settings')->get('password_reset_timeout');
     $bogus_timestamp = REQUEST_TIME - $timeout - 60;
     $_uid = $this->account->id();
-    $this->drupalGet("user/reset/$_uid/$bogus_timestamp/" . user_pass_rehash($this->account->getPassword(), $bogus_timestamp, $this->account->getLastLoginTime(), $this->account->id()));
+    $this->drupalGet("user/reset/$_uid/$bogus_timestamp/" . user_pass_rehash($this->account, $bogus_timestamp));
     $this->assertText(t('You have tried to use a one-time login link that has expired. Please request a new one using the form below.'), 'Expired password reset request rejected.');
 
     // Create a user, block the account, and verify that a login link is denied.
     $timestamp = REQUEST_TIME - 1;
     $blocked_account = $this->drupalCreateUser()->block();
     $blocked_account->save();
-    $this->drupalGet("user/reset/" . $blocked_account->id() . "/$timestamp/" . user_pass_rehash($blocked_account->getPassword(), $timestamp, $blocked_account->getLastLoginTime(), $this->account->id()));
+    $this->drupalGet("user/reset/" . $blocked_account->id() . "/$timestamp/" . user_pass_rehash($blocked_account, $timestamp));
     $this->assertResponse(403);
 
     // Verify a blocked user can not request a new password.
@@ -162,6 +166,16 @@ class UserPasswordResetTest extends PageCacheTagsTestBase {
     $this->drupalPostForm(NULL, $edit, t('Submit'));
     $this->assertRaw(t('%name is blocked or has not been activated yet.', array('%name' => $blocked_account->getUsername())), 'Notified user blocked accounts can not request a new password');
     $this->assertTrue(count($this->drupalGetMails(array('id' => 'user_password_reset'))) === $before, 'No email was sent when requesting password reset for a blocked account');
+
+    // Verify a password reset link is invalidated when the user's email address changes.
+    $this->drupalGet('user/password');
+    $edit = array('name' => $this->account->getUsername());
+    $this->drupalPostForm(NULL, $edit, t('Submit'));
+    $old_email_reset_link = $this->getResetURL();
+    $this->account->setEmail("1" . $this->account->getEmail());
+    $this->account->save();
+    $this->drupalGet($old_email_reset_link);
+    $this->assertText(t('You have tried to use a one-time login link that has either been used or is no longer valid. Please request a new one using the form below.'), 'One-time link is no longer valid.');
   }
 
   /**
@@ -210,8 +224,8 @@ class UserPasswordResetTest extends PageCacheTagsTestBase {
       'pass' => $this->randomMachineName(),
     );
     $this->drupalPostForm('user/login', $edit, t('Log in'));
-    $this->assertRaw(t('Sorry, unrecognized username or password. <a href="@password">Have you forgotten your password?</a>',
-      array('@password' => \Drupal::url('user.pass', [], array('query' => array('name' => $edit['name']))))));
+    $this->assertRaw(t('Unrecognized username or password. <a href=":password">Have you forgotten your password?</a>',
+      array(':password' => \Drupal::url('user.pass', [], array('query' => array('name' => $edit['name']))))));
     unset($edit['pass']);
     $this->drupalGet('user/password', array('query' => array('name' => $edit['name'])));
     $this->assertFieldByName('name', $edit['name'], 'User name found.');

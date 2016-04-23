@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\File\RemoteFileUnmanagedDeleteTest.
- */
-
 namespace Drupal\system\Tests\File;
 
 /**

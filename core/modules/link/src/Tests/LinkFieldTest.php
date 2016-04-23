@@ -1,17 +1,15 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\link\Tests\LinkFieldTest.
- */
-
 namespace Drupal\link\Tests;
 
-use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Url;
+use Drupal\entity_test\Entity\EntityTest;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\link\LinkItemInterface;
 use Drupal\simpletest\WebTestBase;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Tests link field widgets and formatters.
@@ -57,20 +55,20 @@ class LinkFieldTest extends WebTestBase {
   function testURLValidation() {
     $field_name = Unicode::strtolower($this->randomMachineName());
     // Create a field with settings to validate.
-    $this->fieldStorage = entity_create('field_storage_config', array(
+    $this->fieldStorage = FieldStorageConfig::create(array(
       'field_name' => $field_name,
       'entity_type' => 'entity_test',
       'type' => 'link',
     ));
     $this->fieldStorage->save();
-    $this->field = entity_create('field_config', array(
+    $this->field = FieldConfig::create([
       'field_storage' => $this->fieldStorage,
       'bundle' => 'entity_test',
       'settings' => array(
         'title' => DRUPAL_DISABLED,
         'link_type' => LinkItemInterface::LINK_GENERIC,
       ),
-    ));
+    ]);
     $this->field->save();
     entity_get_form_display('entity_test', 'entity_test', 'default')
       ->setComponent($field_name, array(
@@ -92,15 +90,25 @@ class LinkFieldTest extends WebTestBase {
     $this->assertRaw('placeholder="http://example.com"');
 
     // Create a path alias.
-    \Drupal::service('path.alias_storage')->save('admin', 'a/path/alias');
+    \Drupal::service('path.alias_storage')->save('/admin', '/a/path/alias');
 
     // Create a node to test the link widget.
     $node = $this->drupalCreateNode();
+
+    // Create an entity with restricted view access.
+    $entity_test_no_label_access = EntityTest::create([
+      'name' => 'forbid_access',
+    ]);
+    $entity_test_no_label_access->save();
 
     // Define some valid URLs (keys are the entered values, values are the
     // strings displayed to the user).
     $valid_external_entries = array(
       'http://www.example.com/' => 'http://www.example.com/',
+      // Strings within parenthesis without leading space char.
+      'http://www.example.com/strings_(string_within_parenthesis)' => 'http://www.example.com/strings_(string_within_parenthesis)',
+      // Numbers within parenthesis without leading space char.
+      'http://www.example.com/numbers_(9999)' => 'http://www.example.com/numbers_(9999)',
     );
     $valid_internal_entries = array(
       '/entity_test/add' => '/entity_test/add',
@@ -126,11 +134,9 @@ class LinkFieldTest extends WebTestBase {
       // Entity URI displayed as ER autocomplete value when displayed in a form.
       'entity:node/1' => $node->label() . ' (1)',
       // URI for an entity that exists, but is not accessible by the user.
-      'entity:user/1' => '- Restricted access - (1)',
+      'entity:entity_test/' . $entity_test_no_label_access->id() => '- Restricted access - (' . $entity_test_no_label_access->id() . ')',
       // URI for an entity that doesn't exist, but with a valid ID.
       'entity:user/999999' => 'entity:user/999999',
-      // URI for an entity that doesn't exist, with an invalid ID.
-      'entity:user/invalid-parameter' => 'entity:user/invalid-parameter',
     );
 
     // Define some invalid URLs.
@@ -146,6 +152,8 @@ class LinkFieldTest extends WebTestBase {
     $invalid_internal_entries = array(
       'no-leading-slash' => $validation_error_2,
       'entity:non_existing_entity_type/yar' => $validation_error_1,
+      // URI for an entity that doesn't exist, with an invalid ID.
+      'entity:user/invalid-parameter' => $validation_error_1,
     );
 
     // Test external and internal URLs for 'link_type' = LinkItemInterface::LINK_GENERIC.
@@ -218,13 +226,13 @@ class LinkFieldTest extends WebTestBase {
   function testLinkTitle() {
     $field_name = Unicode::strtolower($this->randomMachineName());
     // Create a field with settings to validate.
-    $this->fieldStorage = entity_create('field_storage_config', array(
+    $this->fieldStorage = FieldStorageConfig::create(array(
       'field_name' => $field_name,
       'entity_type' => 'entity_test',
       'type' => 'link',
     ));
     $this->fieldStorage->save();
-    $this->field = entity_create('field_config', array(
+    $this->field = FieldConfig::create([
       'field_storage' => $this->fieldStorage,
       'bundle' => 'entity_test',
       'label' => 'Read more about this entity',
@@ -232,7 +240,7 @@ class LinkFieldTest extends WebTestBase {
         'title' => DRUPAL_OPTIONAL,
         'link_type' => LinkItemInterface::LINK_GENERIC,
       ),
-    ));
+    ]);
     $this->field->save();
     entity_get_form_display('entity_test', 'entity_test', 'default')
       ->setComponent($field_name, array(
@@ -277,14 +285,14 @@ class LinkFieldTest extends WebTestBase {
             "{$field_name}[0][uri]" => 'http://www.example.com',
           );
           $this->drupalPostForm(NULL, $edit, t('Save'));
-          $this->assertText(t('!name field is required.', array('!name' => t('Link text'))));
+          $this->assertText(t('@name field is required.', array('@name' => t('Link text'))));
 
           // Verify that the link text is not required, if the URL is empty.
           $edit = array(
             "{$field_name}[0][uri]" => '',
           );
           $this->drupalPostForm(NULL, $edit, t('Save'));
-          $this->assertNoText(t('!name field is required.', array('!name' => t('Link text'))));
+          $this->assertNoText(t('@name field is required.', array('@name' => t('Link text'))));
 
           // Verify that a URL and link text meets requirements.
           $this->drupalGet('entity_test/add');
@@ -293,7 +301,7 @@ class LinkFieldTest extends WebTestBase {
             "{$field_name}[0][title]" => 'Example',
           );
           $this->drupalPostForm(NULL, $edit, t('Save'));
-          $this->assertNoText(t('!name field is required.', array('!name' => t('Link text'))));
+          $this->assertNoText(t('@name field is required.', array('@name' => t('Link text'))));
         }
       }
     }
@@ -318,7 +326,7 @@ class LinkFieldTest extends WebTestBase {
     $edit = array(
       "{$field_name}[0][title]" => $title,
     );
-    $this->drupalPostForm("entity_test/manage/$id", $edit, t('Save'));
+    $this->drupalPostForm("entity_test/manage/$id/edit", $edit, t('Save'));
     $this->assertText(t('entity_test @id has been updated.', array('@id' => $id)));
 
     $this->renderTestEntity($id);
@@ -332,14 +340,14 @@ class LinkFieldTest extends WebTestBase {
   function testLinkFormatter() {
     $field_name = Unicode::strtolower($this->randomMachineName());
     // Create a field with settings to validate.
-    $this->fieldStorage = entity_create('field_storage_config', array(
+    $this->fieldStorage = FieldStorageConfig::create(array(
       'field_name' => $field_name,
       'entity_type' => 'entity_test',
       'type' => 'link',
       'cardinality' => 2,
     ));
     $this->fieldStorage->save();
-    entity_create('field_config', array(
+    FieldConfig::create([
       'field_storage' => $this->fieldStorage,
       'label' => 'Read more about this entity',
       'bundle' => 'entity_test',
@@ -347,7 +355,7 @@ class LinkFieldTest extends WebTestBase {
         'title' => DRUPAL_OPTIONAL,
         'link_type' => LinkItemInterface::LINK_GENERIC,
       ),
-    ))->save();
+    ])->save();
     entity_get_form_display('entity_test', 'entity_test', 'default')
       ->setComponent($field_name, array(
         'type' => 'link_default',
@@ -389,8 +397,8 @@ class LinkFieldTest extends WebTestBase {
     // Verify that the link is output according to the formatter settings.
     // Not using generatePermutations(), since that leads to 32 cases, which
     // would not test actual link field formatter functionality but rather
-    // _l() and options/attributes. Only 'url_plain' has a dependency on
-    // 'url_only', so we have a total of ~10 cases.
+    // the link generator and options/attributes. Only 'url_plain' has a
+    // dependency on 'url_only', so we have a total of ~10 cases.
     $options = array(
       'trim_length' => array(NULL, 6),
       'rel' => array(NULL, 'nofollow'),
@@ -420,39 +428,39 @@ class LinkFieldTest extends WebTestBase {
           case 'trim_length':
             $url = $url1;
             $title = isset($new_value) ? Unicode::truncate($title1, $new_value, FALSE, TRUE) : $title1;
-            $this->assertRaw('<a href="' . SafeMarkup::checkPlain($url) . '">' . SafeMarkup::checkPlain($title) . '</a>');
+            $this->assertRaw('<a href="' . Html::escape($url) . '">' . Html::escape($title) . '</a>');
 
             $url = $url2;
             $title = isset($new_value) ? Unicode::truncate($title2, $new_value, FALSE, TRUE) : $title2;
-            $this->assertRaw('<a href="' . SafeMarkup::checkPlain($url) . '">' . SafeMarkup::checkPlain($title) . '</a>');
+            $this->assertRaw('<a href="' . Html::escape($url) . '">' . Html::escape($title) . '</a>');
             break;
 
           case 'rel':
             $rel = isset($new_value) ? ' rel="' . $new_value . '"' : '';
-            $this->assertRaw('<a href="' . SafeMarkup::checkPlain($url1) . '"' . $rel . '>' . SafeMarkup::checkPlain($title1) . '</a>');
-            $this->assertRaw('<a href="' . SafeMarkup::checkPlain($url2) . '"' . $rel . '>' . SafeMarkup::checkPlain($title2) . '</a>');
+            $this->assertRaw('<a href="' . Html::escape($url1) . '"' . $rel . '>' . Html::escape($title1) . '</a>');
+            $this->assertRaw('<a href="' . Html::escape($url2) . '"' . $rel . '>' . Html::escape($title2) . '</a>');
             break;
 
           case 'target':
             $target = isset($new_value) ? ' target="' . $new_value . '"' : '';
-            $this->assertRaw('<a href="' . SafeMarkup::checkPlain($url1) . '"' . $target . '>' . SafeMarkup::checkPlain($title1) . '</a>');
-            $this->assertRaw('<a href="' . SafeMarkup::checkPlain($url2) . '"' . $target . '>' . SafeMarkup::checkPlain($title2) . '</a>');
+            $this->assertRaw('<a href="' . Html::escape($url1) . '"' . $target . '>' . Html::escape($title1) . '</a>');
+            $this->assertRaw('<a href="' . Html::escape($url2) . '"' . $target . '>' . Html::escape($title2) . '</a>');
             break;
 
           case 'url_only':
             // In this case, $new_value is an array.
             if (!$new_value['url_only']) {
-              $this->assertRaw('<a href="' . SafeMarkup::checkPlain($url1) . '">' . SafeMarkup::checkPlain($title1) . '</a>');
-              $this->assertRaw('<a href="' . SafeMarkup::checkPlain($url2) . '">' . SafeMarkup::checkPlain($title2) . '</a>');
+              $this->assertRaw('<a href="' . Html::escape($url1) . '">' . Html::escape($title1) . '</a>');
+              $this->assertRaw('<a href="' . Html::escape($url2) . '">' . Html::escape($title2) . '</a>');
             }
             else {
               if (empty($new_value['url_plain'])) {
-                $this->assertRaw('<a href="' . SafeMarkup::checkPlain($url1) . '">' . SafeMarkup::checkPlain($url1) . '</a>');
-                $this->assertRaw('<a href="' . SafeMarkup::checkPlain($url2) . '">' . SafeMarkup::checkPlain($url2) . '</a>');
+                $this->assertRaw('<a href="' . Html::escape($url1) . '">' . Html::escape($url1) . '</a>');
+                $this->assertRaw('<a href="' . Html::escape($url2) . '">' . Html::escape($url2) . '</a>');
               }
               else {
-                $this->assertNoRaw('<a href="' . SafeMarkup::checkPlain($url1) . '">' . SafeMarkup::checkPlain($url1) . '</a>');
-                $this->assertNoRaw('<a href="' . SafeMarkup::checkPlain($url2) . '">' . SafeMarkup::checkPlain($url2) . '</a>');
+                $this->assertNoRaw('<a href="' . Html::escape($url1) . '">' . Html::escape($url1) . '</a>');
+                $this->assertNoRaw('<a href="' . Html::escape($url2) . '">' . Html::escape($url2) . '</a>');
                 $this->assertEscaped($url1);
                 $this->assertEscaped($url2);
               }
@@ -472,21 +480,21 @@ class LinkFieldTest extends WebTestBase {
   function testLinkSeparateFormatter() {
     $field_name = Unicode::strtolower($this->randomMachineName());
     // Create a field with settings to validate.
-    $this->fieldStorage = entity_create('field_storage_config', array(
+    $this->fieldStorage = FieldStorageConfig::create(array(
       'field_name' => $field_name,
       'entity_type' => 'entity_test',
       'type' => 'link',
       'cardinality' => 2,
     ));
     $this->fieldStorage->save();
-    entity_create('field_config', array(
+    FieldConfig::create([
       'field_storage' => $this->fieldStorage,
       'bundle' => 'entity_test',
       'settings' => array(
         'title' => DRUPAL_OPTIONAL,
         'link_type' => LinkItemInterface::LINK_GENERIC,
       ),
-    ))->save();
+    ])->save();
     $display_options = array(
       'type' => 'link_separate',
       'label' => 'hidden',
@@ -540,7 +548,7 @@ class LinkFieldTest extends WebTestBase {
             $url = $url1;
             $url_title = isset($new_value) ? Unicode::truncate($url, $new_value, FALSE, TRUE) : $url;
             $expected = '<div class="link-item">';
-            $expected .= '<div class="link-url"><a href="' . SafeMarkup::checkPlain($url) . '">' . SafeMarkup::checkPlain($url_title) . '</a></div>';
+            $expected .= '<div class="link-url"><a href="' . Html::escape($url) . '">' . Html::escape($url_title) . '</a></div>';
             $expected .= '</div>';
             $this->assertRaw($expected);
 
@@ -548,22 +556,22 @@ class LinkFieldTest extends WebTestBase {
             $url_title = isset($new_value) ? Unicode::truncate($url, $new_value, FALSE, TRUE) : $url;
             $title = isset($new_value) ? Unicode::truncate($title2, $new_value, FALSE, TRUE) : $title2;
             $expected = '<div class="link-item">';
-            $expected .= '<div class="link-title">' . SafeMarkup::checkPlain($title) . '</div>';
-            $expected .= '<div class="link-url"><a href="' . SafeMarkup::checkPlain($url) . '">' . SafeMarkup::checkPlain($url_title) . '</a></div>';
+            $expected .= '<div class="link-title">' . Html::escape($title) . '</div>';
+            $expected .= '<div class="link-url"><a href="' . Html::escape($url) . '">' . Html::escape($url_title) . '</a></div>';
             $expected .= '</div>';
             $this->assertRaw($expected);
             break;
 
           case 'rel':
             $rel = isset($new_value) ? ' rel="' . $new_value . '"' : '';
-            $this->assertRaw('<div class="link-url"><a href="' . SafeMarkup::checkPlain($url1) . '"' . $rel . '>' . SafeMarkup::checkPlain($url1) . '</a></div>');
-            $this->assertRaw('<div class="link-url"><a href="' . SafeMarkup::checkPlain($url2) . '"' . $rel . '>' . SafeMarkup::checkPlain($url2) . '</a></div>');
+            $this->assertRaw('<div class="link-url"><a href="' . Html::escape($url1) . '"' . $rel . '>' . Html::escape($url1) . '</a></div>');
+            $this->assertRaw('<div class="link-url"><a href="' . Html::escape($url2) . '"' . $rel . '>' . Html::escape($url2) . '</a></div>');
             break;
 
           case 'target':
             $target = isset($new_value) ? ' target="' . $new_value . '"' : '';
-            $this->assertRaw('<div class="link-url"><a href="' . SafeMarkup::checkPlain($url1) . '"' . $target . '>' . SafeMarkup::checkPlain($url1) . '</a></div>');
-            $this->assertRaw('<div class="link-url"><a href="' . SafeMarkup::checkPlain($url2) . '"' . $target . '>' . SafeMarkup::checkPlain($url2) . '</a></div>');
+            $this->assertRaw('<div class="link-url"><a href="' . Html::escape($url1) . '"' . $target . '>' . Html::escape($url1) . '</a></div>');
+            $this->assertRaw('<div class="link-url"><a href="' . Html::escape($url2) . '"' . $target . '>' . Html::escape($url2) . '</a></div>');
             break;
         }
       }
@@ -588,7 +596,7 @@ class LinkFieldTest extends WebTestBase {
     $entity = entity_load('entity_test', $id);
     $display = entity_get_display($entity->getEntityTypeId(), $entity->bundle(), $view_mode);
     $content = $display->build($entity);
-    $output = drupal_render($content);
+    $output = \Drupal::service('renderer')->renderRoot($content);
     $this->setRawContent($output);
     $this->verbose($output);
   }

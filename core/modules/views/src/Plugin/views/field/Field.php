@@ -1,15 +1,11 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Plugin\views\field\Field.
- */
-
 namespace Drupal\views\Plugin\views\field;
 
-use Drupal\Component\Utility\SafeMarkup;
-use Drupal\Component\Utility\Xss as CoreXss;
-use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Component\Plugin\DependentPluginInterface;
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -18,12 +14,14 @@ use Drupal\Core\Field\FormatterPluginManager;
 use Drupal\Core\Form\FormHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Plugin\PluginDependencyTrait;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\views\FieldAPIHandlerTrait;
 use Drupal\views\Entity\Render\EntityFieldRenderer;
-use Drupal\views\Plugin\CacheablePluginInterface;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\ResultRow;
 use Drupal\views\ViewExecutable;
@@ -38,8 +36,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @ViewsField("field")
  */
-class Field extends FieldPluginBase implements CacheablePluginInterface, MultiItemsFieldHandlerInterface {
+class Field extends FieldPluginBase implements CacheableDependencyInterface, MultiItemsFieldHandlerInterface {
+
   use FieldAPIHandlerTrait;
+  use PluginDependencyTrait;
 
   /**
    * An array to store field renderable arrays for use by renderItems().
@@ -232,7 +232,6 @@ class Field extends FieldPluginBase implements CacheablePluginInterface, MultiIt
       unset($fields[$entity_type_key]);
     }
 
-    $field_definition = $this->getFieldDefinition();
     if ($use_groupby) {
       // Add the fields that we're actually grouping on.
       $options = array();
@@ -243,8 +242,11 @@ class Field extends FieldPluginBase implements CacheablePluginInterface, MultiIt
 
       // Go through the list and determine the actual column name from field api.
       $fields = array();
+      $table_mapping = $this->getTableMapping();
+      $field_definition = $this->getFieldStorageDefinition();
+
       foreach ($options as $column) {
-        $fields[$column] = $this->getTableMapping()->getFieldColumnName($this->getFieldStorageDefinition(), $column);
+        $fields[$column] = $table_mapping->getFieldColumnName($field_definition, $column);
       }
 
       $this->group_fields = $fields;
@@ -468,25 +470,9 @@ class Field extends FieldPluginBase implements CacheablePluginInterface, MultiIt
       $form['field_api_classes']['#description'] .= ' ' . $this->t('Checking this option will cause the group Display Type and Separator values to be ignored.');
     }
 
-    // Get the currently selected formatter.
-    $format = $this->options['type'];
-
-    $settings = $this->options['settings'] + $this->formatterPluginManager->getDefaultSettings($format);
-
-    $options = array(
-      'field_definition' => $field,
-      'configuration' => array(
-        'type' => $format,
-        'settings' => $settings,
-        'label' => '',
-        'weight' => 0,
-      ),
-      'view_mode' => '_custom',
-    );
-
     // Get the settings form.
     $settings_form = array('#value' => array());
-    if ($formatter = $this->formatterPluginManager->getInstance($options)) {
+    if ($formatter = $this->getFormatterInstance()) {
       $settings_form = $formatter->settingsForm($form, $form_state);
       // Convert field UI selector states to work in the Views field form.
       FormHelper::rewriteStatesSelector($settings_form, "fields[{$field->getName()}][settings_edit_form]", 'options');
@@ -672,7 +658,7 @@ class Field extends FieldPluginBase implements CacheablePluginInterface, MultiIt
     if (!empty($items)) {
       $items = $this->prepareItemsByDelta($items);
       if ($this->options['multi_type'] == 'separator' || !$this->options['group_rows']) {
-        $separator = $this->options['multi_type'] == 'separator' ? SafeMarkup::checkAdminXss($this->options['separator']) : '';
+        $separator = $this->options['multi_type'] == 'separator' ? Xss::filterAdmin($this->options['separator']) : '';
         $build = [
           '#type' => 'inline_template',
           '#template' => '{{ items | safe_join(separator) }}',
@@ -812,15 +798,16 @@ class Field extends FieldPluginBase implements CacheablePluginInterface, MultiIt
       // For grouped results we need to retrieve a massaged entity having
       // grouped field values to ensure that "grouped by" values, especially
       // those with multiple cardinality work properly. See
-      // \Drupal\views\Tests\QueryGroupByTest::testGroupByFieldWithCardinality.
+      // \Drupal\Tests\views\Kernel\QueryGroupByTest::testGroupByFieldWithCardinality.
       $display = [
         'type' => $this->options['type'],
         'settings' => $this->options['settings'],
         'label' => 'hidden',
       ];
-      $build_list = $this->createEntityForGroupBy($this->getEntity($values), $values)
-        ->{$this->definition['field_name']}
-        ->view($display);
+      // Some bundles might not have a specific field, in which case the faked
+      // entity doesn't have it either.
+      $entity = $this->createEntityForGroupBy($this->getEntity($values), $values);
+      $build_list = isset($entity->{$this->definition['field_name']}) ? $entity->{$this->definition['field_name']}->view($display) : NULL;
     }
 
     if (!$build_list) {
@@ -833,17 +820,19 @@ class Field extends FieldPluginBase implements CacheablePluginInterface, MultiIt
 
     // Render using the formatted data itself.
     $items = [];
+    // Each item is extracted and rendered separately, the top-level formatter
+    // render array itself is never rendered, so we extract its bubbleable
+    // metadata and add it to each child individually.
+    $bubbleable = BubbleableMetadata::createFromRenderArray($build_list);
     foreach (Element::children($build_list) as $delta) {
-      $items[$delta]['rendered'] = $build_list[$delta];
-      // Merge the cacheability metadata of the top-level render array into
-      // each child because they will most likely be rendered individually.
-      if (isset($build_list['#cache'])) {
-        CacheableMetadata::createFromRenderArray($build_list)
-          ->merge(CacheableMetadata::createFromRenderArray($items[$delta]['rendered']))
-          ->applyTo($items[$delta]['rendered']);
-      }
-      // Add the raw field items (for use in tokens).
-      $items[$delta]['raw'] = $build_list['#items'][$delta];
+      BubbleableMetadata::createFromRenderArray($build_list[$delta])
+        ->merge($bubbleable)
+        ->applyTo($build_list[$delta]);
+      $items[$delta] = [
+        'rendered' => $build_list[$delta],
+        // Add the raw field items (for use in tokens).
+        'raw' => $build_list['#items'][$delta],
+      ];
     }
     return $items;
   }
@@ -903,7 +892,7 @@ class Field extends FieldPluginBase implements CacheablePluginInterface, MultiIt
   protected function documentSelfTokens(&$tokens) {
     $field = $this->getFieldDefinition();
     foreach ($field->getColumns() as $id => $column) {
-      $tokens['{{ ' . $this->options['id'] . '-' . $id . ' }}'] = $this->t('Raw @column', array('@column' => $id));
+      $tokens['{{ ' . $this->options['id'] . '__' . $id . ' }}'] = $this->t('Raw @column', array('@column' => $id));
     }
   }
 
@@ -913,46 +902,86 @@ class Field extends FieldPluginBase implements CacheablePluginInterface, MultiIt
       // Use \Drupal\Component\Utility\Xss::filterAdmin() because it's user data
       // and we can't be sure it is safe. We know nothing about the data,
       // though, so we can't really do much else.
-
       if (isset($item['raw'])) {
-        // If $item['raw'] is an array then we can use as is, if it's an object
-        // we cast it to an array, if it's neither, we can't use it.
-        $raw = is_array($item['raw']) ? $item['raw'] :
-               (is_object($item['raw']) ? (array)$item['raw'] : NULL);
-      }
-      if (isset($raw) && isset($raw[$id]) && is_scalar($raw[$id])) {
-        $tokens['{{ ' . $this->options['id'] . '-' . $id . ' }}'] = CoreXss::filterAdmin($raw[$id]);
-      }
-      else {
-        // Make sure that empty values are replaced as well.
-        $tokens['{{ ' . $this->options['id'] . '-' . $id . ' }}'] = '';
+        $raw = $item['raw'];
+
+        if (is_array($raw)) {
+          if (isset($raw[$id]) && is_scalar($raw[$id])) {
+            $tokens['{{ ' . $this->options['id'] . '__' . $id . ' }}'] = Xss::filterAdmin($raw[$id]);
+          }
+          else {
+            // Make sure that empty values are replaced as well.
+            $tokens['{{ ' . $this->options['id'] . '__' . $id . ' }}'] = '';
+          }
+        }
+
+        if (is_object($raw)) {
+          $property = $raw->get($id);
+          // Check if TypedDataInterface is implemented so we know how to render
+          // the item as a string.
+          if (!empty($property) && $property instanceof TypedDataInterface) {
+            $tokens['{{ ' . $this->options['id'] . '__' . $id . ' }}'] = Xss::filterAdmin($property->getString());
+          }
+          else {
+            // Make sure that empty values are replaced as well.
+            $tokens['{{ ' . $this->options['id'] . '__' . $id . ' }}'] = '';
+          }
+        }
       }
     }
+  }
+
+  /**
+   * Returns the field formatter instance.
+   *
+   * @return \Drupal\Core\Field\FormatterInterface|null
+   *   The field formatter instance.
+   */
+  protected function getFormatterInstance() {
+    $settings = $this->options['settings'] + $this->formatterPluginManager->getDefaultSettings($this->options['type']);
+
+    $options = [
+      'field_definition' => $this->getFieldDefinition(),
+      'configuration' => [
+        'type' => $this->options['type'],
+        'settings' => $settings,
+        'label' => '',
+        'weight' => 0,
+      ],
+      'view_mode' => '_custom',
+    ];
+
+    return $this->formatterPluginManager->getInstance($options);
   }
 
   /**
    * {@inheritdoc}
    */
   public function calculateDependencies() {
-    $dependencies = parent::calculateDependencies();
+    $this->dependencies = parent::calculateDependencies();
 
     // Add the module providing the configured field storage as a dependency.
     if (($field_storage_definition = $this->getFieldStorageDefinition()) && $field_storage_definition instanceof EntityInterface) {
-      $dependencies['config'][] = $field_storage_definition->getConfigDependencyName();
+      $this->dependencies['config'][] = $field_storage_definition->getConfigDependencyName();
     }
-    // Add the module providing the formatter.
     if (!empty($this->options['type'])) {
-      $dependencies['module'][] = $this->formatterPluginManager->getDefinition($this->options['type'])['provider'];
+      // Add the module providing the formatter.
+      $this->dependencies['module'][] = $this->formatterPluginManager->getDefinition($this->options['type'])['provider'];
+
+      // Add the formatter's dependencies.
+      if (($formatter = $this->getFormatterInstance()) && $formatter instanceof DependentPluginInterface) {
+        $this->calculatePluginDependencies($formatter);
+      }
     }
 
-    return $dependencies;
+    return $this->dependencies;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function isCacheable() {
-    return FALSE;
+  public function getCacheMaxAge() {
+    return Cache::PERMANENT;
   }
 
   /**
@@ -960,6 +989,18 @@ class Field extends FieldPluginBase implements CacheablePluginInterface, MultiIt
    */
   public function getCacheContexts() {
     return $this->getEntityFieldRenderer()->getCacheContexts();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    $field_definition = $this->getFieldDefinition();
+    $field_storage_definition = $this->getFieldStorageDefinition();
+    return Cache::mergeTags(
+      $field_definition instanceof CacheableDependencyInterface ? $field_definition->getCacheTags() : [],
+      $field_storage_definition instanceof CacheableDependencyInterface ? $field_storage_definition->getCacheTags() : []
+    );
   }
 
   /**
@@ -976,8 +1017,17 @@ class Field extends FieldPluginBase implements CacheablePluginInterface, MultiIt
    * {@inheritdoc}
    */
   public function getValue(ResultRow $values, $field = NULL) {
+    $entity = $this->getEntity($values);
+    // Some bundles might not have a specific field, in which case the entity
+    // (potentially a fake one) doesn't have it either.
     /** @var \Drupal\Core\Field\FieldItemListInterface $field_item_list */
-    $field_item_list = $this->getEntity($values)->{$this->definition['field_name']};
+    $field_item_list = isset($entity->{$this->definition['field_name']}) ? $entity->{$this->definition['field_name']} : NULL;
+
+    if (!isset($field_item_list)) {
+      // There isn't anything we can do without a valid field.
+      return NULL;
+    }
+
     $field_item_definition = $field_item_list->getFieldDefinition();
 
     if ($field_item_definition->getFieldStorageDefinition()->getCardinality() == 1) {

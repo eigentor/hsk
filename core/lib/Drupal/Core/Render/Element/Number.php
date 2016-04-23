@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Render\Element\Number.
- */
-
 namespace Drupal\Core\Render\Element;
 
 use Drupal\Core\Form\FormStateInterface;
@@ -13,6 +8,25 @@ use Drupal\Component\Utility\Number as NumberUtility;
 
 /**
  * Provides a form element for numeric input, with special numeric validation.
+ *
+ * Properties:
+ * - #default_value: A valid floating point number.
+ * - #min: Minimum value.
+ * - #max: Maximum value.
+ * - #step: Ensures that the number is an even multiple of step, offset by #min
+ *   if specified. A #min of 1 and a #step of 2 would allow values of 1, 3, 5,
+ *   etc.
+ *
+ * Usage example:
+ * @code
+ * $form['quantity'] = array(
+ *   '#type' => 'number',
+ *   '#title' => t('Quantity'),
+ * );
+ * @endcode
+ *
+ * @see \Drupal\Core\Render\Element\Range
+ * @see \Drupal\Core\Render\Element\Textfield
  *
  * @FormElement("number")
  */

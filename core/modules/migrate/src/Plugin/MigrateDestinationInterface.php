@@ -1,17 +1,13 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\migrate\Plugin\MigrateDestinationInterface.
- */
-
 namespace Drupal\migrate\Plugin;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
-use Drupal\migrate\Entity\MigrationInterface;
 use Drupal\migrate\Row;
 
 /**
+ * Defines an interface for Migration Destination classes.
+ *
  * Destinations are responsible for persisting source data into the destination
  * Drupal.
  *
@@ -25,7 +21,7 @@ use Drupal\migrate\Row;
 interface MigrateDestinationInterface extends PluginInspectionInterface {
 
   /**
-   * Get the destination ids.
+   * Get the destination IDs.
    *
    * To support MigrateIdMap maps, derived destination classes should return
    * schema field definition(s) corresponding to the primary key of the
@@ -33,7 +29,7 @@ interface MigrateDestinationInterface extends PluginInspectionInterface {
    * key fields of the map table for a migration using this destination.
    *
    * @return array
-   *   An array of ids.
+   *   An array of IDs.
    */
   public function getIds();
 
@@ -43,11 +39,11 @@ interface MigrateDestinationInterface extends PluginInspectionInterface {
    * Derived classes must implement fields(), returning a list of available
    * destination fields.
    *
-   * @todo Review the cases where we need the Migration parameter,
-   * can we avoid that?
+   * @todo Review the cases where we need the Migration parameter, can we avoid
+   *   that? To be resolved with https://www.drupal.org/node/2543568.
    *
-   * @param \Drupal\migrate\Entity\MigrationInterface $migration
-   *   (optional) the migration containing this destination.
+   * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *   (optional) The migration containing this destination. Defaults to NULL.
    *
    * @return array
    *   - Keys: machine names of the fields
@@ -55,55 +51,45 @@ interface MigrateDestinationInterface extends PluginInspectionInterface {
    */
   public function fields(MigrationInterface $migration = NULL);
 
-
-  /**
-   * Allows pre-processing of an import.
-   *
-   * Derived classes may implement preImport() to do any processing they need
-   * done before over all source rows.
-   */
-  public function preImport();
-
-  /**
-   * Allows pre-processing of a rollback.
-   */
-  public function preRollback();
-
-  /**
-   * Allows post-processing of an import.
-   *
-   * Derived classes may implement postImport(), to do any processing they need
-   * done after looping over all source rows.
-   */
-  public function postImport();
-
-  /**
-   * Allows post-processing of a rollback.
-   */
-  public function postRollback();
-
   /**
    * Import the row.
    *
    * Derived classes must implement import(), to construct one new object
-   * (pre-populated) using ID mappings in the Migration).
+   * (pre-populated) using ID mappings in the Migration.
    *
    * @param \Drupal\migrate\Row $row
    *   The row object.
    * @param array $old_destination_id_values
-   *   The old destination ids.
+   *   (optional) The old destination IDs. Defaults to an empty array.
    *
    * @return mixed
-   *   The entity id or an indication of success.
+   *   The entity ID or an indication of success.
    */
   public function import(Row $row, array $old_destination_id_values = array());
 
   /**
-   * Delete the specified IDs from the target Drupal.
+   * Delete the specified destination object from the target Drupal.
    *
-   * @param array $destination_identifiers
-   *   The destination ids to delete.
+   * @param array $destination_identifier
+   *   The ID of the destination object to delete.
    */
-  public function rollbackMultiple(array $destination_identifiers);
+  public function rollback(array $destination_identifier);
+
+  /**
+   * Whether the destination can be rolled back or not.
+   *
+   * @return bool
+   *   TRUE if rollback is supported, FALSE if not.
+   */
+  public function supportsRollback();
+
+  /**
+   * The rollback action for the last imported item.
+   *
+   * @return int
+   *   The MigrateIdMapInterface::ROLLBACK_ constant indicating how an imported
+   *   item should be handled on rollback.
+   */
+  public function rollbackAction();
 
 }

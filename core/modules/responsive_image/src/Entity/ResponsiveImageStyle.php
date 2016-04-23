@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\responsive_image\Entity\ResponsiveImageStyle.
- */
-
 namespace Drupal\responsive_image\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
@@ -26,7 +21,6 @@ use Drupal\responsive_image\ResponsiveImageStyleInterface;
  *       "duplicate" = "Drupal\responsive_image\ResponsiveImageStyleForm"
  *     }
  *   },
- *   list_path = "admin/config/media/responsive-image-style",
  *   admin_permission = "administer responsive images",
  *   config_prefix = "styles",
  *   entity_keys = {
@@ -113,6 +107,7 @@ class ResponsiveImageStyle extends ConfigEntityBase implements ResponsiveImageSt
           'breakpoint_id' => $breakpoint_id,
           'multiplier' => $multiplier,
         ) + $image_style_mapping;
+        $this->keyedImageStyleMappings = NULL;
         return $this;
       }
     }
@@ -212,7 +207,7 @@ class ResponsiveImageStyle extends ConfigEntityBase implements ResponsiveImageSt
     array_walk($styles, function ($style) {
       $this->addDependency('config', $style->getConfigDependencyName());
     });
-    return $this->dependencies;
+    return $this;
   }
 
   /**

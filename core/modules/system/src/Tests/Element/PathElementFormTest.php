@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\system\Tests\Element\PathElementFormTest.
- */
-
 namespace Drupal\system\Tests\Element;
 
 use Drupal\Core\Form\FormInterface;
@@ -42,7 +37,7 @@ class PathElementFormTest extends KernelTestBase implements FormInterface {
    */
   protected function setUp() {
     parent::setUp();
-    $this->installSchema('system', ['router', 'sequences', 'key_value_expire']);
+    $this->installSchema('system', ['sequences', 'key_value_expire']);
     $this->installEntitySchema('user');
     \Drupal::service('router.builder')->rebuild();
     /** @var \Drupal\user\RoleInterface $role */
@@ -184,7 +179,7 @@ class PathElementFormTest extends KernelTestBase implements FormInterface {
     $errors = $form_state->getErrors();
     // Should be missing 'required_validate' field.
     $this->assertEqual(count($errors), 1);
-    $this->assertEqual($errors, array('required_validate' => t('!name field is required.', array('!name' => 'required_validate'))));
+    $this->assertEqual($errors, array('required_validate' => t('@name field is required.', array('@name' => 'required_validate'))));
 
     // Test invalid parameters.
     $form_state = (new FormState())

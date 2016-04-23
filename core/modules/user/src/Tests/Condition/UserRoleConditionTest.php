@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\user\Tests\Condition\UserRoleConditionTest.
- */
-
 namespace Drupal\user\Tests\Condition;
 
 use Drupal\Component\Utility\SafeMarkup;
@@ -88,6 +83,7 @@ class UserRoleConditionTest extends KernelTestBase {
 
     // Setup an anonymous user for our tests.
     $this->anonymous = User::create(array(
+      'name' => '',
       'uid' => 0,
     ));
     $this->anonymous->save();

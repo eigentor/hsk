@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\FileTransfer\FileTransferTest.
- */
-
 namespace Drupal\system\Tests\FileTransfer;
 
 use Drupal\Core\FileTransfer\FileTransferException;

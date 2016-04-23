@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\Core\Extension\ModuleHandlerTest.
- */
-
 namespace Drupal\Tests\Core\Extension;
 
 use Drupal\Core\Extension\Extension;
@@ -265,6 +260,11 @@ class ModuleHandlerTest extends UnitTestCase {
 
   /**
    * @covers ::loadInclude
+   *
+   * Note we load code, so isolate the test.
+   *
+   * @runInSeparateProcess
+   * @preserveGlobalState disabled
    */
   public function testLoadInclude() {
     // Include exists.

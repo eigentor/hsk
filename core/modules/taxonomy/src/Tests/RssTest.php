@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\taxonomy\Tests\RssTest.
- */
-
 namespace Drupal\taxonomy\Tests;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\Component\PhpStorage\MTimeProtectedFileStorageBase.
- */
-
 namespace Drupal\Tests\Component\PhpStorage;
 
 /**
@@ -124,6 +119,7 @@ abstract class MTimeProtectedFileStorageBase extends PhpStorageTestBase {
       $this->assertSame($php->load($name), $this->expected[$i]);
       $this->assertSame($GLOBALS['hacked'], $this->expected[$i]);
     }
+    unset($GLOBALS['hacked']);
   }
 
 }

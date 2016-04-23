@@ -1,16 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Plugin\views\relationship\EntityReverse.
- */
-
 namespace Drupal\views\Plugin\views\relationship;
 
 use Drupal\views\Plugin\ViewsHandlerManager;
-use Drupal\views\Plugin\views\display\DisplayPluginBase;
-use Drupal\views\Plugin\views\relationship\RelationshipPluginBase;
-use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\Common\SizeUnitTest.
- */
-
 namespace Drupal\system\Tests\Common;
 
 use Drupal\Component\Utility\Bytes;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\path\Tests\PathTestBase.
- */
-
 namespace Drupal\path\Tests;
 
 use Drupal\simpletest\WebTestBase;

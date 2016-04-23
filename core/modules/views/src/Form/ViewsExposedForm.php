@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Form\ViewsExposedForm.
- */
-
 namespace Drupal\views\Form;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -118,7 +112,7 @@ class ViewsExposedForm extends FormBase {
 
     $form['#action'] = $view->hasUrl() ? $view->getUrl()->toString() : Url::fromRoute('<current>')->toString();
     $form['#theme'] = $view->buildThemeFunctions('views_exposed_form');
-    $form['#id'] = Html::cleanCssIdentifier('views_exposed_form-' . SafeMarkup::checkPlain($view->storage->id()) . '-' . SafeMarkup::checkPlain($display['id']));
+    $form['#id'] = Html::cleanCssIdentifier('views_exposed_form-' . $view->storage->id() . '-' . $display['id']);
 
     /** @var \Drupal\views\Plugin\views\exposed_form\ExposedFormPluginBase $exposed_form_plugin */
     $exposed_form_plugin = $view->display_handler->getPlugin('exposed_form');

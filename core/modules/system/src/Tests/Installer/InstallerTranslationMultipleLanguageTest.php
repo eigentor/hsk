@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\system\Tests\Installer\InstallerTranslationMultipleLanguageTest.
- */
-
 namespace Drupal\system\Tests\Installer;
 
 use Drupal\simpletest\InstallerTestBase;
@@ -125,7 +120,7 @@ ENDPO;
         'modules[Core][views][enable]' => TRUE,
         'modules[Core][filter][enable]' => TRUE,
       );
-      $this->drupalPostForm('admin/modules', $edit, t('Save configuration'));
+      $this->drupalPostForm('admin/modules', $edit, t('Install'));
 
       // Verify the strings from the translation are still as expected.
       $this->verifyImportedStringsTranslated();

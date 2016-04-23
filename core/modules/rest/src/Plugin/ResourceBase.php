@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rest\Plugin\ResourceBase.
- */
-
 namespace Drupal\rest\Plugin;
 
-use Drupal\Core\Access\AccessManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Psr\Log\LoggerInterface;
@@ -94,7 +88,7 @@ abstract class ResourceBase extends PluginBase implements ContainerFactoryPlugin
   }
 
   /**
-   * Implements ResourceInterface::routes().
+   * {@inheritdoc}
    */
   public function routes() {
     $collection = new RouteCollection();
@@ -111,7 +105,7 @@ abstract class ResourceBase extends PluginBase implements ContainerFactoryPlugin
 
       switch ($method) {
         case 'POST':
-          $route->setPattern($create_path);
+          $route->setPath($create_path);
           // Restrict the incoming HTTP Content-type header to the known
           // serialization formats.
           $route->addRequirements(array('_content_type_format' => implode('|', $this->serializerFormats)));
@@ -170,7 +164,7 @@ abstract class ResourceBase extends PluginBase implements ContainerFactoryPlugin
   }
 
   /**
-   * Implements ResourceInterface::availableMethods().
+   * {@inheritdoc}
    */
   public function availableMethods() {
     $methods = $this->requestMethods();
@@ -203,10 +197,14 @@ abstract class ResourceBase extends PluginBase implements ContainerFactoryPlugin
       // Pass the resource plugin ID along as default property.
       '_plugin' => $this->pluginId,
     ), array(
-      // The HTTP method is a requirement for this route.
-      '_method' => $method,
       '_permission' => "restful $lower_method $this->pluginId",
-    ));
+    ),
+      array(),
+      '',
+      array(),
+      // The HTTP method is a requirement for this route.
+      array($method)
+    );
     return $route;
   }
 

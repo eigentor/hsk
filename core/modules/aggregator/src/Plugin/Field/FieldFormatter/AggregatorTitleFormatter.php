@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\aggregator\Plugin\Field\FieldFormatter\AggregatorTitleFormatter.
- */
-
 namespace Drupal\aggregator\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -54,7 +49,7 @@ class AggregatorTitleFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items) {
+  public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
 
     if ($items->getEntity()->getEntityTypeId() == 'aggregator_feed') {

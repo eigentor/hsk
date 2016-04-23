@@ -1,23 +1,19 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\rest\Plugin\rest\resource\EntityResource.
- */
-
 namespace Drupal\rest\Plugin\rest\resource;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
-use Drupal\Component\Utility\SafeMarkup;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Represents entities as resources.
+ *
+ * @see \Drupal\rest\Plugin\Deriver\EntityDeriver
  *
  * @RestResource(
  *   id = "entity",
@@ -29,8 +25,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  *     "https://www.drupal.org/link-relations/create" = "/entity/{entity_type}"
  *   }
  * )
- *
- * @see \Drupal\rest\Plugin\Derivative\EntityDerivative
  */
 class EntityResource extends ResourceBase {
 
@@ -46,19 +40,24 @@ class EntityResource extends ResourceBase {
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    */
   public function get(EntityInterface $entity) {
-    if (!$entity->access('view')) {
+    $entity_access = $entity->access('view', NULL, TRUE);
+    if (!$entity_access->isAllowed()) {
       throw new AccessDeniedHttpException();
-    }
-    foreach ($entity as $field_name => $field) {
-      if (!$field->access('view')) {
-        unset($entity->{$field_name});
-      }
     }
 
     $response = new ResourceResponse($entity, 200);
-    // Make the response use the entity's cacheability metadata.
-    // @todo include access cacheability metadata, for the access checks above.
     $response->addCacheableDependency($entity);
+    $response->addCacheableDependency($entity_access);
+    foreach ($entity as $field_name => $field) {
+      /** @var \Drupal\Core\Field\FieldItemListInterface $field */
+      $field_access = $field->access('view', NULL, TRUE);
+      $response->addCacheableDependency($field_access);
+
+      if (!$field_access->isAllowed()) {
+        $entity->set($field_name, NULL);
+      }
+    }
+
     return $response;
   }
 
@@ -98,7 +97,7 @@ class EntityResource extends ResourceBase {
     // and 'update', so the 'edit' operation is used here.
     foreach ($entity->_restSubmittedFields as $key => $field_name) {
       if (!$entity->get($field_name)->access('edit')) {
-        throw new AccessDeniedHttpException(SafeMarkup::format('Access denied on creating field @field', array('@field' => $field_name)));
+        throw new AccessDeniedHttpException("Access denied on creating field '$field_name'");
       }
     }
 
@@ -108,8 +107,13 @@ class EntityResource extends ResourceBase {
       $entity->save();
       $this->logger->notice('Created entity %type with ID %id.', array('%type' => $entity->getEntityTypeId(), '%id' => $entity->id()));
 
-      // 201 Created responses have an empty body.
-      return new ResourceResponse(NULL, 201, array('Location' => $entity->url('canonical', ['absolute' => TRUE])));
+      // 201 Created responses return the newly created entity in the response
+      // body.
+      $url = $entity->urlInfo('canonical', ['absolute' => TRUE])->toString(TRUE);
+      $response = new ResourceResponse($entity, 201, ['Location' => $url->getGeneratedUrl()]);
+      // Responses after creating an entity are not cacheable, so we add no
+      // cacheability metadata here.
+      return $response;
     }
     catch (EntityStorageException $e) {
       throw new HttpException(500, 'Internal Server Error', $e);
@@ -152,7 +156,7 @@ class EntityResource extends ResourceBase {
       }
 
       if (!$original_entity->get($field_name)->access('edit')) {
-        throw new AccessDeniedHttpException(SafeMarkup::format('Access denied on updating field @field.', array('@field' => $field_name)));
+        throw new AccessDeniedHttpException("Access denied on updating field '$field_name'.");
       }
       $original_entity->set($field_name, $field->getValue());
     }
@@ -161,7 +165,7 @@ class EntityResource extends ResourceBase {
     $this->validate($original_entity);
     try {
       $original_entity->save();
-      $this->logger->notice('Updated entity %type with ID %id.', array('%type' => $entity->getEntityTypeId(), '%id' => $entity->id()));
+      $this->logger->notice('Updated entity %type with ID %id.', array('%type' => $original_entity->getEntityTypeId(), '%id' => $original_entity->id()));
 
       // Update responses have an empty body.
       return new ResourceResponse(NULL, 204);
@@ -209,6 +213,11 @@ class EntityResource extends ResourceBase {
    */
   protected function validate(EntityInterface $entity) {
     $violations = $entity->validate();
+
+    // Remove violations of inaccessible fields as they cannot stem from our
+    // changes.
+    $violations->filterByFieldAccess();
+
     if (count($violations) > 0) {
       $message = "Unprocessable Entity: validation failed.\n";
       foreach ($violations as $violation) {

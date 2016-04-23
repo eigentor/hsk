@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Entity\Query\Sql\Query.
- */
-
 namespace Drupal\Core\Entity\Query\Sql;
 
 use Drupal\Core\Database\Connection;
@@ -78,7 +73,7 @@ class Query extends QueryBase implements QueryInterface {
 
 
   /**
-   * Implements \Drupal\Core\Entity\Query\QueryInterface::execute().
+   * {@inheritdoc}
    */
   public function execute() {
     return $this
@@ -92,11 +87,11 @@ class Query extends QueryBase implements QueryInterface {
   /**
    * Prepares the basic query with proper metadata/tags and base fields.
    *
-   * @throws \Drupal\Core\Entity\Query\QueryException
-   *   Thrown if the base table does not exists.
-   *
    * @return \Drupal\Core\Entity\Query\Sql\Query
    *   Returns the called object.
+   *
+   * @throws \Drupal\Core\Entity\Query\QueryException
+   *   Thrown if the base table does not exist.
    */
   protected function prepare() {
     if ($this->allRevisions) {

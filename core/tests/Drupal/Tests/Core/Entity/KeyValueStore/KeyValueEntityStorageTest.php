@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\Core\Entity\KeyValueStore\KeyValueEntityStorageTest.
- */
-
 namespace Drupal\Tests\Core\Entity\KeyValueStore {
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
@@ -466,7 +461,7 @@ class KeyValueEntityStorageTest extends UnitTestCase {
    * @covers ::doSave
    *
    * @expectedException \Drupal\Core\Entity\EntityStorageException
-   * @expectedExceptionMessage test_entity_type entity with ID foo already exists
+   * @expectedExceptionMessage 'test_entity_type' entity with ID 'foo' already exists
    */
   public function testSaveDuplicate() {
     $this->setUpKeyValueEntityStorage();

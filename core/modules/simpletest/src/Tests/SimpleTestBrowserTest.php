@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simpletest\Tests\SimpleTestBrowserTest.
- */
-
 namespace Drupal\simpletest\Tests;
 
 use Drupal\Core\Url;
@@ -24,7 +19,7 @@ class SimpleTestBrowserTest extends WebTestBase {
    */
   public static $modules = array('simpletest', 'test_page_test');
 
-  public function setUp() {
+  protected function setUp() {
     parent::setUp();
     // Create and log in an admin user.
     $this->drupalLogin($this->drupalCreateUser(array('administer unit tests')));
@@ -124,6 +119,8 @@ class SimpleTestBrowserTest extends WebTestBase {
    * Tests that PHPUnit and KernelTestBase tests work through the UI.
    */
   public function testTestingThroughUI() {
+    $this->drupalGet('admin/config/development/testing');
+    $this->assertTrue(strpos($this->drupalSettings['simpleTest']['images'][0], 'core/misc/menu-collapsed.png') > 0, 'drupalSettings contains a link to core/misc/menu-collapsed.png.');
     // We can not test WebTestBase tests here since they require a valid .htkey
     // to be created. However this scenario is covered by the testception of
     // \Drupal\simpletest\Tests\SimpleTestTest.

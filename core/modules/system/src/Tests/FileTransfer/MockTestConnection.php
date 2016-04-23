@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\FileTransfer\MockTestConnection.
- */
-
 namespace Drupal\system\Tests\FileTransfer;
 
 /**

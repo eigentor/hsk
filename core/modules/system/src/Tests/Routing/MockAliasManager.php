@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\system\Tests\Routing\MockAliasManager.
- */
-
 namespace Drupal\system\Tests\Routing;
 
 use Drupal\Core\Path\AliasManagerInterface;
@@ -54,6 +49,13 @@ class MockAliasManager implements AliasManagerInterface {
    */
   public function addAlias($path, $alias, $path_language = NULL) {
     $language = $path_language ?: $this->defaultLanguage;
+
+    if ($path[0] !== '/') {
+      throw new \InvalidArgumentException('The path needs to start with a slash.');
+    }
+    if ($alias[0] !== '/') {
+      throw new \InvalidArgumentException('The alias needs to start with a slash.');
+    }
 
     $this->aliases[$path][$language] = $alias;
     $this->systemPaths[$alias][$language] = $path;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\language\Tests\LanguagePathMonolingualTest.
- */
-
 namespace Drupal\language\Tests;
 
 use Drupal\simpletest\WebTestBase;
@@ -21,7 +16,7 @@ class LanguagePathMonolingualTest extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array('language', 'path');
+  public static $modules = ['block', 'language', 'path'];
 
   protected function setUp() {
     parent::setUp();
@@ -56,6 +51,7 @@ class LanguagePathMonolingualTest extends WebTestBase {
     // Set language detection to URL.
     $edit = array('language_interface[enabled][language-url]' => TRUE);
     $this->drupalPostForm('admin/config/regional/language/detection', $edit, t('Save settings'));
+    $this->drupalPlaceBlock('local_actions_block');
   }
 
   /**

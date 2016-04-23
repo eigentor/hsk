@@ -1,19 +1,11 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\node\Tests\NodeBodyFieldStorageTest.
- */
-
 namespace Drupal\node\Tests;
 
-use Drupal\Core\Field\Entity\BaseFieldOverride;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\simpletest\KernelTestBase;
-use Drupal\system\Tests\Entity\EntityUnitTestBase;
 
 /**
  * Tests node body field storage.
@@ -27,12 +19,11 @@ class NodeBodyFieldStorageTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = array('user', 'system', 'field', 'node', 'text', 'filter', 'entity_reference');
+  public static $modules = ['user', 'system', 'field', 'node', 'text', 'filter'];
 
   protected function setUp() {
     parent::setUp();
     $this->installSchema('system', 'sequences');
-    $this->installSchema('system', array('router'));
     // Necessary for module uninstall.
     $this->installSchema('user', 'users_data');
     $this->installEntitySchema('user');

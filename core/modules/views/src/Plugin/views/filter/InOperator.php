@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\views\Plugin\views\filter\InOperator.
- */
-
 namespace Drupal\views\Plugin\views\filter;
 
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
@@ -43,7 +37,7 @@ class InOperator extends FilterPluginBase {
   protected $valueTitle;
 
   /**
-   * Overrides \Drupal\views\Plugin\views\filter\FilterPluginBase::init().
+   * {@inheritdoc}
    */
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
@@ -60,8 +54,8 @@ class InOperator extends FilterPluginBase {
    * This can use a guard to be used to reduce database hits as much as
    * possible.
    *
-   * @return
-   *   Return the stored values in $this->valueOptions if someone expects it.
+   * @return array|NULL
+   *   The stored values from $this->valueOptions.
    */
   public function getValueOptions() {
     if (isset($this->valueOptions)) {
@@ -330,17 +324,19 @@ class InOperator extends FilterPluginBase {
     $info = $this->operators();
 
     $this->getValueOptions();
+    // Some filter_in_operator usage uses optgroups forms, so flatten it.
+    $flat_options = OptGroup::flattenOptions($this->valueOptions);
 
     if (!is_array($this->value)) {
       return;
     }
 
-    $operator = SafeMarkup::checkPlain($info[$this->operator]['short']);
+    $operator = $info[$this->operator]['short'];
     $values = '';
     if (in_array($this->operator, $this->operatorValues(1))) {
       // Remove every element which is not known.
       foreach ($this->value as $value) {
-        if (!isset($this->valueOptions[$value])) {
+        if (!isset($flat_options[$value])) {
           unset($this->value[$value]);
         }
       }
@@ -348,16 +344,16 @@ class InOperator extends FilterPluginBase {
       if (count($this->value) == 0) {
         $values = $this->t('Unknown');
       }
-      else if (count($this->value) == 1) {
+      elseif (count($this->value) == 1) {
         // If any, use the 'single' short name of the operator instead.
         if (isset($info[$this->operator]['short_single'])) {
-          $operator = SafeMarkup::checkPlain($info[$this->operator]['short_single']);
+          $operator = $info[$this->operator]['short_single'];
         }
 
         $keys = $this->value;
         $value = array_shift($keys);
-        if (isset($this->valueOptions[$value])) {
-          $values = SafeMarkup::checkPlain($this->valueOptions[$value]);
+        if (isset($flat_options[$value])) {
+          $values = $flat_options[$value];
         }
         else {
           $values = '';
@@ -372,8 +368,8 @@ class InOperator extends FilterPluginBase {
             $values = Unicode::truncate($values, 8, FALSE, TRUE);
             break;
           }
-          if (isset($this->valueOptions[$value])) {
-            $values .= SafeMarkup::checkPlain($this->valueOptions[$value]);
+          if (isset($flat_options[$value])) {
+            $values .= $flat_options[$value];
           }
         }
       }
@@ -414,7 +410,7 @@ class InOperator extends FilterPluginBase {
 
   public function validate() {
     $this->getValueOptions();
-    $errors = array();
+    $errors = parent::validate();
 
     // If the operator is an operator which doesn't require a value, there is
     // no need for additional validation.

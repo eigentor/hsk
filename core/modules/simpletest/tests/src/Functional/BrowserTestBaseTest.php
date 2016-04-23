@@ -1,21 +1,13 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\simpletest\Functional\BrowserTestBaseTest.
- */
-
 namespace Drupal\Tests\simpletest\Functional;
 
-use Drupal\simpletest\BrowserTestBase;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests BrowserTestBase functionality.
  *
  * @group simpletest
- *
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
  */
 class BrowserTestBaseTest extends BrowserTestBase {
 
@@ -34,7 +26,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
     $this->drupalLogin($account);
 
     // Visit a Drupal page that requires login.
-    $this->drupalGet('/test-page');
+    $this->drupalGet('test-page');
     $this->assertSession()->statusCodeEquals(200);
 
     // Test page contains some text.
@@ -46,7 +38,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
    */
   public function testForm() {
     // Ensure the proper response code for a _form route.
-    $this->drupalGet('/form-test/object-builder');
+    $this->drupalGet('form-test/object-builder');
     $this->assertSession()->statusCodeEquals(200);
 
     // Ensure the form and text field exist.
@@ -59,6 +51,11 @@ class BrowserTestBaseTest extends BrowserTestBase {
     $config_factory = $this->container->get('config.factory');
     $value = $config_factory->get('form_test.object')->get('bananas');
     $this->assertSame('green', $value);
+  }
+
+  public function testError() {
+    $this->setExpectedException('\Exception', 'User notice: foo');
+    $this->drupalGet('test-error');
   }
 
 }

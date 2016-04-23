@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\menu_link_content\Entity\MenuLinkContent.
- */
-
 namespace Drupal\menu_link_content\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
@@ -135,13 +130,6 @@ class MenuLinkContent extends ContentEntityBase implements MenuLinkContentInterf
   /**
    * {@inheritdoc}
    */
-  public function getChangedTime() {
-    return $this->get('changed')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getPluginDefinition() {
     $definition = array();
     $definition['class'] = 'Drupal\menu_link_content\Plugin\Menu\MenuLinkContent';
@@ -207,15 +195,22 @@ class MenuLinkContent extends ContentEntityBase implements MenuLinkContentInterf
 
     // The menu link can just be updated if there is already an menu link entry
     // on both entity and menu link plugin level.
-    if ($update && $menu_link_manager->getDefinition($this->getPluginId())) {
+    $definition = $this->getPluginDefinition();
+    // Even when $update is FALSE, for top level links it is possible the link
+    // already is in the storage because of the getPluginDefinition() call
+    // above, see https://www.drupal.org/node/2605684#comment-10515450 for the
+    // call chain. Because of this the $update flag is ignored and only the
+    // existence of the definition (equals to being in the tree storage) is
+    // checked.
+    if ($menu_link_manager->getDefinition($this->getPluginId(), FALSE)) {
       // When the entity is saved via a plugin instance, we should not call
       // the menu tree manager to update the definition a second time.
       if (!$this->insidePlugin) {
-        $menu_link_manager->updateDefinition($this->getPluginId(), $this->getPluginDefinition(), FALSE);
+        $menu_link_manager->updateDefinition($this->getPluginId(), $definition, FALSE);
       }
     }
     else {
-      $menu_link_manager->addDefinition($this->getPluginId(), $this->getPluginDefinition());
+      $menu_link_manager->addDefinition($this->getPluginId(), $definition);
     }
   }
 
@@ -261,9 +256,7 @@ class MenuLinkContent extends ContentEntityBase implements MenuLinkContentInterf
       ->setDescription(t('The text to be used for this link in the menu.'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
-      ->setSettings(array(
-        'max_length' => 255,
-      ))
+      ->setSetting('max_length', 255)
       ->setDisplayOptions('view', array(
         'label' => 'hidden',
         'type' => 'string',
@@ -279,9 +272,7 @@ class MenuLinkContent extends ContentEntityBase implements MenuLinkContentInterf
       ->setLabel(t('Description'))
       ->setDescription(t('Shown when hovering over the menu link.'))
       ->setTranslatable(TRUE)
-      ->setSettings(array(
-        'max_length' => 255,
-      ))
+      ->setSetting('max_length', 255)
       ->setDisplayOptions('view', array(
         'label' => 'hidden',
         'type' => 'string',

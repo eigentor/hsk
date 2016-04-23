@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\Tests\Core\Routing\ContentTypeHeaderMatcherTest.
- */
-
 namespace Drupal\Tests\Core\Routing;
 
 use Drupal\Core\Routing\ContentTypeHeaderMatcher;
-use Drupal\Tests\Core\Routing\RoutingFixtures;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -95,7 +89,7 @@ class ContentTypeHeaderMatcherTest extends UnitTestCase {
    * Confirms that the matcher throws an exception for no-route.
    *
    * @expectedException \Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException
-   * @expectedExceptionMessage No route found that matches the Content-Type header.
+   * @expectedExceptionMessage No route found that matches "Content-Type: application/hal+json"
    */
   public function testNoRouteFound() {
     $matcher = new ContentTypeHeaderMatcher();

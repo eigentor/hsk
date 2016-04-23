@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\views\Tests\Plugin\FilterTest.
- */
-
 namespace Drupal\views\Tests\Plugin;
 
 use Drupal\views\Views;
@@ -39,7 +34,7 @@ class FilterTest extends PluginTestBase {
   }
 
   /**
-   * Overrides Drupal\views\Tests\ViewTestBase::viewsData().
+   * {@inheritdoc}
    */
   protected function viewsData() {
     $data = parent::viewsData();
@@ -88,7 +83,8 @@ class FilterTest extends PluginTestBase {
     $this->assertIdentical($view->filter['test_filter']->operator, '=');
     $this->assertIdentical($view->filter['test_filter']->value, 'John');
 
-    // Check that we have some results.
+    // Check that we have a single element, as a result of applying the '= John'
+    // filter.
     $this->assertEqual(count($view->result), 1, format_string('Results were returned. @count results.', array('@count' => count($view->result))));
 
     $view->destroy();
@@ -113,9 +109,9 @@ class FilterTest extends PluginTestBase {
     $this->assertIdentical($view->filter['test_filter']->operator, '<>');
     $this->assertIdentical($view->filter['test_filter']->value, 'John');
 
-    // Test that no nodes have been returned (Only 'page' type nodes should
-    // exist).
-    $this->assertEqual(count($view->result), 4, format_string('No results were returned. @count results.', array('@count' => count($view->result))));
+    // Check if we have the other elements in the dataset, as a result of
+    // applying the '<> John' filter.
+    $this->assertEqual(count($view->result), 4, format_string('Results were returned. @count results.', array('@count' => count($view->result))));
 
     $view->destroy();
     $view->initDisplay();

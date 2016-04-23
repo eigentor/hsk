@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\language\Tests\LanguageListTest.
- */
-
 namespace Drupal\language\Tests;
 
 use Drupal\language\Entity\ConfigurableLanguage;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\filter\Tests\FilterSecurityTest.
- */
-
 namespace Drupal\filter\Tests;
 
 use Drupal\simpletest\WebTestBase;

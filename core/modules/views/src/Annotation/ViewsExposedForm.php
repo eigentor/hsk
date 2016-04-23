@@ -1,13 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Annotation\ViewsExposedForm.
- */
-
 namespace Drupal\views\Annotation;
-
-use Drupal\views\Annotation\ViewsPluginAnnotationBase;
 
 /**
  * Defines a Plugin annotation object for views exposed form plugins.

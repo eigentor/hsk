@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Tests for forum.module.
- */
-
 namespace Drupal\forum\Tests;
 
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
@@ -16,6 +11,8 @@ use Drupal\Core\Url;
 use Drupal\taxonomy\Entity\Vocabulary;
 
 /**
+ * Tests for forum.module.
+ *
  * Create, view, edit, delete, and change forum entries and verify its
  * consistency in the database.
  *
@@ -81,6 +78,7 @@ class ForumTest extends WebTestBase {
   protected function setUp() {
     parent::setUp();
     $this->drupalPlaceBlock('system_breadcrumb_block');
+    $this->drupalPlaceBlock('page_title_block');
 
     // Create users.
     $this->adminUser = $this->drupalCreateUser(array(
@@ -113,6 +111,7 @@ class ForumTest extends WebTestBase {
       'access comments',
     ));
     $this->drupalPlaceBlock('help_block', array('region' => 'help'));
+    $this->drupalPlaceBlock('local_actions_block');
   }
 
   /**
@@ -233,6 +232,7 @@ class ForumTest extends WebTestBase {
 
     // Test the root forum page title change.
     $this->drupalGet('forum');
+    $this->assertCacheTag('config:taxonomy.vocabulary.' . $this->forum['vid']);
     $this->assertTitle(t('Forums | Drupal'));
     $vocabulary = Vocabulary::load($this->forum['vid']);
     $vocabulary->set('name', 'Discussions');
@@ -334,13 +334,13 @@ class ForumTest extends WebTestBase {
     // Create a default vocabulary named "Tags".
     $description = 'Use tags to group articles on similar topics into categories.';
     $help = 'Enter a comma-separated list of words to describe your content.';
-    $vocabulary = entity_create('taxonomy_vocabulary', array(
+    $vocabulary = Vocabulary::create([
       'name' => 'Tags',
       'description' => $description,
       'vid' => 'tags',
       'langcode' => \Drupal::languageManager()->getDefaultLanguage()->getId(),
       'help' => $help,
-    ));
+    ]);
     $vocabulary->save();
     // Test tags vocabulary form is not affected.
     $this->drupalGet('admin/structure/taxonomy/manage/tags');
@@ -509,6 +509,9 @@ class ForumTest extends WebTestBase {
     // Check that forum renders properly.
     $this->drupalGet("forum/{$this->forum['tid']}");
     $this->assertResponse(200);
+
+    // Verify there is no unintentional HTML tag escaping.
+    $this->assertNoEscaped('<', '');
   }
 
   /**
@@ -602,7 +605,7 @@ class ForumTest extends WebTestBase {
       '#theme' => 'breadcrumb',
       '#links' => $breadcrumb_build,
     );
-    $this->assertRaw(drupal_render($breadcrumb), 'Breadcrumbs were displayed');
+    $this->assertRaw(\Drupal::service('renderer')->renderRoot($breadcrumb), 'Breadcrumbs were displayed');
 
     // View forum edit node.
     $this->drupalGet('node/' . $node->id() . '/edit');
@@ -662,7 +665,7 @@ class ForumTest extends WebTestBase {
       '#theme' => 'breadcrumb',
       '#links' => $breadcrumb_build,
     );
-    $this->assertRaw(drupal_render($breadcrumb), 'Breadcrumbs were displayed');
+    $this->assertRaw(\Drupal::service('renderer')->renderRoot($breadcrumb), 'Breadcrumbs were displayed');
   }
 
   /**

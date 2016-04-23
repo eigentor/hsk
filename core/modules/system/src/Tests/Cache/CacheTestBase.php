@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\Cache\CacheTestBase.
- */
-
 namespace Drupal\system\Tests\Cache;
 
 use Drupal\simpletest\WebTestBase;

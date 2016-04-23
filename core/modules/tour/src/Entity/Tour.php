@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\tour\Entity\Tour.
- */
-
 namespace Drupal\tour\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\tour\TipsPluginCollection;
 use Drupal\tour\TourInterface;
 
@@ -89,7 +83,7 @@ class Tour extends ConfigEntityBase implements TourInterface {
   protected $tips = array();
 
   /**
-   * Overrides \Drupal\Core\Config\Entity\ConfigEntityBase::__construct();
+   * {@inheritdoc}
    */
   public function __construct(array $values, $entity_type) {
     parent::__construct($values, $entity_type);
@@ -183,7 +177,7 @@ class Tour extends ConfigEntityBase implements TourInterface {
     }
 
     $this->addDependency('module', $this->module);
-    return $this->dependencies;
+    return $this;
   }
 
 }

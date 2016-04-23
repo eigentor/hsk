@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Entity\Query\Sql\Tables.
- */
-
 namespace Drupal\Core\Entity\Query\Sql;
 
 use Drupal\Core\Database\Query\SelectInterface;
@@ -215,7 +210,7 @@ class Tables implements TablesInterface {
           $index_prefix .= "$next_index_prefix.";
         }
         else {
-          throw new QueryException(format_string('Invalid specifier @next.', array('@next' => $relationship_specifier)));
+          throw new QueryException("Invalid specifier '$relationship_specifier'");
         }
       }
     }
@@ -235,7 +230,9 @@ class Tables implements TablesInterface {
    * Join entity table if necessary and return the alias for it.
    *
    * @param string $property
+   *
    * @return string
+   *
    * @throws \Drupal\Core\Entity\Query\QueryException
    */
   protected function ensureEntityTable($index_prefix, $property, $type, $langcode, $base_table, $id_field, $entity_tables) {
@@ -247,7 +244,7 @@ class Tables implements TablesInterface {
         return $this->entityTables[$index_prefix . $table];
       }
     }
-    throw new QueryException(format_string('@property not found', array('@property' => $property)));
+    throw new QueryException("'$property' not found");
   }
 
   /**

@@ -1,15 +1,11 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\user\Tests\UserEntityReferenceTest.
- */
-
 namespace Drupal\user\Tests;
 
-use Drupal\entity_reference\Tests\EntityReferenceTestTrait;
+use Drupal\field\Tests\EntityReference\EntityReferenceTestTrait;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\system\Tests\Entity\EntityUnitTestBase;
+use Drupal\user\Entity\Role;
 
 /**
  * Tests the user reference field functionality.
@@ -35,25 +31,18 @@ class UserEntityReferenceTest extends EntityUnitTestBase {
   protected $role2;
 
   /**
-   * Modules to enable.
-   *
-   * @var array
-   */
-  public static $modules = array('entity_reference', 'user');
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
 
-    $this->role1 = entity_create('user_role', array(
+    $this->role1 = Role::create(array(
       'id' => strtolower($this->randomMachineName(8)),
       'label' => $this->randomMachineName(8),
     ));
     $this->role1->save();
 
-    $this->role2 = entity_create('user_role', array(
+    $this->role2 = Role::create(array(
       'id' => strtolower($this->randomMachineName(8)),
       'label' => $this->randomMachineName(8),
     ));

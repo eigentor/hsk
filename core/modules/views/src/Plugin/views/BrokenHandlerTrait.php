@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Plugin\views\BrokenHandlerTrait.
- */
-
 namespace Drupal\views\Plugin\views;
 
 use Drupal\Component\Utility\SafeMarkup;
@@ -69,7 +64,7 @@ trait BrokenHandlerTrait {
     $form['description'] = array(
       '#type' => 'container',
       '#attributes' => array(
-        'class' => array('form-item', 'description'),
+        'class' => array('js-form-item', 'form-item', 'description'),
       ),
       'description_top' => array(
         '#markup' => '<p>' . $description_top . '</p>',

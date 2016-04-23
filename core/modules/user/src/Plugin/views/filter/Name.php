@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\user\Plugin\views\filter\Name.
- */
-
 namespace Drupal\user\Plugin\views\filter;
 
-use Drupal\Component\Utility\Tags;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
@@ -102,8 +96,12 @@ class Name extends InOperator {
     // prevent array filter from removing our anonymous user.
   }
 
-  // Override to do nothing.
-  public function getValueOptions() { }
+/**
+ * {@inheritdoc}
+ */
+  public function getValueOptions() {
+    return $this->valueOptions;
+  }
 
   public function adminSummary() {
     // set up $this->valueOptions for the parent summary

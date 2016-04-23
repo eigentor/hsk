@@ -1,85 +1,89 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\migrate\Unit\process\MigrationTest.
- */
-
 namespace Drupal\Tests\migrate\Unit\process;
 
-use Drupal\migrate\MigrateException;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\migrate\process\Migration;
+use Drupal\migrate\Plugin\MigrateDestinationInterface;
+use Drupal\migrate\Plugin\MigrateIdMapInterface;
+use Drupal\migrate\Plugin\MigratePluginManager;
+use Drupal\migrate\Plugin\MigrateSourceInterface;
+use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
+use Prophecy\Argument;
 
 /**
- * Tests the migration process plugin.
- *
  * @coversDefaultClass \Drupal\migrate\Plugin\migrate\process\Migration
  * @group migrate
  */
 class MigrationTest extends MigrateProcessTestCase {
 
   /**
-   * {@inheritdoc}
+   * @covers ::transform
    */
-  protected function setUp() {
+  public function testTransformWithStubSkipping() {
+    $migration_plugin = $this->prophesize(MigrationInterface::class);
+    $migration_plugin_manager = $this->prophesize(MigrationPluginManagerInterface::class);
+    $process_plugin_manager = $this->prophesize(MigratePluginManager::class);
 
-    $this->migrationConfiguration = [
-      'id' => 'test',
-      'process' => [],
-      'source' => [],
+    $destination_id_map = $this->prophesize(MigrateIdMapInterface::class);
+    $destination_migration = $this->prophesize(MigrationInterface::class);
+    $destination_migration->getIdMap()->willReturn($destination_id_map->reveal());
+    $destination_id_map->lookupDestinationId([1])->willReturn(NULL);
+
+    // Ensure the migration plugin manager returns our migration.
+    $migration_plugin_manager->createInstances(Argument::exact(['destination_migration']))
+      ->willReturn(['destination_migration' => $destination_migration->reveal()]);
+
+    $configuration = [
+      'no_stub' => TRUE,
+      'migration' => 'destination_migration',
     ];
 
-    parent::setUp();
+    $migration_plugin->id()->willReturn('actual_migration');
+    $destination_migration->getDestinationPlugin(TRUE)->shouldNotBeCalled();
+
+    $migration = new Migration($configuration, '', [], $migration_plugin->reveal(), $migration_plugin_manager->reveal(), $process_plugin_manager->reveal());
+    $result = $migration->transform(1, $this->migrateExecutable, $this->row, '');
+    $this->assertNull($result);
   }
 
   /**
-   * Assert that exceptions during import are logged.
-   * @expectedException \Drupal\migrate\MigrateSkipRowException
    * @covers ::transform
    */
-  public function testSaveOnException() {
+  public function testTransformWithStubbing() {
+    $migration_plugin = $this->prophesize(MigrationInterface::class);
+    $migration_plugin_manager = $this->prophesize(MigrationPluginManagerInterface::class);
+    $process_plugin_manager = $this->prophesize(MigratePluginManager::class);
 
-    // A bunch of mock objects to get thing working
-    $migration = $this->getMigration();
-    $migration_source = $this->getMock('\Drupal\migrate\Plugin\MigrateSourceInterface');
-    $migration_source->expects($this->once())
-      ->method('getIds')
-      ->willReturn([]);
-    $migration->expects($this->once())
-      ->method('getSourcePlugin')
-      ->willReturn($migration_source);
-    $migration_destination = $this->getMock('\Drupal\migrate\Plugin\MigrateDestinationInterface');
-    $migration->expects($this->once())
-      ->method('getDestinationPlugin')
-      ->willReturn($migration_destination);
-    $storage = $this->getMock('\Drupal\Core\Entity\EntityStorageInterface');
-    $storage->expects($this->once())
-      ->method('loadMultiple')
-      ->willReturn([
-        'id' => $migration
-      ]);
-    $manager = $this->getMockBuilder('\Drupal\migrate\Plugin\MigratePluginManager')
-      ->disableOriginalConstructor()
-      ->getMock();
+    $destination_id_map = $this->prophesize(MigrateIdMapInterface::class);
+    $destination_migration = $this->prophesize('Drupal\migrate\Plugin\Migration');
+    $destination_migration->getIdMap()->willReturn($destination_id_map->reveal());
+    $migration_plugin_manager->createInstances(['destination_migration'])
+      ->willReturn(['destination_migration' => $destination_migration->reveal()]);
+    $destination_id_map->lookupDestinationId([1])->willReturn(NULL);
+    $destination_id_map->saveIdMapping(Argument::any(), Argument::any(), MigrateIdMapInterface::STATUS_NEEDS_UPDATE)->willReturn(NULL);
 
-    // Throw an exception during import so we can log it.
-    $migration_destination->expects($this->once())
-      ->method('import')
-      ->willThrowException(new MigrateException());
+    $configuration = [
+      'no_stub' => FALSE,
+      'migration' => 'destination_migration',
+    ];
 
-    // Build our migration plugin.
-    $plugin = new Migration(['migration' => []],
-      'migration', // ?
-      [],
-      $migration,
-      $storage,
-      $manager);
+    $migration_plugin->id()->willReturn('actual_migration');
+    $destination_migration->id()->willReturn('destination_migration');
+    $destination_migration->getDestinationPlugin(TRUE)->shouldBeCalled();
+    $destination_migration->getProcess()->willReturn([]);
+    $destination_migration->getSourceConfiguration()->willReturn([]);
 
-    // Assert that we log exceptions thrown during the import.
-    $this->migrateExecutable->expects($this->once())
-      ->method('saveMessage');
+    $source_plugin = $this->prophesize(MigrateSourceInterface::class);
+    $source_plugin->getIds()->willReturn(['nid']);
+    $destination_migration->getSourcePlugin()->willReturn($source_plugin->reveal());
+    $destination_plugin = $this->prophesize(MigrateDestinationInterface::class);
+    $destination_plugin->import(Argument::any())->willReturn([2]);
+    $destination_migration->getDestinationPlugin(TRUE)->willReturn($destination_plugin->reveal());
 
-    $plugin->transform('value', $this->migrateExecutable, $this->row, 'prop');
+    $migration = new Migration($configuration, '', [], $migration_plugin->reveal(), $migration_plugin_manager->reveal(), $process_plugin_manager->reveal());
+    $result = $migration->transform(1, $this->migrateExecutable, $this->row, '');
+    $this->assertEquals(2, $result);
   }
 
 }

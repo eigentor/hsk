@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\migrate\Plugin\migrate\process\Extract.
- */
-
 namespace Drupal\migrate\Plugin\migrate\process;
 
 use Drupal\Component\Utility\NestedArray;
@@ -33,7 +28,12 @@ class Extract extends ProcessPluginBase {
     }
     $new_value = NestedArray::getValue($value, $this->configuration['index'], $key_exists);
     if (!$key_exists) {
-      throw new MigrateException('Array index missing, extraction failed.');
+      if (isset($this->configuration['default'])) {
+        $new_value = $this->configuration['default'];
+      }
+      else {
+        throw new MigrateException('Array index missing, extraction failed.');
+      }
     }
     return $new_value;
   }

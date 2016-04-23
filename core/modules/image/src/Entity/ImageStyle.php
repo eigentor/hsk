@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\image\Entity\ImageStyle.
- */
-
 namespace Drupal\image\Entity;
 
 use Drupal\Core\Cache\Cache;
@@ -36,6 +31,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
  *       "flush" = "Drupal\image\Form\ImageStyleFlushForm"
  *     },
  *     "list_builder" = "Drupal\image\ImageStyleListBuilder",
+ *     "storage" = "Drupal\image\ImageStyleStorage",
  *   },
  *   admin_permission = "administer image styles",
  *   config_prefix = "style",
@@ -57,13 +53,6 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
  * )
  */
 class ImageStyle extends ConfigEntityBase implements ImageStyleInterface, EntityWithPluginCollectionInterface {
-
-  /**
-   * The name of the image style to use as replacement upon delete.
-   *
-   * @var string
-   */
-  protected $replacementID;
 
   /**
    * The name of the image style.
@@ -94,7 +83,7 @@ class ImageStyle extends ConfigEntityBase implements ImageStyleInterface, Entity
   protected $effectsCollection;
 
   /**
-   * Overrides Drupal\Core\Entity\Entity::id().
+   * {@inheritdoc}
    */
   public function id() {
     return $this->name;
@@ -128,17 +117,13 @@ class ImageStyle extends ConfigEntityBase implements ImageStyleInterface, Entity
   public static function postDelete(EntityStorageInterface $storage, array $entities) {
     parent::postDelete($storage, $entities);
 
+    /** @var \Drupal\image\ImageStyleInterface[] $entities */
     foreach ($entities as $style) {
       // Flush cached media for the deleted style.
       $style->flush();
-      // Check whether field settings need to be updated.
-      // In case no replacement style was specified, all image fields that are
-      // using the deleted style are left in a broken state.
-      if (!$style->isSyncing() && $new_id = $style->getReplacementID()) {
-        // The deleted ID is still set as originalID.
-        $style->setName($new_id);
-        static::replaceImageStyle($style);
-      }
+      // Clear the replacement ID, if one has been previously stored.
+      /** @var \Drupal\image\ImageStyleStorageInterface $storage */
+      $storage->clearReplacementId($style->id());
     }
   }
 
@@ -226,7 +211,7 @@ class ImageStyle extends ConfigEntityBase implements ImageStyleInterface, Entity
     // to the actual file path, this avoids bootstrapping PHP once the files are
     // built.
     if ($clean_urls === FALSE && file_uri_scheme($uri) == 'public' && !file_exists($uri)) {
-      $directory_path = file_stream_wrapper_get_instance_by_uri($uri)->getDirectoryPath();
+      $directory_path = \Drupal::service('stream_wrapper_manager')->getViaUri($uri)->getDirectoryPath();
       return Url::fromUri('base:' . $directory_path . '/' . file_uri_target($uri), array('absolute' => TRUE, 'query' => $token_query))->toString();
     }
 
@@ -267,7 +252,7 @@ class ImageStyle extends ConfigEntityBase implements ImageStyleInterface, Entity
     // Clear caches so that formatters may be added for this style.
     drupal_theme_rebuild();
 
-    Cache::invalidateTags($this->getCacheTags());
+    Cache::invalidateTags($this->getCacheTagsToInvalidate());
 
     return $this;
   }
@@ -276,17 +261,19 @@ class ImageStyle extends ConfigEntityBase implements ImageStyleInterface, Entity
    * {@inheritdoc}
    */
   public function createDerivative($original_uri, $derivative_uri) {
+
+    // If the source file doesn't exist, return FALSE without creating folders.
+    $image = \Drupal::service('image.factory')->get($original_uri);
+    if (!$image->isValid()) {
+      return FALSE;
+    }
+
     // Get the folder for the final location of this style.
     $directory = drupal_dirname($derivative_uri);
 
     // Build the destination folder tree if it doesn't already exist.
     if (!file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
       \Drupal::logger('image')->error('Failed to create style directory: %directory', array('%directory' => $directory));
-      return FALSE;
-    }
-
-    $image = \Drupal::service('image.factory')->get($original_uri);
-    if (!$image->isValid()) {
       return FALSE;
     }
 
@@ -307,9 +294,9 @@ class ImageStyle extends ConfigEntityBase implements ImageStyleInterface, Entity
   /**
    * {@inheritdoc}
    */
-  public function transformDimensions(array &$dimensions) {
+  public function transformDimensions(array &$dimensions, $uri) {
     foreach ($this->getEffects() as $effect) {
-      $effect->transformDimensions($dimensions);
+      $effect->transformDimensions($dimensions, $uri);
     }
   }
 
@@ -378,7 +365,9 @@ class ImageStyle extends ConfigEntityBase implements ImageStyleInterface, Entity
    * {@inheritdoc}
    */
   public function getReplacementID() {
-    return $this->get('replacementID');
+    /** @var \Drupal\image\ImageStyleStorageInterface $storage */
+    $storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
+    return $storage->getReplacementId($this->id());
   }
 
   /**

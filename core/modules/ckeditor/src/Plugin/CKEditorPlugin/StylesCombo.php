@@ -1,15 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\ckeditor\Plugin\CKEditorPlugin\StylesCombo.
- */
-
 namespace Drupal\ckeditor\Plugin\CKEditorPlugin;
 
 use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\ckeditor\CKEditorPluginConfigurableInterface;
-use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\editor\Entity\Editor;
 
@@ -24,14 +18,14 @@ use Drupal\editor\Entity\Editor;
 class StylesCombo extends CKEditorPluginBase implements CKEditorPluginConfigurableInterface {
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::isInternal().
+   * {@inheritdoc}
    */
   public function isInternal() {
     return TRUE;
   }
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::getFile().
+   * {@inheritdoc}
    */
   public function getFile() {
     // This plugin is already part of Drupal core's CKEditor build.
@@ -39,7 +33,7 @@ class StylesCombo extends CKEditorPluginBase implements CKEditorPluginConfigurab
   }
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::getConfig().
+   * {@inheritdoc}
    */
   public function getConfig(Editor $editor) {
     $config = array();
@@ -53,19 +47,25 @@ class StylesCombo extends CKEditorPluginBase implements CKEditorPluginConfigurab
   }
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginButtonsInterface::getButtons().
+   * {@inheritdoc}
    */
   public function getButtons() {
     return array(
       'Styles' => array(
         'label' => t('Font style'),
-        'image_alternative' => '<a href="#" role="button" aria-label="' . t('Styles') . '"><span class="ckeditor-button-dropdown">' . t('Styles') . '<span class="ckeditor-button-arrow"></span></span></a>',
+        'image_alternative' => [
+          '#type' => 'inline_template',
+          '#template' => '<a href="#" role="button" aria-label="{{ styles_text }}"><span class="ckeditor-button-dropdown">{{ styles_text }}<span class="ckeditor-button-arrow"></span></span></a>',
+          '#context' => [
+            'styles_text' => t('Styles'),
+          ],
+        ],
       ),
     );
   }
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginConfigurableInterface::settingsForm().
+   * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state, Editor $editor) {
     // Defaults.
@@ -80,7 +80,7 @@ class StylesCombo extends CKEditorPluginBase implements CKEditorPluginConfigurab
       '#title_display' => 'invisible',
       '#type' => 'textarea',
       '#default_value' => $config['styles'],
-      '#description' => t('A list of classes that will be provided in the "Styles" dropdown. Enter one class on each line in the format: element.class|Label. Example: h1.title|Title.<br />These styles should be available in your theme\'s CSS file.'),
+      '#description' => t('A list of classes that will be provided in the "Styles" dropdown. Enter one or more classes on each line in the format: element.classA.classB|Label. Example: h1.title|Title. Advanced example: h1.fancy.title|Fancy title.<br />These styles should be available in your theme\'s CSS file.'),
       '#attached' => array(
         'library' => array('ckeditor/drupal.ckeditor.stylescombo.admin'),
       ),

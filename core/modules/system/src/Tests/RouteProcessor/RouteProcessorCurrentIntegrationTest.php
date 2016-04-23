@@ -1,15 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\system\Tests\RouteProcessor\RouteProcessorCurrentIntegrationTest.
- */
-
 namespace Drupal\system\Tests\RouteProcessor;
 
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\GeneratedUrl;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\simpletest\KernelTestBase;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +36,6 @@ class RouteProcessorCurrentIntegrationTest extends KernelTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->installSchema('system', ['router']);
     \Drupal::service('router.builder')->rebuild();
 
     $this->urlGenerator = \Drupal::urlGenerator();
@@ -51,7 +45,7 @@ class RouteProcessorCurrentIntegrationTest extends KernelTestBase {
    * Tests the output process.
    */
   public function testProcessOutbound() {
-    $expected_cacheability = (new CacheableMetadata())
+    $expected_cacheability = (new BubbleableMetadata())
       ->addCacheContexts(['route'])
       ->setCacheMaxAge(Cache::PERMANENT);
 
@@ -133,7 +127,7 @@ class RouteProcessorCurrentIntegrationTest extends KernelTestBase {
     // In case we have no routing, the current route should point to the front,
     // and the cacheability does not depend on the 'route' cache context, since
     // no route was involved at all: this is fallback behavior.
-    $url = GeneratedUrl::createFromObject((new CacheableMetadata())->setCacheMaxAge(Cache::PERMANENT))->setGeneratedUrl('/');
+    $url = GeneratedUrl::createFromObject((new BubbleableMetadata())->setCacheMaxAge(Cache::PERMANENT))->setGeneratedUrl('/');
     $this->assertEqual($url, $this->urlGenerator->generateFromRoute('<current>', [], [], TRUE));
   }
 

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\Common\SystemListingTest.
- */
-
 namespace Drupal\system\Tests\Common;
 
 use Drupal\Core\Extension\ExtensionDiscovery;

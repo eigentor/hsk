@@ -1,19 +1,11 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rest\Routing\ResourceRoutes.
- */
-
 namespace Drupal\rest\Routing;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Routing\RouteSubscriberBase;
 use Drupal\rest\Plugin\Type\ResourcePluginManager;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -67,17 +59,28 @@ class ResourceRoutes extends RouteSubscriberBase {
    */
   protected function alterRoutes(RouteCollection $collection) {
     $routes = array();
-    $enabled_resources = $this->config->get('rest.settings')->get('resources') ?: array();
+
+    // Silently ignore resources that are in the settings but are not defined on
+    // the plugin manager currently. That avoids exceptions when REST module is
+    // enabled before another module that provides the resource plugin specified
+    // in the settings.
+    // @todo Remove in https://www.drupal.org/node/2308745
+    $resources = $this->config->get('rest.settings')->get('resources') ?: array();
+    $enabled_resources = array_intersect_key($resources, $this->manager->getDefinitions());
+    if (count($resources) != count($enabled_resources)) {
+      trigger_error('rest.settings lists resources relying on the following missing plugins: ' . implode(', ', array_keys(array_diff_key($resources, $enabled_resources))));
+    }
 
     // Iterate over all enabled resource plugins.
     foreach ($enabled_resources as $id => $enabled_methods) {
       $plugin = $this->manager->getInstance(array('id' => $id));
 
       foreach ($plugin->routes() as $name => $route) {
-        $method = $route->getRequirement('_method');
+        // @todo: Are multiple methods possible here?
+        $methods = $route->getMethods();
         // Only expose routes where the method is enabled in the configuration.
-        if ($method && isset($enabled_methods[$method])) {
-          $route->setRequirement('_access_rest_csrf',  'TRUE');
+        if ($methods && ($method = $methods[0]) && $method && isset($enabled_methods[$method])) {
+          $route->setRequirement('_access_rest_csrf', 'TRUE');
 
           // Check that authentication providers are defined.
           if (empty($enabled_methods[$method]['supported_auth']) || !is_array($enabled_methods[$method]['supported_auth'])) {

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Tests\Core\Cache\BackendChainImplementationUnitTest.
- */
-
 namespace Drupal\Tests\Core\Cache;
 
 use Drupal\Core\Cache\BackendChain;

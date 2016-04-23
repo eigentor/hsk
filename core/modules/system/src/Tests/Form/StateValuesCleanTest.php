@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\Form\StateValuesCleanTest.
- */
-
 namespace Drupal\system\Tests\Form;
 
 use Drupal\Component\Serialization\Json;

@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\error_test\Controller\ErrorTestController.
- */
 
 namespace Drupal\error_test\Controller;
 
@@ -51,8 +47,8 @@ class ErrorTestController extends ControllerBase {
     $monkey_love = $bananas;
     // This will generate a warning.
     $awesomely_big = 1/0;
-    // This will generate a user error.
-    trigger_error("Drupal is awesome", E_USER_WARNING);
+    // This will generate a user error. Use & to check for double escaping.
+    trigger_error("Drupal & awesome", E_USER_WARNING);
     return [];
   }
 
@@ -72,7 +68,7 @@ class ErrorTestController extends ControllerBase {
    */
   public function triggerException() {
     define('SIMPLETEST_COLLECT_ERRORS', FALSE);
-    throw new \Exception("Drupal is awesome");
+    throw new \Exception("Drupal & awesome");
   }
 
   /**

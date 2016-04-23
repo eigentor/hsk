@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\rest\test\PageCacheTest.
- */
-
 namespace Drupal\rest\Tests;
 
 /**
@@ -33,29 +28,33 @@ class PageCacheTest extends RESTTestBase {
 
     // Create an entity programmatically.
     $entity = $this->entityCreate('entity_test');
+    $entity->set('field_test_text', 'custom cache tag value');
     $entity->save();
     // Read it over the REST API.
-    $this->httpRequest($entity->urlInfo(), 'GET', NULL, $this->defaultMimeType);
+    $this->httpRequest($entity->urlInfo()->setRouteParameter('_format', $this->defaultFormat), 'GET', NULL, $this->defaultMimeType);
     $this->assertResponse(200, 'HTTP response code is correct.');
     $this->assertHeader('x-drupal-cache', 'MISS');
     $this->assertCacheTag('config:rest.settings');
     $this->assertCacheTag('entity_test:1');
+    $this->assertCacheTag('entity_test_access:field_test_text');
 
     // Read it again, should be page-cached now.
-    $this->httpRequest($entity->urlInfo(), 'GET', NULL, $this->defaultMimeType);
+    $this->httpRequest($entity->urlInfo()->setRouteParameter('_format', $this->defaultFormat), 'GET', NULL, $this->defaultMimeType);
     $this->assertResponse(200, 'HTTP response code is correct.');
     $this->assertHeader('x-drupal-cache', 'HIT');
     $this->assertCacheTag('config:rest.settings');
     $this->assertCacheTag('entity_test:1');
+    $this->assertCacheTag('entity_test_access:field_test_text');
 
     // Trigger a config save which should clear the page cache, so we should get
     // a cache miss now for the same request.
     $this->config('rest.settings')->save();
-    $this->httpRequest($entity->urlInfo(), 'GET', NULL, $this->defaultMimeType);
+    $this->httpRequest($entity->urlInfo()->setRouteParameter('_format', $this->defaultFormat), 'GET', NULL, $this->defaultMimeType);
     $this->assertResponse(200, 'HTTP response code is correct.');
     $this->assertHeader('x-drupal-cache', 'MISS');
     $this->assertCacheTag('config:rest.settings');
     $this->assertCacheTag('entity_test:1');
+    $this->assertCacheTag('entity_test_access:field_test_text');
   }
 
 }

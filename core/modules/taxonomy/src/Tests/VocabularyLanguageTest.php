@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\taxonomy\Tests\VocabularyLanguageTest.
- */
-
 namespace Drupal\taxonomy\Tests;
 
 use Drupal\Component\Utility\Unicode;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\image\Tests\ImageEffectsTest.
- */
-
 namespace Drupal\image\Tests;
 
 use Drupal\system\Tests\Image\ToolkitTestBase;

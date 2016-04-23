@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\Theme\FastTest.
- */
-
 namespace Drupal\system\Tests\Theme;
 
 use Drupal\simpletest\WebTestBase;

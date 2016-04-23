@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Entity\Plugin\Validation\Constraint\EntityChangedConstraint.
- */
-
 namespace Drupal\Core\Entity\Plugin\Validation\Constraint;
 
 use Symfony\Component\Validator\Constraint;
@@ -12,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * Validation constraint for the entity changed timestamp.
  *
- * @Plugin(
+ * @Constraint(
  *   id = "EntityChanged",
  *   label = @Translation("Entity changed", context = "Validation"),
  *   type = {"entity"}

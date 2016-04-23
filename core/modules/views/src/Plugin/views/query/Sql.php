@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Plugin\views\query\Sql.
- */
-
 namespace Drupal\views\Plugin\views\query;
 
 use Drupal\Component\Utility\NestedArray;
@@ -112,7 +107,7 @@ class Sql extends QueryPluginBase {
   protected $noDistinct;
 
   /**
-   * Overrides \Drupal\views\Plugin\views\PluginBase::init().
+   * {@inheritdoc}
    */
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
@@ -805,9 +800,9 @@ class Sql extends QueryPluginBase {
    *   complex options, it is an array. The meaning of each element in the array is
    *   dependent on the $operator.
    * @param $operator
-   *   The comparison operator, such as =, <, or >=. It also accepts more complex
-   *   options such as IN, LIKE, or BETWEEN. Defaults to IN if $value is an array
-   *   = otherwise. If $field is a string you have to use 'formula' here.
+   *   The comparison operator, such as =, <, or >=. It also accepts more
+   *   complex options such as IN, LIKE, LIKE BINARY, or BETWEEN. Defaults to =.
+   *   If $field is a string you have to use 'formula' here.
    *
    * The $field, $value and $operator arguments can also be passed in with a
    * single DatabaseCondition object, like this:
@@ -1408,7 +1403,7 @@ class Sql extends QueryPluginBase {
       $count_query = $count_query->countQuery();
 
       // Add additional arguments as a fake condition.
-      // XXX: this doesn't work... because PDO mandates that all bound arguments
+      // XXX: this doesn't work, because PDO mandates that all bound arguments
       // are used on the query. TODO: Find a better way to do this.
       if (!empty($additional_arguments)) {
         // $query->where('1 = 1', $additional_arguments);
@@ -1454,7 +1449,7 @@ class Sql extends QueryPluginBase {
           drupal_set_message($e->getMessage(), 'error');
         }
         else {
-          throw new DatabaseExceptionWrapper(format_string('Exception in @label[@view_name]: @message', array('@label' => $view->storage->label(), '@view_name' => $view->storage->id(), '@message' => $e->getMessage())));
+          throw new DatabaseExceptionWrapper("Exception in {$view->storage->label()}[{$view->storage->id()}]: {$e->getMessage()}");
         }
       }
 
@@ -1687,7 +1682,7 @@ class Sql extends QueryPluginBase {
   }
 
   /**
-   * Overrides \Drupal\views\Plugin\views\query\QueryPluginBase::getDateField().
+   * {@inheritdoc}
    */
   public function getDateField($field) {
     $db_type = Database::getConnection()->databaseType();
@@ -1722,7 +1717,7 @@ class Sql extends QueryPluginBase {
   }
 
   /**
-   * Overrides \Drupal\views\Plugin\views\query\QueryPluginBase::setupTimezone().
+   * {@inheritdoc}
    */
   public function setupTimezone() {
     $timezone = drupal_get_user_timezone();
@@ -1748,9 +1743,9 @@ class Sql extends QueryPluginBase {
   }
 
   /**
-   * Overrides \Drupal\views\Plugin\views\query\QueryPluginBase::getDateFormat().
+   * {@inheritdoc}
    */
-  public function getDateFormat($field, $format) {
+  public function getDateFormat($field, $format, $string_date = FALSE) {
     $db_type = Database::getConnection()->databaseType();
     switch ($db_type) {
       case 'mysql':
@@ -1797,7 +1792,12 @@ class Sql extends QueryPluginBase {
           'A' => 'AM',
         );
         $format = strtr($format, $replace);
-        return "TO_CHAR($field, '$format')";
+        if (!$string_date) {
+          return "TO_CHAR($field, '$format')";
+        }
+        // In order to allow for partials (eg, only the year), transform to a
+        // date, back to a string again.
+        return "TO_CHAR(TO_TIMESTAMP($field, 'YYYY-MM-DD HH24:MI:SS'), '$format')";
       case 'sqlite':
         $replace = array(
           'Y' => '%Y',
@@ -1827,15 +1827,19 @@ class Sql extends QueryPluginBase {
           'A' => '',
         );
         $format = strtr($format, $replace);
+
+        // Don't use the 'unixepoch' flag for string date comparisons.
+        $unixepoch = $string_date ? '' : ", 'unixepoch'";
+
         // SQLite does not have a ISO week substitution string, so it needs
         // special handling.
-        // @see http://en.wikipedia.org/wiki/ISO_week_date#Calculation
+        // @see http://wikipedia.org/wiki/ISO_week_date#Calculation
         // @see http://stackoverflow.com/a/15511864/1499564
         if ($format === '%W') {
-          $expression = "((strftime('%j', date(strftime('%Y-%m-%d', $field, 'unixepoch'), '-3 days', 'weekday 4')) - 1) / 7 + 1)";
+          $expression = "((strftime('%j', date(strftime('%Y-%m-%d', $field" . $unixepoch . "), '-3 days', 'weekday 4')) - 1) / 7 + 1)";
         }
         else {
-          $expression = "strftime('$format', $field, 'unixepoch')";
+          $expression = "strftime('$format', $field" . $unixepoch . ")";
         }
         // The expression yields a string, but the comparison value is an
         // integer in case the comparison value is a float, integer, or numeric.

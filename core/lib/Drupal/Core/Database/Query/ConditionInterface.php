@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Core\Database\Query\ConditionInterface
- */
-
 namespace Drupal\Core\Database\Query;
 
 use Drupal\Core\Database\Connection;

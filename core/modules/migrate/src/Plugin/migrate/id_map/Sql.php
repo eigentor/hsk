@@ -1,21 +1,22 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\migrate\Plugin\migrate\id_map\Sql.
- */
-
 namespace Drupal\migrate\Plugin\migrate\id_map;
 
 use Drupal\Component\Utility\Unicode;
-use Drupal\Core\Database\Connection;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
-use Drupal\migrate\Entity\MigrationInterface;
+use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\migrate\Event\MigrateIdMapMessageEvent;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Row;
+use Drupal\migrate\Event\MigrateEvents;
+use Drupal\migrate\Event\MigrateMapSaveEvent;
+use Drupal\migrate\Event\MigrateMapDeleteEvent;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Defines the sql based ID map implementation.
@@ -25,7 +26,19 @@ use Drupal\migrate\Row;
  *
  * @PluginID("sql")
  */
-class Sql extends PluginBase implements MigrateIdMapInterface {
+class Sql extends PluginBase implements MigrateIdMapInterface, ContainerFactoryPluginInterface {
+
+  /**
+   * Column name of hashed source id values.
+   */
+  const SOURCE_IDS_HASH = 'source_ids_hash';
+
+  /**
+   * An event dispatcher instance to use for map events.
+   *
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  protected $eventDispatcher;
 
   /**
    * The migration map table name.
@@ -56,6 +69,8 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
   protected $database;
 
   /**
+   * The select query.
+   *
    * @var \Drupal\Core\Database\Query\SelectInterface
    */
   protected $query;
@@ -63,7 +78,7 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
   /**
    * The migration being done.
    *
-   * @var \Drupal\migrate\Entity\MigrationInterface
+   * @var \Drupal\migrate\Plugin\MigrationInterface
    */
   protected $migration;
 
@@ -134,13 +149,54 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
    *   The plugin ID for the migration process to do.
    * @param mixed $plugin_definition
    *   The configuration for the plugin.
-   * @param \Drupal\migrate\Entity\MigrationInterface $migration
+   * @param \Drupal\migrate\Plugin\MigrationInterface $migration
    *   The migration to do.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, EventDispatcherInterface $event_dispatcher) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-
     $this->migration = $migration;
+    $this->eventDispatcher = $event_dispatcher;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $migration,
+      $container->get('event_dispatcher')
+    );
+  }
+
+  /**
+   * Retrieves the hash of the source identifier values.
+   *
+   * It is public only for testing purposes.
+   *
+   * @param array $source_id_values
+   *   The source identifiers
+   *
+   * @return string
+   *   An hash containing the hashed values of the source identifiers.
+   */
+  public function getSourceIDsHash(array $source_id_values) {
+    // When looking up the destination ID we require an array with both the
+    // source key and value, e.g. ['nid' => 41]. In this case, $source_id_values
+    // need to be ordered the same order as $this->sourceIdFields().
+    // However, the Migration process plugin doesn't currently have a way to get
+    // the source key so we presume the values have been passed through in the
+    // correct order.
+    if (!isset($source_id_values[0])) {
+      $source_id_values_keyed = [];
+      foreach ($this->sourceIdFields() as $field_name => $source_id) {
+        $source_id_values_keyed[] = $source_id_values[$field_name];
+      }
+      $source_id_values = $source_id_values_keyed;
+    }
+    return hash('sha256', serialize(array_map('strval', $source_id_values)));
   }
 
   /**
@@ -257,21 +313,25 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
       // and map from the source field names to the map/msg field names.
       $count = 1;
       $source_id_schema = array();
-      $pks = array();
       foreach ($this->migration->getSourcePlugin()->getIds() as $id_definition) {
         $mapkey = 'sourceid' . $count++;
         $source_id_schema[$mapkey] = $this->getFieldSchema($id_definition);
-        $pks[] = $mapkey;
+        $source_id_schema[$mapkey]['not null'] = TRUE;
       }
 
-      $fields = $source_id_schema;
+      $source_ids_hash[static::SOURCE_IDS_HASH] = array(
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+        'description' => 'Hash of source ids. Used as primary key',
+      );
+      $fields = $source_ids_hash + $source_id_schema;
 
       // Add destination identifiers to map table.
-      // TODO: How do we discover the destination schema?
+      // @todo How do we discover the destination schema?
       $count = 1;
       foreach ($this->migration->getDestinationPlugin()->getIds() as $id_definition) {
-        // Allow dest identifier fields to be NULL (for IGNORED/FAILED
-        // cases).
+        // Allow dest identifier fields to be NULL (for IGNORED/FAILED cases).
         $mapkey = 'destid' . $count++;
         $fields[$mapkey] = $this->getFieldSchema($id_definition);
         $fields[$mapkey]['not null'] = FALSE;
@@ -308,10 +368,8 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
       $schema = array(
         'description' => 'Mappings from source identifier value(s) to destination identifier value(s).',
         'fields' => $fields,
+        'primary key' => array(static::SOURCE_IDS_HASH),
       );
-      if ($pks) {
-        $schema['primary key'] = $pks;
-      }
       $this->getDatabase()->schema()->createTable($this->mapTableName, $schema);
 
       // Now do the message table.
@@ -322,7 +380,7 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
           'unsigned' => TRUE,
           'not null' => TRUE,
         );
-        $fields += $source_id_schema;
+        $fields += $source_ids_hash;
 
         $fields['level'] = array(
           'type' => 'int',
@@ -340,9 +398,6 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
           'fields' => $fields,
           'primary key' => array('msgid'),
         );
-        if ($pks) {
-          $schema['indexes']['sourcekey'] = $pks;
-        }
         $this->getDatabase()->schema()->createTable($this->messageTableName(), $schema);
       }
     }
@@ -350,35 +405,48 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
       // Add any missing columns to the map table.
       if (!$this->getDatabase()->schema()->fieldExists($this->mapTableName,
                                                     'rollback_action')) {
-        $this->getDatabase()->schema()->addField($this->mapTableName,
-                                              'rollback_action', array(
-          'type' => 'int',
-          'size' => 'tiny',
-          'unsigned' => TRUE,
-          'not null' => TRUE,
-          'default' => 0,
-          'description' => 'Flag indicating what to do for this item on rollback',
-        ));
+        $this->getDatabase()->schema()->addField($this->mapTableName, 'rollback_action',
+          array(
+            'type' => 'int',
+            'size' => 'tiny',
+            'unsigned' => TRUE,
+            'not null' => TRUE,
+            'default' => 0,
+            'description' => 'Flag indicating what to do for this item on rollback',
+          )
+        );
       }
       if (!$this->getDatabase()->schema()->fieldExists($this->mapTableName, 'hash')) {
-        $this->getDatabase()->schema()->addField($this->mapTableName, 'hash', array(
+        $this->getDatabase()->schema()->addField($this->mapTableName, 'hash',
+          array(
+            'type' => 'varchar',
+            'length' => '64',
+            'not null' => FALSE,
+            'description' => 'Hash of source row data, for detecting changes',
+          )
+        );
+      }
+      if (!$this->getDatabase()->schema()->fieldExists($this->mapTableName, static::SOURCE_IDS_HASH)) {
+        $this->getDatabase()->schema()->addField($this->mapTableName, static::SOURCE_IDS_HASH, array(
           'type' => 'varchar',
           'length' => '64',
-          'not null' => FALSE,
-          'description' => 'Hash of source row data, for detecting changes',
+          'not null' => TRUE,
+          'description' => 'Hash of source ids. Used as primary key',
         ));
       }
     }
   }
 
   /**
-   * Create schema from an id definition.
+   * Creates schema from an ID definition.
    *
    * @param array $id_definition
    *   A field schema definition. Can be SQL schema or a type data
    *   based schema. In the latter case, the value of type needs to be
-   *   $typed_data_type.$column
+   *   $typed_data_type.$column.
+   *
    * @return array
+   *   The schema definition.
    */
   protected function getFieldSchema(array $id_definition) {
     $type_parts = explode('.', $id_definition['type']);
@@ -395,9 +463,7 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
   public function getRowBySource(array $source_id_values) {
     $query = $this->getDatabase()->select($this->mapTableName(), 'map')
               ->fields('map');
-    foreach ($this->sourceIdFields() as $source_id) {
-      $query = $query->condition("map.$source_id", array_shift($source_id_values), '=');
-    }
+    $query->condition(static::SOURCE_IDS_HASH, $this->getSourceIDsHash($source_id_values));
     $result = $query->execute();
     return $result->fetchAssoc();
   }
@@ -408,8 +474,8 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
   public function getRowByDestination(array $destination_id_values) {
     $query = $this->getDatabase()->select($this->mapTableName(), 'map')
               ->fields('map');
-    foreach ($this->destinationIdFields() as $destination_id) {
-      $query = $query->condition("map.$destination_id", array_shift($destination_id_values), '=');
+    foreach ($this->destinationIdFields() as $field_name => $destination_id) {
+      $query->condition("map.$destination_id", $destination_id_values[$field_name], '=');
     }
     $result = $query->execute();
     return $result->fetchAssoc();
@@ -434,29 +500,30 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
   /**
    * {@inheritdoc}
    */
-  public function lookupSourceID(array $destination_id) {
-    $query = $this->getDatabase()->select($this->mapTableName(), 'map')
-              ->fields('map', $this->sourceIdFields());
-    foreach ($this->destinationIdFields() as $key_name) {
-      $query = $query->condition("map.$key_name", array_shift($destination_id), '=');
+  public function lookupSourceID(array $destination_id_values) {
+    $source_id_fields = $this->sourceIdFields();
+    $query = $this->getDatabase()->select($this->mapTableName(), 'map');
+    foreach ($source_id_fields as $source_field_name => $idmap_field_name) {
+      $query->addField('map', $idmap_field_name, $source_field_name);
+    }
+    foreach ($this->destinationIdFields() as $field_name => $destination_id) {
+      $query->condition("map.$destination_id", $destination_id_values[$field_name], '=');
     }
     $result = $query->execute();
-    $source_id = $result->fetchAssoc();
-    return array_values($source_id ?: array());
+    return $result->fetchAssoc() ?: [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function lookupDestinationId(array $source_id) {
-    if (empty($source_id)) {
+  public function lookupDestinationId(array $source_id_values) {
+    if (empty($source_id_values)) {
       return array();
     }
     $query = $this->getDatabase()->select($this->mapTableName(), 'map')
               ->fields('map', $this->destinationIdFields());
-    foreach ($this->sourceIdFields() as $key_name) {
-      $query = $query->condition("map.$key_name", array_shift($source_id), '=');
-    }
+
+    $query->condition(static::SOURCE_IDS_HASH, $this->getSourceIDsHash($source_id_values));
     $result = $query->execute();
     $destination_id = $result->fetchAssoc();
     return array_values($destination_id ?: array());
@@ -469,19 +536,23 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
     // Construct the source key.
     $source_id_values = $row->getSourceIdValues();
     // Construct the source key and initialize to empty variable keys.
-    $keys = array();
+    $fields = [];
     foreach ($this->sourceIdFields() as $field_name => $key_name) {
-      // A NULL key value will fail.
+      // A NULL key value is usually an indication of a problem.
       if (!isset($source_id_values[$field_name])) {
-        $this->message->display(t(
-          'Could not save to map table due to NULL value for key field !field',
-          array('!field' => $field_name)), 'error');
+        $this->message->display($this->t(
+          'Did not save to map table due to NULL value for key field @field',
+          array('@field' => $field_name)), 'error');
         return;
       }
-      $keys[$key_name] = $source_id_values[$field_name];
+      $fields[$key_name] = $source_id_values[$field_name];
     }
 
-    $fields = array(
+    if (!$fields) {
+      return;
+    }
+
+    $fields += array(
       'source_row_status' => (int) $source_row_status,
       'rollback_action' => (int) $rollback_action,
       'hash' => $row->getHash(),
@@ -494,32 +565,14 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
       $this->message->display(t('Could not save to map table due to missing destination id values'), 'error');
       return;
     }
-    if ($this->migration->get('trackLastImported')) {
+    if ($this->migration->getTrackLastImported()) {
       $fields['last_imported'] = time();
     }
-    if ($keys) {
-      $this->getDatabase()->merge($this->mapTableName())
-        ->key($keys)
-        ->fields($fields)
-        ->execute();
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function saveMessage(array $source_id_values, $message, $level = MigrationInterface::MESSAGE_ERROR) {
-    $count = 1;
-    foreach ($source_id_values as $id_value) {
-      $fields['sourceid' . $count++] = $id_value;
-      // If any key value is not set, we can't save.
-      if (!isset($id_value)) {
-        return;
-      }
-    }
-    $fields['level'] = $level;
-    $fields['message'] = $message;
-    $this->getDatabase()->insert($this->messageTableName())
+    $keys = [static::SOURCE_IDS_HASH => $this->getSourceIDsHash($source_id_values)];
+    // Notify anyone listening of the map row we're about to save.
+    $this->eventDispatcher->dispatch(MigrateEvents::MAP_SAVE, new MigrateMapSaveEvent($this, $fields));
+    $this->getDatabase()->merge($this->mapTableName())
+      ->key($keys)
       ->fields($fields)
       ->execute();
   }
@@ -527,10 +580,48 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
   /**
    * {@inheritdoc}
    */
+  public function saveMessage(array $source_id_values, $message, $level = MigrationInterface::MESSAGE_ERROR) {
+    foreach ($this->sourceIdFields() as $field_name => $source_id) {
+      // If any key value is not set, we can't save.
+      if (!isset($source_id_values[$field_name])) {
+        return;
+      }
+    }
+    $fields[static::SOURCE_IDS_HASH] = $this->getSourceIDsHash($source_id_values);
+    $fields['level'] = $level;
+    $fields['message'] = $message;
+    $this->getDatabase()->insert($this->messageTableName())
+      ->fields($fields)
+      ->execute();
+
+    // Notify anyone listening of the message we've saved.
+    $this->eventDispatcher->dispatch(MigrateEvents::IDMAP_MESSAGE,
+      new MigrateIdMapMessageEvent($this->migration, $source_id_values, $message, $level));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMessageIterator(array $source_id_values = [], $level = NULL) {
+    $query = $this->getDatabase()->select($this->messageTableName(), 'msg')
+      ->fields('msg');
+    if ($source_id_values) {
+      $query->condition(static::SOURCE_IDS_HASH, $this->getSourceIDsHash($source_id_values));
+    }
+
+    if ($level) {
+      $query->condition('level', $level);
+    }
+    return $query->execute();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function prepareUpdate() {
     $this->getDatabase()->update($this->mapTableName())
-    ->fields(array('source_row_status' => MigrateIdMapInterface::STATUS_NEEDS_UPDATE))
-    ->execute();
+      ->fields(array('source_row_status' => MigrateIdMapInterface::STATUS_NEEDS_UPDATE))
+      ->execute();
   }
 
   /**
@@ -578,10 +669,11 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
   /**
    * Counts records in a table.
    *
-   * @param $status
+   * @param int $status
    *   An integer for the source_row_status column.
-   * @param $table
-   *   The table to work
+   * @param string $table
+   *   (optional) The table to work. Defaults to NULL.
+   *
    * @return int
    *   The number of records.
    */
@@ -600,44 +692,35 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
     if (empty($source_id_values)) {
       throw new MigrateException('Without source identifier values it is impossible to find the row to delete.');
     }
-    if (!$messages_only) {
-      $map_query = $this->getDatabase()->delete($this->mapTableName());
-    }
-    $message_query = $this->getDatabase()->delete($this->messageTableName());
-    $count = 1;
-    foreach ($source_id_values as $id_value) {
-      if (!$messages_only) {
-        $map_query->condition('sourceid' . $count, $id_value);
-      }
-      $message_query->condition('sourceid' . $count, $id_value);
-      $count++;
-    }
 
     if (!$messages_only) {
+      $map_query = $this->getDatabase()->delete($this->mapTableName());
+      $map_query->condition(static::SOURCE_IDS_HASH, $this->getSourceIDsHash($source_id_values));
+      // Notify anyone listening of the map row we're about to delete.
+      $this->eventDispatcher->dispatch(MigrateEvents::MAP_DELETE, new MigrateMapDeleteEvent($this, $source_id_values));
       $map_query->execute();
     }
+    $message_query = $this->getDatabase()->delete($this->messageTableName());
+    $message_query->condition(static::SOURCE_IDS_HASH, $this->getSourceIDsHash($source_id_values));
     $message_query->execute();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function deleteDestination(array $destination_id) {
+  public function deleteDestination(array $destination_id_values) {
     $map_query = $this->getDatabase()->delete($this->mapTableName());
     $message_query = $this->getDatabase()->delete($this->messageTableName());
-    $source_id = $this->lookupSourceID($destination_id);
-    if (!empty($source_id)) {
-      $count = 1;
-      foreach ($destination_id as $key_value) {
-        $map_query->condition('destid' . $count, $key_value);
-        $count++;
+    $source_id_values = $this->lookupSourceID($destination_id_values);
+    if (!empty($source_id_values)) {
+      foreach ($this->destinationIdFields() as $field_name => $destination_id) {
+        $map_query->condition($destination_id, $destination_id_values[$field_name]);
       }
+      // Notify anyone listening of the map row we're about to delete.
+      $this->eventDispatcher->dispatch(MigrateEvents::MAP_DELETE, new MigrateMapDeleteEvent($this, $source_id_values));
       $map_query->execute();
-      $count = 1;
-      foreach ($source_id as $key_value) {
-        $message_query->condition('sourceid' . $count, $key_value);
-        $count++;
-      }
+
+      $message_query->condition(static::SOURCE_IDS_HASH, $this->getSourceIDsHash($source_id_values));
       $message_query->execute();
     }
   }
@@ -645,50 +728,18 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
   /**
    * {@inheritdoc}
    */
-  public function setUpdate(array $source_id) {
-    if (empty($source_id)) {
+  public function setUpdate(array $source_id_values) {
+    if (empty($source_id_values)) {
       throw new MigrateException('No source identifiers provided to update.');
     }
     $query = $this->getDatabase()
       ->update($this->mapTableName())
       ->fields(array('source_row_status' => MigrateIdMapInterface::STATUS_NEEDS_UPDATE));
-    $count = 1;
-    foreach ($source_id as $key_value) {
-      $query->condition('sourceid' . $count++, $key_value);
+
+    foreach ($this->sourceIdFields() as $field_name => $source_id) {
+      $query->condition($source_id, $source_id_values[$field_name]);
     }
     $query->execute();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function deleteBulk(array $source_id_values) {
-    // If we have a single-column key, we can shortcut it.
-    if (count($this->migration->getSourcePlugin()->getIds()) == 1) {
-      $sourceids = array();
-      foreach ($source_id_values as $source_id) {
-        $sourceids[] = $source_id;
-      }
-      $this->getDatabase()->delete($this->mapTableName())
-        ->condition('sourceid1', $sourceids, 'IN')
-        ->execute();
-      $this->getDatabase()->delete($this->messageTableName())
-        ->condition('sourceid1', $sourceids, 'IN')
-        ->execute();
-    }
-    else {
-      foreach ($source_id_values as $source_id) {
-        $map_query = $this->getDatabase()->delete($this->mapTableName());
-        $message_query = $this->getDatabase()->delete($this->messageTableName());
-        $count = 1;
-        foreach ($source_id as $key_value) {
-          $map_query->condition('sourceid' . $count, $key_value);
-          $message_query->condition('sourceid' . $count++, $key_value);
-        }
-        $map_query->execute();
-        $message_query->execute();
-      }
-    }
   }
 
   /**
@@ -710,8 +761,6 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
    * Implementation of Iterator::rewind().
    *
    * This is called before beginning a foreach loop.
-   *
-   * @todo Support idlist, itemlimit.
    */
   public function rewind() {
     $this->currentRow = NULL;
@@ -722,15 +771,9 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
     foreach ($this->destinationIdFields() as $field) {
       $fields[] = $field;
     }
-
-    // @todo Make this work.
-    /*
-    if (isset($this->options['itemlimit'])) {
-      $query = $query->range(0, $this->options['itemlimit']);
-    }
-    */
     $this->result = $this->getDatabase()->select($this->mapTableName(), 'map')
       ->fields('map', $fields)
+      ->orderBy('destid1')
       ->execute();
     $this->next();
   }
@@ -753,6 +796,22 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
    */
   public function key() {
     return serialize($this->currentKey);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function currentDestination() {
+    if ($this->valid()) {
+      $result = array();
+      foreach ($this->destinationIdFields() as $destination_field_name => $idmap_field_name) {
+        $result[$destination_field_name] = $this->currentRow[$idmap_field_name];
+      }
+      return $result;
+    }
+    else {
+      return NULL;
+    }
   }
 
   /**
@@ -780,7 +839,6 @@ class Sql extends PluginBase implements MigrateIdMapInterface {
    * and FALSE to terminate it.
    */
   public function valid() {
-    // @todo Check numProcessed against itemlimit.
     return $this->currentRow !== FALSE;
   }
 

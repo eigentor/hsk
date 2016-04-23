@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\plugin_test\Plugin\TestPluginManager.
- */
-
 namespace Drupal\plugin_test\Plugin;
 
 use Drupal\Component\Plugin\PluginManagerBase;

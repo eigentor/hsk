@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search\Tests\SearchConfigSettingsFormTest.
- */
-
 namespace Drupal\search\Tests;
 
 use Drupal\Core\Url;
@@ -58,6 +53,8 @@ class SearchConfigSettingsFormTest extends SearchTestBase {
 
     // Enable the search block.
     $this->drupalPlaceBlock('search_form_block');
+    $this->drupalPlaceBlock('local_tasks_block');
+    $this->drupalPlaceBlock('page_title_block');
   }
 
   /**

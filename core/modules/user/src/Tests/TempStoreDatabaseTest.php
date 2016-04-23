@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\user\Tests\TempStoreDatabaseTest.
- */
-
 namespace Drupal\user\Tests;
 
-use Drupal\Component\Serialization\PhpSerialize;
 use Drupal\Core\KeyValueStore\KeyValueExpirableFactory;
 use Drupal\simpletest\KernelTestBase;
 use Drupal\user\SharedTempStoreFactory;
@@ -62,7 +56,7 @@ class TempStoreDatabaseTest extends KernelTestBase {
 
     // Install system tables to test the key/value storage without installing a
     // full Drupal environment.
-    $this->installSchema('system', array('semaphore', 'key_value_expire'));
+    $this->installSchema('system', array('key_value_expire'));
 
     // Create several objects for testing.
     for ($i = 0; $i <= 3; $i++) {

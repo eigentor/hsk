@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\system\Tests\Queue\QueueSerializationTest.
- */
 
 namespace Drupal\system\Tests\Queue;
 
@@ -81,7 +77,7 @@ class QueueSerializationTest extends KernelTestBase implements FormInterface {
    */
   protected function setUp() {
     parent::setUp();
-    $this->installSchema('system', ['key_value_expire', 'sequences', 'queue']);
+    $this->installSchema('system', ['key_value_expire', 'sequences']);
     $this->installEntitySchema('user');
     $this->queue = \Drupal::service('queue.database')->get('aggregator_refresh');
     $test_user = User::create(array(
@@ -97,6 +93,7 @@ class QueueSerializationTest extends KernelTestBase implements FormInterface {
    */
   public function testQueueSerialization() {
     $form_state = new FormState();
+    $form_state->setRequestMethod('POST');
     $form_state->setCached();
     $form_builder = $this->container->get('form_builder');
     $form_id = $form_builder->getFormId($this, $form_state);

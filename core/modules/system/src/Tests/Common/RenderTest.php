@@ -1,16 +1,7 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\Common\RenderTest.
- */
-
 namespace Drupal\system\Tests\Common;
 
-use Drupal\Component\Serialization\Json;
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Render\Element;
-use Drupal\Core\Url;
 use Drupal\simpletest\KernelTestBase;
 
 /**
@@ -39,7 +30,7 @@ class RenderTest extends KernelTestBase {
         '#markup' => 'Kittens!',
       ],
     ];
-    drupal_render($test_element);
+    \Drupal::service('renderer')->renderRoot($test_element);
 
     $expected_attached = [
       'library' => [
@@ -53,17 +44,18 @@ class RenderTest extends KernelTestBase {
   }
 
   /**
-   * Tests drupal_process_attached().
+   * Tests that we get an exception when we try to attach an illegal type.
    */
-  public function testDrupalProcessAttached() {
+  public function testProcessAttached() {
     // Specify invalid attachments in a render array.
     $build['#attached']['library'][] = 'core/drupal.states';
     $build['#attached']['drupal_process_states'][] = [];
+    $renderer = $this->container->get('bare_html_page_renderer');
     try {
-      drupal_process_attached($build);
+      $renderer->renderBarePage($build, '', 'maintenance_page');
       $this->fail("Invalid #attachment 'drupal_process_states' allowed");
     }
-    catch (\Exception $e) {
+    catch (\LogicException $e) {
       $this->pass("Invalid #attachment 'drupal_process_states' not allowed");
     }
   }

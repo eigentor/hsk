@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\rest\Plugin\Type\ResourcePluginManager.
- */
-
 namespace Drupal\rest\Plugin\Type;
 
 use Drupal\Core\Cache\CacheBackendInterface;
@@ -40,7 +35,7 @@ class ResourcePluginManager extends DefaultPluginManager {
   }
 
   /**
-   * Overrides Drupal\Component\Plugin\PluginManagerBase::getInstance().
+   * {@inheritdoc}
    */
   public function getInstance(array $options){
     if (isset($options['id'])) {

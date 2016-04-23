@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\system\Tests\ParamConverter\UpcastingTest.
- */
-
 namespace Drupal\system\Tests\ParamConverter;
 
 use Drupal\simpletest\WebTestBase;
@@ -67,7 +62,9 @@ class UpcastingTest extends WebTestBase {
   public function testEntityLanguage() {
     $language = ConfigurableLanguage::createFromLangcode('de');
     $language->save();
-    language_negotiation_url_prefixes_save(array('de' => 'de'));
+    \Drupal::configFactory()->getEditable('language.negotiation')
+      ->set('url.prefixes', array('de' => 'de'))
+      ->save();
 
     // The container must be recreated after adding a new language.
     $this->rebuildContainer();

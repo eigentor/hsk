@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\taxonomy\Tests\ThemeTest.
- */
-
 namespace Drupal\taxonomy\Tests;
 
 /**

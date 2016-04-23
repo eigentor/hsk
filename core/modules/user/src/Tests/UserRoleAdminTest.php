@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\user\Tests\UserRoleAdminTest.
- */
-
 namespace Drupal\user\Tests;
 
 use Drupal\simpletest\WebTestBase;
@@ -25,9 +20,20 @@ class UserRoleAdminTest extends WebTestBase {
    */
   protected $adminUser;
 
+  /**
+   * Modules to enable.
+   *
+   * @var string[]
+   */
+  public static $modules = ['block'];
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
     $this->adminUser = $this->drupalCreateUser(array('administer permissions', 'administer users'));
+    $this->drupalPlaceBlock('local_tasks_block');
   }
 
   /**

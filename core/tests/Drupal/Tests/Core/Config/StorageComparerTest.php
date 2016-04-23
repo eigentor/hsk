@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\Core\Config\StorageComparerTest.
- */
-
 namespace Drupal\Tests\Core\Config;
 
 use Drupal\Component\Uuid\Php;
@@ -125,9 +120,6 @@ class StorageComparerTest extends UnitTestCase {
     $this->targetStorage->expects($this->once())
       ->method('getAllCollectionNames')
       ->will($this->returnValue(array()));
-    $this->configManager->expects($this->any())
-      ->method('supportsConfigurationEntities')
-      ->will($this->returnValue(TRUE));
 
     $this->storageComparer->createChangelist();
     $this->assertEmpty($this->storageComparer->getChangelist('create'));
@@ -162,9 +154,6 @@ class StorageComparerTest extends UnitTestCase {
     $this->targetStorage->expects($this->once())
       ->method('getAllCollectionNames')
       ->will($this->returnValue(array()));
-    $this->configManager->expects($this->any())
-      ->method('supportsConfigurationEntities')
-      ->will($this->returnValue(TRUE));
 
     $this->storageComparer->createChangelist();
     $expected = array(
@@ -204,9 +193,6 @@ class StorageComparerTest extends UnitTestCase {
     $this->targetStorage->expects($this->once())
       ->method('getAllCollectionNames')
       ->will($this->returnValue(array()));
-    $this->configManager->expects($this->any())
-      ->method('supportsConfigurationEntities')
-      ->will($this->returnValue(TRUE));
 
     $this->storageComparer->createChangelist();
     $expected = array(
@@ -246,9 +232,6 @@ class StorageComparerTest extends UnitTestCase {
     $this->targetStorage->expects($this->once())
       ->method('getAllCollectionNames')
       ->will($this->returnValue(array()));
-    $this->configManager->expects($this->any())
-      ->method('supportsConfigurationEntities')
-      ->will($this->returnValue(TRUE));
 
     $this->storageComparer->createChangelist();
     $expected = array(

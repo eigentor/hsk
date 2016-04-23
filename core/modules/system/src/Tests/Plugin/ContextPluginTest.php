@@ -1,16 +1,14 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\system\Tests\Plugin\ContextPluginTest.
- */
-
 namespace Drupal\system\Tests\Plugin;
 
 use Drupal\Component\Plugin\Exception\ContextException;
 use Drupal\Core\Plugin\Context\ContextDefinition;
+use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
 use Drupal\plugin_test\Plugin\MockBlockManager;
 use Drupal\simpletest\KernelTestBase;
+use Drupal\user\Entity\User;
 
 /**
  * Tests that contexts are properly set and working within plugins.
@@ -26,12 +24,16 @@ class ContextPluginTest extends KernelTestBase {
    */
   function testContext() {
     $this->installEntitySchema('user');
+    $this->installEntitySchema('node');
+    $this->installEntitySchema('node_type');
+    $type = NodeType::create(['type' => 'page', 'name' => 'Page']);
+    $type->save();
 
     $name = $this->randomMachineName();
     $manager = new MockBlockManager();
     $plugin = $manager->createInstance('user_name');
     // Create a node, add it as context, catch the exception.
-    $node = entity_create('node', array('title' => $name, 'type' => 'page'));
+    $node = Node::create(['type' => 'page', 'title' => $name]);
 
     // Try to get context that is missing its definition.
     try {
@@ -57,7 +59,7 @@ class ContextPluginTest extends KernelTestBase {
       $plugin->getContextValue('user');
     }
     catch(ContextException $e) {
-      $this->assertIdentical("The entity:user context is required and not present.", $e->getMessage(), 'Requesting a non-set value of a required context should throw a context exception.');
+      $this->assertIdentical("The 'entity:user' context is required and not present.", $e->getMessage(), 'Requesting a non-set value of a required context should throw a context exception.');
     }
 
     // Try to pass the wrong class type as a context value.
@@ -67,7 +69,7 @@ class ContextPluginTest extends KernelTestBase {
 
     // Set an appropriate context value and check to make sure its methods work
     // as expected.
-    $user = entity_create('user', array('name' => $name));
+    $user = User::create(['name' => $name]);
     $plugin->setContextValue('user', $user);
 
     $this->assertEqual($plugin->getContextValue('user')->getUsername(), $user->getUsername());

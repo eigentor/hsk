@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Plugin\DefaultPluginManagerTest.
- */
-
 namespace Drupal\Tests\Core\Plugin;
 
 use Drupal\Tests\UnitTestCase;
@@ -49,6 +44,10 @@ class DefaultPluginManagerTest extends UnitTestCase {
         'color' => 'yellow',
         'uses' => array(
           'bread' => 'Banana bread',
+          'loaf' => array(
+            'singular' => '@count loaf',
+            'plural' => '@count loaves',
+          ),
         ),
         'class' => 'Drupal\plugin_test\Plugin\plugin_test\fruit\Banana',
       ),
@@ -251,7 +250,7 @@ class DefaultPluginManagerTest extends UnitTestCase {
    * @covers ::createInstance
    *
    * @expectedException \Drupal\Component\Plugin\Exception\PluginException
-   * @expectedExceptionMessage Plugin "kale" (Drupal\plugin_test\Plugin\plugin_test\fruit\Kale) in plugin_test should implement interface \Drupal\plugin_test\Plugin\plugin_test\fruit\FruitInterface
+   * @expectedExceptionMessage Plugin "kale" (Drupal\plugin_test\Plugin\plugin_test\fruit\Kale) must implement interface \Drupal\plugin_test\Plugin\plugin_test\fruit\FruitInterface
    */
   public function testCreateInstanceWithInvalidInterfaces() {
     $module_handler = $this->getMock('Drupal\Core\Extension\ModuleHandlerInterface');

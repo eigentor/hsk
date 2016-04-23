@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\datetime\Plugin\Field\FieldType\DateTimeFieldItemList.
- */
-
 namespace Drupal\datetime\Plugin\Field\FieldType;
 
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -32,8 +27,8 @@ class DateTimeFieldItemList extends FieldItemList {
    * {@inheritdoc}
    */
   public function defaultValuesForm(array &$form, FormStateInterface $form_state) {
-    if (empty($this->getFieldDefinition()->default_value_callback)) {
-      $default_value = $this->getFieldDefinition()->default_value;
+    if (empty($this->getFieldDefinition()->getDefaultValueCallback())) {
+      $default_value = $this->getFieldDefinition()->getDefaultValueLiteral();
 
       $element = array(
         '#parents' => array('default_value_input'),
@@ -51,7 +46,7 @@ class DateTimeFieldItemList extends FieldItemList {
         'default_date' => array(
           '#type' => 'textfield',
           '#title' => t('Relative default value'),
-          '#description' => t("Describe a time by reference to the current day, like '+90 days' (90 days from the day the field is created) or '+1 Saturday' (the next Saturday). See <a href=\"@url\">@strtotime</a> for more details.", array('@strtotime' => 'strtotime', '@url' => 'http://www.php.net/manual/en/function.strtotime.php')),
+          '#description' => t("Describe a time by reference to the current day, like '+90 days' (90 days from the day the field is created) or '+1 Saturday' (the next Saturday). See <a href=\"http://php.net/manual/function.strtotime.php\">strtotime</a> for more details."),
           '#default_value' => (isset($default_value[0]['default_date_type']) && $default_value[0]['default_date_type'] == static::DEFAULT_VALUE_CUSTOM) ? $default_value[0]['default_date'] : '',
           '#states' => array(
             'visible' => array(

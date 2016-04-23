@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Validation\Plugin\Validation\Constraint\CountConstraint.
- */
-
 namespace Drupal\Core\Validation\Plugin\Validation\Constraint;
 
 use Symfony\Component\Validator\Constraints\Count;
@@ -14,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Count;
  *
  * Overrides the symfony constraint to use Drupal-style replacement patterns.
  *
- * @Plugin(
+ * @Constraint(
  *   id = "Count",
  *   label = @Translation("Count", context = "Validation"),
  *   type = { "list" }

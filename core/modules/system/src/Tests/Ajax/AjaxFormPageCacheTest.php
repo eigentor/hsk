@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\system\Tests\Ajax\AjaxFormPageCacheTest.
- */
-
 namespace Drupal\system\Tests\Ajax;
 
 /**
@@ -17,7 +12,7 @@ class AjaxFormPageCacheTest extends AjaxTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  protected function setUp() {
     parent::setUp();
 
     $config = $this->config('system.performance');
@@ -35,7 +30,7 @@ class AjaxFormPageCacheTest extends AjaxTestBase {
   }
 
   /**
-   * Create a simple form, then POST to system/ajax to change to it.
+   * Create a simple form, then submit the form via AJAX to change to it.
    */
   public function testSimpleAJAXFormValue() {
    $this->drupalGet('ajax_forms_test_get_form');
@@ -54,9 +49,15 @@ class AjaxFormPageCacheTest extends AjaxTestBase {
    $this->assertCommand($commands, $expected, 'Build id change command issued on first AJAX submission');
 
    $edit = ['select' => 'red'];
-   $this->drupalPostAjaxForm(NULL, $edit, 'select');
+   $commands = $this->drupalPostAjaxForm(NULL, $edit, 'select');
    $build_id_second_ajax = $this->getFormBuildId();
-   $this->assertEqual($build_id_first_ajax, $build_id_second_ajax, 'Build id remains the same on subsequent AJAX submissions');
+   $this->assertNotEqual($build_id_first_ajax, $build_id_second_ajax, 'Build id changes on subsequent AJAX submissions');
+   $expected = [
+     'command' => 'update_build_id',
+     'old' => $build_id_first_ajax,
+     'new' => $build_id_second_ajax,
+   ];
+   $this->assertCommand($commands, $expected, 'Build id change command issued on subsequent AJAX submissions');
 
    // Repeat the test sequence but this time with a page loaded from the cache.
    $this->drupalGet('ajax_forms_test_get_form');
@@ -77,9 +78,15 @@ class AjaxFormPageCacheTest extends AjaxTestBase {
    $this->assertCommand($commands, $expected, 'Build id change command issued on first AJAX submission');
 
    $edit = ['select' => 'red'];
-   $this->drupalPostAjaxForm(NULL, $edit, 'select');
+   $commands = $this->drupalPostAjaxForm(NULL, $edit, 'select');
    $build_id_from_cache_second_ajax = $this->getFormBuildId();
-   $this->assertEqual($build_id_from_cache_first_ajax, $build_id_from_cache_second_ajax, 'Build id remains the same on subsequent AJAX submissions');
+   $this->assertNotEqual($build_id_from_cache_first_ajax, $build_id_from_cache_second_ajax, 'Build id changes on subsequent AJAX submissions');
+   $expected = [
+     'command' => 'update_build_id',
+     'old' => $build_id_from_cache_first_ajax,
+     'new' => $build_id_from_cache_second_ajax,
+   ];
+   $this->assertCommand($commands, $expected, 'Build id change command issued on subsequent AJAX submissions');
  }
 
   /**

@@ -1,19 +1,15 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Entity\Element\EntityAutocomplete.
- */
-
 namespace Drupal\Core\Entity\Element;
 
 use Drupal\Component\Utility\Crypt;
 use Drupal\Component\Utility\Tags;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityReferenceSelection\SelectionInterface;
+use Drupal\Core\Entity\EntityReferenceSelection\SelectionWithAutocreateInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\Textfield;
 use Drupal\Core\Site\Settings;
-use Drupal\user\EntityOwnerInterface;
 
 /**
  * Provides an entity autocomplete form element.
@@ -146,8 +142,9 @@ class EntityAutocomplete extends Textfield {
         'handler' => $element['#selection_handler'],
         'handler_settings' => $element['#selection_settings'],
       );
+      /** @var /Drupal\Core\Entity\EntityReferenceSelection\SelectionInterface $handler */
       $handler = \Drupal::service('plugin.manager.entity_reference_selection')->getInstance($options);
-      $autocreate = (bool) $element['#autocreate'];
+      $autocreate = (bool) $element['#autocreate'] && $handler instanceof SelectionWithAutocreateInterface;
 
       $input_values = $element['#tags'] ? Tags::explode($element['#value']) : array($element['#value']);
       foreach ($input_values as $input) {
@@ -155,7 +152,7 @@ class EntityAutocomplete extends Textfield {
         if ($match === NULL) {
           // Try to get a match from the input string when the user didn't use
           // the autocomplete but filled in a value manually.
-          $match = $handler->validateAutocompleteInput($input, $element, $form_state, $complete_form, !$autocreate);
+          $match = static::matchEntityByTitle($handler, $input, $element, $form_state, !$autocreate);
         }
 
         if ($match !== NULL) {
@@ -164,16 +161,18 @@ class EntityAutocomplete extends Textfield {
           );
         }
         elseif ($autocreate) {
+          /** @var \Drupal\Core\Entity\EntityReferenceSelection\SelectionWithAutocreateInterface $handler */
           // Auto-create item. See an example of how this is handled in
           // \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem::presave().
           $value[] = array(
-            'entity' => static::createNewEntity($element['#target_type'], $element['#autocreate']['bundle'], $input, $element['#autocreate']['uid'])
+            'entity' => $handler->createNewEntity($element['#target_type'], $element['#autocreate']['bundle'], $input, $element['#autocreate']['uid']),
           );
         }
       }
 
       // Check that the referenced entities are valid, if needed.
-      if ($element['#validate_reference'] && !$autocreate && !empty($value)) {
+      if ($element['#validate_reference'] && !empty($value)) {
+        // Validate existing entities.
         $ids = array_reduce($value, function ($return, $item) {
           if (isset($item['target_id'])) {
             $return[] = $item['target_id'];
@@ -187,6 +186,31 @@ class EntityAutocomplete extends Textfield {
             foreach ($invalid_ids as $invalid_id) {
               $form_state->setError($element, t('The referenced entity (%type: %id) does not exist.', array('%type' => $element['#target_type'], '%id' => $invalid_id)));
             }
+          }
+        }
+
+        // Validate newly created entities.
+        $new_entities = array_reduce($value, function ($return, $item) {
+          if (isset($item['entity'])) {
+            $return[] = $item['entity'];
+          }
+          return $return;
+        });
+
+        if ($new_entities) {
+          if ($autocreate) {
+            $valid_new_entities = $handler->validateReferenceableNewEntities($new_entities);
+            $invalid_new_entities = array_diff_key($new_entities, $valid_new_entities);
+          }
+          else {
+            // If the selection handler does not support referencing newly
+            // created entities, all of them should be invalidated.
+            $invalid_new_entities = $new_entities;
+          }
+
+          foreach ($invalid_new_entities as $entity) {
+            /** @var \Drupal\Core\Entity\EntityInterface $entity */
+            $form_state->setError($element, t('This entity (%type: %label) cannot be referenced.', array('%type' => $element['#target_type'], '%label' => $entity->label())));
           }
         }
       }
@@ -203,9 +227,65 @@ class EntityAutocomplete extends Textfield {
   }
 
   /**
+   * Finds an entity from an autocomplete input without an explicit ID.
+   *
+   * The method will return an entity ID if one single entity unambuguously
+   * matches the incoming input, and sill assign form errors otherwise.
+   *
+   * @param \Drupal\Core\Entity\EntityReferenceSelection\SelectionInterface $handler
+   *   Entity reference selection plugin.
+   * @param string $input
+   *   Single string from autocomplete element.
+   * @param array $element
+   *   The form element to set a form error.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   * @param bool $strict
+   *   Whether to trigger a form error if an element from $input (eg. an entity)
+   *   is not found.
+   *
+   * @return int|null
+   *   Value of a matching entity ID, or NULL if none.
+   */
+  protected static function matchEntityByTitle(SelectionInterface $handler, $input, array &$element, FormStateInterface $form_state, $strict) {
+    $entities_by_bundle = $handler->getReferenceableEntities($input, '=', 6);
+    $entities = array_reduce($entities_by_bundle, function ($flattened, $bundle_entities) {
+      return $flattened + $bundle_entities;
+    }, []);
+    $params = array(
+      '%value' => $input,
+      '@value' => $input,
+    );
+    if (empty($entities)) {
+      if ($strict) {
+        // Error if there are no entities available for a required field.
+        $form_state->setError($element, t('There are no entities matching "%value".', $params));
+      }
+    }
+    elseif (count($entities) > 5) {
+      $params['@id'] = key($entities);
+      // Error if there are more than 5 matching entities.
+      $form_state->setError($element, t('Many entities are called %value. Specify the one you want by appending the id in parentheses, like "@value (@id)".', $params));
+    }
+    elseif (count($entities) > 1) {
+      // More helpful error if there are only a few matching entities.
+      $multiples = array();
+      foreach ($entities as $id => $name) {
+        $multiples[] = $name . ' (' . $id . ')';
+      }
+      $params['@id'] = $id;
+      $form_state->setError($element, t('Multiple entities match this reference; "%multiple". Specify the one you want by appending the id in parentheses, like "@value (@id)".', array('%multiple' => implode('", "', $multiples))));
+    }
+    else {
+      // Take the one and only matching entity.
+      return key($entities);
+    }
+  }
+
+  /**
    * Converts an array of entity objects into a string of entity labels.
    *
-   * This method is also responsible for checking the 'view' access on the
+   * This method is also responsible for checking the 'view label' access on the
    * passed-in entities.
    *
    * @param \Drupal\Core\Entity\EntityInterface[] $entities
@@ -217,7 +297,9 @@ class EntityAutocomplete extends Textfield {
   public static function getEntityLabels(array $entities) {
     $entity_labels = array();
     foreach ($entities as $entity) {
-      $label = ($entity->access('view')) ? $entity->label() : t('- Restricted access -');
+      // Use the special view label, since some entities allow the label to be
+      // viewed, even if the entity is not allowed to be viewed.
+      $label = ($entity->access('view label')) ? $entity->label() : t('- Restricted access -');
 
       // Take into account "autocreated" entities.
       if (!$entity->isNew()) {
@@ -245,48 +327,15 @@ class EntityAutocomplete extends Textfield {
 
     // Take "label (entity id)', match the ID from parenthesis when it's a
     // number.
-    if (preg_match("/.+\((\d+)\)/", $input, $matches)) {
+    if (preg_match("/.+\s\((\d+)\)/", $input, $matches)) {
       $match = $matches[1];
     }
     // Match the ID when it's a string (e.g. for config entity types).
-    elseif (preg_match("/.+\(([\w.]+)\)/", $input, $matches)) {
+    elseif (preg_match("/.+\s\(([\w.]+)\)/", $input, $matches)) {
       $match = $matches[1];
     }
 
     return $match;
-  }
-
-  /**
-   * Creates a new entity from a label entered in the autocomplete input.
-   *
-   * @param string $entity_type_id
-   *   The entity type ID.
-   * @param string $bundle
-   *   The bundle name.
-   * @param string $label
-   *   The entity label.
-   * @param int $uid
-   *   The entity owner ID.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
-   */
-  protected static function createNewEntity($entity_type_id, $bundle, $label, $uid) {
-    $entity_manager = \Drupal::entityManager();
-
-    $entity_type = $entity_manager->getDefinition($entity_type_id);
-    $bundle_key = $entity_type->getKey('bundle');
-    $label_key = $entity_type->getKey('label');
-
-    $entity = $entity_manager->getStorage($entity_type_id)->create(array(
-      $bundle_key => $bundle,
-      $label_key => $label,
-    ));
-
-    if ($entity instanceof EntityOwnerInterface) {
-      $entity->setOwnerId($uid);
-    }
-
-    return $entity;
   }
 
 }

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\Module\ClassLoaderTest.
- */
-
 namespace Drupal\system\Tests\Module;
 
 use Drupal\simpletest\WebTestBase;

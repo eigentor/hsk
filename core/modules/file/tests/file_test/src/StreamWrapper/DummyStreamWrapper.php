@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\file_test\StreamWrapper\DummyStreamWrapper.
- */
-
 namespace Drupal\file_test\StreamWrapper;
 
 use Drupal\Core\StreamWrapper\LocalStream;
@@ -31,7 +26,7 @@ class DummyStreamWrapper extends LocalStream {
   }
 
   function getDirectoryPath() {
-    return conf_path() . '/files';
+    return \Drupal::service('site.path') . '/files';
   }
 
   /**

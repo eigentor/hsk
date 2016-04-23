@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Plugin\views\wizard\WizardPluginBase.
- */
-
 namespace Drupal\views\Plugin\views\wizard;
 
 use Drupal\Component\Utility\NestedArray;
@@ -15,7 +10,6 @@ use Drupal\views\Views;
 use Drupal\views_ui\ViewUI;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\Plugin\views\PluginBase;
-use Drupal\views\Plugin\views\wizard\WizardInterface;
 
 /**
  * @defgroup views_wizard_plugins Views wizard plugins
@@ -496,15 +490,18 @@ abstract class WizardPluginBase extends PluginBase implements WizardInterface {
     }
 
     // If there is a user-submitted value for this element that matches one of
-    // the currently available options attached to it, use that. We need to check
-    // FormState::$input rather than $form_state->getValues() here because the
-    // triggering element often has the #limit_validation_errors property set to
-    // prevent unwanted errors elsewhere on the form. This means that the
-    // $form_state->getValues() array won't be complete. We could make it complete
-    // by adding each required part of the form to the #limit_validation_errors
-    // property individually as the form is being built, but this is difficult to
-    // do for a highly dynamic and extensible form. This method is much simpler.
-    $user_input = &$form_state->getUserInput();
+    // the currently available options attached to it, use that. However, only
+    // perform this check during the form rebuild. During the initial build
+    // after #ajax is triggered, we need to rebuild the form as it was
+    // initially. We need to check FormState::getUserInput() rather than
+    // $form_state->getValues() here because the triggering element often has
+    // the #limit_validation_errors property set to prevent unwanted errors
+    // elsewhere on the form. This means that the $form_state->getValues() array
+    // won't be complete. We could make it complete by adding each required part
+    // of the form to the #limit_validation_errors property individually as the
+    // form is being built, but this is difficult to do for a highly dynamic and
+    // extensible form. This method is much simpler.
+    $user_input = $form_state->isRebuilding() ? $form_state->getUserInput() : [];
     if (!empty($user_input)) {
       $key_exists = NULL;
       $submitted = NestedArray::getValue($user_input, $parents, $key_exists);
@@ -658,7 +655,7 @@ abstract class WizardPluginBase extends PluginBase implements WizardInterface {
       'langcode' => \Drupal::languageManager()->getDefaultLanguage()->getId(),
     );
 
-    $view = entity_create('view', $values);
+    $view = View::create($values);
 
     // Build all display options for this view.
     $display_options = $this->buildDisplayOptions($form, $form_state);
@@ -795,10 +792,10 @@ abstract class WizardPluginBase extends PluginBase implements WizardInterface {
   protected function defaultDisplayOptions() {
     $display_options = array();
     $display_options['access']['type'] = 'none';
-    $display_options['cache']['type'] = 'none';
+    $display_options['cache']['type'] = 'tag';
     $display_options['query']['type'] = 'views_query';
     $display_options['exposed_form']['type'] = 'basic';
-    $display_options['pager']['type'] = 'full';
+    $display_options['pager']['type'] = 'mini';
     $display_options['style']['type'] = 'default';
     $display_options['row']['type'] = 'fields';
 
@@ -1036,9 +1033,9 @@ abstract class WizardPluginBase extends PluginBase implements WizardInterface {
     if (empty($page['items_per_page'])) {
       $display_options['pager']['type'] = 'none';
     }
-    // If the user checked the pager checkbox use a full pager.
-    elseif (isset($page['pager'])) {
-      $display_options['pager']['type'] = 'full';
+    // If the user checked the pager checkbox use a mini pager.
+    elseif (!empty($page['pager'])) {
+      $display_options['pager']['type'] = 'mini';
     }
     // If the user doesn't have checked the checkbox use the pager which just
     // displays a certain amount of items.
@@ -1247,7 +1244,7 @@ abstract class WizardPluginBase extends PluginBase implements WizardInterface {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public function createView(array $form, FormStateInterface $form_state) {
     $view = $this->retrieveValidatedView($form, $form_state);

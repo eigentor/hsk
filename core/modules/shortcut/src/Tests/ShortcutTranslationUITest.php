@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\shortcut\Tests\ShortcutTranslationUITest.
- */
-
 namespace Drupal\shortcut\Tests;
 
 use Drupal\content_translation\Tests\ContentTranslationUITestBase;
@@ -17,6 +12,11 @@ use Drupal\Core\Language\Language;
  * @group Shortcut
  */
 class ShortcutTranslationUITest extends ContentTranslationUITestBase {
+
+  /**
+   * {inheritdoc}
+   */
+  protected $defaultCacheContexts = ['languages:language_interface', 'session', 'theme', 'user', 'url.path', 'url.query_args', 'url.site'];
 
   /**
    * Modules to enable.

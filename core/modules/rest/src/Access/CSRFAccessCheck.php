@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\rest\Access\CSRFAccessCheck.
- */
-
 namespace Drupal\rest\Access;
 
 use Drupal\Core\Access\AccessCheckInterface;
@@ -37,7 +32,7 @@ class CSRFAccessCheck implements AccessCheckInterface {
   }
 
   /**
-   * Implements AccessCheckInterface::applies().
+   * {@inheritdoc}
    */
   public function applies(Route $route) {
     $requirements = $route->getRequirements();

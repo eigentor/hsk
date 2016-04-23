@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Datetime\Element\Datetime.
- */
-
 namespace Drupal\Core\Datetime\Element;
 
 use Drupal\Component\Utility\NestedArray;
@@ -101,7 +96,7 @@ class Datetime extends DateElementBase {
     }
     else {
       $date = $element['#default_value'];
-      if ($date instanceOf DrupalDateTime && !$date->hasErrors()) {
+      if ($date instanceof DrupalDateTime && !$date->hasErrors()) {
         $input = array(
           'date'   => $date->format($element['#date_date_format']),
           'time'   => $date->format($element['#date_time_format']),
@@ -223,7 +218,7 @@ class Datetime extends DateElementBase {
     $date = !empty($element['#value']['object']) ? $element['#value']['object'] : NULL;
 
     // Set a fallback timezone.
-    if ($date instanceOf DrupalDateTime) {
+    if ($date instanceof DrupalDateTime) {
       $element['#date_timezone'] = $date->getTimezone()->getName();
     }
     elseif (empty($element['#timezone'])) {
@@ -241,12 +236,12 @@ class Datetime extends DateElementBase {
       // placeholders are invalid for HTML5 date and datetime, so an example
       // format is appended to the title to appear in tooltips.
       $extra_attributes = array(
-        'title' => t('Date (e.g. !format)', array('!format' => static::formatExample($date_format))),
+        'title' => t('Date (e.g. @format)', array('@format' => static::formatExample($date_format))),
         'type' => $element['#date_date_element'],
       );
 
       // Adds the HTML5 date attributes.
-      if ($date instanceOf DrupalDateTime && !$date->hasErrors()) {
+      if ($date instanceof DrupalDateTime && !$date->hasErrors()) {
         $html5_min = clone($date);
         $range = static::datetimeRangeYears($element['#date_year_range'], $date);
         $html5_min->setDate($range[0], 1, 1)->setTime(0, 0, 0);
@@ -267,6 +262,8 @@ class Datetime extends DateElementBase {
         '#attributes' => $element['#attributes'] + $extra_attributes,
         '#required' => $element['#required'],
         '#size' => max(12, strlen($element['#value']['date'])),
+        '#error_no_message' => TRUE,
+        '#date_date_format' => $element['#date_date_format'],
       );
 
       // Allows custom callbacks to alter the element.
@@ -286,7 +283,7 @@ class Datetime extends DateElementBase {
 
       // Adds the HTML5 attributes.
       $extra_attributes = array(
-        'title' => t('Time (e.g. !format)', array('!format' => static::formatExample($time_format))),
+        'title' => t('Time (e.g. @format)', array('@format' => static::formatExample($time_format))),
         'type' => $element['#date_time_element'],
         'step' => $element['#date_increment'],
       );
@@ -298,6 +295,7 @@ class Datetime extends DateElementBase {
         '#attributes' => $element['#attributes'] + $extra_attributes,
         '#required' => $element['#required'],
         '#size' => 12,
+        '#error_no_message' => TRUE,
       );
 
       // Allows custom callbacks to alter the element.

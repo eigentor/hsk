@@ -1,17 +1,12 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\edit\Tests\MetadataGeneratorTest.
- */
-
 namespace Drupal\quickedit\Tests;
 
-use Drupal\Core\Language\LanguageInterface;
+use Drupal\entity_test\Entity\EntityTest;
 use Drupal\quickedit\EditorSelector;
 use Drupal\quickedit\MetadataGenerator;
-use Drupal\quickedit\Plugin\InPlaceEditorManager;
 use Drupal\quickedit_test\MockEditEntityFieldAccessCheck;
+use Drupal\filter\Entity\FilterFormat;
 
 /**
  * Tests in-place field editing metadata.
@@ -94,31 +89,29 @@ class MetadataGeneratorTest extends QuickEditTestBase {
     );
 
     // Create an entity with values for this text field.
-    $entity = entity_create('entity_test');
+    $entity = EntityTest::create();
     $entity->{$field_1_name}->value = 'Test';
     $entity->{$field_2_name}->value = 42;
     $entity->save();
     $entity = entity_load('entity_test', $entity->id());
 
     // Verify metadata for field 1.
-    $items_1 = $entity->getTranslation(LanguageInterface::LANGCODE_NOT_SPECIFIED)->get($field_1_name);
+    $items_1 = $entity->get($field_1_name);
     $metadata_1 = $this->metadataGenerator->generateFieldMetadata($items_1, 'default');
     $expected_1 = array(
       'access' => TRUE,
       'label' => 'Plain text field',
       'editor' => 'plain_text',
-      'aria' => 'Entity entity_test 1, field Plain text field',
     );
     $this->assertEqual($expected_1, $metadata_1, 'The correct metadata is generated for the first field.');
 
     // Verify metadata for field 2.
-    $items_2 = $entity->getTranslation(LanguageInterface::LANGCODE_NOT_SPECIFIED)->get($field_2_name);
+    $items_2 = $entity->get($field_2_name);
     $metadata_2 = $this->metadataGenerator->generateFieldMetadata($items_2, 'default');
     $expected_2 = array(
       'access' => TRUE,
       'label' => 'Simple number field',
       'editor' => 'form',
-      'aria' => 'Entity entity_test 1, field Simple number field',
     );
     $this->assertEqual($expected_2, $metadata_2, 'The correct metadata is generated for the second field.');
   }
@@ -127,8 +120,6 @@ class MetadataGeneratorTest extends QuickEditTestBase {
    * Tests a field whose associated in-place editor generates custom metadata.
    */
   public function testEditorWithCustomMetadata() {
-    $this->installSchema('system', 'url_alias');
-
     $this->editorManager = $this->container->get('plugin.manager.quickedit.editor');
     $this->editorSelector = new EditorSelector($this->editorManager, $this->container->get('plugin.manager.field.formatter'));
     $this->metadataGenerator = new MetadataGenerator($this->accessChecker, $this->editorSelector, $this->editorManager);
@@ -153,7 +144,7 @@ class MetadataGeneratorTest extends QuickEditTestBase {
     );
 
     // Create a text format.
-    $full_html_format = entity_create('filter_format', array(
+    $full_html_format = FilterFormat::create(array(
       'format' => 'full_html',
       'name' => 'Full HTML',
       'weight' => 1,
@@ -164,20 +155,19 @@ class MetadataGeneratorTest extends QuickEditTestBase {
     $full_html_format->save();
 
     // Create an entity with values for this rich text field.
-    $entity = entity_create('entity_test');
+    $entity = EntityTest::create();
     $entity->{$field_name}->value = 'Test';
     $entity->{$field_name}->format = 'full_html';
     $entity->save();
     $entity = entity_load('entity_test', $entity->id());
 
     // Verify metadata.
-    $items = $entity->getTranslation(LanguageInterface::LANGCODE_NOT_SPECIFIED)->get($field_name);
+    $items = $entity->get($field_name);
     $metadata = $this->metadataGenerator->generateFieldMetadata($items, 'default');
     $expected = array(
       'access' => TRUE,
       'label' => 'Rich text field',
       'editor' => 'wysiwyg',
-      'aria' => 'Entity entity_test 1, field Rich text field',
       'custom' => array(
         'format' => 'full_html'
       ),

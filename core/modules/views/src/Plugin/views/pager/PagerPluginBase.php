@@ -1,15 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Plugin\views\pager\PagerPluginBase.
- */
-
 namespace Drupal\views\Plugin\views\pager;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\PluginBase;
-use Drupal\views\ViewExecutable;
 
 /**
  * @defgroup views_pager_plugins Views pager plugins
@@ -38,7 +32,7 @@ abstract class PagerPluginBase extends PluginBase {
   var $total_items = 0;
 
   /**
-   * Overrides Drupal\views\Plugin\Plugin::$usesOptions.
+   * {@inheritdoc}
    */
   protected $usesOptions = TRUE;
 

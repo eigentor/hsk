@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\menu_link_content\Tests\PathAliasMenuLinkContentTest.
- */
-
 namespace Drupal\menu_link_content\Tests;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
@@ -32,7 +27,6 @@ class PathAliasMenuLinkContentTest extends KernelTestBase {
     parent::setUp();
 
     $this->installEntitySchema('menu_link_content');
-    $this->installSchema('system', ['url_alias', 'router']);
 
     // Ensure that the weight of module_link_content is higher than system.
     // @see menu_link_content_install()
@@ -59,7 +53,7 @@ class PathAliasMenuLinkContentTest extends KernelTestBase {
 
     /** @var \Drupal\Core\Path\AliasStorageInterface $path_alias_storage */
     $path_alias_storage = \Drupal::service('path.alias_storage');
-    $alias = $path_alias_storage->save('test-page', 'my-blog');
+    $alias = $path_alias_storage->save('/test-page', '/my-blog');
     $pid = $alias['pid'];
 
     $menu_link_content = MenuLinkContent::create([
@@ -73,7 +67,7 @@ class PathAliasMenuLinkContentTest extends KernelTestBase {
     $this->assertEqual('test_page_test.test_page', $tree[$menu_link_content->getPluginId()]->link->getPluginDefinition()['route_name']);
 
     // Saving an alias should clear the alias manager cache.
-    $path_alias_storage->save('test-render-title', 'my-blog', LanguageInterface::LANGCODE_NOT_SPECIFIED, $pid);
+    $path_alias_storage->save('/test-render-title', '/my-blog', LanguageInterface::LANGCODE_NOT_SPECIFIED, $pid);
 
     $tree = \Drupal::menuTree()->load('tools', new MenuTreeParameters());
     $this->assertEqual('test_page_test.render_title', $tree[$menu_link_content->getPluginId()]->link->getPluginDefinition()['route_name']);

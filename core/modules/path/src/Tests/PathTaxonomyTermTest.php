@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\path\Tests\PathTaxonomyTermTest.
- */
-
 namespace Drupal\path\Tests;
 
 use Drupal\taxonomy\Entity\Vocabulary;
@@ -27,10 +22,10 @@ class PathTaxonomyTermTest extends PathTestBase {
     parent::setUp();
 
     // Create a Tags vocabulary for the Article node type.
-    $vocabulary = entity_create('taxonomy_vocabulary', array(
+    $vocabulary = Vocabulary::create([
       'name' => t('Tags'),
       'vid' => 'tags',
-    ));
+    ]);
     $vocabulary->save();
 
     // Create and login user.
@@ -48,7 +43,7 @@ class PathTaxonomyTermTest extends PathTestBase {
     $edit = array(
       'name[0][value]' => $this->randomMachineName(),
       'description[0][value]' => $description,
-      'path[0][alias]' => $this->randomMachineName(),
+      'path[0][alias]' => '/' . $this->randomMachineName(),
     );
     $this->drupalPostForm('admin/structure/taxonomy/manage/' . $vocabulary->id() . '/add', $edit, t('Save'));
     $tid = db_query("SELECT tid FROM {taxonomy_term_field_data} WHERE name = :name AND default_langcode = 1", array(':name' => $edit['name[0][value]']))->fetchField();
@@ -65,15 +60,15 @@ class PathTaxonomyTermTest extends PathTestBase {
 
     // Change the term's URL alias.
     $edit2 = array();
-    $edit2['path[0][alias]'] = $this->randomMachineName();
+    $edit2['path[0][alias]'] = '/' . $this->randomMachineName();
     $this->drupalPostForm('taxonomy/term/' . $tid . '/edit', $edit2, t('Save'));
 
     // Confirm that the changed alias works.
-    $this->drupalGet($edit2['path[0][alias]']);
+    $this->drupalGet(trim($edit2['path[0][alias]'], '/'));
     $this->assertText($description, 'Term can be accessed on changed URL alias.');
 
     // Confirm that the old alias no longer works.
-    $this->drupalGet($edit['path[0][alias]']);
+    $this->drupalGet(trim($edit['path[0][alias]'], '/'));
     $this->assertNoText($description, 'Old URL alias has been removed after altering.');
     $this->assertResponse(404, 'Old URL alias returns 404.');
 
@@ -83,7 +78,7 @@ class PathTaxonomyTermTest extends PathTestBase {
     $this->drupalPostForm('taxonomy/term/' . $tid . '/edit', $edit3, t('Save'));
 
     // Confirm that the alias no longer works.
-    $this->drupalGet($edit2['path[0][alias]']);
+    $this->drupalGet(trim($edit2['path[0][alias]'], '/'));
     $this->assertNoText($description, 'Old URL alias has been removed after altering.');
     $this->assertResponse(404, 'Old URL alias returns 404.');
   }

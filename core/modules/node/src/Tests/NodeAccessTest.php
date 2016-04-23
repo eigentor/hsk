@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\node\Tests\NodeAccessTest.
- */
-
 namespace Drupal\node\Tests;
 
 use Drupal\user\RoleInterface;

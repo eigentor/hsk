@@ -1,20 +1,15 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Plugin\views\filter\FilterPluginBase.
- */
-
 namespace Drupal\views\Plugin\views\filter;
 
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Form\FormHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\user\RoleInterface;
-use Drupal\views\Plugin\CacheablePluginInterface;
 use Drupal\views\Plugin\views\HandlerBase;
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\ViewExecutable;
 
@@ -47,7 +42,7 @@ use Drupal\views\ViewExecutable;
 /**
  * Base class for Views filters handler plugins.
  */
-abstract class FilterPluginBase extends HandlerBase implements CacheablePluginInterface {
+abstract class FilterPluginBase extends HandlerBase implements CacheableDependencyInterface {
 
   /**
    * Contains the actual value of the field,either configured in the views ui
@@ -172,7 +167,7 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
    * Display the filter on the administrative summary
    */
   public function adminSummary() {
-    return SafeMarkup::checkPlain((string) $this->operator) . ' ' . SafeMarkup::checkPlain((string) $this->value);
+    return $this->operator . ' ' . $this->value;
   }
 
   /**
@@ -412,7 +407,6 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
         '#type' => 'submit',
         '#value' => $this->t('Grouped filters'),
         '#submit' => array(array($this, 'buildGroupForm')),
-        '#attributes' => array('class' => array('use-ajax-submit')),
       );
       $form['group_button']['radios']['radios']['#default_value'] = 0;
     }
@@ -422,7 +416,6 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
         '#type' => 'submit',
         '#value' => $this->t('Single filter'),
         '#submit' => array(array($this, 'buildGroupForm')),
-        '#attributes' => array('class' => array('use-ajax-submit')),
       );
       $form['group_button']['radios']['radios']['#default_value'] = 1;
     }
@@ -487,7 +480,6 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
         '#type' => 'submit',
         '#value' => $this->t('Expose filter'),
         '#submit' => array(array($this, 'displayExposedForm')),
-        '#attributes' => array('class' => array('use-ajax-submit')),
       );
       $form['expose_button']['checkbox']['checkbox']['#default_value'] = 0;
     }
@@ -500,7 +492,6 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
         '#type' => 'submit',
         '#value' => $this->t('Hide filter'),
         '#submit' => array(array($this, 'displayExposedForm')),
-        '#attributes' => array('class' => array('use-ajax-submit')),
       );
       $form['expose_button']['checkbox']['checkbox']['#default_value'] = 1;
     }
@@ -595,7 +586,7 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
       '#default_value' => $this->options['expose']['remember'],
     );
 
-    $role_options = array_map('\Drupal\Component\Utility\SafeMarkup::checkPlain', user_role_names());
+    $role_options = array_map('\Drupal\Component\Utility\Html::escape', user_role_names());
     $form['expose']['remember_roles'] = array(
       '#type' => 'checkboxes',
       '#title' => $this->t('User roles'),
@@ -614,7 +605,7 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
       '#default_value' => $this->options['expose']['identifier'],
       '#title' => $this->t('Filter identifier'),
       '#size' => 40,
-      '#description' => $this->t('This will appear in the URL after the ? to identify this filter. Cannot be blank.'),
+      '#description' => $this->t('This will appear in the URL after the ? to identify this filter. Cannot be blank. Only letters, digits and the dot ("."), hyphen ("-"), underscore ("_"), and tilde ("~") characters are allowed.'),
     );
   }
 
@@ -623,16 +614,7 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
    */
   public function validateExposeForm($form, FormStateInterface $form_state) {
     $identifier = $form_state->getValue(array('options', 'expose', 'identifier'));
-    if (empty($identifier)) {
-      $form_state->setError($form['expose']['identifier'], $this->t('The identifier is required if the filter is exposed.'));
-    }
-    elseif ($identifier == 'value') {
-      $form_state->setError($form['expose']['identifier'], $this->t('This identifier is not allowed.'));
-    }
-
-    if (!$this->view->display_handler->isIdentifierUnique($form_state->get('id'), $identifier)) {
-      $form_state->setError($form['expose']['identifier'], $this->t('This identifier is used by another handler.'));
-    }
+    $this->validateIdentifier($identifier, $form_state, $form['expose']['identifier']);
   }
 
   /**
@@ -641,17 +623,7 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
   protected function buildGroupValidate($form, FormStateInterface $form_state) {
     if (!$form_state->isValueEmpty(array('options', 'group_info'))) {
       $identifier = $form_state->getValue(array('options', 'group_info', 'identifier'));
-      if (empty($identifier)) {
-        $form_state->setError($form['group_info']['identifier'], $this->t('The identifier is required if the filter is exposed.'));
-      }
-
-      elseif ($identifier == 'value') {
-        $form_state->setError($form['group_info']['identifier'], $this->t('This identifier is not allowed.'));
-      }
-
-      if (!$this->view->display_handler->isIdentifierUnique($form_state->get('id'), $identifier)) {
-        $form_state->setError($form['group_info']['identifier'], $this->t('This identifier is used by another handler.'));
-      }
+      $this->validateIdentifier($identifier, $form_state, $form['group_info']['identifier']);
     }
 
     if ($group_items = $form_state->getValue(array('options', 'group_info', 'group_items'))) {
@@ -678,6 +650,42 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
         }
       }
     }
+  }
+
+  /**
+   * Validates a filter identifier.
+   *
+   * Sets the form error if $form_state is passed or a error string if
+   * $form_state is not passed.
+   *
+   * @param string $identifier
+   *   The identifier to check.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   * @param array $form_group
+   *   The form element to set any errors on.
+   *
+   * @return string
+   */
+  protected function validateIdentifier($identifier, FormStateInterface $form_state = NULL, &$form_group = array()) {
+    $error = '';
+    if (empty($identifier)) {
+      $error = $this->t('The identifier is required if the filter is exposed.');
+    }
+    elseif ($identifier == 'value') {
+      $error = $this->t('This identifier is not allowed.');
+    }
+    elseif (preg_match('/[^a-zA-z0-9_~\.\-]/', $identifier)) {
+      $error = $this->t('This identifier has illegal characters.');
+    }
+
+    if ($form_state && !$this->view->display_handler->isIdentifierUnique($form_state->get('id'), $identifier)) {
+      $error = $this->t('This identifier is used by another handler.');
+    }
+
+    if (!empty($form_state) && !empty($error)) {
+      $form_state->setError($form_group, $error);
+    }
+    return $error;
   }
 
   /**
@@ -766,7 +774,7 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
       $value = $this->options['group_info']['identifier'];
 
       $form[$value] = array(
-        '#title' => SafeMarkup::checkPlain($this->options['group_info']['label']),
+        '#title' => $this->options['group_info']['label'],
         '#type' => $this->options['group_info']['widget'],
         '#default_value' => $this->group_info,
         '#options' => $groups,
@@ -868,7 +876,7 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
       '#default_value' => $identifier,
       '#title' => $this->t('Filter identifier'),
       '#size' => 40,
-      '#description' => $this->t('This will appear in the URL after the ? to identify this filter. Cannot be blank.'),
+      '#description' => $this->t('This will appear in the URL after the ? to identify this filter. Cannot be blank. Only letters, digits and the dot ("."), hyphen ("-"), underscore ("_"), and tilde ("~") characters are allowed.'),
     );
     $form['group_info']['label'] = array(
       '#type' => 'textfield',
@@ -922,7 +930,7 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
       '#default_value' => $identifier,
       '#title' => $this->t('Filter identifier'),
       '#size' => 40,
-      '#description' => $this->t('This will appear in the URL after the ? to identify this filter. Cannot be blank.'),
+      '#description' => $this->t('This will appear in the URL after the ? to identify this filter. Cannot be blank. Only letters, digits and the dot ("."), hyphen ("-"), underscore ("_"), and tilde ("~") characters are allowed.'),
     );
     $form['group_info']['label'] = array(
       '#type' => 'textfield',
@@ -1075,7 +1083,6 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
       '#type' => 'submit',
       '#value' => $this->t('Add another item'),
       '#submit' => array(array($this, 'addGroupForm')),
-      '#attributes' => array('class' => array('use-ajax-submit')),
     );
 
     $js = array();
@@ -1180,7 +1187,7 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
       }
       else {
         // Cast the label to a string since it can be an object.
-        // @see \Drupal\Core\StringTranslation\TranslationWrapper
+        // @see \Drupal\Core\StringTranslation\TranslatableMarkup
         $options[$value] = strip_tags(Html::decodeEntities((string) $label));
       }
     }
@@ -1465,8 +1472,8 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
   /**
    * {@inheritdoc}
    */
-  public function isCacheable() {
-    return TRUE;
+  public function getCacheMaxAge() {
+    return Cache::PERMANENT;
   }
 
   /**
@@ -1481,6 +1488,22 @@ abstract class FilterPluginBase extends HandlerBase implements CacheablePluginIn
       $cache_contexts[] = 'url';
     }
     return $cache_contexts;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validate() {
+    if (!empty($this->options['exposed']) && $error = $this->validateIdentifier($this->options['expose']['identifier'])) {
+      return [$error];
+    }
   }
 
 }

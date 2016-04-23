@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Tests\ViewAjaxTest.
- */
-
 namespace Drupal\views\Tests;
 
 use Drupal\Component\Serialization\Json;
@@ -53,6 +48,8 @@ class ViewAjaxTest extends ViewTestBase {
     $post += $this->getAjaxPageStatePostData();
     $response = $this->drupalPost('views/ajax', 'application/vnd.drupal-ajax', $post);
     $data = Json::decode($response);
+
+    $this->assertTrue(isset($data[0]['settings']['views']['ajaxViews']));
 
     // Ensure that the view insert command is part of the result.
     $this->assertEqual($data[1]['command'], 'insert');

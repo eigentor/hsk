@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Plugin\views\join\JoinPluginBase.
- */
-
 namespace Drupal\views\Plugin\views\join;
 
 use Drupal\Core\Plugin\PluginBase;
@@ -21,12 +16,13 @@ use Drupal\Core\Plugin\PluginBase;
  * They must be annotated with \Drupal\views\Annotation\ViewsJoin annotation,
  * and they must be in namespace directory Plugin\views\join.
  *
- * Here are some examples of how to join from table one to table two so it
- * produces the following SQL:
+ * Here are some examples of configuration for the join plugins.
+ *
+ * For this SQL:
  * @code
- * INNER JOIN {two} ON one.field_a = two.field_b
+ * LEFT JOIN {two} ON one.field_a = two.field_b
  * @endcode
- * The required php code for this kind of functionality is the following:
+ * Use this configuration:
  * @code
  * $configuration = array(
  *   'table' => 'two',
@@ -37,12 +33,17 @@ use Drupal\Core\Plugin\PluginBase;
  * );
  * $join = Views::pluginManager('join')->createInstance('standard', $configuration);
  * @endcode
+ * Note that the default join type is a LEFT join when 'type' is not supplied in
+ * the join plugin configuration.
+ *
+ * For this SQL:
  * @code
  * INNER JOIN {two} ON one.field_a = two.field_b AND one.field_c = 'some_val'
  * @endcode
- * The required php code for this kind of functionality is the following:
+ * Use this configuration:
  * @code
  * $configuration = array(
+ *   'type' => 'INNER',
  *   'table' => 'two',
  *   'field' => 'field_b',
  *   'left_table' => 'one',
@@ -57,12 +58,15 @@ use Drupal\Core\Plugin\PluginBase;
  * );
  * $join = Views::pluginManager('join')->createInstance('standard', $configuration);
  * @endcode
+ *
+ * For this SQL:
  * @code
  * INNER JOIN {two} ON one.field_a = two.field_b AND two.field_d = 'other_val'
  * @endcode
- * The required php code for this kind of functionality is the following:
+ * Use this configuration:
  * @code
  * $configuration = array(
+ *   'type' => 'INNER',
  *   'table' => 'two',
  *   'field' => 'field_b',
  *   'left_table' => 'one',
@@ -77,12 +81,15 @@ use Drupal\Core\Plugin\PluginBase;
  * );
  * $join = Views::pluginManager('join')->createInstance('standard', $configuration);
  * @endcode
+ *
+ * For this SQL:
  * @code
  * INNER JOIN {two} ON one.field_a = two.field_b AND one.field_c = two.field_d
  * @endcode
- * The required php code for this kind of functionality is the following:
+ * Use this configuration:
  * @code
  * $configuration = array(
+ *   'type' => 'INNER',
  *   'table' => 'two',
  *   'field' => 'field_b',
  *   'left_table' => 'one',
@@ -294,12 +301,6 @@ class JoinPluginBase extends PluginBase implements JoinPluginInterface {
           // Convert a single-valued array of values to the single-value case,
           // and transform from IN() notation to = notation
           if (is_array($info['value']) && count($info['value']) == 1) {
-            if (empty($info['operator'])) {
-              $operator = '=';
-            }
-            else {
-              $operator = $info['operator'] == 'NOT IN' ? '!=' : '=';
-            }
             $info['value'] = array_shift($info['value']);
           }
 

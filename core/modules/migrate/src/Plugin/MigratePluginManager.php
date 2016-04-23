@@ -1,17 +1,11 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\migrate\Plugin\MigratePluginManager.
- */
-
 namespace Drupal\migrate\Plugin;
 
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
-use Drupal\migrate\Entity\MigrationInterface;
 
 /**
  * Manages migrate plugins.
@@ -34,7 +28,7 @@ class MigratePluginManager extends DefaultPluginManager {
    *
    * @param string $type
    *   The type of the plugin: row, source, process, destination, entity_field,
-   * id_map.
+   *   id_map.
    * @param \Traversable $namespaces
    *   An object that implements \Traversable which contains the root paths
    *   keyed by the corresponding namespace to look for plugin implementations.
@@ -43,7 +37,8 @@ class MigratePluginManager extends DefaultPluginManager {
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler to invoke the alter hook with.
    * @param string $annotation
-   *   The annotation class name.
+   *   (optional) The annotation class name. Defaults to
+   *   'Drupal\Component\Annotation\PluginID'.
    */
   public function __construct($type, \Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler, $annotation = 'Drupal\Component\Annotation\PluginID') {
     $plugin_interface = isset($plugin_interface_map[$type]) ? $plugin_interface_map[$type] : NULL;
@@ -68,22 +63,6 @@ class MigratePluginManager extends DefaultPluginManager {
       $plugin = new $plugin_class($configuration, $plugin_id, $plugin_definition, $migration);
     }
     return $plugin;
-  }
-
-  /**
-   * Helper for the plugin type to interface map.
-   *
-   * @return array
-   *   An array map from plugin type to interface.
-   */
-  protected function getPluginInterfaceMap() {
-    return [
-      'destination' => 'Drupal\migrate\Plugin\MigrateDestinationInterface',
-      'process' => 'Drupal\migrate\Plugin\MigrateProcessInterface',
-      'source' => 'Drupal\migrate\Plugin\MigrateSourceInterface',
-      'id_map' => 'Drupal\migrate\Plugin\MigrateIdMapInterface',
-      'entity_field' => 'Drupal\migrate\Plugin\MigrateEntityDestinationFieldInterface',
-    ];
   }
 
 }

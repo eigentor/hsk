@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\filter\Tests\FilterNoFormatTest.
- */
-
 namespace Drupal\filter\Tests;
 
 use Drupal\simpletest\WebTestBase;

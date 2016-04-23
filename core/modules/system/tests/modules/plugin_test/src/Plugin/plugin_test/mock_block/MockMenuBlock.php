@@ -1,13 +1,6 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\plugin_test\Plugin\plugin_test\mock_block\MockMenuBlock.
- */
-
 namespace Drupal\plugin_test\Plugin\plugin_test\mock_block;
-
-use Drupal\Component\Plugin\PluginBase;
 
 /**
  * Mock implementation of a menu block plugin used by Plugin API unit tests.
@@ -26,7 +19,7 @@ class MockMenuBlock {
   /**
    * The number of menu levels deep to render.
    *
-   * @var integer
+   * @var int
    */
   protected $depth;
 

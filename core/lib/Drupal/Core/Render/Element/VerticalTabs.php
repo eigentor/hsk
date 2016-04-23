@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Render\Element\VerticalTabs.
- */
-
 namespace Drupal\Core\Render\Element;
 
 use Drupal\Core\Form\FormStateInterface;
@@ -13,8 +8,42 @@ use Drupal\Core\Render\Element;
 /**
  * Provides a render element for vertical tabs in a form.
  *
- * Formats all child fieldsets and all non-child fieldsets whose #group is
- * assigned this element's name as vertical tabs.
+ * Formats all child and non-child details elements whose #group is assigned
+ * this element's name as vertical tabs.
+ *
+ * Properties:
+ * - #default_tab: The HTML ID of the rendered details element to be used as
+ *   the default tab. View the source of the rendered page to determine the ID.
+ *
+ * Usage example:
+ * @code
+ * $form['information'] = array(
+ *   '#type' => 'vertical_tabs',
+ *   '#default_tab' => 'edit-publication',
+ * );
+ *
+ * $form['author'] = array(
+ *   '#type' => 'details',
+ *   '#title' => 'Author',
+ *   '#group' => 'information',
+ * );
+ *
+ * $form['author']['name'] = array(
+ *   '#type' => 'textfield',
+ *   '#title' => t('Name'),
+ * );
+ *
+ * $form['publication'] = array(
+ *   '#type' => 'details',
+ *   '#title' => t('Publication'),
+ *   '#group' => 'information',
+ * );
+ *
+ * $form['publication']['publisher'] = array(
+ *   '#type' => 'textfield',
+ *   '#title' => t('Publisher'),
+ * );
+ * @endcode
  *
  * @FormElement("vertical_tabs")
  */
@@ -71,6 +100,10 @@ class VerticalTabs extends RenderElement {
    *   The processed element.
    */
   public static function processVerticalTabs(&$element, FormStateInterface $form_state, &$complete_form) {
+    if (isset($element['#access']) && !$element['#access']) {
+      return $element;
+    }
+
     // Inject a new details as child, so that form_process_details() processes
     // this details element like any other details.
     $element['group'] = array(
@@ -98,7 +131,7 @@ class VerticalTabs extends RenderElement {
     $element[$name . '__active_tab'] = array(
       '#type' => 'hidden',
       '#default_value' => $element['#default_tab'],
-      '#attributes' => array('class' => array('vertical-tabs-active-tab')),
+      '#attributes' => array('class' => array('vertical-tabs__active-tab')),
     );
     // Clean up the active tab value so it's not accidentally stored in
     // settings forms.

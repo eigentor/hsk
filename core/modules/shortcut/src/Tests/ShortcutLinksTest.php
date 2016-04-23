@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\shortcut\Tests\ShortcutLinksTest.
- */
-
 namespace Drupal\shortcut\Tests;
 
 use Drupal\Component\Utility\SafeMarkup;
@@ -27,6 +22,15 @@ class ShortcutLinksTest extends ShortcutTestBase {
   public static $modules = array('router_test', 'views', 'block');
 
   /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
+    parent::setUp();
+
+    $this->drupalPlaceBlock('page_title_block');
+  }
+
+  /**
    * Tests that creating a shortcut works properly.
    */
   public function testShortcutLinkAdd() {
@@ -34,8 +38,8 @@ class ShortcutLinksTest extends ShortcutTestBase {
 
     // Create an alias for the node so we can test aliases.
     $path = array(
-      'source' => 'node/' . $this->node->id(),
-      'alias' => $this->randomMachineName(8),
+      'source' => '/node/' . $this->node->id(),
+      'alias' => '/' . $this->randomMachineName(8),
     );
     $this->container->get('path.alias_storage')->save($path['source'], $path['alias']);
 
@@ -45,7 +49,7 @@ class ShortcutLinksTest extends ShortcutTestBase {
       '/admin',
       '/admin/config/system/site-information',
       '/node/' . $this->node->id() . '/edit',
-      '/' . $path['alias'],
+      $path['alias'],
       '/router_test/test2',
       '/router_test/test3/value',
     ];
@@ -105,6 +109,21 @@ class ShortcutLinksTest extends ShortcutTestBase {
     ];
     $this->drupalPostForm('admin/config/user-interface/shortcut/manage/' . $set->id() . '/add-link', $form_data, t('Save'));
     $this->assertLink($title, 0, 'Shortcut link found on the page.');
+
+    // Create a new shortcut set and add a link to it.
+    $this->drupalLogin($this->adminUser);
+    $edit = array(
+      'label' => $this->randomMachineName(),
+      'id' => strtolower($this->randomMachineName()),
+    );
+    $this->drupalPostForm('admin/config/user-interface/shortcut/add-set', $edit, t('Save'));
+    $title = $this->randomMachineName();
+    $form_data = [
+      'title[0][value]' => $title,
+      'link[0][uri]' => '/admin',
+    ];
+    $this->drupalPostForm('admin/config/user-interface/shortcut/manage/' . $edit['id'] . '/add-link', $form_data, t('Save'));
+    $this->assertResponse(200);
   }
 
   /**
@@ -153,6 +172,19 @@ class ShortcutLinksTest extends ShortcutTestBase {
     // works here.
     $link = $this->xpath('//a[normalize-space()=:label]', array(':label' => 'Add to Default shortcuts'));
     $this->assertTrue(!empty($link), 'Link Add to Default shortcuts found.');
+
+    // Test two pages which use same route name but different route parameters.
+    $this->drupalGet('node/add/page');
+    // Add Shortcut for Basic Page.
+    $this->clickLink('Add to Default shortcuts');
+    $this->assertText('Added a shortcut for Create Basic page.');
+    // Assure that Article does not have its shortcut indicated as set.
+    $this->drupalGet('node/add/article');
+    $link = $this->xpath('//a[normalize-space()=:label]', array(':label' => 'Remove from Default shortcuts'));
+    $this->assertTrue(empty($link), 'Link Remove to Default shortcuts not found for Create Article page.');
+    // Add Shortcut for Article.
+    $this->clickLink('Add to Default shortcuts');
+    $this->assertText('Added a shortcut for Create Article.');
   }
 
   /**
@@ -243,23 +275,23 @@ class ShortcutLinksTest extends ShortcutTestBase {
       ->save();
 
     $this->drupalGet('page-that-does-not-exist');
-    $result = $this->xpath('//div[contains(@class, "add-shortcut")]');
+    $result = $this->xpath('//a[contains(@class, "shortcut-action--add")]');
     $this->assertTrue(empty($result), 'Add to shortcuts link was not shown on a page not found.');
 
     // The user does not have access to this path.
     $this->drupalGet('admin/modules');
-    $result = $this->xpath('//div[contains(@class, "add-shortcut")]');
+    $result = $this->xpath('//a[contains(@class, "shortcut-action--add")]');
     $this->assertTrue(empty($result), 'Add to shortcuts link was not shown on a page the user does not have access to.');
 
-    // Verify that the testing mechanism works by verifying the shortcut
-    // link appears on admin/people.
-    $this->drupalGet('admin/people');
-    $result = $this->xpath('//div[contains(@class, "remove-shortcut")]');
+    // Verify that the testing mechanism works by verifying the shortcut link
+    // appears on admin/content.
+    $this->drupalGet('admin/content');
+    $result = $this->xpath('//a[contains(@class, "shortcut-action--remove")]');
     $this->assertTrue(!empty($result), 'Remove from shortcuts link was shown on a page the user does have access to.');
 
     // Verify that the shortcut link appears on routing only pages.
     $this->drupalGet('router_test/test2');
-    $result = $this->xpath('//div[contains(@class, "add-shortcut")]');
+    $result = $this->xpath('//a[contains(@class, "shortcut-action--add")]');
     $this->assertTrue(!empty($result), 'Add to shortcuts link was shown on a page the user does have access to.');
   }
 

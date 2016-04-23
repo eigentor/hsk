@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\Form\AlterTest.
- */
-
 namespace Drupal\system\Tests\Form;
 
 use Drupal\Component\Utility\Xss;

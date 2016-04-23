@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\syslog\Tests\SyslogTest.
- */
-
 namespace Drupal\syslog\Tests;
 
 use Drupal\simpletest\WebTestBase;

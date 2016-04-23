@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\taxonomy\Form\OverviewTerms
- */
-
 namespace Drupal\taxonomy\Form;
 
 use Drupal\Core\Entity\EntityManagerInterface;
@@ -27,7 +22,7 @@ class OverviewTerms extends FormBase {
   protected $moduleHandler;
 
   /**
-   * The term storage controller.
+   * The term storage handler.
    *
    * @var \Drupal\taxonomy\TermStorageInterface
    */
@@ -207,7 +202,7 @@ class OverviewTerms extends FormBase {
     $form['terms'] = array(
       '#type' => 'table',
       '#header' => array($this->t('Name'), $this->t('Weight'), $this->t('Operations')),
-      '#empty' => $this->t('No terms available. <a href="@link">Add term</a>.', array('@link' => $this->url('entity.taxonomy_term.add_form', array('taxonomy_vocabulary' => $taxonomy_vocabulary->id())))),
+      '#empty' => $this->t('No terms available. <a href=":link">Add term</a>.', array(':link' => $this->url('entity.taxonomy_term.add_form', array('taxonomy_vocabulary' => $taxonomy_vocabulary->id())))),
       '#attributes' => array(
         'id' => 'taxonomy',
       ),
@@ -390,9 +385,7 @@ class OverviewTerms extends FormBase {
     $hierarchy = TAXONOMY_HIERARCHY_DISABLED;
 
     $changed_terms = array();
-    // @todo taxonomy_get_tree needs to be converted to a service and injected.
-    //   Will be fixed in https://www.drupal.org/node/1976298.
-    $tree = taxonomy_get_tree($vocabulary->id(), 0, NULL, TRUE);
+    $tree = $this->storageController->loadTree($vocabulary->id(), 0, NULL, TRUE);
 
     if (empty($tree)) {
       return;

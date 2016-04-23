@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\node\Tests\NodeViewTest.
- */
-
 namespace Drupal\node\Tests;
 
 /**
@@ -31,6 +26,18 @@ class NodeViewTest extends NodeTestBase {
 
     $result = $this->xpath('//link[@rel = "canonical"]');
     $this->assertEqual($result[0]['href'], $node->url());
+  }
+
+  /**
+   * Tests that we store and retrieve multi-byte UTF-8 characters correctly.
+   */
+  public function testMultiByteUtf8() {
+    $title = '🐝';
+    $this->assertTrue(mb_strlen($title, 'utf-8') < strlen($title), 'Title has multi-byte characters.');
+    $node = $this->drupalCreateNode(array('title' => $title));
+    $this->drupalGet($node->urlInfo());
+    $result = $this->xpath('//span[contains(@class, "field--name-title")]');
+    $this->assertEqual((string) $result[0], $title, 'The passed title was returned.');
   }
 
 }

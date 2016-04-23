@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\Mail\MailTest.
- */
-
 namespace Drupal\system\Tests\Mail;
 
 use Drupal\Core\Mail\Plugin\Mail\TestMailCollector;

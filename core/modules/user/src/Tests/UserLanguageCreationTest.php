@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\user\Tests\UserLanguageCreationTest.
- */
-
 namespace Drupal\user\Tests;
 
 use Drupal\language\Entity\ConfigurableLanguage;

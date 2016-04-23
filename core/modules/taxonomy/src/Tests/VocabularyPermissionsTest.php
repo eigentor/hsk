@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\taxonomy\Tests\VocabularyPermissionsTest.
- */
-
 namespace Drupal\taxonomy\Tests;
 
 /**
@@ -13,6 +8,12 @@ namespace Drupal\taxonomy\Tests;
  * @group taxonomy
  */
 class VocabularyPermissionsTest extends TaxonomyTestBase {
+
+  protected function setUp() {
+    parent::setUp();
+
+    $this->drupalPlaceBlock('page_title_block');
+  }
 
   /**
    * Create, edit and delete a taxonomy term via the user interface.

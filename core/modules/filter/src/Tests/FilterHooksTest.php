@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\filter\Tests\FilterHooksTest.
- */
-
 namespace Drupal\filter\Tests;
 
 use Drupal\Component\Utility\Unicode;

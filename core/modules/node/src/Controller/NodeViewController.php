@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\node\Controller\NodeViewController.
- */
-
 namespace Drupal\node\Controller;
 
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Controller\EntityViewController;
 
@@ -20,10 +14,7 @@ class NodeViewController extends EntityViewController {
    * {@inheritdoc}
    */
   public function view(EntityInterface $node, $view_mode = 'full', $langcode = NULL) {
-    $build = array('nodes' => parent::view($node));
-
-    $build['#title'] = $build['nodes']['#title'];
-    unset($build['nodes']['#title']);
+    $build = parent::view($node, $view_mode, $langcode);
 
     foreach ($node->uriRelationships() as $rel) {
       // Set the node path as the canonical URL to prevent duplicate content.
@@ -60,7 +51,7 @@ class NodeViewController extends EntityViewController {
    *   The page title.
    */
   public function title(EntityInterface $node) {
-    return SafeMarkup::checkPlain($this->entityManager->getTranslationFromContext($node)->label());
+    return $this->entityManager->getTranslationFromContext($node)->label();
   }
 
 }

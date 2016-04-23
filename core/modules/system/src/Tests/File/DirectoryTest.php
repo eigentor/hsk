@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\File\DirectoryTest.
- */
-
 namespace Drupal\system\Tests\File;
 
 use Drupal\Component\PhpStorage\FileStorage;
@@ -19,7 +14,8 @@ class DirectoryTest extends FileTestBase {
    * Test local directory handling functions.
    */
   function testFileCheckLocalDirectoryHandling() {
-    $directory = conf_path() . '/files';
+    $site_path = $this->container->get('site.path');
+    $directory = $site_path . '/files';
 
     // Check a new recursively created local directory for correct file system
     // permissions.

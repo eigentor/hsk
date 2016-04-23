@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\theme_test\ThemeTestController.
- */
-
 namespace Drupal\theme_test;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -141,6 +136,27 @@ class ThemeTestController extends ControllerBase {
   public function nonHtml() {
     $theme_initialized = \Drupal::theme()->hasActiveTheme();
     return new JsonResponse(['theme_initialized' => $theme_initialized]);
+  }
+
+  /**
+   * Controller for testing preprocess functions with theme suggestions.
+   */
+  public function preprocessSuggestions() {
+    return [
+      [
+        '#theme' => 'theme_test_preprocess_suggestions',
+        '#foo' => 'suggestion',
+      ],
+      [
+        '#theme' => 'theme_test_preprocess_suggestions',
+        '#foo' => 'kitten',
+      ],
+      [
+        '#theme' => 'theme_test_preprocess_suggestions',
+        '#foo' => 'monkey',
+      ],
+      ['#theme' => 'theme_test_preprocess_suggestions__kitten__flamingo'],
+    ];
   }
 
 }

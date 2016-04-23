@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Extension\Discovery\RecursiveExtensionFilterIterator.
- */
-
 namespace Drupal\Core\Extension\Discovery;
 
 /**
@@ -103,7 +98,7 @@ class RecursiveExtensionFilterIterator extends \RecursiveFilterIterator {
   }
 
   /**
-   * Overrides \RecursiveFilterIterator::getChildren().
+   * {@inheritdoc}
    */
   public function getChildren() {
     $filter = parent::getChildren();
@@ -113,7 +108,7 @@ class RecursiveExtensionFilterIterator extends \RecursiveFilterIterator {
   }
 
   /**
-   * Implements \FilterIterator::accept().
+   * {@inheritdoc}
    */
   public function accept() {
     $name = $this->current()->getFilename();

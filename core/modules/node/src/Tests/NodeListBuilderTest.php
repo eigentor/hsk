@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\node\Tests\NodeListBuilderTest.
- */
-
 namespace Drupal\node\Tests;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -39,7 +34,7 @@ class NodeListBuilderTest extends KernelTestBase {
     $build = $list_builder->render();
     $this->container->get('renderer')->renderRoot($build);
 
-    $this->assertEqual(['languages:' . LanguageInterface::TYPE_INTERFACE, 'theme', 'url.query_args.pagers:0', 'user.node_grants:view'], $build['#cache']['contexts']);
+    $this->assertEqual(['languages:' . LanguageInterface::TYPE_INTERFACE, 'theme', 'url.query_args.pagers:0', 'user.node_grants:view', 'user.permissions'], $build['#cache']['contexts']);
   }
 
 }

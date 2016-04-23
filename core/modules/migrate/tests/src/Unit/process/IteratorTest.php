@@ -1,15 +1,10 @@
 <?php
-/**
- * @file
- * Contains Drupal\Tests\migrate\Unit\process\IteratorTest.
- */
 
 namespace Drupal\Tests\migrate\Unit\process;
 
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\Plugin\migrate\process\Get;
 use Drupal\migrate\Plugin\migrate\process\Iterator;
-use Drupal\migrate\Plugin\migrate\process\StaticMap;
 use Drupal\migrate\Row;
 use Drupal\Tests\migrate\Unit\MigrateTestCase;
 
@@ -61,7 +56,8 @@ class IteratorTest extends MigrateTestCase {
     $migration->expects($this->at(2))
       ->method('getProcessPlugins')
       ->will($this->returnValue($key_plugin));
-    $migrate_executable = new MigrateExecutable($migration, $this->getMock('Drupal\migrate\MigrateMessageInterface'));
+    $event_dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+    $migrate_executable = new MigrateExecutable($migration, $this->getMock('Drupal\migrate\MigrateMessageInterface'), $event_dispatcher);
 
     // The current value of the pipeline.
     $current_value = array(

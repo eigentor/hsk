@@ -1,13 +1,10 @@
 <?php
 
-/**
- * @file
- *
- */
-
 namespace Drupal\serialization\Tests;
 
-use Drupal\simpletest\KernelTestBase;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 
 abstract class NormalizerTestBase extends KernelTestBase {
 
@@ -23,20 +20,19 @@ abstract class NormalizerTestBase extends KernelTestBase {
 
     $this->installEntitySchema('entity_test_mulrev');
     $this->installEntitySchema('user');
-    $this->installSchema('system', array('url_alias', 'router'));
     $this->installConfig(array('field'));
     \Drupal::service('router.builder')->rebuild();
     \Drupal::moduleHandler()->invoke('rest', 'install');
 
     // Auto-create a field for testing.
-    entity_create('field_storage_config', array(
+    FieldStorageConfig::create(array(
       'entity_type' => 'entity_test_mulrev',
       'field_name' => 'field_test_text',
       'type' => 'text',
       'cardinality' => 1,
       'translatable' => FALSE,
     ))->save();
-    entity_create('field_config', array(
+    FieldConfig::create(array(
       'entity_type' => 'entity_test_mulrev',
       'field_name' => 'field_test_text',
       'bundle' => 'entity_test_mulrev',

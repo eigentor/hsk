@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\history\Plugin\views\field\HistoryUserTimestamp.
- */
-
 namespace Drupal\history\Plugin\views\field;
 
 use Drupal\Core\Form\FormStateInterface;
@@ -33,7 +28,7 @@ class HistoryUserTimestamp extends Node {
   }
 
   /**
-   * Overrides \Drupal\node\Plugin\views\field\Node::init().
+   * {@inheritdoc}
    */
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);

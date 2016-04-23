@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\system\Tests\Update\DependencyHookInvocationTest.
- */
-
 namespace Drupal\system\Tests\Update;
 
 use Drupal\simpletest\WebTestBase;

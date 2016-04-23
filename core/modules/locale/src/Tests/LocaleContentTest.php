@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\locale\Tests\LocaleContentTest.
- */
-
 namespace Drupal\locale\Tests;
 
 use Drupal\simpletest\WebTestBase;

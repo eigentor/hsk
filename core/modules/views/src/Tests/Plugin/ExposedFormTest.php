@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\views\Tests\Plugin\ExposedFormTest.
- */
-
 namespace Drupal\views\Tests\Plugin;
 
 use Drupal\Component\Utility\Html;
@@ -85,6 +80,69 @@ class ExposedFormTest extends ViewTestBase {
   }
 
   /**
+   * Tests the exposed form with a non-standard identifier.
+   */
+  public function testExposedIdentifier() {
+    // Alter the identifier of the filter to a random string.
+    $view = Views::getView('test_exposed_form_buttons');
+    $view->setDisplay();
+    $identifier = 'new_identifier';
+    $view->displayHandlers->get('default')->overrideOption('filters', array(
+      'type' => [
+        'exposed' => TRUE,
+        'field' => 'type',
+        'id' => 'type',
+        'table' => 'node_field_data',
+        'plugin_id' => 'in_operator',
+        'entity_type' => 'node',
+        'entity_field' => 'type',
+        'expose' => [
+          'identifier' => $identifier,
+          'label' => 'Content: Type',
+          'operator_id' => 'type_op',
+          'reduce' => FALSE,
+          'description' => 'Exposed overridden description'
+        ],
+      ]
+    ));
+    $view->save();
+    $this->drupalGet('test_exposed_form_buttons', array('query' => array($identifier => 'article')));
+    $this->assertFieldById(Html::getId('edit-' . $identifier), 'article', "Article type filter set with new identifier.");
+
+    // Alter the identifier of the filter to a random string containing
+    // restricted characters.
+    $view = Views::getView('test_exposed_form_buttons');
+    $view->setDisplay();
+    $identifier = 'bad identifier';
+    $view->displayHandlers->get('default')->overrideOption('filters', array(
+      'type' => [
+        'exposed' =>  TRUE,
+        'field' => 'type',
+        'id' => 'type',
+        'table' => 'node_field_data',
+        'plugin_id' => 'in_operator',
+        'entity_type' => 'node',
+        'entity_field' => 'type',
+        'expose' => [
+          'identifier' => $identifier,
+          'label' => 'Content: Type',
+          'operator_id' => 'type_op',
+          'reduce' => FALSE,
+          'description' => 'Exposed overridden description'
+        ],
+      ]
+    ));
+    $this->executeView($view);
+
+    $errors = $view->validate();
+    $expected = [
+      'default' => ['This identifier has illegal characters.'],
+      'page_1' => ['This identifier has illegal characters.'],
+    ];
+    $this->assertEqual($errors, $expected);
+  }
+
+  /**
    * Tests whether the reset button works on an exposed form.
    */
   public function testResetButton() {
@@ -135,7 +193,7 @@ class ExposedFormTest extends ViewTestBase {
     $this->executeView($view);
     $exposed_form = $view->display_handler->getPlugin('exposed_form');
     $output = $exposed_form->renderExposedForm();
-    $this->setRawContent(drupal_render($output));
+    $this->setRawContent(\Drupal::service('renderer')->renderRoot($output));
 
     $this->assertFieldByXpath('//form/@id', $this->getExpectedExposedFormId($view), 'Expected form ID found.');
 
@@ -151,6 +209,7 @@ class ExposedFormTest extends ViewTestBase {
    * Tests the exposed block functionality.
    */
   public function testExposedBlock() {
+    $this->drupalCreateContentType(['type' => 'page']);
     $view = Views::getView('test_exposed_block');
     $view->setDisplay('page_1');
     $block = $this->drupalPlaceBlock('views_exposed_filter_block:test_exposed_block-page_1');
@@ -167,6 +226,15 @@ class ExposedFormTest extends ViewTestBase {
     // Test there is only one views exposed form on the page.
     $elements = $this->xpath('//form[@id=:id]', array(':id' => $this->getExpectedExposedFormId($view)));
     $this->assertEqual(count($elements), 1, 'One exposed form block found.');
+
+    // Test that the correct option is selected after form submission.
+    $this->assertCacheContext('url');
+    $this->assertOptionSelected('edit-type', 'All');
+    foreach (['All', 'article', 'page'] as $argument) {
+      $this->drupalGet('test_exposed_block', ['query' => ['type' => $argument]]);
+      $this->assertCacheContext('url');
+      $this->assertOptionSelected('edit-type', $argument);
+    }
   }
 
   /**
@@ -194,6 +262,31 @@ class ExposedFormTest extends ViewTestBase {
   }
 
   /**
+   * Test the "on demand text" for the input required exposed form type.
+   */
+  public function testTextInputRequired() {
+    $view = Views::getView('test_exposed_form_buttons');
+    $display = &$view->storage->getDisplay('default');
+    $display['display_options']['exposed_form']['type'] = 'input_required';
+    // Set up the "on demand text".
+    // @see https://www.drupal.org/node/535868
+    $on_demand_text = 'Select any filter and click Apply to see results.';
+    $display['display_options']['exposed_form']['options']['text_input_required'] = $on_demand_text;
+    $display['display_options']['exposed_form']['options']['text_input_required_format'] = filter_default_format();
+    $view->save();
+
+    // Ensure that the "on demand text" is displayed when no exposed filters are
+    // applied.
+    $this->drupalGet('test_exposed_form_buttons');
+    $this->assertText('Select any filter and click Apply to see results.');
+
+    // Ensure that the "on demand text" is not displayed when an exposed filter
+    // is applied.
+    $this->drupalGet('test_exposed_form_buttons', array('query' => array('type' => 'article')));
+    $this->assertNoText($on_demand_text);
+  }
+
+  /**
    * Tests exposed forms with exposed sort and items per page.
    */
   public function testExposedSortAndItemsPerPage() {
@@ -206,11 +299,7 @@ class ExposedFormTest extends ViewTestBase {
       'languages:language_interface',
       'entity_test_view_grants',
       'theme',
-      'url.query_args.pagers:0',
-      'url.query_args:items_per_page',
-      'url.query_args:offset',
-      'url.query_args:sort_order',
-      'url.query_args:sort_by',
+      'url.query_args',
       'languages:language_content'
     ];
 

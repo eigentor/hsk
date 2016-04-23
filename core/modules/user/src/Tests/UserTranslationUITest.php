@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\user\Tests\UserTranslationUITest.
- */
-
 namespace Drupal\user\Tests;
 
 use Drupal\content_translation\Tests\ContentTranslationUITestBase;
@@ -40,14 +35,14 @@ class UserTranslationUITest extends ContentTranslationUITestBase {
   }
 
   /**
-   * Overrides \Drupal\content_translation\Tests\ContentTranslationUITestBase::getTranslatorPermission().
+   * {@inheritdoc}
    */
   protected function getTranslatorPermissions() {
     return array_merge(parent::getTranslatorPermissions(), array('administer users'));
   }
 
   /**
-   * Overrides \Drupal\content_translation\Tests\ContentTranslationUITestBase::getNewEntityValues().
+   * {@inheritdoc}
    */
   protected function getNewEntityValues($langcode) {
     // User name is not translatable hence we use a fixed value.

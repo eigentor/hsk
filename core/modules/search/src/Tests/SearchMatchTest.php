@@ -1,13 +1,9 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\search\Tests\SearchMatchTest.
- */
-
 namespace Drupal\search\Tests;
 
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\simpletest\KernelTestBase;
 
 // The search index can contain different types of content. Typically the type
 // is 'node'. Here we test with _test_ and _test2_ as the type.
@@ -20,7 +16,24 @@ const SEARCH_TYPE_JPN = '_test3_';
  *
  * @group search
  */
-class SearchMatchTest extends SearchTestBase {
+class SearchMatchTest extends KernelTestBase {
+
+  /**
+   * Modules to enable.
+   *
+   * @var array
+   */
+  public static $modules = ['search'];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
+    parent::setUp();
+    $this->installSchema('search', ['search_index', 'search_dataset', 'search_total']);
+    $this->installConfig(['search']);
+  }
+
   /**
    * Test search indexing.
    */

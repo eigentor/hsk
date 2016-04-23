@@ -1,13 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\hal\Normalizer\ContentEntityNormalizer.
- */
-
 namespace Drupal\hal\Normalizer;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\rest\LinkManager\LinkManagerInterface;
@@ -60,7 +56,7 @@ class ContentEntityNormalizer extends NormalizerBase {
   }
 
   /**
-   * Implements \Symfony\Component\Serializer\Normalizer\NormalizerInterface::normalize()
+   * {@inheritdoc}
    */
   public function normalize($entity, $format = NULL, array $context = array()) {
     $context += array(
@@ -82,7 +78,6 @@ class ContentEntityNormalizer extends NormalizerBase {
     );
 
     // If the fields to use were specified, only output those field values.
-    // Otherwise, output all field values except internal ID.
     if (isset($context['included_fields'])) {
       $fields = array();
       foreach ($context['included_fields'] as $field_name) {
@@ -92,12 +87,9 @@ class ContentEntityNormalizer extends NormalizerBase {
     else {
       $fields = $entity->getFields();
     }
-    // Ignore the entity ID and revision ID.
-    $exclude = array($entity->getEntityType()->getKey('id'), $entity->getEntityType()->getKey('revision'));
     foreach ($fields as $field) {
-      // Continue if this is an excluded field or the current user does not have
-      // access to view it.
-      if (in_array($field->getFieldDefinition()->getName(), $exclude) || !$field->access('view', $context['account'])) {
+      // Continue if the current user does not have access to view this field.
+      if (!$field->access('view', $context['account'])) {
         continue;
       }
 
@@ -122,6 +114,9 @@ class ContentEntityNormalizer extends NormalizerBase {
    *   - request_method: if set to "patch" the denormalization will clear out
    *     all default values for entity fields before applying $data to the
    *     entity.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   An unserialized entity object containing the data in $data.
    *
    * @throws \Symfony\Component\Serializer\Exception\UnexpectedValueException
    */
@@ -195,14 +190,19 @@ class ContentEntityNormalizer extends NormalizerBase {
   /**
    * Constructs the entity URI.
    *
-   * @param $entity
+   * @param \Drupal\Core\Entity\EntityInterface
    *   The entity.
-   *
    * @return string
    *   The entity URI.
    */
-  protected function getEntityUri($entity) {
-    return $entity->url('canonical', array('absolute' => TRUE));
+  protected function getEntityUri(EntityInterface $entity) {
+    // Some entity types don't provide a canonical link template, at least call
+    // out to ->url().
+    if ($entity->isNew() || !$entity->hasLinkTemplate('canonical')) {
+      return $entity->url('canonical', []);
+    }
+    $url = $entity->urlInfo('canonical', ['absolute' => TRUE]);
+    return $url->setRouteParameter('_format', 'hal_json')->toString();
   }
 
   /**

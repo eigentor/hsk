@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\views\Tests\ViewElementTest.
- */
-
 namespace Drupal\views\Tests;
 
 use Drupal\views\Views;
@@ -52,12 +47,14 @@ class ViewElementTest extends ViewTestBase {
    * Tests the rendered output and form output of a view element.
    */
   public function testViewElement() {
+    /** @var \Drupal\Core\Render\RendererInterface $renderer */
+    $renderer = $this->container->get('renderer');
     $view = Views::getView('test_view_embed');
     $view->setDisplay();
 
     // Set the content as our rendered array.
     $render = $this->render;
-    $this->setRawContent(drupal_render($render));
+    $this->setRawContent($renderer->renderRoot($render));
 
     $xpath = $this->xpath('//div[@class="views-element-container"]');
     $this->assertTrue($xpath, 'The view container has been found in the rendered output.');
@@ -71,7 +68,7 @@ class ViewElementTest extends ViewTestBase {
     // Test a form.
     $this->drupalGet('views_test_data_element_form');
 
-    $xpath = $this->xpath('//div[@class="views-element-container form-wrapper"]');
+    $xpath = $this->xpath('//div[@class="views-element-container js-form-wrapper form-wrapper"]');
     $this->assertTrue($xpath, 'The view container has been found on the form.');
 
     $xpath = $this->xpath('//div[@class="view-content"]');
@@ -102,7 +99,7 @@ class ViewElementTest extends ViewTestBase {
 
     // Test the render array again.
     $render = $this->render;
-    $this->setRawContent(drupal_render($render));
+    $this->setRawContent($renderer->renderRoot($render));
     // There should be 1 row in the results, 'John' arg 25.
     $xpath = $this->xpath('//div[@class="view-content"]/div');
     $this->assertEqual(count($xpath), 1);
@@ -118,13 +115,15 @@ class ViewElementTest extends ViewTestBase {
    * embed display plugin.
    */
   public function testViewElementEmbed() {
+    /** @var \Drupal\Core\Render\RendererInterface $renderer */
+    $renderer = $this->container->get('renderer');
     $view = Views::getView('test_view_embed');
     $view->setDisplay('embed_1');
 
     // Set the content as our rendered array.
     $render = $this->render;
-    $render['#embed'] = TRUE;
-    $this->setRawContent(drupal_render($render));
+    $render['view']['#embed'] = TRUE;
+    $this->setRawContent($renderer->renderRoot($render));
 
     $xpath = $this->xpath('//div[@class="views-element-container"]');
     $this->assertTrue($xpath, 'The view container has been found in the rendered output.');
@@ -138,7 +137,7 @@ class ViewElementTest extends ViewTestBase {
     // Test a form.
     $this->drupalGet('views_test_data_element_embed_form');
 
-    $xpath = $this->xpath('//div[@class="views-element-container form-wrapper"]');
+    $xpath = $this->xpath('//div[@class="views-element-container js-form-wrapper form-wrapper"]');
     $this->assertTrue($xpath, 'The view container has been found on the form.');
 
     $xpath = $this->xpath('//div[@class="view-content"]');
@@ -169,8 +168,8 @@ class ViewElementTest extends ViewTestBase {
 
     // Test the render array again.
     $render = $this->render;
-    $render['#embed'] = TRUE;
-    $this->setRawContent(drupal_render($render));
+    $render['view']['#embed'] = TRUE;
+    $this->setRawContent($renderer->renderRoot($render));
     // There should be 1 row in the results, 'John' arg 25.
     $xpath = $this->xpath('//div[@class="view-content"]/div');
     $this->assertEqual(count($xpath), 1);
@@ -179,6 +178,15 @@ class ViewElementTest extends ViewTestBase {
     $this->drupalGet('views_test_data_element_embed_form');
     $xpath = $this->xpath('//div[@class="view-content"]/div');
     $this->assertEqual(count($xpath), 1);
+
+    // Tests the render array with an exposed filter.
+    $render = $this->render;
+    $render['view']['#display_id'] = 'embed_2';
+    $render['view']['#embed'] = TRUE;
+    $this->setRawContent($renderer->renderRoot($render));
+
+    // Ensure that the exposed form is rendered.
+    $this->assertEqual(1, count($this->xpath('//form[@class="views-exposed-form"]')));
   }
 
 }

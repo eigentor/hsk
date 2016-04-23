@@ -1,15 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\system\Tests\DrupalKernel\ServiceDestructionTest.
- */
-
 namespace Drupal\system\Tests\DrupalKernel;
 
 use Drupal\simpletest\KernelTestBase;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 
 /**
  * Tests that services are correctly destructed.
