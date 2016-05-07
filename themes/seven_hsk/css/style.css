@@ -1,0 +1,19 @@
+/* Timepicker */
+
+#ui-timepicker-div table{
+  background: white;
+  border: 1px solid #aaa;
+}
+#ui-timepicker-div table table {
+  background: none;
+  border: none;
+}
+#ui-timepicker-div td.ui-timepicker-hours {
+  border-right: 1px solid #aaa;
+}
+
+/* Masquerade */
+.masquerade-block-form {
+  clear: both;
+  margin-top: 35px;
+}
