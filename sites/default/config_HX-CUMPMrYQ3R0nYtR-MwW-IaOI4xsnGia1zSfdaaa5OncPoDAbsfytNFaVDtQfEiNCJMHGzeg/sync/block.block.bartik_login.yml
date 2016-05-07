@@ -1,0 +1,22 @@
+uuid: cacbc9d5-d978-4d4d-adbe-b2241c8617b6
+langcode: de
+status: true
+dependencies:
+  module:
+    - user
+  theme:
+    - bartik
+_core:
+  default_config_hash: XN8hS1i9Btpl2xIhXQcMf317wl2GlWQRAf2bIBNg0qw
+id: bartik_login
+theme: bartik
+region: sidebar_first
+weight: 0
+provider: null
+plugin: user_login_block
+settings:
+  id: user_login_block
+  label: Benutzeranmeldung
+  provider: user
+  label_display: visible
+visibility: {  }

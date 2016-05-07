@@ -1,0 +1,17 @@
+protocols:
+  - http
+  - https
+  - ftp
+  - news
+  - nntp
+  - tel
+  - telnet
+  - mailto
+  - irc
+  - ssh
+  - sftp
+  - webcal
+  - rtsp
+_core:
+  default_config_hash: 4ZjVLr4j8g2BM6DN29eOoRhXwZwG4rAujYx-qYlofkw
+langcode: de

@@ -1,0 +1,11 @@
+uuid: 89b78081-edba-48c2-9008-6b4e584d4fc1
+langcode: de
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 4w1vDIuPlVqNIiynysHZHU-9sBCpx5uiEIPlo4SW1tw
+id: personal
+label: 'Persönliches Kontaktformular'
+recipients: {  }
+reply: ''
+weight: 0

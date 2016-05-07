@@ -1,0 +1,22 @@
+uuid: 5609adde-3f3d-493e-9601-c99146bfd5e9
+langcode: de
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hsk
+_core:
+  default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
+id: hsk_messages
+theme: hsk
+region: highlighted
+weight: -5
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: Status-Nachrichten
+  provider: system
+  label_display: '0'
+visibility: {  }

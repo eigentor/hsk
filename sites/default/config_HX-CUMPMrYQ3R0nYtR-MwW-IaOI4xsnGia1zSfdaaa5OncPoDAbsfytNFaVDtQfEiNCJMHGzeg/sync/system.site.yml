@@ -1,0 +1,14 @@
+uuid: 0945c977-8695-47e3-938f-007cb167560b
+name: 'HSK Lister Turm'
+mail: info@rufzeichen-online.de
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /node
+admin_compact_mode: false
+weight_select_max: 100
+langcode: de
+default_langcode: de
+_core:
+  default_config_hash: yXadRE77Va-G6dxhd2kPYapAvbnSvTF6hO4oXiOEynI

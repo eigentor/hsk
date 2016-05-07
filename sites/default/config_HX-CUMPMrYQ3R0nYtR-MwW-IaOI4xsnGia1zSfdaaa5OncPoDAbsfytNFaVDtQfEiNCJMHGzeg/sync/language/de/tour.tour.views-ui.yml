@@ -1,0 +1,9 @@
+tips:
+  views-ui-format:
+    label: Ausgabeformat
+  views-ui-fields:
+    label: Felder
+  views-ui-sorts:
+    label: Sortierkriterium
+  views-ui-preview:
+    label: Vorschau

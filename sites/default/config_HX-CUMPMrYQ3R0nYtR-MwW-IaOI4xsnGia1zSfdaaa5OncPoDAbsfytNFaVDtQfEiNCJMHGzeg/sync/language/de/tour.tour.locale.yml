@@ -1,0 +1,8 @@
+label: Übersetzung
+tips:
+  locale-language:
+    label: Übersetzungssprache
+  locale-search:
+    label: Suche
+  locale-translate:
+    label: Übersetzen

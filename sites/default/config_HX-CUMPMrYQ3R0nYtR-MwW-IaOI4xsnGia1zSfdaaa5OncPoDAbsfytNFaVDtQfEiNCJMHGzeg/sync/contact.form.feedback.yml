@@ -1,0 +1,12 @@
+uuid: 7421e88d-f449-4da0-8a80-48baf4d610e7
+langcode: de
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: c4zaT5cyPxuTXI6JOWt3qRtMvICT9tHB6d9a5VG-CmQ
+id: feedback
+label: 'Website feedback'
+recipients:
+  - info@rufzeichen-online.de
+reply: ''
+weight: 0

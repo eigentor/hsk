@@ -1,0 +1,13 @@
+uuid: f29b4418-2435-442e-bc30-bef0cc74cd83
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: N0RDBTqiK4dKoN4p4oW2j0SGWycdHyALUe9M-Ofp89U
+id: node_promote_action
+label: 'Inhalt auf der Startseite veröffentlichen'
+type: node
+plugin: node_promote_action
+configuration: {  }

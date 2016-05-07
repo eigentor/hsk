@@ -1,0 +1,10 @@
+uuid: 8700131d-d519-479c-8c48-948288e3f986
+langcode: de
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 7yrlW5z9zdg2eBucB2GPqXKSMQfH9lSRSO4DbWF7AFc
+id: footer
+label: Fußbereich
+description: 'Site information links'
+locked: true

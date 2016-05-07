@@ -1,0 +1,20 @@
+uuid: 7fc67328-b08c-4096-8ce9-b02beb51845b
+langcode: de
+status: true
+dependencies:
+  theme:
+    - hsk
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: hsk_local_actions
+theme: hsk
+region: content
+weight: -7
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primäre Admin-Aktionen'
+  provider: core
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,22 @@
+uuid: 24e1347f-6e3a-4989-8444-4bac46cfa515
+langcode: de
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - hsk
+_core:
+  default_config_hash: 8I8iACSa0sKO3k3jlvUG1ge52rfcKX7USJAQYnzuBgg
+id: hsk_help
+theme: hsk
+region: content
+weight: -7
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Hilfe
+  provider: help
+  label_display: '0'
+visibility: {  }

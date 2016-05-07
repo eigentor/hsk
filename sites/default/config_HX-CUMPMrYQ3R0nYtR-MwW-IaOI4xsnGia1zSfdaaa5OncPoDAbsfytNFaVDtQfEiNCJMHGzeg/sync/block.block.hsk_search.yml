@@ -1,0 +1,22 @@
+uuid: d04dfe66-7fdb-461e-8da6-734430a1712d
+langcode: de
+status: true
+dependencies:
+  module:
+    - search
+  theme:
+    - hsk
+_core:
+  default_config_hash: za-39d5WDUg6XvbyqSnuVYEeq6QM4qKJxW8MnoAha5A
+id: hsk_search
+theme: hsk
+region: header
+weight: -3
+provider: null
+plugin: search_form_block
+settings:
+  id: search_form_block
+  label: Search
+  provider: search
+  label_display: visible
+visibility: {  }

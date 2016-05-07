@@ -1,0 +1,11 @@
+label: 'Neueste Kommentare'
+display:
+  default:
+    display_title: Master
+    display_options:
+      title: 'Neueste Kommentare'
+  block_1:
+    display_title: Block
+    display_options:
+      block_description: 'Neueste Kommentare'
+      block_category: 'Listen (Ansichten)'

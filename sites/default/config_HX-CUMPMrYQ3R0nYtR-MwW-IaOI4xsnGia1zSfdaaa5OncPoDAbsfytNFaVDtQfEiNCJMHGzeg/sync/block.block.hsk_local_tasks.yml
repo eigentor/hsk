@@ -1,0 +1,22 @@
+uuid: 3aa62a4f-92da-49b6-ac3b-378f30f0d91c
+langcode: de
+status: true
+dependencies:
+  theme:
+    - hsk
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: hsk_local_tasks
+theme: hsk
+region: content
+weight: -7
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }
