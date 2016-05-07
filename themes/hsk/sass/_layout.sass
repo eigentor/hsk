@@ -1,0 +1,132 @@
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*------------- All Screen Sizes -------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
+.layout-container
+  margin-left: $mobile-margin
+  margin-right: $mobile-margin
+
+.region-highlighted
+  padding: 1px 0 1px
+
+main
+  padding-top: 30px
+  padding-bottom: 30px
+  +legacy-pie-clearfix
+  min-height: 400px
+  .content-bottom
+    margin-top: 40px
+    background: #d7d7d7
+
+footer
+  .region-footer
+    background: $footer-background
+    padding: 22px $mobile-margin 0
+    margin-left: -($mobile-margin)
+    margin-right: -($mobile-margin)
+    color: white
+    +legacy-pie-clearfix
+    .block
+      margin-bottom: 30px
+      p
+        margin: 0
+
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*----------- Tablet Portrait ----------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
++breakpoint($breakpoint-tablet-portrait)
+  footer
+    .region-footer
+      .block
+        float: left
+        width: 50%
+
+
+/* End Media Query Tablet Portrait */
+
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*---------------- Tablet  -------------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
++breakpoint($breakpoint-tablet)
+
+  footer
+    .region-footer
+      .block
+        float: left
+        padding-right: 30px
+
+  .sidebar-second
+    .layout-container
+      .layout-content
+        float: left
+        width: 72%
+        padding-right: 3.5%
+        margin-right: 2.5%
+        border-right: $divider-line
+
+      .layout-sidebar-second
+        float: left
+        width: 22%
+
+
+
+
+/* End Media Query Tablet */
+
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*------------- Desktop narrow  --------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
++breakpoint($breakpoint-desktop-narrow)
+  body
+    background: #eee
+  header, main, footer .region-footer, .region-highlighted
+    padding-left: $desktop-padding
+    padding-right: $desktop-padding
+  header, main, .region-highlighted
+    background: white
+  .layout-container
+    width: $desktop-narrow-width
+    margin: auto
+    +box-shadow(0 0 5px #aaa)
+  main
+    .content-bottom
+      +legacy-pie-clearfix
+      margin-left: -($desktop-padding)
+      margin-right: -($desktop-padding)
+      padding: $desktop-padding
+
+  .layout-sidebar-second
+    padding-top: 10px
+
+
+  footer
+    .region-footer
+      padding: 22px 30px
+      margin-left: 0
+      margin-right: 0
+      .block
+        width: 25%
+        margin-bottom: 0
+        +font-smaller
+        color: white
+
+
+
+/* End Media Query Tablet */
+
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*---------------- Desktop  ------------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
++breakpoint($breakpoint-desktop)
+
+
+/* End Media Query Tablet */

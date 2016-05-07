@@ -1,0 +1,130 @@
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*------------- All Screen Sizes -------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
+.path-frontpage, .path-news
+  .view-news-startseite
+    .views-field-field-image
+      text-align: center
+
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*----------- Tablet Portrait ----------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
++breakpoint($breakpoint-tablet-portrait)
+  .path-frontpage
+    .view-header-slideshow
+      button.slick-prev, button.slick-next
+        height: 30px
+        width: 30px
+        top: 47%
+        &:before
+          font-size: 30px
+          font-weight: normal
+      button.slick-prev
+        left: 10px
+        z-index: 15
+      button.slick-next
+        right: 10px
+        z-index: 15
+      .views-row
+        position: relative
+        .views-field-field-sl-text
+          background: #ddd
+          padding: 10px 15px
+          +x-rem(font-size, 1.2)
+          a
+            color: black
+
+.path-veranstaltungen
+  .view-events
+    .views-row
+      +divider-line-bottom
+      &:last-child
+        border: none
+        margin-bottom: 0
+      h2
+        margin-bottom: 7px
+      .views-field-field-event-date, .views-field-field-event-location
+        .views-label
+          +highlighted-field-label
+        .field-content, .field-content p
+          display: inline
+        .field-content p
+          margin-bottom: 0
+      .views-field-body
+        margin-top: 10px
+
+.layout-sidebar-second
+  .view-events
+    h3
+      margin-bottom: 0
+      +x-rem(font-size, 1)
+    .views-row
+      margin-bottom: 7px
+    .views-field-field-event-date
+      line-height: 1.3
+      +x-rem(font-size, 0.94)
+      color: #999
+    .views-field-title
+      a
+        color: $base-text-color
+        +x-rem(font-size, 0.94)
+
+
+
+
+/* End Media Query Tablet Portrait */
+
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*---------------- Tablet  -------------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
++breakpoint($breakpoint-tablet)
+  .path-frontpage, .path-news
+    .view-news-startseite
+      .views-field-field-image
+        text-align: left
+
+
+/* End Media Query Tablet */
+
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*------------- Desktop narrow  --------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
++breakpoint($breakpoint-desktop-narrow)
+  +breakpoint($breakpoint-tablet-portrait)
+  .path-frontpage
+    .view-header-slideshow
+      .slick-slider
+        margin-bottom: 0
+      .views-row
+        .views-field-field-sl-text
+          position: absolute
+          bottom: 30px
+          left: 30px
+          background: rgba(255,255,255,0.6)
+          padding: 10px 15px
+          +x-rem(font-size, 1.15)
+          line-height: 1.4
+          width: 30%
+          a
+            color: black
+
+
+/* End Media Query Tablet */
+
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*---------------- Desktop  ------------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
++breakpoint($breakpoint-desktop)
+
+
+/* End Media Query Tablet */

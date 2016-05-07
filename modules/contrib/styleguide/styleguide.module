@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function styleguide_theme($existing, $type, $theme, $path) {
+  $themes = array(
+    'styleguide_header' => array(
+      'variables' => array('theme_info' => array()),
+      'template' => 'styleguide-header',
+    ),
+    'styleguide_links' => array(
+      'variables' => array('items' => array()),
+      'template' => 'styleguide-links',
+    ),
+    'styleguide_item' => array(
+      'variables' => array('key' => NULL, 'item' => array(), 'content' => NULL),
+      'template' => 'styleguide-item',
+    ),
+    'styleguide_content' => array(
+      'variables' => array('content' => NULL),
+      'template' => 'styleguide-content',
+    ),
+  );
+
+  return $themes;
+}
