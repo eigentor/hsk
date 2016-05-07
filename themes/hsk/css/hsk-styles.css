@@ -477,28 +477,28 @@ header {
     overflow: hidden;
     visibility: hidden; }
 
-#block-presseclub-branding {
+#block-hsk-branding {
   width: 55%;
   float: left; }
 
-nav#block-presseclub-main-menu {
+nav#block-hsk-main-menu {
   display: none;
   *zoom: 1;
   clear: both; }
-  nav#block-presseclub-main-menu:after {
+  nav#block-hsk-main-menu:after {
     content: "\0020";
     display: block;
     height: 0;
     clear: both;
     overflow: hidden;
     visibility: hidden; }
-  nav#block-presseclub-main-menu ul.menu {
+  nav#block-hsk-main-menu ul.menu {
     margin: 0;
     padding: 0; }
-    nav#block-presseclub-main-menu ul.menu li {
+    nav#block-hsk-main-menu ul.menu li {
       display: inline;
       display: block; }
-      nav#block-presseclub-main-menu ul.menu li a {
+      nav#block-hsk-main-menu ul.menu li a {
         background: #bbbbbb;
         display: block;
         height: 42px;
@@ -508,26 +508,26 @@ nav#block-presseclub-main-menu {
         padding: 0 15px;
         font-size: 18.2px;
         font-size: 1.4rem; }
-        nav#block-presseclub-main-menu ul.menu li a:hover {
+        nav#block-hsk-main-menu ul.menu li a:hover {
           background: #888888;
           text-decoration: none; }
-        nav#block-presseclub-main-menu ul.menu li a span.arrow {
+        nav#block-hsk-main-menu ul.menu li a span.arrow {
           display: inline-block;
           width: 17px;
           height: 25px;
           background: url(../images/arrow-white-down.png) no-repeat right 16px; }
-      nav#block-presseclub-main-menu ul.menu li.menu-visible a {
+      nav#block-hsk-main-menu ul.menu li.menu-visible a {
         background: #444444; }
-      nav#block-presseclub-main-menu ul.menu li.menu-visible ul li a {
+      nav#block-hsk-main-menu ul.menu li.menu-visible ul li a {
         background: #777777; }
-      nav#block-presseclub-main-menu ul.menu li ul {
+      nav#block-hsk-main-menu ul.menu li ul {
         display: none; }
-        nav#block-presseclub-main-menu ul.menu li ul li a {
+        nav#block-hsk-main-menu ul.menu li ul li a {
           background: #888888;
           font-size: 15.6px;
           font-size: 1.2rem;
           padding: 0; }
-      nav#block-presseclub-main-menu ul.menu li.menu-visible ul {
+      nav#block-hsk-main-menu ul.menu li.menu-visible ul {
         display: block; }
 
 #block-mobilemenubutton {
@@ -556,13 +556,13 @@ nav#block-useraccountmenu {
         font-size: 0.9rem;
         color: #666666; }
 
-nav#block-presseclub-footer {
+nav#block-hsk-footer {
   float: right; }
-  nav#block-presseclub-footer ul {
+  nav#block-hsk-footer ul {
     margin-top: 0; }
-    nav#block-presseclub-footer ul li {
+    nav#block-hsk-footer ul li {
       display: inline; }
-      nav#block-presseclub-footer ul li a {
+      nav#block-hsk-footer ul li a {
         font-size: 13px;
         font-size: 1rem;
         line-height: 1.5;
@@ -604,46 +604,46 @@ nav#block-presseclub-footer {
 /*------------------------------------------- */
 /*------------------------------------------- */
 @media only screen and (min-width: 1024px) {
-  header #block-presseclub-branding {
+  header #block-hsk-branding {
     width: auto; }
-    header #block-presseclub-branding .logo img {
+    header #block-hsk-branding .logo img {
       margin-left: 10px; }
   header nav#block-useraccountmenu {
     float: right;
     margin-top: 4px; }
-  header nav#block-presseclub-footer {
+  header nav#block-hsk-footer {
     margin-top: 4px;
     float: right; }
   header .search-block-form {
     clear: right;
     float: right;
     margin-top: 21px; }
-  header nav#block-presseclub-main-menu {
+  header nav#block-hsk-main-menu {
     clear: both; }
 
-  nav#block-presseclub-main-menu {
+  nav#block-hsk-main-menu {
     margin-bottom: 0;
     clear: both;
     padding-top: 30px;
     display: table !important;
     width: 100%; }
-    nav#block-presseclub-main-menu ul.menu {
+    nav#block-hsk-main-menu ul.menu {
       display: table-row;
       width: 100%; }
-      nav#block-presseclub-main-menu ul.menu li.menu-visible.has-submenu a {
+      nav#block-hsk-main-menu ul.menu li.menu-visible.has-submenu a {
         background: #717171;
         border-bottom: 1px solid #cccccc; }
-      nav#block-presseclub-main-menu ul.menu li.menu-visible.has-submenu ul li a {
+      nav#block-hsk-main-menu ul.menu li.menu-visible.has-submenu ul li a {
         border-bottom: 0;
         background: #999999; }
-      nav#block-presseclub-main-menu ul.menu li, nav#block-presseclub-main-menu ul.menu li.menu-visible {
+      nav#block-hsk-main-menu ul.menu li, nav#block-hsk-main-menu ul.menu li.menu-visible {
         display: table-cell;
         padding-top: 0;
         padding-right: 2px;
         position: relative; }
-        nav#block-presseclub-main-menu ul.menu li:last-child, nav#block-presseclub-main-menu ul.menu li.menu-visible:last-child {
+        nav#block-hsk-main-menu ul.menu li:last-child, nav#block-hsk-main-menu ul.menu li.menu-visible:last-child {
           padding-right: 0; }
-        nav#block-presseclub-main-menu ul.menu li a, nav#block-presseclub-main-menu ul.menu li.menu-visible a {
+        nav#block-hsk-main-menu ul.menu li a, nav#block-hsk-main-menu ul.menu li.menu-visible a {
           float: left;
           min-width: 150px;
           width: 100%;
@@ -652,23 +652,23 @@ nav#block-presseclub-footer {
           font-size: 1.4rem;
           height: 42px;
           line-height: 42px; }
-          nav#block-presseclub-main-menu ul.menu li a:hover, nav#block-presseclub-main-menu ul.menu li.menu-visible a:hover {
+          nav#block-hsk-main-menu ul.menu li a:hover, nav#block-hsk-main-menu ul.menu li.menu-visible a:hover {
             background: #717171; }
-        nav#block-presseclub-main-menu ul.menu li ul, nav#block-presseclub-main-menu ul.menu li.menu-visible ul {
+        nav#block-hsk-main-menu ul.menu li ul, nav#block-hsk-main-menu ul.menu li.menu-visible ul {
           position: absolute;
           top: 42px;
           left: 0;
           z-index: 20;
           width: auto;
           background: #999999; }
-          nav#block-presseclub-main-menu ul.menu li ul li, nav#block-presseclub-main-menu ul.menu li.menu-visible ul li {
+          nav#block-hsk-main-menu ul.menu li ul li, nav#block-hsk-main-menu ul.menu li.menu-visible ul li {
             display: block;
             padding-top: 0;
             padding-right: 0;
             border-bottom: 1px solid #cccccc; }
-            nav#block-presseclub-main-menu ul.menu li ul li:last-child, nav#block-presseclub-main-menu ul.menu li.menu-visible ul li:last-child {
+            nav#block-hsk-main-menu ul.menu li ul li:last-child, nav#block-hsk-main-menu ul.menu li.menu-visible ul li:last-child {
               border-bottom: none; }
-            nav#block-presseclub-main-menu ul.menu li ul li a, nav#block-presseclub-main-menu ul.menu li.menu-visible ul li a {
+            nav#block-hsk-main-menu ul.menu li ul li a, nav#block-hsk-main-menu ul.menu li.menu-visible ul li a {
               float: none;
               white-space: nowrap;
               background: #999999;
@@ -676,7 +676,7 @@ nav#block-presseclub-footer {
               font-size: 1.2rem;
               padding: 0 30px;
               text-align: left; }
-              nav#block-presseclub-main-menu ul.menu li ul li a:hover, nav#block-presseclub-main-menu ul.menu li.menu-visible ul li a:hover {
+              nav#block-hsk-main-menu ul.menu li ul li a:hover, nav#block-hsk-main-menu ul.menu li.menu-visible ul li a:hover {
                 background: #777777; }
 
   #block-mobilemenubutton {
@@ -685,7 +685,7 @@ nav#block-presseclub-footer {
       cursor: pointer;
       cursor: hand; }
 
-  .path-frontpage nav#block-presseclub-main-menu {
+  .path-frontpage nav#block-hsk-main-menu {
     border-bottom: 1px solid #999999; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */

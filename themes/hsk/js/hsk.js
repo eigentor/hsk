@@ -1,5 +1,5 @@
 (function ($) {
-  Drupal.behaviors.presseclub = {
+  Drupal.behaviors.hsk = {
     attach: function (context, settings) {
 
 /**
@@ -7,12 +7,12 @@
  */
 
 // Add a class to each Menu item that has submenu items
-$('nav#block-presseclub-main-menu > ul > li').has( "ul" ).addClass('has-submenu');
-$('nav#block-presseclub-main-menu > ul > li').has( "ul" ).once('add_arrow').each(function(){
+$('nav#block-hsk-main-menu > ul > li').has( "ul" ).addClass('has-submenu');
+$('nav#block-hsk-main-menu > ul > li').has( "ul" ).once('add_arrow').each(function(){
   $(this).children('a').append('<span class="arrow"></span>');
 })
 
-$('nav#block-presseclub-main-menu > ul > li').on("mouseover", function() {
+$('nav#block-hsk-main-menu > ul > li').on("mouseover", function() {
   var window_width = $(document).width();
   if(window_width >= 1024) {
     setTimeout($.proxy(function () {
@@ -33,13 +33,13 @@ $('nav#block-presseclub-main-menu > ul > li').on("mouseover", function() {
  */
 
 $('#block-mobilemenubutton a').once('toggle_menu').click(function(){
-    $('nav#block-presseclub-main-menu').slideToggle();
+    $('nav#block-hsk-main-menu').slideToggle();
 });
 
 // First expand the menu for Mobile without going to the link for Menu Items that
 // have submenu items
 
-$('nav#block-presseclub-main-menu > ul > li').has('ul').one('click', function(e) {
+$('nav#block-hsk-main-menu > ul > li').has('ul').one('click', function(e) {
   var window_width = $(document).width();
   if(window_width < 1024 && $(this).not('.menu-visible')) {
     e.preventDefault();
