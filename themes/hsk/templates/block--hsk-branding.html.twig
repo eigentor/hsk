@@ -14,9 +14,9 @@
  */
 #}
 {% block content %}
-    <a class="logo" href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home">
-      <img src="/{{ base_path ~ directory }}/images/logo-hsk.png" alt="{{ 'Home'|t }}" />
-    </a>
+    {% if site_name %}
+        <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home">{{ site_name }}</a>
+    {% endif %}
 
   {{ site_slogan }}
 {% endblock %}
