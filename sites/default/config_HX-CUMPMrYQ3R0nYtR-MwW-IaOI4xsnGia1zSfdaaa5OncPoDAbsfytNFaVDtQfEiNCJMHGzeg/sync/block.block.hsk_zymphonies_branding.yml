@@ -1,0 +1,25 @@
+uuid: bdc27cbd-7145-4b0f-9af1-a40249297c5a
+langcode: de
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hsk_zymphonies
+_core:
+  default_config_hash: cZTgxpeYayUZ6vHIGxZikk3cfeV8MKF72ax3ljQJ38Y
+id: hsk_zymphonies_branding
+theme: hsk_zymphonies
+region: header
+weight: 0
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: 'Site branding'
+  provider: system
+  label_display: '0'
+  use_site_logo: true
+  use_site_name: true
+  use_site_slogan: false
+visibility: {  }

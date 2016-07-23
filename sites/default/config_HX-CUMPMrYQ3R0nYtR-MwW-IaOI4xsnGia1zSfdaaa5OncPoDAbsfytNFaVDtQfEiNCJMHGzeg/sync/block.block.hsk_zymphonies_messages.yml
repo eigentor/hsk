@@ -1,0 +1,22 @@
+uuid: efd5b310-385d-4c5f-824e-af7622b652d5
+langcode: de
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hsk_zymphonies
+_core:
+  default_config_hash: mHlwUVEUZgexqEoFGLghbBsl2C0SmKgZh5KrtvGBc6Y
+id: hsk_zymphonies_messages
+theme: hsk_zymphonies
+region: highlighted
+weight: -50
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }

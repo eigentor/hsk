@@ -1,0 +1,22 @@
+uuid: 50ce3567-a067-4a26-accb-022c63eb1cc3
+langcode: de
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hsk_zymphonies
+_core:
+  default_config_hash: RuxBP3o_jzBCGd__jpU7fbTJ1-7BCYJo86DXTKBQsJ8
+id: hsk_zymphonies_powered
+theme: hsk_zymphonies
+region: auto_hidden_block
+weight: -10
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

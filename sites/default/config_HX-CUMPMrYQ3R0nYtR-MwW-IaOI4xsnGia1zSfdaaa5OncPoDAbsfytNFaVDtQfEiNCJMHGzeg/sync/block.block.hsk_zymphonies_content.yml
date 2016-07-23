@@ -1,0 +1,22 @@
+uuid: 24f438a8-0ba8-4e10-ad72-771cfc1b4e24
+langcode: de
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hsk_zymphonies
+_core:
+  default_config_hash: 4FmCnyx7RQxbOJjd-lp4lqMbNm_2X2SPRiZ2j-qIM0g
+id: hsk_zymphonies_content
+theme: hsk_zymphonies
+region: content
+weight: 1
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

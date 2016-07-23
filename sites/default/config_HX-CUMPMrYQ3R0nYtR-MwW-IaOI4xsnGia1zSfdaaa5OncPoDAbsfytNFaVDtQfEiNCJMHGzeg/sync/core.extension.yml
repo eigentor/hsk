@@ -50,6 +50,8 @@ theme:
   bartik: 0
   seven: 0
   hsk: 0
+  businessgroup_zymphonies_theme: 0
+  hsk_zymphonies: 0
 _core:
   default_config_hash: m2GVq11UAOVuNgj8x0t5fMOPujpvQQ_zxLoaly1BMEU
 langcode: de

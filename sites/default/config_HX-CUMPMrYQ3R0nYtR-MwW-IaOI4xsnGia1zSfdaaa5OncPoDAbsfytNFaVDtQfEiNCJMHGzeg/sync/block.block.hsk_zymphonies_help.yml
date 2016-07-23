@@ -1,0 +1,22 @@
+uuid: a82689c2-2acb-4716-b61c-48d2b904dcdc
+langcode: de
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - hsk_zymphonies
+_core:
+  default_config_hash: JzaWkoC9Wrt0iNmNY2nI_xBR_1RB9DDTzmg0PR3aAvc
+id: hsk_zymphonies_help
+theme: hsk_zymphonies
+region: highlighted
+weight: -30
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  provider: help
+  label_display: '0'
+visibility: {  }

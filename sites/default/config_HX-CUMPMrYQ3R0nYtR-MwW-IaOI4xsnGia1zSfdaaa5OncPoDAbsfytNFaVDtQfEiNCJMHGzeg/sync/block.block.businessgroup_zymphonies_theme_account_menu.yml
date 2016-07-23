@@ -1,0 +1,26 @@
+uuid: d961216a-88b3-4959-b10a-b976b3d05ece
+langcode: de
+status: true
+dependencies:
+  config:
+    - system.menu.account
+  module:
+    - system
+  theme:
+    - businessgroup_zymphonies_theme
+_core:
+  default_config_hash: NNyhdWw8DyqDR5uBCpmWWmBpOtbvOH9gTuBCyWA_1jI
+id: businessgroup_zymphonies_theme_account_menu
+theme: businessgroup_zymphonies_theme
+region: auto_hidden_block
+weight: 11
+provider: null
+plugin: 'system_menu_block:account'
+settings:
+  id: 'system_menu_block:account'
+  label: 'User account menu'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 2
+visibility: {  }

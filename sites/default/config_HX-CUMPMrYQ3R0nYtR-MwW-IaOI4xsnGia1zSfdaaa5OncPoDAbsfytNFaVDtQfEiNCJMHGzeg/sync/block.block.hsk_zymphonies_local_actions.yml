@@ -1,0 +1,20 @@
+uuid: e994e119-ccfd-4646-8fa9-e25358bd8824
+langcode: de
+status: true
+dependencies:
+  theme:
+    - hsk_zymphonies
+_core:
+  default_config_hash: Nwv2bYD2vM8GYLPxeYR0aq9T9sRzAJNI6rbuy6bdxhA
+id: hsk_zymphonies_local_actions
+theme: hsk_zymphonies
+region: auto_hidden_block
+weight: 20
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }
