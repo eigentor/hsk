@@ -2,4 +2,4 @@ base-styling:
   version: VERSION
   css:
     component:
-      - css/hsk-zymphonies-styles.css: {}
+      css/hsk-zymphonies-styles.css: {}
