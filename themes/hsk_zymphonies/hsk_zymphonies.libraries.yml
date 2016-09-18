@@ -1,5 +1,5 @@
 base-styling:
   version: VERSION
   css:
-    component:
+    theme:
       css/hsk-zymphonies-styles.css: {}
