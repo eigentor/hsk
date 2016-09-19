@@ -1,0 +1,11 @@
+uuid: cc7ef6cc-684e-4829-8bed-60a625243732
+langcode: de
+status: true
+dependencies:
+  config:
+    - node.type.header_slideshow
+id: node.header_slideshow
+target_entity_type_id: node
+target_bundle: header_slideshow
+default_langcode: site_default
+language_alterable: false

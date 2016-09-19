@@ -1,0 +1,14 @@
+uuid: ced3fe1f-7121-4a43-b61c-89ce66ba4465
+langcode: de
+status: true
+dependencies: {  }
+name: header_slideshow
+label: 'Header Slideshow'
+effects:
+  c2261baf-265c-4646-a634-59dd2beafef8:
+    uuid: c2261baf-265c-4646-a634-59dd2beafef8
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1220
+      height: 400

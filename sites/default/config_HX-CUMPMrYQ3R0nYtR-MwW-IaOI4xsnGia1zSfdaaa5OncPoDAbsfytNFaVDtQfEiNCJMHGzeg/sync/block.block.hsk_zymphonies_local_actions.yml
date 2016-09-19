@@ -9,7 +9,7 @@ _core:
 id: hsk_zymphonies_local_actions
 theme: hsk_zymphonies
 region: auto_hidden_block
-weight: 20
+weight: -7
 provider: null
 plugin: local_actions_block
 settings:

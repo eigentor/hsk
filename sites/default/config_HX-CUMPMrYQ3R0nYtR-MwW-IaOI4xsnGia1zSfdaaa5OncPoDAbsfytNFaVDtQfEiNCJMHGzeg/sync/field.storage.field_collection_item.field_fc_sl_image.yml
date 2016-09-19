@@ -1,0 +1,30 @@
+uuid: 003ecfbc-1a74-4590-a6df-3071324fa79c
+langcode: de
+status: true
+dependencies:
+  module:
+    - field_collection
+    - file
+    - image
+id: field_collection_item.field_fc_sl_image
+field_name: field_fc_sl_image
+entity_type: field_collection_item
+type: image
+settings:
+  uri_scheme: public
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  target_type: file
+  display_field: false
+  display_default: false
+module: image
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

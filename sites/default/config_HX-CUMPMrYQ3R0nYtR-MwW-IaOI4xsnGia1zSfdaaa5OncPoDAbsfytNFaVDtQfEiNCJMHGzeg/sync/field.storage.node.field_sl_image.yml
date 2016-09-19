@@ -1,0 +1,19 @@
+uuid: ef4de73e-ada2-4863-b1d3-61295028f8c9
+langcode: de
+status: true
+dependencies:
+  module:
+    - field_collection
+    - node
+id: node.field_sl_image
+field_name: field_sl_image
+entity_type: node
+type: field_collection
+settings: {  }
+module: field_collection
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
