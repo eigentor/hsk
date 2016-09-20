@@ -1,0 +1,5 @@
+name: Glue
+description: Our Glue module
+package: d8_developer_prep
+type: module
+core: 8.x
