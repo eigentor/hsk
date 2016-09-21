@@ -38,3 +38,5 @@ sites/simpletest
 .idea/
 *.sassc
 .sass-cache/
+
+node_modules/
