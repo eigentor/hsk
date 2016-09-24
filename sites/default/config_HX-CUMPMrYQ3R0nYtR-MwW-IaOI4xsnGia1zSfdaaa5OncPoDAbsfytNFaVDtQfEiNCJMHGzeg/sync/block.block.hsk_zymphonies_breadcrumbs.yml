@@ -1,6 +1,6 @@
 uuid: 69312cce-80bd-4c8a-885e-7c01ebe542b4
 langcode: de
-status: true
+status: false
 dependencies:
   module:
     - system
@@ -10,8 +10,8 @@ _core:
   default_config_hash: 8hFnuAR_exGkng3kwI3vUa1WD6tx-nvOyhaiIWtwFKk
 id: hsk_zymphonies_breadcrumbs
 theme: hsk_zymphonies
-region: breadcrumb
-weight: -7
+region: '-1'
+weight: -6
 provider: null
 plugin: system_breadcrumb_block
 settings:

@@ -1,15 +1,13 @@
-uuid: e5677cf1-8b97-42aa-a3df-be97c9aefc99
+uuid: 341790c8-13a7-4778-9933-e23f97789915
 langcode: de
-status: false
+status: true
 dependencies:
   theme:
     - hsk_zymphonies
-_core:
-  default_config_hash: a1zoZxtJ4zZCNF9GWNbKX-n_z1eaCMUAFgo4VxZ_ZkQ
-id: hsk_zymphonies_page_title
+id: pagetitle
 theme: hsk_zymphonies
-region: '-1'
-weight: -7
+region: page_title
+weight: -8
 provider: null
 plugin: page_title_block
 settings:
