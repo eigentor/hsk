@@ -3,3 +3,17 @@ base-styling:
   css:
     theme:
       css/hsk-zymphonies-styles.css: {}
+
+header-slideshow:
+  version: VERSION
+  css:
+    theme:
+      js/slick/slick.css: {}
+      js/slick/slick-theme.css: {}
+  js:
+    js/slick/slick.min.js: {}
+    js/header-slideshow.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
