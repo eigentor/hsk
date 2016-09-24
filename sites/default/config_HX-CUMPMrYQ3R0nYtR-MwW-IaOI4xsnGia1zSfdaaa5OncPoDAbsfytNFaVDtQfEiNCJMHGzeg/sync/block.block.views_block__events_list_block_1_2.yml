@@ -1,0 +1,34 @@
+uuid: 382a214b-275f-47c0-a34f-0b2d892c6f05
+langcode: de
+status: true
+dependencies:
+  config:
+    - views.view.events_list
+  module:
+    - node
+    - views
+  theme:
+    - hsk_zymphonies
+id: views_block__events_list_block_1_2
+theme: hsk_zymphonies
+region: sidebar_second
+weight: -9
+provider: null
+plugin: 'views_block:events_list-block_1'
+settings:
+  id: 'views_block:events_list-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      article: article
+      event: event
+      page: page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
