@@ -16,5 +16,6 @@ content:
   links:
     weight: 100
 hidden:
+  body: true
   field_sl_image: true
   langcode: true
