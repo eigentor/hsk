@@ -1,0 +1,8 @@
+uuid: 33d5f205-6f65-43f3-9f27-b6cc2f07608a
+langcode: de
+status: true
+dependencies: {  }
+id: date_full_weekday_no_time
+label: 'Datum mit ausgeschriebenem Wochentag ohne Uhrzeit'
+locked: false
+pattern: 'l, d.m.Y'

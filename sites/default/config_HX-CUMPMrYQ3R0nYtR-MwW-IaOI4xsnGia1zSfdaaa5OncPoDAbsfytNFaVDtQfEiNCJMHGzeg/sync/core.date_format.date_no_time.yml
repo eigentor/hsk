@@ -1,0 +1,8 @@
+uuid: 8569bcdb-1708-496d-a3a9-cd027d5f1283
+langcode: de
+status: true
+dependencies: {  }
+id: date_no_time
+label: 'Nur Datum ohne Uhrzeit'
+locked: false
+pattern: d.m.Y

@@ -1,0 +1,21 @@
+uuid: 180acf9a-da65-4872-bcd1-4dfe295e0e08
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ev_end_time
+    - node.type.event
+  module:
+    - hms_field
+id: node.event.field_ev_end_time
+field_name: field_ev_end_time
+entity_type: node
+bundle: event
+label: Endzeit
+description: 'Ende der Veranstaltung (optional)'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: hms

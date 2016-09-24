@@ -23,6 +23,7 @@ module:
   glue: 0
   help: 0
   history: 0
+  hms_field: 0
   image: 0
   language: 0
   link: 0
@@ -36,6 +37,7 @@ module:
   rdf: 0
   search: 0
   shortcut: 0
+  stage_file_proxy: 0
   system: 0
   taxonomy: 0
   text: 0

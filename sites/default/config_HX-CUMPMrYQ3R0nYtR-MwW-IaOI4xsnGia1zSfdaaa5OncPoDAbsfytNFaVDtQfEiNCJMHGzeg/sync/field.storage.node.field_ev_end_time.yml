@@ -1,0 +1,19 @@
+uuid: 9b81cca6-2c28-4ebb-abcb-e638e6095d64
+langcode: de
+status: true
+dependencies:
+  module:
+    - hms_field
+    - node
+id: node.field_ev_end_time
+field_name: field_ev_end_time
+entity_type: node
+type: hms
+settings: {  }
+module: hms_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

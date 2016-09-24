@@ -1,0 +1,56 @@
+uuid: 66d97dc8-0018-4b6e-bc05-5743e159654c
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.node.event.body
+    - field.field.node.event.field_ev_date
+    - field.field.node.event.field_ev_end_time
+    - field.field.node.event.field_ev_start_time
+    - node.type.event
+  module:
+    - datetime
+    - hms_field
+    - text
+    - user
+id: node.event.default
+targetEntityType: node
+bundle: event
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+  field_ev_date:
+    weight: 102
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: date_full_weekday_no_time
+    third_party_settings: {  }
+    type: datetime_default
+  field_ev_end_time:
+    weight: 104
+    label: above
+    settings:
+      format: 'h:mm'
+      leading_zero: true
+    third_party_settings: {  }
+    type: hms_default_formatter
+  field_ev_start_time:
+    weight: 103
+    label: above
+    settings:
+      format: 'h:mm'
+      leading_zero: true
+    third_party_settings: {  }
+    type: hms_default_formatter
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true
