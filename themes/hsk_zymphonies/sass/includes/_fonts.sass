@@ -1,10 +1,13 @@
 // Font-Face
 @import url(https://fonts.googleapis.com/css?family=Roboto+Slab:400,700)
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500)
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i)
 
 // Font-Family
 $roboto: 'Roboto', sans-serif
 $roboto-slab: 'Roboto Slab', serif
+$open-sans: 'Open Sans', sans-serif
+
 $normal: 400
 $bold: 700
 
@@ -23,7 +26,7 @@ $bold: 700
   @include x-rem(font-size, 1.0)
   line-height: 1.5
   color: $base-text-color
-  font-family: $roboto
+  font-family: $open-sans
   /*- Desktop narrow -*/
   +breakpoint($breakpoint-desktop-narrow)
     @include x-rem(font-size, 0.9)
