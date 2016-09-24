@@ -7,6 +7,7 @@ dependencies:
     - field.field.field_collection_item.field_sl_image.field_sl_text
     - field.field.field_collection_item.field_sl_image.field_sl_text_link
     - field_collection.field_collection.field_sl_image
+    - image.style.large
   module:
     - image
     - link
@@ -20,7 +21,7 @@ content:
     weight: 0
     label: above
     settings:
-      image_style: ''
+      image_style: large
       image_link: ''
     third_party_settings: {  }
     type: image
