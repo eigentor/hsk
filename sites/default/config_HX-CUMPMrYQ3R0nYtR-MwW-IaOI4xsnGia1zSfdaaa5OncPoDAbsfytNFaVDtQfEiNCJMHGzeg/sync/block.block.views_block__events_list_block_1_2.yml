@@ -6,6 +6,7 @@ dependencies:
     - views.view.events_list
   module:
     - node
+    - system
     - views
   theme:
     - hsk_zymphonies
@@ -32,3 +33,8 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: true
+    context_mapping: {  }
