@@ -2,7 +2,7 @@
 
 function hsk_zymphonies_preprocess_page(&$variables) {
   $variables['page']['#cache']['contexts'][] = 'route';
-  if (\Drupal::routeMatch()->getRouteName() === 'view.frontpage.page_1') {
+  if (\Drupal::service('path.matcher')->isFrontPage()) {
     $variables['#attached']['library'][] = 'hsk_zymphonies/header-slideshow';
   }
 }
