@@ -1,0 +1,4 @@
+services:
+  quick_node_clone.entity.form_builder:
+    class: Drupal\quick_node_clone\Entity\QuickNodeCloneEntityFormBuilder
+    arguments: ['@entity.manager', '@form_builder']

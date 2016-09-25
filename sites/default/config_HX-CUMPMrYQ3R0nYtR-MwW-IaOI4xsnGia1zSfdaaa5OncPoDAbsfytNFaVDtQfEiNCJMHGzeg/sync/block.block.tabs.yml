@@ -1,0 +1,20 @@
+uuid: 334cbc68-db1b-494b-85f5-c05c4ba96903
+langcode: de
+status: true
+dependencies:
+  theme:
+    - hsk_zymphonies
+id: tabs
+theme: hsk_zymphonies
+region: content
+weight: -8
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

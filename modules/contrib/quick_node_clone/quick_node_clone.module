@@ -1,0 +1,11 @@
+<?php
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function quick_node_clone_entity_type_build(array &$entity_types) {
+  if(isset($entity_types['node'])) {
+    $entity_types['node']->setFormClass('quick_node_clone', 'Drupal\quick_node_clone\Form\QuickNodeCloneNodeForm');
+  }
+
+}
