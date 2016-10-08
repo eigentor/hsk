@@ -1,0 +1,12 @@
+uuid: eb2042bc-a7a4-4db8-93af-02d5d8c0c21e
+langcode: de
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: yBqw6UD3j0MM1yoDSVDif7nw4SNdoS2e385nw--3ysk
+id: front
+label: 'Front page'
+tags:
+  canonical_url: '[site:url]'
+  shortlink: '[site:url]'
+  title: 'Schachclub Hannover - [site:name]'
