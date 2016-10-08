@@ -36,6 +36,12 @@ ul.tabs
         &:hover
           text-decoration: none
 
+// Styling correction for the place block module
+// The plus icon was not displayed before because the anchor
+// element was an inline element and could not have a width
+.block-place-region a.button
+  display: inline-block
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/

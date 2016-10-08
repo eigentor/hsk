@@ -106,6 +106,9 @@ ul.tabs.primary {
     ul.tabs.primary li a:hover {
       text-decoration: none; }
 
+.block-place-region a.button {
+  display: inline-block; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
