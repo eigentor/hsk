@@ -1,0 +1,6 @@
+glue.admin:
+  title: 'Glue module settings'
+  description: 'Here should be some settings but we do not have any'
+  parent: system.admin_config_development
+  route_name: glue.content
+  weight: 100
