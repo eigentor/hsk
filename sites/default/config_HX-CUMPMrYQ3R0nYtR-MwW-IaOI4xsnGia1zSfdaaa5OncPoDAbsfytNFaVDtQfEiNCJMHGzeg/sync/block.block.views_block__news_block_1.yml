@@ -1,0 +1,30 @@
+uuid: ab9dc6d5-c1a3-4263-a748-581037928564
+langcode: de
+status: true
+dependencies:
+  config:
+    - views.view.news
+  module:
+    - system
+    - views
+  theme:
+    - hsk_zymphonies
+id: views_block__news_block_1
+theme: hsk_zymphonies
+region: content
+weight: 0
+provider: null
+plugin: 'views_block:news-block_1'
+settings:
+  id: 'views_block:news-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: '5'
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
