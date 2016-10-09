@@ -10,8 +10,8 @@ _core:
   default_config_hash: mHlwUVEUZgexqEoFGLghbBsl2C0SmKgZh5KrtvGBc6Y
 id: hsk_zymphonies_messages
 theme: hsk_zymphonies
-region: highlighted
-weight: -7
+region: content
+weight: -9
 provider: null
 plugin: system_messages_block
 settings:

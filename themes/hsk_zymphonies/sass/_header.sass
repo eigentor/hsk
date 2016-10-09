@@ -7,12 +7,20 @@
 header
   padding-top: 20px
   +legacy-pie-clearfix
+  .brand
+    .site-branding__name, .site-branding__name a
+      line-height: 1.2
+      font-family: $roboto-slab
+      color: #888
+    .site-branding__slogan
+      color: #555
+      font-family: $roboto-slab
 
 #block-hsk-branding
   width: 55%
   float: left
 
-nav#block-hsk-main-menu
+nav#block-hsk-zymphonies-main-menu
   display: none
   @include legacy-pie-clearfix
   clear: both
@@ -117,6 +125,12 @@ nav#block-hsk-footer
   .search-block-form
     display: block
 
+  nav#block-hsk-zymphonies-main-menu
+    ul
+      li.active
+        a
+          background: $primary-color
+
 
 /* End Media Query Tablet */
 
@@ -132,6 +146,14 @@ nav#block-hsk-footer
       .logo
         img
           margin-left: 10px
+
+    .brand
+      .site-branding__name, .site-branding__name a
+        +x-rem(font-size, 2)
+        margin-bottom: 2px
+      .site-branding__slogan
+        +x-rem(font-size, 0.88)
+
     nav#block-useraccountmenu
       float: right
       margin-top: 4px
@@ -145,10 +167,10 @@ nav#block-hsk-footer
     nav#block-hsk-main-menu
       clear: both
 
-  nav#block-hsk-main-menu
+  nav#block-hsk-zymphonies-main-menu
     margin-bottom: 0
     clear: both
-    padding-top: 30px
+    padding-top: 25px
     display: table!important
     width: 100%
     ul.menu

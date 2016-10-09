@@ -40,7 +40,7 @@ h2 {
   margin-bottom: 10px; }
 
 a {
-  color: #cc0033;
+  color: #e27500;
   text-decoration: none; }
   a:hover {
     text-decoration: underline; }
@@ -141,6 +141,24 @@ ul.tabs.primary {
 .offcanvas-lining {
   background: transparent; }
 
+#page-title {
+  background: #333333;
+  border-top: 5px solid #555555;
+  border-bottom: 5px solid #cccccc; }
+  #page-title #block-pagetitle {
+    margin-bottom: 0; }
+  #page-title h1 {
+    color: white;
+    display: inline-block;
+    margin: 20px 0 -5px;
+    padding-bottom: 25px;
+    font-size: 26px;
+    font-size: 2rem;
+    border-bottom: 5px solid #ed8600; }
+
+.content_layout {
+  margin-top: 30px; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -240,6 +258,10 @@ footer #block-masquerade {
 /*------------- All Screen Sizes ------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+.node .comment-submitted {
+  border: none;
+  padding: 0; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -279,29 +301,36 @@ header {
     clear: both;
     overflow: hidden;
     visibility: hidden; }
+  header .brand .site-branding__name, header .brand .site-branding__name a {
+    line-height: 1.2;
+    font-family: "Roboto Slab", serif;
+    color: #888888; }
+  header .brand .site-branding__slogan {
+    color: #555555;
+    font-family: "Roboto Slab", serif; }
 
 #block-hsk-branding {
   width: 55%;
   float: left; }
 
-nav#block-hsk-main-menu {
+nav#block-hsk-zymphonies-main-menu {
   display: none;
   *zoom: 1;
   clear: both; }
-  nav#block-hsk-main-menu:after {
+  nav#block-hsk-zymphonies-main-menu:after {
     content: "\0020";
     display: block;
     height: 0;
     clear: both;
     overflow: hidden;
     visibility: hidden; }
-  nav#block-hsk-main-menu ul.menu {
+  nav#block-hsk-zymphonies-main-menu ul.menu {
     margin: 0;
     padding: 0; }
-    nav#block-hsk-main-menu ul.menu li {
+    nav#block-hsk-zymphonies-main-menu ul.menu li {
       display: inline;
       display: block; }
-      nav#block-hsk-main-menu ul.menu li a {
+      nav#block-hsk-zymphonies-main-menu ul.menu li a {
         background: #bbbbbb;
         display: block;
         height: 42px;
@@ -311,26 +340,26 @@ nav#block-hsk-main-menu {
         padding: 0 15px;
         font-size: 18.2px;
         font-size: 1.4rem; }
-        nav#block-hsk-main-menu ul.menu li a:hover {
+        nav#block-hsk-zymphonies-main-menu ul.menu li a:hover {
           background: #888888;
           text-decoration: none; }
-        nav#block-hsk-main-menu ul.menu li a span.arrow {
+        nav#block-hsk-zymphonies-main-menu ul.menu li a span.arrow {
           display: inline-block;
           width: 17px;
           height: 25px;
           background: url(../images/arrow-white-down.png) no-repeat right 16px; }
-      nav#block-hsk-main-menu ul.menu li.menu-visible a {
+      nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible a {
         background: #444444; }
-      nav#block-hsk-main-menu ul.menu li.menu-visible ul li a {
+      nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul li a {
         background: #777777; }
-      nav#block-hsk-main-menu ul.menu li ul {
+      nav#block-hsk-zymphonies-main-menu ul.menu li ul {
         display: none; }
-        nav#block-hsk-main-menu ul.menu li ul li a {
+        nav#block-hsk-zymphonies-main-menu ul.menu li ul li a {
           background: #888888;
           font-size: 15.6px;
           font-size: 1.2rem;
           padding: 0; }
-      nav#block-hsk-main-menu ul.menu li.menu-visible ul {
+      nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul {
         display: block; }
 
 #block-mobilemenubutton {
@@ -409,7 +438,10 @@ nav#block-hsk-footer {
     padding-top: 30px; }
 
   .search-block-form {
-    display: block; } }
+    display: block; }
+
+  nav#block-hsk-zymphonies-main-menu ul li.active a {
+    background: #ed8600; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -421,6 +453,13 @@ nav#block-hsk-footer {
     width: auto; }
     header #block-hsk-branding .logo img {
       margin-left: 10px; }
+  header .brand .site-branding__name, header .brand .site-branding__name a {
+    font-size: 26px;
+    font-size: 2rem;
+    margin-bottom: 2px; }
+  header .brand .site-branding__slogan {
+    font-size: 11.44px;
+    font-size: 0.88rem; }
   header nav#block-useraccountmenu {
     float: right;
     margin-top: 4px; }
@@ -434,29 +473,29 @@ nav#block-hsk-footer {
   header nav#block-hsk-main-menu {
     clear: both; }
 
-  nav#block-hsk-main-menu {
+  nav#block-hsk-zymphonies-main-menu {
     margin-bottom: 0;
     clear: both;
-    padding-top: 30px;
+    padding-top: 25px;
     display: table !important;
     width: 100%; }
-    nav#block-hsk-main-menu ul.menu {
+    nav#block-hsk-zymphonies-main-menu ul.menu {
       display: table-row;
       width: 100%; }
-      nav#block-hsk-main-menu ul.menu li.menu-visible.has-submenu a {
+      nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible.has-submenu a {
         background: #717171;
         border-bottom: 1px solid #cccccc; }
-      nav#block-hsk-main-menu ul.menu li.menu-visible.has-submenu ul li a {
+      nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible.has-submenu ul li a {
         border-bottom: 0;
         background: #999999; }
-      nav#block-hsk-main-menu ul.menu li, nav#block-hsk-main-menu ul.menu li.menu-visible {
+      nav#block-hsk-zymphonies-main-menu ul.menu li, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible {
         display: table-cell;
         padding-top: 0;
         padding-right: 2px;
         position: relative; }
-        nav#block-hsk-main-menu ul.menu li:last-child, nav#block-hsk-main-menu ul.menu li.menu-visible:last-child {
+        nav#block-hsk-zymphonies-main-menu ul.menu li:last-child, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible:last-child {
           padding-right: 0; }
-        nav#block-hsk-main-menu ul.menu li a, nav#block-hsk-main-menu ul.menu li.menu-visible a {
+        nav#block-hsk-zymphonies-main-menu ul.menu li a, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible a {
           float: left;
           min-width: 150px;
           width: 100%;
@@ -465,23 +504,23 @@ nav#block-hsk-footer {
           font-size: 1.4rem;
           height: 42px;
           line-height: 42px; }
-          nav#block-hsk-main-menu ul.menu li a:hover, nav#block-hsk-main-menu ul.menu li.menu-visible a:hover {
+          nav#block-hsk-zymphonies-main-menu ul.menu li a:hover, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible a:hover {
             background: #717171; }
-        nav#block-hsk-main-menu ul.menu li ul, nav#block-hsk-main-menu ul.menu li.menu-visible ul {
+        nav#block-hsk-zymphonies-main-menu ul.menu li ul, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul {
           position: absolute;
           top: 42px;
           left: 0;
           z-index: 20;
           width: auto;
           background: #999999; }
-          nav#block-hsk-main-menu ul.menu li ul li, nav#block-hsk-main-menu ul.menu li.menu-visible ul li {
+          nav#block-hsk-zymphonies-main-menu ul.menu li ul li, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul li {
             display: block;
             padding-top: 0;
             padding-right: 0;
             border-bottom: 1px solid #cccccc; }
-            nav#block-hsk-main-menu ul.menu li ul li:last-child, nav#block-hsk-main-menu ul.menu li.menu-visible ul li:last-child {
+            nav#block-hsk-zymphonies-main-menu ul.menu li ul li:last-child, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul li:last-child {
               border-bottom: none; }
-            nav#block-hsk-main-menu ul.menu li ul li a, nav#block-hsk-main-menu ul.menu li.menu-visible ul li a {
+            nav#block-hsk-zymphonies-main-menu ul.menu li ul li a, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul li a {
               float: none;
               white-space: nowrap;
               background: #999999;
@@ -489,7 +528,7 @@ nav#block-hsk-footer {
               font-size: 1.2rem;
               padding: 0 30px;
               text-align: left; }
-              nav#block-hsk-main-menu ul.menu li ul li a:hover, nav#block-hsk-main-menu ul.menu li.menu-visible ul li a:hover {
+              nav#block-hsk-zymphonies-main-menu ul.menu li ul li a:hover, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul li a:hover {
                 background: #777777; }
 
   #block-mobilemenubutton {
