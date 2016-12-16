@@ -142,13 +142,13 @@ ul.tabs.primary {
   background: transparent; }
 
 #page-title {
-  background: #333333;
-  border-top: 5px solid #555555;
+  background: #dddddd;
+  border-top: 5px solid #cccccc;
   border-bottom: 5px solid #cccccc; }
   #page-title #block-pagetitle {
     margin-bottom: 0; }
   #page-title h1 {
-    color: white;
+    color: black;
     display: inline-block;
     margin: 20px 0 -5px;
     padding-bottom: 25px;
@@ -158,6 +158,14 @@ ul.tabs.primary {
 
 .content_layout {
   margin-top: 30px; }
+
+.footer-menu {
+  background: #999999; }
+  .footer-menu a {
+    color: white; }
+
+.copyright {
+  background: #818181; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -194,6 +202,17 @@ ul.tabs.primary {
 /*------------- All Screen Sizes ------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+.path-frontpage .view-header-slideshow .views-row {
+  position: relative; }
+  .path-frontpage .view-header-slideshow .views-row .views-field-field-sl-text {
+    background: #888888;
+    color: white;
+    font-size: 14.3px;
+    font-size: 1.1rem;
+    padding: 7px; }
+    .path-frontpage .view-header-slideshow .views-row .views-field-field-sl-text p {
+      margin-bottom: 0; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -211,6 +230,16 @@ ul.tabs.primary {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 1024px) {
+  .path-frontpage .view-header-slideshow .views-row .views-field-field-sl-text {
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+    background: rgba(125, 125, 125, 0.6);
+    color: white;
+    padding: 15px 20px;
+    font-size: 16.9px;
+    font-size: 1.3rem; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -551,6 +580,34 @@ nav#block-hsk-footer {
 /*------------- All Screen Sizes ------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+.path-frontpage .content_layout {
+  margin-top: 0; }
+.path-frontpage #block-views-block-events-list-block-1 .views-row {
+  *zoom: 1; }
+  .path-frontpage #block-views-block-events-list-block-1 .views-row:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden; }
+  .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-date {
+    font-size: 10.4px;
+    font-size: 0.8rem; }
+  .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time {
+    margin-top: 3px;
+    font-size: 9.75px;
+    font-size: 0.75rem;
+    float: left;
+    margin-right: 11px;
+    text-align: center; }
+    .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date {
+      background: #888888;
+      color: white;
+      padding: 1px 6px; }
+    .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .time {
+      padding: 2px 0; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -568,6 +625,14 @@ nav#block-hsk-footer {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 1024px) {
+  .path-frontpage #block-views-block-events-list-block-1 {
+    float: left;
+    width: 50%; }
+  .path-frontpage #block-views-block-news-block-1 {
+    float: left;
+    width: 50%;
+    padding-left: 15px; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */

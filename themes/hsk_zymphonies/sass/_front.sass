@@ -3,6 +3,26 @@
 /*------------- All Screen Sizes -------------*/
 /*------------------------------------------- */
 /*------------------------------------------- */
+.path-frontpage
+  .content_layout
+    margin-top: 0
+  #block-views-block-events-list-block-1
+    .views-row
+      +legacy-pie-clearfix
+      .views-field-field-ev-date
+        +x-rem(font-size, 0.8)
+      .views-field-field-ev-start-time
+        margin-top: 3px
+        +x-rem(font-size, 0.75)
+        float: left
+        margin-right: 11px
+        text-align: center
+        .date
+          background: #888
+          color: white
+          padding: 1px 6px
+        .time
+          padding: 2px 0
 
 
 /*------------------------------------------- */
@@ -31,6 +51,15 @@
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop-narrow)
+  .path-frontpage
+    #block-views-block-events-list-block-1
+      float: left
+      width: 50%
+
+    #block-views-block-news-block-1
+      float: left
+      width: 50%
+      padding-left: 15px
 
 
 /* End Media Query Tablet */

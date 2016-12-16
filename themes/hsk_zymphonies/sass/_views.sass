@@ -3,7 +3,17 @@
 /*------------- All Screen Sizes -------------*/
 /*------------------------------------------- */
 /*------------------------------------------- */
-.path-frontpage, .path-news
+.path-frontpage
+  .view-header-slideshow
+    .views-row
+      position: relative
+      .views-field-field-sl-text
+        background: #888
+        color: white
+        +x-rem(font-size, 1.1)
+        padding: 7px
+        p
+          margin-bottom: 0
 
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -32,6 +42,18 @@
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop-narrow)
+  .path-frontpage
+    .view-header-slideshow
+      .views-row
+        .views-field-field-sl-text
+          position: absolute
+          left: 30px
+          bottom: 30px
+          background: rgba(125,125,125,0.6)
+          color: white
+          padding: 15px 20px
+          +x-rem(font-size, 1.3)
+
 
 
 /* End Media Query Tablet */
