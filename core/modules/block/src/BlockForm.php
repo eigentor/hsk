@@ -237,7 +237,7 @@ class BlockForm extends EntityForm {
     // @todo Allow list of conditions to be configured in
     //   https://www.drupal.org/node/2284687.
     $visibility = $this->entity->getVisibility();
-    foreach ($this->manager->getDefinitions() as $condition_id => $definition) {
+    foreach ($this->manager->getDefinitionsForContexts($form_state->getTemporaryValue('gathered_contexts')) as $condition_id => $definition) {
       // Don't display the current theme condition.
       if ($condition_id == 'current_theme') {
         continue;
@@ -323,7 +323,7 @@ class BlockForm extends EntityForm {
       // However, certain form elements may return it as 0/1. Cast here to
       // ensure the data is in the expected type.
       if (array_key_exists('negate', $values)) {
-        $values['negate'] = (bool) $values['negate'];
+        $form_state->setValue(['visibility', $condition_id, 'negate'], (bool) $values['negate']);
       }
 
       // Allow the condition to validate the form.
