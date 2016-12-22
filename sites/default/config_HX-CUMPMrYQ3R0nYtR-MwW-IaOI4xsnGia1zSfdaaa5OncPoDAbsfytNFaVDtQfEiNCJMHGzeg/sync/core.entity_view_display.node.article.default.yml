@@ -10,7 +10,6 @@ dependencies:
     - image.style.large
     - node.type.article
   module:
-    - comment
     - image
     - text
     - user
@@ -23,21 +22,13 @@ mode: default
 content:
   body:
     type: text_default
-    weight: 0
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     label: hidden
-  comment:
-    label: above
-    type: comment_default
-    weight: 20
-    settings:
-      pager_id: 0
-      view_mode: default
-    third_party_settings: {  }
   field_image:
     type: image
-    weight: -1
+    weight: 0
     settings:
       image_style: large
       image_link: ''
@@ -45,14 +36,15 @@ content:
     label: hidden
   field_tags:
     type: entity_reference_label
-    weight: 10
+    weight: 2
     label: above
     settings:
       link: true
     third_party_settings: {  }
   links:
-    weight: 100
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
 hidden:
-  field_image: true
-  field_tags: true
+  comment: true
   langcode: true
