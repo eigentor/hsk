@@ -15,6 +15,29 @@
         p
           margin-bottom: 0
 
+.sidebar
+  .view-events-list
+    .views-field-title
+      h3
+        +x-rem(font-size, 0.85)
+    .views-field-field-ev-start-time
+      color: #777
+      +x-rem(font-size, 0.8)
+      .date
+        display: inline
+      .time
+        display: inline
+        &:before
+          content: "-"
+          padding: 0 0 0 1px
+
+.path-news
+  .view-news
+    .views-row
+      margin-bottom: 15px
+
+
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/
@@ -61,6 +84,13 @@
               padding: 15px 20px
               +x-rem(font-size, 1.3)
               float: left
+  .path-news
+    .view-news
+      .views-row
+        +legacy-pie-clearfix
+      .field--name-field-image
+        float: left
+        margin: 5px 15px 5px 0
 
 
 

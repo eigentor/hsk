@@ -213,6 +213,24 @@ ul.tabs.primary {
     .path-frontpage .view-header-slideshow .views-row .views-field-field-sl-text p {
       margin-bottom: 0; }
 
+.sidebar .view-events-list .views-field-title h3 {
+  font-size: 11.05px;
+  font-size: 0.85rem; }
+.sidebar .view-events-list .views-field-field-ev-start-time {
+  color: #777;
+  font-size: 10.4px;
+  font-size: 0.8rem; }
+  .sidebar .view-events-list .views-field-field-ev-start-time .date {
+    display: inline; }
+  .sidebar .view-events-list .views-field-field-ev-start-time .time {
+    display: inline; }
+    .sidebar .view-events-list .views-field-field-ev-start-time .time:before {
+      content: "-";
+      padding: 0 0 0 1px; }
+
+.path-news .view-news .views-row {
+  margin-bottom: 15px; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -248,7 +266,20 @@ ul.tabs.primary {
           padding: 15px 20px;
           font-size: 16.9px;
           font-size: 1.3rem;
-          float: left; } }
+          float: left; }
+
+  .path-news .view-news .views-row {
+    *zoom: 1; }
+    .path-news .view-news .views-row:after {
+      content: "\0020";
+      display: block;
+      height: 0;
+      clear: both;
+      overflow: hidden;
+      visibility: hidden; }
+  .path-news .view-news .field--name-field-image {
+    float: left;
+    margin: 5px 15px 5px 0; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -299,6 +330,50 @@ footer #block-masquerade {
 .node .comment-submitted {
   border: none;
   padding: 0; }
+.node .field--name-field-tags {
+  clear: left; }
+  .node .field--name-field-tags .field__label {
+    font-weight: normal;
+    display: inline-block; }
+  .node .field--name-field-tags .field__items {
+    display: inline-block; }
+  .node .field--name-field-tags .field__item {
+    display: inline-block; }
+    .node .field--name-field-tags .field__item a {
+      font-size: 10.4px;
+      font-size: 0.8rem;
+      color: #888;
+      border: 1px solid #ddd;
+      -webkit-border-radius: 7px;
+      -moz-border-radius: 7px;
+      -ms-border-radius: 7px;
+      -o-border-radius: 7px;
+      border-radius: 7px;
+      line-height: 1;
+      padding: 0 5px 1px; }
+.node .node__links {
+  margin-top: 8px; }
+  .node .node__links li {
+    padding-left: 0; }
+  .node .node__links a {
+    font-size: 10.4px;
+    font-size: 0.8rem;
+    color: #888; }
+
+.page-node-type-article node__content {
+  *zoom: 1; }
+  .page-node-type-article node__content:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden; }
+.page-node-type-article .field--name-field-image {
+  margin-bottom: 15px; }
+  .page-node-type-article .field--name-field-image img {
+    display: block;
+    margin: auto; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -311,6 +386,10 @@ footer #block-masquerade {
 /*---------------- Tablet  ------------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 768px) {
+  .page-node-type-article .field--name-field-image {
+    float: left;
+    margin: 5px 15px 5px 0; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */

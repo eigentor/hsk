@@ -7,6 +7,38 @@
   .comment-submitted
     border: none
     padding: 0
+  .field--name-field-tags
+    clear: left
+    .field__label
+      font-weight: normal
+      display: inline-block
+    .field__items
+      display: inline-block
+    .field__item
+      display: inline-block
+      a
+        +x-rem(font-size, 0.8)
+        color: $light-grey-text
+        border: 1px solid #ddd
+        +border-radius(7px)
+        line-height: 1
+        padding: 0 5px 1px
+  .node__links
+    margin-top: 8px
+    li
+      padding-left: 0
+    a
+      +x-rem(font-size, 0.8)
+      color: $light-grey-text
+
+.page-node-type-article
+  node__content
+    +legacy-pie-clearfix
+  .field--name-field-image
+    margin-bottom: 15px
+    img
+      display: block
+      margin: auto
 
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -24,6 +56,10 @@
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-tablet)
+  .page-node-type-article
+    .field--name-field-image
+      float: left
+      margin: 5px 15px 5px 0
 
 
 /* End Media Query Tablet */
