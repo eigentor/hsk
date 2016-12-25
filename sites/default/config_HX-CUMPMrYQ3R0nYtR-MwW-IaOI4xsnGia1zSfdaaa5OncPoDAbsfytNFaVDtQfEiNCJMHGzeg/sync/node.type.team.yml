@@ -1,0 +1,18 @@
+uuid: 0e0a6b0e-b5d6-4cf8-9498-b30d55f23ae2
+langcode: de
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: Mannschaft
+type: team
+description: 'Für Mannschaften des HSK mit einigen nützlichen Feldern.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true

@@ -1,15 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\Plugin\Field\FieldWidget\FieldCollectionEmbedWidget.
- */
-
 namespace Drupal\field_collection\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -42,7 +35,7 @@ class FieldCollectionEmbedWidget extends WidgetBase {
     // Nest the field collection item entity form in a dedicated parent space,
     // by appending [field_name, delta] to the current parent space.
     // That way the form values of the field collection item are separated.
-    $parents = array_merge($element['#field_parents'], array($field_name, $delta));
+    $parents = array_merge($element['#field_parents'], [$field_name, $delta]);
 
     $element += [
       '#element_validate' => [[static::class, 'validate']],
@@ -56,13 +49,13 @@ class FieldCollectionEmbedWidget extends WidgetBase {
 
     $field_state = static::getWidgetState($element['#field_parents'], $field_name, $form_state);
 
-    if (isset($field_state['field_collection_item'][$delta])) {
-      $field_collection_item = $field_state['field_collection_item'][$delta];
+    if (isset($field_state['entity'][$delta])) {
+      $field_collection_item = $field_state['entity'][$delta];
     }
     else {
       $field_collection_item = $items[$delta]->getFieldCollectionItem(TRUE);
       // Put our entity in the form state, so FAPI callbacks can access it.
-      $field_state['field_collection_item'][$delta] = $field_collection_item;
+      $field_state['entity'][$delta] = $field_collection_item;
     }
 
     static::setWidgetState($element['#field_parents'], $field_name, $form_state, $field_state);
@@ -111,9 +104,8 @@ class FieldCollectionEmbedWidget extends WidgetBase {
   protected function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
     // We don't want to render empty items on field collection fields
     // unless a) the field collection is empty ; b) the form is rebuilding,
-    // which means that the user clicked on "Add another item"; or
-    // c) we are creating a new entity.
-    if ((count($items) > 0) && !$form_state->isRebuilding() && !$items->getEntity()->isNew()) {
+    // which means that the user clicked on "Add another item"
+    if ((count($items) > 0) && !$form_state->isRebuilding()) {
       $field_name = $this->fieldDefinition->getName();
       $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
       $parents = $form['#parents'];
@@ -163,7 +155,7 @@ class FieldCollectionEmbedWidget extends WidgetBase {
     if (!empty($element['#required'])) {
       $element['#required'] = FALSE;
       $required_elements[] = &$element;
-      $element += array('#pre_render' => array());
+      $element += ['#pre_render' => []];
       array_unshift($element['#pre_render'], [static::class, 'renderRequired']);
     }
   }
@@ -185,7 +177,7 @@ class FieldCollectionEmbedWidget extends WidgetBase {
 
     $field_state = static::getWidgetState($field_parents, $field_name, $form_state);
 
-    $field_collection_item = $field_state['field_collection_item'][$element['#delta']];
+    $field_collection_item = $field_state['entity'][$element['#delta']];
 
     $display = entity_get_form_display('field_collection_item', $field_name, 'default');
     $display->extractFormValues($field_collection_item, $element, $form_state);
@@ -206,7 +198,7 @@ class FieldCollectionEmbedWidget extends WidgetBase {
               $form_state->setError($elements, $elements['#required_error']);
             }
             else if (isset($elements['#title'])) {
-              $form_state->setError($elements, t('@name field is required.', array('@name' => $elements['#title'])));
+              $form_state->setError($elements, t('@name field is required.', ['@name' => $elements['#title']]));
             }
             else {
               $form_state->setError($elements);
@@ -229,10 +221,10 @@ class FieldCollectionEmbedWidget extends WidgetBase {
         $field['_weight'] = $element['_weight']['#value'];
       }
 
-      // Put the field collection field in $field['field_collection_item'], so
+      // Put the field collection field in $field['entity'], so
       // it is saved with the host entity via FieldCollection->preSave() / field
       // API if it is not empty.
-      $field['field_collection_item'] = $field_collection_item;
+      $field['entity'] = $field_collection_item;
       $form_state->setValue($element['#parents'], $field);
     }
   }
@@ -243,9 +235,9 @@ class FieldCollectionEmbedWidget extends WidgetBase {
    * When a remove button is submitted, we need to find the item that it
    * referenced and delete it. Since field UI has the deltas as a straight
    * unbroken array key, we have to renumber everything down. Since we do this
-   * we *also* need to move all the deltas around in the $form_state->values
-   * and $form_state input so that user changed values follow. This is a bit
-   * of a complicated process.
+   * we *also* need to move all the deltas around in the $form_state values,
+   * $form_state input, and $form_state field_storage so that user changed
+   * values follow. This is a bit of a complicated process.
    */
   public static function removeSubmit($form, FormStateInterface $form_state) {
     $button = $form_state->getTriggeringElement();
@@ -256,7 +248,7 @@ class FieldCollectionEmbedWidget extends WidgetBase {
     $address_state = array_slice($button['#parents'], 0, -3);
 
     // Go one level up in the form, to the widgets container.
-    $parent_element = NestedArray::getValue($form, array_merge($address, array('widget')));
+    $parent_element = NestedArray::getValue($form, array_merge($address, ['widget']));
 
     $field_name = $parent_element['#field_name'];
     $parents = $parent_element['#field_parents'];
@@ -266,15 +258,15 @@ class FieldCollectionEmbedWidget extends WidgetBase {
     // Go ahead and renumber everything from our delta to the last
     // item down one. This will overwrite the item being removed.
     for ($i = $delta; $i <= $field_state['items_count']; $i++) {
-      $old_element_address = array_merge($address, array('widget', $i + 1));
-      $old_element_state_address = array_merge($address_state, array($i + 1));
-      $new_element_state_address = array_merge($address_state, array($i));
+      $old_element_address = array_merge($address, ['widget', $i + 1]);
+      $old_element_state_address = array_merge($address_state, [$i + 1]);
+      $new_element_state_address = array_merge($address_state, [$i]);
 
       $moving_element = NestedArray::getValue($form, $old_element_address);
 
       $moving_element_value = NestedArray::getValue($form_state->getValues(), $old_element_state_address);
-
       $moving_element_input = NestedArray::getValue($form_state->getUserInput(), $old_element_state_address);
+      $moving_element_field = NestedArray::getValue($form_state->get('field_storage'), array_merge(['#parents'], $address));
 
       // Tell the element where it's being moved to.
       $moving_element['#parents'] = $new_element_state_address;
@@ -284,26 +276,26 @@ class FieldCollectionEmbedWidget extends WidgetBase {
       $user_input = $form_state->getUserInput();
       NestedArray::setValue($user_input, $moving_element['#parents'], $moving_element_input);
       $form_state->setUserInput($user_input);
+      NestedArray::setValue($form_state->get('field_storage'), array_merge(['#parents'], $moving_element['#parents']), $moving_element_field);
 
       // Move the entity in our saved state.
-      if (isset($field_state['field_collection_item'][$i + 1])) {
-        $field_state['field_collection_item'][$i] = $field_state['field_collection_item'][$i + 1];
+      if (isset($field_state['entity'][$i + 1])) {
+        $field_state['entity'][$i] = $field_state['entity'][$i + 1];
       }
       else {
-        unset($field_state['field_collection_item'][$i]);
+        unset($field_state['entity'][$i]);
       }
     }
-
-    // Replace the deleted entity with an empty one. This helps to ensure that
-    // trying to add a new entity won't ressurect a deleted entity from the
-    // trash bin.
-    $count = count($field_state['field_collection_item']);
-
-    $field_state['field_collection_item'][$count] = FieldCollectionItem::create(['field_name' => $field_name]);
 
     // Then remove the last item. But we must not go negative.
     if ($field_state['items_count'] > 0) {
       $field_state['items_count']--;
+    }
+    else {
+      // Create a new field collection item after deleting the last one so the
+      // form will show a blank field collection item instead of resurrecting
+      // the first one if there was already data.
+      $field_state['entity'][0] = FieldCollectionItem::create(['field_name' => $field_name]);
     }
 
     // Fix the weights. Field UI lets the weights be in a range of
@@ -315,7 +307,7 @@ class FieldCollectionEmbedWidget extends WidgetBase {
     // if I have items weight weights 3 and 4, and I change 4 to 3 but leave
     // the 3, the order of the two 3s now is undefined and may not match what
     // the user had selected.
-    $input = NestedArray::getValue($form_state->getUserInput(), $address);
+    $input = NestedArray::getValue($form_state->getUserInput(), $address_state);
     // Sort by weight.
     uasort($input, '_field_collection_sort_items_helper');
 
@@ -328,7 +320,7 @@ class FieldCollectionEmbedWidget extends WidgetBase {
     }
 
     $user_input = $form_state->getUserInput();
-    NestedArray::setValue($user_input, $address, $input);
+    NestedArray::setValue($user_input, $address_state, $input);
     $form_state->setUserInput($user_input);
 
     static::setWidgetState($parents, $field_name, $form_state, $field_state);
@@ -352,6 +344,31 @@ class FieldCollectionEmbedWidget extends WidgetBase {
     // to return the parent element.
     $button = $form_state->getTriggeringElement();
     return NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -3));
+  }
+
+  /**
+   * Submission handler for the "Add another item" button.
+   */
+  public static function addMoreSubmit(array $form, FormStateInterface $form_state) {
+    $button = $form_state->getTriggeringElement();
+
+    // Go one level up in the form, to the widgets container.
+    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -1));
+    $field_name = $element['#field_name'];
+    $parents = $element['#field_parents'];
+
+    // Increment the items count.
+    $field_state = static::getWidgetState($parents, $field_name, $form_state);
+    $field_state['items_count']++;
+
+    // Make a new field collection item. This helps to ensure that
+    // trying to add a field collection item won't ressurect a deleted one from
+    // the trash bin.
+    $field_state['entity'][$field_state['items_count']] = FieldCollectionItem::create(['field_name' => $field_name]);
+
+    static::setWidgetState($parents, $field_name, $form_state, $field_state);
+
+    $form_state->setRebuild();
   }
 
 }

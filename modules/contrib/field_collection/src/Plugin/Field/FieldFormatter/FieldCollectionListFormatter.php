@@ -1,13 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\Plugin\Field\FieldFormatter\FieldCollectionListFormatter.
- */
-
 namespace Drupal\field_collection\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
 
 /**
@@ -29,7 +25,7 @@ class FieldCollectionListFormatter extends FieldCollectionLinksFormatter {
    * TODO: Use $langcode.
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $element = array();
+    $element = [];
     $settings = $this->getFieldSettings();
     $count = 0; // TODO: Is there a better way to get an accurate count of the
                 // items from the FieldItemList that doesn't count blank items?
@@ -37,24 +33,35 @@ class FieldCollectionListFormatter extends FieldCollectionLinksFormatter {
 
     $storage = \Drupal::entityTypeManager()->getStorage('field_collection_item');
     foreach ($items as $delta => $item) {
-      if ($item->value !== NULL) {
+      if ($item->target_id !== NULL) {
         $count++;
 
         $field_collection_item = $storage->loadRevision($item->revision_id);
 
         if ($field_collection_item->isDefaultRevision()) {
-          $links = \Drupal::l($this->fieldDefinition->getName() . ' ' . $delta, Url::FromRoute('entity.field_collection_item.canonical', array('field_collection_item' => $item->value)));
+          $links = Link::fromTextAndUrl(
+            $this->fieldDefinition->getName() . ' ' . $delta,
+            Url::FromRoute(
+              'entity.field_collection_item.canonical',
+              ['field_collection_item' => $item->target_id]
+            ))
+            ->toString();
 
           $links .= ' ' . $this->getEditLinks($item);
         }
         else {
-          $links = \Drupal::l($this->fieldDefinition->getName() . ' ' . $delta, Url::FromRoute('field_collection_item.revision_show', [
-            'field_collection_item' => $item->value,
-            'field_collection_item_revision' => $item->revision_id,
-          ]));
+          $links = Link::fromTextAndUrl(
+            $this->fieldDefinition->getName() . ' ' . $delta,
+            Url::FromRoute(
+              'field_collection_item.revision_show',
+              [
+                'field_collection_item' => $item->target_id,
+                'field_collection_item_revision' => $item->revision_id,
+          ]))
+          ->toString();
         }
 
-        $element[$delta] = array('#markup' => $links);
+        $element[$delta] = ['#markup' => $links];
       }
     }
 
@@ -62,9 +69,10 @@ class FieldCollectionListFormatter extends FieldCollectionLinksFormatter {
       ->getFieldStorageDefinition()
       ->getCardinality();
 
-    if ($cardinality == -1 || $count < $cardinality) {
+    $entity = $items->getEntity();
+    if ($entity->id() && ($cardinality == -1 || $count < $cardinality)) {
       $element['#suffix'] = '<ul class="action-links action-links-field-collection-add"><li>';
-      $element['#suffix'] .= $this->getAddLink($items->getEntity());
+      $element['#suffix'] .= $this->getAddLink($entity);
       $element['#suffix'] .= '</li></ul>';
     }
 

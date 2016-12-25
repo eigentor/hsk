@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Contains \Drupal\node\FieldCollectionListController.
- */
-
 namespace Drupal\field_collection;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
@@ -20,10 +16,10 @@ class FieldCollectionListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    $row['title'] = array(
+    $row['title'] = [
       'data' => $entity->label(),
-      'class' => array('menu-label'),
-    );
+      'class' => ['menu-label'],
+    ];
     return $row + parent::buildRow($entity);
   }
 
@@ -31,7 +27,7 @@ class FieldCollectionListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildHeader() {
-    $header = array('title' => $this->t('Machine name'));
+    $header = ['title' => $this->t('Machine name')];
     return $header + parent::buildHeader();
   }
 
@@ -39,7 +35,7 @@ class FieldCollectionListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function getDefaultOperations(EntityInterface $entity) {
-    return array();
+    return [];
   }
 
   /**

@@ -1,19 +1,10 @@
 <?php
 
-
-/**
- * @file
- * Provide relationship handler for field collection fields.
- *
- * Definition of Drupal\field_collection\Plugin\views\relationship\FieldCollectionHandlerRelationship.
- */
-
 namespace Drupal\field_collection\Plugin\views\relationship;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\views\Views;
 use Drupal\views\Plugin\views\relationship\RelationshipPluginBase;
 
 /**
@@ -30,7 +21,7 @@ class FieldCollectionHandlerRelationship extends RelationshipPluginBase  {
    */
   protected function defineOptions() {
     $options = parent::defineOptions();
-    $options['delta'] = array('default' => -1);
+    $options['delta'] = ['default' => -1];
 
     return $options;
   }
@@ -48,17 +39,17 @@ class FieldCollectionHandlerRelationship extends RelationshipPluginBase  {
     if ($field->isMultiple()) {
       $max_delta = ($cardinality == FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED) ? 10 : $cardinality;
 
-      $options = array('-1' => t('All'));
+      $options = ['-1' => t('All')];
       for ($i = 0; $i < $max_delta; $i++) {
         $options[$i] = $i + 1;
       }
-      $form['delta'] = array(
+      $form['delta'] = [
         '#type' => 'select',
         '#options' => $options,
         '#default_value' => $this->options['delta'],
         '#title' => t('Delta'),
         '#description' => t('The delta allows you to select which item in a multiple value field to key the relationship off of. Select "1" to use the first item, "2" for the second item, and so on. If you select "All", each item in the field will create a new row, which may appear to cause duplicates.'),
-      );
+      ];
     }
   }
 
@@ -73,11 +64,11 @@ class FieldCollectionHandlerRelationship extends RelationshipPluginBase  {
     if (!isset($this->tableAlias)) {
       $join = $this->getJoin();
       if ($this->options['delta'] != -1 && $cardinality) {
-        $join->extra[] = array(
+        $join->extra[] = [
           'field' => 'delta',
           'value' => $this->options['delta'],
           'numeric' => TRUE,
-        );
+        ];
       }
       $this->tableAlias = $this->query->ensureTable($this->table, $this->relationship, $join);
       return $this->tableAlias;

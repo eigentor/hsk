@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\FieldCollectionItemInterface.
- */
-
 namespace Drupal\field_collection;
 
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -44,6 +39,15 @@ interface FieldCollectionItemInterface extends ContentEntityInterface {
    *   reference doesn't exist in the host yet.
    */
   public function getHostId();
+
+  /**
+   * Returns the revision_id of the host entity for this field collection item.
+   *
+   * To provide correct record id, we need to use revision ids instead of id.
+   *
+   * @return int
+   */
+  public function getHostRevisionId();
 
   /**
    * Sets the host entity. Only possible during creation of a item.

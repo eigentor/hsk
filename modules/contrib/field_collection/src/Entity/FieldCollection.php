@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\Entity\FieldCollection.
- */
-
 namespace Drupal\field_collection\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
-use Drupal\Core\Annotation\Translation;
 use Drupal\field_collection\FieldCollectionInterface;
 
 /**
@@ -50,7 +44,7 @@ class FieldCollection extends ConfigEntityBundleBase implements FieldCollectionI
   protected $id;
 
   /**
-   * The UUID of the node type.
+   * The UUID of the field collection type.
    *
    * @var string
    */
@@ -68,7 +62,7 @@ class FieldCollection extends ConfigEntityBundleBase implements FieldCollectionI
    */
   protected $entityType;
 
-  public function __construct(array $values = array(), $entity_type = 'field_collection') {
+  public function __construct(array $values = [], $entity_type = 'field_collection') {
     parent::__construct($values, $entity_type);
     $this->entityType = 'field_collection';
   }

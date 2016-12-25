@@ -1,13 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\Plugin\Field\FieldFormatter\FieldCollectionLinksFormatter.
- */
-
 namespace Drupal\field_collection\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -20,9 +16,21 @@ abstract class FieldCollectionLinksFormatter extends FormatterBase {
   protected function getEditLinks(FieldItemInterface $item) {
     $links = '';
     if ($item->getEntity()->access('update', \Drupal::currentUser())) {
-      $links = '(' . \Drupal::l(t('Edit'), Url::FromRoute('entity.field_collection_item.edit_form', array('field_collection_item' => $item->value)));
+      $links = '(' . Link::fromTextAndUrl(
+        t('Edit'),
+        Url::FromRoute(
+          'entity.field_collection_item.edit_form',
+          ['field_collection_item' => $item->target_id]
+        ))
+        ->toString();
 
-      $links .= '|' . \Drupal::l(t('Delete'), Url::FromRoute('entity.field_collection_item.delete_form', array('field_collection_item' => $item->value)));
+      $links .= '|' . Link::fromTextAndUrl(
+        t('Delete'),
+        Url::FromRoute(
+          'entity.field_collection_item.delete_form',
+          ['field_collection_item' => $item->target_id]
+        ))
+        ->toString();
 
       $links .= ')';
     }
@@ -42,11 +50,11 @@ abstract class FieldCollectionLinksFormatter extends FormatterBase {
     if ($host->access('update', \Drupal::currentUser())) {
       $link = '<ul class="action-links action-links-field-collection-add"><li>';
 
-      $link .= \Drupal::l(t('Add'), Url::FromRoute('field_collection_item.add_page', [
+      $link .= Link::fromTextAndUrl(t('Add'), Url::FromRoute('field_collection_item.add_page', [
         'field_collection' => $this->fieldDefinition->getName(),
         'host_type' => $host->getEntityTypeId(),
         'host_id' => $host->id(),
-      ]));
+      ]))->toString();
 
       $link .= '</li></ul>';
     }

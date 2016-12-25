@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\FieldCollectionItemFormController.
- */
-
 namespace Drupal\field_collection;
 
 use Drupal\Core\Entity\ContentEntityForm;
@@ -24,11 +19,11 @@ class FieldCollectionItemForm extends ContentEntityForm {
 
     /*
     // Basic item information.
-    foreach (array('revision_id', 'id', 'field_name') as $key) {
-      $form[$key] = array(
+    foreach (['revision_id', 'id', 'field_name'] as $key) {
+      $form[$key] = [
         '#type' => 'value',
         '#value' => $field_collection_item->$key->value,
-      );
+      ];
     }
 
     $language_configuration = module_invoke('language', 'get_default_configuration', 'field_collection_item', $field_collection_item->field_name->value);
@@ -39,13 +34,13 @@ class FieldCollectionItemForm extends ContentEntityForm {
       $field_collection_item->langcode->value = $language_default->langcode;
     }
 
-    $form['langcode'] = array(
+    $form['langcode'] = [
       '#title' => t('Language'),
       '#type' => 'language_select',
       '#default_value' => $field_collection_item->langcode->value,
       '#languages' => LANGUAGE_ALL,
       '#access' => isset($language_configuration['language_show']) && $language_configuration['language_show'],
-    );
+    ];
     */
 
     return parent::form($form, $form_state);
@@ -91,14 +86,14 @@ class FieldCollectionItemForm extends ContentEntityForm {
 
       $messages = drupal_get_messages(NULL, false);
       if (!isset($messages['warning']) && !isset($messages['error'])) {
-        drupal_set_message(t('Successfully added a @type.', array('@type' => $field_collection_item->bundle())));
+        drupal_set_message(t('Successfully added a @type.', ['@type' => $field_collection_item->bundle()]));
       }
     }
     else {
       $messages = drupal_get_messages(NULL, false);
       if (!isset($messages['warning']) && !isset($messages['error'])) {
         $field_collection_item->save();
-        drupal_set_message(t('Successfully edited %label.', array('%label' => $field_collection_item->label())));
+        drupal_set_message(t('Successfully edited %label.', ['%label' => $field_collection_item->label()]));
       }
     }
 
@@ -117,8 +112,8 @@ class FieldCollectionItemForm extends ContentEntityForm {
     /*
     $form_state->setRedirect(
       'field_collection_item.view',
-      array('field_collection_item' => $field_collection_item->id()
-    ));
+      ['field_collection_item' => $field_collection_item->id()
+    ]);
     */
   }
 

@@ -19,7 +19,7 @@ use Drupal\views;
 function field_collection_field_views_data(FieldStorageConfigInterface $field_storage) {
   $data = views_field_default_views_data($field_storage);
   $storage = _views_field_get_entity_type_storage($field_storage);
-  /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */ 
+  /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
   $table_mapping = $storage->getTableMapping();
 
   $entity_type_id = $field_storage->getTargetEntityTypeId();
@@ -29,19 +29,19 @@ function field_collection_field_views_data(FieldStorageConfigInterface $field_st
 
   foreach ($data as $table_name => $table_data) {
     foreach ($table_data as $table_field_name => $field_data) {
-      // Only operate on the _value columns.
-      if (strrpos($table_field_name, '_value') === (strlen($table_field_name) - strlen('_value'))) {
-        $data[$table_name][$table_field_name]['relationship'] = array(
+      // Only operate on the _target_id columns.
+      if (strrpos($table_field_name, '_target_id') === (strlen($table_field_name) - strlen('_target_id'))) {
+        $data[$table_name][$table_field_name]['relationship'] = [
           'id' => 'field_collection_handler_relationship',
           'base' => 'field_collection_item',
           'base field' => 'item_id',
-          'label' => t('field collection item from @field_name', array('@field_name' => $field_name)),
+          'label' => t('field collection item from @field_name', ['@field_name' => $field_name]),
           'field name' => $field_name,
           'target entity type' => $entity_type_id,
-        );
+        ];
       }
-    } 
-  } 
+    }
+  }
 
   $args['@entity'] = $entity_type->getLabel()->render();
   $args['@entity'] = ($args['@entity'] == t('Content')) ? t('Node') : $args['@entity'];
@@ -49,7 +49,7 @@ function field_collection_field_views_data(FieldStorageConfigInterface $field_st
   $args['@field_name'] = $field_name;
   $pseudo_field_name = $field_name . '_' . $entity_type_id;
 
-  $data['field_collection_item'][$pseudo_field_name]['relationship'] = array(
+  $data['field_collection_item'][$pseudo_field_name]['relationship'] = [
     'title' => t('Host entity of @field (@field_name)', $args),
     'label' => t('@field_name', $args),
     'group' => $entity_type->getLabel(),
@@ -59,9 +59,8 @@ function field_collection_field_views_data(FieldStorageConfigInterface $field_st
     'base field' => $entity_type->getKey('id'),
     'field_name' => $field_name,
     'field table' => $table_mapping->getDedicatedDataTableName($field_storage),
-    'field field' => $field_name . '_value',
-  );
- 
+    'field field' => $field_name . '_target_id',
+  ];
 
   return $data;
 }

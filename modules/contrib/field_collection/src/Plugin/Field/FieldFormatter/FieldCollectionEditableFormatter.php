@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\Plugin\Field\FieldFormatter\FieldCollectionEditableFormatter
- */
-
 namespace Drupal\field_collection\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
@@ -27,14 +22,16 @@ class FieldCollectionEditableFormatter extends FieldCollectionLinksFormatter {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $count = 0; // TODO: Is there a better way to get an accurate count of the
                 // items from the FileItemList that doesn't count blank items?
-    $render_items = array();
+    $render_items = [];
     foreach ($items as $delta => $item) {
-      if ($item->value !== NULL) {
+      if ($item->target_id !== NULL) {
         $count++;
         $to_render = \Drupal::entityTypeManager()->getViewBuilder('field_collection_item')->view($item->getFieldCollectionItem());
 
         $to_render['#suffix'] = $this->getEditLinks($item);
-        $render_items[] = $to_render;
+        $builder = $to_render['#pre_render'][0][0];
+        unset($to_render['#pre_render']);
+        $render_items[] = $builder->build($to_render);
       }
     }
 

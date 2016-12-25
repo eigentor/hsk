@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\Form\FieldCollectionItemDeleteForm.
- */
-
 namespace Drupal\field_collection\Form;
 
 use Drupal\Core\Entity\ContentEntityConfirmFormBase;
@@ -19,7 +14,7 @@ class FieldCollectionItemDeleteForm extends ContentEntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return t('Are you sure you want to delete this %title?', array('%title' => $this->entity->label()));
+    return t('Are you sure you want to delete this %title?', ['%title' => $this->entity->label()]);
   }
 
   /**
@@ -42,17 +37,24 @@ class FieldCollectionItemDeleteForm extends ContentEntityConfirmFormBase {
     $host->save();
     $this->entity->delete();
 
-    $this->logger('content')->notice('@type: deleted %id.', array(
-      '@type' => $this->entity->bundle(),
-      '%id' => $this->entity->id())
-    );
+    $this
+      ->logger('content')
+      ->notice(
+        '@type: deleted %id.',
+        [
+          '@type' => $this->entity->bundle(),
+          '%id' => $this->entity->id()
+        ]);
 
     $node_type_storage = $this->entityTypeManager->getStorage('field_collection');
     $node_type = $node_type_storage->load($this->entity->bundle())->label();
 
-    drupal_set_message(t('@type %id has been deleted.', array(
-      '@type' => $node_type,
-      '%id' => $this->entity->id())));
+    drupal_set_message(t(
+      '@type %id has been deleted.',
+      [
+        '@type' => $node_type,
+        '%id' => $this->entity->id()
+      ]));
 
     $form_state->setRedirectUrl($host->toUrl());
   }

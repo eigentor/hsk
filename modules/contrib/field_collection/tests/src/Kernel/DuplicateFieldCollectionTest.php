@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\field_collection\Kernel\DuplicateFieldCollectionTest.
- */
-
 namespace Drupal\Tests\field_collection\Kernel;
 
 use Drupal\field\Entity\FieldStorageConfig;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\FieldCollectionForm.
- */
-
 namespace Drupal\field_collection;
 
 use Drupal\Core\Entity\EntityForm;
@@ -31,17 +26,17 @@ class FieldCollectionForm extends EntityForm {
       drupal_set_message(t('To add a field collection create a field of type field collection on the host entity type.'));
     }
     else {
-      $form['#title'] = $this->t('Edit %label field collection', array('%label' => $field_collection->label()));
+      $form['#title'] = $this->t('Edit %label field collection', ['%label' => $field_collection->label()]);
 
       // TODO: Add links to edit the field for this collection in each of its
       // host bundles.
-      $form['help'] = array(
+      $form['help'] = [
         '#type' => 'markup',
-        '#markup' => t('<p>There are no options to edit for field collection bundles.</p><p><a href="@url">Manage fields inside this collection.</a></p>', array(
+        '#markup' => t('<p>There are no options to edit for field collection bundles.</p><p><a href="@url">Manage fields inside this collection.</a></p>', [
           '@url' => Url::fromRoute('entity.field_collection_item.field_ui_fields', [
             $field_collection->getEntityTypeId() => $field_collection->id()
           ]),
-        )));
+        ])];
     }
 
     return $form;

@@ -24,7 +24,7 @@ function field_collection_help($route_name, RouteMatchInterface $route_match) {
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('The field collection module provides a field, to which any number of fields can be attached. See the <a href="@field-help">Field module help page</a> for more information about fields.', [
-        '@field-help' => Url::fromRoute('help.page', ['name' => 'field']),
+        '@field-help' => Url::fromRoute('help.page', ['name' => 'field'])->toString(),
       ]) . '</p>';
       return $output;
   }
@@ -42,9 +42,8 @@ function field_collection_field_storage_config_insert(FieldStorageConfigInterfac
       ->count()
       ->execute();
     if (!$field_collection_exists) {
-      $field_collection = new FieldCollection();
-      $field_collection->set('label', $field->getName());
-      $field_collection->set('id', $field->getName());
+      $values = ['label' => $field->getName(), 'id' => $field->getName()];
+      $field_collection = \Drupal::service('entity.manager')->getStorage('field_collection')->create($values);
       $field_collection->enforceIsNew();
       $field_collection->save();
     }
@@ -74,28 +73,20 @@ function field_collection_field_storage_config_insert(FieldStorageConfigInterfac
  */
 function field_collection_field_storage_config_delete(EntityInterface $field) {
   if ($field->getType() == 'field_collection') {
+    // If this was called through field API bulk data deletion there may still
+    // be a few field collection items from field data that hasn't been purged
+    // yet.  Delete them here because Entity::delete() won't work after the
+    // bundle is deleted.
+    $field_collection_item_ids = \Drupal::entityQuery('field_collection_item')
+      ->condition('field_name', $field->getName())
+      ->execute();
+    $controller = \Drupal::entityTypeManager()->getStorage('field_collection_item');
+    $field_collection_items = $controller->loadMultiple($field_collection_item_ids);
+    $controller->delete($field_collection_items);
+
+    // Do the bundle delete.
     $field_collection_bundle = FieldCollection::load($field->getName());
     $field_collection_bundle->delete();
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_predelete() for field_config.
- *
- * Delete field collection item entities when their corrosponding field
- * collection field is deleted.
- *
- * TODO: Perform the operation in batches because it will fail when there is
- * too much data.  See @link field_purge Field API bulk data deletion @endlink
- * for inspiration.
- */
-function field_collection_field_config_predelete(EntityInterface $field) {
-  if ($field->getType() == 'field_collection') {
-    // @todo This is not how you interpolate variables into a db_query().
-    $field_collection_item_ids = \Drupal::database()->query('SELECT `entity_id` FROM {' . $field->getTargetEntityTypeId() . '__' . $field->getName() . '} WHERE `bundle` = \'' . $field->getTargetBundle() . '\' ')->fetchCol();
-    $controller = \Drupal::entityTypeManager()->getStorage('field_collection_item');
-    $entities = $controller->loadMultiple($field_collection_item_ids);
-    $controller->delete($entities);
   }
 }
 
@@ -120,11 +111,14 @@ function field_collection_page_attachments(array &$attachments) {
 function field_collection_form_field_config_edit_form_alter(&$form, FormStateInterface $form_state) {
   if ($form_state->getFormObject()->getEntity()->getType() == 'field_collection') {
     unset($form['default_value']['widget']);
-    $form['default_value']['#description'] = t('To specify a default value, configure it via the regular default value setting of each field that is part of the field collection. To do so, go to the <a href=":url/fields">manage fields</a> screen of the field collection.', array(
-      ':url' => Url::fromRoute('entity.field_collection.edit_form', array(
-        'field_collection' => $form_state->getFormObject()->getEntity()->getName()
-      ))->setAbsolute()->toString(),
-    ));
+    $url = Url::fromRoute(
+      'entity.field_collection.edit_form',
+      ['field_collection' => $form_state->getFormObject()->getEntity()->getName()])
+        ->setAbsolute()
+        ->toString();
+
+    $form['default_value']['#description'] =
+      t('To specify a default value, configure it via the regular default value setting of each field that is part of the field collection. To do so, go to the <a href=":url/fields">manage fields</a> screen of the field collection.', [':url' => $url]);
   }
 }
 
@@ -162,18 +156,18 @@ function _field_collection_field_item_list_full(FieldItemListInterface $field_li
  * Implements hook_theme to define field_collection templates
  */
 function field_collection_theme() {
-  return array(
-    'field_collection_item' => array(
+  return [
+    'field_collection_item' => [
       'render element' => 'item',
-    ),
-  );
+    ],
+  ];
 }
 
 /**
  * Implements hook_theme_suggestions_HOOK().
  */
 function field_collection_theme_suggestions_field_collection_item(array $variables) {
-  $suggestions = array();
+  $suggestions = [];
   $item = $variables['item']['#field_collection_item'];
 
   $sanitized_view_mode = strtr($variables['item']['#view_mode'], '.', '_');
@@ -206,7 +200,7 @@ function template_preprocess_field_collection_item(&$variables) {
   ];
 
   // Provide field_collection_item $content variable for the template.
-  $variables += array('content' => array());
+  $variables += ['content' => []];
   foreach (Element::children($variables['item']) as $key) {
     $variables['content'][$key] = $variables['item'][$key];
   }

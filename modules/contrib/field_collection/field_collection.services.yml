@@ -15,3 +15,9 @@ services:
     arguments: ['@user.permissions']
     tags:
       - { name: access_check, applies_to: _access_field_collection_item_host_revisions }
+
+  field_collection.normalizer.field_collection_item:
+    class: Drupal\field_collection\Normalizer\FieldCollectionItemNormalizer
+    arguments: ['@entity.manager']
+    tags:
+      - { name: normalizer, priority: 20 }

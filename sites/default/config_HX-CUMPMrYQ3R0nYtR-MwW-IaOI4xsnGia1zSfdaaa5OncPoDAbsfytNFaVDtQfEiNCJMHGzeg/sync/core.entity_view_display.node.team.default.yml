@@ -1,0 +1,33 @@
+uuid: 13ad72d7-cee1-4bbc-83fa-d56c48970fe6
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.node.team.body
+    - field.field.node.team.field_team_leader
+    - node.type.team
+  module:
+    - text
+    - user
+id: node.team.default
+targetEntityType: node
+bundle: team
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+  field_team_leader:
+    weight: 102
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  links:
+    weight: 100
+hidden:
+  langcode: true

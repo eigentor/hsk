@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\FieldCollectionInterface.
- */
-
 namespace Drupal\field_collection;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;

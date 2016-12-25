@@ -92,7 +92,7 @@ display:
           id: field_sl_text_link
           table: field_collection_item__field_sl_text_link
           field: field_sl_text_link
-          relationship: field_sl_image_value
+          relationship: field_sl_image_target_id
           group_type: group
           admin_label: ''
           label: ''
@@ -159,7 +159,7 @@ display:
           id: field_fc_sl_image
           table: field_collection_item__field_fc_sl_image
           field: field_fc_sl_image
-          relationship: field_sl_image_value
+          relationship: field_sl_image_target_id
           group_type: group
           admin_label: ''
           label: ''
@@ -223,7 +223,7 @@ display:
           id: field_sl_text
           table: field_collection_item__field_sl_text
           field: field_sl_text
-          relationship: field_sl_image_value
+          relationship: field_sl_image_target_id
           group_type: group
           admin_label: ''
           label: ''
@@ -307,10 +307,10 @@ display:
       footer: {  }
       empty: {  }
       relationships:
-        field_sl_image_value:
-          id: field_sl_image_value
+        field_sl_image_target_id:
+          id: field_sl_image_target_id
           table: node__field_sl_image
-          field: field_sl_image_value
+          field: field_sl_image_target_id
           relationship: none
           group_type: group
           admin_label: 'field collection item from field_sl_image'

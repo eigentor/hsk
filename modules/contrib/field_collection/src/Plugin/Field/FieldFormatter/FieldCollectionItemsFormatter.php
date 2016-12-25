@@ -1,13 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\Plugin\Field\FieldFormatter\FieldCollectionItemsFormatter
- */
-
 namespace Drupal\field_collection\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceEntityFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 
 /**
@@ -21,18 +16,23 @@ use Drupal\Core\Field\FieldItemListInterface;
  *   },
  * )
  */
-class FieldCollectionItemsFormatter extends FormatterBase {
+class FieldCollectionItemsFormatter extends EntityReferenceEntityFormatter {
 
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $render_items = array();
-    foreach ($items as $delta => $item) {
-      if ($item->value !== NULL) {
-        $render_items[] = \Drupal::entityTypeManager()->getViewBuilder('field_collection_item')->view($item->getFieldCollectionItem());
-      }
+    $render_items = parent::viewElements($items, $langcode);
+
+    // Make subfields accessible via twig.
+    // For example, in field--field-collection.html.twig:
+    // {{ items[0].content.field_aaa }}
+    foreach($render_items as $delta => $item) {
+      $builder = $item['#pre_render'][0][0];
+      unset($item['#pre_render']);
+      $render_items[$delta] = $builder->build($item);
     }
+
     return $render_items;
   }
 }

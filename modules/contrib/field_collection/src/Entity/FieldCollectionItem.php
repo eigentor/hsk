@@ -1,16 +1,13 @@
 <?php
 
-/**
- * @file
- * Definition of \Drupal\field_collection\Entity\FieldCollectionItem.
- */
-
 namespace Drupal\field_collection\Entity;
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityBase;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field_collection\FieldCollectionItemInterface;
 
 /**
@@ -68,6 +65,13 @@ class FieldCollectionItem extends ContentEntityBase implements FieldCollectionIt
   protected $host_id;
 
   /**
+   * The revision id of the host entity.
+   *
+   * @var int
+   */
+  protected $host_revision_id;
+
+  /**
    * Implements Drupal\Core\Entity\EntityInterface::id().
    */
   public function id() {
@@ -86,10 +90,10 @@ class FieldCollectionItem extends ContentEntityBase implements FieldCollectionIt
       return parent::label();
     }
     else {
-      return t('@label @delta of @host',
-               array('@label' => $field_label,
-                     '@delta' => $this->getDelta(),
-                     '@host' => $this->getHost()->label()));
+      return t('@label @delta of @host', [
+        '@label' => $field_label,
+        '@delta' => $this->getDelta(),
+        '@host' => $this->getHost()->label()]);
     }
   }
 
@@ -181,10 +185,10 @@ class FieldCollectionItem extends ContentEntityBase implements FieldCollectionIt
       $delta = $this->getDelta();
       $value = $host_entity->{$this->bundle()}->getValue();
       if (isset($delta)) {
-        $value[$delta] = array('field_collection_item' => $this);
+        $value[$delta] = ['entity' => $this];
       }
       else {
-        $value[] = array('field_collection_item' => $this);
+        $value[] = ['entity' => $this];
       }
       $host_entity->{$this->bundle()}->setValue($value);
 
@@ -196,20 +200,10 @@ class FieldCollectionItem extends ContentEntityBase implements FieldCollectionIt
    * {@inheritdoc}
    */
   public function delete() {
-    if ($this->getHost()) {
+    if (empty($this->field_collection_deleting) && $this->getHost()) {
       $this->deleteHostEntityReference();
     }
     parent::delete();
-  }
-
-  /**
-   * Overrides \Drupal\Core\Entity\Entity::createDuplicate().
-   */
-  public function createDuplicate() {
-    $duplicate = parent::createDuplicate();
-    $duplicate->revision_id->value = NULL;
-    $duplicate->id->value = NULL;
-    return $duplicate;
   }
 
   /**
@@ -222,7 +216,7 @@ class FieldCollectionItem extends ContentEntityBase implements FieldCollectionIt
       unset($host->{$this->bundle()}[$delta]);
       // Do not save when the host entity is being deleted. See
       // \Drupal\field_collection\Plugin\Field\FieldType\FieldCollection::delete().
-      if (empty($host->field_collection_deleting)) {
+      if (empty($this->field_collection_deleting)) {
         $host->save();
       }
     }
@@ -239,13 +233,13 @@ class FieldCollectionItem extends ContentEntityBase implements FieldCollectionIt
    * Overrides \Drupal\Core\Entity\Entity::uri().
    */
   public function uri() {
-    $ret = array(
+    $ret = [
       'path' => 'field-collection-item/' . $this->id(),
-      'options' => array(
+      'options' => [
         'entity_type' => $this->entityType,
         'entity' => $this,
-      )
-    );
+      ]
+    ];
 
     return $ret;
   }
@@ -254,14 +248,12 @@ class FieldCollectionItem extends ContentEntityBase implements FieldCollectionIt
    * {@inheritdoc}
    */
   public function getDelta() {
-    $host = $this->getHost();
-
     if (($host = $this->getHost()) && isset($host->{$this->bundle()})) {
       foreach ($host->{$this->bundle()} as $delta => $item) {
-        if (isset($item->value) && $item->value == $this->id()) {
+        if (isset($item->target_id) && $item->target_id == $this->id()) {
           return $delta;
         }
-        elseif (isset($item->field_collection_item) && $item->field_collection_item === $this) {
+        elseif (isset($item->entity) && $item->entity === $this) {
           return $delta;
         }
       }
@@ -272,12 +264,21 @@ class FieldCollectionItem extends ContentEntityBase implements FieldCollectionIt
    * {@inheritdoc}
    */
   public function getHost($reset = FALSE) {
+    $host_type = $this->host_type->value;
+    $entity_info = $this->entityTypeManager()->getDefinition($host_type, TRUE);
+
     if ($id = $this->getHostId()) {
-      $storage = $this->entityTypeManager()->getStorage($this->host_type->value);
+      $storage = $this->entityTypeManager()->getStorage($host_type);
       if ($reset) {
         $storage->resetCache([$id]);
       }
-      return $storage->load($id);
+
+      $host_entity = $storage->load($id);
+      if($entity_info->isRevisionable() && ($rev_id = $this->getHostRevisionId()) && $rev_id != $host_entity->getRevisionId()) {
+          $host_entity = $storage->loadRevision($rev_id);
+      }
+
+      return $host_entity;
     }
     else {
       return NULL;
@@ -290,19 +291,47 @@ class FieldCollectionItem extends ContentEntityBase implements FieldCollectionIt
   public function getHostId() {
     if (!isset($this->host_id)) {
       $entity_info = $this->entityTypeManager()->getDefinition($this->host_type->value, TRUE);
-      $table = $entity_info->get('base_table') . '__' . $this->bundle();
-
-      if (Database::getConnection()->schema()->tableExists($table)) {
-        // @todo This is not how you interpolate variables into a db_query().
-        $host_id_results = \Drupal::database()->query('SELECT `entity_id` FROM {' . $table . '} ' . 'WHERE `' . $this->bundle() . '_value` = ' . $this->id())->fetchCol();
-        $this->host_id = reset($host_id_results);
-      }
-      else {
-        $this->host_id = NULL;
-      }
+      $host_id_results = \Drupal::entityQuery($entity_info->id())
+        ->condition($this->bundle(), $this->id())
+        ->execute();
+      $this->host_id = reset($host_id_results);
     }
 
     return $this->host_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getHostRevisionId() {
+    $host_type = $this->host_type->value;
+    $entity_info = $this->entityTypeManager()->getDefinition($host_type, TRUE);
+
+    if (!isset($this->host_revision_id) && $entity_info->isRevisionable()) {
+
+      /** @var SqlContentEntityStorage $storage */
+      $storage = $this->entityTypeManager()->getStorage($host_type);
+
+      // generate revision table name of the current field
+      $field_storage = FieldStorageConfig::loadByName($host_type, $this->bundle());
+      $table = $storage->getTableMapping()->getDedicatedRevisionTableName($field_storage);
+
+      // fetch entity + revision id of the related host
+      $query = \Drupal::database()->select($table, 'base');
+      $query->addExpression('base.entity_id', 'entity_id');
+      $query->addExpression('base.revision_id', 'revision_id');
+      $query->condition('base.'.$this->bundle().'_target_id', $this->id());
+      $query->condition('base.'.$this->bundle().'_revision_id', $this->getRevisionId());
+      $query->range(0, 1);
+      $result = $query->execute()->fetch();
+
+      $this->host_revision_id = $result->revision_id;
+      if ($this->host_revision_id) {
+        $this->host_id = $result->entity_id;
+      }
+    }
+
+    return $this->host_revision_id;
   }
 
   /**
@@ -335,7 +364,8 @@ class FieldCollectionItem extends ContentEntityBase implements FieldCollectionIt
           drupal_set_message(t('Field is already full.'), 'error');
         }
         else {
-          $entity->{$this->bundle()}[] = array('field_collection_item' => $this);
+          $bundle = $this->bundle();
+          $entity->$bundle->appendItem(['entity' => $this]);
           $entity->save();
         }
       }

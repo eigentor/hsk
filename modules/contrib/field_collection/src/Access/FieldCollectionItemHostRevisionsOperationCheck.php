@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\Access\FieldCollectionItemHostRevisionsOperationCheck.
- */
-
 namespace Drupal\field_collection\Access;
 
 use Drupal\Core\Access\AccessResult;

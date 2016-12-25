@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\Controller\FieldCollectionItemController.
- */
-
 namespace Drupal\field_collection\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -38,16 +33,16 @@ class FieldCollectionItemController extends ControllerBase {
     $host = $this->entityTypeManager()->getStorage($host_type)->load($host_id);
     if (_field_collection_field_item_list_full($host->{$field_collection->id()})) {
       drupal_set_message(t('This field is already full.'), 'error');
-      return array('#markup' => 'Can not add to an already full field.');
+      return ['#markup' => 'Can not add to an already full field.'];
     }
     else {
       $field_collection_item = $this->entityTypeManager()
         ->getStorage('field_collection_item')
-        ->create(array(
+        ->create([
           'field_name' => $field_collection->id(),
           'host_type' => $host_type,
           'revision_id' => 0,
-        ));
+        ]);
 
       $form = $this->entityFormBuilder()->getForm($field_collection_item);
       return $form;
@@ -78,9 +73,9 @@ class FieldCollectionItemController extends ControllerBase {
    *   An array suitable for drupal_render().
    */
   protected function buildPage(FieldCollectionItem $field_collection_item) {
-    $ret = array('field_collection_items' => $this->entityTypeManager()
+    $ret = ['field_collection_items' => $this->entityTypeManager()
       ->getViewBuilder('field_collection_item')
-      ->view($field_collection_item));
+      ->view($field_collection_item)];
 
     return $ret;
   }
@@ -108,7 +103,7 @@ class FieldCollectionItemController extends ControllerBase {
    *   The page title.
    */
   public function addPageTitle(FieldCollection $field_collection) {
-    return $this->t('Create @label', array('@label' => $field_collection->label()));
+    return $this->t('Create @label', ['@label' => $field_collection->label()]);
   }
 
   /**
@@ -148,7 +143,7 @@ class FieldCollectionItemController extends ControllerBase {
       ->getStorage('field_collection_item')
       ->loadRevision($field_collection_item_revision);
 
-    return $this->t('Revision %revision of %title', array('%revision' => $field_collection_item_revision, '%title' => $field_collection_item->label()));
+    return $this->t('Revision %revision of %title', ['%revision' => $field_collection_item_revision, '%title' => $field_collection_item->label()]);
   }
 
 }

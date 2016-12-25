@@ -1,16 +1,16 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_collection\Plugin\Field\FieldType\FieldCollection.
- */
-
 namespace Drupal\field_collection\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
-use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\field_collection\Entity\FieldCollectionItem;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\TypedData\DataReferenceDefinition;
+use Drupal\Core\TypedData\DataReferenceTargetDefinition;
+use Drupal\Core\TypedData\DataDefinition;
+use Drupal\Core\Entity\TypedData\EntityDataDefinition;
 
 /**
  * Plugin implementation of the 'field_collection' field type.
@@ -29,10 +29,11 @@ use Drupal\field_collection\Entity\FieldCollectionItem;
  *   instance_settings = {
  *   },
  *   default_widget = "field_collection_embed",
- *   default_formatter = "field_collection_list"
+ *   default_formatter = "field_collection_list",
+ *   list_class = "\Drupal\field_collection\FieldCollectionItemList",
  * )
  */
-class FieldCollection extends FieldItemBase {
+class FieldCollection extends EntityReferenceItem {
 
   /**
    * Cache for whether the host is a new revision.
@@ -47,45 +48,99 @@ class FieldCollection extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public static function schema(FieldStorageDefinitionInterface $field) {
+  public static function defaultStorageSettings() {
     return array(
-      'columns' => array(
-        'value' => array(
+      'target_type' => 'field_collection_item',
+    ) + parent::defaultStorageSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function schema(FieldStorageDefinitionInterface $field) {
+    return [
+      'columns' => [
+        'target_id' => [
           'type' => 'int',
-          'not null' => TRUE
-        ),
-        'revision_id' => array(
+          'unsigned' => TRUE,
+          'description' => 'The ID of the field collection item.',
+          'not null' => TRUE,
+        ],
+        'revision_id' => [
           'type' => 'int',
-          'not null' => FALSE
-        ),
-      ),
-    );
+          'not null' => FALSE,
+        ],
+      ],
+      'indexes' => [
+        'target_id' => ['target_id'],
+      ],
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
-    $properties['value'] = DataDefinition::create('integer')
-      ->setLabel(t('Field collection item ID'))
+    $properties['target_id'] = DataReferenceTargetDefinition::create('integer')
+      ->setLabel(t('The ID of the field collection item.'))
       ->setSetting('unsigned', TRUE)
+      ->setRequired(TRUE)
       ->setReadOnly(TRUE);
 
     $properties['revision_id'] = DataDefinition::create('integer')
       ->setLabel(t('Field collection item revision'))
-      ->setSetting('unsigned', TRUE)
       ->setReadOnly(TRUE);
+
+    $properties['entity'] = DataReferenceDefinition::create('entity')
+      ->setLabel(t('Field collection item'))
+      ->setDescription(t('The referenced field collection item'))
+      // The field collection item object is computed out of the entity ID.
+      ->setComputed(TRUE)
+      ->setReadOnly(TRUE)
+      ->setTargetDefinition(EntityDataDefinition::create('field_collection_item'))
+      ->addConstraint('EntityType', 'field_collection_item');
 
     return $properties;
   }
 
-  public function getFieldCollectionItem($create = FALSE) {
-    if (isset($this->field_collection_item)) {
-      return $this->field_collection_item;
+  /**
+   * Override EntityReferenceItem storage settings form.
+   *
+   * The target type setting from EntityReferenceItem does not apply to field
+   * collections so override the settings form with a blank one.
+   */
+  public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
+    return array();
+  }
+
+  /**
+   * Override EntityReferenceItem field settings form.
+   *
+   * These options do not apply to field collections.
+   */
+  public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
+    $form = parent::fieldSettingsForm($form, $form_state);
+
+    $form['handler']['#access'] = FALSE;
+    $form['handler']['handler_settings']['target_bundles']['#access'] = FALSE;
+    $form['handler']['handler_settings']['target_bundles']['#default_value'] = array($this->getFieldDefinition()->getName() => $this->getFieldDefinition()->getName());
+    $form['handler']['handler_settings']['auto_create']['#access'] = FALSE;
+    $form['handler']['handler']['#access'] = FALSE;
+    $form['handler']['handler_settings']['sort']['field']['#access'] = FALSE;
+
+    return $form;
+  }
+
+  /**
+   * @TODO
+   */
+  public function getFieldCollectionItem($create = FALSE, $use_reference = TRUE) {
+    if ($use_reference && isset($this->entity)) {
+      return $this->entity;
     }
-    elseif (isset($this->value)) {
+    elseif (isset($this->target_id)) {
       // By default always load the default revision, so caches get used.
-      $field_collection_item = FieldCollectionItem::load($this->value);
+      $field_collection_item = FieldCollectionItem::load($this->target_id);
       if ($field_collection_item !== NULL && $field_collection_item->getRevisionId() != $this->revision_id) {
         // A non-default revision is a referenced, so load this one.
         $field_collection_item = \Drupal::entityTypeManager()->getStorage('field_collection_item')->loadRevision($this->revision_id);
@@ -107,9 +162,10 @@ class FieldCollection extends FieldItemBase {
 
   public function delete() {
     $field_collection_item = $this->getFieldCollectionItem();
-    // Set a flag to remember that the host entity is being deleted. See
-    // \Drupal\field_collection\Entity\FieldCollectionItem::deleteHostEntityReference().
     if ($field_collection_item !== NULL) {
+      // Set a flag so the field collection item entity knows that the field in
+      // its host is already being taken care of.
+      // See \Drupal\field_collection\Entity\FieldCollectionItem::delete().
       $field_collection_item->field_collection_deleting = TRUE;
       $field_collection_item->delete();
     }
@@ -127,33 +183,28 @@ class FieldCollection extends FieldItemBase {
   public function preSave() {
 
     if ($field_collection_item = $this->getFieldCollectionItem()) {
-      // TODO: Handle node cloning
-      /*
-      if (!empty($host_entity->is_new) && empty($entity->is_new)) {
+      $host = $this->getEntity();
+
+      // Handle node cloning
+      if($host->isNew() && !$field_collection_item->isNew()) {
         // If the host entity is new but we have a field_collection that is not
         // new, it means that its host is being cloned. Thus we need to clone
         // the field collection entity as well.
-        $new_entity = clone $entity;
-        $new_entity->item_id = NULL;
-        $new_entity->revision_id = NULL;
-        $new_entity->is_new = TRUE;
-        $entity = $new_entity;
+        $field_collection_item = $field_collection_item->createDuplicate();
       }
-      */
 
       // TODO: Handle deleted items
       /*
       $field_name = $this->getFieldDefinition()->field_name;
       $host_original = $host->original;
-      $items_original = !empty($host_original->$field_name) ? $host_original->$field_name : array();
+      $items_original = !empty($host_original->$field_name) ? $host_original->$field_name : [];
       $original_by_id = array_flip(field_collection_field_item_to_ids($items_original));
       foreach ($items as &$item) {
       */
 
-
       // TODO: Handle deleted items
       /*
-        unset($original_by_id[$item['value']]);
+        unset($original_by_id[$item['target_id']]);
       }
       // If there are removed items, care about deleting the item entities.
       if ($original_by_id) {
@@ -162,8 +213,8 @@ class FieldCollection extends FieldItemBase {
         // marked as archived now.
         if (!empty($host_entity->revision)) {
           db_update('field_collection_item')
-            ->fields(array('archived' => 1))
-            ->condition('item_id', $ids, 'IN')
+            ->fields(['archived' => 1])
+            ->condition('target_id', $ids, 'IN')
             ->execute();
         }
         else {
@@ -176,11 +227,10 @@ class FieldCollection extends FieldItemBase {
       }
       */
 
-      $this->newHostRevision = $this->getEntity()->isNewRevision();
+      $this->newHostRevision = $host->isNewRevision();
 
       // If the host entity is saved as new revision, do the same for the item.
       if ($this->newHostRevision) {
-        $host = $this->getEntity();
 
         $field_collection_item->setNewRevision();
 
@@ -190,7 +240,7 @@ class FieldCollection extends FieldItemBase {
         // incorrectly return false here when creating a new published revision
         if (!isset($cleared_host_entity_cache)) {
           list($entity_id) = entity_extract_ids($host_entity_type, $host_entity);
-          entity_get_controller($host_entity_type)->resetCache(array($entity_id));
+          entity_get_controller($host_entity_type)->resetCache([$entity_id]);
           $cleared_host_entity_cache = true;
         }
         */
@@ -206,7 +256,7 @@ class FieldCollection extends FieldItemBase {
       }
 
       $field_collection_item->save(TRUE);
-      $this->value = $field_collection_item->id();
+      $this->target_id = $field_collection_item->id();
       $this->revision_id = $field_collection_item->getRevisionId();
     }
   }
@@ -215,13 +265,24 @@ class FieldCollection extends FieldItemBase {
    * {@inheritdoc}
    */
   public function isEmpty() {
-    if ($this->value) {
+    if ($this->target_id) {
       return FALSE;
     }
     else if ($this->getFieldCollectionItem()) {
       return $this->getFieldCollectionItem()->isEmpty();
     }
     return TRUE;
+  }
+
+  /**
+   * No preconfigured options.
+   *
+   * This overrides the EntityReferenceItem version because that would allow
+   * FieldCollectionItem fields to be created that could point to entities
+   * other than FieldCollectionItems.
+   */
+  public static function getPreconfiguredOptions() {
+    return array();
   }
 
 }
