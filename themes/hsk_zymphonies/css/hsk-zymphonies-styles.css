@@ -779,6 +779,20 @@ ul.tabs.primary {
 .block-place-region a.button {
   display: inline-block; }
 
+.node__content table {
+  font-size: 13px;
+  font-size: 1rem; }
+  .node__content table th, .node__content table td {
+    text-align: center;
+    padding: 2px 6px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    font-size: 1rem; }
+    .node__content table th font, .node__content table td font {
+      font-size: 14px !important; }
+  .node__content table th {
+    background: #eee; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -796,17 +810,6 @@ ul.tabs.primary {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 1024px) {
-  .tabs.primary {
-    position: relative;
-    min-height: 1px;
-    padding-left: 15px;
-    padding-right: 15px; } }
-  @media only screen and (min-width: 1024px) and (min-width: 992px) {
-    .tabs.primary {
-      float: left;
-      width: 100%; } }
-
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
