@@ -1,0 +1,23 @@
+uuid: 101bd307-7c80-4526-854b-c643e7d58b9f
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_results_standings
+    - node.type.team
+  module:
+    - link
+id: node.team.field_results_standings
+field_name: field_results_standings
+entity_type: node
+bundle: team
+label: 'Ergebnisse / Tabelle'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

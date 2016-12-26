@@ -1,0 +1,21 @@
+uuid: e02b6bee-ac2b-4a0b-9a8c-8c2af82ad45a
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_league
+field_name: field_league
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

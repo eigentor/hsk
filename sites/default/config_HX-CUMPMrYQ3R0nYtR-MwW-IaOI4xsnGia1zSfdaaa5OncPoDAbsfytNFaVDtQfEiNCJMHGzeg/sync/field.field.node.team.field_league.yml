@@ -1,0 +1,19 @@
+uuid: 9aff0d6f-1138-427f-95a1-d9509a48b42c
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_league
+    - node.type.team
+id: node.team.field_league
+field_name: field_league
+entity_type: node
+bundle: team
+label: Liga
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
