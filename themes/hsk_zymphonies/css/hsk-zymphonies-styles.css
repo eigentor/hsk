@@ -779,18 +779,16 @@ ul.tabs.primary {
 .block-place-region a.button {
   display: inline-block; }
 
-.node__content table {
+table {
   font-size: 13px;
   font-size: 1rem; }
-  .node__content table th, .node__content table td {
+  table th, table td {
     text-align: center;
     padding: 2px 6px;
     border: 1px solid #ccc;
     font-size: 13px;
     font-size: 1rem; }
-    .node__content table th font, .node__content table td font {
-      font-size: 14px !important; }
-  .node__content table th {
+  table th {
     background: #eee; }
 
 /*------------------------------------------- */
@@ -810,6 +808,15 @@ ul.tabs.primary {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 1024px) {
+  table {
+    font-size: 11.7px;
+    font-size: 0.9rem; }
+    table th, table td {
+      font-size: 11.7px;
+      font-size: 0.9rem; }
+      table th font, table td font {
+        font-size: 14px !important; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -898,12 +905,12 @@ ul.tabs.primary {
       margin-bottom: 0; }
 
 .sidebar .view-events-list .views-field-title h3 {
-  font-size: 11.05px;
-  font-size: 0.85rem; }
+  font-size: 13px;
+  font-size: 1rem; }
 .sidebar .view-events-list .views-field-field-ev-start-time {
   color: #777;
-  font-size: 10.4px;
-  font-size: 0.8rem; }
+  font-size: 11.7px;
+  font-size: 0.9rem; }
   .sidebar .view-events-list .views-field-field-ev-start-time .date {
     display: inline; }
   .sidebar .view-events-list .views-field-field-ev-start-time .time {
@@ -963,7 +970,14 @@ ul.tabs.primary {
       visibility: hidden; }
   .path-news .view-news .field--name-field-image {
     float: left;
-    margin: 5px 15px 5px 0; } }
+    margin: 5px 15px 5px 0; }
+
+  .sidebar .view-events-list .views-field-title h3 {
+    font-size: 11.05px;
+    font-size: 0.85rem; }
+  .sidebar .view-events-list .views-field-field-ev-start-time {
+    font-size: 10.4px;
+    font-size: 0.8rem; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
