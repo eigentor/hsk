@@ -17,3 +17,12 @@ header-slideshow:
     - core/drupal
     - core/jquery
     - core/jquery.once
+
+hsk-menu:
+  version: VERSION
+  js:
+    js/hsk-menu.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once

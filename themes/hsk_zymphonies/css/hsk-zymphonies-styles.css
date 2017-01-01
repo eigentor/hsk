@@ -1253,10 +1253,7 @@ nav#block-hsk-footer {
     padding-top: 30px; }
 
   .search-block-form {
-    display: block; }
-
-  nav#block-hsk-zymphonies-main-menu ul li.active a {
-    background: #ED8600; } }
+    display: block; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -1287,64 +1284,56 @@ nav#block-hsk-footer {
     margin-top: 21px; }
   header nav#block-hsk-main-menu {
     clear: both; }
-
-  nav#block-hsk-zymphonies-main-menu {
-    margin-bottom: 0;
-    clear: both;
-    padding-top: 25px;
-    display: table !important;
-    width: 100%; }
-    nav#block-hsk-zymphonies-main-menu ul.menu {
+  header nav#block-hsk-zymphonies-main-menu {
+    display: block; }
+    header nav#block-hsk-zymphonies-main-menu ul#main-menu {
       display: table-row;
       width: 100%; }
-      nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible.has-submenu a {
-        background: #717171;
-        border-bottom: 1px solid #ccc; }
-      nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible.has-submenu ul li a {
-        border-bottom: 0;
-        background: #999; }
-      nav#block-hsk-zymphonies-main-menu ul.menu li, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible {
-        display: table-cell;
-        padding-top: 0;
-        padding-right: 2px;
-        position: relative; }
-        nav#block-hsk-zymphonies-main-menu ul.menu li:last-child, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible:last-child {
-          padding-right: 0; }
-        nav#block-hsk-zymphonies-main-menu ul.menu li a, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible a {
-          float: left;
-          min-width: 150px;
-          width: 100%;
-          text-align: center;
-          font-size: 18.2px;
-          font-size: 1.4rem;
-          height: 42px;
-          line-height: 42px; }
-          nav#block-hsk-zymphonies-main-menu ul.menu li a:hover, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible a:hover {
-            background: #717171; }
-        nav#block-hsk-zymphonies-main-menu ul.menu li ul, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul {
-          position: absolute;
-          top: 42px;
-          left: 0;
-          z-index: 20;
-          width: auto;
-          background: #999; }
-          nav#block-hsk-zymphonies-main-menu ul.menu li ul li, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul li {
-            display: block;
-            padding-top: 0;
-            padding-right: 0;
-            border-bottom: 1px solid #ccc; }
-            nav#block-hsk-zymphonies-main-menu ul.menu li ul li:last-child, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul li:last-child {
-              border-bottom: none; }
-            nav#block-hsk-zymphonies-main-menu ul.menu li ul li a, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul li a {
-              float: none;
-              white-space: nowrap;
-              background: #999;
-              font-size: 15.6px;
-              font-size: 1.2rem;
-              padding: 0 30px;
-              text-align: left; }
-              nav#block-hsk-zymphonies-main-menu ul.menu li ul li a:hover, nav#block-hsk-zymphonies-main-menu ul.menu li.menu-visible ul li a:hover {
-                background: #777; }
+      header nav#block-hsk-zymphonies-main-menu ul#main-menu li.active a {
+        background: #ED8600; }
+      header nav#block-hsk-zymphonies-main-menu ul#main-menu li {
+        margin-right: 5px; }
+        header nav#block-hsk-zymphonies-main-menu ul#main-menu li:hover {
+          background: none; }
+        header nav#block-hsk-zymphonies-main-menu ul#main-menu li a:hover {
+          background: #ED8600;
+          color: white; }
+        header nav#block-hsk-zymphonies-main-menu ul#main-menu li a.has-submenu:hover {
+          background: none;
+          color: #888; }
+        header nav#block-hsk-zymphonies-main-menu ul#main-menu li a.highlighted, header nav#block-hsk-zymphonies-main-menu ul#main-menu li a.highlighted:hover {
+          background: #ED8600;
+          color: white; }
+        header nav#block-hsk-zymphonies-main-menu ul#main-menu li a.has-submenu.highlighted {
+          -webkit-border-radius: 4px 4px 0 0;
+          -moz-border-radius: 4px 4px 0 0;
+          -ms-border-radius: 4px 4px 0 0;
+          -o-border-radius: 4px 4px 0 0;
+          border-radius: 4px 4px 0 0; }
+        header nav#block-hsk-zymphonies-main-menu ul#main-menu li a span.sub-arrow {
+          display: none; }
+      header nav#block-hsk-zymphonies-main-menu ul#main-menu ul {
+        background: #ED8600;
+        border: none;
+        top: 29px;
+        -webkit-border-radius: 0 4px 4px 4px;
+        -moz-border-radius: 0 4px 4px 4px;
+        -ms-border-radius: 0 4px 4px 4px;
+        -o-border-radius: 0 4px 4px 4px;
+        border-radius: 0 4px 4px 4px; }
+        header nav#block-hsk-zymphonies-main-menu ul#main-menu ul li {
+          margin-right: 0; }
+          header nav#block-hsk-zymphonies-main-menu ul#main-menu ul li a {
+            color: white;
+            padding: 6px 15px; }
+            header nav#block-hsk-zymphonies-main-menu ul#main-menu ul li a:hover {
+              background: #ED8600;
+              color: black;
+              -webkit-border-radius: 0;
+              -moz-border-radius: 0;
+              -ms-border-radius: 0;
+              -o-border-radius: 0;
+              border-radius: 0; }
 
   #block-mobilemenubutton {
     display: none; }

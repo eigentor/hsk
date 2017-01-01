@@ -125,11 +125,7 @@ nav#block-hsk-footer
   .search-block-form
     display: block
 
-  nav#block-hsk-zymphonies-main-menu
-    ul
-      li.active
-        a
-          background: $primary-color
+
 
 
 /* End Media Query Tablet */
@@ -167,64 +163,107 @@ nav#block-hsk-footer
     nav#block-hsk-main-menu
       clear: both
 
-  nav#block-hsk-zymphonies-main-menu
-    margin-bottom: 0
-    clear: both
-    padding-top: 25px
-    display: table!important
-    width: 100%
-    ul.menu
-      display: table-row
-      width: 100%
-      li.menu-visible.has-submenu
-        a
-          background: #717171
-          border-bottom: 1px solid #ccc
-        ul
-          li
-            a
-              border-bottom: 0
-              background: #999
-      li, li.menu-visible
-        display: table-cell
-        padding-top: 0
-        padding-right: 2px
-        position: relative
-        &:last-child
-          padding-right: 0
-        a
-          float: left
-          min-width: 150px
-          width: 100%
-          text-align: center
-          +font-size-medium
-          height: 42px
-          line-height: 42px
+        //nav#block-hsk-zymphonies-main-menu
+        //  margin-bottom: 0
+        //  clear: both
+        //  padding-top: 25px
+        //  display: table!important
+        //  width: 100%
+        //  ul.menu
+        //    display: table-row
+        //    width: 100%
+        //    li.menu-visible.has-submenu
+        //      a
+        //        background: #717171
+        //        border-bottom: 1px solid #ccc
+        //      ul
+        //        li
+        //          a
+        //            border-bottom: 0
+        //            background: #999
+        //    li, li.menu-visible
+        //      display: table-cell
+        //      padding-top: 0
+        //      padding-right: 2px
+        //      position: relative
+        //      &:last-child
+        //        padding-right: 0
+        //      a
+        //        float: left
+        //        min-width: 150px
+        //        width: 100%
+        //        text-align: center
+        //        +font-size-medium
+        //        height: 42px
+        //        line-height: 42px
+        //        &:hover
+        //          background: #717171
+        //      ul
+        //        position: absolute
+        //        top: 42px
+        //        left: 0
+        //        z-index: 20
+        //        width: auto
+        //        background: #999
+        //        li
+        //          display: block
+        //          padding-top: 0
+        //          padding-right: 0
+        //          border-bottom: 1px solid #ccc
+        //          &:last-child
+        //            border-bottom: none
+        //          a
+        //            float: none
+        //            white-space: nowrap
+        //            background: #999
+        //            +font-size-slightly-bigger
+        //            padding: 0 30px
+        //            text-align: left
+        //            &:hover
+        //              background: #777
+
+    nav#block-hsk-zymphonies-main-menu
+      display: block
+      ul#main-menu
+        display: table-row
+        width: 100%
+        li.active
+          a
+            background: $primary-color
+        li
+          margin-right: 5px
           &:hover
-            background: #717171
+            background: none
+          a
+            &:hover
+              background: $primary-color
+              color: white
+            &.has-submenu:hover
+              background: none
+              color: #888
+            &.highlighted, &.highlighted:hover
+              background: $primary-color
+              color: white
+            &.has-submenu.highlighted
+              +border-radius(4px 4px 0 0)
+          a
+            span.sub-arrow
+              display: none
+
         ul
-          position: absolute
-          top: 42px
-          left: 0
-          z-index: 20
-          width: auto
-          background: #999
+          background: $primary-color
+          border: none
+          top: 29px
+          +border-radius(0 4px 4px 4px)
           li
-            display: block
-            padding-top: 0
-            padding-right: 0
-            border-bottom: 1px solid #ccc
-            &:last-child
-              border-bottom: none
+            margin-right: 0
             a
-              float: none
-              white-space: nowrap
-              background: #999
-              +font-size-slightly-bigger
-              padding: 0 30px
-              text-align: left
+              color: white
+              padding: 6px 15px
               &:hover
-                background: #777
+                background: $primary-color
+                color: black
+                +border-radius(0)
 
   #block-mobilemenubutton
     display: none

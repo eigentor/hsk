@@ -7,6 +7,7 @@ base theme: businessgroup_zymphonies_theme
 
 libraries:
   - hsk_zymphonies/base-styling
+  - hsk_zymphonies/hsk-menu
 
 regions:
   header: 'Header'
