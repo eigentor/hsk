@@ -61,6 +61,16 @@
       float: left
       margin: 5px 15px 5px 0
 
+  .page-node-type-page
+    .node-turniere
+      +make-row()
+      .content-box
+        +make-sm-column(6)
+        text-align: center
+        min-height: 250px
+      i:before
+        +x-rem(font-size, 3)
+
 
 /* End Media Query Tablet */
 
@@ -70,6 +80,11 @@
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop-narrow)
+  .page-node-type-page
+    .node-turniere
+      .content-box
+        +make-md-column(4)
+        min-height: 250px
 
 
 /* End Media Query Tablet */
