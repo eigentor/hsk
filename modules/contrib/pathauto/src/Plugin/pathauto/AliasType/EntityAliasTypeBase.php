@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\pathauto\Plugin\AliasType\EntityAliasTypeBase.
- */
-
 namespace Drupal\pathauto\Plugin\pathauto\AliasType;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -12,6 +7,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Plugin\Context\Context;
 use Drupal\Core\Plugin\ContextAwarePluginBase;
 use Drupal\pathauto\AliasTypeBatchUpdateInterface;
 use Drupal\pathauto\AliasTypeInterface;
@@ -148,7 +144,7 @@ class EntityAliasTypeBase extends ContextAwarePluginBase implements AliasTypeInt
     $this->bulkUpdate($ids);
     $context['sandbox']['count'] += count($ids);
     $context['sandbox']['current'] = max($ids);
-    $context['message'] = t('Updated alias for %label @id.', array('%label' => $entity_type->getLabel(), '@id' => end($ids)));
+    $context['message'] = $this->t('Updated alias for %label @id.', array('%label' => $entity_type->getLabel(), '@id' => end($ids)));
 
     if ($context['sandbox']['count'] != $context['sandbox']['total']) {
       $context['finished'] = $context['sandbox']['count'] / $context['sandbox']['total'];
@@ -217,5 +213,16 @@ class EntityAliasTypeBase extends ContextAwarePluginBase implements AliasTypeInt
     }
     return $this->prefix;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setContextValue($name, $value) {
+    // Overridden to avoid merging existing cacheability metadata, which is not
+    // relevant for alias type plugins.
+    $this->context[$name] = new Context($this->getContextDefinition($name), $value);
+    return $this;
+  }
+
 
 }

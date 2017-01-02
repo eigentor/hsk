@@ -11,6 +11,7 @@ module:
   config: 0
   contact: 0
   contextual: 0
+  ctools: 0
   datetime: 0
   dblog: 0
   devel: 0
@@ -52,6 +53,7 @@ module:
   user: 0
   views_ui: 0
   menu_link_content: 1
+  pathauto: 1
   views: 10
   standard: 1000
 theme:
