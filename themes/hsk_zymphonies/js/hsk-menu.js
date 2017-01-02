@@ -1,6 +1,12 @@
 (function ($) {
   Drupal.behaviors.menu = {
     attach: function (context, settings) {
+
+
+      $('ul#main-menu > li > a').click(function(){
+          window.location = $(this).attr('href');
+      });
+
       $('#main-menu').smartmenus({
         showTimeout: 100,
         hideTimeout: 100
