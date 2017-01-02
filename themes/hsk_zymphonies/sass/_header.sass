@@ -12,58 +12,89 @@ header
       line-height: 1.2
       font-family: $roboto-slab
       color: #888
+      +x-rem(font-size, 1.5)
     .site-branding__slogan
       color: #555
       font-family: $roboto-slab
+      +x-rem(font-size, 0.8)
+
+  .region-primary-menu
+    display: none
 
 #block-hsk-branding
   width: 55%
   float: left
 
+
+
 nav#block-hsk-zymphonies-main-menu
-  display: none
   @include legacy-pie-clearfix
   clear: both
-  ul.menu
+  ul#main-menu
     margin: 0
     padding: 0
     li
-      display: inline
-      display: block
       a
-        background: #bbb
-        display: block
-        height: 42px
-        line-height: 42px
-        color: white
-        text-align: center
-        padding: 0 15px
-        +font-size-medium
+        background: #f3f3f3
+        border-bottom: 1px solid #ccc
+        color: $base-text-color
         &:hover
-          background: #888
-          text-decoration: none
-        span.arrow
-          display: inline-block
-          width: 17px
-          height: 25px
-          background: url(../images/arrow-white-down.png) no-repeat right 16px
-      &.menu-visible
-        a
-          background: #444
-        ul
-          li
-            a
-              background: #777
+          background: #e5e5e5
+        .sub-arrow
+          background: white
+          color: #555
+          border: 1px solid #ccc
+          &:hover
+            color: black
+            border: 1px solid #aaa
+            color: white
+            background: $primary-color
       ul
-        display: none // Initially hide the submenus
         li
           a
-            background: #888
-            +font-size-slightly-bigger
-            padding: 0
-      &.menu-visible
-        ul
-          display: block
+            padding-left: 25px
+            background: #e5e5e5
+            +x-rem(font-size, 0.95)
+            &:hover
+              background: #d5d5d5
+
+    //li
+    //  display: inline
+    //  display: block
+    //  a
+    //    background: #bbb
+    //    display: block
+    //    height: 42px
+    //    line-height: 42px
+    //    color: white
+    //    text-align: center
+    //    padding: 0 15px
+    //    +font-size-medium
+    //    &:hover
+    //      background: #888
+    //      text-decoration: none
+    //    span.arrow
+    //      display: inline-block
+    //      width: 17px
+    //      height: 25px
+    //      background: url(../images/arrow-white-down.png) no-repeat right 16px
+    //  &.menu-visible
+    //    a
+    //      background: #444
+    //    ul
+    //      li
+    //        a
+    //          background: #777
+    //  ul
+    //    display: none // Initially hide the submenus
+    //    li
+    //      a
+    //        background: #888
+    //        +font-size-slightly-bigger
+    //        padding: 0
+    //  &.menu-visible
+    //    ul
+    //      display: block
 
 #block-mobilemenubutton
   width: 29px
@@ -137,6 +168,11 @@ nav#block-hsk-footer
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop-narrow)
   header
+    &.main-header
+      nav
+        padding-bottom: 15px
+        .region-primary-menu
+          margin-top: 8px
     #block-hsk-branding
       width: auto
       .logo
@@ -163,78 +199,25 @@ nav#block-hsk-footer
     nav#block-hsk-main-menu
       clear: both
 
-        //nav#block-hsk-zymphonies-main-menu
-        //  margin-bottom: 0
-        //  clear: both
-        //  padding-top: 25px
-        //  display: table!important
-        //  width: 100%
-        //  ul.menu
-        //    display: table-row
-        //    width: 100%
-        //    li.menu-visible.has-submenu
-        //      a
-        //        background: #717171
-        //        border-bottom: 1px solid #ccc
-        //      ul
-        //        li
-        //          a
-        //            border-bottom: 0
-        //            background: #999
-        //    li, li.menu-visible
-        //      display: table-cell
-        //      padding-top: 0
-        //      padding-right: 2px
-        //      position: relative
-        //      &:last-child
-        //        padding-right: 0
-        //      a
-        //        float: left
-        //        min-width: 150px
-        //        width: 100%
-        //        text-align: center
-        //        +font-size-medium
-        //        height: 42px
-        //        line-height: 42px
-        //        &:hover
-        //          background: #717171
-        //      ul
-        //        position: absolute
-        //        top: 42px
-        //        left: 0
-        //        z-index: 20
-        //        width: auto
-        //        background: #999
-        //        li
-        //          display: block
-        //          padding-top: 0
-        //          padding-right: 0
-        //          border-bottom: 1px solid #ccc
-        //          &:last-child
-        //            border-bottom: none
-        //          a
-        //            float: none
-        //            white-space: nowrap
-        //            background: #999
-        //            +font-size-slightly-bigger
-        //            padding: 0 30px
-        //            text-align: left
-        //            &:hover
-        //              background: #777
+
+
+    .region-primary-menu
+      display: block
 
     nav#block-hsk-zymphonies-main-menu
-      display: block
       ul#main-menu
-        display: table-row
-        width: 100%
         li.active
           a
             background: $primary-color
+            color: white
         li
           margin-right: 5px
           &:hover
             background: none
           a
+            background: none
+            border: none
+            color: $light-grey-text
             &:hover
               background: $primary-color
               color: white
@@ -260,10 +243,10 @@ nav#block-hsk-footer
             a
               color: white
               padding: 6px 15px
+              background: none
               &:hover
-                background: $primary-color
                 color: black
-                +border-radius(0)
+                background: none
 
   #block-mobilemenubutton
     display: none

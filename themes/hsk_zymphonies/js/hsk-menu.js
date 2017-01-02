@@ -8,8 +8,10 @@
       });
 
       //Mobile menu toggle
-      $('.navbar-toggle').click(function(){
-        $('.region-primary-menu').slideToggle();
+      $('.navbar-toggle').once('slideonce').each(function(){
+        $(this).click(function(){
+          $('.region-primary-menu').slideToggle();
+        });
       });
 
       //Mobile dropdown menu
