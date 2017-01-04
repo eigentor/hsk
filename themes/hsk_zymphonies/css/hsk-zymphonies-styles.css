@@ -1759,6 +1759,8 @@ footer #block-masquerade {
     font-size: 1.35rem; }
   .page-node-type-page .node-turniere .content-box .box-text {
     color: #666; }
+  .page-node-type-page .node-turniere .content-box a {
+    display: inline-block; }
   .page-node-type-page .node-turniere .content-box a:hover {
     text-decoration: none; }
   .page-node-type-page .node-turniere .content-box h3 a:hover, .page-node-type-page .node-turniere .content-box .box-text a:hover {
@@ -1781,7 +1783,7 @@ footer #block-masquerade {
     margin: auto;
     line-height: 110px; }
   .page-node-type-page .node-turniere .content-box a:hover i:before {
-    color: #ddd; }
+    color: #333; }
   .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft i:before {
     background: #ED8600;
     content: ""; }
