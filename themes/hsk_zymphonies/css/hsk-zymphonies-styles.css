@@ -1759,6 +1759,10 @@ footer #block-masquerade {
     font-size: 1.35rem; }
   .page-node-type-page .node-turniere .content-box .box-text {
     color: #666; }
+  .page-node-type-page .node-turniere .content-box a:hover {
+    text-decoration: none; }
+  .page-node-type-page .node-turniere .content-box h3 a:hover, .page-node-type-page .node-turniere .content-box .box-text a:hover {
+    text-decoration: underline; }
   .page-node-type-page .node-turniere .content-box i:before {
     font-family: "Fontawesome";
     content: "";
@@ -1776,33 +1780,35 @@ footer #block-masquerade {
     display: block;
     margin: auto;
     line-height: 110px; }
+  .page-node-type-page .node-turniere .content-box a:hover i:before {
+    color: #ddd; }
   .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft i:before {
     background: #ED8600;
     content: ""; }
-  .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft h3 {
+  .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft h3, .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft h3 a {
     color: #ED8600; }
-  .page-node-type-page .node-turniere .content-box.pokal h3 {
+  .page-node-type-page .node-turniere .content-box.pokal h3, .page-node-type-page .node-turniere .content-box.pokal h3 a {
     color: #6f6f6f; }
   .page-node-type-page .node-turniere .content-box.blitz i:before {
     background: #6A7BA8;
     content: ""; }
-  .page-node-type-page .node-turniere .content-box.blitz h3 {
+  .page-node-type-page .node-turniere .content-box.blitz h3, .page-node-type-page .node-turniere .content-box.blitz h3 a {
     color: #52628d; }
   .page-node-type-page .node-turniere .content-box.schnellschach i:before {
     content: ""; }
-  .page-node-type-page .node-turniere .content-box.schnellschach h3 {
+  .page-node-type-page .node-turniere .content-box.schnellschach h3, .page-node-type-page .node-turniere .content-box.schnellschach h3 a {
     color: #6f6f6f; }
   .page-node-type-page .node-turniere .content-box.tusi i:before {
     content: "";
     background: #6A7BA8;
     font-size: 39px;
     font-size: 3rem; }
-  .page-node-type-page .node-turniere .content-box.tusi h3 {
+  .page-node-type-page .node-turniere .content-box.tusi h3, .page-node-type-page .node-turniere .content-box.tusi h3 a {
     color: #52628d; }
   .page-node-type-page .node-turniere .content-box.thema i:before {
     content: "";
     background: #ED8600; }
-  .page-node-type-page .node-turniere .content-box.thema h3 {
+  .page-node-type-page .node-turniere .content-box.thema h3, .page-node-type-page .node-turniere .content-box.thema h3 a {
     color: #ED8600; }
 
 /*------------------------------------------- */
