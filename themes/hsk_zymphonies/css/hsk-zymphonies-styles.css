@@ -1581,6 +1581,8 @@ i.icon {
       margin-bottom: 0; }
     .path-frontpage .view-header-slideshow .views-row .views-field-field-sl-text a {
       color: white; }
+  .path-frontpage .view-header-slideshow .views-row .views-field-field-fc-sl-image img {
+    width: 100%; }
 
 .sidebar .view-events-list .views-field-title h3 {
   font-size: 13px;
@@ -1620,7 +1622,6 @@ i.icon {
 @media only screen and (min-width: 1024px) {
   .path-frontpage #block-views-block-header-slideshow-block-1 {
     width: 100%;
-    height: 450px;
     overflow: hidden; }
     .path-frontpage #block-views-block-header-slideshow-block-1 .view-header-slideshow .views-row {
       max-height: 450px; }
@@ -1662,6 +1663,9 @@ i.icon {
 /*---------------- Desktop  ------------------ */
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 1200px) {
+  .path-frontpage #block-views-block-header-slideshow-block-1 {
+    height: 450px; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
