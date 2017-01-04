@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i);
@@ -1750,6 +1751,60 @@ footer #block-masquerade {
     display: block;
     margin: auto; }
 
+.page-node-type-page .node-turniere .content-box {
+  text-align: center;
+  min-height: 320px; }
+  .page-node-type-page .node-turniere .content-box h3 {
+    font-size: 17.55px;
+    font-size: 1.35rem; }
+  .page-node-type-page .node-turniere .content-box .box-text {
+    color: #666; }
+  .page-node-type-page .node-turniere .content-box i:before {
+    font-family: "Fontawesome";
+    content: "";
+    font-size: 52px;
+    font-size: 4rem;
+    width: 110px;
+    height: 110px;
+    -webkit-border-radius: 55px;
+    -moz-border-radius: 55px;
+    -ms-border-radius: 55px;
+    -o-border-radius: 55px;
+    border-radius: 55px;
+    background: #888;
+    color: white;
+    display: block;
+    margin: auto;
+    line-height: 110px; }
+  .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft i:before {
+    background: #ED8600;
+    content: ""; }
+  .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft h3 {
+    color: #ED8600; }
+  .page-node-type-page .node-turniere .content-box.pokal h3 {
+    color: #6f6f6f; }
+  .page-node-type-page .node-turniere .content-box.blitz i:before {
+    background: #6A7BA8;
+    content: ""; }
+  .page-node-type-page .node-turniere .content-box.blitz h3 {
+    color: #52628d; }
+  .page-node-type-page .node-turniere .content-box.schnellschach i:before {
+    content: ""; }
+  .page-node-type-page .node-turniere .content-box.schnellschach h3 {
+    color: #6f6f6f; }
+  .page-node-type-page .node-turniere .content-box.tusi i:before {
+    content: "";
+    background: #6A7BA8;
+    font-size: 39px;
+    font-size: 3rem; }
+  .page-node-type-page .node-turniere .content-box.tusi h3 {
+    color: #52628d; }
+  .page-node-type-page .node-turniere .content-box.thema i:before {
+    content: "";
+    background: #ED8600; }
+  .page-node-type-page .node-turniere .content-box.thema h3 {
+    color: #ED8600; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -1779,16 +1834,12 @@ footer #block-masquerade {
       min-height: 1px;
       padding-left: 15px;
       padding-right: 15px;
-      text-align: center;
-      min-height: 250px; } }
+      min-height: 320px; } }
     @media only screen and (min-width: 768px) and (min-width: 768px) {
       .page-node-type-page .node-turniere .content-box {
         float: left;
         width: 50%; } }
-@media only screen and (min-width: 768px) {
-    .page-node-type-page .node-turniere i:before {
-      font-size: 39px;
-      font-size: 3rem; } }
+
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -1801,7 +1852,7 @@ footer #block-masquerade {
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px;
-    min-height: 250px; } }
+    min-height: 320px; } }
   @media only screen and (min-width: 1024px) and (min-width: 992px) {
     .page-node-type-page .node-turniere .content-box {
       float: left;
