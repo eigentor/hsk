@@ -40,10 +40,6 @@ function node_class_entity_base_field_info(EntityTypeInterface $entity_type) {
         'weight' => 35,
       ))
       ->setDisplayConfigurable('form', TRUE);
-    $fields['mymodule_text'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('The text'))
-      ->setDescription(t('A text property added by mymodule.'))
-      ->setComputed(TRUE);
     return $fields;
   }
 }
@@ -55,6 +51,8 @@ function node_class_preprocess_node(&$variables) {
   if (!empty($variables['node'])) {
     $entity = $variables['node'];
     $classes = $entity->get('node_class')->getValue();
-    $variables['attributes']['class'][] = $classes['0']['value'];
+    if(!empty($classes)) {
+      $variables['attributes']['class'][] = $classes['0']['value'];
+    }
   }
 }

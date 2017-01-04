@@ -40,6 +40,62 @@
       display: block
       margin: auto
 
+.page-node-type-page
+  .node-turniere
+    .content-box
+      text-align: center
+      min-height: 320px
+      h3
+        +x-rem(font-size, 1.35)
+      .box-text
+        color: #666
+      i:before
+        font-family: 'Fontawesome'
+        content: "\f091"
+        +x-rem(font-size, 4)
+        width: 110px
+        height: 110px
+        +border-radius(55px)
+        background: $grey-background
+        color: white
+        display: block
+        margin: auto
+        line-height: 110px
+      &.vereinsmeisterschaft
+        i:before
+          background: $primary-color
+          content: "\f135"
+        h3
+          color: $primary-color
+      &.pokal
+        h3
+          color: darken($grey-background, 10%)
+      &.blitz
+        i:before
+          background: $blue
+          content: "\f0e7"
+        h3
+          color: darken($blue, 10%)
+      &.schnellschach
+        i:before
+          content: "\f017"
+        h3
+          color: darken($grey-background, 10%)
+      &.tusi
+        i:before
+          content: "\f248"
+          background: $blue
+          +x-rem(font-size, 3)
+        h3
+          color: darken($blue, 10%)
+      &.thema
+        i:before
+          content: "\f02d"
+          background: $primary-color
+        h3
+          color: $primary-color
+
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/
@@ -66,10 +122,8 @@
       +make-row()
       .content-box
         +make-sm-column(6)
-        text-align: center
-        min-height: 250px
-      i:before
-        +x-rem(font-size, 3)
+        min-height: 320px
+
 
 
 /* End Media Query Tablet */
@@ -84,7 +138,7 @@
     .node-turniere
       .content-box
         +make-md-column(4)
-        min-height: 250px
+        min-height: 320px
 
 
 /* End Media Query Tablet */
