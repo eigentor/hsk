@@ -12,7 +12,7 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<table><th><tr><td><h2><h3><h4><p><strong>'
+      allowed_html: '<table><th colspan rowspan><tr><td colspan rowspan><h2><h3><h4><p><strong>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_autop:
