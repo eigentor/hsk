@@ -9,8 +9,30 @@ dependencies:
     - field.field.node.turnier.field_standings
     - node.type.turnier
   module:
+    - field_group
     - text
     - user
+third_party_settings:
+  field_group:
+    group_tables:
+      children:
+        - field_standings
+        - field_current_results
+        - field_pairings
+      parent_name: ''
+      weight: 20
+      format_type: html_element
+      format_settings:
+        label: Tabellen
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: info-tabs
+        classes: info-tabs
+      label: Tabellen
 id: node.turnier.default
 targetEntityType: node
 bundle: turnier
