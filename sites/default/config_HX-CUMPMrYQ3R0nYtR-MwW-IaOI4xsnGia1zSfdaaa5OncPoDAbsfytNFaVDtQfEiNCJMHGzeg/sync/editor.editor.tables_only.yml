@@ -1,0 +1,48 @@
+uuid: ef9df9e7-c0cb-416a-9342-90c76398a48a
+langcode: de
+status: true
+dependencies:
+  config:
+    - filter.format.tables_only
+  module:
+    - ckeditor
+format: tables_only
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatierung
+          items:
+            - Bold
+            - Italic
+        -
+          name: Links
+          items:
+            - DrupalLink
+            - DrupalUnlink
+        -
+          name: Tabellen
+          items:
+            - Table
+        -
+          name: Werkzeuge
+          items:
+            - Source
+  plugins:
+    drupallink:
+      linkit_enabled: false
+      linkit_profile: ''
+    language:
+      language_list: un
+    stylescombo:
+      styles: ''
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null

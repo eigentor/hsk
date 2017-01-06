@@ -1453,7 +1453,8 @@ ul.tabs.primary {
 
 table {
   font-size: 13px;
-  font-size: 1rem; }
+  font-size: 1rem;
+  margin-bottom: 10px; }
   table th, table td {
     text-align: center;
     padding: 2px 6px;
@@ -1461,7 +1462,8 @@ table {
     font-size: 13px;
     font-size: 1rem; }
   table th {
-    background: #eee; }
+    background: #6A7BA8;
+    color: white; }
 
 i.icon {
   font-family: "FontAwesome";

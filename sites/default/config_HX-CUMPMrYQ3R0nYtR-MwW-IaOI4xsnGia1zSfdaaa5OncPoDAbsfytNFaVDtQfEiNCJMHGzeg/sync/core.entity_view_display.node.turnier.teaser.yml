@@ -1,0 +1,27 @@
+uuid: 1ac4de28-0e2c-4463-b52b-24e9c5f8762c
+langcode: de
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.turnier.body
+    - node.type.turnier
+  module:
+    - text
+    - user
+id: node.turnier.teaser
+targetEntityType: node
+bundle: turnier
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden:
+  langcode: true

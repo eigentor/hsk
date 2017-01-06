@@ -26,3 +26,13 @@ hsk-menu:
     - core/drupal
     - core/jquery
     - core/jquery.once
+
+hsk-js-tabs:
+  version: VERSION
+  js:
+    js/hsk-js-tabs.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
+    - core/jquery.ui.tabs

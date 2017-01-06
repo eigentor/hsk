@@ -1,0 +1,11 @@
+uuid: 97d31703-45ec-498e-92c8-0f99b1f0f7f3
+langcode: de
+status: true
+dependencies:
+  config:
+    - node.type.turnier
+id: node.turnier
+target_entity_type_id: node
+target_bundle: turnier
+default_langcode: site_default
+language_alterable: false

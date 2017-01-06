@@ -1,0 +1,22 @@
+uuid: f9724224-3943-4037-beaf-cce7955b8157
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.turnier
+  module:
+    - text
+id: node.turnier.body
+field_name: body
+entity_type: node
+bundle: turnier
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

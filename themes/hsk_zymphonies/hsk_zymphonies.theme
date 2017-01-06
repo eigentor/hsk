@@ -1,8 +1,17 @@
 <?php
 
 function hsk_zymphonies_preprocess_page(&$variables) {
+
+  // Load the header Slideshow script on the front page
   $variables['page']['#cache']['contexts'][] = 'route';
   if (\Drupal::service('path.matcher')->isFrontPage()) {
     $variables['#attached']['library'][] = 'hsk_zymphonies/header-slideshow';
+  }
+
+    // Load the JS Tabs Script only if we are on the content Type 'turnier'
+  if( array_key_exists('node', $variables)) {
+      if($variables['node']->getType() == 'turnier') {
+        $variables['#attached']['library'][] = 'hsk_zymphonies/hsk-js-tabs';
+      }
   }
 }

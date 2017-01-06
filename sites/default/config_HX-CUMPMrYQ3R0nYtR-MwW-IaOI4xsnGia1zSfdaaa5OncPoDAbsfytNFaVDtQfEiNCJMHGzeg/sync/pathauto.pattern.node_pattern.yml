@@ -9,17 +9,18 @@ label: 'Node Pattern'
 type: 'canonical_entities:node'
 pattern: '[node:title]'
 selection_criteria:
-  2362deb3-441b-4511-89af-9bbd02961b2c:
+  7691a037-1627-483a-b5d6-060e11f5d38b:
     id: node_type
     bundles:
       article: article
       event: event
       page: page
       team: team
+      turnier: turnier
     negate: false
     context_mapping:
       node: node
-    uuid: 2362deb3-441b-4511-89af-9bbd02961b2c
+    uuid: 7691a037-1627-483a-b5d6-060e11f5d38b
 selection_logic: and
 weight: -5
 relationships: {  }

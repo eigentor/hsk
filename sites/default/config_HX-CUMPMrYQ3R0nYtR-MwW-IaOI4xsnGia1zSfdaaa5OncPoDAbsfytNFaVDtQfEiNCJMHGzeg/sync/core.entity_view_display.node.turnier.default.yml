@@ -1,0 +1,48 @@
+uuid: 2bba3336-d5c0-42a1-ba82-53dad6ca84a6
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.node.turnier.body
+    - field.field.node.turnier.field_current_results
+    - field.field.node.turnier.field_pairings
+    - field.field.node.turnier.field_standings
+    - node.type.turnier
+  module:
+    - text
+    - user
+id: node.turnier.default
+targetEntityType: node
+bundle: turnier
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+  field_current_results:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_pairings:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_standings:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  links:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

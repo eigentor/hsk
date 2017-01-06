@@ -1,0 +1,22 @@
+uuid: 1adb653f-fcb3-4fd1-a8c3-0a528b5bddc1
+langcode: de
+status: true
+dependencies:
+  config:
+    - node.type.turnier
+id: node.turnier.promote
+field_name: promote
+entity_type: node
+bundle: turnier
+label: 'Auf der Startseite'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: An
+  off_label: Aus
+field_type: boolean

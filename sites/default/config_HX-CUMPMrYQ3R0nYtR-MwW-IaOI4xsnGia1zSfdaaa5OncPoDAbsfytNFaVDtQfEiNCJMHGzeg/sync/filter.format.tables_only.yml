@@ -1,0 +1,23 @@
+uuid: fc8e4c92-756a-4cd2-b115-ce9f66dae894
+langcode: de
+status: true
+dependencies: {  }
+name: Tabellen
+format: tables_only
+weight: 0
+filters:
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: true
+    weight: -10
+    settings:
+      allowed_html: '<table><th><tr><td><h2><h3><h4><p><strong>'
+      filter_html_help: true
+      filter_html_nofollow: false
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: true
+    weight: 0
+    settings: {  }
