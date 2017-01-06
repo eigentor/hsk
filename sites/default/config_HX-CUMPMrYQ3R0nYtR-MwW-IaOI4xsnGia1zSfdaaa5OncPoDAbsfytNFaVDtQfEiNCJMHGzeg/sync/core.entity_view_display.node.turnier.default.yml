@@ -31,7 +31,7 @@ third_party_settings:
         effect: none
         speed: fast
         id: info-tabs
-        classes: info-tabs
+        classes: ''
       label: Tabellen
 id: node.turnier.default
 targetEntityType: node
