@@ -47,8 +47,6 @@ class Definition
     protected $arguments;
 
     /**
-     * Constructor.
-     *
      * @param string|null $class     The service class
      * @param array       $arguments An array of arguments to pass to the service constructor
      */
@@ -852,7 +850,7 @@ class Definition
     /**
      * Sets autowired.
      *
-     * @param $autowired
+     * @param bool $autowired
      *
      * @return Definition The current instance
      */
