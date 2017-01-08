@@ -1982,6 +1982,8 @@ nav#block-hsk-zymphonies-main-menu {
         font-size: 0.95rem; }
         nav#block-hsk-zymphonies-main-menu ul.menu li ul li a:hover {
           background: #d5d5d5; }
+    nav#block-hsk-zymphonies-main-menu ul.menu li > ul {
+      top: 29px !important; }
 
 #block-mobilemenubutton {
   width: 29px;

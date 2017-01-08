@@ -21,6 +21,7 @@ header-slideshow:
 hsk-menu:
   version: VERSION
   js:
+    js/smartmenus/jquery.smartmenus.min.js: {}
     js/hsk-menu.js: {}
   dependencies:
     - core/drupal
