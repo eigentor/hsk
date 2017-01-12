@@ -24,4 +24,7 @@ content:
   links:
     weight: 100
 hidden:
+  field_current_results: true
+  field_pairings: true
+  field_standings: true
   langcode: true
