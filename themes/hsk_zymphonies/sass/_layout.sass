@@ -24,14 +24,33 @@
   margin-top: 30px
 
 .sidebar
-  #block-mainnavigation
+  ul.menu
+    li
+      display: block
+      float: none
+      text-transform: uppercase
+      border-bottom: 1px solid $divider-line-color
+      &.menu-item--expanded
+        list-style-image: none
+        list-style-type: none
+        border-bottom: 0
+        > a
+          border-bottom: 1px solid $divider-line-color
+      &.menu-item--active-trail
+        > a
+          color: $link-color
+      a
+        color: $grey-text
+        padding: 8px 0 8px 2px
+        display: block
+        &:hover
+          text-decoration: none
+          color: $link-color
+        &.is-active
+          color: $link-color
     ul
-      li
-        display: block
-        float: none
-      ul
-        display: block
-        position: static
+      display: block
+      position: static
 
 
 .footer-menu

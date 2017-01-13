@@ -1531,10 +1531,29 @@ i.icon {
 .content_layout {
   margin-top: 30px; }
 
-.sidebar #block-mainnavigation ul li {
+.sidebar ul.menu li {
   display: block;
-  float: none; }
-.sidebar #block-mainnavigation ul ul {
+  float: none;
+  text-transform: uppercase;
+  border-bottom: 1px solid #e5e5e5; }
+  .sidebar ul.menu li.menu-item--expanded {
+    list-style-image: none;
+    list-style-type: none;
+    border-bottom: 0; }
+    .sidebar ul.menu li.menu-item--expanded > a {
+      border-bottom: 1px solid #e5e5e5; }
+  .sidebar ul.menu li.menu-item--active-trail > a {
+    color: #E27500; }
+  .sidebar ul.menu li a {
+    color: #666;
+    padding: 8px 0 8px 2px;
+    display: block; }
+    .sidebar ul.menu li a:hover {
+      text-decoration: none;
+      color: #E27500; }
+    .sidebar ul.menu li a.is-active {
+      color: #E27500; }
+.sidebar ul.menu ul {
   display: block;
   position: static; }
 
@@ -1923,6 +1942,12 @@ footer #block-masquerade {
   min-width: 50%; }
 .page-node-type-turnier #info-tabs .field--name-field-pairings table {
   width: 100%; }
+.page-node-type-turnier .vormeisterturnier .field--name-field-pairings table th, .page-node-type-turnier .vormeisterturnier .field--name-field-pairings table td {
+  font-size: 10.4px;
+  font-size: 0.8rem; }
+.page-node-type-turnier .vormeisterturnier .field--name-field-pairings table td {
+  padding-left: 3px;
+  padding-right: 3px; }
 
 /* End Media Query Tablet */
 /*------------------------------------------- */
@@ -2129,7 +2154,8 @@ nav#block-hsk-footer {
     header nav#block-hsk-zymphonies-main-menu ul.menu li {
       display: inline;
       float: left;
-      margin-right: 5px; }
+      margin-right: 5px;
+      text-transform: uppercase; }
       header nav#block-hsk-zymphonies-main-menu ul.menu li:hover {
         background: none; }
       header nav#block-hsk-zymphonies-main-menu ul.menu li.menu-item--active-trail a {
@@ -2171,6 +2197,7 @@ nav#block-hsk-footer {
       background: #ED8600;
       border: none;
       top: 29px;
+      padding: 8px 0;
       -webkit-border-radius: 0 4px 4px 4px;
       -moz-border-radius: 0 4px 4px 4px;
       -ms-border-radius: 0 4px 4px 4px;
