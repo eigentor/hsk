@@ -1469,6 +1469,9 @@ i.icon {
   font-family: "FontAwesome";
   font-style: normal; }
 
+.messages {
+  margin-bottom: 30px; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
