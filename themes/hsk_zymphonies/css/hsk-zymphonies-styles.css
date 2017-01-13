@@ -1553,9 +1553,13 @@ i.icon {
       color: #E27500; }
     .sidebar ul.menu li a.is-active {
       color: #E27500; }
-.sidebar ul.menu ul {
-  display: block;
-  position: static; }
+  .sidebar ul.menu li ul {
+    display: block;
+    position: static; }
+    .sidebar ul.menu li ul li a:before {
+      content: "•";
+      color: #bbb;
+      margin-right: 5px; }
 
 .footer-menu {
   background: #999; }

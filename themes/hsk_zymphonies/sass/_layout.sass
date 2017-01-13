@@ -48,9 +48,15 @@
           color: $link-color
         &.is-active
           color: $link-color
-    ul
-      display: block
-      position: static
+      ul
+        display: block
+        position: static
+        li
+          a
+            &:before
+              content: "\2022"
+              color: #bbb
+              margin-right: 5px
 
 
 .footer-menu
