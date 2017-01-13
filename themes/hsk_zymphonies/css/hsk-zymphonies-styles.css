@@ -1859,6 +1859,10 @@ footer #block-masquerade {
     display: block; }
   .page-node-type-turnier #info-tabs > .field .field__label {
     display: none; }
+.page-node-type-turnier #info-tabs .field--name-field-pairings table th {
+  border-right: 3px solid white; }
+  .page-node-type-turnier #info-tabs .field--name-field-pairings table th:last-child {
+    border-right: none; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */
