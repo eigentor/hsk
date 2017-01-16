@@ -107,11 +107,10 @@
 
 .page-node-type-turnier
   #table-tabs
-    margin: 12px 0 25px
-    .tab-button
-      +tab-button
+    +tab-container
 
   #info-tabs
+    +tab-content-container
     > .field
       display: none
       &:first-child
@@ -183,7 +182,6 @@
     .field--name-field-pairings
       table
         width: 100%
-  .vormeisterturnier
     .field--name-field-pairings
       table
         th, td

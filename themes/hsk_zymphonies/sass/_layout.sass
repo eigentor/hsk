@@ -29,19 +29,20 @@
       display: block
       float: none
       text-transform: uppercase
-      border-bottom: 1px solid $divider-line-color
+      border-bottom: 1px solid #ccc
+      font-family: $roboto-slab
       &.menu-item--expanded
         list-style-image: none
         list-style-type: none
         border-bottom: 0
         > a
-          border-bottom: 1px solid $divider-line-color
+          border-bottom: 1px solid #ccc
       &.menu-item--active-trail
         > a
           color: $link-color
       a
-        color: $grey-text
-        padding: 8px 0 8px 2px
+        color: $light-grey-text
+        padding: 7px 0 7px 4px
         display: block
         &:hover
           text-decoration: none
@@ -53,6 +54,7 @@
         position: static
         li
           a
+            +x-rem(font-size, 0.85)
             &:before
               content: "\2022"
               color: #bbb
