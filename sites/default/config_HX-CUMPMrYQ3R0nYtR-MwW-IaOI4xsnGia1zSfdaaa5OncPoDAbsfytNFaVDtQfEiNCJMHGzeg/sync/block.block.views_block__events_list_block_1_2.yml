@@ -13,7 +13,7 @@ dependencies:
 id: views_block__events_list_block_1_2
 theme: hsk_zymphonies
 region: sidebar_second
-weight: -9
+weight: -8
 provider: null
 plugin: 'views_block:events_list-block_1'
 settings:
@@ -35,6 +35,6 @@ visibility:
       node: '@node.node_route_context:node'
   request_path:
     id: request_path
-    pages: "<front>\r\n/turniere"
+    pages: "<front>\r\n/turniere\r\n/vereinsmeisterschaft\r\n/vereinspokal\r\n/monatsblitz\r\n/schnellschach\r\n/turnier-simultan-tusi\r\n/thema-turnier"
     negate: true
     context_mapping: {  }

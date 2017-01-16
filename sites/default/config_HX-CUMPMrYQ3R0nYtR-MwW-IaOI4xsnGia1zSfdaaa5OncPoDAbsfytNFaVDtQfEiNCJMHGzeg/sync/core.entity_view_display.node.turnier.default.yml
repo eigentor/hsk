@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.turnier.field_current_results
     - field.field.node.turnier.field_pairings
     - field.field.node.turnier.field_standings
+    - field.field.node.turnier.field_vorhol_nachhol
     - node.type.turnier
   module:
     - field_group
@@ -19,6 +20,7 @@ third_party_settings:
         - field_standings
         - field_current_results
         - field_pairings
+        - field_vorhol_nachhol
       parent_name: ''
       weight: 20
       format_type: html_element
@@ -58,6 +60,12 @@ content:
     type: text_default
   field_standings:
     weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_vorhol_nachhol:
+    weight: 5
     label: above
     settings: {  }
     third_party_settings: {  }

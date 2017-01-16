@@ -17,6 +17,7 @@ settings:
           items:
             - Bold
             - Italic
+            - Format
         -
           name: Links
           items:
@@ -34,10 +35,10 @@ settings:
     drupallink:
       linkit_enabled: false
       linkit_profile: ''
-    language:
-      language_list: un
     stylescombo:
       styles: ''
+    language:
+      language_list: un
 image_upload:
   status: false
   scheme: public
