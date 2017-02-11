@@ -67,4 +67,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_vorhol_nachhol: true
   langcode: true

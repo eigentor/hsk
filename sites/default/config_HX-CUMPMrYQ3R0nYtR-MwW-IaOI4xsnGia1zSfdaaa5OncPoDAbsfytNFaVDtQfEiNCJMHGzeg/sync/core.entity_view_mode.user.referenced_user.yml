@@ -1,0 +1,10 @@
+uuid: 894d62a7-73b8-471b-9399-0c4f4ae048a0
+langcode: de
+status: true
+dependencies:
+  module:
+    - user
+id: user.referenced_user
+label: 'Referenzierter User'
+targetEntityType: user
+cache: true

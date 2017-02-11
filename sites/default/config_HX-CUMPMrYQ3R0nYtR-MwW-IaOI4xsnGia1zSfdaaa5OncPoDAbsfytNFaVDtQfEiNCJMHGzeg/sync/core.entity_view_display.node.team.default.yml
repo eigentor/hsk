@@ -5,10 +5,12 @@ dependencies:
   config:
     - field.field.node.team.field_league
     - field.field.node.team.field_results_standings
+    - field.field.node.team.field_team_description
     - field.field.node.team.field_team_leader
     - node.type.team
   module:
     - link
+    - text
     - user
 id: node.team.default
 targetEntityType: node
@@ -33,14 +35,23 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+  field_team_description:
+    weight: 105
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   field_team_leader:
     weight: 102
     label: above
     settings:
-      link: true
+      view_mode: referenced_user
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
   links:
     weight: 100
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   langcode: true

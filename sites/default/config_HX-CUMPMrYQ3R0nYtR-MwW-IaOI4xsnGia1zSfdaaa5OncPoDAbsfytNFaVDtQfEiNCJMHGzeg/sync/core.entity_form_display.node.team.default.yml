@@ -5,11 +5,13 @@ dependencies:
   config:
     - field.field.node.team.field_league
     - field.field.node.team.field_results_standings
+    - field.field.node.team.field_team_description
     - field.field.node.team.field_team_leader
     - node.type.team
   module:
     - link
     - path
+    - text
 id: node.team.default
 targetEntityType: node
 bundle: team
@@ -34,6 +36,14 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_team_description:
+    weight: 36
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
   field_team_leader:
     weight: 32
     settings:
