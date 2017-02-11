@@ -24,6 +24,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: "/vereinsmeisterschaft\r\n/monatsblitz\r\n/schnellschach\r\n/turnier-simultan-tusi\r\n/thema-turnier"
+    pages: "/vereinsmeisterschaft\r\n/vereinspokal\r\n/monatsblitz\r\n/schnellschach\r\n/turnier-simultan-tusi\r\n/thema-turnier"
     negate: false
     context_mapping: {  }

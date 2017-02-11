@@ -47,6 +47,13 @@ content:
     weight: 2
     settings: {  }
     third_party_settings: {  }
+  node_class:
+    type: string_textfield
+    weight: 35
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   path:
     type: path
     weight: 30
