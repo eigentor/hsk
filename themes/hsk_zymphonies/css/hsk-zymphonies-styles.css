@@ -1641,6 +1641,22 @@ i.icon {
 .path-news .view-news .views-row {
   margin-bottom: 15px; }
 
+.path-mannschaften .view-mannschaften .views-row {
+  display: flex;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 10px;
+  margin-bottom: 10px; }
+  .path-mannschaften .view-mannschaften .views-row .views-field {
+    margin: 0 15px 0 0;
+    align-self: center; }
+  .path-mannschaften .view-mannschaften .views-row .views-field-field-user-first-name .views-label {
+    font-size: 10.4px;
+    font-size: 0.8rem;
+    color: #888; }
+  .path-mannschaften .view-mannschaften .views-row .views-field-user-picture img {
+    height: 50px;
+    width: auto; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -1696,6 +1712,11 @@ i.icon {
   .sidebar .view-events-list .views-field-field-ev-start-time {
     font-size: 10.4px;
     font-size: 0.8rem; } }
+.path-mannschaften .view-mannschaften .views-row {
+  display: flex; }
+  .path-mannschaften .view-mannschaften .views-row .views-field {
+    width: 20%; }
+
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
