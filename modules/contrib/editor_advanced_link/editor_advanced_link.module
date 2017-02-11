@@ -131,7 +131,7 @@ function editor_advanced_link_form_editor_link_dialog_alter(&$form, FormStateInt
 /**
  * Filter empty attributes to avoid empty HTML output.
  */
-function _editor_advanced_link_attributes_validate(array &$form, FormStateInterface $form_state) {
+function _editor_advanced_link_attributes_validate($element, FormStateInterface $form_state, $form) {
   $values = $form_state->getValue('attributes');
   $link_element = $form_state->get('link_element');
   foreach ($values as $key => $value) {
