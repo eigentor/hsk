@@ -123,6 +123,14 @@
           border-right: 3px solid white
           &:last-child
             border-right: none
+  // Special styling for the Schnellschach and Blitz Turnier
+  // page, since the tables are too wide
+  &.node-schnellschach, &.node-monatsblitz
+    #info-tabs
+      border-right: 0
+
+
+
 
 
 
@@ -179,24 +187,30 @@
         +make-md-column(4)
         min-height: 320px
 
-.page-node-type-turnier
-  #info-tabs
-    .field--name-field-standings
-      table
+  .page-node-type-turnier
+    #info-tabs
+      .field--name-field-standings
+        table
+          width: 100%
+      .field--name-field-current-results
+        table
+          min-width: 50%
+      .field--name-field-pairings
+        table
+          width: 100%
+      .field--name-field-pairings
+        table
+          th, td
+            +x-rem(font-size, 0.8)
+          td
+            padding-left: 3px
+            padding-right: 3px
+    // Special styling for the Schnellschach and Blitz Turnier
+    // page, since the tables are too wide
+    &.node-schnellschach, &.node-monatsblitz
+      .col-md-9
+        float: none
         width: 100%
-    .field--name-field-current-results
-      table
-        min-width: 50%
-    .field--name-field-pairings
-      table
-        width: 100%
-    .field--name-field-pairings
-      table
-        th, td
-          +x-rem(font-size, 0.8)
-        td
-          padding-left: 3px
-          padding-right: 3px
 
 
 
@@ -208,6 +222,12 @@
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop)
+  .page-node-type-turnier
+    // Special styling for the Schnellschach and Blitz Turnier
+    // page, since the tables are too wide
+    &.node-schnellschach
+      #info-tabs
+        border-right: 1px solid #ccc
 
 
 /* End Media Query Tablet */

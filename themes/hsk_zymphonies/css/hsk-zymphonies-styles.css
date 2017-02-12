@@ -1352,7 +1352,7 @@ body {
   color: #333;
   font-family: "Open Sans", sans-serif;
   /*- Desktop narrow - */ }
-  @media only screen and (min-width: 1024px) {
+  @media only screen and (min-width: 992px) {
     body {
       font-size: 11.7px;
       font-size: 0.9rem; } }
@@ -1396,7 +1396,7 @@ p {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 992px) {
   h2 {
     font-size: 19.5px;
     font-size: 1.5rem; }
@@ -1489,7 +1489,7 @@ i.icon {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 992px) {
   table {
     font-size: 11.7px;
     font-size: 0.9rem; }
@@ -1674,7 +1674,7 @@ i.icon {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 992px) {
   .path-frontpage #block-views-block-header-slideshow-block-1 {
     width: 100%;
     overflow: hidden; }
@@ -1922,6 +1922,8 @@ footer #block-masquerade {
     border-right: 3px solid white; }
     .page-node-type-turnier #info-tabs .field--name-field-pairings table th:last-child {
       border-right: none; }
+.page-node-type-turnier.node-schnellschach #info-tabs, .page-node-type-turnier.node-monatsblitz #info-tabs {
+  border-right: 0; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -1969,37 +1971,43 @@ footer #block-masquerade {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 992px) {
   .page-node-type-page .node-turniere .content-box {
     position: relative;
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px;
     min-height: 320px; } }
-  @media only screen and (min-width: 1024px) and (min-width: 992px) {
+  @media only screen and (min-width: 992px) and (min-width: 992px) {
     .page-node-type-page .node-turniere .content-box {
       float: left;
       width: 33.33333%; } }
 
-.page-node-type-turnier #info-tabs .field--name-field-standings table {
-  width: 100%; }
-.page-node-type-turnier #info-tabs .field--name-field-current-results table {
-  min-width: 50%; }
-.page-node-type-turnier #info-tabs .field--name-field-pairings table {
-  width: 100%; }
-.page-node-type-turnier #info-tabs .field--name-field-pairings table th, .page-node-type-turnier #info-tabs .field--name-field-pairings table td {
-  font-size: 10.4px;
-  font-size: 0.8rem; }
-.page-node-type-turnier #info-tabs .field--name-field-pairings table td {
-  padding-left: 3px;
-  padding-right: 3px; }
-
+@media only screen and (min-width: 992px) {
+  .page-node-type-turnier #info-tabs .field--name-field-standings table {
+    width: 100%; }
+  .page-node-type-turnier #info-tabs .field--name-field-current-results table {
+    min-width: 50%; }
+  .page-node-type-turnier #info-tabs .field--name-field-pairings table {
+    width: 100%; }
+  .page-node-type-turnier #info-tabs .field--name-field-pairings table th, .page-node-type-turnier #info-tabs .field--name-field-pairings table td {
+    font-size: 10.4px;
+    font-size: 0.8rem; }
+  .page-node-type-turnier #info-tabs .field--name-field-pairings table td {
+    padding-left: 3px;
+    padding-right: 3px; }
+  .page-node-type-turnier.node-schnellschach .col-md-9, .page-node-type-turnier.node-monatsblitz .col-md-9 {
+    float: none;
+    width: 100%; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*---------------- Desktop  ------------------ */
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 1200px) {
+  .page-node-type-turnier.node-schnellschach #info-tabs {
+    border-right: 1px solid #ccc; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2100,7 +2108,7 @@ nav#block-useraccountmenu {
         font-size: 11.7px;
         font-size: 0.9rem;
         color: #666; }
-        @media only screen and (min-width: 1024px) {
+        @media only screen and (min-width: 992px) {
           nav#block-useraccountmenu ul li a {
             font-size: 11.7px;
             font-size: 0.9rem; } }
@@ -2121,7 +2129,7 @@ nav#block-hsk-footer {
         font-size: 11.7px;
         font-size: 0.9rem;
         color: #666; }
-        @media only screen and (min-width: 1024px) {
+        @media only screen and (min-width: 992px) {
           nav#block-hsk-footer ul li a {
             font-size: 11.7px;
             font-size: 0.9rem; } }
@@ -2157,7 +2165,7 @@ nav#block-hsk-footer {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 992px) {
   header.main-header nav {
     padding-bottom: 15px; }
     header.main-header nav .region-primary-menu {
@@ -2337,7 +2345,7 @@ nav#block-hsk-footer {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 992px) {
   .path-frontpage .region-content {
     margin-left: -15px;
     margin-right: -15px; }
@@ -2351,17 +2359,17 @@ nav#block-hsk-footer {
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px; } }
-  @media only screen and (min-width: 1024px) and (min-width: 992px) {
+  @media only screen and (min-width: 992px) and (min-width: 992px) {
     .path-frontpage #block-views-block-events-list-block-1 {
       float: left;
       width: 50%; } }
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 992px) {
   .path-frontpage #block-views-block-news-block-1 {
     position: relative;
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px; } }
-  @media only screen and (min-width: 1024px) and (min-width: 992px) {
+  @media only screen and (min-width: 992px) and (min-width: 992px) {
     .path-frontpage #block-views-block-news-block-1 {
       float: left;
       width: 50%; } }

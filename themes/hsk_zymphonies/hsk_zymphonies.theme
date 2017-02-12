@@ -1,7 +1,10 @@
 <?php
 
+/**
+ * @param $variables
+ * preprocess_page function
+ */
 function hsk_zymphonies_preprocess_page(&$variables) {
-
   // Load the header Slideshow script on the front page
   $variables['page']['#cache']['contexts'][] = 'route';
   if (\Drupal::service('path.matcher')->isFrontPage()) {
@@ -13,5 +16,22 @@ function hsk_zymphonies_preprocess_page(&$variables) {
       if($variables['node']->getType() == 'turnier') {
         $variables['#attached']['library'][] = 'hsk_zymphonies/hsk-js-tabs';
       }
+  }
+}
+
+/**
+ * @param $variables
+ * preprocess_html function
+ */
+function hsk_zymphonies_preprocess_html(&$variables) {
+  // Add the node classes from the node_class Module as body class
+  if ($node = \Drupal::request()->attributes->get('node')) {
+    // Get classes set with the node_class Module
+    $classes = $node->get('node_class')->getValue();
+    if(!empty($classes)) {
+      $node_class = ($classes['0']['value']);
+      // Add the class to the body classes as "node-"[class]
+      $variables['attributes']['class'][] = 'node-' . $node_class;
+    }
   }
 }
