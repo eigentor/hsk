@@ -6,7 +6,7 @@ dependencies:
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_last_name
     - field.field.user.user.user_picture
-    - image.style.thumbnail
+    - image.style.portrait
   module:
     - image
     - user
@@ -39,7 +39,7 @@ content:
     type: image
     weight: 0
     settings:
-      image_style: thumbnail
+      image_style: portrait
       image_link: content
     third_party_settings: {  }
     label: hidden

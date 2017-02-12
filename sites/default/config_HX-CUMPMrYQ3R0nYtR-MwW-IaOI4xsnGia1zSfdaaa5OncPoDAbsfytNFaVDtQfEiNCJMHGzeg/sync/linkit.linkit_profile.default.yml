@@ -21,6 +21,7 @@ matchers:
         event: event
         page: page
         team: team
+        turnier: turnier
       group_by_bundle: false
       include_unpublished: false
       substitution_type: canonical

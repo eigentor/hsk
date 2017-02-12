@@ -1530,6 +1530,8 @@ i.icon {
 
 .content_layout {
   margin-top: 30px; }
+  .content_layout .region-content {
+    margin-bottom: 40px; }
 
 .sidebar ul.menu li {
   display: block;
@@ -1656,6 +1658,55 @@ i.icon {
   .path-mannschaften .view-mannschaften .views-row .views-field-user-picture img {
     height: 50px;
     width: auto; }
+
+.path-termine .view-events-list h3 {
+  font-size: 16.25px;
+  font-size: 1.25rem;
+  color: #777;
+  margin: 25px 0 10px;
+  border-bottom: 1px solid #ccc; }
+  .path-termine .view-events-list h3:first-child {
+    margin-top: 0; }
+.path-termine .view-events-list .views-row {
+  display: flex;
+  margin-bottom: 9px;
+  margin-bottom: 9px;
+  *zoom: 1; }
+  .path-termine .view-events-list .views-row:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden; }
+  .path-termine .view-events-list .views-row .views-field-field-ev-date {
+    font-size: 10.4px;
+    font-size: 0.8rem; }
+  .path-termine .view-events-list .views-row .views-field-field-ev-start-time {
+    margin-top: 3px;
+    font-size: 9.75px;
+    font-size: 0.75rem;
+    margin-right: 11px;
+    text-align: center;
+    min-width: 75px; }
+    .path-termine .view-events-list .views-row .views-field-field-ev-start-time .date {
+      background: #888;
+      color: white;
+      padding: 1px 6px; }
+    .path-termine .view-events-list .views-row .views-field-field-ev-start-time .time {
+      padding: 2px 0;
+      border: 1px solid #ccc;
+      border-top: 0;
+      line-height: 1.2; }
+  .path-termine .view-events-list .views-row .views-field-title {
+    display: flex; }
+    .path-termine .view-events-list .views-row .views-field-title h3 {
+      font-size: 14.3px;
+      font-size: 1.1rem;
+      align-self: flex-start;
+      margin-top: 3px;
+      margin-bottom: 0;
+      border: none; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2290,6 +2341,9 @@ nav#block-hsk-footer {
 .path-frontpage .content_layout {
   margin-top: 0; }
 .path-frontpage #block-views-block-events-list-block-1 .views-row {
+  display: flex;
+  margin-bottom: 9px;
+  margin-bottom: 9px;
   *zoom: 1; }
   .path-frontpage #block-views-block-events-list-block-1 .views-row:after {
     content: "\0020";
@@ -2305,18 +2359,26 @@ nav#block-hsk-footer {
     margin-top: 3px;
     font-size: 9.75px;
     font-size: 0.75rem;
-    float: left;
     margin-right: 11px;
-    text-align: center; }
+    text-align: center;
+    min-width: 75px; }
     .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date {
       background: #888;
       color: white;
       padding: 1px 6px; }
     .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .time {
-      padding: 2px 0; }
-  .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-title h3 {
-    font-size: 12.35px;
-    font-size: 0.95rem; }
+      padding: 2px 0;
+      border: 1px solid #ccc;
+      border-top: 0;
+      line-height: 1.2; }
+  .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-title {
+    display: flex; }
+    .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-title h3 {
+      font-size: 12.35px;
+      font-size: 0.95rem;
+      align-self: flex-start;
+      margin-top: 3px;
+      margin-bottom: 0; }
 .path-frontpage #block-views-block-news-block-1 .views-row {
   margin-bottom: 10px; }
   .path-frontpage #block-views-block-news-block-1 .views-row h3 {

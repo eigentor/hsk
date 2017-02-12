@@ -60,6 +60,48 @@
           height: 50px
           width: auto
 
+.path-termine
+  .view-events-list
+    h3
+      +x-rem(font-size, 1.25)
+      color: #777
+      margin: 25px 0 10px
+      border-bottom: 1px solid #ccc
+      &:first-child
+        margin-top: 0
+    .views-row
+      display: flex
+      margin-bottom: 9px
+      margin-bottom: 9px
+      +legacy-pie-clearfix
+      .views-field-field-ev-date
+        +x-rem(font-size, 0.8)
+      .views-field-field-ev-start-time
+        margin-top: 3px
+        +x-rem(font-size, 0.75)
+        //float: left
+        margin-right: 11px
+        text-align: center
+        min-width: 75px
+        .date
+          background: #888
+          color: white
+          padding: 1px 6px
+        .time
+          padding: 2px 0
+          border: 1px solid #ccc
+          border-top: 0
+          line-height: 1.2
+      .views-field-title
+        display: flex
+        h3
+          //font-family: $open-sans
+          +x-rem(font-size, 1.1)
+          align-self: flex-start
+          margin-top: 3px
+          margin-bottom: 0
+          border: none
+
 
 
 
