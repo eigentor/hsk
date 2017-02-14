@@ -2016,6 +2016,117 @@ footer #block-masquerade {
     display: flex; }
     .page-node-type-team .node__content .field {
       margin-right: 20px; } }
+.node-vereinsmeisterschaft #page-title h1, .node-meisterturnier #page-title h1,
+.node-vormeisterturnier #page-title h1, .node-hauptturnier #page-title h1 {
+  margin-left: 100px;
+  padding-left: 10px;
+  position: relative; }
+  .node-vereinsmeisterschaft #page-title h1:before, .node-meisterturnier #page-title h1:before,
+  .node-vormeisterturnier #page-title h1:before, .node-hauptturnier #page-title h1:before {
+    position: absolute;
+    left: -115px;
+    bottom: -22px;
+    display: block;
+    font-size: 52px;
+    font-size: 4rem;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    -webkit-border-radius: 55px;
+    -moz-border-radius: 55px;
+    -ms-border-radius: 55px;
+    -o-border-radius: 55px;
+    border-radius: 55px;
+    background: #ED8600;
+    font-family: "fontawesome";
+    content: "";
+    color: white; }
+
+.node-vereinspokal #page-title h1 {
+  margin-left: 100px;
+  padding-left: 10px;
+  position: relative; }
+  .node-vereinspokal #page-title h1:before {
+    position: absolute;
+    left: -115px;
+    bottom: -22px;
+    display: block;
+    font-size: 52px;
+    font-size: 4rem;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    -webkit-border-radius: 55px;
+    -moz-border-radius: 55px;
+    -ms-border-radius: 55px;
+    -o-border-radius: 55px;
+    border-radius: 55px;
+    background: #ED8600;
+    font-family: "fontawesome";
+    content: "";
+    color: white; }
+  .node-vereinspokal #page-title h1:before {
+    background: #888;
+    content: ""; }
+
+.node-monatsblitz #page-title h1 {
+  margin-left: 100px;
+  padding-left: 10px;
+  position: relative; }
+  .node-monatsblitz #page-title h1:before {
+    position: absolute;
+    left: -115px;
+    bottom: -22px;
+    display: block;
+    font-size: 52px;
+    font-size: 4rem;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    -webkit-border-radius: 55px;
+    -moz-border-radius: 55px;
+    -ms-border-radius: 55px;
+    -o-border-radius: 55px;
+    border-radius: 55px;
+    background: #ED8600;
+    font-family: "fontawesome";
+    content: "";
+    color: white; }
+  .node-monatsblitz #page-title h1:before {
+    background: #6A7BA8;
+      background-content: ""; }
+
+.node-schnellschach #page-title h1 {
+  margin-left: 100px;
+  padding-left: 10px;
+  position: relative; }
+  .node-schnellschach #page-title h1:before {
+    position: absolute;
+    left: -115px;
+    bottom: -22px;
+    display: block;
+    font-size: 52px;
+    font-size: 4rem;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    -webkit-border-radius: 55px;
+    -moz-border-radius: 55px;
+    -ms-border-radius: 55px;
+    -o-border-radius: 55px;
+    border-radius: 55px;
+    background: #ED8600;
+    font-family: "fontawesome";
+    content: "";
+    color: white; }
+  .node-schnellschach #page-title h1:before {
+    background: #888;
+    content: ""; }
+
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */

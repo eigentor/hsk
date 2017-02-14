@@ -130,11 +130,6 @@
       border-right: 0
 
 
-
-
-
-
-
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/
@@ -168,6 +163,35 @@
       display: flex
       .field
         margin-right: 20px
+
+.node-vereinsmeisterschaft, .node-meisterturnier,
+.node-vormeisterturnier, .node-hauptturnier
+  #page-title
+    h1
+      +pagetitle-with-icon
+.node-vereinspokal
+  #page-title
+    h1
+      +pagetitle-with-icon
+      &:before
+        background: $grey-background
+        content: "\f091"
+.node-monatsblitz
+  #page-title
+    h1
+      +pagetitle-with-icon
+      &:before
+        background: $blue
+          content: "\f0e7"
+.node-schnellschach
+  #page-title
+    h1
+      +pagetitle-with-icon
+      &:before
+        background: $grey-background
+        content: "\f017"
+
+
 
 
 
