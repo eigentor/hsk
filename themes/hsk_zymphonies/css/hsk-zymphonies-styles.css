@@ -2412,7 +2412,7 @@ nav#block-hsk-footer {
     header nav#block-hsk-zymphonies-main-menu ul.menu ul {
       background: #ED8600;
       border: none;
-      top: 29px;
+      top: 27px !important;
       padding: 8px 0;
       -webkit-border-radius: 0 4px 4px 4px;
       -moz-border-radius: 0 4px 4px 4px;
@@ -2425,12 +2425,16 @@ nav#block-hsk-footer {
           color: white;
           padding: 6px 15px;
           background: none; }
-          header nav#block-hsk-zymphonies-main-menu ul.menu ul li a:hover {
+          header nav#block-hsk-zymphonies-main-menu ul.menu ul li a:hover, header nav#block-hsk-zymphonies-main-menu ul.menu ul li a.highlighted {
             color: black;
             background: none; }
         header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul {
           background: #b76400;
           top: 27px !important; }
+          header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul li a {
+            background: none; }
+            header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul li a:hover, header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul li a.highlighted {
+              background: none; }
 
   #block-mobilemenubutton {
     display: none; }

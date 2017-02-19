@@ -216,7 +216,7 @@ nav#block-hsk-footer
         ul
           background: $primary-color
           border: none
-          top: 29px
+          top: 27px!important
           padding: 8px 0
           +border-radius(0 4px 4px 4px)
           li
@@ -225,12 +225,17 @@ nav#block-hsk-footer
               color: white
               padding: 6px 15px
               background: none
-              &:hover
+              &:hover, &.highlighted
                 color: black
                 background: none
             ul
               background: #b76400
               top: 27px!important
+              li
+                a
+                  background: none
+                  &:hover, &.highlighted
+                    background: none
 
   #block-mobilemenubutton
     display: none
