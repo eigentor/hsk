@@ -2221,7 +2221,7 @@ nav#block-hsk-zymphonies-main-menu {
       background: #f3f3f3;
       border-bottom: 1px solid #ccc;
       color: #333; }
-      nav#block-hsk-zymphonies-main-menu ul.menu li a:hover {
+      nav#block-hsk-zymphonies-main-menu ul.menu li a:hover, nav#block-hsk-zymphonies-main-menu ul.menu li a.highlighted {
         background: #e5e5e5; }
       nav#block-hsk-zymphonies-main-menu ul.menu li a .sub-arrow {
         background: white;
@@ -2239,10 +2239,10 @@ nav#block-hsk-zymphonies-main-menu {
         background: #e5e5e5;
         font-size: 12.35px;
         font-size: 0.95rem; }
-        nav#block-hsk-zymphonies-main-menu ul.menu li ul li a:hover {
+        nav#block-hsk-zymphonies-main-menu ul.menu li ul li a:hover, nav#block-hsk-zymphonies-main-menu ul.menu li ul li a.highlighted {
           background: #d5d5d5; }
-    nav#block-hsk-zymphonies-main-menu ul.menu li > ul {
-      top: 29px !important; }
+      nav#block-hsk-zymphonies-main-menu ul.menu li ul li ul li a {
+        background: #d5d5d5; }
 
 #block-mobilemenubutton {
   width: 29px;
@@ -2428,6 +2428,9 @@ nav#block-hsk-footer {
           header nav#block-hsk-zymphonies-main-menu ul.menu ul li a:hover {
             color: black;
             background: none; }
+        header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul {
+          background: #b76400;
+          top: 27px !important; }
 
   #block-mobilemenubutton {
     display: none; }

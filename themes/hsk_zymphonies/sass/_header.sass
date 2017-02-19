@@ -38,7 +38,7 @@ nav#block-hsk-zymphonies-main-menu
         background: #f3f3f3
         border-bottom: 1px solid #ccc
         color: $base-text-color
-        &:hover
+        &:hover, &.highlighted
           background: #e5e5e5
         .sub-arrow
           background: white
@@ -56,49 +56,13 @@ nav#block-hsk-zymphonies-main-menu
             padding-left: 25px
             background: #e5e5e5
             +x-rem(font-size, 0.95)
-            &:hover
+            &:hover, &.highlighted
               background: #d5d5d5
-      > ul
-        top: 29px!important
+          ul
+            li
+              a
+                background: #d5d5d5
 
-
-    //li
-    //  display: inline
-    //  display: block
-    //  a
-    //    background: #bbb
-    //    display: block
-    //    height: 42px
-    //    line-height: 42px
-    //    color: white
-    //    text-align: center
-    //    padding: 0 15px
-    //    +font-size-medium
-    //    &:hover
-    //      background: #888
-    //      text-decoration: none
-    //    span.arrow
-    //      display: inline-block
-    //      width: 17px
-    //      height: 25px
-    //      background: url(../images/arrow-white-down.png) no-repeat right 16px
-    //  &.menu-visible
-    //    a
-    //      background: #444
-    //    ul
-    //      li
-    //        a
-    //          background: #777
-    //  ul
-    //    display: none // Initially hide the submenus
-    //    li
-    //      a
-    //        background: #888
-    //        +font-size-slightly-bigger
-    //        padding: 0
-    //  &.menu-visible
-    //    ul
-    //      display: block
 
 #block-mobilemenubutton
   width: 29px
@@ -264,6 +228,9 @@ nav#block-hsk-footer
               &:hover
                 color: black
                 background: none
+            ul
+              background: #b76400
+              top: 27px!important
 
   #block-mobilemenubutton
     display: none
