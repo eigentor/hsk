@@ -2377,6 +2377,8 @@ nav#block-hsk-footer {
       header nav#block-hsk-zymphonies-main-menu ul.menu li.menu-item--active-trail a {
         background: #ED8600;
         color: white; }
+      header nav#block-hsk-zymphonies-main-menu ul.menu li.menu-item--active-trail ul li a {
+        background: none; }
       header nav#block-hsk-zymphonies-main-menu ul.menu li a {
         background: none;
         border: none;
