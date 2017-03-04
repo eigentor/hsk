@@ -4,24 +4,17 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.player.body
+    - field.field.node.player.field_player_image
     - node.type.player
   module:
-    - text
     - user
 id: node.player.teaser
 targetEntityType: node
 bundle: player
 mode: teaser
 content:
-  body:
-    label: hidden
-    type: text_summary_or_trimmed
-    weight: 101
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
   links:
     weight: 100
 hidden:
+  field_player_image: true
   langcode: true

@@ -3,33 +3,28 @@ langcode: de
 status: true
 dependencies:
   config:
-    - field.field.node.player.body
     - field.field.node.player.field_player_image
+    - image.style.medium
     - node.type.player
   module:
     - image
-    - text
     - user
 id: node.player.default
 targetEntityType: node
 bundle: player
 mode: default
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 101
-    settings: {  }
-    third_party_settings: {  }
   field_player_image:
     weight: 102
-    label: above
+    label: visually_hidden
     settings:
-      image_style: ''
+      image_style: medium
       image_link: ''
     third_party_settings: {  }
     type: image
   links:
     weight: 100
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   langcode: true

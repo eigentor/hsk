@@ -1,0 +1,28 @@
+uuid: 5d6d1704-6424-4a1e-a916-33db947977de
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_team_leader
+    - node.type.player
+    - node.type.team
+id: node.team.field_team_leader
+field_name: field_team_leader
+entity_type: node
+bundle: team
+label: Mannschaftsführer
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      player: player
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

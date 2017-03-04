@@ -3,27 +3,17 @@ langcode: de
 status: true
 dependencies:
   config:
-    - field.field.node.player.body
     - field.field.node.player.field_player_image
     - image.style.thumbnail
     - node.type.player
   module:
     - image
     - path
-    - text
 id: node.player.default
 targetEntityType: node
 bundle: player
 mode: default
 content:
-  body:
-    type: text_textarea_with_summary
-    weight: 36
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-    third_party_settings: {  }
   created:
     type: datetime_timestamp
     weight: 10
