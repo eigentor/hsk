@@ -1,0 +1,35 @@
+uuid: b8a7fa7e-2431-439b-8ddd-ada565e6eaa2
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.node.player.body
+    - field.field.node.player.field_player_image
+    - node.type.player
+  module:
+    - image
+    - text
+    - user
+id: node.player.default
+targetEntityType: node
+bundle: player
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+  field_player_image:
+    weight: 102
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+  links:
+    weight: 100
+hidden:
+  langcode: true
