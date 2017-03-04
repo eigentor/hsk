@@ -6,7 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.team.field_league
     - field.field.node.team.field_results_standings
-    - field.field.node.team.field_team_leader
+    - field.field.node.team.field_team_description
     - node.type.team
   module:
     - user
@@ -20,5 +20,5 @@ content:
 hidden:
   field_league: true
   field_results_standings: true
-  field_team_leader: true
+  field_team_description: true
   langcode: true
