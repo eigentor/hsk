@@ -49,6 +49,11 @@ function linkit_ckeditor_plugin_info_alter(array &$plugins) {
  * Implements hook_form_FORM_ID_alter().
  */
 function linkit_form_editor_link_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Alter only the form with ID 'editor_link_dialog'.
+  if ($form_id !== 'editor_link_dialog') {
+    return;
+  }
+
   /** @var Drupal\filter\Entity\FilterFormat $filter_format */
   $filter_format = $form_state->getBuildInfo()['args'][0];
 
@@ -95,6 +100,8 @@ function linkit_form_editor_link_dialog_alter(&$form, FormStateInterface $form_s
       /** @var \Drupal\Core\Entity\EntityInterface $entity */
       $entity = \Drupal::service('entity.repository')
         ->loadEntityByUuid($input['data-entity-type'], $input['data-entity-uuid']);
+      $entity = \Drupal::service('entity.repository')
+        ->getTranslationFromContext($entity);
       $access = !$entity->access('view', NULL, TRUE)->isForbidden();
       $autocomplete_default_value = !empty($access) && $access ? $entity->label() : '';
     }

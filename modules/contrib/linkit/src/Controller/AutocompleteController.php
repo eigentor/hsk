@@ -70,14 +70,14 @@ class AutocompleteController implements ContainerInjectionInterface {
    * @param string $linkit_profile_id
    *   The linkit profile id.
    *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse JsonResponse
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   A JSON response containing the autocomplete suggestions.
    */
   public function autocomplete(Request $request, $linkit_profile_id) {
     $this->linkitProfile = $this->linkitProfileStorage->load($linkit_profile_id);
-    $string = Unicode::strtolower($request->query->get('q'));
+    $string = $request->query->get('q');
 
-    $suggestionCollection = $this->suggestionManager->getSuggestions($this->linkitProfile, $string);
+    $suggestionCollection = $this->suggestionManager->getSuggestions($this->linkitProfile, Unicode::strtolower($string));
 
     /*
      * If there are no suggestions from the matcher plugins, we have to add a

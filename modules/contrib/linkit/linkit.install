@@ -6,6 +6,16 @@
  */
 
 /**
+ * Implements hook_uninstall().
+ */
+function linkit_uninstall() {
+  $config_factory = \Drupal::configFactory();
+
+  // Remove the image styles that Linkit has installed.
+  $config_factory->getEditable('image.style.linkit_result_thumbnail')->delete();
+}
+
+/**
  * Updates Linkit from 4 to 5.
  *
  * Removes linkit profile attributes.
@@ -52,7 +62,7 @@ function linkit_update_8500() {
       $toolbar_rows = $editor_config->get('settings.toolbar.rows');
       foreach ($toolbar_rows as $row_index => $row) {
         foreach ($row as $button_group_index => $button_group) {
-          foreach ($button_group['items'] as $item_index => $item__name) {
+          foreach ($button_group['items'] as $item__name) {
             if ($item__name === 'Linkit') {
               $old_linkit_button_path = 'settings.toolbar.rows.' . $row_index . '.' . $button_group_index . '.items';
             }

@@ -89,12 +89,12 @@ class FileMatcher extends EntityMatcher {
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
 
-    $form['extensions'] = array(
+    $form['extensions'] = [
       '#type' => 'details',
       '#title' => $this->t('File extensions'),
       '#open' => TRUE,
       '#weight' => -100,
-    );
+    ];
 
     $file_extensions = str_replace(' ', ', ', $this->configuration['file_extensions']);
     $form['extensions']['file_extensions'] = [

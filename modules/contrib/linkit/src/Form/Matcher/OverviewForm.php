@@ -104,7 +104,7 @@ class OverviewForm extends FormBase {
 
       $form['plugins'][$key]['weight'] = [
         '#type' => 'weight',
-        '#title' => t('Weight for @title', ['@title' => (string) $plugin->getLabel()]),
+        '#title' => $this->t('Weight for @title', ['@title' => (string) $plugin->getLabel()]),
         '#title_display' => 'invisible',
         '#default_value' => $plugin->getWeight(),
         '#attributes' => ['class' => ['plugin-order-weight']],
@@ -118,7 +118,7 @@ class OverviewForm extends FormBase {
       $is_configurable = $plugin instanceof ConfigurableMatcherInterface;
       if ($is_configurable) {
         $form['plugins'][$key]['operations']['#links']['edit'] = [
-          'title' => t('Edit'),
+          'title' => $this->t('Edit'),
           'url' => Url::fromRoute('linkit.matcher.edit', [
             'linkit_profile' => $this->linkitProfile->id(),
             'plugin_instance_id' => $key,
@@ -127,7 +127,7 @@ class OverviewForm extends FormBase {
       }
 
       $form['plugins'][$key]['operations']['#links']['delete'] = [
-        'title' => t('Delete'),
+        'title' => $this->t('Delete'),
         'url' => Url::fromRoute('linkit.matcher.delete', [
           'linkit_profile' => $this->linkitProfile->id(),
           'plugin_instance_id' => $key,

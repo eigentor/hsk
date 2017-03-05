@@ -42,44 +42,44 @@ class NodeMatcherTest extends LinkitKernelTestBase {
     // anonymous user.
     \Drupal::currentUser()->setAccount($this->createUser());
 
-    $type1 = NodeType::create(array(
+    $type1 = NodeType::create([
       'type' => 'test1',
       'name' => 'Test1',
-    ));
+    ]);
     $type1->save();
 
-    $type2 = NodeType::create(array(
+    $type2 = NodeType::create([
       'type' => 'test2',
       'name' => 'Test2',
-    ));
+    ]);
     $type2->save();
 
     // Nodes with type 1.
-    $node = Node::create(array(
+    $node = Node::create([
       'title' => 'Lorem Ipsum 1',
       'type' => $type1->id(),
-    ));
+    ]);
     $node->save();
 
-    $node = Node::create(array(
+    $node = Node::create([
       'title' => 'Lorem Ipsum 2',
       'type' => $type1->id(),
-    ));
+    ]);
     $node->save();
 
     // Node with type 2.
-    $node = Node::create(array(
+    $node = Node::create([
       'title' => 'Lorem Ipsum 3',
       'type' => $type2->id(),
-    ));
+    ]);
     $node->save();
 
     // Unpublished node.
-    $node = Node::create(array(
+    $node = Node::create([
       'title' => 'Lorem unpublishd',
       'type' => $type1->id(),
       'status' => FALSE,
-    ));
+    ]);
     $node->save();
 
     // Set the current user to someone that is not the node owner.
@@ -134,6 +134,27 @@ class NodeMatcherTest extends LinkitKernelTestBase {
     // Test with permissions to see unpublished nodes.
     $suggestions = $plugin->execute('Lorem');
     $this->assertEquals(4, count($suggestions->getSuggestions()), 'Correct number of suggestions');
+  }
+
+  /**
+   * Tests node matcher with tokens in the matcher metadata.
+   */
+  public function testNodeMatcherWidthMetadataTokens() {
+    /** @var \Drupal\linkit\MatcherInterface $plugin */
+    $plugin = $this->manager->createInstance('entity:node', [
+      'settings' => [
+        'metadata' => '[node:nid] [node:field_with_no_value]',
+      ],
+    ]);
+
+    $suggestionCollection = $plugin->execute('Lorem');
+    /** @var \Drupal\linkit\Suggestion\EntitySuggestion[] $suggestions */
+    $suggestions = $suggestionCollection->getSuggestions();
+
+    foreach ($suggestions as $suggestion) {
+      $this->assertNotContains('[node:nid]', $suggestion->getDescription(), 'Raw token "[node:nid]" is not present in the description');
+      $this->assertNotContains('[node:field_with_no_value]', $suggestion->getDescription(), 'Raw token "[node:field_with_no_value]" is not present in the description');
+    }
   }
 
 }

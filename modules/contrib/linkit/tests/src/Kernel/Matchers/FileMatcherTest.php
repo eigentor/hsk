@@ -34,7 +34,7 @@ class FileMatcherTest extends LinkitKernelTestBase {
 
     $this->installEntitySchema('file');
     $this->installSchema('system', ['key_value_expire']);
-    $this->installSchema('file', array('file_usage'));
+    $this->installSchema('file', ['file_usage']);
 
     $this->manager = $this->container->get('plugin.manager.linkit.matcher');
 
@@ -84,6 +84,27 @@ class FileMatcherTest extends LinkitKernelTestBase {
 
     $suggestions = $plugin->execute('image-test');
     $this->assertEquals(2, count($suggestions->getSuggestions()), 'Correct number of suggestions with multiple file extension filter.');
+  }
+
+  /**
+   * Tests file matcher with tokens in the matcher metadata.
+   */
+  public function testTermMatcherWidthMetadataTokens() {
+    /** @var \Drupal\linkit\MatcherInterface $plugin */
+    $plugin = $this->manager->createInstance('entity:file', [
+      'settings' => [
+        'metadata' => '[file:fid] [file:field_with_no_value]',
+      ],
+    ]);
+
+    $suggestionCollection = $plugin->execute('Lorem');
+    /** @var \Drupal\linkit\Suggestion\EntitySuggestion[] $suggestions */
+    $suggestions = $suggestionCollection->getSuggestions();
+
+    foreach ($suggestions as $suggestion) {
+      $this->assertNotContains('[file:fid]', $suggestion->getDescription(), 'Raw token "[file:fid]" is not present in the description');
+      $this->assertNotContains('[file:field_with_no_value]', $suggestion->getDescription(), 'Raw token "[file:field_with_no_value]" is not present in the description');
+    }
   }
 
 }

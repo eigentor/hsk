@@ -111,13 +111,13 @@ class LinkitFilterEntityTest extends LinkitKernelTestBase {
    * Tests the linkit filter for file entities.
    */
   public function testFilterFileEntity() {
-    $file = File::create(array(
+    $file = File::create([
       'uid' => 1,
       'filename' => 'druplicon.txt',
       'uri' => 'public://druplicon.txt',
       'filemime' => 'text/plain',
       'status' => FILE_STATUS_PERMANENT,
-    ));
+    ]);
     $file->save();
 
     // Disable the automatic title attribute.

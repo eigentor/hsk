@@ -3,6 +3,7 @@
 namespace Drupal\linkit\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
+use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -50,7 +51,7 @@ class EntityMatcherDeriver extends DeriverBase implements ContainerDeriverInterf
 
       // Only entities that has a distinct canonical URI that is not the same
       // as the edit-form URI will be derived.
-      if ($canonical && ($canonical !== $edit_form)) {
+      if ($entity_type instanceof ContentEntityTypeInterface && $canonical && ($canonical !== $edit_form)) {
         $this->derivatives[$entity_type_id] = $base_plugin_definition;
         $this->derivatives[$entity_type_id]['id'] = $base_plugin_definition['id'] . ':' . $entity_type_id;
         $this->derivatives[$entity_type_id]['label'] = $entity_type->getLabel();

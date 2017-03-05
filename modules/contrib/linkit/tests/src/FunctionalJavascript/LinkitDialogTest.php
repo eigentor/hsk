@@ -4,10 +4,12 @@ namespace Drupal\Tests\linkit\FunctionalJavascript;
 
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\editor\Entity\Editor;
+use Drupal\entity_test\Entity\EntityTestMul;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\FunctionalJavascriptTests\JavascriptTestBase;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\linkit\Tests\ProfileCreationTrait;
 use Drupal\node\Entity\NodeType;
 
@@ -25,12 +27,19 @@ class LinkitDialogTest extends JavascriptTestBase {
    *
    * @var array
    */
-  public static $modules = ['node', 'ckeditor', 'filter', 'linkit'];
+  public static $modules = [
+    'node',
+    'ckeditor',
+    'filter',
+    'linkit',
+    'entity_test',
+    'language',
+  ];
 
   /**
    * An instance of the "CKEditor" text editor plugin.
    *
-   * @var \Drupal\ckeditor\Plugin\Editor\CKEditor;
+   * @var \Drupal\ckeditor\Plugin\Editor\CKEditor
    */
   protected $ckeditor;
 
@@ -56,8 +65,9 @@ class LinkitDialogTest extends JavascriptTestBase {
 
     $matcherManager = $this->container->get('plugin.manager.linkit.matcher');
     /** @var \Drupal\linkit\MatcherInterface $plugin */
-    $plugin = $matcherManager->createInstance('entity:node', []);
+
     $this->linkitProfile = $this->createProfile();
+    $plugin = $matcherManager->createInstance('entity:entity_test_mul');
     $this->linkitProfile->addMatcher($plugin->getConfiguration());
     $this->linkitProfile->save();
 
@@ -127,8 +137,18 @@ class LinkitDialogTest extends JavascriptTestBase {
     $web_assert = $this->assertSession();
     $page = $session->getPage();
 
+    // Adds additional languages.
+    $langcodes = ['sv', 'da', 'fi'];
+    foreach ($langcodes as $langcode) {
+      ConfigurableLanguage::createFromLangcode($langcode)->save();
+    }
+
+    // Create a test entity.
+    $entity = EntityTestMul::create(['name' => 'Foo']);
+    $entity->save();
+
     // Create test nodes.
-    $this->demoEntity = $this->createNode(['title' => 'Foo']);
+    $this->demoEntity = $entity;
 
     // Go to node creation page.
     $this->drupalGet('node/add/page');
@@ -286,6 +306,94 @@ JS;
 
     $href_attribute = $this->getLinkAttributeFromEditor('href');
     $this->assertEquals('http://example.com', $href_attribute, 'The link href is correct.');
+  }
+
+  /**
+   * Test the link dialog with translated entities.
+   */
+  public function testLinkDialogTranslations() {
+    $session = $this->getSession();
+    $web_assert = $this->assertSession();
+    $page = $session->getPage();
+
+    // Adds additional languages.
+    $langcodes = ['sv', 'da', 'fi'];
+    foreach ($langcodes as $langcode) {
+      ConfigurableLanguage::createFromLangcode($langcode)->save();
+    }
+
+    // Create a test entity.
+    $entity = EntityTestMul::create(['name' => 'Foo']);
+
+    foreach ($langcodes as $langcode) {
+      $entity->addTranslation($langcode, ['name' => 'Foo ' . $langcode]);
+    }
+
+    $entity->save();
+
+    // Create test nodes.
+    $this->demoEntity = $entity;
+
+    $this->config('system.site')->set('default_langcode', 'sv')->save();
+
+    // Go to node creation page.
+    $this->drupalGet('node/add/page');
+
+    // Wait until the editor has been loaded.
+    $ckeditor_loaded = $this->getSession()->wait(5000, "jQuery('.cke_contents').length > 0");
+    $this->assertTrue($ckeditor_loaded, 'The editor has been loaded.');
+
+    // Click on the drupallink plugin.
+    $page->find('css', 'a.cke_button__drupallink')->click();
+
+    // Wait for the form to load.
+    $web_assert->assertWaitOnAjaxRequest();
+
+    // Find the linkit field.
+    $linkit_field = $page->findField('linkit');
+
+    // Trigger a keydown event to active a autocomplete search.
+    $linkit_field->keyDown('f');
+
+    // Wait for the results to load.
+    $this->getSession()->wait(5000, "jQuery('.linkit-result.ui-menu-item').length > 0");
+
+    // Find all the autocomplete results.
+    $results = $page->findAll('css', '.linkit-result.ui-menu-item');
+    $this->assertEquals(1, count($results), 'Found autocomplete result');
+
+    // Find the first result and click it.
+    $page->find('xpath', '(//li[contains(@class, "linkit-result") and contains(@class, "ui-menu-item")])[1]')->click();
+
+    // Save the dialog input.
+    $page->find('css', '.editor-link-dialog')->find('css', '.button.form-submit span')->click();
+
+    // Wait for the dialog to close.
+    $web_assert->assertWaitOnAjaxRequest();
+
+    // Select the link in the editor.
+    $javascript = <<<JS
+      (function(){
+        var editor = window.CKEDITOR.instances['edit-body-0-value'];
+        console.log(editor);
+        var element = editor.document.findOne( 'a' );
+        editor.getSelection().selectElement( element );
+      })()
+JS;
+    $session->executeScript($javascript);
+
+    // Click on the drupallink plugin.
+    $page->find('css', 'a.cke_button__drupallink')->click();
+
+    // Wait for the form to load.
+    $web_assert->assertWaitOnAjaxRequest();
+
+    // Find the linkit field.
+    $linkit_field = $page->findField('linkit');
+    $this->assertEquals($this->demoEntity->getTranslation('sv')->label(), $linkit_field->getValue(), 'Linkit field has the correct value.');
+
+    // Make sure the link information is populated with the old label.
+    $this->assertEquals($this->demoEntity->getTranslation('sv')->label(), $this->getLinkInfoText(), 'Link information is populated');
   }
 
   /**

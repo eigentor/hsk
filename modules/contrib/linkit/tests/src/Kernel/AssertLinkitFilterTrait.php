@@ -29,7 +29,7 @@ trait AssertLinkitFilterTrait {
   protected function assertLinkitFilter(EntityInterface $entity, $langcode = LanguageInterface::LANGCODE_SITE_DEFAULT) {
     if ($entity->getEntityTypeId() === "file") {
       /** @var \Drupal\file\Entity\File $entity */
-      $href = $url = file_create_url($entity->getFileUri());
+      $href = file_create_url($entity->getFileUri());
     }
     else {
       $href = $entity->toUrl()->toString();
@@ -37,7 +37,7 @@ trait AssertLinkitFilterTrait {
 
     $input = '<a data-entity-type="' . $entity->getEntityTypeId() . '" data-entity-uuid="' . $entity->uuid() . '">Link text</a>';
     $expected = '<a data-entity-type="' . $entity->getEntityTypeId() . '" data-entity-uuid="' . $entity->uuid() . '" href="' . $href . '">Link text</a>';
-    $this->assertIdentical($expected, $this->process($input, $langcode)->getProcessedText());
+    $this->assertSame($expected, $this->process($input, $langcode)->getProcessedText());
   }
 
   /**
@@ -51,7 +51,7 @@ trait AssertLinkitFilterTrait {
   protected function assertLinkitFilterWithTitle(EntityInterface $entity, $langcode = LanguageInterface::LANGCODE_SITE_DEFAULT) {
     if ($entity->getEntityTypeId() === "file") {
       /** @var \Drupal\file\Entity\File $entity */
-      $href = $url = file_create_url($entity->getFileUri());
+      $href = file_create_url($entity->getFileUri());
     }
     else {
       $href = $entity->toUrl()->toString();
@@ -59,7 +59,7 @@ trait AssertLinkitFilterTrait {
 
     $input = '<a data-entity-type="' . $entity->getEntityTypeId() . '" data-entity-uuid="' . $entity->uuid() . '">Link text</a>';
     $expected = '<a data-entity-type="' . $entity->getEntityTypeId() . '" data-entity-uuid="' . $entity->uuid() . '" href="' . $href . '" title="' . Html::decodeEntities($entity->label()) . '">Link text</a>';
-    $this->assertIdentical($expected, $this->process($input, $langcode)->getProcessedText());
+    $this->assertSame($expected, $this->process($input, $langcode)->getProcessedText());
   }
 
   /**

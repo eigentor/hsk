@@ -15,7 +15,7 @@ trait MatcherTokensTrait {
    * @param array $types
    *   An array of token types to use.
    */
-  public function insertTokenList(&$form, array $types = []) {
+  public function insertTokenList(array &$form, array $types = []) {
     if (\Drupal::moduleHandler()->moduleExists('token')) {
       // Add the token tree UI.
       $form['metadata']['token_tree'] = [

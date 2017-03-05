@@ -53,11 +53,11 @@ class NodeMatcher extends EntityMatcher {
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
 
-    $form['unpublished_nodes'] = array(
+    $form['unpublished_nodes'] = [
       '#type' => 'details',
       '#title' => $this->t('Unpublished nodes'),
       '#open' => TRUE,
-    );
+    ];
 
     $form['unpublished_nodes']['include_unpublished'] = [
       '#title' => $this->t('Include unpublished nodes'),

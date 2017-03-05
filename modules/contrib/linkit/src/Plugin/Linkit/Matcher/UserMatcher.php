@@ -60,12 +60,12 @@ class UserMatcher extends EntityMatcher {
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
 
-    $form['role_restrictions'] = array(
+    $form['role_restrictions'] = [
       '#type' => 'details',
       '#title' => $this->t('Role restrictions'),
       '#open' => TRUE,
       '#weight' => -90,
-    );
+    ];
 
     $form['role_restrictions']['roles'] = [
       '#type' => 'checkboxes',
@@ -76,11 +76,11 @@ class UserMatcher extends EntityMatcher {
       '#element_validate' => [[get_class($this), 'elementValidateFilter']],
     ];
 
-    $form['blocked_users'] = array(
+    $form['blocked_users'] = [
       '#type' => 'details',
       '#title' => $this->t('Blocked users'),
       '#open' => TRUE,
-    );
+    ];
 
     $form['blocked_users']['include_blocked'] = [
       '#title' => $this->t('Include blocked user'),

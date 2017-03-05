@@ -47,22 +47,22 @@ abstract class LinkitKernelTestBase extends KernelTestBase {
    * @return \Drupal\user\Entity\User
    *   The created user entity.
    */
-  protected function createUser($values = array(), $permissions = array()) {
+  protected function createUser(array $values = [], array $permissions = []) {
     if ($permissions) {
       // Create a new role and apply permissions to it.
-      $role = Role::create(array(
+      $role = Role::create([
         'id' => strtolower($this->randomMachineName(8)),
         'label' => $this->randomMachineName(8),
-      ));
+      ]);
       $role->save();
       user_role_grant_permissions($role->id(), $permissions);
       $values['roles'][] = $role->id();
     }
 
-    $account = User::create($values + array(
+    $account = User::create($values + [
       'name' => $this->randomMachineName(),
       'status' => 1,
-    ));
+    ]);
     $account->enforceIsNew();
     $account->save();
     return $account;

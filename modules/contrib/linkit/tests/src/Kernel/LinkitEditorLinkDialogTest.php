@@ -27,11 +27,11 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
   protected $linkitProfile;
 
   /**
-   * Filter format for testing.
+   * Editor for testing.
    *
-   * @var \Drupal\filter\FilterFormatInterface
+   * @var \Drupal\editor\EditorInterface
    */
-  protected $format;
+  protected $editor;
 
   /**
    * Modules to enable.
@@ -62,20 +62,20 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
     $this->linkitProfile->save();
 
     // Add a text format.
-    $this->format = FilterFormat::create([
+    $format = FilterFormat::create([
       'format' => 'filtered_html',
       'name' => 'Filtered HTML',
       'weight' => 0,
       'filters' => [],
     ]);
-    $this->format->save();
+    $format->save();
 
     // Set up editor.
-    $editor = Editor::create([
+    $this->editor = Editor::create([
       'format' => 'filtered_html',
       'editor' => 'ckeditor',
     ]);
-    $editor->setSettings([
+    $this->editor->setSettings([
       'plugins' => [
         'drupallink' => [
           'linkit_enabled' => TRUE,
@@ -83,7 +83,7 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
         ],
       ],
     ]);
-    $editor->save();
+    $this->editor->save();
   }
 
   /**
@@ -113,7 +113,7 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
     $form_state = (new FormState())
       ->setRequestMethod('POST')
       ->setUserInput($input)
-      ->addBuildInfo('args', [$this->format]);
+      ->addBuildInfo('args', [$this->editor]);
 
     /** @var \Drupal\Core\Form\FormBuilderInterface $form_builder */
     $form_builder = $this->container->get('form_builder');
@@ -178,7 +178,7 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
     $form_state = (new FormState())
       ->setRequestMethod('POST')
       ->setUserInput($input)
-      ->addBuildInfo('args', [$this->format]);
+      ->addBuildInfo('args', [$this->editor]);
 
     /** @var \Drupal\Core\Form\FormBuilderInterface $form_builder */
     $form_builder = $this->container->get('form_builder');
@@ -217,7 +217,7 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
     $form_state = (new FormState())
       ->setRequestMethod('POST')
       ->setUserInput($input)
-      ->addBuildInfo('args', [$this->format]);
+      ->addBuildInfo('args', [$this->editor]);
 
     /** @var \Drupal\Core\Form\FormBuilderInterface $form_builder */
     $form_builder = $this->container->get('form_builder');
@@ -255,7 +255,7 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
     $form_state = (new FormState())
       ->setRequestMethod('POST')
       ->setUserInput($input)
-      ->addBuildInfo('args', [$this->format]);
+      ->addBuildInfo('args', [$this->editor]);
 
     /** @var \Drupal\Core\Form\FormBuilderInterface $form_builder */
     $form_builder = $this->container->get('form_builder');
