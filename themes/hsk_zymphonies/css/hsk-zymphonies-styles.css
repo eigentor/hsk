@@ -1662,7 +1662,7 @@ i.icon {
 .path-termine .view-events-list h3 {
   font-size: 16.25px;
   font-size: 1.25rem;
-  color: #777;
+  color: #666;
   margin: 25px 0 10px;
   border-bottom: 1px solid #ccc; }
   .path-termine .view-events-list h3:first-child {
@@ -2302,6 +2302,7 @@ nav#block-hsk-footer {
     border: 1px solid #aaa; }
 
 #block-views-block-header-slideshow-block-1 {
+  margin-bottom: -30px;
   clear: both; }
 
 /*------------------------------------------- */
@@ -2460,6 +2461,14 @@ nav#block-hsk-footer {
 /*------------------------------------------- */
 .path-frontpage .content_layout {
   margin-top: 0; }
+.path-frontpage #block-views-block-events-list-block-1 h3 {
+  color: #666;
+  border-bottom: 1px solid #e5e5e5; }
+.path-frontpage #block-views-block-events-list-block-1 .more-link a {
+  font-size: 10.4px;
+  font-size: 0.8rem;
+  color: #888;
+  padding-right: 15px; }
 .path-frontpage #block-views-block-events-list-block-1 .views-row {
   display: flex;
   margin-bottom: 9px;
@@ -2498,7 +2507,8 @@ nav#block-hsk-footer {
       font-size: 0.95rem;
       align-self: flex-start;
       margin-top: 3px;
-      margin-bottom: 0; }
+      margin-bottom: 0;
+      border: none; }
 .path-frontpage #block-views-block-news-block-1 .views-row {
   margin-bottom: 10px; }
   .path-frontpage #block-views-block-news-block-1 .views-row h3 {

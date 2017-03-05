@@ -1,0 +1,25 @@
+uuid: 9b3fc06d-f896-4871-b03c-9ee6110efe7d
+langcode: de
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:9a479331-9c95-47e5-8c7b-9f6cd76f3a57'
+  module:
+    - block_content
+  theme:
+    - hsk_zymphonies
+id: begrussungstext
+theme: hsk_zymphonies
+region: bottom_first
+weight: 0
+provider: null
+plugin: 'block_content:9a479331-9c95-47e5-8c7b-9f6cd76f3a57'
+settings:
+  id: 'block_content:9a479331-9c95-47e5-8c7b-9f6cd76f3a57'
+  label: 'Schachklub HSK Lister Turm Hannover'
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

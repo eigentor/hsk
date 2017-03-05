@@ -1,0 +1,25 @@
+uuid: a538c2fb-6ac8-4d7c-bd61-b48866bdf810
+langcode: de
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:f040413a-fd98-4635-a390-d5a37713732c'
+  module:
+    - block_content
+  theme:
+    - hsk_zymphonies
+id: infoblockstartseite1
+theme: hsk_zymphonies
+region: bottom_second
+weight: 0
+provider: null
+plugin: 'block_content:f040413a-fd98-4635-a390-d5a37713732c'
+settings:
+  id: 'block_content:f040413a-fd98-4635-a390-d5a37713732c'
+  label: 'Info-Block Startseite 1'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }
