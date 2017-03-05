@@ -1,9 +1,9 @@
-uuid: 9b3fc06d-f896-4871-b03c-9ee6110efe7d
+uuid: cf96bf44-722b-4957-a863-dd70ecef2cb1
 langcode: de
 status: true
 dependencies:
   content:
-    - 'block_content:basic:9a479331-9c95-47e5-8c7b-9f6cd76f3a57'
+    - 'block_content:basic:7da41258-75ca-4a9f-8a9d-6f4a9c72d213'
   module:
     - block_content
   theme:
@@ -13,9 +13,9 @@ theme: hsk_zymphonies
 region: bottom_first
 weight: 0
 provider: null
-plugin: 'block_content:9a479331-9c95-47e5-8c7b-9f6cd76f3a57'
+plugin: 'block_content:7da41258-75ca-4a9f-8a9d-6f4a9c72d213'
 settings:
-  id: 'block_content:9a479331-9c95-47e5-8c7b-9f6cd76f3a57'
+  id: 'block_content:7da41258-75ca-4a9f-8a9d-6f4a9c72d213'
   label: 'Schachklub HSK Lister Turm Hannover'
   provider: block_content
   label_display: visible

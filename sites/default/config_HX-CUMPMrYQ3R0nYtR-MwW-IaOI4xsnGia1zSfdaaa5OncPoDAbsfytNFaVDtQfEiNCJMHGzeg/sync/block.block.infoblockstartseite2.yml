@@ -1,9 +1,9 @@
-uuid: 5688508a-4a0b-40fd-a424-7bcec93c7677
+uuid: 8fd41e9a-bc6b-4179-a213-6004d7b22f49
 langcode: de
 status: true
 dependencies:
   content:
-    - 'block_content:basic:c420042f-dbbd-4bde-93b8-d70f65b8babe'
+    - 'block_content:basic:83519218-57f2-40c5-9c4f-5ff33e4887c2'
   module:
     - block_content
   theme:
@@ -13,9 +13,9 @@ theme: hsk_zymphonies
 region: bottom_third
 weight: 0
 provider: null
-plugin: 'block_content:c420042f-dbbd-4bde-93b8-d70f65b8babe'
+plugin: 'block_content:83519218-57f2-40c5-9c4f-5ff33e4887c2'
 settings:
-  id: 'block_content:c420042f-dbbd-4bde-93b8-d70f65b8babe'
+  id: 'block_content:83519218-57f2-40c5-9c4f-5ff33e4887c2'
   label: 'Info-Block Startseite 2'
   provider: block_content
   label_display: '0'

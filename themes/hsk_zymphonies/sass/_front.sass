@@ -6,6 +6,8 @@
 .path-frontpage
   .content_layout
     margin-top: 0
+    .region-content
+      margin-bottom: 15px
   #block-views-block-events-list-block-1
     h3
       color: $grey-text
@@ -59,6 +61,12 @@
       a
         +small-grey-links
 
+  .bottom-widgets
+    background: #eee
+    padding-top: 40px
+    h3
+      +x-rem(font-size, 1.2)
+
 
 
 
@@ -92,8 +100,9 @@
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop-narrow)
   .path-frontpage
-    .region-content
-      +make-row()
+    .content_layout
+      .region-content
+        +make-row()
     #block-views-block-events-list-block-1
       +make-md-column(6)
 
