@@ -1,0 +1,42 @@
+uuid: 066738d7-2180-4f0b-8e5c-d8d23e7f3670
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.player
+  module:
+    - better_formats
+    - text
+third_party_settings:
+  better_formats:
+    allowed_formats_toggle: 0
+    allowed_formats:
+      basic_html: basic_html
+      restricted_html: restricted_html
+      tables_only: tables_only
+      full_html: full_html
+    default_order_toggle: 0
+    default_order_wrapper:
+      formats:
+        basic_html:
+          weight: '0'
+        restricted_html:
+          weight: '0'
+        tables_only:
+          weight: '0'
+        full_html:
+          weight: '1'
+id: node.player.body
+field_name: body
+entity_type: node
+bundle: player
+label: Beschreibung
+description: 'Infos über den Spieler. Funktion im Verein, was sonst interessant ist...'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

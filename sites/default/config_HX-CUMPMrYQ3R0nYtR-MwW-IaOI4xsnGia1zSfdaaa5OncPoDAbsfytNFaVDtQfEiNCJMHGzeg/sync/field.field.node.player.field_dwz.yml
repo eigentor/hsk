@@ -1,0 +1,23 @@
+uuid: 69241439-0745-4da9-87ea-d323bb2a5474
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_dwz
+    - node.type.player
+id: node.player.field_dwz
+field_name: field_dwz
+entity_type: node
+bundle: player
+label: DWZ
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: 3500
+  prefix: ''
+  suffix: ''
+field_type: integer
