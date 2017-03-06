@@ -1,0 +1,14 @@
+uuid: 2dcf224c-b07e-4dbd-8875-359b52b55bb3
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.chefredakteur
+  module:
+    - user
+id: user_add_role_action.chefredakteur
+label: 'Add the chefredakteur role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: chefredakteur

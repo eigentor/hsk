@@ -1,0 +1,24 @@
+uuid: cb2af89f-6808-4687-a19e-4ef63845ef1c
+langcode: de
+status: true
+dependencies: {  }
+id: chefredakteur
+label: chefredakteur
+weight: 4
+is_admin: null
+permissions:
+  - 'post comments'
+  - 'skip comment approval'
+  - 'access comments'
+  - 'access contextual links'
+  - 'use text format basic_html'
+  - 'use text format tables_only'
+  - 'translate interface'
+  - 'access content overview'
+  - 'administer nodes'
+  - 'create url aliases'
+  - 'access in-place editing'
+  - 'access administration pages'
+  - 'view the administration theme'
+  - 'access toolbar'
+  - 'access user profiles'

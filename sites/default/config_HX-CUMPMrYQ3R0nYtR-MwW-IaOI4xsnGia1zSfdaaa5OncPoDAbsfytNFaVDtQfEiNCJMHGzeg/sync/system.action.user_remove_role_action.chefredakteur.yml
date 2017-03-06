@@ -1,0 +1,14 @@
+uuid: 560f9ff7-1764-47db-971a-53443cbf59b8
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.chefredakteur
+  module:
+    - user
+id: user_remove_role_action.chefredakteur
+label: 'Remove the chefredakteur role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: chefredakteur

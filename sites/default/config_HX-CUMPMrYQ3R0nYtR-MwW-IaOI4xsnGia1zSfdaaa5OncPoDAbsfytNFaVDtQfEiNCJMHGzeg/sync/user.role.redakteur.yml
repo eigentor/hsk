@@ -1,0 +1,9 @@
+uuid: d6c1d1de-4309-4376-9940-21ec222a0a96
+langcode: de
+status: true
+dependencies: {  }
+id: redakteur
+label: Redakteur
+weight: 3
+is_admin: null
+permissions: {  }
