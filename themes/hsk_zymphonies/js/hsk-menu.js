@@ -29,6 +29,23 @@
       //     $('.region-primary-menu').hide();
       //   });
       // }
+
+
+      var startheading = $('h1.page-title').offset();
+      var widthheading = $('h1.page-title').innerWidth();
+      var endheading = startheading.left + widthheading;
+      var offset_pieces = endheading + 40;
+      $('#page-title').css('background-position', offset_pieces);
+
+      $( window ).resize(function() {
+        var startheading = $('h1.page-title').offset();
+        var widthheading = $('h1.page-title').innerWidth();
+        var endheading = startheading.left + widthheading;
+        var offset_pieces = endheading + 40;
+        $('#page-title').css('background-position', offset_pieces);
+
+      });
+
     }
   };
 })(jQuery);
