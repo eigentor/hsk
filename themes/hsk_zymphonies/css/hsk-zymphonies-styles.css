@@ -1514,7 +1514,7 @@ i.icon {
   background: transparent; }
 
 #page-title {
-  background: #ddd url(../images/figuren.png) right center no-repeat;
+  background: #ddd url(../images/figuren.png) 5000px center no-repeat;
   border-top: 5px solid #ccc;
   border-bottom: 5px solid #ccc; }
   #page-title #block-pagetitle {
@@ -2526,6 +2526,46 @@ nav#block-hsk-footer {
   .path-frontpage .bottom-widgets h3 {
     font-size: 15.6px;
     font-size: 1.2rem; }
+.path-frontpage #block-infoblockstartseite1 {
+  position: relative;
+  padding-left: 40px;
+  padding-top: 3px; }
+  .path-frontpage #block-infoblockstartseite1 h3 {
+    margin-bottom: 5px; }
+  .path-frontpage #block-infoblockstartseite1:before {
+    position: absolute;
+    font-family: Fontawesome;
+    content: "";
+    left: 0;
+    top: -2px;
+    font-size: 23.4px;
+    font-size: 1.8rem; }
+.path-frontpage #block-infoblockstartseite2 {
+  position: relative;
+  padding-left: 40px;
+  padding-top: 3px; }
+  .path-frontpage #block-infoblockstartseite2 h3 {
+    margin-bottom: 5px; }
+  .path-frontpage #block-infoblockstartseite2 h3.freizeitheim {
+    position: relative; }
+    .path-frontpage #block-infoblockstartseite2 h3.freizeitheim:before {
+      position: absolute;
+      font-family: Fontawesome;
+      content: "";
+      left: -35px;
+      top: -5px;
+      font-size: 29.9px;
+      font-size: 2.3rem; }
+  .path-frontpage #block-infoblockstartseite2 p.vorsitzender {
+    position: relative; }
+    .path-frontpage #block-infoblockstartseite2 p.vorsitzender:before {
+      position: absolute;
+      font-family: Fontawesome;
+      content: "";
+      left: -40px;
+      top: -6px;
+      font-size: 23.4px;
+      font-size: 1.8rem; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */

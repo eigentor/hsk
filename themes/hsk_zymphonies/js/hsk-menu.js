@@ -36,6 +36,7 @@
       var endheading = startheading.left + widthheading;
       var offset_pieces = endheading + 50;
       $('#page-title').css('background-position', offset_pieces);
+      console.log(offset_pieces);
 
       $( window ).resize(function() {
         var startheading = $('h1.page-title').offset();
