@@ -5,6 +5,7 @@ dependencies:
   module:
     - editor
     - linkit
+    - spamspan
 _core:
   default_config_hash: P8ddpAIKtawJDi5SzOwCzVnnNYqONewSTJ6Xn0dW_aQ
 name: 'Einfaches HTML'
@@ -17,7 +18,7 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id class> <h3 id class> <h4 id class> <h5 id class> <h6 id> <p class> <br> <span class> <img src alt data-entity-type data-entity-uuid data-align data-caption height width> <a href hreflang data-entity-type data-entity-uuid title>'
+      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id class=""> <h3 id class=""> <h4 id class=""> <h5 id class=""> <h6 id> <p class=""> <br> <span class=""> <img src alt data-entity-type data-entity-uuid data-align data-caption height width> <a href hreflang data-entity-type data-entity-uuid title>'
       filter_html_help: false
       filter_html_nofollow: false
   filter_align:
@@ -51,3 +52,17 @@ filters:
     weight: -15
     settings:
       title: true
+  filter_spamspan:
+    id: filter_spamspan
+    provider: spamspan
+    status: true
+    weight: 0
+    settings:
+      spamspan_at: ' [at] '
+      spamspan_use_graphic: '1'
+      spamspan_dot_enable: '1'
+      spamspan_dot: ' [dot] '
+      spamspan_use_form: '0'
+      spamspan_form_pattern: '<a href="%url?goto=%email">%displaytext</a>'
+      spamspan_form_default_url: contact
+      spamspan_form_default_displaytext: 'contact form'
