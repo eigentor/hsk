@@ -46,12 +46,9 @@ content:
     type: image_image
   field_player_team:
     weight: 4
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_buttons
   langcode:
     type: language_select
     weight: 5
