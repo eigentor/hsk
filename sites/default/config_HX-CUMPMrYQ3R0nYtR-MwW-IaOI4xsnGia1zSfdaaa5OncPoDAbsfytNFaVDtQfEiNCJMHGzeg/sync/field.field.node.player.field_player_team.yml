@@ -1,0 +1,29 @@
+uuid: 1ed7374e-9539-4242-90f4-05d5bb8f8f97
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_player_team
+    - node.type.player
+    - node.type.team
+id: node.player.field_player_team
+field_name: field_player_team
+entity_type: node
+bundle: player
+label: Mannschaft
+description: 'In welcher Mannschaft spielt der Spieler?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      team: team
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
