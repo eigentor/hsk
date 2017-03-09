@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.team.field_results_standings
     - field.field.node.team.field_team_description
     - field.field.node.team.field_team_leader
+    - field.field.node.team.field_team_players
     - node.type.team
   module:
     - link
@@ -43,6 +44,13 @@ content:
     type: text_default
   field_team_leader:
     weight: 5
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_team_players:
+    weight: 6
     label: above
     settings:
       link: true

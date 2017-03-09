@@ -6,7 +6,6 @@ dependencies:
     - field.field.node.player.body
     - field.field.node.player.field_dwz
     - field.field.node.player.field_player_image
-    - field.field.node.player.field_player_team
     - image.style.thumbnail
     - node.type.player
   module:
@@ -44,11 +43,6 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
-  field_player_team:
-    weight: 4
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
   langcode:
     type: language_select
     weight: 5

@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.team.field_results_standings
     - field.field.node.team.field_team_description
     - field.field.node.team.field_team_leader
+    - field.field.node.team.field_team_players
     - node.type.team
   module:
     - link
@@ -46,6 +47,14 @@ content:
     type: text_textarea_with_summary
   field_team_leader:
     weight: 37
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_team_players:
+    weight: 38
     settings:
       match_operator: CONTAINS
       size: 60
