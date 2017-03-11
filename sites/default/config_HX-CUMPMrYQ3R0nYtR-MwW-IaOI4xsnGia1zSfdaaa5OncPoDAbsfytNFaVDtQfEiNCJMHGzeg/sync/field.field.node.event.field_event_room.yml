@@ -1,0 +1,19 @@
+uuid: 9538887d-17f5-4577-86ab-1439678078f1
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_room
+    - node.type.event
+id: node.event.field_event_room
+field_name: field_event_room
+entity_type: node
+bundle: event
+label: Raum
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

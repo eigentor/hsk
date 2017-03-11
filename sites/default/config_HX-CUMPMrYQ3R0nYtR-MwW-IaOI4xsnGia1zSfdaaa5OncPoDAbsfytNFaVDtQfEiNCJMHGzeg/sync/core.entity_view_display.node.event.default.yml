@@ -7,6 +7,8 @@ dependencies:
     - field.field.node.event.field_ev_date
     - field.field.node.event.field_ev_end_time
     - field.field.node.event.field_ev_start_time
+    - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_room
     - node.type.event
   module:
     - datetime
@@ -48,6 +50,20 @@ content:
       leading_zero: true
     third_party_settings: {  }
     type: hms_default_formatter
+  field_event_location:
+    weight: 105
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_event_room:
+    weight: 106
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   links:
     weight: 100
     settings: {  }
