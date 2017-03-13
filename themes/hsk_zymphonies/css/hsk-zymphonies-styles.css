@@ -2012,10 +2012,8 @@ i.icon {
         width: 50%; } }
 
 @media only screen and (min-width: 768px) {
-  .page-node-type-team .node__content {
-    display: flex; }
-    .page-node-type-team .node__content .field {
-      margin-right: 20px; } }
+  .page-node-type-team .node__content .field {
+    margin-right: 20px; } }
 .node-vereinsmeisterschaft #page-title h1, .node-meisterturnier #page-title h1,
 .node-vormeisterturnier #page-title h1, .node-hauptturnier #page-title h1 {
   margin-left: 100px;

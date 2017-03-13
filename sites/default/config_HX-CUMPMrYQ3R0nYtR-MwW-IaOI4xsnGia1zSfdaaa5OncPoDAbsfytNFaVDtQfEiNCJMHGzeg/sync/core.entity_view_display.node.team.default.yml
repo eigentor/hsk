@@ -10,24 +10,62 @@ dependencies:
     - field.field.node.team.field_team_players
     - node.type.team
   module:
+    - field_group
     - link
     - text
     - user
+third_party_settings:
+  field_group:
+    group_team_top:
+      children:
+        - field_team_description
+        - referenced_player_entity_view_1
+      parent_name: ''
+      weight: 0
+      format_type: html_element
+      format_settings:
+        label: Top
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: group-top
+      label: Top
+    group_team_middle:
+      children:
+        - field_league
+        - field_results_standings
+      parent_name: ''
+      weight: 1
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: group-middle
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Middle
 id: node.team.default
 targetEntityType: node
 bundle: team
 mode: default
 content:
   field_league:
-    weight: 0
-    label: above
+    weight: 1
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_results_standings:
     weight: 2
-    label: above
+    label: visually_hidden
     settings:
       trim_length: 80
       url_only: false
@@ -38,27 +76,26 @@ content:
     type: link
   field_team_description:
     weight: 3
-    label: above
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_team_leader:
-    weight: 5
+    weight: 3
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_team_players:
-    weight: 6
-    label: above
-    settings:
-      link: true
+  kader_entity_view_1:
+    weight: 2
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_label
-  links:
+  referenced_player_entity_view_1:
     weight: 4
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_team_players: true
   langcode: true
+  links: true
