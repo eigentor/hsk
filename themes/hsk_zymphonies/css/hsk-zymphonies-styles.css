@@ -1976,6 +1976,10 @@ i.icon {
 .page-node-type-turnier.node-schnellschach #info-tabs, .page-node-type-turnier.node-monatsblitz #info-tabs {
   border-right: 0; }
 
+.page-node-type-team .group-kader .views-field-field-player-image img {
+  width: 45px;
+  height: auto; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */

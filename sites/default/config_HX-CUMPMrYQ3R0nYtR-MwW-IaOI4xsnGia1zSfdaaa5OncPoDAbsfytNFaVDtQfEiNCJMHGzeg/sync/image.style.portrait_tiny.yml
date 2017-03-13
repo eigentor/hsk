@@ -1,0 +1,14 @@
+uuid: 2bdb401f-dcd9-4652-864a-f9db295842b1
+langcode: de
+status: true
+dependencies: {  }
+name: portrait_tiny
+label: 'Portrait winzig'
+effects:
+  f680b6c5-ca83-478e-8e27-06e8456196d0:
+    uuid: f680b6c5-ca83-478e-8e27-06e8456196d0
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 45
+      height: 60

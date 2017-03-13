@@ -3,7 +3,7 @@ langcode: de
 status: true
 dependencies: {  }
 name: portrait
-label: Portrait
+label: 'Portrait klein'
 effects:
   7ce83dca-f8e3-49a8-a0fd-1550251e114b:
     uuid: 7ce83dca-f8e3-49a8-a0fd-1550251e114b

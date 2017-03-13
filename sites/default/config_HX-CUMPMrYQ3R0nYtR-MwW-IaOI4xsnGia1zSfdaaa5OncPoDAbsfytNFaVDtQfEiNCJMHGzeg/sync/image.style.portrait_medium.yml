@@ -1,0 +1,14 @@
+uuid: 14af0fba-dbb8-4302-9343-d2c70cb7aa33
+langcode: de
+status: true
+dependencies: {  }
+name: portrait_medium
+label: 'Portrait Medium'
+effects:
+  ecd55407-5b85-4acd-8a09-2edaa5f61c35:
+    uuid: ecd55407-5b85-4acd-8a09-2edaa5f61c35
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 85
+      height: 110
