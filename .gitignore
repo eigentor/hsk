@@ -40,3 +40,6 @@ sites/simpletest
 .sass-cache/
 
 node_modules/
+
+
+stage_file_proxy.settings.yml
