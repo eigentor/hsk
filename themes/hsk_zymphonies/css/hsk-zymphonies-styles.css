@@ -1610,6 +1610,8 @@ i.icon {
 /*------------- All Screen Sizes ------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+.path-frontpage #block-views-block-header-slideshow-block-1.block {
+  margin-bottom: 0; }
 .path-frontpage .view-header-slideshow .views-row {
   position: relative; }
   .path-frontpage .view-header-slideshow .views-row .views-field-field-sl-text {
@@ -1730,7 +1732,7 @@ i.icon {
     width: 100%;
     overflow: hidden; }
     .path-frontpage #block-views-block-header-slideshow-block-1 .view-header-slideshow .views-row {
-      max-height: 450px; }
+      max-height: 400px; }
       .path-frontpage #block-views-block-header-slideshow-block-1 .view-header-slideshow .views-row .views-field-field-sl-text {
         position: absolute;
         bottom: 20px;
@@ -1776,7 +1778,7 @@ i.icon {
 /*------------------------------------------- */
 @media only screen and (min-width: 1200px) {
   .path-frontpage #block-views-block-header-slideshow-block-1 {
-    height: 450px; } }
+    max-height: 400px; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
