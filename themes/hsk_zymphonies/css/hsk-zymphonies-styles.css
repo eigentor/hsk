@@ -2465,7 +2465,8 @@ nav#block-hsk-footer {
             background: none; }
         header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul {
           background: #b76400;
-          top: 27px !important; }
+          top: 27px !important;
+          min-width: 210px; }
           header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul li a {
             background: none; }
             header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul li a:hover, header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul li a.highlighted {
