@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\eva\Plugin\views\display\Eva.
- */
-
 namespace Drupal\eva\Plugin\views\display;
 
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
@@ -57,7 +52,7 @@ class Eva extends DisplayPluginBase {
     parent::optionsSummary($categories, $options);
 
     $categories['entity_view'] = array(
-      'title' => t('Entity content settings'),
+      'title' => $this->t('Entity content settings'),
       'column' => 'second',
       'build' => array(
         '#weight' => -10,
@@ -119,7 +114,7 @@ class Eva extends DisplayPluginBase {
           }
         }
 
-        $form['#title'] .= t('Entity type');
+        $form['#title'] .= $this->t('Entity type');
         $form['entity_type'] = array(
           '#type' => 'radios',
           '#required' => TRUE,
@@ -172,7 +167,7 @@ class Eva extends DisplayPluginBase {
         );
 
         $form['token']['default_argument'] = array(
-          '#title' => t('Arguments'),
+          '#title' => $this->t('Arguments'),
           '#type' => 'textfield',
           '#default_value' => $this->getOption('default_argument'),
           '#description' => $this->t('You may use token replacement to provide arguments based on the current entity. Separate arguments with "/".'),
@@ -180,7 +175,7 @@ class Eva extends DisplayPluginBase {
         break;
 
       case 'show_title':
-        $form['#title'] .= t('Show title');
+        $form['#title'] .= $this->t('Show title');
         $form['show_title'] = array(
           '#type' => 'checkbox',
           '#title' => $this->t('Show the title of the view above the attached view.'),
@@ -191,6 +186,7 @@ class Eva extends DisplayPluginBase {
   }
 
   public function validateOptionsForm(&$form, FormStateInterface $form_state) {
+    parent::validateOptionsForm($form, $form_state);
     switch ($form_state->get('section')) {
       case 'entity_type':
         if (empty($form_state->getValue('entity_type'))) {
@@ -206,6 +202,14 @@ class Eva extends DisplayPluginBase {
       $errors[] = $this->t('Display "@display" must be attached to an entity.', array('@display' => $this->display['display_title']));
     }
     return $errors;
+  }
+
+  public function remove() {
+    // clean up display configs before the display disappears
+    $longname = $this->view->storage->get('id') . '_' . $this->display['id'];
+    _eva_clear_detached($longname);
+
+    parent::remove();
   }
 
   public function submitOptionsForm(&$form, FormStateInterface $form_state) {
@@ -277,7 +281,7 @@ class Eva extends DisplayPluginBase {
   }
   
   public function getPath() {
-    if (isset($this->view->current_entity)) { 
+    if (isset($this->view->current_entity)) {
       $uri = $this->view->current_entity->url();
       if ($uri) {
         $uri['options']['absolute'] = TRUE;
@@ -300,5 +304,3 @@ class Eva extends DisplayPluginBase {
     }
   }
 }
-
-
