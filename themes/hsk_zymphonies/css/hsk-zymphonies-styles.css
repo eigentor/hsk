@@ -2019,7 +2019,35 @@ i.icon {
 
 @media only screen and (min-width: 768px) {
   .page-node-type-team .node__content .field {
-    margin-right: 20px; } }
+    margin-right: 20px; }
+  .page-node-type-team .group-top {
+    margin-left: -15px;
+    margin-right: -15px; }
+    .page-node-type-team .group-top:before, .page-node-type-team .group-top:after {
+      content: " ";
+      display: table; }
+    .page-node-type-team .group-top:after {
+      clear: both; }
+    .page-node-type-team .group-top .field--name-field-team-description {
+      position: relative;
+      min-height: 1px;
+      padding-left: 15px;
+      padding-right: 15px; } }
+    @media only screen and (min-width: 768px) and (min-width: 992px) {
+      .page-node-type-team .group-top .field--name-field-team-description {
+        float: left;
+        width: 75%; } }
+@media only screen and (min-width: 768px) {
+    .page-node-type-team .group-top .js-view-dom-id-fd8b98a724d27368114bfca7df11c859ee97caca6a0420a0c4eea67fd2262288 {
+      position: relative;
+      min-height: 1px;
+      padding-left: 15px;
+      padding-right: 15px; } }
+    @media only screen and (min-width: 768px) and (min-width: 992px) {
+      .page-node-type-team .group-top .js-view-dom-id-fd8b98a724d27368114bfca7df11c859ee97caca6a0420a0c4eea67fd2262288 {
+        float: left;
+        width: 25%; } }
+
 .node-vereinsmeisterschaft #page-title h1, .node-meisterturnier #page-title h1,
 .node-vormeisterturnier #page-title h1, .node-hauptturnier #page-title h1 {
   margin-left: 100px;
@@ -2417,6 +2445,7 @@ nav#block-hsk-footer {
         display: none; }
     header nav#block-hsk-zymphonies-main-menu ul.menu ul {
       background: #ED8600;
+      min-width: 210px;
       border: none;
       top: 27px !important;
       padding: 8px 0;
