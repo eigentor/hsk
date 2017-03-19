@@ -1,40 +1,29 @@
-uuid: 9e1617fa-8d97-4ecb-b04c-391d87922f98
+uuid: 6315f11e-9f87-4008-9a8e-960e9600981d
 langcode: de
 status: true
 dependencies:
   config:
     - system.menu.main
   module:
-    - ctools
-    - node
     - system
   theme:
     - hsk_zymphonies
 id: mainnavigation
 theme: hsk_zymphonies
 region: sidebar_second
-weight: -10
+weight: -12
 provider: null
 plugin: 'system_menu_block:main'
 settings:
   id: 'system_menu_block:main'
-  label: 'Main navigation Turniere Inhaltstyp'
+  label: 'Main navigation'
   provider: system
   label_display: '0'
   level: 2
   depth: 0
 visibility:
-  node_type:
-    id: node_type
-    bundles:
-      turnier: turnier
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
-    bundles:
-      turnier: turnier
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
+  request_path:
+    id: request_path
+    pages: /turniere
+    negate: true
+    context_mapping: {  }

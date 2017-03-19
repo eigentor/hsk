@@ -82,7 +82,7 @@ display:
           exclude: false
           alter:
             alter_text: false
-            text: "<div class=\"image\">{{ field_player_image }}</div>\n<div class=\"title\"><span class=\"label\">Mannschaftsführer: </span>{{ title }}</span></div>"
+            text: ''
             make_link: false
             path: ''
             absolute: false
