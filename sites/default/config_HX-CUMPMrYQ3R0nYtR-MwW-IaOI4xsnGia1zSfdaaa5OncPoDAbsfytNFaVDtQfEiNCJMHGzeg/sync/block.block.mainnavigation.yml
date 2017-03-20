@@ -24,6 +24,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: "/turniere\r\n/mannschaften"
+    pages: "/turniere\r\n/mannschaften\r\n<front>"
     negate: true
     context_mapping: {  }
