@@ -1,18 +1,18 @@
-uuid: a6119cbb-6e51-4d51-abe8-3ba98a7435d8
+uuid: 54721b6e-1753-4652-b006-e0618ea0435a
 langcode: de
 status: true
 dependencies:
   config:
     - field.storage.node.body
-    - node.type.article
+    - node.type.webform
   module:
     - text
 _core:
-  default_config_hash: Ay3b2hq42cpQTFB_lNu8S2ZxuVIY6-dlBsc7vLeJ-YY
-id: node.article.body
+  default_config_hash: '-Qu0UyzQ0jD4TDYq8fOasS-D-vGd3gSwzi15PzRJUD4'
+id: node.webform.body
 field_name: body
 entity_type: node
-bundle: article
+bundle: webform
 label: Body
 description: ''
 required: false
