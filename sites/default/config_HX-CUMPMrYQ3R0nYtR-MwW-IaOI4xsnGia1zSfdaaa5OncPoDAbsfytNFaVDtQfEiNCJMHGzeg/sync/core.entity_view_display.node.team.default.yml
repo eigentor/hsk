@@ -53,7 +53,7 @@ third_party_settings:
       label: Middle
     group_kader:
       children:
-        - kader_entity_view_1
+        - kader_2_entity_view_1
       parent_name: ''
       weight: 2
       format_type: html_element
@@ -96,7 +96,7 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
-  kader_entity_view_1:
+  kader_2_entity_view_1:
     weight: 3
     settings: {  }
     third_party_settings: {  }
@@ -107,5 +107,6 @@ content:
 hidden:
   field_team_leader: true
   field_team_players: true
+  kader_entity_view_1: true
   langcode: true
   links: true
