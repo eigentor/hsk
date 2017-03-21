@@ -6,6 +6,16 @@ dependencies:
     - field.storage.node.field_team_players
     - node.type.player
     - node.type.team
+  module:
+    - entityconnect
+third_party_settings:
+  entityconnect:
+    buttons:
+      button_add: '0'
+      button_edit: '0'
+    icons:
+      icon_add: '0'
+      icon_edit: '0'
 id: node.team.field_team_players
 field_name: field_team_players
 entity_type: node
