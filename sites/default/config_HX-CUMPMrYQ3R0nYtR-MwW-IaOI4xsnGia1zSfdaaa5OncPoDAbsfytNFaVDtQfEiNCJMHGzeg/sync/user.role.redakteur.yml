@@ -6,4 +6,6 @@ id: redakteur
 label: Redakteur
 weight: 3
 is_admin: null
-permissions: {  }
+permissions:
+  - 'entityconnect add button'
+  - 'entityconnect edit button'

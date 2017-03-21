@@ -23,3 +23,5 @@ permissions:
   - 'access toolbar'
   - 'access user profiles'
   - 'bypass node access'
+  - 'entityconnect add button'
+  - 'entityconnect edit button'
