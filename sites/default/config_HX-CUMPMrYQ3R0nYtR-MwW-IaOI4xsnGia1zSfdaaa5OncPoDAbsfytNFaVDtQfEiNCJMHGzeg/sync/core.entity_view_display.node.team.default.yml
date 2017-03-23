@@ -54,8 +54,7 @@ third_party_settings:
         speed: fast
       label: Middle
     group_kader:
-      children:
-        - kader_2_entity_view_1
+      children: {  }
       parent_name: ''
       weight: 2
       format_type: html_element
@@ -69,6 +68,56 @@ third_party_settings:
         effect: none
         speed: fast
       label: Kader
+    group_team_and_results:
+      children:
+        - group_team
+        - group_results
+        - group_tabelle
+      parent_name: ''
+      weight: 4
+      format_type: tabs
+      format_settings:
+        label: 'Kader und Ergebnisse'
+        direction: horizontal
+        id: ''
+        classes: group-team-results
+      label: 'Kader und Ergebnisse'
+    group_team:
+      children:
+        - kader_2_entity_view_1
+      parent_name: group_team_and_results
+      weight: 3
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+      label: Kader
+    group_results:
+      children:
+        - field_team_results
+      parent_name: group_team_and_results
+      weight: 4
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+      label: Ergebnisse
+    group_tabelle:
+      children:
+        - field_team_standings
+      parent_name: group_team_and_results
+      weight: 5
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+      label: Tabelle
 id: node.team.default
 targetEntityType: node
 bundle: team
@@ -99,19 +148,19 @@ content:
     third_party_settings: {  }
     type: text_default
   field_team_results:
-    weight: 5
-    label: above
+    weight: 7
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_team_standings:
-    weight: 6
-    label: above
+    weight: 8
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
   kader_2_entity_view_1:
-    weight: 3
+    weight: 6
     settings: {  }
     third_party_settings: {  }
   referenced_player_entity_view_1:

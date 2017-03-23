@@ -1989,6 +1989,9 @@ i.icon {
     margin: 12px 0 0;
     background: #ddd; }
     .page-node-type-team .group-team-results .horizontal-tabs .horizontal-tabs-list li {
+      float: none;
+      background: none;
+      border: none;
       display: inline-block;
       padding: 12px 12px;
       -webkit-border-radius: 5px 5px 0 0;
@@ -2001,7 +2004,9 @@ i.icon {
       font-size: 0.9rem;
       font-weight: bold; }
       .page-node-type-team .group-team-results .horizontal-tabs .horizontal-tabs-list li a {
-        color: #777; }
+        color: #777;
+        background: none;
+        padding: 0; }
       .page-node-type-team .group-team-results .horizontal-tabs .horizontal-tabs-list li.selected {
         border: 1px solid #bbb;
         border-bottom: none;
@@ -2013,6 +2018,12 @@ i.icon {
         cursor: hand; }
       .page-node-type-team .group-team-results .horizontal-tabs .horizontal-tabs-list li:last-child {
         margin-right: 0; }
+      .page-node-type-team .group-team-results .horizontal-tabs .horizontal-tabs-list li:first-child a {
+        padding-left: 3px; }
+.page-node-type-team .group-team-results .horizontal-tabs-panes {
+  border: 1px solid #ccc;
+  border-top: 0;
+  padding: 25px 22px 12px; }
 .page-node-type-team .group-team-results .views-field-field-player-image img {
   width: 45px;
   height: auto; }
