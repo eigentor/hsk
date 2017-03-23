@@ -32,6 +32,11 @@ class ContactFormMatcherTest extends LinkitKernelTestBase {
   protected function setUp() {
     parent::setUp();
 
+    // Create user 1 who has special permissions.
+    $this->createUser();
+
+    \Drupal::currentUser()->setAccount($this->createUser([], ['access site-wide contact form', 'view test entity translations']));
+
     $this->manager = $this->container->get('plugin.manager.linkit.matcher');
 
     ContactForm::create([

@@ -43,7 +43,10 @@
       response(autocomplete.cache[elementId][term]);
     }
     else {
-      var options = $.extend({success: sourceCallbackHandler, data: {q: term}}, autocomplete.ajax);
+      var options = $.extend({
+                               success: sourceCallbackHandler,
+                               data: {q: term}
+                             }, autocomplete.ajax);
       $.ajax(this.element.attr('data-autocomplete-path'), options);
     }
   }
@@ -62,28 +65,23 @@
   function selectHandler(event, ui) {
     var $form = $(event.target).closest('form');
 
-    if (ui.item.path != null) {
-      $('input[name="attributes[href]"]', $form).val(ui.item.path);
-      $('input[name="attributes[data-entity-type]"]', $form).val('');
-      $('input[name="attributes[data-entity-uuid]"]', $form).val('');
-      $('input[name="attributes[data-entity-substitution]"]', $form).val('');
-      event.target.value = ui.item.path;
+    if (!ui.item.path) {
+      throw 'Missing path param.' + JSON.stringify(ui.item);
     }
-    else {
+
+    $('input[name="href_dirty_check"]', $form).val(ui.item.path);
+
+    if (ui.item.entity_type_id || ui.item.entity_uuid || ui.item.substitution_id) {
       if (!ui.item.entity_type_id || !ui.item.entity_uuid || !ui.item.substitution_id) {
-        throw 'Missing data params.' + JSON.stringify(ui.item);
+        throw 'Missing path param.' + JSON.stringify(ui.item);
       }
 
-      // The href needs to be set in order for the drupallink saveCallback to
-      // insert new anchor elements.
-      $('input[name="attributes[href]"]', $form).val('#');
       $('input[name="attributes[data-entity-type]"]', $form).val(ui.item.entity_type_id);
       $('input[name="attributes[data-entity-uuid]"]', $form).val(ui.item.entity_uuid);
       $('input[name="attributes[data-entity-substitution]"]', $form).val(ui.item.substitution_id);
-      event.target.value = ui.item.label;
     }
 
-    $('.linkit-link-information > span', $form).text(ui.item.label);
+    event.target.value = ui.item.path;
 
     return false;
   }
@@ -163,6 +161,10 @@
         // Use jQuery UI Autocomplete on the textfield.
         $autocomplete.autocomplete(autocomplete.options);
         $autocomplete.autocomplete('widget').addClass('linkit-ui-autocomplete');
+
+        $autocomplete.click(function () {
+          $autocomplete.autocomplete('search', $autocomplete.val());
+        });
       }
     },
     detach: function (context, settings, trigger) {

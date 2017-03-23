@@ -91,6 +91,7 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
    */
   public function testAdd() {
     $entity_label = $this->randomString();
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = EntityTest::create(['name' => $entity_label]);
     $entity->save();
 
@@ -122,22 +123,27 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
     $form_builder->prepareForm($form_id, $form, $form_state);
     $form_builder->processForm($form_id, $form, $form_state);
 
-    $this->assertEquals('linkit.autocomplete', $form['linkit']['#autocomplete_route_name'], 'Linkit is enabled on the linkit field.');
-    $this->assertEmpty($form['linkit']['#default_value'], 'The linkit field is empty.');
+    $this->assertEquals('linkit.autocomplete', $form['attributes']['href']['#autocomplete_route_name'], 'Linkit is enabled on the linkit field.');
+    $this->assertEmpty($form['attributes']['href']['#default_value'], 'The linkit field is empty.');
 
-    $form_state->setValue('linkit', 'url_without_schema');
+    $form_state->setValue(['attributes', 'href'], 'https://example.com/');
+    $form_state->setValue('href_dirty_check', '');
+    $form_state->setValue(['attributes', 'data-entity-type'], $this->randomString());
+    $form_state->setValue(['attributes', 'data-entity-uuid'], $this->randomString());
+    $form_state->setValue(['attributes', 'data-entity-substitution'], $this->randomString());
     $form_builder->submitForm($form_object, $form_state);
-    $this->assertEmpty($form_state->getErrors(), 'Got no validation errors for url without schema.');
     $this->assertEmpty($form_state->getValue(['attributes', 'data-entity-type']));
     $this->assertEmpty($form_state->getValue(['attributes', 'data-entity-uuid']));
     $this->assertEmpty($form_state->getValue(['attributes', 'data-entity-substitution']));
 
+    $entity_url = $entity->toUrl('canonical', ['path_processing' => FALSE])->toString();
+    $form_state->setValue(['attributes', 'href'], $entity_url);
+    $form_state->setValue('href_dirty_check', $entity_url);
     $form_state->setValue(['attributes', 'data-entity-type'], $entity->getEntityTypeId());
     $form_state->setValue(['attributes', 'data-entity-uuid'], $entity->uuid());
     $form_state->setValue(['attributes', 'data-entity-substitution'], SubstitutionManagerInterface::DEFAULT_SUBSTITUTION);
-
     $form_builder->submitForm($form_object, $form_state);
-    $this->assertEmpty($form_state->getErrors(), 'Got no validation errors for correct URI.');
+
     $this->assertEquals($entity->getEntityTypeId(), $form_state->getValue(['attributes', 'data-entity-type']), 'Attribute "data-entity-type" exists and has the correct value.');
     $this->assertEquals($entity->uuid(), $form_state->getValue(['attributes', 'data-entity-uuid']), 'Attribute "data-entity-uuid" exists and has the correct value.');
     $this->assertEquals(SubstitutionManagerInterface::DEFAULT_SUBSTITUTION, $form_state->getValue(['attributes', 'data-entity-substitution']), 'Attribute "data-entity-substitution" exists and has the correct value.');
@@ -148,17 +154,16 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
    */
   public function testEditWithDataAttributes() {
     $entity_label = $this->randomString();
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = EntityTest::create(['name' => $entity_label]);
     $entity->save();
-
-    $entity_no_access = EntityTest::create(['name' => 'forbid_access']);
-    $entity_no_access->save();
+    $entity_url = $entity->toUrl('canonical', ['path_processing' => FALSE])->toString();
 
     $form_object = new EditorLinkDialog();
 
     $input = [
       'editor_object' => [
-        'href' => '#',
+        'href' => $entity_url,
         'data-entity-type' => $entity->getEntityTypeId(),
         'data-entity-uuid' => $entity->uuid(),
         'data-entity-substitution' => SubstitutionManagerInterface::DEFAULT_SUBSTITUTION,
@@ -187,47 +192,11 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
     $form_builder->prepareForm($form_id, $form, $form_state);
     $form_builder->processForm($form_id, $form, $form_state);
 
-    $this->assertEquals('linkit.autocomplete', $form['linkit']['#autocomplete_route_name'], 'Linkit is enabled on the linkit field.');
-    $this->assertEquals($entity->label(), $form['linkit']['#default_value'], 'The linkit field has the label as default value.');
+    $this->assertEquals('linkit.autocomplete', $form['attributes']['href']['#autocomplete_route_name'], 'Linkit is enabled on the href field.');
+    $this->assertEquals($entity_url, $form['attributes']['href']['#default_value'], 'The href field has the url as default value.');
     $this->assertEquals($entity->getEntityTypeId(), $form_state->getValue(['attributes', 'data-entity-type']), 'Attribute "data-entity-type" exists and has the correct value.');
     $this->assertEquals($entity->uuid(), $form_state->getValue(['attributes', 'data-entity-uuid']), 'Attribute "data-entity-uuid" exists and has the correct value.');
     $this->assertEquals(SubstitutionManagerInterface::DEFAULT_SUBSTITUTION, $form_state->getValue(['attributes', 'data-entity-substitution']), 'Attribute "data-entity-substitution" exists and has the correct value.');
-
-    // Make sure the dialog don't display entity labels for inaccessible
-    // entities.
-    $input = [
-      'editor_object' => [
-        'href' => '#',
-        'data-entity-type' => $entity_no_access->getEntityTypeId(),
-        'data-entity-uuid' => $entity_no_access->uuid(),
-        'data-entity-substitution' => SubstitutionManagerInterface::DEFAULT_SUBSTITUTION,
-      ],
-      'dialogOptions' => [
-        'title' => 'Edit Link',
-        'dialogClass' => 'editor-link-dialog',
-        'autoResize' => 'true',
-      ],
-      '_drupal_ajax' => '1',
-      'ajax_page_state' => [
-        'theme' => 'bartik',
-        'theme_token' => 'some-token',
-        'libraries' => '',
-      ],
-    ];
-    $form_state = (new FormState())
-      ->setRequestMethod('POST')
-      ->setUserInput($input)
-      ->addBuildInfo('args', [$this->editor]);
-
-    /** @var \Drupal\Core\Form\FormBuilderInterface $form_builder */
-    $form_builder = $this->container->get('form_builder');
-    $form_id = $form_builder->getFormId($form_object, $form_state);
-    $form = $form_builder->retrieveForm($form_id, $form_state);
-    $form_builder->prepareForm($form_id, $form, $form_state);
-    $form_builder->processForm($form_id, $form, $form_state);
-
-    $this->assertEquals('linkit.autocomplete', $form['linkit']['#autocomplete_route_name'], 'Linkit is enabled on the linkit field.');
-    $this->assertEmpty($form['linkit']['#default_value']);
   }
 
   /**
@@ -264,8 +233,8 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
     $form_builder->prepareForm($form_id, $form, $form_state);
     $form_builder->processForm($form_id, $form, $form_state);
 
-    $this->assertEquals('linkit.autocomplete', $form['linkit']['#autocomplete_route_name'], 'Linkit is enabled on the href field.');
-    $this->assertEquals('http://example.com/', $form['linkit']['#default_value'], 'The linkit field default value is the external URI.');
+    $this->assertEquals('linkit.autocomplete', $form['attributes']['href']['#autocomplete_route_name'], 'Linkit is enabled on the href field.');
+    $this->assertEquals('http://example.com/', $form['attributes']['href']['#default_value'], 'The href field default value is the external URI.');
     $this->assertEmpty($form['attributes']['data-entity-type']['#default_value']);
     $this->assertEmpty($form['attributes']['data-entity-uuid']['#default_value']);
     $this->assertEmpty($form['attributes']['data-entity-substitution']['#default_value']);

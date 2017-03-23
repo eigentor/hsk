@@ -213,4 +213,12 @@ class FileMatcher extends EntityMatcher {
     return LinkitXss::descriptionFilter($description);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function buildPath(EntityInterface $entity) {
+    /** @var \Drupal\file\FileInterface $entity */
+    return file_url_transform_relative(file_create_url($entity->getFileUri()));
+  }
+
 }

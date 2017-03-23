@@ -12,12 +12,14 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\linkit\ConfigurableMatcherBase;
 use Drupal\linkit\MatcherTokensTrait;
 use Drupal\linkit\SubstitutionManagerInterface;
 use Drupal\linkit\Suggestion\EntitySuggestion;
 use Drupal\linkit\Suggestion\SuggestionCollection;
 use Drupal\linkit\Utility\LinkitXss;
+use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -287,7 +289,9 @@ class EntityMatcher extends ConfigurableMatcherBase {
   public function execute($string) {
     $suggestions = new SuggestionCollection();
     $query = $this->buildEntityQuery($string);
-    $result = $query->execute();
+    $query_result = $query->execute();
+    $url_results = $this->findEntityIdByUrl($string);
+    $result = array_merge($query_result, $url_results);
 
     if (empty($result)) {
       return $suggestions;
@@ -299,7 +303,7 @@ class EntityMatcher extends ConfigurableMatcherBase {
       // Check the access against the defined entity access handler.
       /** @var \Drupal\Core\Access\AccessResultInterface $access */
       $access = $entity->access('view', $this->currentUser, TRUE);
-      if ($access->isForbidden()) {
+      if (!$access->isAllowed()) {
         continue;
       }
 
@@ -311,7 +315,8 @@ class EntityMatcher extends ConfigurableMatcherBase {
         ->setDescription($this->buildDescription($entity))
         ->setEntityUuid($entity->uuid())
         ->setEntityTypeId($entity->getEntityTypeId())
-        ->setSubstitutionId($this->configuration['substitution_type']);
+        ->setSubstitutionId($this->configuration['substitution_type'])
+        ->setPath($this->buildPath($entity));
 
       $suggestions->addSuggestion($suggestion);
     }
@@ -413,6 +418,45 @@ class EntityMatcher extends ConfigurableMatcherBase {
     }
 
     return $group;
+  }
+
+  /**
+   * Builds the path used in the match array.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The matched entity.
+   *
+   * @return string
+   *   The path for this entity.
+   */
+  protected function buildPath(EntityInterface $entity) {
+    return $entity->toUrl('canonical', ['path_processing' => FALSE])->toString();
+  }
+
+  /**
+   * Finds entity id from the given input.
+   *
+   * @param string $user_input
+   *   The string to url parse.
+   *
+   * @return array
+   *   An array with an entity id if the input can be parsed as an internal url
+   *   and a match is found, otherwise an empty array.
+   */
+  protected function findEntityIdByUrl($user_input) {
+    $result = [];
+
+    try {
+      $params = Url::fromUserInput($user_input)->getRouteParameters();
+      if (key($params) === $this->targetType) {
+        $result = [end($params)];
+      }
+    }
+    catch (Exception $e) {
+      // Do nothing.
+    }
+
+    return $result;
   }
 
 }

@@ -4,9 +4,6 @@ namespace Drupal\linkit\Form\Profile;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StreamWrapper\StreamWrapperInterface;
-use Drupal\Core\StreamWrapper\StreamWrapperManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base form for profile add and edit forms.
@@ -19,32 +16,6 @@ abstract class FormBase extends EntityForm {
    * @var \Drupal\linkit\ProfileInterface
    */
   protected $entity;
-
-  /**
-   * The stream wrapper manager.
-   *
-   * @var \Drupal\Core\StreamWrapper\StreamWrapperManager
-   */
-  protected $streamWrapperManager;
-
-  /**
-   * Constructs a FormBase object.
-   *
-   * @param \Drupal\Core\StreamWrapper\StreamWrapperManager $stream_wrapper_manager
-   *   The stream wrapper manager.
-   */
-  public function __construct(StreamWrapperManager $stream_wrapper_manager) {
-    $this->streamWrapperManager = $stream_wrapper_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('stream_wrapper_manager')
-    );
-  }
 
   /**
    * {@inheritdoc}
@@ -80,33 +51,6 @@ abstract class FormBase extends EntityForm {
       '#weight' => 99,
     ];
 
-    if ($this->moduleHandler->moduleExists('imce')) {
-      $form['imce'] = [
-        '#type' => 'details',
-        '#title' => $this->t('IMCE integration'),
-        '#group' => 'additional_settings',
-      ];
-
-      $form['imce']['imce_use'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Enable IMCE File Browser in the editor dialog.'),
-        '#default_value' => $this->entity->getThirdPartySetting('imce', 'use', FALSE),
-      ];
-
-      $scheme_options = $this->streamWrapperManager->getNames(StreamWrapperInterface::READ_VISIBLE);
-      $form['imce']['imce_scheme'] = [
-        '#type' => 'radios',
-        '#title' => $this->t('Scheme'),
-        '#options' => $scheme_options,
-        '#default_value' => $this->entity->getThirdPartySetting('imce', 'scheme', 'public'),
-        '#states' => [
-          'visible' => [
-            ':input[name="imce_use"]' => ['checked' => TRUE],
-          ],
-        ],
-      ];
-    }
-
     return parent::form($form, $form_state);
   }
 
@@ -118,11 +62,6 @@ abstract class FormBase extends EntityForm {
 
     // Prevent leading and trailing spaces in linkit profile labels.
     $linkit_profile->set('label', trim($linkit_profile->label()));
-
-    if ($this->moduleHandler->moduleExists('imce')) {
-      $linkit_profile->setThirdPartySetting('imce', 'use', $form_state->getValue('imce_use'));
-      $linkit_profile->setThirdPartySetting('imce', 'scheme', $form_state->getValue('imce_scheme'));
-    }
 
     $status = $linkit_profile->save();
     $edit_link = $this->entity->toLink($this->t('Edit'), 'edit-form')->toString();

@@ -54,6 +54,11 @@ class LinkitAutocompleteTest extends LinkitKernelTestBase {
   protected function setUp() {
     parent::setUp();
 
+    // Create user 1 who has special permissions.
+    $this->createUser();
+
+    \Drupal::currentUser()->setAccount($this->createUser([], ['view test entity']));
+
     \Drupal::service('router.builder')->rebuild();
     $this->installEntitySchema('user');
     $this->installEntitySchema('entity_test');

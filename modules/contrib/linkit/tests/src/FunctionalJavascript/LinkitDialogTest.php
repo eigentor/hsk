@@ -44,13 +44,6 @@ class LinkitDialogTest extends JavascriptTestBase {
   protected $ckeditor;
 
   /**
-   * A demo entity.
-   *
-   * @var \Drupal\Core\Entity\EntityInterface
-   */
-  protected $demoEntity;
-
-  /**
    * A linkit profile.
    *
    * @var \Drupal\linkit\ProfileInterface
@@ -124,6 +117,7 @@ class LinkitDialogTest extends JavascriptTestBase {
       'create page content',
       'edit own page content',
       'use text format llama',
+      'view test entity',
     ]);
 
     $this->drupalLogin($account);
@@ -144,11 +138,9 @@ class LinkitDialogTest extends JavascriptTestBase {
     }
 
     // Create a test entity.
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = EntityTestMul::create(['name' => 'Foo']);
     $entity->save();
-
-    // Create test nodes.
-    $this->demoEntity = $entity;
 
     // Go to node creation page.
     $this->drupalGet('node/add/page');
@@ -163,30 +155,27 @@ class LinkitDialogTest extends JavascriptTestBase {
     // Wait for the form to load.
     $web_assert->assertWaitOnAjaxRequest();
 
-    // Find the linkit field.
-    $linkit_field = $page->findField('linkit');
+    // Find the href field.
+    $href_field = $page->findField('attributes[href]');
 
-    // Make sure the linkit field is an autocomplete field.
-    $linkit_field->hasAttribute('data-autocomplete-path');
-    $linkit_field->hasClass('form-linkit-autocomplete');
-    $linkit_field->hasClass('ui-autocomplete-input');
+    // Make sure the href field is an autocomplete field.
+    $href_field->hasAttribute('data-autocomplete-path');
+    $href_field->hasClass('form-linkit-autocomplete');
+    $href_field->hasClass('ui-autocomplete-input');
 
     // Make sure all fields are empty.
-    $this->assertEmpty($linkit_field->getValue(), 'Linkit field is empty.');
+    $this->assertEmpty($href_field->getValue(), 'Href field is empty.');
     $this->assertEmptyWithJs('attributes[data-entity-type]');
     $this->assertEmptyWithJs('attributes[data-entity-uuid]');
     $this->assertEmptyWithJs('attributes[data-entity-substitution]');
-    $this->assertEmptyWithJs('attributes[href]');
-
-    // Make sure the link information is empty.
-    $this->assertEmpty($this->getLinkInfoText(), 'Link information is empty');
+    $this->assertEmptyWithJs('href_dirty_check');
 
     // Make sure the autocomplete result container is hidden.
     $autocomplete_container = $page->find('css', 'ul.linkit-ui-autocomplete');
     $this->assertFalse($autocomplete_container->isVisible());
 
     // Trigger a keydown event to active a autocomplete search.
-    $linkit_field->keyDown('f');
+    $href_field->keyDown('f');
 
     // Wait for the results to load.
     $this->getSession()->wait(5000, "jQuery('.linkit-result.ui-menu-item').length > 0");
@@ -201,17 +190,14 @@ class LinkitDialogTest extends JavascriptTestBase {
     // Find the first result and click it.
     $page->find('xpath', '(//li[contains(@class, "linkit-result") and contains(@class, "ui-menu-item")])[1]')->click();
 
-    // Make sure the linkit field field is populated with the node label.
-    $this->assertEquals($this->demoEntity->label(), $linkit_field->getValue(), 'The linkit field is populated with the node label.');
-
-    // Make sure the link information is populated.
-    $this->assertEquals($this->demoEntity->label(), $this->getLinkInfoText(), 'Link information is populated');
+    // Make sure the linkit field field is populated with the node url.
+    $this->assertEquals($entity->toUrl()->toString(), $href_field->getValue(), 'The href field is populated with the node url.');
 
     // Make sure all other fields are populated.
-    $this->assertEqualsWithJs('attributes[data-entity-type]', $this->demoEntity->getEntityTypeId());
-    $this->assertEqualsWithJs('attributes[data-entity-uuid]', $this->demoEntity->uuid());
+    $this->assertEqualsWithJs('attributes[data-entity-type]', $entity->getEntityTypeId());
+    $this->assertEqualsWithJs('attributes[data-entity-uuid]', $entity->uuid());
     $this->assertEqualsWithJs('attributes[data-entity-substitution]', 'canonical');
-    $this->assertEqualsWithJs('attributes[href]', '#');
+    $this->assertEqualsWithJs('href_dirty_check', $entity->toUrl()->toString());
 
     // Save the dialog input.
     $page->find('css', '.editor-link-dialog')->find('css', '.button.form-submit span')->click();
@@ -220,10 +206,10 @@ class LinkitDialogTest extends JavascriptTestBase {
     $web_assert->assertWaitOnAjaxRequest();
 
     $fields = [
-      'data-entity-type' => $this->demoEntity->getEntityTypeId(),
-      'data-entity-uuid' => $this->demoEntity->uuid(),
+      'data-entity-type' => $entity->getEntityTypeId(),
+      'data-entity-uuid' => $entity->uuid(),
       'data-entity-substitution' => 'canonical',
-      'href' => '#',
+      'href' => $entity->toUrl()->toString(),
     ];
     foreach ($fields as $attribute => $value) {
       $link_attribute = $this->getLinkAttributeFromEditor($attribute);
@@ -247,46 +233,18 @@ JS;
     // Wait for the form to load.
     $web_assert->assertWaitOnAjaxRequest();
 
-    // Find the linkit field.
-    $linkit_field = $page->findField('linkit');
-    $this->assertEquals($this->demoEntity->label(), $linkit_field->getValue(), 'Linkit field has the correct value.');
+    // Find the href field.
+    $href_field = $page->findField('attributes[href]');
+    $this->assertEquals($entity->toUrl()->toString(), $href_field->getValue(), 'Href field contains the node url when edit.');
 
     // Make sure all other fields are populated when editing a link.
-    $this->assertEqualsWithJs('attributes[data-entity-type]', $this->demoEntity->getEntityTypeId());
-    $this->assertEqualsWithJs('attributes[data-entity-uuid]', $this->demoEntity->uuid());
+    $this->assertEqualsWithJs('attributes[data-entity-type]', $entity->getEntityTypeId());
+    $this->assertEqualsWithJs('attributes[data-entity-uuid]', $entity->uuid());
     $this->assertEqualsWithJs('attributes[data-entity-substitution]', 'canonical');
-    $this->assertEqualsWithJs('attributes[href]', '#');
+    $this->assertEqualsWithJs('href_dirty_check', $entity->toUrl()->toString());
 
-    // Make sure the link information is populated with the old label.
-    $this->assertEquals($this->demoEntity->label(), $this->getLinkInfoText(), 'Link information is populated');
-
-    // Trigger a keydown event to active a autocomplete search.
-    $linkit_field->setValue('http://example.co');
-    $linkit_field->keyDown('m');
-
-    // Wait for the autocomplete to be done.
-    $this->getSession()->wait(5000, "jQuery('.linkit-result.ui-menu-item').length > 0");
-
-    // Make sure the autocomplete result container is visible.
-    $this->assertTrue($autocomplete_container->isVisible());
-
-    // Find all the autocomplete results.
-    $results = $page->findAll('css', '.linkit-result.ui-menu-item');
-    $this->assertEquals(1, count($results), 'Found autocomplete result');
-
-    // Find the first result and click it.
-    $page->find('xpath', '(//li[contains(@class, "linkit-result") and contains(@class, "ui-menu-item")])[1]')->click();
-
-    // Make sure the href field is populated with the external uri.
-    $this->assertEquals('http://example.com', $linkit_field->getValue(), 'The linkit field is the same as the URI');
-
-    // Make sure the link information is populated.
-    $this->assertEquals('http://example.com', $this->getLinkInfoText(), 'Link information is populated');
-
-    $this->assertEmptyWithJs('attributes[data-entity-type]');
-    $this->assertEmptyWithJs('attributes[data-entity-uuid]');
-    $this->assertEmptyWithJs('attributes[data-entity-substitution]');
-    $this->assertEqualsWithJs('attributes[href]', 'http://example.com');
+    // Edit the href field and set an external url.
+    $href_field->setValue('http://example.com');
 
     // Save the dialog input.
     $page->find('css', '.editor-link-dialog')->find('css', '.button.form-submit span')->click();
@@ -306,94 +264,6 @@ JS;
 
     $href_attribute = $this->getLinkAttributeFromEditor('href');
     $this->assertEquals('http://example.com', $href_attribute, 'The link href is correct.');
-  }
-
-  /**
-   * Test the link dialog with translated entities.
-   */
-  public function testLinkDialogTranslations() {
-    $session = $this->getSession();
-    $web_assert = $this->assertSession();
-    $page = $session->getPage();
-
-    // Adds additional languages.
-    $langcodes = ['sv', 'da', 'fi'];
-    foreach ($langcodes as $langcode) {
-      ConfigurableLanguage::createFromLangcode($langcode)->save();
-    }
-
-    // Create a test entity.
-    $entity = EntityTestMul::create(['name' => 'Foo']);
-
-    foreach ($langcodes as $langcode) {
-      $entity->addTranslation($langcode, ['name' => 'Foo ' . $langcode]);
-    }
-
-    $entity->save();
-
-    // Create test nodes.
-    $this->demoEntity = $entity;
-
-    $this->config('system.site')->set('default_langcode', 'sv')->save();
-
-    // Go to node creation page.
-    $this->drupalGet('node/add/page');
-
-    // Wait until the editor has been loaded.
-    $ckeditor_loaded = $this->getSession()->wait(5000, "jQuery('.cke_contents').length > 0");
-    $this->assertTrue($ckeditor_loaded, 'The editor has been loaded.');
-
-    // Click on the drupallink plugin.
-    $page->find('css', 'a.cke_button__drupallink')->click();
-
-    // Wait for the form to load.
-    $web_assert->assertWaitOnAjaxRequest();
-
-    // Find the linkit field.
-    $linkit_field = $page->findField('linkit');
-
-    // Trigger a keydown event to active a autocomplete search.
-    $linkit_field->keyDown('f');
-
-    // Wait for the results to load.
-    $this->getSession()->wait(5000, "jQuery('.linkit-result.ui-menu-item').length > 0");
-
-    // Find all the autocomplete results.
-    $results = $page->findAll('css', '.linkit-result.ui-menu-item');
-    $this->assertEquals(1, count($results), 'Found autocomplete result');
-
-    // Find the first result and click it.
-    $page->find('xpath', '(//li[contains(@class, "linkit-result") and contains(@class, "ui-menu-item")])[1]')->click();
-
-    // Save the dialog input.
-    $page->find('css', '.editor-link-dialog')->find('css', '.button.form-submit span')->click();
-
-    // Wait for the dialog to close.
-    $web_assert->assertWaitOnAjaxRequest();
-
-    // Select the link in the editor.
-    $javascript = <<<JS
-      (function(){
-        var editor = window.CKEDITOR.instances['edit-body-0-value'];
-        console.log(editor);
-        var element = editor.document.findOne( 'a' );
-        editor.getSelection().selectElement( element );
-      })()
-JS;
-    $session->executeScript($javascript);
-
-    // Click on the drupallink plugin.
-    $page->find('css', 'a.cke_button__drupallink')->click();
-
-    // Wait for the form to load.
-    $web_assert->assertWaitOnAjaxRequest();
-
-    // Find the linkit field.
-    $linkit_field = $page->findField('linkit');
-    $this->assertEquals($this->demoEntity->getTranslation('sv')->label(), $linkit_field->getValue(), 'Linkit field has the correct value.');
-
-    // Make sure the link information is populated with the old label.
-    $this->assertEquals($this->demoEntity->getTranslation('sv')->label(), $this->getLinkInfoText(), 'Link information is populated');
   }
 
   /**
@@ -444,17 +314,6 @@ JS;
           }
         })()
 JS;
-    return $this->getSession()->evaluateScript($javascript);
-  }
-
-  /**
-   * Gets the text in the link information element.
-   *
-   * @return string
-   *   The text in the link information element.
-   */
-  private function getLinkInfoText() {
-    $javascript = "(function (){ return jQuery('.linkit-link-information > span').text(); })()";
     return $this->getSession()->evaluateScript($javascript);
   }
 

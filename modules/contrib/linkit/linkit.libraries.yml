@@ -30,11 +30,3 @@ linkit.filter_html.admin:
   version: VERSION
   js:
     js/linkit.filter_html.admin.js: {}
-
-linkit.imce:
-  version: VERSION
-  js:
-    js/linkit.imce.js: {}
-  dependencies:
-    - core/jquery.once
-    - linkit/linkit.base

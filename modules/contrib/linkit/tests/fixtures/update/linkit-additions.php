@@ -14,20 +14,23 @@ use Drupal\Core\Database\Database;
 $connection = Database::getConnection();
 
 // Configuration for linkit profiles.
-$config = Yaml::decode(file_get_contents(__DIR__ . '/linkit.linkit_profile.test_profile.yml'));
-$connection->insert('config')
-  ->fields([
-    'collection',
-    'name',
-    'data',
-  ])
-  ->values([
-    'collection' => '',
-    'name' => 'linkit.linkit_profile.' . $config['id'],
-    'data' => serialize($config),
-  ])
-  ->execute();
-
+$configs = [];
+$configs[] = Yaml::decode(file_get_contents(__DIR__ . '/linkit.linkit_profile.test_profile.yml'));
+$configs[] = Yaml::decode(file_get_contents(__DIR__ . '/linkit.linkit_profile.test_profile_with_imce.yml'));
+foreach ($configs as $config) {
+  $connection->insert('config')
+    ->fields([
+      'collection',
+      'name',
+      'data',
+    ])
+    ->values([
+      'collection' => '',
+      'name' => 'linkit.linkit_profile.' . $config['id'],
+      'data' => serialize($config),
+    ])
+    ->execute();
+}
 
 // Configuration for text formats.
 $configs = [];

@@ -88,15 +88,6 @@ linkit.matcher.entity:user:
     include_blocked:
       type: boolean
 
-# Third party settings on behalf of the imce module.
-linkit.linkit_profile.*.third_party.imce:
-  type: mapping
-  mapping:
-    use:
-      type: boolean
-    scheme:
-      type: string
-
 # Plugin \Drupal\linkit\Plugin\Filter\LinkitFilter
 filter_settings.linkit:
   type: filter

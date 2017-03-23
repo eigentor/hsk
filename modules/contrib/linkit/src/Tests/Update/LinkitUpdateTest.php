@@ -132,4 +132,21 @@ class LinkitUpdateTest extends UpdatePathTestBase {
     $this->assertNotNull($test_profile->get('matchers.fc48c807-2a9c-44eb-b86b-7e134c1aa252.settings.metadata'), 'Profile have metadata');
   }
 
+  /**
+   * Tests linkit_update_8503().
+   *
+   * @see linkit_update_8503()
+   */
+  public function testLinkitUpdate8503() {
+    $test_profile = $this->configFactory->get('linkit.linkit_profile.test_profile_imce');
+    $this->assertNotNull($test_profile->get('third_party_settings.imce.use'), 'Profile have imce use');
+    $this->assertNotNull($test_profile->get('third_party_settings.imce.scheme'), 'Profile have imce scheme');
+
+    $this->runUpdates();
+
+    $test_profile = $this->configFactory->get('linkit.linkit_profile.test_profile_imce');
+    $this->assertNull($test_profile->get('third_party_settings.imce.use'), 'Profile does not have imce use');
+    $this->assertNull($test_profile->get('third_party_settings.imce.scheme'), 'Profile does not have imce scheme');
+  }
+
 }

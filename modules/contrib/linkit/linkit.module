@@ -70,8 +70,6 @@ function linkit_form_editor_link_dialog_alter(&$form, FormStateInterface $form_s
   }
 
   $linkit_profile_id = $editor->getSettings()['plugins']['drupallink']['linkit_profile'];
-  /** @var \Drupal\linkit\Entity\Profile $linkit_profile */
-  $linkit_profile = Drupal::entityTypeManager()->getStorage('linkit_profile')->load($linkit_profile_id);
 
   if (isset($form_state->getUserInput()['editor_object'])) {
     $input = $form_state->getUserInput()['editor_object'];
@@ -83,53 +81,23 @@ function linkit_form_editor_link_dialog_alter(&$form, FormStateInterface $form_s
     $input = $form_state->get('link_element') ?: [];
   }
 
-  $form['linkit'] = [
-    '#title' => t('Link'),
+  $form['href_dirty_check'] = [
+    '#type' => 'hidden',
+    '#default_value' => isset($input['href']) ? $input['href'] : '',
+  ];
+
+  $form['attributes']['href'] = array_merge($form['attributes']['href'], [
     '#type' => 'linkit',
-    '#description' => t('Start typing to find content or paste a URL.'),
+    '#description' => t('Start typing to find content.'),
     '#autocomplete_route_name' => 'linkit.autocomplete',
     '#autocomplete_route_parameters' => [
       'linkit_profile_id' => $linkit_profile_id,
     ],
     "#weight" => -10,
-  ];
-
-  // Determine what the default value of the linkit autocomplete field.
-  try {
-    if (!empty($input['data-entity-type']) && !empty($input['data-entity-uuid'])) {
-      /** @var \Drupal\Core\Entity\EntityInterface $entity */
-      $entity = \Drupal::service('entity.repository')
-        ->loadEntityByUuid($input['data-entity-type'], $input['data-entity-uuid']);
-      $entity = \Drupal::service('entity.repository')
-        ->getTranslationFromContext($entity);
-      $access = !$entity->access('view', NULL, TRUE)->isForbidden();
-      $autocomplete_default_value = !empty($access) && $access ? $entity->label() : '';
-    }
-  }
-  catch (Exception $exception) {
-    // Do nothing, this is handled in the finally block.
-  }
-  finally {
-    // If the href is not set, the data- attributes might not exists, or the
-    // href is external. In that case, use the given href.
-    if (!isset($autocomplete_default_value)) {
-      $autocomplete_default_value = isset($input['href']) ? $input['href'] : '';
-    }
-  }
-
-  $form['linkit']['#default_value'] = $autocomplete_default_value;
-
-  $form['link-information'] = [
-    '#type' => 'inline_template',
-    '#template' => '<div class="form-item linkit-link-information"><strong>{% trans %}Selected link:{% endtrans %}</strong> <span>{{ link_target }}</span></div>',
-    '#context' => [
-      'link_target' => !empty($entity) && !empty($access) && $access ? $entity->label() : $autocomplete_default_value,
-    ],
-    "#weight" => -10,
-  ];
+    '#default_value' => isset($input['href']) ? $input['href'] : '',
+  ]);
 
   $fields = [
-    'href',
     'data-entity-type',
     'data-entity-uuid',
     'data-entity-substitution',
@@ -139,35 +107,12 @@ function linkit_form_editor_link_dialog_alter(&$form, FormStateInterface $form_s
 
   foreach ($fields as $field_name) {
     $form['attributes'][$field_name] = [
+      '#title' => $field_name,
       '#type' => 'hidden',
       '#default_value' => isset($input[$field_name]) ? $input[$field_name] : '',
     ];
   }
 
-  // Add IMCE button if IMCE is installed and enabled for the given profile.
-  if (Drupal::service('module_handler')->moduleExists('imce') && $linkit_profile->getThirdPartySetting('imce', 'use', FALSE)) {
-    $form['imce-link'] = [
-      '#type' => 'link',
-      '#title' => t('Open IMCE file browser'),
-      '#url' => Url::fromRoute('imce.page', [
-        'scheme' => $linkit_profile->getThirdPartySetting('imce', 'scheme', 'public'),
-      ]),
-      '#options' => [
-        'query' => [
-          'sendto' => 'linkitImce.sendto',
-        ],
-      ],
-      '#attributes' => [
-        'class' => ['form-item', 'linkit-imce-open'],
-      ],
-      '#attached' => [
-        'library' => [
-          'linkit/linkit.imce',
-        ],
-      ],
-      '#weight' => 10,
-    ];
-  }
   // Add #submit callback that handles the data-* attributes.
   array_unshift($form['#submit'], 'linkit_form_editor_link_dialog_submit');
 }
@@ -178,19 +123,31 @@ function linkit_form_editor_link_dialog_alter(&$form, FormStateInterface $form_s
 function linkit_form_editor_link_dialog_submit(array &$form, FormStateInterface $form_state) {
   $link_element = $form_state->get('link_element');
 
-  $data_entity_type = $form_state->getValue(['attributes', 'data-entity-type']);
-  $data_entity_uuid = $form_state->getValue(['attributes', 'data-entity-uuid']);
+  $href = $form_state->getValue(['attributes', 'href']);
+  $href_dirty_check = $form_state->getValue(['href_dirty_check']);
 
-  if (empty($data_entity_type) || empty($data_entity_uuid)) {
-    if (!empty($link_element)) {
-      $form_state->setValue(['attributes', 'data-entity-type'], '');
-      $form_state->setValue(['attributes', 'data-entity-uuid'], '');
-      $form_state->setValue(['attributes', 'data-entity-substitution'], '');
-    }
-    else {
-      $form_state->unsetValue(['attributes', 'data-entity-type']);
-      $form_state->unsetValue(['attributes', 'data-entity-uuid']);
-      $form_state->unsetValue(['attributes', 'data-entity-substitution']);
+  if ($href !== $href_dirty_check) {
+    $form_state->unsetValue(['attributes', 'data-entity-type']);
+    $form_state->unsetValue(['attributes', 'data-entity-uuid']);
+    $form_state->unsetValue(['attributes', 'data-entity-substitution']);
+  }
+
+  $fields = [
+    'href',
+    'data-entity-type',
+    'data-entity-uuid',
+    'data-entity-substitution',
+  ];
+
+  foreach ($fields as $field_name) {
+    $value = $form_state->getValue(['attributes', $field_name]);
+    if (empty($value)) {
+      if (!empty($link_element)) {
+        $form_state->setValue(['attributes', $field_name], '');
+      }
+      else {
+        $form_state->unsetValue(['attributes', $field_name]);
+      }
     }
   }
 }
