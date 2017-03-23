@@ -8,6 +8,8 @@ dependencies:
     - field.field.node.team.field_team_description
     - field.field.node.team.field_team_leader
     - field.field.node.team.field_team_players
+    - field.field.node.team.field_team_results
+    - field.field.node.team.field_team_standings
     - node.type.team
   module:
     - link
@@ -61,6 +63,20 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+  field_team_results:
+    weight: 39
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_team_standings:
+    weight: 40
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
   langcode:
     type: language_select
     weight: 2

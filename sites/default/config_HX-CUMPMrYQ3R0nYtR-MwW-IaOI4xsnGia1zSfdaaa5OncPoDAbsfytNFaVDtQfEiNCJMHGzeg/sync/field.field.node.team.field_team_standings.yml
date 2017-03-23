@@ -1,0 +1,41 @@
+uuid: 7991bbbf-024a-4455-8995-e58974674e82
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_team_standings
+    - node.type.team
+  module:
+    - better_formats
+    - text
+third_party_settings:
+  better_formats:
+    allowed_formats_toggle: 1
+    allowed_formats:
+      tables_only: tables_only
+      basic_html: 0
+      restricted_html: 0
+      full_html: 0
+    default_order_toggle: 0
+    default_order_wrapper:
+      formats:
+        basic_html:
+          weight: '0'
+        restricted_html:
+          weight: '0'
+        tables_only:
+          weight: '0'
+        full_html:
+          weight: '1'
+id: node.team.field_team_standings
+field_name: field_team_standings
+entity_type: node
+bundle: team
+label: Tabelle
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

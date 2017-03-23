@@ -8,6 +8,8 @@ dependencies:
     - field.field.node.team.field_team_description
     - field.field.node.team.field_team_leader
     - field.field.node.team.field_team_players
+    - field.field.node.team.field_team_results
+    - field.field.node.team.field_team_standings
     - node.type.team
   module:
     - field_group
@@ -93,6 +95,18 @@ content:
   field_team_description:
     weight: 3
     label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_team_results:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_team_standings:
+    weight: 6
+    label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default

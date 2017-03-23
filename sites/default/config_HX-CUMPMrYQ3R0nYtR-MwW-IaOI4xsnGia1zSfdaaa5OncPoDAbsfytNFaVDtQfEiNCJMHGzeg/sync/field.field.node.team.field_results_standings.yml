@@ -11,7 +11,7 @@ id: node.team.field_results_standings
 field_name: field_results_standings
 entity_type: node
 bundle: team
-label: 'Ergebnisse / Tabelle'
+label: 'Ergebnisse / Tabelle externer Link'
 description: ''
 required: false
 translatable: false
