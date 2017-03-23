@@ -376,7 +376,7 @@ display:
           admin_label: ''
           empty: false
           tokenize: true
-          content: '<h3>Kader der {{ title }}</h3>'
+          content: '<!--<h3>Kader der {{ title }}</h3>-->'
           plugin_id: text_custom
       footer: {  }
       empty: {  }
