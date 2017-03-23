@@ -1965,6 +1965,8 @@ i.icon {
   border: 1px solid #ccc;
   border-top: 0;
   padding: 25px 22px 12px; }
+  .page-node-type-turnier #info-tabs .details-wrapper {
+    padding: 0; }
   .page-node-type-turnier #info-tabs > .field {
     display: none; }
     .page-node-type-turnier #info-tabs > .field:first-child {
@@ -2024,6 +2026,8 @@ i.icon {
   border: 1px solid #ccc;
   border-top: 0;
   padding: 25px 22px 12px; }
+  .page-node-type-team .group-team-results .horizontal-tabs-panes .details-wrapper {
+    padding: 0; }
 .page-node-type-team .group-team-results .views-field-field-player-image img {
   width: 45px;
   height: auto; }
