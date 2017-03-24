@@ -1454,6 +1454,7 @@ ul.tabs.primary {
 table {
   font-size: 13px;
   font-size: 1rem;
+  background: white;
   margin-bottom: 10px; }
   table th, table td {
     text-align: center;
@@ -2028,9 +2029,46 @@ i.icon {
   padding: 25px 22px 12px; }
   .page-node-type-team .group-team-results .horizontal-tabs-panes .details-wrapper {
     padding: 0; }
-.page-node-type-team .group-team-results .views-field-field-player-image img {
-  width: 45px;
-  height: auto; }
+.page-node-type-team .group-team-results .view-kader-2 {
+  *zoom: 1; }
+  .page-node-type-team .group-team-results .view-kader-2:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden; }
+  .page-node-type-team .group-team-results .view-kader-2 header {
+    padding: 0; }
+  .page-node-type-team .group-team-results .view-kader-2 .views-row {
+    display: flex;
+    clear: left;
+    float: left;
+    align-items: center;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e5e5e5; }
+    .page-node-type-team .group-team-results .view-kader-2 .views-row.row-1 .views-field-field-dwz {
+      position: relative; }
+      .page-node-type-team .group-team-results .view-kader-2 .views-row.row-1 .views-field-field-dwz:before {
+        content: "DWZ";
+        position: absolute;
+        top: -28px;
+        color: #888;
+        font-size: 10.4px;
+        font-size: 0.8rem;
+        margin-left: 2px; }
+    .page-node-type-team .group-team-results .view-kader-2 .views-row .views-field {
+      margin-right: 12px; }
+      .page-node-type-team .group-team-results .view-kader-2 .views-row .views-field:last-child {
+        margin: 0; }
+    .page-node-type-team .group-team-results .view-kader-2 .views-row .views-field-counter {
+      width: 20px; }
+    .page-node-type-team .group-team-results .view-kader-2 .views-row .views-field-title-1 {
+      width: 140px; }
+    .page-node-type-team .group-team-results .view-kader-2 .views-row .views-field-field-player-image img {
+      width: 45px;
+      height: auto; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */

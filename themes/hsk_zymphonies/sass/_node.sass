@@ -135,10 +135,40 @@
       +tab-group-container
     .horizontal-tabs-panes
       +tab-content-container
-    .views-field-field-player-image
-      img
-        width: 45px
-        height: auto
+    .view-kader-2
+      +legacy-pie-clearfix
+      header
+        padding: 0
+      .views-row
+        &.row-1
+          .views-field-field-dwz
+            position: relative
+            &:before
+              content: "DWZ"
+              position: absolute
+              top: -28px
+              color: $light-grey-text
+              +x-rem(font-size, 0.8)
+              margin-left: 2px
+        display: flex
+        clear: left
+        float: left
+        align-items: center
+        padding-bottom: 10px
+        margin-bottom: 15px
+        border-bottom: $divider-line
+        .views-field
+          margin-right: 12px
+          &:last-child
+            margin: 0
+        .views-field-counter
+          width: 20px
+        .views-field-title-1
+          width: 140px
+        .views-field-field-player-image
+          img
+            width: 45px
+            height: auto
 
 
 
