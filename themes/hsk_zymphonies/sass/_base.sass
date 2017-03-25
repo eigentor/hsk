@@ -62,6 +62,11 @@ i.icon
 .messages
   margin-bottom: 30px
 
+/* Slick Slider Styling */
+.slick-list
+  z-index: 2
+
+
 
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -95,6 +100,36 @@ i.icon
       +x-rem(font-size, 0.9)
       font
         font-size: 14px!important
+
+  button
+    &.slick-prev, &.slick-next
+      z-index: 7
+      display: block
+      left: 35px
+      width: 42px
+      height: 42px
+      &:before
+        position: absolute
+        top: 0px
+        left: 0
+        background: white
+        width: 42px
+        height: 42px
+        line-height: 44px
+        text-align: center
+        padding-right: 5px
+        +border-radius(21px)
+        z-index: 8
+        font-family: Fontawesome
+        content: "\f053"
+        color: #aaa
+        +x-rem(font-size, 2)
+    &.slick-next
+      left: auto
+      right: 35px
+      &:before
+        content: "\f054"
+        padding-left: 10px
 
 
 /* End Media Query Tablet */

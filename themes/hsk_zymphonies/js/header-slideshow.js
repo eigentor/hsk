@@ -7,7 +7,7 @@
       $('.path-frontpage #block-views-block-header-slideshow-block-1 .view-content').slick({
         infinite: true,
         autoplay: true,
-        arrows: false,
+        arrows: true,
         autoplaySpeed: 6000,
         speed: 700,
         slidesToShow: 1,

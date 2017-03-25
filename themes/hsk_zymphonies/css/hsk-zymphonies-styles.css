@@ -1473,6 +1473,10 @@ i.icon {
 .messages {
   margin-bottom: 30px; }
 
+/* Slick Slider Styling */
+.slick-list {
+  z-index: 2; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -1498,7 +1502,41 @@ i.icon {
       font-size: 11.7px;
       font-size: 0.9rem; }
       table th font, table td font {
-        font-size: 14px !important; } }
+        font-size: 14px !important; }
+
+  button.slick-prev, button.slick-next {
+    z-index: 7;
+    display: block;
+    left: 35px;
+    width: 42px;
+    height: 42px; }
+    button.slick-prev:before, button.slick-next:before {
+      position: absolute;
+      top: 0px;
+      left: 0;
+      background: white;
+      width: 42px;
+      height: 42px;
+      line-height: 44px;
+      text-align: center;
+      padding-right: 5px;
+      -webkit-border-radius: 21px;
+      -moz-border-radius: 21px;
+      -ms-border-radius: 21px;
+      -o-border-radius: 21px;
+      border-radius: 21px;
+      z-index: 8;
+      font-family: Fontawesome;
+      content: "";
+      color: #aaa;
+      font-size: 26px;
+      font-size: 2rem; }
+  button.slick-next {
+    left: auto;
+    right: 35px; }
+    button.slick-next:before {
+      content: "";
+      padding-left: 10px; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -1745,7 +1783,10 @@ i.icon {
           padding: 15px 20px;
           font-size: 16.9px;
           font-size: 1.3rem;
-          float: left; }
+          float: left;
+          max-width: 50%;
+          text-align: left;
+          line-height: 1.35; }
 
   .path-news .view-news .views-row {
     *zoom: 1; }
@@ -1778,8 +1819,12 @@ i.icon {
 /*------------------------------------------- */
 /*------------------------------------------- */
 @media only screen and (min-width: 1200px) {
+  .path-frontpage .region-slideshow {
+    background: #888; }
   .path-frontpage #block-views-block-header-slideshow-block-1 {
-    max-height: 400px; } }
+    max-height: 400px;
+    max-width: 1600px;
+    margin: auto; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
