@@ -1812,19 +1812,26 @@ i.icon {
   .path-mannschaften .view-mannschaften .views-row .views-field {
     width: 20%; }
 
-/* End Media Query Tablet */
+/* End Media Query Desktop narrow */
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*---------------- Desktop  ------------------ */
 /*------------------------------------------- */
 /*------------------------------------------- */
 @media only screen and (min-width: 1200px) {
-  .path-frontpage .region-slideshow {
-    background: #888; }
   .path-frontpage #block-views-block-header-slideshow-block-1 {
     max-height: 400px;
     max-width: 1600px;
     margin: auto; } }
+/* End Media Query Desktop */
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*------------ Super- Desktop  --------------- */
+/*------------------------------------------- */
+/*------------------------------------------- */
+@media only screen and (min-width: 1600px) {
+  .path-frontpage .region-slideshow {
+    background: #888; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
