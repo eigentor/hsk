@@ -1477,6 +1477,11 @@ i.icon {
 .slick-list {
   z-index: 2; }
 
+button.btn, a.btn {
+  color: #eee; }
+  button.btn:hover, a.btn:hover {
+    color: white; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
