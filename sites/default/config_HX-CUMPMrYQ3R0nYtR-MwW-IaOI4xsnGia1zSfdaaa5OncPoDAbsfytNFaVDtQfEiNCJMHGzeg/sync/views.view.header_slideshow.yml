@@ -83,10 +83,10 @@ display:
       row:
         type: fields
         options:
+          default_field_elements: true
           inline: {  }
           separator: ''
-          hide_empty: false
-          default_field_elements: true
+          hide_empty: true
       fields:
         field_sl_text_link:
           id: field_sl_text_link
