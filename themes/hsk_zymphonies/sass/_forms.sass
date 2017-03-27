@@ -13,6 +13,13 @@
   input.form-text
     color: #333
 
+form#webform-submission-anmeldung-als-vereinsmitglied-form
+  input
+    width: 100%
+    &#edit-sepa-consent
+      width: auto
+      margin-right: 5px
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/
@@ -29,6 +36,32 @@
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-tablet)
+  form#webform-submission-anmeldung-als-vereinsmitglied-form
+    .form-required
+      &:after
+        background-image: url(../../../../core/misc/icons/ee0000/required.svg)
+        margin-left: 6px
+    fieldset
+      margin-top: 25px
+    input
+      width: auto
+    label
+      width: 140px
+    #edit-area-code-city
+      display: flex
+    .form-item-area-code
+      display: flex
+      align-items: center
+      label
+        width: 50px
+    .form-item-city
+      flex: none
+      webkit-flex: 0
+      label
+        width: auto
+        padding-left: 30px
+      input
+        width: 75%
 
 
 /* End Media Query Tablet */
