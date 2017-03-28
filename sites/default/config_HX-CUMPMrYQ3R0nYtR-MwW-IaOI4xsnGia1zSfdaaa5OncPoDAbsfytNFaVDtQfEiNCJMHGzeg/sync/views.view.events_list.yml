@@ -455,7 +455,7 @@ display:
       pager:
         type: some
         options:
-          items_per_page: 5
+          items_per_page: 7
           offset: 0
     cache_metadata:
       max-age: -1
