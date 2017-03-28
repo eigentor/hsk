@@ -42,6 +42,7 @@ settings:
           name: Tools
           items:
             - Source
+            - Table
   plugins:
     drupallink:
       linkit_enabled: true
