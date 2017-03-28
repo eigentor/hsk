@@ -190,6 +190,7 @@ display:
         style: false
         row: false
         fields: false
+        pager: false
       row:
         type: fields
         options:
@@ -270,7 +271,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Veröffentlicht am '
+          label: ''
           exclude: false
           alter:
             alter_text: false
@@ -443,12 +444,16 @@ display:
           text: '» Weiterlesen'
           entity_type: node
           plugin_id: entity_link
+      pager:
+        type: some
+        options:
+          items_per_page: 3
+          offset: 0
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags:
