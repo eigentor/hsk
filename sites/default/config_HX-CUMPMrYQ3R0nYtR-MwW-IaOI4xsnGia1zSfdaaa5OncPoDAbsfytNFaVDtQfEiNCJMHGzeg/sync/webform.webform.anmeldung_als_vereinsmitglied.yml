@@ -56,7 +56,7 @@ settings:
   draft_loaded_message: ''
   confirmation_type: page
   confirmation_title: ''
-  confirmation_message: ''
+  confirmation_message: "Vielen Dank f&uuml;r Ihre Anmeldung. Sie h&ouml;ren umgehend von uns.<br />\r\n<br />\r\nHSK Lister Turm"
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -119,5 +119,26 @@ handlers:
         iban: iban
         bic: bic
       html: false
+      attachments: false
+      debug: false
+  bestaetigungsmail_an_ausfueller_des_formulars:
+    id: email
+    label: 'Bestätigungsmail an Ausfüller des Formulars'
+    handler_id: bestaetigungsmail_an_ausfueller_des_formulars
+    status: true
+    weight: 1
+    settings:
+      to_mail: '[webform_submission:values:email:raw]'
+      cc_mail: ''
+      bcc_mail: ''
+      from_mail: hayen@schachklub-hannover.de
+      from_name: default
+      subject: 'Ihre Anmeldung als Vereinsmitglied beim HSK Lister Turm'
+      body: "Sehr geehrter [webform_submission:values:first_name] [webform_submission:values:last_name],<br />\n<br />\nSie haben sich als Vereinsmitglied beim HSK Lister Turm angemeldet.<br />\nIhre eingegebenen Daten:<br />\n[webform_submission:values]<br />\n<br />\nIBAN, BIC und Name der Bank Ihrer Kontoverbindung haben wir aus Sicherheitsgr&uuml;nden in dieser Email ausgelassen.<br />\nVielen Dank, Sie h&ouml;ren in K&uuml;rze von uns.<br />\n<br />\nHSK Lister Turm<br />\nGerhard Hayen<br />\nGoebenstra&szlig;e 36<br />\n30163 Hannover"
+      excluded_elements:
+        iban: iban
+        bic: bic
+        bank_name: bank_name
+      html: true
       attachments: false
       debug: false
