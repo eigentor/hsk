@@ -25,3 +25,6 @@ permissions:
   - 'bypass node access'
   - 'entityconnect add button'
   - 'entityconnect edit button'
+  - 'access webform overview'
+  - 'administer webform submission'
+  - 'view any webform submission'
