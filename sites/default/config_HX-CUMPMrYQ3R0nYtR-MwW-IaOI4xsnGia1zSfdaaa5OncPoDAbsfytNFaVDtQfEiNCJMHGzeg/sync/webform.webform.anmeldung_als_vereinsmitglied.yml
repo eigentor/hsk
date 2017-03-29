@@ -100,4 +100,24 @@ access:
   delete_own:
     roles: {  }
     users: {  }
-handlers: {  }
+handlers:
+  mail_treasurer:
+    id: email
+    label: 'E-Mail an Schatzmeister'
+    handler_id: mail_treasurer
+    status: true
+    weight: 0
+    settings:
+      to_mail: h.schilling@kabelmail.de
+      cc_mail: thomas@rufzeichen-online.de
+      bcc_mail: ''
+      from_mail: hayen@schachklub-hannover.de
+      from_name: default
+      subject: 'Anmeldung als Vereinsmitglied über die HSK Website [site:url]'
+      body: "Es wurde eine Anmeldung als Vereinsmitglied über die HSK Website eingegeben.\n\nDatum der Eingabe: [webform_submission:created]\n\nEingegebene Daten: \n[webform_submission:values]\n"
+      excluded_elements:
+        iban: iban
+        bic: bic
+      html: false
+      attachments: false
+      debug: false

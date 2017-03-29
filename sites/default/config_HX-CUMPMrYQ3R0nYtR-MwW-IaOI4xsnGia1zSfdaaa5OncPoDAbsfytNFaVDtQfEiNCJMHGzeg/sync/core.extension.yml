@@ -39,6 +39,7 @@ module:
   link: 0
   linkit: 0
   locale: 0
+  maillog: 0
   masquerade: 0
   menu_ui: 0
   metatag: 0
