@@ -134,11 +134,11 @@ handlers:
       from_mail: hayen@schachklub-hannover.de
       from_name: default
       subject: 'Ihre Anmeldung als Vereinsmitglied beim HSK Lister Turm'
-      body: "Sehr geehrter [webform_submission:values:first_name] [webform_submission:values:last_name],<br />\n<br />\nSie haben sich als Vereinsmitglied beim HSK Lister Turm angemeldet.<br />\nIhre eingegebenen Daten:<br />\n[webform_submission:values]<br />\n<br />\nIBAN, BIC und Name der Bank Ihrer Kontoverbindung haben wir aus Sicherheitsgr&uuml;nden in dieser Email ausgelassen.<br />\nVielen Dank, Sie h&ouml;ren in K&uuml;rze von uns.<br />\n<br />\nHSK Lister Turm<br />\nGerhard Hayen<br />\nGoebenstra&szlig;e 36<br />\n30163 Hannover"
+      body: "Sehr geehrter  Sehr geehrter [webform_submission:values:vorname] [webform_submission:values:nachname],\n\nSie haben sich als Vereinsmitglied beim HSK Lister Turm angemeldet.\n\nIhre eingegebenen Daten:\n\n[webform_submission:values]\n\nIhre Kontoverbindung haben wir aus\nSicherheitsgründen in dieser Email ausgelassen.\n\nVielen Dank, Sie hören in Kürze von uns.\n\n------------------------------------\nHSK Lister Turm\nGerhard Hayen\nGoebenstraße 36\n30163 Hannover\n"
       excluded_elements:
         iban: iban
         bic: bic
         bank_name: bank_name
-      html: true
+      html: false
       attachments: false
       debug: false
