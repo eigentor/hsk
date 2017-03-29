@@ -22,7 +22,7 @@ settings:
   provider: views
   label_display: visible
   views_label: ''
-  items_per_page: none
+  items_per_page: '5'
 visibility:
   node_type:
     id: node_type
