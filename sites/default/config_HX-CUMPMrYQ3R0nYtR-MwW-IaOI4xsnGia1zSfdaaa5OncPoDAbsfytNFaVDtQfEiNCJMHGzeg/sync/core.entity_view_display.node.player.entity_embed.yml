@@ -20,10 +20,11 @@ mode: entity_embed
 content:
   body:
     weight: 1
-    label: above
-    settings: {  }
+    label: visually_hidden
+    settings:
+      trim_length: 200
     third_party_settings: {  }
-    type: text_default
+    type: text_summary_or_trimmed
   field_player_image:
     weight: 0
     label: visually_hidden
