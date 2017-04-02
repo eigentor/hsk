@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.entity_embed
     - field.field.node.player.body
     - field.field.node.player.field_dwz
+    - field.field.node.player.field_function_club
     - field.field.node.player.field_player_image
     - image.style.portrait
     - node.type.player
@@ -19,12 +20,19 @@ bundle: player
 mode: entity_embed
 content:
   body:
-    weight: 1
+    weight: 2
     label: visually_hidden
     settings:
       trim_length: 200
     third_party_settings: {  }
     type: text_summary_or_trimmed
+  field_function_club:
+    type: string
+    weight: 1
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_player_image:
     weight: 0
     label: visually_hidden
