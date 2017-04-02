@@ -43,6 +43,10 @@ settings:
           items:
             - Source
             - Table
+        -
+          name: 'Entity Embed'
+          items:
+            - node
   plugins:
     drupallink:
       linkit_enabled: true

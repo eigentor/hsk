@@ -50,6 +50,10 @@ settings:
           items:
             - ShowBlocks
             - Source
+        -
+          name: 'Entity Embed'
+          items:
+            - node
   plugins:
     drupallink:
       linkit_enabled: true

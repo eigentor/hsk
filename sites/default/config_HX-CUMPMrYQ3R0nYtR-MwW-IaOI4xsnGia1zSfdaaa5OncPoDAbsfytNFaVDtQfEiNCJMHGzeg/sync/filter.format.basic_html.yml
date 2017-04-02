@@ -19,7 +19,7 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <button class=""> <h2 id class=""> <h3 id class=""> <h4 id class=""> <h5 id class=""> <h6 id> <p class=""> <br> <span class=""> <img src alt data-entity-type data-entity-uuid data-align data-caption height width> <a href hreflang data-entity-type data-entity-uuid title class=""> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr>'
+      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <button class=""> <h2 id class=""> <h3 id class=""> <h4 id class=""> <h5 id class=""> <h6 id> <p class=""> <br> <span class=""> <img src alt data-entity-type data-entity-uuid data-align data-caption height width> <a href hreflang data-entity-type data-entity-uuid title class=""> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr><drupal-entity data-entity-type data-entity-uuid data-view-mode data-entity-embed-display data-entity-embed-display-settings data-align data-caption data-embed-button>'
       filter_html_help: false
       filter_html_nofollow: false
   filter_align:
@@ -73,3 +73,10 @@ filters:
     status: true
     weight: 0
     settings: {  }
+  filter_url:
+    id: filter_url
+    provider: filter
+    status: true
+    weight: 0
+    settings:
+      filter_url_length: 72
