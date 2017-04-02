@@ -787,6 +787,11 @@ function _filter_html_image_secure_process($text) {
       // with the Drupal root and running getimagesize() on it.
       $local_image_path = $local_dir . Unicode::substr($src, $base_path_length);
       $local_image_path = rawurldecode($local_image_path);
+      // Check for query string and remove it if present.
+      $parse_query_string = substr($local_image_path, 0, strpos($local_image_path, '?'));
+      if (!empty($parse_query_string)) {
+        $local_image_path = $parse_query_string;
+      }
       if (@getimagesize($local_image_path)) {
         // The image has the right path. Erroneous images are dealt with below.
         continue;
