@@ -1979,6 +1979,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
     text-align: center;
     width: 100%; }
     .node .embedded-entity .node--type-player {
+      padding: 0 15px;
       height: 187px; }
       .node .embedded-entity .node--type-player h2 {
         font-size: 15.6px;
