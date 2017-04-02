@@ -1,0 +1,19 @@
+uuid: c152a4b0-420e-43fb-9056-c11de5614754
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_function_club
+    - node.type.player
+id: node.player.field_function_club
+field_name: field_function_club
+entity_type: node
+bundle: player
+label: 'Funktion im Verein'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.player.body
     - field.field.node.player.field_dwz
+    - field.field.node.player.field_function_club
     - field.field.node.player.field_player_image
     - image.style.medium
     - node.type.player
@@ -23,6 +24,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  field_function_club:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_player_image:
     weight: 0
     label: visually_hidden

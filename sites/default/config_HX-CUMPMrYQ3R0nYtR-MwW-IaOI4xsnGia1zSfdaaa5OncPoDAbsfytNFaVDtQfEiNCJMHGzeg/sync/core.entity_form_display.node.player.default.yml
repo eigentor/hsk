@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.player.body
     - field.field.node.player.field_dwz
+    - field.field.node.player.field_function_club
     - field.field.node.player.field_player_image
     - image.style.thumbnail
     - node.type.player
@@ -36,6 +37,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: number
+  field_function_club:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
   field_player_image:
     weight: 1
     settings:
