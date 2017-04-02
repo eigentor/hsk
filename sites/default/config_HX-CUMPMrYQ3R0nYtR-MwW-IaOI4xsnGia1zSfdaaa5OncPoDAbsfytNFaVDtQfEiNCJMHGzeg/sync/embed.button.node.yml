@@ -3,8 +3,7 @@ langcode: de
 status: true
 dependencies:
   config:
-    - node.type.article
-    - node.type.page
+    - node.type.player
   module:
     - entity_embed
     - node
@@ -16,8 +15,7 @@ type_id: entity
 type_settings:
   entity_type: node
   bundles:
-    - page
-    - article
+    - player
   display_plugins:
     - 'view_mode:node.entity_embed'
   entity_browser: ''

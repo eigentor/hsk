@@ -80,17 +80,17 @@ filters:
     weight: -47
     settings:
       filter_url_length: 72
-  filter_autop:
-    id: filter_autop
-    provider: filter
-    status: false
-    weight: -40
-    settings: {  }
   filter_htmlcorrector:
     id: filter_htmlcorrector
     provider: filter
     status: false
     weight: -39
+    settings: {  }
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: false
+    weight: -40
     settings: {  }
   filter_html_escape:
     id: filter_html_escape
