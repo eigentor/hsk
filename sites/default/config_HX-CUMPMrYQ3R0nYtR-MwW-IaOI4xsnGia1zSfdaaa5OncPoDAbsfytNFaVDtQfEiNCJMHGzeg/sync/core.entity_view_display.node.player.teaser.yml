@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.player.body
     - field.field.node.player.field_dwz
     - field.field.node.player.field_player_image
+    - image.style.portrait
     - node.type.player
   module:
     - image
@@ -29,7 +30,7 @@ content:
     weight: 0
     label: visually_hidden
     settings:
-      image_style: ''
+      image_style: portrait
       image_link: ''
     third_party_settings: {  }
 hidden:

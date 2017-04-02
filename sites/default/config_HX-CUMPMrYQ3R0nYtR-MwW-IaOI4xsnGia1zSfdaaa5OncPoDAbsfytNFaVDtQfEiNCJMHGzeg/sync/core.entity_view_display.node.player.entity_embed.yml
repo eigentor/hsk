@@ -7,7 +7,7 @@ dependencies:
     - field.field.node.player.body
     - field.field.node.player.field_dwz
     - field.field.node.player.field_player_image
-    - image.style.medium
+    - image.style.portrait
     - node.type.player
   module:
     - image
@@ -19,30 +19,20 @@ bundle: player
 mode: entity_embed
 content:
   body:
-    weight: 104
+    weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
-  field_dwz:
-    weight: 103
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
   field_player_image:
-    weight: 102
+    weight: 0
     label: visually_hidden
     settings:
-      image_style: medium
+      image_style: portrait
       image_link: ''
     third_party_settings: {  }
     type: image
-  links:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
 hidden:
+  field_dwz: true
   langcode: true
+  links: true
