@@ -2,6 +2,9 @@ uuid: d20fca8e-cb9f-4079-a875-82d15c49f5b6
 langcode: de
 status: true
 dependencies:
+  config:
+    - node.type.article
+    - node.type.page
   module:
     - entity_embed
     - node
@@ -12,6 +15,11 @@ id: node
 type_id: entity
 type_settings:
   entity_type: node
-  bundles: {  }
-  display_plugins: {  }
+  bundles:
+    - page
+    - article
+  display_plugins:
+    - 'view_mode:node.entity_embed'
+  entity_browser: ''
+  entity_browser_settings: null
 icon_uuid: null
