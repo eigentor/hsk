@@ -1,8 +1,9 @@
-uuid: b8a7fa7e-2431-439b-8ddd-ada565e6eaa2
+uuid: 2378d4f2-cec9-4718-a1fc-3b7c2f5ec60d
 langcode: de
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.entity_embed
     - field.field.node.player.body
     - field.field.node.player.field_dwz
     - field.field.node.player.field_player_image
@@ -12,26 +13,36 @@ dependencies:
     - image
     - text
     - user
-id: node.player.default
+id: node.player.entity_embed
 targetEntityType: node
 bundle: player
-mode: default
+mode: entity_embed
 content:
   body:
-    weight: 1
+    weight: 104
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  field_dwz:
+    weight: 103
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
   field_player_image:
-    weight: 0
+    weight: 102
     label: visually_hidden
     settings:
       image_style: medium
       image_link: ''
     third_party_settings: {  }
     type: image
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
 hidden:
-  field_dwz: true
   langcode: true
-  links: true

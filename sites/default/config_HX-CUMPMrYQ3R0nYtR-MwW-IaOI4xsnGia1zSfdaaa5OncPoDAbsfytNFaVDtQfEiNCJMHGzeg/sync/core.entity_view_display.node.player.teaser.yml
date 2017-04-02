@@ -4,17 +4,35 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.player.body
+    - field.field.node.player.field_dwz
     - field.field.node.player.field_player_image
     - node.type.player
   module:
+    - image
+    - text
     - user
 id: node.player.teaser
 targetEntityType: node
 bundle: player
 mode: teaser
 content:
-  links:
-    weight: 100
+  body:
+    type: text_trimmed
+    weight: 1
+    label: visually_hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  field_player_image:
+    type: image
+    weight: 0
+    label: visually_hidden
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
 hidden:
-  field_player_image: true
+  field_dwz: true
   langcode: true
+  links: true

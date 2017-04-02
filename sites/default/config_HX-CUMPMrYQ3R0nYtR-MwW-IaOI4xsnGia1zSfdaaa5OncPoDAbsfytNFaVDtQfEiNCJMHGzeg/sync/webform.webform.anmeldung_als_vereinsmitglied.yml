@@ -109,12 +109,12 @@ handlers:
     weight: 0
     settings:
       to_mail: h.schilling@kabelmail.de
-      cc_mail: 'hayen@schachklub-hannover.de, thomas@rufzeichen-online.de'
+      cc_mail: thomas@rufzeichen-online.de
       bcc_mail: ''
       from_mail: hayen@schachklub-hannover.de
       from_name: default
       subject: 'Anmeldung als Vereinsmitglied über die HSK Website [site:url]'
-      body: "Es wurde eine Anmeldung als Vereinsmitglied über die HSK Website eingegeben.\n\nDatum der Eingabe: [webform_submission:created]\n\nEingegebene Daten: \n[webform_submission:values]\n"
+      body: "Es wurde eine Anmeldung als Vereinsmitglied über die HSK Website eingegeben.\n\nDatum der Eingabe: [webform_submission:created]\nHier geht es zu den eingegebenen Daten auf der Website: [webform_submission:original]\n\nEingegebene Daten: \n[webform_submission:values]\n"
       excluded_elements:
         iban: iban
         bic: bic
