@@ -8,7 +8,8 @@ id: feedback
 label: Kontakt
 recipients:
   - info@rufzeichen-online.de
+  - hayen@schachklub-hannover.de
 reply: ''
 weight: 0
-message: 'Your message has been sent.'
+message: 'Ihre Nachricht wurde gesendet.'
 redirect: ''

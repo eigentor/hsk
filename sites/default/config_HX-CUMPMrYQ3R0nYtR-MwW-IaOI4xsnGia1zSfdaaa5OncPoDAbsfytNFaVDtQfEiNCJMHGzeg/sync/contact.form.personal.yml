@@ -9,5 +9,5 @@ label: 'Persönliches Kontaktformular'
 recipients: {  }
 reply: ''
 weight: 0
-message: 'Your message has been sent.'
+message: 'Ihre Nachricht wurde gesendet.'
 redirect: ''
