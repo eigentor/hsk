@@ -12,20 +12,12 @@ dependencies:
     - node.type.player
   module:
     - image
-    - text
     - user
 id: node.player.entity_embed
 targetEntityType: node
 bundle: player
 mode: entity_embed
 content:
-  body:
-    weight: 2
-    label: visually_hidden
-    settings:
-      trim_length: 200
-    third_party_settings: {  }
-    type: text_summary_or_trimmed
   field_function_club:
     type: string
     weight: 1
@@ -42,6 +34,7 @@ content:
     third_party_settings: {  }
     type: image
 hidden:
+  body: true
   field_dwz: true
   langcode: true
   links: true
