@@ -17,6 +17,13 @@ function hsk_zymphonies_preprocess_page(&$variables) {
         $variables['#attached']['library'][] = 'hsk_zymphonies/hsk-js-tabs';
       }
   }
+
+  // Load Fancybox for content types "News(article)" and "page", but not on the homepage
+  if( array_key_exists('node', $variables)) {
+    if($variables['node']->getType() == 'article' || $variables['node']->getType() == 'page' &&(\Drupal::service('path.matcher')->isFrontPage() == FALSE)) {
+      $variables['#attached']['library'][] = 'hsk_zymphonies/fancybox';
+    }
+  }
 }
 
 /**

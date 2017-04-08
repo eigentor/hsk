@@ -37,3 +37,16 @@ hsk-js-tabs:
     - core/jquery
     - core/jquery.once
     - core/jquery.ui.tabs
+
+fancybox:
+  version: VERSION
+  css:
+    theme:
+      /libraries/fancybox/jquery.fancybox.min.css: {}
+  js:
+    /libraries/fancybox/jquery.fancybox.min.js: {}
+    js/hsk-fancybox.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
