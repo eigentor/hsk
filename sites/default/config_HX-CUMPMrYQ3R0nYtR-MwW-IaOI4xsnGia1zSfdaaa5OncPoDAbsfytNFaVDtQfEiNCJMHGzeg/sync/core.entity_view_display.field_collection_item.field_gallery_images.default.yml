@@ -19,16 +19,9 @@ content:
     label: visually_hidden
     settings:
       image_style: image_gallery_thumb
-      image_link: ''
+      image_link: file
     third_party_settings: {  }
     type: image
     region: content
-  field_gallery_image_caption:
-    weight: 1
-    label: visually_hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-hidden: {  }
+hidden:
+  field_gallery_image_caption: true
