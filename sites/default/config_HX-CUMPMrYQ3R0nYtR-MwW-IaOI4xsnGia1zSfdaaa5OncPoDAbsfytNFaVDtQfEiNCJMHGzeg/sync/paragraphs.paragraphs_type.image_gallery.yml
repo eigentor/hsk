@@ -1,0 +1,7 @@
+uuid: 31b4a518-6027-45b9-ab95-3803e7b818ae
+langcode: de
+status: true
+dependencies: {  }
+id: image_gallery
+label: Bildergalerie
+behavior_plugins: {  }

@@ -25,12 +25,14 @@ content:
       image_link: ''
     third_party_settings: {  }
     type: image
+    region: content
   field_sl_text:
     weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_sl_text_link:
     weight: 2
     label: above
@@ -42,4 +44,5 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
 hidden: {  }

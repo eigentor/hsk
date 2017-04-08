@@ -10,7 +10,7 @@ _core:
   default_config_hash: '-Rl4UzLWcNbP0PEI2Ci5O4IuEYk3yK6Xl9DdJaTLO0M'
 id: hsk_zymphonies_search
 theme: hsk_zymphonies
-region: '-1'
+region: header
 weight: -1
 provider: null
 plugin: search_form_block

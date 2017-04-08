@@ -8,7 +8,7 @@ dependencies:
 _core:
   default_config_hash: tp4wP6wVrEPZfApiCfkpoCxUzN-B1ceGcGv5sEzQ2Sg
 id: block_content
-label: 'Custom block library'
+label: 'Bibliothek benutzerdefinierter Blöcke'
 module: views
 description: 'Find and manage custom blocks.'
 tag: default
@@ -40,13 +40,13 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Anwenden
           reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
       pager:
         type: mini
         options:
@@ -55,14 +55,14 @@ display:
           id: 0
           total_pages: null
           tags:
-            previous: '‹ Previous'
-            next: 'Next ›'
+            previous: '< Zurück'
+            next: 'Weiter >'
           expose:
             items_per_page: false
-            items_per_page_label: 'Items per page'
+            items_per_page_label: 'Elemente pro Seite'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
+            items_per_page_options_all_label: '- Alle -'
             offset: false
             offset_label: Offset
       style:
@@ -122,7 +122,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Block description'
+          label: Blockbeschreibung
           exclude: false
           alter:
             alter_text: false
@@ -187,7 +187,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Block type'
+          label: 'Art des Blocks'
           exclude: false
           alter:
             alter_text: false
@@ -252,7 +252,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: Updated
+          label: Aktualisiert
           exclude: false
           alter:
             alter_text: false
@@ -308,7 +308,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: Operations
+          label: Operationen
           exclude: false
           alter:
             alter_text: false
@@ -366,7 +366,7 @@ display:
           exposed: true
           expose:
             operator_id: info_op
-            label: 'Block description'
+            label: Blockbeschreibung
             description: ''
             use_operator: false
             operator: info_op
@@ -406,7 +406,7 @@ display:
           exposed: true
           expose:
             operator_id: type_op
-            label: 'Block type'
+            label: 'Art des Blocks'
             description: ''
             use_operator: false
             operator: type_op
@@ -435,7 +435,7 @@ display:
           entity_field: type
           plugin_id: bundle
       sorts: {  }
-      title: 'Custom block library'
+      title: 'Bibliothek benutzerdefinierter Blöcke'
       header: {  }
       footer: {  }
       empty:
@@ -476,14 +476,14 @@ display:
   page_1:
     display_plugin: page
     id: page_1
-    display_title: Page
+    display_title: Seite
     position: 1
     display_options:
       display_extenders: {  }
       path: admin/structure/block/block-content
       menu:
         type: tab
-        title: 'Custom block library'
+        title: 'Bibliothek benutzerdefinierter Blöcke'
         description: ''
         parent: block.admin_display
         weight: 0

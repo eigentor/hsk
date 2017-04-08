@@ -5,6 +5,10 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.turnier.body
+    - field.field.node.turnier.field_current_results
+    - field.field.node.turnier.field_pairings
+    - field.field.node.turnier.field_standings
+    - field.field.node.turnier.field_vorhol_nachhol
     - node.type.turnier
   module:
     - text
@@ -21,10 +25,13 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
+    region: content
   links:
     weight: 100
+    region: content
 hidden:
   field_current_results: true
   field_pairings: true
   field_standings: true
+  field_vorhol_nachhol: true
   langcode: true

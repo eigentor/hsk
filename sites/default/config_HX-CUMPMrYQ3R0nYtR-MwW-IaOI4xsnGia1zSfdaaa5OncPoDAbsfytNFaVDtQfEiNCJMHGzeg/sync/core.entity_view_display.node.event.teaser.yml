@@ -8,6 +8,8 @@ dependencies:
     - field.field.node.event.field_ev_date
     - field.field.node.event.field_ev_end_time
     - field.field.node.event.field_ev_start_time
+    - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_room
     - node.type.event
   module:
     - text
@@ -24,10 +26,14 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
+    region: content
   links:
     weight: 100
+    region: content
 hidden:
   field_ev_date: true
   field_ev_end_time: true
   field_ev_start_time: true
+  field_event_location: true
+  field_event_room: true
   langcode: true

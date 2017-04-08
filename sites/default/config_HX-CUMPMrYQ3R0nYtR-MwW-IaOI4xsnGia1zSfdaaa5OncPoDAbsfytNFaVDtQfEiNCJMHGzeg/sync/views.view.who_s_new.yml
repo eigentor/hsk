@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: B2M6BoNVm-hHVnH2ILCpbhCZV71T6zLNs8Ag5QH-oNE
 id: who_s_new
-label: 'Who''s new'
+label: 'Neue Mitglieder'
 module: user
 description: 'Shows a list of the newest user accounts on the site.'
 tag: default
@@ -39,13 +39,13 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Anwenden
           reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
       pager:
         type: some
         options:
@@ -160,7 +160,7 @@ display:
           plugin_id: date
           entity_type: user
           entity_field: created
-      title: 'Who''s new'
+      title: 'Neue Mitglieder'
       header: {  }
       footer: {  }
       empty: {  }
@@ -177,12 +177,12 @@ display:
   block_1:
     display_plugin: block
     id: block_1
-    display_title: 'Who''s new'
+    display_title: 'Neue Mitglieder'
     position: 1
     display_options:
       display_description: 'A list of new users'
-      block_description: 'Who''s new'
-      block_category: User
+      block_description: 'Neue Mitglieder'
+      block_category: Benutzer
       display_extenders: {  }
     cache_metadata:
       contexts:

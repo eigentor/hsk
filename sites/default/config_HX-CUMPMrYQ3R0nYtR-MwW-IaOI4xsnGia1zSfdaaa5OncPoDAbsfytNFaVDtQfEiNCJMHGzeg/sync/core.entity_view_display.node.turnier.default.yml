@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.turnier.field_current_results
     - field.field.node.turnier.field_pairings
     - field.field.node.turnier.field_standings
+    - field.field.node.turnier.field_vorhol_nachhol
     - node.type.turnier
   module:
     - field_group
@@ -44,28 +45,33 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_current_results:
     weight: 3
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_pairings:
     weight: 4
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_standings:
     weight: 2
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   links:
     weight: 0
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden:
   field_vorhol_nachhol: true
   langcode: true

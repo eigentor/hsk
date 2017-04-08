@@ -7,9 +7,9 @@ dependencies:
 _core:
   default_config_hash: queuLjhKGUQ_b-lNh_TkhCvOPrVunfJopvVGOf3cjAo
 id: user_admin_people
-label: People
+label: Benutzer
 module: user
-description: 'Find and manage people interacting with your site.'
+description: 'Menschen finden und verwalten, die mit Ihrer Website in Kontakt stehen.'
 tag: default
 base_table: users_field_data
 base_field: uid
@@ -40,11 +40,11 @@ display:
         options:
           submit_button: Filter
           reset_button: true
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
       pager:
         type: full
         options:
@@ -53,16 +53,16 @@ display:
           id: 0
           total_pages: 0
           tags:
-            previous: '‹ Previous'
-            next: 'Next ›'
+            previous: '< Zurück'
+            next: 'Weiter >'
             first: '« First'
             last: 'Last »'
           expose:
             items_per_page: false
-            items_per_page_label: 'Items per page'
+            items_per_page_label: 'Elemente pro Seite'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
+            items_per_page_options_all_label: '- Alle -'
             offset: false
             offset_label: Offset
           quantity: 9
@@ -149,7 +149,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Bulk update'
+          label: Massenaktualisierung
           exclude: false
           alter:
             alter_text: false
@@ -199,7 +199,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: Username
+          label: Benutzername
           exclude: false
           alter:
             alter_text: false
@@ -307,7 +307,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: Roles
+          label: Rollen
           exclude: false
           alter:
             alter_text: false
@@ -358,7 +358,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Member for'
+          label: 'Mitglied seit'
           exclude: false
           alter:
             alter_text: false
@@ -414,7 +414,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Last access'
+          label: 'Letzter Zugriff'
           exclude: false
           alter:
             alter_text: false
@@ -470,7 +470,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: Operations
+          label: Operationen
           exclude: false
           alter:
             alter_text: false
@@ -633,7 +633,7 @@ display:
           exposed: true
           expose:
             operator_id: roles_target_id_op
-            label: Role
+            label: Rolle
             description: ''
             use_operator: false
             operator: roles_target_id_op
@@ -673,7 +673,7 @@ display:
           exposed: true
           expose:
             operator_id: permission_op
-            label: Permission
+            label: Berechtigung
             description: ''
             use_operator: false
             operator: permission_op
@@ -738,11 +738,11 @@ display:
             default_group_multiple: {  }
             group_items:
               1:
-                title: Active
+                title: Aktiv
                 operator: '='
                 value: '1'
               2:
-                title: Blocked
+                title: Gesperrt
                 operator: '='
                 value: '0'
           plugin_id: boolean
@@ -842,7 +842,7 @@ display:
           plugin_id: date
           entity_type: user
           entity_field: created
-      title: People
+      title: Benutzer
       empty:
         area_text_custom:
           id: area_text_custom
@@ -853,11 +853,11 @@ display:
           admin_label: ''
           empty: true
           tokenize: false
-          content: 'No people available.'
+          content: 'Keine Personen verfügbar.'
           plugin_id: text_custom
       use_more: false
       use_more_always: false
-      use_more_text: more
+      use_more_text: mehr
       display_comment: ''
       use_ajax: false
       hide_attachment_summary: false
@@ -883,15 +883,15 @@ display:
   page_1:
     display_plugin: page
     id: page_1
-    display_title: Page
+    display_title: Seite
     position: 1
     display_options:
       path: admin/people/list
       show_admin_links: false
       menu:
         type: 'default tab'
-        title: List
-        description: 'Find and manage people interacting with your site.'
+        title: Liste
+        description: 'Menschen finden und verwalten, die mit Ihrer Website in Kontakt stehen.'
         menu_name: admin
         weight: -10
         context: ''
@@ -899,8 +899,8 @@ display:
         expanded: false
       tab_options:
         type: normal
-        title: People
-        description: 'Manage user accounts, roles, and permissions.'
+        title: Benutzer
+        description: 'Verwalten von Benutzerkonten, Rollen und Zugriffsrechten.'
         menu_name: admin
         weight: 0
       defaults:

@@ -24,6 +24,7 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
+    region: content
   field_sl_text:
     weight: 1
     settings:
@@ -31,6 +32,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   field_sl_text_link:
     weight: 2
     settings:
@@ -38,4 +40,5 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
 hidden: {  }

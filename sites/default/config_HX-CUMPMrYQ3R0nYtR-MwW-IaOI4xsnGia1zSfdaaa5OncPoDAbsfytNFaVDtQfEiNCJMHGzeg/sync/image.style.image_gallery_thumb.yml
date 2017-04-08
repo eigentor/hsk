@@ -1,0 +1,14 @@
+uuid: 0f99fd98-cf13-4c68-8d42-31a795c633ed
+langcode: de
+status: true
+dependencies: {  }
+name: image_gallery_thumb
+label: 'Bildergalerie Thumbnail'
+effects:
+  7b8ad477-5c84-4613-88ec-2b5332bab8b7:
+    uuid: 7b8ad477-5c84-4613-88ec-2b5332bab8b7
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 100
+      height: 100

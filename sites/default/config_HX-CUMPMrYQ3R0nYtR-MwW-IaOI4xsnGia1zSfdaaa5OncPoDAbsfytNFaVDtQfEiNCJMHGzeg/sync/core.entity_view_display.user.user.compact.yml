@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.user.compact
+    - field.field.user.user.field_user_first_name
+    - field.field.user.user.field_user_last_name
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
@@ -16,6 +18,9 @@ targetEntityType: user
 bundle: user
 mode: compact
 content:
+  masquerade:
+    weight: 50
+    region: content
   user_picture:
     type: image
     weight: 0
@@ -24,5 +29,9 @@ content:
       image_link: content
     third_party_settings: {  }
     label: hidden
+    region: content
 hidden:
+  field_user_first_name: true
+  field_user_last_name: true
+  langcode: true
   member_for: true

@@ -19,10 +19,12 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: field_collection_items
+    region: content
   links:
     weight: 100
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden:
   body: true
   langcode: true

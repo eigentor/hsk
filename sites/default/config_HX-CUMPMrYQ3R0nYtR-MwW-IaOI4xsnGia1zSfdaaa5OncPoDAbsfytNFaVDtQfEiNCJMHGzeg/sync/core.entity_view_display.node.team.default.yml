@@ -130,6 +130,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_results_standings:
     weight: 2
     label: visually_hidden
@@ -141,32 +142,38 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_team_description:
     weight: 3
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_team_results:
     weight: 7
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_team_standings:
     weight: 8
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   kader_2_entity_view_1:
     weight: 6
     settings: {  }
     third_party_settings: {  }
+    region: content
   referenced_player_entity_view_1:
     weight: 4
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden:
   field_team_leader: true
   field_team_players: true

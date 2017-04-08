@@ -39,13 +39,13 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Anwenden
           reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
       pager:
         type: some
         options:
@@ -126,8 +126,8 @@ display:
           exposed: false
           expose:
             operator_id: access_op
-            label: 'Last access'
-            description: 'A user is considered online for this long after they have last viewed a page.'
+            label: 'Letzter Zugriff'
+            description: 'Ein Benutzer gilt für diesen Zeitraum als „online“, nachdem er das letzte Mal eine Seite betrachtet hat.'
             use_operator: false
             operator: access_op
             identifier: access
@@ -169,7 +169,7 @@ display:
           plugin_id: date
           entity_type: user
           entity_field: access
-      title: 'Who''s online'
+      title: 'Wer ist online'
       header:
         result:
           id: result
@@ -207,10 +207,10 @@ display:
   who_s_online_block:
     display_plugin: block
     id: who_s_online_block
-    display_title: 'Who''s online'
+    display_title: 'Wer ist online'
     position: 1
     display_options:
-      block_description: 'Who''s online'
+      block_description: 'Wer ist online'
       display_description: 'A list of users that are currently logged in.'
       display_extenders: {  }
     cache_metadata:

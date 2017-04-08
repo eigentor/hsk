@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.turnier.field_current_results
     - field.field.node.turnier.field_pairings
     - field.field.node.turnier.field_standings
+    - field.field.node.turnier.field_vorhol_nachhol
     - node.type.turnier
   module:
     - path
@@ -24,11 +25,13 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
+    region: content
   created:
     type: datetime_timestamp
     weight: 7
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_current_results:
     weight: 3
     settings:
@@ -36,6 +39,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   field_pairings:
     weight: 4
     settings:
@@ -43,6 +47,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   field_standings:
     weight: 2
     settings:
@@ -50,11 +55,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   langcode:
     type: language_select
     weight: 5
     settings: {  }
     third_party_settings: {  }
+    region: content
   node_class:
     type: string_textfield
     weight: 11
@@ -62,23 +69,27 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   path:
     type: path
     weight: 10
     settings: {  }
     third_party_settings: {  }
+    region: content
   promote:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 8
     third_party_settings: {  }
+    region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 9
     third_party_settings: {  }
+    region: content
   title:
     type: string_textfield
     weight: 0
@@ -86,6 +97,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   uid:
     type: entity_reference_autocomplete
     weight: 6
@@ -94,5 +106,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden:
   field_vorhol_nachhol: true

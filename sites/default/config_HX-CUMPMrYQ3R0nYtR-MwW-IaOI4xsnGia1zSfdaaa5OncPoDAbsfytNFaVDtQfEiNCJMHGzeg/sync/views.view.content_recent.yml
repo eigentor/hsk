@@ -8,9 +8,9 @@ dependencies:
 _core:
   default_config_hash: tDcmzGfShE0XJbfwJzyA6lJTUYC6X4iVu887dgoFfDg
 id: content_recent
-label: 'Recent content'
+label: 'Neuester Inhalt'
 module: node
-description: 'Recent content.'
+description: 'Neuer Inhalt.'
 tag: default
 base_table: node_field_data
 base_field: nid
@@ -40,13 +40,13 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Anwenden
           reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
       pager:
         type: some
         options:
@@ -258,7 +258,7 @@ display:
           entity_type: node
           entity_field: changed
           plugin_id: date
-      title: 'Recent content'
+      title: 'Neuester Inhalt'
       header: {  }
       footer: {  }
       empty:
@@ -271,7 +271,7 @@ display:
           admin_label: ''
           empty: true
           tokenize: false
-          content: 'No content available.'
+          content: 'Kein Inhalt verfügbar.'
           plugin_id: text_custom
       relationships:
         uid:
@@ -289,7 +289,7 @@ display:
       display_extenders: {  }
       use_more: false
       use_more_always: false
-      use_more_text: More
+      use_more_text: Mehr
       link_url: ''
       link_display: '0'
     cache_metadata:

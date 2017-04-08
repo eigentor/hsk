@@ -25,6 +25,7 @@ content:
     weight: 3
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_league:
     weight: 9
     settings:
@@ -32,6 +33,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_results_standings:
     weight: 10
     settings:
@@ -39,6 +41,7 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
   field_team_description:
     weight: 7
     settings:
@@ -47,6 +50,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea_with_summary
+    region: content
   field_team_leader:
     weight: 8
     settings:
@@ -55,6 +59,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_team_players:
     weight: 14
     settings:
@@ -63,6 +68,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_team_results:
     weight: 11
     settings:
@@ -70,6 +76,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   field_team_standings:
     weight: 12
     settings:
@@ -77,11 +84,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   langcode:
     type: language_select
     weight: 1
     settings: {  }
     third_party_settings: {  }
+    region: content
   node_class:
     type: string_textfield
     weight: 13
@@ -89,23 +98,27 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   path:
     type: path
     weight: 6
     settings: {  }
     third_party_settings: {  }
+    region: content
   promote:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 4
     third_party_settings: {  }
+    region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 5
     third_party_settings: {  }
+    region: content
   title:
     type: string_textfield
     weight: 0
@@ -113,6 +126,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   uid:
     type: entity_reference_autocomplete
     weight: 2
@@ -121,4 +135,5 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden: {  }

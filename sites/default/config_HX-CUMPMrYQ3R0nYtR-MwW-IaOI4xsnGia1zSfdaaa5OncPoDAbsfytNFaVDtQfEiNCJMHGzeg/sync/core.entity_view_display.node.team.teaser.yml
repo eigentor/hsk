@@ -7,6 +7,10 @@ dependencies:
     - field.field.node.team.field_league
     - field.field.node.team.field_results_standings
     - field.field.node.team.field_team_description
+    - field.field.node.team.field_team_leader
+    - field.field.node.team.field_team_players
+    - field.field.node.team.field_team_results
+    - field.field.node.team.field_team_standings
     - node.type.team
   module:
     - user
@@ -15,10 +19,21 @@ targetEntityType: node
 bundle: team
 mode: teaser
 content:
+  kader_2_entity_view_1:
+    weight: 10
+    region: content
   links:
     weight: 100
+    region: content
+  referenced_player_entity_view_1:
+    weight: 10
+    region: content
 hidden:
   field_league: true
   field_results_standings: true
   field_team_description: true
+  field_team_leader: true
+  field_team_players: true
+  field_team_results: true
+  field_team_standings: true
   langcode: true

@@ -10,7 +10,7 @@ _core:
   default_config_hash: 8hFnuAR_exGkng3kwI3vUa1WD6tx-nvOyhaiIWtwFKk
 id: hsk_zymphonies_breadcrumbs
 theme: hsk_zymphonies
-region: '-1'
+region: header
 weight: -6
 provider: null
 plugin: system_breadcrumb_block

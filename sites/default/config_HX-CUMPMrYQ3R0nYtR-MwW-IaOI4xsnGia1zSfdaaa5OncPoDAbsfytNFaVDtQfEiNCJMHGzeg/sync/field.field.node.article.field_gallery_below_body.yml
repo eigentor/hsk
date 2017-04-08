@@ -1,0 +1,30 @@
+uuid: f892841f-1a48-4f0e-b3b5-9578cd74a389
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_gallery_below_body
+    - node.type.article
+    - paragraphs.paragraphs_type.image_gallery
+  module:
+    - entity_reference_revisions
+id: node.article.field_gallery_below_body
+field_name: field_gallery_below_body
+entity_type: node
+bundle: article
+label: 'Bildergalerie oben'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      image_gallery: image_gallery
+    target_bundles_drag_drop:
+      image_gallery:
+        enabled: true
+        weight: 2
+field_type: entity_reference_revisions

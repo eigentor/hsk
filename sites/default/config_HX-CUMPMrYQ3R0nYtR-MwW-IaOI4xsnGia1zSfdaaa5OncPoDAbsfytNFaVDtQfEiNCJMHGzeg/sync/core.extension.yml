@@ -21,6 +21,7 @@ module:
   editor_file: 0
   embed: 0
   entity_embed: 0
+  entity_reference_revisions: 0
   entityconnect: 0
   eva: 0
   field: 0
@@ -71,6 +72,7 @@ module:
   menu_link_content: 1
   pathauto: 1
   views: 10
+  paragraphs: 11
   better_formats: 100
   standard: 1000
 theme:
@@ -83,3 +85,4 @@ theme:
 _core:
   default_config_hash: m2GVq11UAOVuNgj8x0t5fMOPujpvQQ_zxLoaly1BMEU
 langcode: de
+profile: standard

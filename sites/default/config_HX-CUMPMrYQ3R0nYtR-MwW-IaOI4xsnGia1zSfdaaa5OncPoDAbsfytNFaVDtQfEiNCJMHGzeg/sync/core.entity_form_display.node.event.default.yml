@@ -28,16 +28,19 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
+    region: content
   created:
     type: datetime_timestamp
     weight: 9
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_ev_date:
     weight: 2
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_ev_end_time:
     weight: 4
     settings:
@@ -46,6 +49,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: hms_default
+    region: content
   field_ev_start_time:
     weight: 3
     settings:
@@ -54,6 +58,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: hms_default
+    region: content
   field_event_location:
     weight: 6
     settings:
@@ -61,6 +66,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_event_room:
     weight: 5
     settings:
@@ -68,11 +74,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   langcode:
     type: language_select
     weight: 7
     settings: {  }
     third_party_settings: {  }
+    region: content
   node_class:
     type: string_textfield
     weight: 13
@@ -80,23 +88,27 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   path:
     type: path
     weight: 12
     settings: {  }
     third_party_settings: {  }
+    region: content
   promote:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 10
     third_party_settings: {  }
+    region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 11
     third_party_settings: {  }
+    region: content
   title:
     type: string_textfield
     weight: 0
@@ -104,6 +116,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   uid:
     type: entity_reference_autocomplete
     weight: 8
@@ -112,4 +125,5 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden: {  }

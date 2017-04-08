@@ -1,0 +1,30 @@
+uuid: 4caa5f82-c114-4b3d-b8c1-56c0ccb76878
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_gallery_images
+    - field_collection.field_collection.field_gallery_images
+    - paragraphs.paragraphs_type.image_gallery
+  module:
+    - field_collection
+id: paragraph.image_gallery.field_gallery_images
+field_name: field_gallery_images
+entity_type: paragraph
+bundle: image_gallery
+label: Bilder
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:field_collection_item'
+  handler_settings:
+    target_bundles:
+      field_gallery_images: field_gallery_images
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: field_collection

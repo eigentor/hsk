@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.player.body
     - field.field.node.player.field_dwz
+    - field.field.node.player.field_function_club
     - field.field.node.player.field_player_image
     - image.style.portrait
     - node.type.player
@@ -25,6 +26,7 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
+    region: content
   field_player_image:
     type: image
     weight: 0
@@ -33,7 +35,9 @@ content:
       image_style: portrait
       image_link: ''
     third_party_settings: {  }
+    region: content
 hidden:
   field_dwz: true
+  field_function_club: true
   langcode: true
   links: true

@@ -8,7 +8,7 @@ _core:
   default_config_hash: a1zoZxtJ4zZCNF9GWNbKX-n_z1eaCMUAFgo4VxZ_ZkQ
 id: businessgroup_zymphonies_theme_page_title
 theme: businessgroup_zymphonies_theme
-region: '-1'
+region: header
 weight: 0
 provider: null
 plugin: page_title_block

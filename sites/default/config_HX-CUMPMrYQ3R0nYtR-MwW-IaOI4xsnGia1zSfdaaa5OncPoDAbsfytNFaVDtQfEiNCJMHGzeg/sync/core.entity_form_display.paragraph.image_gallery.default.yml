@@ -1,0 +1,24 @@
+uuid: 6f5a24fc-f0bd-4b9e-a75c-e13275dadd38
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.image_gallery.field_gallery_images
+    - paragraphs.paragraphs_type.image_gallery
+  module:
+    - field_collection
+id: paragraph.image_gallery.default
+targetEntityType: paragraph
+bundle: image_gallery
+mode: default
+content:
+  field_gallery_images:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: field_collection_embed
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true
