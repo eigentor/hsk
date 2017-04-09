@@ -50,3 +50,16 @@ fancybox:
     - core/drupal
     - core/jquery
     - core/jquery.once
+
+colorbox:
+  version: VERSION
+  css:
+    theme:
+      /libraries/colorbox/example1/colorbox.css: {}
+  js:
+    /libraries/colorbox/jquery.colorbox-min.js: {}
+    js/hsk-colorbox.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
