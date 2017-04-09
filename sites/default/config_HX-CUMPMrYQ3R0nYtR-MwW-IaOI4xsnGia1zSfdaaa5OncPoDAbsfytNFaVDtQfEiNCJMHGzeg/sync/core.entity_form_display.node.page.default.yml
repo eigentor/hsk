@@ -4,8 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_gallery_above_body
+    - field.field.node.page.field_gallery_below_body
     - node.type.page
   module:
+    - paragraphs
     - path
     - text
 _core:
@@ -17,7 +20,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 31
+    weight: 2
     settings:
       rows: 9
       summary_rows: 3
@@ -26,19 +29,43 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     region: content
+  field_gallery_above_body:
+    weight: 1
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    type: paragraphs
+    region: content
+  field_gallery_below_body:
+    weight: 3
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    type: paragraphs
+    region: content
   langcode:
     type: language_select
-    weight: 2
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     region: content
   node_class:
     type: string_textfield
-    weight: 35
+    weight: 10
     region: content
     settings:
       size: 60
@@ -46,7 +73,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 9
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -54,19 +81,19 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 15
+    weight: 7
     third_party_settings: {  }
     region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 16
+    weight: 8
     third_party_settings: {  }
     region: content
   title:
     type: string_textfield
-    weight: -5
+    weight: 0
     settings:
       size: 60
       placeholder: ''

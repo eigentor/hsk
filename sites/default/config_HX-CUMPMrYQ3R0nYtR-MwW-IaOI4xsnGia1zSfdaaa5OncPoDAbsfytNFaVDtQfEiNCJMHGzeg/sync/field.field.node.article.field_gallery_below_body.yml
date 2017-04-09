@@ -12,7 +12,7 @@ id: node.article.field_gallery_below_body
 field_name: field_gallery_below_body
 entity_type: node
 bundle: article
-label: 'Bildergalerie oben'
+label: 'Bildergalerie unten'
 description: ''
 required: false
 translatable: false

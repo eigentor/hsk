@@ -4,8 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_gallery_above_body
+    - field.field.node.page.field_gallery_below_body
     - node.type.page
   module:
+    - entity_reference_revisions
     - text
     - user
 _core:
@@ -18,12 +21,32 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 100
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
-  links:
-    weight: 101
+  field_gallery_above_body:
+    weight: 0
+    label: visually_hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
     region: content
+  field_gallery_below_body:
+    weight: 2
+    label: visually_hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  links:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   langcode: true

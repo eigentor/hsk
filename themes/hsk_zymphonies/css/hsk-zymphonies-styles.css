@@ -1994,6 +1994,20 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
         margin-bottom: 2px;
         line-height: 1.3;
         color: #888; }
+  .node .field--name-field-gallery-below-body {
+    margin: 10px 0 8px; }
+  .node .paragraph--type--image-gallery .field__items {
+    display: flex;
+    flex-wrap: wrap; }
+    .node .paragraph--type--image-gallery .field__items .field__item a {
+      display: block;
+      padding: 8px;
+      margin: 0 17px 17px 0;
+      background: white;
+      -moz-box-shadow: 0px 0px 3px #eee;
+      -webkit-box-shadow: 0px 0px 3px #eee;
+      box-shadow: 0px 0px 3px #eee;
+      border: 1px solid #e5e5e5; }
 
 .page-node-type-article node__content {
   *zoom: 1; }

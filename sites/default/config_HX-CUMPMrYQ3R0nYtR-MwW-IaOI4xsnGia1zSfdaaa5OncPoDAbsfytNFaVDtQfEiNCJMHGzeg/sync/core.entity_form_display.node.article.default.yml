@@ -40,7 +40,7 @@ content:
     region: content
   field_gallery_above_body:
     type: entity_reference_paragraphs
-    weight: 4
+    weight: 2
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -52,7 +52,7 @@ content:
     region: content
   field_gallery_below_body:
     type: entity_reference_paragraphs
-    weight: 2
+    weight: 4
     settings:
       title: Paragraph
       title_plural: Paragraphs
