@@ -8,7 +8,8 @@
 
       // Open Image gallery links in fancybox
       $('.node .paragraph--type--image-gallery .field-collection-item--name-field-gallery-images a').colorbox({
-
+        maxWidth: '97%',
+        maxHeight: '97%',
       });
     }
   };
