@@ -1,0 +1,15 @@
+uuid: c4896314-8870-4033-b3ea-cb362cb72284
+langcode: de
+status: true
+dependencies: {  }
+name: gallery_full
+label: 'Bildergalerie full image'
+effects:
+  32bab8b3-c8a9-4955-bb30-d2e93f23e9dd:
+    uuid: 32bab8b3-c8a9-4955-bb30-d2e93f23e9dd
+    id: image_scale
+    weight: 1
+    data:
+      width: 1500
+      height: 1200
+      upscale: false
