@@ -1749,7 +1749,7 @@ button.btn, a.btn {
     margin-top: 3px;
     font-size: 9.75px;
     font-size: 0.75rem;
-    margin-right: 11px;
+    margin-right: 14px;
     text-align: center;
     min-width: 75px; }
     .path-termine .view-events-list .views-row .views-field-field-ev-start-time .date {
@@ -1761,15 +1761,23 @@ button.btn, a.btn {
       border: 1px solid #ccc;
       border-top: 0;
       line-height: 1.2; }
-  .path-termine .view-events-list .views-row .views-field-title {
-    display: flex; }
-    .path-termine .view-events-list .views-row .views-field-title h3 {
-      font-size: 14.3px;
-      font-size: 1.1rem;
-      align-self: flex-start;
-      margin-top: 3px;
-      margin-bottom: 0;
-      border: none; }
+  .path-termine .view-events-list .views-row .views-field-title h3 {
+    font-size: 14.3px;
+    font-size: 1.1rem;
+    align-self: flex-start;
+    margin-top: 3px;
+    margin-bottom: 0;
+    border: none; }
+  .path-termine .view-events-list .views-row .views-field-field-event-room {
+    display: flex;
+    margin-top: 0.45em;
+    font-size: 10.4px;
+    font-size: 0.8rem;
+    color: #888;
+    margin-left: 10px; }
+    .path-termine .view-events-list .views-row .views-field-field-event-room .views-label-field-event-room {
+      margin-right: 0.3em;
+      margin-right: 0.3em; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2811,6 +2819,15 @@ nav#block-hsk-footer {
       margin-top: 3px;
       margin-bottom: 0;
       border: none; }
+  .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-event-room {
+    display: flex;
+    margin-top: 0.3em;
+    font-size: 10.4px;
+    font-size: 0.8rem;
+    color: #888;
+    margin-left: 10px; }
+    .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-event-room .views-label-field-event-room {
+      margin-right: 0.3em; }
 .path-frontpage #block-views-block-news-block-1 h2.title {
   margin-bottom: 15px; }
 .path-frontpage #block-views-block-news-block-1 .views-row {
