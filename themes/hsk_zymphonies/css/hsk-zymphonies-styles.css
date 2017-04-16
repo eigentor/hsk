@@ -2863,6 +2863,22 @@ nav#block-hsk-footer {
   color: white; }
   .path-frontpage #block-begrussungstext a.btn:hover {
     background: #ba6900; }
+  .path-frontpage #block-begrussungstext a.btn:before {
+    font-family: Fontawesome;
+    content: "";
+    padding-right: 5px;
+    font-weight: normal;
+    font-size: 13px;
+    font-size: 1rem;
+    border: 1px solid #f9c17c;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+    border-radius: 15px;
+    padding: 2px 4px;
+    margin-right: 6px;
+    margin-left: -3px; }
 .path-frontpage #block-infoblockstartseite1 {
   position: relative;
   padding-left: 40px;
