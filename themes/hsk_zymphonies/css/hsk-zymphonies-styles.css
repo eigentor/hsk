@@ -2857,6 +2857,12 @@ nav#block-hsk-footer {
   .path-frontpage .bottom-widgets h3 {
     font-size: 15.6px;
     font-size: 1.2rem; }
+.path-frontpage #block-begrussungstext a.btn {
+  background: #ED8600;
+  font-weight: bold;
+  color: white; }
+  .path-frontpage #block-begrussungstext a.btn:hover {
+    background: #ba6900; }
 .path-frontpage #block-infoblockstartseite1 {
   position: relative;
   padding-left: 40px;
