@@ -1,18 +1,13 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\stage_file_proxy\FetchManagerInterface.
- */
-
 namespace Drupal\stage_file_proxy;
 
-
+use Drupal\Core\File\FileSystemInterface;
 use GuzzleHttp\ClientInterface;
 
 interface FetchManagerInterface {
 
-  public function __construct(ClientInterface $client);
+  public function __construct(ClientInterface $client, FileSystemInterface $file_system);
 
   /**
    * Downloads a remote file and saves it to the local files directory.

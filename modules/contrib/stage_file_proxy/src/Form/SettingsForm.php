@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\stage_file_proxy\Form\SettingsForm.
- */
-
 namespace Drupal\stage_file_proxy\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
@@ -37,9 +32,9 @@ class SettingsForm extends ConfigFormBase {
 
     $form['origin'] = array(
       '#type' => 'textfield',
-      '#title' => t('The origin website.'),
+      '#title' => $this->t('The origin website.'),
       '#default_value' => $config->get('origin'),
-      '#description' => t("The origin website. For example: 'http://example.com' with no trailing slash. If the site is using HTTP Basic Authentication (the browser popup for username and password) you can embed those in the url. Be sure to URL encode any special characters:<br/><br/>For example, setting a user name of 'myusername' and password as, 'letme&in' the configuration would be the following: <br/><br/>'http://myusername:letme%26in@example.com';"),
+      '#description' => $this->t("The origin website. For example: 'http://example.com' with no trailing slash. If the site is using HTTP Basic Authentication (the browser popup for username and password) you can embed those in the url. Be sure to URL encode any special characters:<br/><br/>For example, setting a user name of 'myusername' and password as, 'letme&in' the configuration would be the following: <br/><br/>'http://myusername:letme%26in@example.com';"),
       '#required' => FALSE,
     );
 
@@ -52,25 +47,25 @@ class SettingsForm extends ConfigFormBase {
     }
     $form['origin_dir'] = array(
       '#type' => 'textfield',
-      '#title' => t('The origin directory.'),
+      '#title' => $this->t('The origin directory.'),
       '#default_value' => $stage_file_proxy_origin_dir,
-      '#description' => t('If this is set then Stage File Proxy will use a different path for the remote files. This is useful for multisite installations where the sites directory contains different names for each url. If this is not set, it defaults to the same path as the local site.'),
+      '#description' => $this->t('If this is set then Stage File Proxy will use a different path for the remote files. This is useful for multisite installations where the sites directory contains different names for each url. If this is not set, it defaults to the same path as the local site.'),
       '#required' => FALSE,
     );
 
     $form['use_imagecache_root'] = array(
       '#type' => 'checkbox',
-      '#title' => t('Imagecache Root.'),
+      '#title' => $this->t('Imagecache Root.'),
       '#default_value' => $config->get('use_imagecache_root'),
-      '#description' => t("If this is true (default) then Stage File Proxy will look for /imagecache/ in the URL and determine the original file and request that rather than the processed file, then send a header to the browser to refresh the image and let imagecache handle it. This will speed up future imagecache requests for the same original file."),
+      '#description' => $this->t("If this is true (default) then Stage File Proxy will look for /imagecache/ in the URL and determine the original file and request that rather than the processed file, then send a header to the browser to refresh the image and let imagecache handle it. This will speed up future imagecache requests for the same original file."),
       '#required' => FALSE,
     );
 
     $form['hotlink'] = array(
       '#type' => 'checkbox',
-      '#title' => t('Hotlink.'),
+      '#title' => $this->t('Hotlink.'),
       '#default_value' => $config->get('hotlink'),
-      '#description' => t("If this is true then Stage File Proxy will not transfer the remote file to the local machine, it will just serve a 301 to the remote file and let the origin webserver handle it."),
+      '#description' => $this->t("If this is true then Stage File Proxy will not transfer the remote file to the local machine, it will just serve a 301 to the remote file and let the origin webserver handle it."),
       '#required' => FALSE,
     );
 
