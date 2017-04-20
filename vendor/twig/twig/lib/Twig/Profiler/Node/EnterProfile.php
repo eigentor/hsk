@@ -21,6 +21,9 @@ class Twig_Profiler_Node_EnterProfile extends Twig_Node
         parent::__construct(array(), array('extension_name' => $extensionName, 'name' => $name, 'type' => $type, 'var_name' => $varName));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function compile(Twig_Compiler $compiler)
     {
         $compiler

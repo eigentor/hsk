@@ -12,8 +12,6 @@
 /**
  * Represents a template test.
  *
- * @final
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class Twig_SimpleTest
