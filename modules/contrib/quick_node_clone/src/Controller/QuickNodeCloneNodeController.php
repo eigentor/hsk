@@ -1,25 +1,14 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\quick_node_clone\Controller\QuickNodeCloneNodeController.
- */
-
 namespace Drupal\quick_node_clone\Controller;
 
 use Drupal\quick_node_clone\Entity\QuickNodeCloneEntityFormBuilder;
-use Drupal\Component\Utility\Xss;
-use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\Core\Url;
-use Drupal\node\NodeTypeInterface;
-use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\Controller\NodeController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Returns responses for Quick Node Clone Node routes.
@@ -77,24 +66,29 @@ class QuickNodeCloneNodeController extends NodeController {
    *   A node submission form.
    */
   public function cloneNode($node) {
-    $parent_node = $this->entityManager()->getStorage('node')->load($node);
-    $form = $this->entityFormBuilder()->getForm($parent_node, 'quick_node_clone');
-    return $form;
+    $parent_node = $this->entityTypeManager()->getStorage('node')->load($node);
+    if(!empty($parent_node)){
+      $form = $this->entityFormBuilder()->getForm($parent_node, 'quick_node_clone');
+      return $form;
+    }
+    else {
+      throw new NotFoundHttpException();
+    }
   }
 
   /**
    * The _title_callback for the node.add route.
    *
-   * @param \Drupal\node\NodeTypeInterface $node_type
-   *   The current node.
+   * @param int $node_id
+   *   The current node id.
    *
    * @return string
    *   The page title.
    */
   public function clonePageTitle($node) {
-    $parent  = Node::load($node);
-    return $this->t('Clone of "@node_id"', array(
-      '@node_id' => $parent->getTitle()
+    $parent = Node::load($node);
+    return $this->t('Clone of "@node"', array(
+      '@node' => $parent->getTitle()
       )
     );
   }

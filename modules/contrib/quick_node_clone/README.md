@@ -13,12 +13,9 @@ Quick Node Clone is meant as a way in Drupal 8 to clone nodes. It currently supp
 
 The module adds a "Clone" tab to a node. When clicked, a new node is created and fields from the previous node are populated into the new fields.
 
-This may be duplicate work of [Node Clone](https://www.drupal.org/project/node_clone), but as of this writing (1/7/16) they don't have a D8 version and this code was created for a project from scratch in a reusable manner. This is meant to support different field types than core easily.
+This is potentially duplicate work of [Node Clone](https://www.drupal.org/project/node_clone), but as of release they don't have a stable D8 version and this code was created for a project from scratch in a reusable manner. This is focused on supporting more variety in field types than core's default cloning.
 
-Future TODO: Support more than just nodes! With the recent improvements from 1/7 it could be expanded to all Content Entities fairly easily. This will likely be in its own properly named module with a better method for adding a UI to other content entities.
-
- * Drupal.org Project: https://www.drupal.org/sandbox/vilepickle/2636000
- * Github (for opening pull requests): https://github.com/vilepickle/quick_node_clone
+Future @TODO: Support more than just nodes! It could be expanded to all Content Entities fairly easily. This will likely be in its own properly named module with a better method for adding a UI to other content entities.
 
 
 REQUIREMENTS
