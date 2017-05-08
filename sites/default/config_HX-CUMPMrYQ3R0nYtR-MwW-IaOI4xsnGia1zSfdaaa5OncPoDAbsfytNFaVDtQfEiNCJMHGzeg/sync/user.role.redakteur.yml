@@ -7,5 +7,17 @@ label: Redakteur
 weight: 3
 is_admin: null
 permissions:
+  - 'access administration pages'
+  - 'access content overview'
+  - 'access in-place editing'
+  - 'access toolbar'
+  - 'create article content'
+  - 'create event content'
+  - 'delete own article content'
+  - 'delete own event content'
+  - 'edit any event content'
+  - 'edit own article content'
+  - 'edit own event content'
   - 'entityconnect add button'
   - 'entityconnect edit button'
+  - 'view the administration theme'
