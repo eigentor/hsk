@@ -48,10 +48,10 @@ module:
   metatag: 0
   node: 0
   node_class: 0
+  node_clone: 0
   options: 0
   page_cache: 0
   path: 0
-  quick_node_clone: 0
   quickedit: 0
   rdf: 0
   search: 0
