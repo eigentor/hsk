@@ -33,7 +33,7 @@
 +breakpoint($breakpoint-desktop-narrow)
 
 
-/* End Media Query Tablet */
+/* End Media Query Desktop narrow */
 
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -43,4 +43,4 @@
 +breakpoint($breakpoint-desktop)
 
 
-/* End Media Query Tablet */
+/* End Media Query Desktop */
