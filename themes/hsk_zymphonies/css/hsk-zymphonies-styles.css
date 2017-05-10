@@ -1346,7 +1346,7 @@ html {
   font-size: 15.5px; }
 
 body {
-  font-size: 13px;
+  font-size: 15.5px;
   font-size: 1rem;
   line-height: 1.5;
   color: #333;
@@ -1354,7 +1354,7 @@ body {
   /*- Desktop narrow - */ }
   @media only screen and (min-width: 992px) {
     body {
-      font-size: 11.7px;
+      font-size: 13.95px;
       font-size: 0.9rem; } }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1365,16 +1365,16 @@ h1, h2, h3, h4, h5, h6 {
   color: black; }
 
 h2 {
-  font-size: 19.5px;
+  font-size: 23.25px;
   font-size: 1.5rem; }
 
 .block h2.block-title {
   margin-bottom: 10px;
-  font-size: 17.55px;
+  font-size: 20.925px;
   font-size: 1.35rem; }
 
 .sidebar-second .block h2.block-title {
-  font-size: 16.9px;
+  font-size: 20.15px;
   font-size: 1.3rem; }
 
 .path-node h1 {
@@ -1398,16 +1398,16 @@ p {
 /*------------------------------------------- */
 @media only screen and (min-width: 992px) {
   h2 {
-    font-size: 19.5px;
+    font-size: 23.25px;
     font-size: 1.5rem; }
 
   .block h2.block-title {
     margin-bottom: 10px;
-    font-size: 19.5px;
+    font-size: 23.25px;
     font-size: 1.5rem; }
 
   .sidebar-second .block h2.block-title {
-    font-size: 18.2px;
+    font-size: 21.7px;
     font-size: 1.4rem; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
@@ -1436,7 +1436,7 @@ img {
   display: none; }
 
 .node__submitted {
-  font-size: 11.05px;
+  font-size: 13.175px;
   font-size: 0.85rem;
   color: #888;
   margin-bottom: 15px; }
@@ -1452,7 +1452,7 @@ ul.tabs.primary {
   display: inline-block; }
 
 table {
-  font-size: 13px;
+  font-size: 15.5px;
   font-size: 1rem;
   background: white;
   margin-bottom: 10px; }
@@ -1460,7 +1460,7 @@ table {
     text-align: center;
     padding: 2px 6px;
     border: 1px solid #ccc;
-    font-size: 13px;
+    font-size: 15.5px;
     font-size: 1rem; }
   table th {
     background: #6A7BA8;
@@ -1501,10 +1501,10 @@ button.btn, a.btn {
 /*------------------------------------------- */
 @media only screen and (min-width: 992px) {
   table {
-    font-size: 11.7px;
+    font-size: 13.95px;
     font-size: 0.9rem; }
     table th, table td {
-      font-size: 11.7px;
+      font-size: 13.95px;
       font-size: 0.9rem; }
       table th font, table td font {
         font-size: 14px !important; }
@@ -1534,7 +1534,7 @@ button.btn, a.btn {
       font-family: Fontawesome;
       content: "";
       color: #aaa;
-      font-size: 26px;
+      font-size: 31px;
       font-size: 2rem; }
   button.slick-next {
     left: auto;
@@ -1568,7 +1568,7 @@ button.btn, a.btn {
     display: inline-block;
     margin: 20px 0 -5px;
     padding-bottom: 25px;
-    font-size: 26px;
+    font-size: 31px;
     font-size: 2rem;
     border-bottom: 5px solid #ED8600; }
 
@@ -1604,7 +1604,7 @@ button.btn, a.btn {
     display: block;
     position: static; }
     .sidebar ul.menu li ul li a {
-      font-size: 11.05px;
+      font-size: 13.175px;
       font-size: 0.85rem; }
       .sidebar ul.menu li ul li a:before {
         content: "•";
@@ -1661,7 +1661,7 @@ button.btn, a.btn {
   .path-frontpage .view-header-slideshow .views-row .views-field-field-sl-text {
     background: #888;
     color: white;
-    font-size: 14.3px;
+    font-size: 17.05px;
     font-size: 1.1rem;
     padding: 7px; }
     .path-frontpage .view-header-slideshow .views-row .views-field-field-sl-text p {
@@ -1679,7 +1679,7 @@ button.btn, a.btn {
   margin-bottom: 5px;
   border-bottom: 1px solid #e5e5e5; }
 .sidebar .view-events-list .views-field-title h3 {
-  font-size: 13px;
+  font-size: 15.5px;
   font-size: 1rem;
   border: none;
   padding-bottom: 0; }
@@ -1687,7 +1687,7 @@ button.btn, a.btn {
   color: #777;
   line-height: 1.2;
   margin-bottom: -2px;
-  font-size: 11.7px;
+  font-size: 13.95px;
   font-size: 0.9rem; }
   .sidebar .view-events-list .views-field-field-ev-start-time .date {
     display: inline; }
@@ -1699,7 +1699,7 @@ button.btn, a.btn {
 .sidebar .view-events-list .more-link {
   margin-top: -5px; }
   .sidebar .view-events-list .more-link a {
-    font-size: 10.4px;
+    font-size: 12.4px;
     font-size: 0.8rem;
     color: #888; }
 
@@ -1715,7 +1715,7 @@ button.btn, a.btn {
     margin: 0 15px 0 0;
     align-self: center; }
   .path-mannschaften .view-mannschaften .views-row .views-field-field-user-first-name .views-label {
-    font-size: 10.4px;
+    font-size: 12.4px;
     font-size: 0.8rem;
     color: #888; }
   .path-mannschaften .view-mannschaften .views-row .views-field-user-picture img {
@@ -1723,7 +1723,7 @@ button.btn, a.btn {
     width: auto; }
 
 .path-termine .view-events-list h3 {
-  font-size: 16.25px;
+  font-size: 19.375px;
   font-size: 1.25rem;
   color: #666;
   margin: 25px 0 10px;
@@ -1743,11 +1743,11 @@ button.btn, a.btn {
     overflow: hidden;
     visibility: hidden; }
   .path-termine .view-events-list .views-row .views-field-field-ev-date {
-    font-size: 10.4px;
+    font-size: 12.4px;
     font-size: 0.8rem; }
   .path-termine .view-events-list .views-row .views-field-field-ev-start-time {
     margin-top: 3px;
-    font-size: 9.75px;
+    font-size: 11.625px;
     font-size: 0.75rem;
     margin-right: 14px;
     text-align: center;
@@ -1762,7 +1762,7 @@ button.btn, a.btn {
       border-top: 0;
       line-height: 1.2; }
   .path-termine .view-events-list .views-row .views-field-title h3 {
-    font-size: 14.3px;
+    font-size: 17.05px;
     font-size: 1.1rem;
     align-self: flex-start;
     margin-top: 3px;
@@ -1771,7 +1771,7 @@ button.btn, a.btn {
   .path-termine .view-events-list .views-row .views-field-field-event-room {
     display: flex;
     margin-top: 0.45em;
-    font-size: 10.4px;
+    font-size: 12.4px;
     font-size: 0.8rem;
     color: #888;
     margin-left: 10px; }
@@ -1811,7 +1811,7 @@ button.btn, a.btn {
           background: rgba(125, 125, 125, 0.6);
           color: white;
           padding: 15px 20px;
-          font-size: 16.9px;
+          font-size: 20.15px;
           font-size: 1.3rem;
           float: left;
           max-width: 50%;
@@ -1832,10 +1832,10 @@ button.btn, a.btn {
     margin: 5px 15px 5px 0; }
 
   .sidebar .view-events-list .views-field-title h3 {
-    font-size: 11.05px;
+    font-size: 13.175px;
     font-size: 0.85rem; }
   .sidebar .view-events-list .views-field-field-ev-start-time {
-    font-size: 10.4px;
+    font-size: 12.4px;
     font-size: 0.8rem; } }
 .path-mannschaften .view-mannschaften .views-row {
   display: flex; }
@@ -1895,7 +1895,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
   form#webform-submission-anmeldung-als-vereinsmitglied-form .description {
     margin-left: 147px;
     margin-top: 2px;
-    font-size: 11.05px;
+    font-size: 13.175px;
     font-size: 0.85rem;
     color: #888; }
   form#webform-submission-anmeldung-als-vereinsmitglied-form .form-required:after {
@@ -1962,7 +1962,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
     .node .field--name-field-tags .field__item {
       display: inline-block; }
       .node .field--name-field-tags .field__item a {
-        font-size: 10.4px;
+        font-size: 12.4px;
         font-size: 0.8rem;
         color: #888;
         border: 1px solid #ddd;
@@ -1978,7 +1978,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
     .node .node__links li {
       padding-left: 0; }
     .node .node__links a {
-      font-size: 10.4px;
+      font-size: 12.4px;
       font-size: 0.8rem;
       color: #888; }
   .node .embedded-entity {
@@ -1990,14 +1990,14 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
       padding: 0 15px;
       height: 187px; }
       .node .embedded-entity .node--type-player h2 {
-        font-size: 15.6px;
+        font-size: 18.6px;
         font-size: 1.2rem; }
       .node .embedded-entity .node--type-player .field--name-field-player-image {
         margin-bottom: 5px; }
       .node .embedded-entity .node--type-player .field--name-field-function-club {
         max-width: 135px;
         margin: auto;
-        font-size: 11.05px;
+        font-size: 13.175px;
         font-size: 0.85rem;
         margin-bottom: 2px;
         line-height: 1.3;
@@ -2036,7 +2036,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
   text-align: center;
   min-height: 320px; }
   .page-node-type-page .node-turniere .content-box h3 {
-    font-size: 17.55px;
+    font-size: 20.925px;
     font-size: 1.35rem; }
   .page-node-type-page .node-turniere .content-box .box-text {
     color: #666; }
@@ -2049,7 +2049,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
   .page-node-type-page .node-turniere .content-box i:before {
     font-family: "Fontawesome";
     content: "";
-    font-size: 52px;
+    font-size: 62px;
     font-size: 4rem;
     width: 110px;
     height: 110px;
@@ -2084,7 +2084,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
   .page-node-type-page .node-turniere .content-box.tusi i:before {
     content: "";
     background: #6A7BA8;
-    font-size: 39px;
+    font-size: 46.5px;
     font-size: 3rem; }
   .page-node-type-page .node-turniere .content-box.tusi h3, .page-node-type-page .node-turniere .content-box.tusi h3 a {
     color: #52628d; }
@@ -2112,7 +2112,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
     border-radius: 5px 5px 0 0;
     margin-right: 7px;
     color: #777;
-    font-size: 11.7px;
+    font-size: 13.95px;
     font-size: 0.9rem;
     font-weight: bold; }
     .page-node-type-turnier #table-tabs .tab-button.active {
@@ -2166,7 +2166,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
       -o-border-radius: 5px 5px 0 0;
       border-radius: 5px 5px 0 0;
       margin-right: 7px;
-      font-size: 11.7px;
+      font-size: 13.95px;
       font-size: 0.9rem;
       font-weight: bold; }
       .page-node-type-team .group-team-results .horizontal-tabs .horizontal-tabs-list li a {
@@ -2218,7 +2218,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
         position: absolute;
         top: -28px;
         color: #888;
-        font-size: 10.4px;
+        font-size: 12.4px;
         font-size: 0.8rem;
         margin-left: 2px; }
     .page-node-type-team .group-team-results .view-kader-2 .views-row .views-field {
@@ -2251,7 +2251,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
     text-align: center;
     width: 33.3%; }
     .node .embedded-entity h2 {
-      font-size: 14.3px;
+      font-size: 17.05px;
       font-size: 1.1rem; }
 
   .page-node-type-article .field--name-field-image {
@@ -2313,7 +2313,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
       .page-node-type-team .group-top .views-element-container .views-field-field-player-image {
         margin-bottom: 5px; }
       .page-node-type-team .group-top .views-element-container .views-field-title .views-label {
-        font-size: 11.05px;
+        font-size: 13.175px;
         font-size: 0.85rem;
         margin-bottom: 2px;
         color: #888;
@@ -2332,7 +2332,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
     left: -115px;
     bottom: -22px;
     display: block;
-    font-size: 52px;
+    font-size: 62px;
     font-size: 4rem;
     width: 100px;
     height: 100px;
@@ -2357,7 +2357,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
     left: -115px;
     bottom: -22px;
     display: block;
-    font-size: 52px;
+    font-size: 62px;
     font-size: 4rem;
     width: 100px;
     height: 100px;
@@ -2385,7 +2385,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
     left: -115px;
     bottom: -22px;
     display: block;
-    font-size: 52px;
+    font-size: 62px;
     font-size: 4rem;
     width: 100px;
     height: 100px;
@@ -2413,7 +2413,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
     left: -115px;
     bottom: -22px;
     display: block;
-    font-size: 52px;
+    font-size: 62px;
     font-size: 4rem;
     width: 100px;
     height: 100px;
@@ -2458,7 +2458,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
   .page-node-type-turnier #info-tabs .field--name-field-pairings table {
     width: 100%; }
   .page-node-type-turnier #info-tabs .field--name-field-pairings table th, .page-node-type-turnier #info-tabs .field--name-field-pairings table td {
-    font-size: 10.4px;
+    font-size: 12.4px;
     font-size: 0.8rem; }
   .page-node-type-turnier #info-tabs .field--name-field-pairings table td {
     padding-left: 3px;
@@ -2495,12 +2495,12 @@ header {
     line-height: 1.2;
     font-family: "Roboto Slab", serif;
     color: #888;
-    font-size: 19.5px;
+    font-size: 23.25px;
     font-size: 1.5rem; }
   header .brand .site-branding__slogan {
     color: #555;
     font-family: "Roboto Slab", serif;
-    font-size: 10.4px;
+    font-size: 12.4px;
     font-size: 0.8rem; }
   header .region-primary-menu {
     display: none; }
@@ -2542,7 +2542,7 @@ nav#block-hsk-zymphonies-main-menu {
       nav#block-hsk-zymphonies-main-menu ul.menu li ul li a {
         padding-left: 25px;
         background: #e5e5e5;
-        font-size: 12.35px;
+        font-size: 14.725px;
         font-size: 0.95rem; }
         nav#block-hsk-zymphonies-main-menu ul.menu li ul li a:hover, nav#block-hsk-zymphonies-main-menu ul.menu li ul li a.highlighted {
           background: #d5d5d5; }
@@ -2566,18 +2566,18 @@ nav#block-useraccountmenu {
     nav#block-useraccountmenu ul li {
       display: inline; }
       nav#block-useraccountmenu ul li a {
-        font-size: 13px;
+        font-size: 15.5px;
         font-size: 1rem;
         line-height: 1.5;
         color: #333;
         font-family: "Open Sans", sans-serif;
         /*- Desktop narrow - */
-        font-size: 11.7px;
+        font-size: 13.95px;
         font-size: 0.9rem;
         color: #666; }
         @media only screen and (min-width: 992px) {
           nav#block-useraccountmenu ul li a {
-            font-size: 11.7px;
+            font-size: 13.95px;
             font-size: 0.9rem; } }
 
 nav#block-hsk-footer {
@@ -2587,18 +2587,18 @@ nav#block-hsk-footer {
     nav#block-hsk-footer ul li {
       display: inline; }
       nav#block-hsk-footer ul li a {
-        font-size: 13px;
+        font-size: 15.5px;
         font-size: 1rem;
         line-height: 1.5;
         color: #333;
         font-family: "Open Sans", sans-serif;
         /*- Desktop narrow - */
-        font-size: 11.7px;
+        font-size: 13.95px;
         font-size: 0.9rem;
         color: #666; }
         @media only screen and (min-width: 992px) {
           nav#block-hsk-footer ul li a {
-            font-size: 11.7px;
+            font-size: 13.95px;
             font-size: 0.9rem; } }
 
 .search-block-form {
@@ -2642,11 +2642,11 @@ nav#block-hsk-footer {
     header #block-hsk-branding .logo img {
       margin-left: 10px; }
   header .brand .site-branding__name, header .brand .site-branding__name a {
-    font-size: 26px;
+    font-size: 31px;
     font-size: 2rem;
     margin-bottom: 2px; }
   header .brand .site-branding__slogan {
-    font-size: 11.44px;
+    font-size: 13.64px;
     font-size: 0.88rem; }
   header nav#block-useraccountmenu {
     float: right;
@@ -2775,7 +2775,7 @@ nav#block-hsk-footer {
 .path-frontpage #block-views-block-events-list-block-1 .more-link {
   margin-top: -20px; }
   .path-frontpage #block-views-block-events-list-block-1 .more-link a {
-    font-size: 10.4px;
+    font-size: 12.4px;
     font-size: 0.8rem;
     color: #888;
     padding-right: 30px; }
@@ -2792,11 +2792,11 @@ nav#block-hsk-footer {
     overflow: hidden;
     visibility: hidden; }
   .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-date {
-    font-size: 10.4px;
+    font-size: 12.4px;
     font-size: 0.8rem; }
   .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time {
     margin-top: 3px;
-    font-size: 9.75px;
+    font-size: 11.625px;
     font-size: 0.75rem;
     margin-right: 11px;
     text-align: center;
@@ -2813,7 +2813,7 @@ nav#block-hsk-footer {
   .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-title {
     display: flex; }
     .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-title h3 {
-      font-size: 12.35px;
+      font-size: 14.725px;
       font-size: 0.95rem;
       align-self: flex-start;
       margin-top: 3px;
@@ -2822,7 +2822,7 @@ nav#block-hsk-footer {
   .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-event-room {
     display: flex;
     margin-top: 0.3em;
-    font-size: 10.4px;
+    font-size: 12.4px;
     font-size: 0.8rem;
     color: #888;
     margin-left: 10px; }
@@ -2835,27 +2835,27 @@ nav#block-hsk-footer {
   .path-frontpage #block-views-block-news-block-1 .views-row h3 {
     margin-bottom: 2px; }
     .path-frontpage #block-views-block-news-block-1 .views-row h3 span.date {
-      font-size: 10.4px;
+      font-size: 12.4px;
       font-size: 0.8rem;
       color: #888;
       color: #999; }
       .path-frontpage #block-views-block-news-block-1 .views-row h3 span.date:before {
         content: "- "; }
 .path-frontpage #block-views-block-news-block-1 .views-field-created {
-  font-size: 10.4px;
+  font-size: 12.4px;
   font-size: 0.8rem;
   color: #888; }
 .path-frontpage #block-views-block-news-block-1 .views-field-body p {
   margin-bottom: 0; }
 .path-frontpage #block-views-block-news-block-1 .views-field-view-node a {
-  font-size: 10.4px;
+  font-size: 12.4px;
   font-size: 0.8rem;
   color: #888; }
 .path-frontpage .bottom-widgets {
   background: #eee;
   padding-top: 40px; }
   .path-frontpage .bottom-widgets h3 {
-    font-size: 15.6px;
+    font-size: 18.6px;
     font-size: 1.2rem; }
 .path-frontpage #block-begrussungstext a.btn {
   background: #ED8600;
@@ -2869,7 +2869,7 @@ nav#block-hsk-footer {
     content: "";
     padding-right: 5px;
     font-weight: normal;
-    font-size: 13px;
+    font-size: 15.5px;
     font-size: 1rem;
     border: 1px solid #f9c17c;
     -webkit-border-radius: 15px;
@@ -2893,7 +2893,7 @@ nav#block-hsk-footer {
     content: "";
     left: 0;
     top: -2px;
-    font-size: 23.4px;
+    font-size: 27.9px;
     font-size: 1.8rem; }
 .path-frontpage #block-infoblockstartseite2 {
   position: relative;
@@ -2909,7 +2909,7 @@ nav#block-hsk-footer {
       content: "";
       left: -35px;
       top: -5px;
-      font-size: 29.9px;
+      font-size: 35.65px;
       font-size: 2.3rem; }
   .path-frontpage #block-infoblockstartseite2 p.vorsitzender {
     position: relative; }
@@ -2919,7 +2919,7 @@ nav#block-hsk-footer {
       content: "";
       left: -40px;
       top: -6px;
-      font-size: 23.4px;
+      font-size: 27.9px;
       font-size: 1.8rem; }
 
 /*------------------------------------------- */

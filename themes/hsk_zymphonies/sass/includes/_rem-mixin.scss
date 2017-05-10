@@ -1,4 +1,4 @@
-@mixin x-rem ($property, $values, $main-font-size: 13px) {
+@mixin x-rem ($property, $values, $main-font-size: 15.5px) {
 
   // Empty list for all values in px
   $px-values: ();
