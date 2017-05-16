@@ -494,7 +494,7 @@ display:
           admin_label: ''
           empty: false
           tokenize: false
-          content: "<h3>Kein Vereinsabend (Fr.) und Erwachsenentraining (Do.) von 22.06.-02.08.2017</h3>\nDer Lister Turm hat während dieser Zeit abends geschlossen.\n<p>&nbsp;</p>"
+          content: "<h3>Kein Vereinsabend (Fr.) und Erwachsenentraining (Do.) von 22.06.-02.08.2017</h3>\nDer Lister Turm hat während den Sommerferien abends geschlossen."
           plugin_id: text_custom
       footer: {  }
       empty: {  }
