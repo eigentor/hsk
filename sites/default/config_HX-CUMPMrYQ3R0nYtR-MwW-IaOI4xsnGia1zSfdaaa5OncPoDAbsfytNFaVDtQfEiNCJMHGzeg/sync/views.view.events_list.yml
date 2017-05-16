@@ -484,7 +484,18 @@ display:
             label: ''
           granularity: day
           plugin_id: datetime
-      header: {  }
+      header:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content: "<h3>Kein Vereinsabend (Fr.) und Erwachsenentraining (Do.) von 22.06.-02.08.2017</h3>\nDer Lister Turm hat während dieser Zeit abends geschlossen.\n<p>&nbsp;</p>"
+          plugin_id: text_custom
       footer: {  }
       empty: {  }
       relationships: {  }
@@ -521,7 +532,7 @@ display:
       pager:
         type: some
         options:
-          items_per_page: 6
+          items_per_page: 4
           offset: 0
       fields:
         field_ev_date_1:
