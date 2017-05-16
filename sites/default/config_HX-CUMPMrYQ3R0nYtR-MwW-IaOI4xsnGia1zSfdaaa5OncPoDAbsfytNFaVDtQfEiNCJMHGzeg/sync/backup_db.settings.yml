@@ -4,7 +4,7 @@ date: html_date
 settings:
   include_tables: null
   exclude_tables: null
-  compress: None
+  compress: Gzip
   no_data: false
   add_drop_table: true
   single_transaction: true
