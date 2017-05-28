@@ -1810,6 +1810,11 @@ button.btn, a.btn {
     display: none; }
 .path-dwz-rangliste table th#view-field-dwz-table-column a:after {
   margin-left: 5px; }
+.path-dwz-rangliste table th.views-field-nothing, .path-dwz-rangliste table td.views-field-nothing {
+  display: none; }
+
+.user-logged-in.path-dwz-rangliste table th.views-field-nothing, .user-logged-in.path-dwz-rangliste table td.views-field-nothing {
+  display: table-cell; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */
