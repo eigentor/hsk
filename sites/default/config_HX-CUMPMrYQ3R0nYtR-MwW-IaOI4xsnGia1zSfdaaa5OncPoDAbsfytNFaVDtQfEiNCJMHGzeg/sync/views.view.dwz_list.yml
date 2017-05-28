@@ -501,7 +501,18 @@ display:
           plugin_id: standard
       title: DWZ-Rangliste
       header: {  }
-      footer: {  }
+      footer:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content: '<a href="http://www.schachbund.de/verein/70107.html">DWZ-Liste des HSK auf schachbund.de</a>'
+          plugin_id: text_custom
       empty: {  }
       relationships: {  }
       arguments: {  }
