@@ -1793,6 +1793,24 @@ button.btn, a.btn {
       margin-right: 0.3em;
       margin-right: 0.3em; }
 
+.path-dwz-rangliste form#views-exposed-form-dwz-list-page-1 .js-form-item {
+  display: inline-block;
+  margin-right: 10px; }
+  .path-dwz-rangliste form#views-exposed-form-dwz-list-page-1 .js-form-item label {
+    margin-right: 5px; }
+.path-dwz-rangliste form#views-exposed-form-dwz-list-page-1 #edit-actions {
+  display: inline-block; }
+.path-dwz-rangliste table th a {
+  color: white; }
+  .path-dwz-rangliste table th a:after {
+    font-family: Fontawesome;
+    content: "";
+    margin-left: 5px; }
+  .path-dwz-rangliste table th a span.tablesort {
+    display: none; }
+.path-dwz-rangliste table th#view-field-dwz-table-column a:after {
+  margin-left: 5px; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
