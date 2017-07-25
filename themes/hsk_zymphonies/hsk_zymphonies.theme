@@ -24,6 +24,11 @@ function hsk_zymphonies_preprocess_page(&$variables) {
       $variables['#attached']['library'][] = 'hsk_zymphonies/colorbox';
     }
   }
+  if( array_key_exists('node', $variables)) {
+    if($variables['node']->getType() == 'turnier') {
+      $variables['#attached']['library'][] = 'hsk_zymphonies/tablesaw';
+    }
+  }
 }
 
 /**
