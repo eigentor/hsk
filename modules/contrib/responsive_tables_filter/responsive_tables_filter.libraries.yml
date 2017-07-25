@@ -1,0 +1,10 @@
+tablesaw-filter:
+  version: 1.x
+  css:
+    theme:
+      css/tablesaw.stackonly.css: {}
+  js:
+    js/tablesaw.stackonly.js: {}
+    js/tablesaw-init.js: {}
+  dependencies:
+    - core/jquery
