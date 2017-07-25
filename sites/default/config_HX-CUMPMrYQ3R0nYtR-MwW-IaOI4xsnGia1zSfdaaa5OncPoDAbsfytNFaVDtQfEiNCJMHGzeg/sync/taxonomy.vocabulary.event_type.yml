@@ -1,0 +1,9 @@
+uuid: 114190db-d84f-4c12-8f9a-1e3d1e588377
+langcode: de
+status: true
+dependencies: {  }
+name: 'Art der Veranstaltung'
+vid: event_type
+description: ''
+hierarchy: 0
+weight: 0

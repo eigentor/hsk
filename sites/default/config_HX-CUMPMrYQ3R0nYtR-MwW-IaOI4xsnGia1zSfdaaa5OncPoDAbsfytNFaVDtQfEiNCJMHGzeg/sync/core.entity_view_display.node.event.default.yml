@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.event.field_ev_start_time
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_room
+    - field.field.node.event.field_event_type
     - node.type.event
   module:
     - datetime
@@ -23,12 +24,12 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
   field_ev_date:
-    weight: 102
+    weight: 2
     label: above
     settings:
       timezone_override: ''
@@ -37,7 +38,7 @@ content:
     type: datetime_default
     region: content
   field_ev_end_time:
-    weight: 104
+    weight: 4
     label: above
     settings:
       format: 'h:mm'
@@ -46,7 +47,7 @@ content:
     type: hms_default_formatter
     region: content
   field_ev_start_time:
-    weight: 103
+    weight: 3
     label: above
     settings:
       format: 'h:mm'
@@ -55,7 +56,7 @@ content:
     type: hms_default_formatter
     region: content
   field_event_location:
-    weight: 105
+    weight: 6
     label: above
     settings:
       link_to_entity: false
@@ -63,17 +64,25 @@ content:
     type: string
     region: content
   field_event_room:
-    weight: 106
+    weight: 7
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
+  field_event_type:
+    weight: 5
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   links:
-    weight: 100
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   langcode: true

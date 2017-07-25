@@ -1,0 +1,38 @@
+uuid: acb10a09-02ea-420a-8416-2f7c9d7f0397
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_type
+    - node.type.event
+    - taxonomy.vocabulary.event_type
+  module:
+    - entityconnect
+third_party_settings:
+  entityconnect:
+    buttons:
+      button_add: '1'
+      button_edit: '1'
+    icons:
+      icon_add: '0'
+      icon_edit: '0'
+id: node.event.field_event_type
+field_name: field_event_type
+entity_type: node
+bundle: event
+label: 'Art der Veranstaltung'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      event_type: event_type
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

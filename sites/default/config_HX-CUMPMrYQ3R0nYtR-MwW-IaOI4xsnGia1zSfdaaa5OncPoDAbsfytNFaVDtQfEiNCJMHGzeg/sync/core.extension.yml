@@ -54,6 +54,7 @@ module:
   path: 0
   quickedit: 0
   rdf: 0
+  responsive_tables_filter: 0
   search: 0
   shortcut: 0
   spamspan: 0
