@@ -1724,6 +1724,13 @@ button.btn, a.btn {
     height: 65px;
     width: auto; }
 
+.path-termine form.views-exposed-form {
+  background: #f5f5f5;
+  padding: 0 20px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px; }
+  .path-termine form.views-exposed-form label[for=edit-field-event-type-target-id] {
+    margin-right: 20px; }
 .path-termine .view-events-list h3 {
   font-size: 19.375px;
   font-size: 1.25rem;
