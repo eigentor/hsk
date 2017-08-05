@@ -484,18 +484,7 @@ display:
             label: ''
           granularity: day
           plugin_id: datetime
-      header:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: false
-          content: "<h3>Kein Vereinsabend (Fr.) und Jugendtraining (Mo.) von 22.06.-02.08.2017</h3>\n<p>Der Lister Turm hat während den Sommerferien abends geschlossen. \nBesuchen Sie uns wieder ab 04.08.</p>"
-          plugin_id: text_custom
+      header: {  }
       footer: {  }
       empty: {  }
       relationships: {  }
@@ -532,7 +521,7 @@ display:
       pager:
         type: some
         options:
-          items_per_page: 4
+          items_per_page: 6
           offset: 0
       fields:
         field_ev_date_1:
