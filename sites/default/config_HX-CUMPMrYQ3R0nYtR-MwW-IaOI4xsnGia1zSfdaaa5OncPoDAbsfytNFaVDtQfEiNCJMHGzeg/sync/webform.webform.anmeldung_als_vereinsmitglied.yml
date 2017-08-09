@@ -109,7 +109,7 @@ handlers:
     weight: 0
     settings:
       to_mail: h.schilling@kabelmail.de
-      cc_mail: thomas@rufzeichen-online.de
+      cc_mail: 'thomas@rufzeichen-online.de, hayen@schachklub-hannover.de'
       bcc_mail: ''
       from_mail: hayen@schachklub-hannover.de
       from_name: default
