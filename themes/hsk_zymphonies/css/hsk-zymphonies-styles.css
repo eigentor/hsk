@@ -2507,7 +2507,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
   .page-node-type-turnier #info-tabs .field--name-field-pairings table td {
     padding-left: 3px;
     padding-right: 3px; }
-  .page-node-type-turnier.node-schnellschach .col-md-9, .page-node-type-turnier.node-monatsblitz .col-md-9 {
+  .page-node-type-turnier.node-schnellschach .col-md-9, .page-node-type-turnier.node-monatsblitz .col-md-9, .page-node-type-turnier.node-vereinspokal .col-md-9 {
     float: none;
     width: 100%; } }
 /* End Media Query Tablet */
@@ -2528,6 +2528,8 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
 header {
   padding-top: 20px;
   *zoom: 1; }
+  header.main-header {
+    z-index: 1; }
   header:after {
     content: "\0020";
     display: block;
