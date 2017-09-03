@@ -6,8 +6,8 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Url;
 use Psr\Log\LoggerInterface;
-use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Drupal\stage_file_proxy\EventDispatcher\AlterExcludedPathsEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -28,14 +28,14 @@ class ProxySubscriber implements EventSubscriberInterface {
   /**
    * The logger.
    *
-   * @var LoggerInterface
+   * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
 
   /**
    * The event dispatcher.
    *
-   * @var ContainerAwareEventDispatcher
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
    */
   protected $eventDispatcher;
 
@@ -44,12 +44,12 @@ class ProxySubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\stage_file_proxy\FetchManagerInterface $manager
    *   The manager used to fetch the file against.
-   *
    * @param \Psr\Log\LoggerInterface $logger
-   * @param ContainerAwareEventDispatcher $event_dispatcher
+   *   The logger interface.
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
    *   The event dispatcher.
    */
-  public function __construct(FetchManagerInterface $manager, LoggerInterface $logger, ContainerAwareEventDispatcher $event_dispatcher) {
+  public function __construct(FetchManagerInterface $manager, LoggerInterface $logger, EventDispatcherInterface $event_dispatcher) {
     $this->manager = $manager;
     $this->logger = $logger;
     $this->eventDispatcher = $event_dispatcher;
@@ -85,7 +85,7 @@ class ProxySubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $alter_excluded_paths_event = new AlterExcludedPathsEvent(array());
+    $alter_excluded_paths_event = new AlterExcludedPathsEvent([]);
     $this->eventDispatcher->dispatch('stage_file_proxy.alter_excluded_paths', $alter_excluded_paths_event);
     $excluded_paths = $alter_excluded_paths_event->getExcludedPaths();
     foreach ($excluded_paths as $excluded_path) {
@@ -124,26 +124,29 @@ class ProxySubscriber implements EventSubscriberInterface {
 
     $query = \Drupal::request()->query->all();
     $query_parameters = UrlHelper::filterQueryParameters($query);
+      $options = [
+        'verify' => \Drupal::config('stage_file_proxy.settings')->get('verify'),
+      ];
 
     if ($config->get('hotlink')) {
 
-      $location = Url::fromUri("$server/$remote_file_dir/$relative_path", array(
+      $location = Url::fromUri("$server/$remote_file_dir/$relative_path", [
         'query' => $query_parameters,
         'absolute' => TRUE,
-      ))->toString();
+      ])->toString();
 
     }
-    elseif ($this->manager->fetch($server, $remote_file_dir, $fetch_path)) {
+    elseif ($this->manager->fetch($server, $remote_file_dir, $fetch_path, $options)) {
       // Refresh this request & let the web server work out mime type, etc.
-      $location = Url::fromUri('base://' . $request_path, array(
+      $location = Url::fromUri('base://' . $request_path, [
         'query' => $query_parameters,
         'absolute' => TRUE,
-      ))->toString();
+      ])->toString();
       // Avoid redirection caching in upstream proxies.
       header("Cache-Control: must-revalidate, no-cache, post-check=0, pre-check=0, private");
     }
     else {
-      $this->logger->error('Stage File Proxy encountered an unknown error by retrieving file @file', array('@file' => $server . '/' . UrlHelper::encodePath($remote_file_dir . '/' . $relative_path)));
+      $this->logger->error('Stage File Proxy encountered an unknown error by retrieving file @file', ['@file' => $server . '/' . UrlHelper::encodePath($remote_file_dir . '/' . $relative_path)]);
     }
 
     if (isset($location)) {
@@ -158,9 +161,9 @@ class ProxySubscriber implements EventSubscriberInterface {
    * @return array
    *   An array of event listener definitions.
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     // Priority 240 is after ban middleware but before page cache.
-    $events[KernelEvents::REQUEST][] = array('checkFileOrigin', 240);
+    $events[KernelEvents::REQUEST][] = ['checkFileOrigin', 240];
     return $events;
   }
 

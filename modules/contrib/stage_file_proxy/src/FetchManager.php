@@ -6,16 +6,31 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\StreamWrapper\PublicStream;
 use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 
+/**
+ * Fetch manager.
+ */
 class FetchManager implements FetchManagerInterface {
-  /** @var Client */
+
+  /**
+   * The HTTP client.
+   *
+   * @var \GuzzleHttp\Client
+   */
   protected $client;
-  /** @var FileSystemInterface */
+
+  /**
+   * The file system.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
   protected $fileSystem;
 
-  public function __construct(ClientInterface $client, FileSystemInterface $file_system) {
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(Client $client, FileSystemInterface $file_system) {
     $this->client = $client;
     $this->fileSystem = $file_system;
   }
@@ -23,11 +38,12 @@ class FetchManager implements FetchManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function fetch($server, $remote_file_dir, $relative_path) {
+  public function fetch($server, $remote_file_dir, $relative_path, array $options) {
     try {
       // Fetch remote file.
       $url = $server . '/' . UrlHelper::encodePath($remote_file_dir . '/' . $relative_path);
-      $response = $this->client->get($url, ['Connection' => 'close']);
+      $options['Connection'] = 'close';
+      $response = $this->client->get($url, $options);
 
       $result = $response->getStatusCode();
       if ($result != 200) {
@@ -46,7 +62,7 @@ class FetchManager implements FetchManagerInterface {
         return FALSE;
       }
 
-      $destination = str_replace('///', '//', "$destination/") . drupal_basename($relative_path);
+      $destination = str_replace('///', '//', "$destination/") . $this->fileSystem->basename($relative_path);
 
       $response_headers = $response->getHeaders();
       $content_length = array_shift($response_headers['Content-Length']);
@@ -64,9 +80,11 @@ class FetchManager implements FetchManagerInterface {
       }
       \Drupal::logger('stage_file_proxy')->error('@remote could not be saved to @path.', ['@remote' => $url, '@path' => $destination]);
       return FALSE;
-    } catch (ClientException $e) {
+    }
+    catch (ClientException $e) {
       // Do nothing.
     }
+    return FALSE;
   }
 
   /**
@@ -80,7 +98,7 @@ class FetchManager implements FetchManagerInterface {
    * {@inheritdoc}
    */
   public function styleOriginalPath($uri, $style_only = TRUE) {
-    $scheme = file_uri_scheme($uri);
+    $scheme = $this->fileSystem->uriScheme($uri);
     if ($scheme) {
       $path = file_uri_target($uri);
     }
@@ -103,23 +121,23 @@ class FetchManager implements FetchManagerInterface {
     }
   }
 
- /**
-  * Use write & rename instead of write.
-  *
-  * Perform the replace operation. Since there could be multiple processes
-  * writing to the same file, the best option is to create a temporary file in
-  * the same directory and then rename it to the destination. A temporary file
-  * is needed if the directory is mounted on a separate machine; thus ensuring
-  * the rename command stays local.
-  *
-  * @param string $destination
-  *   A string containing the destination location.
-  * @param string $data
-  *   A string containing the contents of the file.
-  *
-  * @return bool
-  *   True if write was successful. False if write or rename failed.
-  */
+  /**
+   * Use write & rename instead of write.
+   *
+   * Perform the replace operation. Since there could be multiple processes
+   * writing to the same file, the best option is to create a temporary file in
+   * the same directory and then rename it to the destination. A temporary file
+   * is needed if the directory is mounted on a separate machine; thus ensuring
+   * the rename command stays local.
+   *
+   * @param string $destination
+   *   A string containing the destination location.
+   * @param string $data
+   *   A string containing the contents of the file.
+   *
+   * @return bool
+   *   True if write was successful. False if write or rename failed.
+   */
   protected function writeFile($destination, $data) {
     // Get a temporary filename in the destination directory.
     $dir = $this->fileSystem->dirname($destination) . '/';
@@ -127,7 +145,8 @@ class FetchManager implements FetchManagerInterface {
     $temporary_file_copy = $temporary_file;
 
     // Get the extension of the original filename and append it to the temp file
-    // name. Preserves the mime type in different stream wrapper implementations.
+    // name. Preserves the mime type in different stream wrapper
+    // implementations.
     $parts = pathinfo($destination);
     $extension = '.' . $parts['extension'];
     if ($extension === '.gz') {
@@ -163,9 +182,10 @@ class FetchManager implements FetchManagerInterface {
 
     // Final check; make sure file exists & is not empty.
     $result = FALSE;
-    if (file_exists($destination) & filesize($destination) != 0 ) {
+    if (file_exists($destination) & filesize($destination) != 0) {
       $result = TRUE;
     }
     return $result;
   }
+
 }

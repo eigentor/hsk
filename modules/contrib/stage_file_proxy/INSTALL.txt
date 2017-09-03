@@ -26,6 +26,13 @@ drush config-set stage_file_proxy.settings origin http://myusername:letme%26in@e
 
 OPTIONAL
 ========
+$config['stage_file_proxy.settings']['verify'] = TRUE;
+
+Default is TRUE.
+
+If this is true (default) then the request will be done by doing the SSL
+verification if the origin is using https.
+
 $config['stage_file_proxy.settings']['use_imagecache_root'] = TRUE;
 // Drush variable set
 drush config-set stage_file_proxy.settings use_imagecache_root TRUE

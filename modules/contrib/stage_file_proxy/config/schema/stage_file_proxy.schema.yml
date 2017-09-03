@@ -14,3 +14,6 @@ stage_file_proxy.settings:
     use_imagecache_root:
       type: boolean
       label: "Use imagecache root"
+    verify:
+      type: boolean
+      label: "Verify SSL"
