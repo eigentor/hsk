@@ -219,31 +219,34 @@ nav#block-hsk-footer
             span.sub-arrow
               display: none
 
-        ul
-          background: $primary-color
-          min-width: 210px!important
-          border: none
-          top: 27px!important
-          padding: 8px 0
-          +border-radius(0 4px 4px 4px)
-          li
-            margin-right: 0
-            a
-              color: white
-              padding: 6px 15px
-              background: none
-              &:hover, &.highlighted
-                color: black
+          ul
+            background: $primary-color
+            min-width: 210px!important
+            border: none
+            top: 27px!important
+            padding: 8px 0
+            +border-radius(0 4px 4px 4px)
+            li
+              margin-right: 0
+              float: none
+              display: block
+              a
+                float: none
+                color: white
+                padding: 6px 15px
                 background: none
-            ul
-              background: #b76400
-              top: 27px!important
-              min-width: 210px!important
-              li
-                a
+                &:hover, &.highlighted
+                  color: black
                   background: none
-                  &:hover, &.highlighted
+              ul
+                background: #b76400
+                top: 27px!important
+                min-width: 210px!important
+                li
+                  a
                     background: none
+                    &:hover, &.highlighted
+                      background: none
 
   #block-mobilemenubutton
     display: none

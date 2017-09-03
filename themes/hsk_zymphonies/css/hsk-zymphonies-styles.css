@@ -2760,34 +2760,37 @@ nav#block-hsk-footer {
           border-radius: 4px 4px 0 0; }
       header nav#block-hsk-zymphonies-main-menu ul.menu li a span.sub-arrow {
         display: none; }
-    header nav#block-hsk-zymphonies-main-menu ul.menu ul {
-      background: #ED8600;
-      min-width: 210px !important;
-      border: none;
-      top: 27px !important;
-      padding: 8px 0;
-      -webkit-border-radius: 0 4px 4px 4px;
-      -moz-border-radius: 0 4px 4px 4px;
-      -ms-border-radius: 0 4px 4px 4px;
-      -o-border-radius: 0 4px 4px 4px;
-      border-radius: 0 4px 4px 4px; }
-      header nav#block-hsk-zymphonies-main-menu ul.menu ul li {
-        margin-right: 0; }
-        header nav#block-hsk-zymphonies-main-menu ul.menu ul li a {
-          color: white;
-          padding: 6px 15px;
-          background: none; }
-          header nav#block-hsk-zymphonies-main-menu ul.menu ul li a:hover, header nav#block-hsk-zymphonies-main-menu ul.menu ul li a.highlighted {
-            color: black;
+      header nav#block-hsk-zymphonies-main-menu ul.menu li ul {
+        background: #ED8600;
+        min-width: 210px !important;
+        border: none;
+        top: 27px !important;
+        padding: 8px 0;
+        -webkit-border-radius: 0 4px 4px 4px;
+        -moz-border-radius: 0 4px 4px 4px;
+        -ms-border-radius: 0 4px 4px 4px;
+        -o-border-radius: 0 4px 4px 4px;
+        border-radius: 0 4px 4px 4px; }
+        header nav#block-hsk-zymphonies-main-menu ul.menu li ul li {
+          margin-right: 0;
+          float: none;
+          display: block; }
+          header nav#block-hsk-zymphonies-main-menu ul.menu li ul li a {
+            float: none;
+            color: white;
+            padding: 6px 15px;
             background: none; }
-        header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul {
-          background: #b76400;
-          top: 27px !important;
-          min-width: 210px !important; }
-          header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul li a {
-            background: none; }
-            header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul li a:hover, header nav#block-hsk-zymphonies-main-menu ul.menu ul li ul li a.highlighted {
+            header nav#block-hsk-zymphonies-main-menu ul.menu li ul li a:hover, header nav#block-hsk-zymphonies-main-menu ul.menu li ul li a.highlighted {
+              color: black;
               background: none; }
+          header nav#block-hsk-zymphonies-main-menu ul.menu li ul li ul {
+            background: #b76400;
+            top: 27px !important;
+            min-width: 210px !important; }
+            header nav#block-hsk-zymphonies-main-menu ul.menu li ul li ul li a {
+              background: none; }
+              header nav#block-hsk-zymphonies-main-menu ul.menu li ul li ul li a:hover, header nav#block-hsk-zymphonies-main-menu ul.menu li ul li ul li a.highlighted {
+                background: none; }
 
   #block-mobilemenubutton {
     display: none; }
