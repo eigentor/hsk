@@ -1594,7 +1594,8 @@ button.btn, a.btn {
   .sidebar ul.menu li a {
     color: #888;
     padding: 7px 0 7px 4px;
-    display: block; }
+    display: block;
+    hyphens: auto; }
     .sidebar ul.menu li a:hover {
       text-decoration: none;
       color: #E27500; }
@@ -2507,7 +2508,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
   .page-node-type-turnier #info-tabs .field--name-field-pairings table td {
     padding-left: 3px;
     padding-right: 3px; }
-  .page-node-type-turnier.node-schnellschach .col-md-9, .page-node-type-turnier.node-monatsblitz .col-md-9, .page-node-type-turnier.node-vereinspokal .col-md-9 {
+  .page-node-type-turnier.node-schnellschach .col-md-9, .page-node-type-turnier.node-monatsblitz .col-md-9, .page-node-type-turnier.node-vereinspokal .col-md-9, .page-node-type-turnier.node-seniorenschnellschach .col-md-9 {
     float: none;
     width: 100%; } }
 /* End Media Query Tablet */
