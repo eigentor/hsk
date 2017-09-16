@@ -40,11 +40,11 @@ display:
         options:
           submit_button: Filter
           reset_button: true
-          reset_button_label: Zurücksetzen
-          exposed_sorts_label: 'Sortieren nach'
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
           expose_sort_order: true
-          sort_asc_label: Aufsteigend
-          sort_desc_label: Absteigend
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       pager:
         type: full
         options:
@@ -59,10 +59,10 @@ display:
             last: 'Last »'
           expose:
             items_per_page: false
-            items_per_page_label: 'Elemente pro Seite'
+            items_per_page_label: 'Items per page'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- Alle -'
+            items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
           quantity: 9
@@ -296,8 +296,8 @@ display:
           type: boolean
           settings:
             format: custom
-            format_custom_true: Active
-            format_custom_false: Blocked
+            format_custom_true: Aktiv
+            format_custom_false: Gesperrt
           entity_type: user
           entity_field: status
         roles_target_id:
@@ -883,7 +883,7 @@ display:
   page_1:
     display_plugin: page
     id: page_1
-    display_title: Seite
+    display_title: Page
     position: 1
     display_options:
       path: admin/people/list

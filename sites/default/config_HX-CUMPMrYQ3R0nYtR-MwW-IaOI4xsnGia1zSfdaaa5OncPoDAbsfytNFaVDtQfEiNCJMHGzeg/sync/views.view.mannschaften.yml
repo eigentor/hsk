@@ -452,7 +452,7 @@ display:
         description: ''
         expanded: true
         parent: ''
-        weight: -46
+        weight: -45
         context: '0'
         menu_name: main
         enabled: true

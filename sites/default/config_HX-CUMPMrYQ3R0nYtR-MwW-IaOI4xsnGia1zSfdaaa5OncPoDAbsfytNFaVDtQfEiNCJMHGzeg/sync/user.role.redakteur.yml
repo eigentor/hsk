@@ -20,4 +20,5 @@ permissions:
   - 'edit own event content'
   - 'entityconnect add button'
   - 'entityconnect edit button'
+  - 'view any unpublished page content'
   - 'view the administration theme'

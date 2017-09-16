@@ -8,7 +8,7 @@ dependencies:
 _core:
   default_config_hash: YIwhIF9MSP1E_HMam6MrYeti_UqMXQiLDMjDsPFKK8s
 id: content
-label: Inhalt
+label: Content
 module: node
 description: 'Die Inhalte finden und verwalten.'
 tag: default
@@ -31,11 +31,11 @@ display:
         options:
           submit_button: Filter
           reset_button: true
-          reset_button_label: Zurücksetzen
-          exposed_sorts_label: 'Sortieren nach'
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
           expose_sort_order: true
-          sort_asc_label: Aufsteigend
-          sort_desc_label: Absteigend
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       pager:
         type: full
         options:
@@ -278,8 +278,8 @@ display:
           type: boolean
           settings:
             format: custom
-            format_custom_true: Published
-            format_custom_false: Unpublished
+            format_custom_true: Veröffentlicht
+            format_custom_false: Unveröffentlicht
           plugin_id: field
           entity_type: node
           entity_field: status
@@ -505,7 +505,7 @@ display:
           exposed: true
           expose:
             operator_id: langcode_op
-            label: Sprache
+            label: Language
             description: ''
             use_operator: false
             operator: langcode_op
@@ -534,7 +534,7 @@ display:
           entity_type: node
           entity_field: langcode
       sorts: {  }
-      title: Inhalt
+      title: Content
       empty:
         area_text_custom:
           id: area_text_custom
@@ -578,7 +578,7 @@ display:
       path: admin/content/node
       menu:
         type: 'default tab'
-        title: Inhalt
+        title: Content
         description: ''
         menu_name: admin
         weight: -10
@@ -587,13 +587,13 @@ display:
         expanded: false
       tab_options:
         type: normal
-        title: Inhalt
+        title: Content
         description: 'Inhalt finden und verwalten'
         menu_name: admin
         weight: -10
       display_extenders: {  }
     display_plugin: page
-    display_title: Seite
+    display_title: Page
     id: page_1
     position: 1
     cache_metadata:

@@ -8,5 +8,5 @@ dependencies:
 _core:
   default_config_hash: Tq6nZxoRP6_RwY5Q6Z4ecRFadf4xCmFRgg6PqnBzJLc
 id: size
-label: Size
+label: Größe
 options: "Extra Small: Extra Small\nSmall: Small\nMedium: Medium\nLarge: Large\nExtra Large: Extra Large\n"
