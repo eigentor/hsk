@@ -1773,7 +1773,7 @@ button.btn, a.btn {
     font-size: 0.75rem;
     margin-right: 14px;
     text-align: center;
-    min-width: 75px; }
+    min-width: 80px; }
     .path-termine .view-events-list .views-row .views-field-field-ev-start-time .date {
       background: #888;
       color: white;
@@ -2862,7 +2862,7 @@ nav#block-hsk-footer {
     font-size: 0.75rem;
     margin-right: 11px;
     text-align: center;
-    min-width: 75px; }
+    min-width: 80px; }
     .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date {
       background: #888;
       color: white;
