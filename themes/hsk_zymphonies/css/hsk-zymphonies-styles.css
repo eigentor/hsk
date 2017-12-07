@@ -2026,6 +2026,8 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
       font-size: 12.4px;
       font-size: 0.8rem;
       color: #888; }
+  .node h2, .node h3 {
+    clear: both; }
   .node .embedded-entity {
     margin-top: 12px;
     float: left;
