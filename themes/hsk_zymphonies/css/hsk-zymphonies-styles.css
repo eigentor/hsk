@@ -2192,6 +2192,8 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
 .page-node-type-turnier.node-schnellschach #info-tabs, .page-node-type-turnier.node-monatsblitz #info-tabs {
   border-right: 0; }
 
+.page-node-type-team .group-team-results .details-wrapper {
+  overflow-x: auto; }
 .page-node-type-team .group-team-results .horizontal-tabs {
   border: none; }
   .page-node-type-team .group-team-results .horizontal-tabs .horizontal-tabs-list {
