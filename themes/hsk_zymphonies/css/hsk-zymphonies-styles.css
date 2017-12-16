@@ -2173,6 +2173,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
     .page-node-type-turnier #table-tabs .tab-button:last-child {
       margin-right: 0; }
 .page-node-type-turnier #info-tabs {
+  overflow-x: auto;
   border: 1px solid #ccc;
   border-top: 0;
   padding: 25px 22px 12px; }
