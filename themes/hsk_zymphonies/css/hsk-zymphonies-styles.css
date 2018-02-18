@@ -1488,14 +1488,6 @@ button.btn, a.btn {
 .align-left {
   margin: 5px 15px 5px 0; }
 
-.floatright-far {
-  float: right;
-  margin: 5px 0 5px 30px; }
-
-.floatleft-far {
-  float: left;
-  margin: 5px 30px 5px 0; }
-
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -1507,6 +1499,14 @@ button.btn, a.btn {
 /*---------------- Tablet  ------------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 768px) {
+  .floatright-far {
+    float: right;
+    margin: 5px 0 5px 30px; }
+
+  .floatleft-far {
+    float: left;
+    margin: 5px 30px 5px 0; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
