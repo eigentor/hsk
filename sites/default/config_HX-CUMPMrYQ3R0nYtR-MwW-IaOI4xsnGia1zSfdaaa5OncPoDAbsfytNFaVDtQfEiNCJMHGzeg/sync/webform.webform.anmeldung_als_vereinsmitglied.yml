@@ -109,9 +109,9 @@ handlers:
     weight: 0
     settings:
       to_mail: h.schilling@kabelmail.de
-      cc_mail: 'thomas@rufzeichen-online.de, hayen@schachklub-hannover.de'
+      cc_mail: 'thomas@rufzeichen-online.de, lukahoffmann@aol.com'
       bcc_mail: ''
-      from_mail: hayen@schachklub-hannover.de
+      from_mail: info@schachklub-hannover.de
       from_name: default
       subject: 'Anmeldung als Vereinsmitglied über die HSK Website [site:url]'
       body: "Es wurde eine Anmeldung als Vereinsmitglied über die HSK Website eingegeben.\n\nDatum der Eingabe: [webform_submission:created]\nHier geht es zu den eingegebenen Daten auf der Website: [webform_submission:original]\n\nEingegebene Daten: \n[webform_submission:values]\n"
@@ -131,7 +131,7 @@ handlers:
       to_mail: '[webform_submission:values:email:raw]'
       cc_mail: ''
       bcc_mail: ''
-      from_mail: hayen@schachklub-hannover.de
+      from_mail: info@schachklub-hannover.de
       from_name: default
       subject: 'Ihre Anmeldung als Vereinsmitglied beim HSK Lister Turm'
       body: "Sehr geehrter  Sehr geehrter [webform_submission:values:vorname] [webform_submission:values:nachname],\n\nSie haben sich als Vereinsmitglied beim HSK Lister Turm angemeldet.\n\nIhre eingegebenen Daten:\n\n[webform_submission:values]\n\nIhre Kontoverbindung haben wir aus\nSicherheitsgründen in dieser Email ausgelassen.\n\nVielen Dank, Sie hören in Kürze von uns.\n\n------------------------------------\nHSK Lister Turm\nGerhard Hayen\nGoebenstraße 36\n30163 Hannover\n"
