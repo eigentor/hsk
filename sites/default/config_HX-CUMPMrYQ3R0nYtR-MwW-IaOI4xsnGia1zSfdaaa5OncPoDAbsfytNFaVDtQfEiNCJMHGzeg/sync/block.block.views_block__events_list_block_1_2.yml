@@ -35,6 +35,6 @@ visibility:
       node: '@node.node_route_context:node'
   request_path:
     id: request_path
-    pages: "<front>\r\n/turniere\r\n/vereinsmeisterschaft\r\n/vereinspokal\r\n/monatsblitz\r\n/schnellschach\r\n/turnier-simultan-tusi\r\n/thema-turnier\r\n/vorstand"
+    pages: "<front>\r\n/turniere\r\n/vereinsmeisterschaft\r\n/vereinspokal\r\n/monatsblitz\r\n/schnellschach\r\n/turnier-simultan-tusi\r\n/thema-turnier\r\n/vorstand\r\n/node/351"
     negate: true
     context_mapping: {  }
