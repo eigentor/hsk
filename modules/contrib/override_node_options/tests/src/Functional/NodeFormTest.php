@@ -22,6 +22,13 @@ class NodeFormTest extends BrowserTestBase {
   protected $normalUser;
 
   /**
+   * An administrator user.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $adminUser;
+
+  /**
    * A node to test against.
    *
    * @var \Drupal\node\NodeInterface
@@ -47,6 +54,10 @@ class NodeFormTest extends BrowserTestBase {
     $this->normalUser = $this->drupalCreateUser([
       'create page content',
       'edit any page content',
+    ]);
+
+    $this->adminUser = $this->drupalCreateUser([
+      'create page content',
     ]);
 
     $this->node = $this->drupalCreateNode();
@@ -112,7 +123,7 @@ class NodeFormTest extends BrowserTestBase {
    * Test the 'Authoring information' fieldset.
    */
   public function testNodeOptions() {
-    $specific_user = $this->drupalCreateUser([
+    $this->adminUser = $this->drupalCreateUser([
       'create page content',
       'edit any page content',
       'override page published option',
@@ -120,7 +131,7 @@ class NodeFormTest extends BrowserTestBase {
       'override page sticky option',
     ]);
 
-    $general_user = $this->drupalCreateUser([
+    $generalUser = $this->drupalCreateUser([
       'create page content',
       'edit any page content',
       'override all published option',
@@ -128,30 +139,16 @@ class NodeFormTest extends BrowserTestBase {
       'override all sticky option',
     ]);
 
-    $fields = [
-      'promote' => TRUE,
-      'status' => TRUE,
-      'sticky' => TRUE,
-    ];
-
-    foreach ([$specific_user, $general_user] as $user) {
+    foreach ([$this->adminUser, $generalUser] as $user) {
       $this->drupalLogin($user);
 
-      $this->drupalPostForm(
-        "node/{$this->node->id()}/edit",
-        [
-          'promote[value]' => TRUE,
-          'status[value]' => TRUE,
-          'sticky[value]' => TRUE,
-        ],
-        t('Save')
-      );
+      $fields = ['promote' => TRUE, 'sticky' => TRUE];
 
+      $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['promote[value]' => TRUE, 'sticky[value]' => TRUE], t('Save and keep published'));
       $this->assertNodeFieldsUpdated($this->node, $fields);
     }
 
     $this->drupalLogin($this->normalUser);
-
     $this->assertNodeFieldsNoAccess($this->node, array_keys($fields));
   }
 
@@ -159,38 +156,28 @@ class NodeFormTest extends BrowserTestBase {
    * Test the 'Revision information' fieldset.
    */
   public function testNodeRevisions() {
-    $specific_user = $this->drupalCreateUser([
+    $this->adminUser = $this->drupalCreateUser([
       'create page content',
       'edit any page content',
-      'enter page revision log entry',
       'override page revision option',
     ]);
 
-    $general_user = $this->drupalCreateUser([
+    $generalUser = $this->drupalCreateUser([
       'create page content',
       'edit any page content',
-      'enter all revision log entry',
       'override all revision option',
     ]);
 
-    $fields = [
-      'revision' => TRUE,
-      'revision_log' => TRUE,
-    ];
-
-    foreach ([$specific_user, $general_user] as $user) {
+    foreach ([$this->adminUser, $generalUser] as $user) {
       $this->drupalLogin($user);
 
-      $this->drupalPostForm('node/' . $this->node->id() . '/edit', [
-        'revision' => TRUE,
-        'revision_log[0][value]' => '',
-      ], t('Save'));
+      $fields = ['revision' => TRUE];
 
+      $this->drupalPostForm('node/' . $this->node->id() . '/edit', $fields, t('Save'));
       $this->assertNodeFieldsUpdated($this->node, [], $this->node->getRevisionId());
     }
 
     $this->drupalLogin($this->normalUser);
-
     $this->assertNodeFieldsNoAccess($this->node, array_keys($fields));
   }
 
@@ -198,50 +185,43 @@ class NodeFormTest extends BrowserTestBase {
    * Test the 'Authoring information' fieldset.
    */
   public function testNodeAuthor() {
-    $specific_user = $this->drupalCreateUser([
-      'create page content',
-      'edit any page content',
-      'override page authored on option',
-      'override page authored by option',
-    ]);
+    $this->adminUser = $this->drupalCreateUser(
+      [
+        'create page content',
+        'edit any page content',
+        'override page authored on option',
+        'override page authored by option',
+      ]
+    );
 
-    $general_user = $this->drupalCreateUser([
+    $generalUser = $this->drupalCreateUser([
       'create page content',
       'edit any page content',
       'override all authored by option',
       'override all authored on option',
     ]);
 
-    $time = \Drupal::time()->getCurrentTime();
-    $formatter = \Drupal::service('date.formatter');
+    $time = time();
 
-    $fields = [
-      'created[0][value][date]' => $formatter->format($time, 'custom', 'Y-m-d'),
-      'created[0][value][time]' => $formatter->format($time, 'custom', 'H:i:s'),
-      'uid[0][target_id]' => '',
-    ];
-
-    foreach ([$specific_user, $general_user] as $user) {
+    foreach ([$this->adminUser, $generalUser] as $user) {
       $this->drupalLogin($user);
 
       $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['uid[0][target_id]' => 'invalid-user'], t('Save'));
-
       $this->assertSession()->pageTextContains('There are no entities matching "invalid-user".');
 
       $this->drupalPostForm('node/' . $this->node->id() . '/edit', ['created[0][value][date]' => 'invalid-date'], t('Save'));
-
       $this->assertSession()->pageTextContains('The Authored on date is invalid.');
 
+      $fields = [
+        'uid[0][target_id]' => '',
+        'created[0][value][date]' => \Drupal::service('date.formatter')->format($time, 'custom', 'Y-m-d'),
+        'created[0][value][time]' => \Drupal::service('date.formatter')->format($time, 'custom', 'H:i:s'),
+      ];
       $this->drupalPostForm('node/' . $this->node->id() . '/edit', $fields, t('Save'));
-
-      $this->assertNodeFieldsUpdated($this->node, [
-        'created' => $time,
-        'uid' => 0,
-      ]);
+      $this->assertNodeFieldsUpdated($this->node, ['uid' => 0, 'created' => $time]);
     }
 
     $this->drupalLogin($this->normalUser);
-
     $this->assertNodeFieldsNoAccess($this->node, array_keys($fields));
   }
 
