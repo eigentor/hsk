@@ -73,6 +73,10 @@ trait TaxonomyTranslationTestTrait {
 
   /**
    * Adds term reference field for the article content type.
+   *
+   * @param bool $translatable
+   *   (optional) If TRUE, create a translatable term reference field. Defaults
+   *   to FALSE.
    */
   protected function setUpTermReferenceField() {
     $handler_settings = [

@@ -2,8 +2,6 @@
 
 namespace Drupal\views\Plugin\views\display;
 
-use Drupal\Core\Database\Query\Condition;
-
 /**
  * The plugin that handles an EntityReference display.
  *
@@ -90,16 +88,13 @@ class EntityReference extends DisplayPluginBase {
   }
 
   /**
-   * Builds the view result as a renderable array.
-   *
-   * @return array
-   *   Renderable array or empty array.
+   * {@inheritdoc}
    */
   public function render() {
     if (!empty($this->view->result) && $this->view->style_plugin->evenEmpty()) {
       return $this->view->style_plugin->render($this->view->result);
     }
-    return [];
+    return '';
   }
 
   /**
@@ -136,7 +131,7 @@ class EntityReference extends DisplayPluginBase {
       }
 
       // Multiple search fields are OR'd together.
-      $conditions = new Condition('OR');
+      $conditions = db_or();
 
       // Build the condition using the selected search fields.
       foreach ($style_options['options']['search_fields'] as $field_id) {

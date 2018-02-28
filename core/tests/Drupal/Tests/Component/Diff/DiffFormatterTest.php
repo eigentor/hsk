@@ -4,7 +4,6 @@ namespace Drupal\Tests\Component\Diff;
 
 use Drupal\Component\Diff\Diff;
 use Drupal\Component\Diff\DiffFormatter;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test DiffFormatter classes.
@@ -13,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @group Diff
  */
-class DiffFormatterTest extends TestCase {
+class DiffFormatterTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * @return array

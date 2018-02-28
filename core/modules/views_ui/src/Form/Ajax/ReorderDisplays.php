@@ -8,8 +8,6 @@ use Drupal\Core\Url;
 
 /**
  * Displays the display reorder form.
- *
- * @internal
  */
 class ReorderDisplays extends ViewsFormBase {
 

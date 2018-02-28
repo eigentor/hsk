@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides a base class for tableselect forms.
- *
- * @internal
  */
 abstract class FormTestTableSelectFormBase extends FormBase {
 

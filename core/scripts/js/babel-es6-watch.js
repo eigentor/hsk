@@ -11,18 +11,40 @@
 
 const fs = require('fs');
 const path = require('path');
+const babel = require('babel-core');
 const chokidar = require('chokidar');
 
-const changeOrAdded = require('./changeOrAdded');
-const log = require('./log');
+// Logging human-readable timestamp.
+const log = function log(message) {
+  // eslint-disable-next-line no-console
+  console.log(`[${new Date().toTimeString().slice(0, 8)}] ${message}`);
+};
 
-// Match only on .es6.js files.
+function addSourceMappingUrl(code, loc) {
+  return `${code}\n\n//# sourceMappingURL=${path.basename(loc)}`;
+}
+
 const fileMatch = './**/*.es6.js';
-// Ignore everything in node_modules
 const watcher = chokidar.watch(fileMatch, {
   ignoreInitial: true,
-  ignored: './node_modules/**'
+  ignored: 'node_modules/**'
 });
+
+const changedOrAdded = (filePath) => {
+  babel.transformFile(filePath, {
+    sourceMaps: true,
+    comments: false
+  }, (err, result) => {
+    const fileName = filePath.slice(0, -7);
+    // we've requested for a sourcemap to be written to disk
+    const mapLoc = `${fileName}.js.map`;
+
+    fs.writeFileSync(mapLoc, JSON.stringify(result.map));
+    fs.writeFileSync(`${fileName}.js`, addSourceMappingUrl(result.code, mapLoc));
+
+    log(`'${filePath}' has been changed.`);
+  });
+};
 
 const unlinkHandler = (err) => {
   if (err) {
@@ -30,14 +52,16 @@ const unlinkHandler = (err) => {
   }
 };
 
-// Watch for filesystem changes.
 watcher
-  .on('add', changeOrAdded)
-  .on('change', changeOrAdded)
+  .on('add', filePath => changedOrAdded(filePath))
+  .on('change', filePath => changedOrAdded(filePath))
   .on('unlink', (filePath) => {
     const fileName = filePath.slice(0, -7);
     fs.stat(`${fileName}.js`, () => {
       fs.unlink(`${fileName}.js`, unlinkHandler);
+    });
+    fs.stat(`${fileName}.js.map`, () => {
+      fs.unlink(`${fileName}.js.map`, unlinkHandler);
     });
   })
   .on('ready', () => log(`Watching '${fileMatch}' for changes.`));

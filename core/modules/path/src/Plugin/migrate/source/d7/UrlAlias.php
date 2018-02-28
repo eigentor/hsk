@@ -9,7 +9,7 @@ use Drupal\path\Plugin\migrate\source\UrlAliasBase;
  *
  * @MigrateSource(
  *   id = "d7_url_alias",
- *   source_module = "path"
+ *   source_provider = "path"
  * )
  */
 class UrlAlias extends UrlAliasBase {

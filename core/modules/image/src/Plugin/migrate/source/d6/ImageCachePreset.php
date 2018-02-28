@@ -10,7 +10,7 @@ use Drupal\migrate\Row;
  *
  * @MigrateSource(
  *   id = "d6_imagecache_presets",
- *   source_module = "imagecache"
+ *   source_provider = "imagecache"
  * )
  */
 class ImageCachePreset extends DrupalSqlBase {

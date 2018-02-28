@@ -9,8 +9,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  * Drupal 7 role source from database.
  *
  * @MigrateSource(
- *   id = "d7_user_role",
- *   source_module = "user"
+ *   id = "d7_user_role"
  * )
  */
 class Role extends DrupalSqlBase {

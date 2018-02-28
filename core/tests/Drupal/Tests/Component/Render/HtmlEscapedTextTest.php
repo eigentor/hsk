@@ -4,7 +4,7 @@ namespace Drupal\Tests\Component\Render;
 
 use Drupal\Component\Render\HtmlEscapedText;
 use Drupal\Component\Render\MarkupInterface;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests the HtmlEscapedText class.
@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  * @coversDefaultClass \Drupal\Component\Render\HtmlEscapedText
  * @group utility
  */
-class HtmlEscapedTextTest extends TestCase {
+class HtmlEscapedTextTest extends UnitTestCase {
 
   /**
    * @covers ::__toString

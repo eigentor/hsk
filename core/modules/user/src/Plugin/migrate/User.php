@@ -21,7 +21,6 @@ class User extends FieldMigration {
         'ignore_map' => TRUE,
       ] + $this->source;
       $definition['destination']['plugin'] = 'null';
-      $definition['idMap']['plugin'] = 'null';
       if (\Drupal::moduleHandler()->moduleExists('field')) {
         $definition['source']['plugin'] = 'd7_field_instance';
         $field_migration = $this->migrationPluginManager->createStubMigration($definition);

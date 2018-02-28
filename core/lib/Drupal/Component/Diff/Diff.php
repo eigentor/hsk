@@ -27,11 +27,9 @@ class Diff {
    * Constructor.
    * Computes diff between sequences of strings.
    *
-   * @param array $from_lines
-   *   An array of strings.
-   *   (Typically these are lines from a file.)
-   * @param array $to_lines
-   *   An array of strings.
+   * @param $from_lines array An array of strings.
+   *      (Typically these are lines from a file.)
+   * @param $to_lines array An array of strings.
    */
   public function __construct($from_lines, $to_lines) {
     $eng = new DiffEngine();
@@ -46,8 +44,8 @@ class Diff {
    *
    *  $diff = new Diff($lines1, $lines2);
    *  $rev = $diff->reverse();
-   * @return object
-   *   A Diff object representing the inverse of the original diff.
+   * @return object A Diff object representing the inverse of the
+   *          original diff.
    */
   public function reverse() {
     $rev = $this;
@@ -147,6 +145,7 @@ class Diff {
     if (serialize($from_lines) != serialize($rev->closing())) {
       trigger_error("Reversed closing doesn't match", E_USER_ERROR);
     }
+
 
     $prevtype = 'none';
     foreach ($this->edits as $edit) {

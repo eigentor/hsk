@@ -439,6 +439,7 @@ class EntityFieldManagerTest extends UnitTestCase {
       })
       ->shouldBeCalled();
 
+
     $this->assertSame($expected, $this->entityFieldManager->getFieldStorageDefinitions('test_entity_type'));
     $this->entityFieldManager->testClearEntityFieldInfo();
     $this->assertSame($expected, $this->entityFieldManager->getFieldStorageDefinitions('test_entity_type'));
@@ -541,7 +542,6 @@ class EntityFieldManagerTest extends UnitTestCase {
     $this->entityType->getKeys()->willReturn($entity_keys + ['default_langcode' => 'default_langcode']);
     $this->entityType->entityClassImplements(FieldableEntityInterface::class)->willReturn(TRUE);
     $this->entityType->isTranslatable()->willReturn(FALSE);
-    $this->entityType->isRevisionable()->willReturn(FALSE);
     $this->entityType->getProvider()->willReturn('the_provider');
     $this->entityType->id()->willReturn('the_entity_id');
 
@@ -651,7 +651,6 @@ class EntityFieldManagerTest extends UnitTestCase {
     $entity_type->getKeys()->willReturn(['default_langcode' => 'default_langcode']);
     $entity_type->entityClassImplements(FieldableEntityInterface::class)->willReturn(TRUE);
     $entity_type->isTranslatable()->shouldBeCalled();
-    $entity_type->isRevisionable()->shouldBeCalled();
     $entity_type->getProvider()->shouldBeCalled();
 
     $non_content_entity_type->entityClassImplements(FieldableEntityInterface::class)->willReturn(FALSE);
@@ -753,7 +752,6 @@ class EntityFieldManagerTest extends UnitTestCase {
     $entity_type->getKeys()->willReturn(['default_langcode' => 'default_langcode'])->shouldBeCalled();
     $entity_type->entityClassImplements(FieldableEntityInterface::class)->willReturn(TRUE)->shouldBeCalled();
     $entity_type->isTranslatable()->shouldBeCalled();
-    $entity_type->isRevisionable()->shouldBeCalled();
     $entity_type->getProvider()->shouldBeCalled();
 
     $override_entity_type->entityClassImplements(FieldableEntityInterface::class)->willReturn(FALSE)->shouldBeCalled();

@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form controller for search_embedded_form form.
- *
- * @internal
  */
 class SearchEmbeddedForm extends FormBase {
 

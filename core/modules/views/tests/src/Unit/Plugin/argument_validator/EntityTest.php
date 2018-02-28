@@ -71,6 +71,7 @@ class EntityTest extends UnitTestCase {
         ['test_op_3', NULL, FALSE, TRUE],
       ]));
 
+
     $storage = $this->getMock('Drupal\Core\Entity\EntityStorageInterface');
 
     // Setup values for IDs passed as strings or numbers.

@@ -36,27 +36,19 @@ class ContentModerationWorkflowTypeTest extends BrowserTestBase {
    * Test creating a new workflow using the content moderation plugin.
    */
   public function testNewWorkflow() {
-    $types[] = $this->createContentType();
-    $types[] = $this->createContentType();
-    $types[] = $this->createContentType();
-
     $entity_bundle_info = \Drupal::service('entity_type.bundle.info');
 
     $this->drupalPostForm('admin/config/workflow/workflows/add', [
-      'label' => 'Test',
-      'id' => 'test',
+      'label' => 'Test Workflow',
+      'id' => 'test_workflow',
       'workflow_type' => 'content_moderation',
     ], 'Save');
 
-    $session = $this->assertSession();
     // Make sure the test workflow includes the default states and transitions.
-    $session->pageTextContains('Draft');
-    $session->pageTextContains('Published');
-    $session->pageTextContains('Create New Draft');
-    $session->pageTextContains('Publish');
-
-    $session->linkByHrefNotExists('/admin/config/workflow/workflows/manage/test/state/draft/delete');
-    $session->linkByHrefNotExists('/admin/config/workflow/workflows/manage/test/state/published/delete');
+    $this->assertSession()->pageTextContains('Draft');
+    $this->assertSession()->pageTextContains('Published');
+    $this->assertSession()->pageTextContains('Create New Draft');
+    $this->assertSession()->pageTextContains('Publish');
 
     // Ensure after a workflow is created, the bundle information can be
     // refreshed.
@@ -67,35 +59,20 @@ class ContentModerationWorkflowTypeTest extends BrowserTestBase {
     $this->submitForm([
       'label' => 'Test State',
       'id' => 'test_state',
-      'type_settings[published]' => TRUE,
-      'type_settings[default_revision]' => FALSE,
+      'type_settings[content_moderation][published]' => TRUE,
+      'type_settings[content_moderation][default_revision]' => FALSE,
     ], 'Save');
-    $session->pageTextContains('Created Test State state.');
-    $session->linkByHrefExists('/admin/config/workflow/workflows/manage/test/state/test_state/delete');
-
-    // Check there is a link to delete a default transition.
-    $session->linkByHrefExists('/admin/config/workflow/workflows/manage/test/transition/publish/delete');
-    // Delete the transition.
-    $this->drupalGet('/admin/config/workflow/workflows/manage/test/transition/publish/delete');
-    $this->submitForm([], 'Delete');
-    // The link to delete the transition should now be gone.
-    $session->linkByHrefNotExists('/admin/config/workflow/workflows/manage/test/transition/publish/delete');
+    $this->assertSession()->pageTextContains('Created Test State state.');
 
     // Ensure that the published settings cannot be changed.
-    $this->drupalGet('admin/config/workflow/workflows/manage/test/state/published');
-    $session->fieldDisabled('type_settings[published]');
-    $session->fieldDisabled('type_settings[default_revision]');
+    $this->drupalGet('admin/config/workflow/workflows/manage/test_workflow/state/published');
+    $this->assertSession()->fieldDisabled('type_settings[content_moderation][published]');
+    $this->assertSession()->fieldDisabled('type_settings[content_moderation][default_revision]');
 
     // Ensure that the draft settings cannot be changed.
-    $this->drupalGet('admin/config/workflow/workflows/manage/test/state/draft');
-    $session->fieldDisabled('type_settings[published]');
-    $session->fieldDisabled('type_settings[default_revision]');
-
-    $this->drupalGet('admin/config/workflow/workflows/manage/test/type/node');
-    $session->pageTextContains('Select the content type entities for the Test workflow');
-    foreach ($types as $type) {
-      $session->pageTextContains($type->label());
-    }
+    $this->drupalGet('admin/config/workflow/workflows/manage/test_workflow/state/draft');
+    $this->assertSession()->fieldDisabled('type_settings[content_moderation][published]');
+    $this->assertSession()->fieldDisabled('type_settings[content_moderation][default_revision]');
   }
 
 }

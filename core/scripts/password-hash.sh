@@ -2,7 +2,6 @@
 <?php
 
 /**
- * @file
  * Drupal hash script - to generate a hash from a plaintext password
  *
  * @param password1 [password2 [password3 ...]]
@@ -65,6 +64,7 @@ $kernel->boot();
 $password_hasher = $kernel->getContainer()->get('password');
 
 foreach ($passwords as $password) {
-  print("\npassword: $password \t\thash: " . $password_hasher->hash($password) . "\n");
+  print("\npassword: $password \t\thash: ". $password_hasher->hash($password) ."\n");
 }
 print("\n");
+

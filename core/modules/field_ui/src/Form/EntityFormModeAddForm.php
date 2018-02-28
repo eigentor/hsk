@@ -6,8 +6,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Provides the add form for entity display modes.
- *
- * @internal
  */
 class EntityFormModeAddForm extends EntityDisplayModeAddForm {
 

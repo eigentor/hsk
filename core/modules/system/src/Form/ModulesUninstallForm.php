@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a form for uninstalling modules.
- *
- * @internal
  */
 class ModulesUninstallForm extends FormBase {
 

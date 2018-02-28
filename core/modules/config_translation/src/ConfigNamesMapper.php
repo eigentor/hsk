@@ -61,7 +61,7 @@ class ConfigNamesMapper extends PluginBase implements ConfigMapperInterface, Con
   /**
    * The base route object that the mapper is attached to.
    *
-   * @var \Symfony\Component\Routing\Route
+   * @return \Symfony\Component\Routing\Route
    */
   protected $baseRoute;
 

@@ -11,8 +11,7 @@ use Drupal\migrate\Plugin\migrate\source\DummyQueryTrait;
  * @todo Support default picture?
  *
  * @MigrateSource(
- *   id = "user_picture_instance",
- *   source_module = "user"
+ *   id = "user_picture_instance"
  * )
  */
 class UserPictureInstance extends DrupalSqlBase {
@@ -29,8 +28,7 @@ class UserPictureInstance extends DrupalSqlBase {
         'file_directory' => $this->variableGet('user_picture_path', 'pictures'),
         'max_filesize' => $this->variableGet('user_picture_file_size', '30') . 'KB',
         'max_resolution' => $this->variableGet('user_picture_dimensions', '85x85'),
-      ],
-    ]);
+      ]]);
   }
 
   /**

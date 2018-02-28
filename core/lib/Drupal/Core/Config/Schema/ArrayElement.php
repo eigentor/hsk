@@ -2,12 +2,10 @@
 
 namespace Drupal\Core\Config\Schema;
 
-use Drupal\Core\TypedData\ComplexDataInterface;
-
 /**
  * Defines a generic configuration element that contains multiple properties.
  */
-abstract class ArrayElement extends Element implements \IteratorAggregate, TypedConfigInterface, ComplexDataInterface {
+abstract class ArrayElement extends Element implements \IteratorAggregate, TypedConfigInterface {
 
   /**
    * Parsed elements.
@@ -48,7 +46,7 @@ abstract class ArrayElement extends Element implements \IteratorAggregate, Typed
    *
    * @return \Drupal\Core\TypedData\DataDefinitionInterface
    */
-  abstract protected function getElementDefinition($key);
+  protected abstract function getElementDefinition($key);
 
   /**
    * {@inheritdoc}
@@ -161,27 +159,6 @@ abstract class ArrayElement extends Element implements \IteratorAggregate, Typed
    */
   public function isNullable() {
     return isset($this->definition['nullable']) && $this->definition['nullable'] == TRUE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function set($property_name, $value, $notify = TRUE) {
-    $this->value[$property_name] = $value;
-    // Config schema elements do not make use of notifications. Thus, we skip
-    // notifying parents.
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getProperties($include_computed = FALSE) {
-    $properties = [];
-    foreach (array_keys($this->value) as $name) {
-      $properties[$name] = $this->get($name);
-    }
-    return $properties;
   }
 
 }

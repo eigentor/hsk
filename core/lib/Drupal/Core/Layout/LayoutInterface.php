@@ -8,6 +8,11 @@ use Drupal\Component\Plugin\ConfigurablePluginInterface;
 
 /**
  * Provides an interface for static Layout plugins.
+ *
+ * @internal
+ *   The layout system is currently experimental and should only be leveraged by
+ *   experimental modules and development releases of contributed modules.
+ *   See https://www.drupal.org/core/experimental for more information.
  */
 interface LayoutInterface extends PluginInspectionInterface, DerivativeInspectionInterface, ConfigurablePluginInterface {
 

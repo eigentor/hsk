@@ -2,6 +2,7 @@
 
 namespace Drupal\rest;
 
+
 trait ResourceResponseTrait {
 
   /**

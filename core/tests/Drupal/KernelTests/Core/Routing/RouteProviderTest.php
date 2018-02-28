@@ -18,7 +18,6 @@ use Drupal\Core\Routing\MatcherDumper;
 use Drupal\Core\Routing\RouteProvider;
 use Drupal\Core\State\State;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\Tests\Core\Routing\RoutingFixtures;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -37,12 +36,12 @@ class RouteProviderTest extends KernelTestBase {
   /**
    * Modules to enable.
    */
-  public static $modules = ['url_alter_test', 'system', 'language'];
+  public static $modules = ['url_alter_test', 'system'];
 
   /**
    * A collection of shared fixture data for tests.
    *
-   * @var \Drupal\Tests\Core\Routing\RoutingFixtures
+   * @var RoutingFixtures
    */
   protected $fixtures;
 
@@ -533,6 +532,7 @@ class RouteProviderTest extends KernelTestBase {
 
     $request = Request::create($path, 'GET');
 
+
     $routes = $provider->getRoutesByPattern($path);
     $this->assertFalse(count($routes), 'No path found with this pattern.');
 
@@ -545,8 +545,7 @@ class RouteProviderTest extends KernelTestBase {
    */
   public function testRouteCaching() {
     $connection = Database::getConnection();
-    $language_manager = \Drupal::languageManager();
-    $provider = new RouteProvider($connection, $this->state, $this->currentPath, $this->cache, $this->pathProcessor, $this->cacheTagsInvalidator, 'test_routes', $language_manager);
+    $provider = new RouteProvider($connection, $this->state, $this->currentPath, $this->cache, $this->pathProcessor, $this->cacheTagsInvalidator, 'test_routes');
 
     $this->fixtures->createTables($connection);
 
@@ -560,7 +559,7 @@ class RouteProviderTest extends KernelTestBase {
     $request = Request::create($path, 'GET');
     $provider->getRouteCollectionForRequest($request);
 
-    $cache = $this->cache->get('route:en:/path/add/one:');
+    $cache = $this->cache->get('route:/path/add/one:');
     $this->assertEqual('/path/add/one', $cache->data['path']);
     $this->assertEqual([], $cache->data['query']);
     $this->assertEqual(3, count($cache->data['routes']));
@@ -570,7 +569,7 @@ class RouteProviderTest extends KernelTestBase {
     $request = Request::create($path, 'GET');
     $provider->getRouteCollectionForRequest($request);
 
-    $cache = $this->cache->get('route:en:/path/add/one:foo=bar');
+    $cache = $this->cache->get('route:/path/add/one:foo=bar');
     $this->assertEqual('/path/add/one', $cache->data['path']);
     $this->assertEqual(['foo' => 'bar'], $cache->data['query']);
     $this->assertEqual(3, count($cache->data['routes']));
@@ -580,7 +579,7 @@ class RouteProviderTest extends KernelTestBase {
     $request = Request::create($path, 'GET');
     $provider->getRouteCollectionForRequest($request);
 
-    $cache = $this->cache->get('route:en:/path/1/one:');
+    $cache = $this->cache->get('route:/path/1/one:');
     $this->assertEqual('/path/1/one', $cache->data['path']);
     $this->assertEqual([], $cache->data['query']);
     $this->assertEqual(2, count($cache->data['routes']));
@@ -597,25 +596,10 @@ class RouteProviderTest extends KernelTestBase {
     $request = Request::create($path, 'GET');
     $provider->getRouteCollectionForRequest($request);
 
-    $cache = $this->cache->get('route:en:/path/add-one:');
+    $cache = $this->cache->get('route:/path/add-one:');
     $this->assertEqual('/path/add/one', $cache->data['path']);
     $this->assertEqual([], $cache->data['query']);
     $this->assertEqual(3, count($cache->data['routes']));
-
-    // Test with a different current language by switching out the default
-    // language.
-    $swiss = ConfigurableLanguage::createFromLangcode('gsw-berne');
-    $language_manager->reset();
-    \Drupal::service('language.default')->set($swiss);
-
-    $path = '/path/add-one';
-    $request = Request::create($path, 'GET');
-    $provider->getRouteCollectionForRequest($request);
-
-    $cache = $this->cache->get('route:gsw-berne:/path/add-one:');
-    $this->assertEquals('/path/add/one', $cache->data['path']);
-    $this->assertEquals([], $cache->data['query']);
-    $this->assertEquals(3, count($cache->data['routes']));
   }
 
   /**

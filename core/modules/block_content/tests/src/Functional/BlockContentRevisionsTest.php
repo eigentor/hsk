@@ -31,7 +31,7 @@ class BlockContentRevisionsTest extends BlockContentTestBase {
   protected function setUp() {
     parent::setUp();
 
-    /** @var \Drupal\user\Entity\UserInterface $user */
+    /** @var UserInterface $user */
     $user = User::load(1);
 
     // Create initial block.

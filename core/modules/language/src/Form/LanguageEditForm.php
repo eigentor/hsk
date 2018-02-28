@@ -6,8 +6,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Controller for language edit forms.
- *
- * @internal
  */
 class LanguageEditForm extends LanguageFormBase {
 

@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Form constructor for testing #type 'machine_name' elements.
- *
- * @internal
  */
 class FormTestMachineNameForm extends FormBase {
 

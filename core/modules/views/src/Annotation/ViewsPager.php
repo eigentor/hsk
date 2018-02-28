@@ -50,7 +50,7 @@ class ViewsPager extends ViewsPluginAnnotationBase {
   /**
    * The theme function used to render the pager's output.
    *
-   * @var string
+   * @return string
    */
   public $theme;
 

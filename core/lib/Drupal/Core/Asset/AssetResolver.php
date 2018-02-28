@@ -45,7 +45,7 @@ class AssetResolver implements AssetResolverInterface {
   /**
    * The language manager.
    *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
+   * @var \Drupal\Core\Language\LanguageManagerInterface $language_manager
    */
   protected $languageManager;
 

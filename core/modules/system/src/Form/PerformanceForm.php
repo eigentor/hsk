@@ -5,16 +5,22 @@ namespace Drupal\system\Form;
 use Drupal\Core\Asset\AssetCollectionOptimizerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure performance settings for this site.
- *
- * @internal
  */
 class PerformanceForm extends ConfigFormBase {
+
+  /**
+   * The render cache bin.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $renderCache;
 
   /**
    * The date formatter service.
@@ -42,6 +48,7 @@ class PerformanceForm extends ConfigFormBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $render_cache
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The date formatter service.
    * @param \Drupal\Core\Asset\AssetCollectionOptimizerInterface $css_collection_optimizer
@@ -49,9 +56,10 @@ class PerformanceForm extends ConfigFormBase {
    * @param \Drupal\Core\Asset\AssetCollectionOptimizerInterface $js_collection_optimizer
    *   The JavaScript asset collection optimizer service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, DateFormatterInterface $date_formatter, AssetCollectionOptimizerInterface $css_collection_optimizer, AssetCollectionOptimizerInterface $js_collection_optimizer) {
+  public function __construct(ConfigFactoryInterface $config_factory, CacheBackendInterface $render_cache, DateFormatterInterface $date_formatter, AssetCollectionOptimizerInterface $css_collection_optimizer, AssetCollectionOptimizerInterface $js_collection_optimizer) {
     parent::__construct($config_factory);
 
+    $this->renderCache = $render_cache;
     $this->dateFormatter = $date_formatter;
     $this->cssCollectionOptimizer = $css_collection_optimizer;
     $this->jsCollectionOptimizer = $js_collection_optimizer;
@@ -63,6 +71,7 @@ class PerformanceForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('cache.render'),
       $container->get('date.formatter'),
       $container->get('asset.css.collection_optimizer'),
       $container->get('asset.js.collection_optimizer')
@@ -159,6 +168,10 @@ class PerformanceForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->cssCollectionOptimizer->deleteAll();
     $this->jsCollectionOptimizer->deleteAll();
+    // This form allows page compression settings to be changed, which can
+    // invalidate cached pages in the render cache, so it needs to be cleared on
+    // form submit.
+    $this->renderCache->deleteAll();
 
     $this->config('system.performance')
       ->set('cache.page.max_age', $form_state->getValue('page_cache_maximum_age'))

@@ -11,6 +11,9 @@
 
 namespace Symfony\Component\Validator\Mapping;
 
+use Symfony\Component\Validator\ClassBasedInterface;
+use Symfony\Component\Validator\PropertyMetadataContainerInterface as LegacyPropertyMetadataContainerInterface;
+
 /**
  * Stores all metadata needed for validating objects of specific class.
  *
@@ -28,7 +31,7 @@ namespace Symfony\Component\Validator\Mapping;
  * @see \Symfony\Component\Validator\GroupSequenceProviderInterface
  * @see TraversalStrategy
  */
-interface ClassMetadataInterface extends MetadataInterface
+interface ClassMetadataInterface extends MetadataInterface, LegacyPropertyMetadataContainerInterface, ClassBasedInterface
 {
     /**
      * Returns the names of all constrained properties.
@@ -73,33 +76,4 @@ interface ClassMetadataInterface extends MetadataInterface
      * @see \Symfony\Component\Validator\GroupSequenceProviderInterface
      */
     public function isGroupSequenceProvider();
-
-    /**
-     * Check if there's any metadata attached to the given named property.
-     *
-     * @param string $property The property name
-     *
-     * @return bool
-     */
-    public function hasPropertyMetadata($property);
-
-    /**
-     * Returns all metadata instances for the given named property.
-     *
-     * If your implementation does not support properties, simply throw an
-     * exception in this method (for example a <tt>BadMethodCallException</tt>).
-     *
-     * @param string $property The property name
-     *
-     * @return PropertyMetadataInterface[] A list of metadata instances. Empty if
-     *                                     no metadata exists for the property.
-     */
-    public function getPropertyMetadata($property);
-
-    /**
-     * Returns the name of the backing PHP class.
-     *
-     * @return string The name of the backing class
-     */
-    public function getClassName();
 }

@@ -64,8 +64,7 @@ class ChainedFastBackendTest extends UnitTestCase {
   public function testFallThroughToConsistentCache() {
     $timestamp_item = (object) [
       'cid' => ChainedFastBackend::LAST_WRITE_TIMESTAMP_PREFIX . 'cache_foo',
-      // Time travel is easy.
-      'data' => time() + 60,
+      'data' => time() + 60, // Time travel is easy.
     ];
     $cache_item = (object) [
       'cid' => 'foo',

@@ -302,8 +302,6 @@ class Datelist extends DateElementBase {
   public static function validateDatelist(&$element, FormStateInterface $form_state, &$complete_form) {
     $input_exists = FALSE;
     $input = NestedArray::getValue($form_state->getValues(), $element['#parents'], $input_exists);
-    $title = static::getElementTitle($element, $complete_form);
-
     if ($input_exists) {
       $all_empty = static::checkEmptyInputs($input, $element['#date_part_order']);
 
@@ -313,11 +311,10 @@ class Datelist extends DateElementBase {
       }
       // If there's empty input and the field is required, set an error.
       elseif (empty($input['year']) && empty($input['month']) && empty($input['day']) && $element['#required']) {
-        $form_state->setError($element, t('The %field date is required.', ['%field' => $title]));
+        $form_state->setError($element, t('The %field date is required.'));
       }
       elseif (!empty($all_empty)) {
         foreach ($all_empty as $value) {
-          $form_state->setError($element, t('The %field date is incomplete.', ['%field' => $title]));
           $form_state->setError($element[$value], t('A value must be selected for %part.', ['%part' => $value]));
         }
       }
@@ -329,7 +326,7 @@ class Datelist extends DateElementBase {
         }
         // If the input is invalid and an error doesn't exist, set one.
         elseif ($form_state->getError($element) === NULL) {
-          $form_state->setError($element, t('The %field date is invalid.', ['%field' => $title]));
+          $form_state->setError($element, t('The %field date is invalid.', ['%field' => !empty($element['#title']) ? $element['#title'] : '']));
         }
       }
     }

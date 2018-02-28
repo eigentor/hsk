@@ -1,7 +1,6 @@
 <?php
 
 namespace Drupal\Core\Template;
-
 use Drupal\Component\Utility\Html;
 
 /**

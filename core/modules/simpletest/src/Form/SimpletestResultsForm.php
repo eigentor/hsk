@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * Note that the UI strings are not translated because this form is also used
  * from run-tests.sh.
  *
- * @internal
- *
  * @see simpletest_script_open_browser()
  * @see run-tests.sh
  */
@@ -237,7 +235,7 @@ class SimpletestResultsForm extends FormBase {
    *
    * @param array $form
    *   The form to attach the results to.
-   * @param array $results
+   * @param array $test_results
    *   The simpletest results.
    *
    * @return array

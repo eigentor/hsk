@@ -157,7 +157,7 @@ class TwigNodeTrans extends \Twig_Node {
             if (!is_null($args)) {
               $argName = $args->getAttribute('name');
             }
-            $expr = new \Twig_Node_Expression_Name($argName, $n->getTemplateLine());
+            $expr = new \Twig_Node_Expression_Name($argName, $n->getLine());
           }
           $placeholder = sprintf('%s%s', $argPrefix, $argName);
           $text .= $placeholder;
@@ -176,10 +176,7 @@ class TwigNodeTrans extends \Twig_Node {
       $text = $body->getAttribute('data');
     }
 
-    return [
-      new \Twig_Node([new \Twig_Node_Expression_Constant(trim($text), $body->getTemplateLine())]),
-      $tokens,
-    ];
+    return [new \Twig_Node([new \Twig_Node_Expression_Constant(trim($text), $body->getLine())]), $tokens];
   }
 
 }

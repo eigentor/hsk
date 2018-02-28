@@ -75,6 +75,7 @@ class ViewListBuilderTest extends UnitTestCase {
         ],
       ]));
 
+
     $default_display = $this->getMock('Drupal\views\Plugin\views\display\DefaultDisplay',
       ['initDisplay'],
       [[], 'default', $display_manager->getDefinition('default')]

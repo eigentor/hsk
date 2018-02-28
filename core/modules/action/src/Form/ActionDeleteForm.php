@@ -7,8 +7,6 @@ use Drupal\Core\Url;
 
 /**
  * Builds a form to delete an action.
- *
- * @internal
  */
 class ActionDeleteForm extends EntityDeleteForm {
 

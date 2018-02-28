@@ -8,8 +8,6 @@ use Drupal\Core\Url;
 
 /**
  * Provides the search reindex confirmation form.
- *
- * @internal
  */
 class ReindexConfirm extends ConfirmFormBase {
 

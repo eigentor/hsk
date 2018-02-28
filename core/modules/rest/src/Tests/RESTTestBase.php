@@ -306,12 +306,10 @@ abstract class RESTTestBase extends WebTestBase {
         return [
           'name' => $this->randomMachineName(),
           'user_id' => 1,
-          'field_test_text' => [
-            0 => [
-              'value' => $this->randomString(),
-              'format' => 'plain_text',
-            ],
-          ],
+          'field_test_text' => [0 => [
+            'value' => $this->randomString(),
+            'format' => 'plain_text',
+          ]],
         ];
       case 'config_test':
         return [

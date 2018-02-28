@@ -5,16 +5,13 @@ namespace Drupal\workflows;
 /**
  * An interface for state value objects.
  *
+ * @see \Drupal\workflows\WorkflowTypeInterface::decorateState()
+ *
  * @internal
- *   The StateInterface should only be used by Workflows and Content Moderation.
- * @todo Revisit the need for this in https://www.drupal.org/node/2902309.
+ *   The workflow system is currently experimental and should only be leveraged
+ *   by experimental modules and development releases of contributed modules.
  */
 interface StateInterface {
-
-  /**
-   * The key of the state plugin form.
-   */
-  const PLUGIN_FORM_KEY = 'state';
 
   /**
    * Gets the state's ID.

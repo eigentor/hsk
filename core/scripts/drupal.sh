@@ -2,7 +2,6 @@
 <?php
 
 /**
- * @file
  * Drupal shell execution script
  *
  * Check for your PHP interpreter - on Windows you'll probably have to
@@ -12,7 +11,6 @@
  * @param path  Drupal's absolute root directory in local file system (optional).
  * @param URI   A URI to execute, including HTTP protocol prefix.
  */
-
 $script = basename(array_shift($_SERVER['argv']));
 
 if (in_array('--help', $_SERVER['argv']) || empty($_SERVER['argv'])) {
@@ -71,10 +69,10 @@ $_SERVER['HTTP_USER_AGENT'] = 'console';
 
 // toggle verbose mode
 if (in_array('--verbose', $_SERVER['argv'])) {
-  $_verbose_mode = TRUE;
+  $_verbose_mode = true;
 }
 else {
-  $_verbose_mode = FALSE;
+  $_verbose_mode = false;
 }
 
 // parse invocation arguments

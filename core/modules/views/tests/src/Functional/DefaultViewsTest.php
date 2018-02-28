@@ -100,15 +100,6 @@ class DefaultViewsTest extends ViewTestBase {
         'field_name' => 'comment'
       ];
       Comment::create($comment)->save();
-
-      $unpublished_comment = [
-        'uid' => $user->id(),
-        'status' => CommentInterface::NOT_PUBLISHED,
-        'entity_id' => $node->id(),
-        'entity_type' => 'node',
-        'field_name' => 'comment',
-      ];
-      Comment::create($unpublished_comment)->save();
     }
 
     // Some views, such as the "Who's Online" view, only return results if at
@@ -174,19 +165,16 @@ class DefaultViewsTest extends ViewTestBase {
     // Create additional nodes compared to the one in the setup method.
     // Create two nodes in the same month, and one in each following month.
     $node = [
-      // Sun, 19 Nov 1978 05:00:00 GMT.
-      'created' => 280299600,
+      'created' => 280299600, // Sun, 19 Nov 1978 05:00:00 GMT
     ];
     $this->drupalCreateNode($node);
     $this->drupalCreateNode($node);
     $node = [
-      // Tue, 19 Dec 1978 05:00:00 GMT.
-      'created' => 282891600,
+      'created' => 282891600, // Tue, 19 Dec 1978 05:00:00 GMT
     ];
     $this->drupalCreateNode($node);
     $node = [
-      // Fri, 19 Jan 1979 05:00:00 GMT.
-      'created' => 285570000,
+      'created' => 285570000, // Fri, 19 Jan 1979 05:00:00 GMT
     ];
     $this->drupalCreateNode($node);
 

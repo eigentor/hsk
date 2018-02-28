@@ -18,8 +18,11 @@ class StandardInstallerTest extends ConfigAfterInstallerTestBase {
    * Ensures that the user page is available after installation.
    */
   public function testInstaller() {
-    // Verify that the Standard install profile's default frontpage appears.
-    $this->assertRaw('No front page content has been created yet.');
+    // Verify that the confirmation message appears.
+    require_once \Drupal::root() . '/core/includes/install.inc';
+    $this->assertRaw(t('Congratulations, you installed @drupal!', [
+      '@drupal' => drupal_install_profile_distribution_name(),
+    ]));
   }
 
   /**

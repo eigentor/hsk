@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form builder for testing hook_form_alter() and hook_form_FORM_ID_alter().
- *
- * @internal
  */
 class FormTestAlterForm extends FormBase {
 

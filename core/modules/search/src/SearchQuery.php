@@ -2,7 +2,6 @@
 
 namespace Drupal\search;
 
-use Drupal\Core\Database\Query\Condition;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Database\Query\SelectExtender;
 use Drupal\Core\Database\Query\SelectInterface;
@@ -206,7 +205,7 @@ class SearchQuery extends SelectExtender {
     $this->addTag('search_' . $type);
 
     // Initialize conditions and status.
-    $this->conditions = new Condition('AND');
+    $this->conditions = db_and();
     $this->status = 0;
 
     return $this;
@@ -314,7 +313,7 @@ class SearchQuery extends SelectExtender {
         }
         $has_or = TRUE;
         $has_new_scores = FALSE;
-        $queryor = new Condition('OR');
+        $queryor = db_or();
         foreach ($key as $or) {
           list($num_new_scores) = $this->parseWord($or);
           $has_new_scores |= $num_new_scores;
@@ -402,7 +401,7 @@ class SearchQuery extends SelectExtender {
     }
 
     // Build the basic search query: match the entered keywords.
-    $or = new Condition('OR');
+    $or = db_or();
     foreach ($this->words as $word) {
       $or->condition('i.word', $word);
     }
@@ -571,9 +570,10 @@ class SearchQuery extends SelectExtender {
       }
     }
 
+
     // Add arguments for the keyword relevance normalization number.
     $normalization = 1.0 / $this->normalize;
-    for ($i = 0; $i < $this->relevance_count; $i++) {
+    for ($i = 0; $i < $this->relevance_count; $i++ ) {
       $this->scoresArguments[':normalization_' . $i] = $normalization;
     }
 

@@ -115,6 +115,7 @@ class GroupwiseMax extends RelationshipPluginBase {
       '#default_value' => $this->options['subquery_namespace'],
     ];
 
+
     // WIP: This stuff doesn't work yet: namespacing issues.
     // A list of suitable views to pick one as the subview.
     $views = ['' => '- None -'];
@@ -177,7 +178,7 @@ class GroupwiseMax extends RelationshipPluginBase {
    *    - subquery_order: either ASC or DESC.
    *
    * @return string
-   *   The subquery SQL string, ready for use in the main query.
+   *    The subquery SQL string, ready for use in the main query.
    */
   protected function leftQuery($options) {
     // Either load another view, or create one on the fly.

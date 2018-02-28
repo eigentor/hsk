@@ -10,7 +10,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  *
  * @MigrateSource(
  *   id = "contact_category",
- *   source_module = "contact"
+ *   source_provider = "contact"
  * )
  */
 class ContactCategory extends DrupalSqlBase {

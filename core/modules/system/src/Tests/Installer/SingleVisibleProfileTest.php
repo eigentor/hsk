@@ -21,20 +21,25 @@ class SingleVisibleProfileTest extends InstallerTestBase {
    */
   protected $profile = NULL;
 
+  /**
+   * The install profile info.
+   *
+   * @var array
+   */
+  protected $info;
+
   protected function setUp() {
-    $profiles = ['standard', 'demo_umami'];
-    foreach ($profiles as $profile) {
-      $info = [
-        'type' => 'profile',
-        'core' => \Drupal::CORE_COMPATIBILITY,
-        'name' => 'Override ' . $profile,
-        'hidden' => TRUE,
-      ];
-      // File API functions are not available yet.
-      $path = $this->siteDirectory . '/profiles/' . $profile;
-      mkdir($path, 0777, TRUE);
-      file_put_contents("$path/$profile.info.yml", Yaml::encode($info));
-    }
+    $this->info = [
+      'type' => 'profile',
+      'core' => \Drupal::CORE_COMPATIBILITY,
+      'name' => 'Override standard',
+      'hidden' => TRUE,
+    ];
+    // File API functions are not available yet.
+    $path = $this->siteDirectory . '/profiles/standard';
+    mkdir($path, 0777, TRUE);
+    file_put_contents("$path/standard.info.yml", Yaml::encode($this->info));
+
     parent::setUp();
   }
 

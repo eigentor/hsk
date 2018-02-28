@@ -23,7 +23,9 @@ abstract class Helper implements HelperInterface
     protected $helperSet = null;
 
     /**
-     * {@inheritdoc}
+     * Sets the helper set associated with this helper.
+     *
+     * @param HelperSet $helperSet A HelperSet instance
      */
     public function setHelperSet(HelperSet $helperSet = null)
     {
@@ -31,7 +33,9 @@ abstract class Helper implements HelperInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Gets the helper set associated with this helper.
+     *
+     * @return HelperSet|null
      */
     public function getHelperSet()
     {
@@ -52,24 +56,6 @@ abstract class Helper implements HelperInterface
         }
 
         return mb_strwidth($string, $encoding);
-    }
-
-    /**
-     * Returns the subset of a string, using mb_substr if it is available.
-     *
-     * @param string   $string String to subset
-     * @param int      $from   Start offset
-     * @param int|null $length Length to read
-     *
-     * @return string The string subset
-     */
-    public static function substr($string, $from, $length = null)
-    {
-        if (false === $encoding = mb_detect_encoding($string, null, true)) {
-            return substr($string, $from, $length);
-        }
-
-        return mb_substr($string, $from, $length, $encoding);
     }
 
     public static function formatTime($secs)
@@ -120,11 +106,6 @@ abstract class Helper implements HelperInterface
 
     public static function strlenWithoutDecoration(OutputFormatterInterface $formatter, $string)
     {
-        return self::strlen(self::removeDecoration($formatter, $string));
-    }
-
-    public static function removeDecoration(OutputFormatterInterface $formatter, $string)
-    {
         $isDecorated = $formatter->isDecorated();
         $formatter->setDecorated(false);
         // remove <...> formatting
@@ -133,6 +114,6 @@ abstract class Helper implements HelperInterface
         $string = preg_replace("/\033\[[^m]*m/", '', $string);
         $formatter->setDecorated($isDecorated);
 
-        return $string;
+        return self::strlen($string);
     }
 }

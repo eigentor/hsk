@@ -12,8 +12,6 @@ use Drupal\field_ui\FieldUI;
 
 /**
  * Provides a form for the field settings form.
- *
- * @internal
  */
 class FieldConfigEditForm extends EntityForm {
 

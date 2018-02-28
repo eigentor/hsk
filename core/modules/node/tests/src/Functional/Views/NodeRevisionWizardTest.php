@@ -45,19 +45,16 @@ class NodeRevisionWizardTest extends WizardTestBase {
     $view['show[wizard_key]'] = 'node_revision';
     $this->drupalPostForm('admin/structure/views/add', $view, t('Save and edit'));
 
-    $view = Views::getView($view['id']);
-    $view->initHandlers();
+    $view_storage_controller = \Drupal::entityManager()->getStorage('view');
+    /** @var \Drupal\views\Entity\View $view */
+    $view = $view_storage_controller->load($view['id']);
 
-    $this->assertEqual($view->getBaseTables(), ['node_field_revision' => TRUE, '#global' => TRUE]);
+    $this->assertEqual($view->get('base_table'), 'node_field_revision');
 
-    // Check for the default filters.
-    $this->assertEqual($view->filter['status']->table, 'node_field_revision');
-    $this->assertEqual($view->filter['status']->field, 'status');
-    $this->assertTrue($view->filter['status']->value);
+    $executable = Views::executableFactory()->get($view);
+    $this->executeView($executable);
 
-    $this->executeView($view);
-
-    $this->assertIdenticalResultset($view, [['vid' => 1], ['vid' => 3], ['vid' => 2], ['vid' => 4]],
+    $this->assertIdenticalResultset($executable, [['vid' => 1], ['vid' => 3], ['vid' => 2], ['vid' => 4]],
       ['vid' => 'vid']);
   }
 

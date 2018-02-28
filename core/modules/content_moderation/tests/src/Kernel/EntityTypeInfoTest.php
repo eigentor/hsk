@@ -20,7 +20,6 @@ class EntityTypeInfoTest extends KernelTestBase {
    */
   public static $modules = [
     'content_moderation',
-    'workflows',
     'entity_test',
   ];
 

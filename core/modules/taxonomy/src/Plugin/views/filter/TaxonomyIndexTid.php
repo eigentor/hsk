@@ -82,9 +82,7 @@ class TaxonomyIndexTid extends ManyToOne {
     }
   }
 
-  public function hasExtraOptions() {
-    return TRUE;
-  }
+  public function hasExtraOptions() { return TRUE; }
 
   /**
    * {@inheritdoc}

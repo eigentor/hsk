@@ -52,6 +52,7 @@ class ForumBlockTest extends BrowserTestBase {
     // Create 5 forum topics.
     $topics = $this->createForumTopics();
 
+
     $this->assertLink(t('More'), 0, 'New forum topics block has a "more"-link.');
     $this->assertLinkByHref('forum', 0, 'New forum topics block has a "more"-link.');
 
@@ -169,7 +170,7 @@ class ForumBlockTest extends BrowserTestBase {
       ];
 
       // Create the forum topic, preselecting the forum ID via a URL parameter.
-      $this->drupalPostForm('node/add/forum', $edit, t('Save'), ['query' => ['forum_id' => 1]]);
+      $this->drupalPostForm('node/add/forum', $edit, t('Save and publish'), ['query' => ['forum_id' => 1]]);
       $topics[] = $title;
     }
 

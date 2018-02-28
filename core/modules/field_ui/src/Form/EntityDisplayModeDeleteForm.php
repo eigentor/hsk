@@ -6,8 +6,6 @@ use Drupal\Core\Entity\EntityDeleteForm;
 
 /**
  * Provides the delete form for entity display modes.
- *
- * @internal
  */
 class EntityDisplayModeDeleteForm extends EntityDeleteForm {
 

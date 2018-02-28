@@ -41,13 +41,6 @@ class ThemeInitialization implements ThemeInitializationInterface {
   protected $extensions;
 
   /**
-   * The module handler.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected $moduleHandler;
-
-  /**
    * Constructs a new ThemeInitialization object.
    *
    * @param string $root

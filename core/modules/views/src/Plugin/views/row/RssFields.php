@@ -19,7 +19,7 @@ use Drupal\Core\Url;
 class RssFields extends RowPluginBase {
 
   /**
-   * Does the row plugin support to add fields to its output.
+   * Does the row plugin support to add fields to it's output.
    *
    * @var bool
    */

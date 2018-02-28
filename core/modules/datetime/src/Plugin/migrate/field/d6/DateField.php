@@ -2,8 +2,6 @@
 
 namespace Drupal\datetime\Plugin\migrate\field\d6;
 
-@trigger_error('DateField is deprecated in Drupal 8.4.x and will be removed before Drupal 9.0.x. Use \Drupal\datetime\Plugin\migrate\field\DateField instead.', E_USER_DEPRECATED);
-
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate_drupal\Plugin\migrate\field\FieldPluginBase;
@@ -16,13 +14,8 @@ use Drupal\migrate_drupal\Plugin\migrate\field\FieldPluginBase;
  *     "datestamp" =  "timestamp",
  *     "datetime" =  "datetime",
  *   },
- *   core = {6},
- *   source_module = "date",
- *   destination_module = "datetime"
+ *   core = {6}
  * )
- *
- * @deprecated in Drupal 8.4.x, to be removed before Drupal 9.0.x. Use
- * \Drupal\datetime\Plugin\migrate\field\DateField instead.
  */
 class DateField extends FieldPluginBase {
 
@@ -35,6 +28,15 @@ class DateField extends FieldPluginBase {
       'datetime' => 'datetime_default',
       'datestamp' => 'datetime_timestamp',
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFieldFormatterMap() {
+    // See d6_field_formatter_settings.yml and
+    // FieldPluginBase::processFieldFormatter().
+    return [];
   }
 
   /**
@@ -67,7 +69,7 @@ class DateField extends FieldPluginBase {
     ];
 
     $process = [
-      'plugin' => 'sub_process',
+      'plugin' => 'iterator',
       'source' => $field_name,
       'process' => $process,
     ];

@@ -8,8 +8,6 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Builds a simple form that redirects on submit.
  *
- * @internal
- *
  * @see \Drupal\form_test\Plugin\Block\RedirectFormBlock
  */
 class RedirectBlockForm extends FormBase {

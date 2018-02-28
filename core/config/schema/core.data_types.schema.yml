@@ -28,9 +28,6 @@ email:
 integer:
   label: 'Integer'
   class: '\Drupal\Core\TypedData\Plugin\DataType\IntegerData'
-timestamp:
-  label: 'Timestamp'
-  class: '\Drupal\Core\TypedData\Plugin\DataType\Timestamp'
 float:
   label: 'Float'
   class: '\Drupal\Core\TypedData\Plugin\DataType\FloatData'
@@ -49,7 +46,7 @@ mapping:
 sequence:
   label: Sequence
   class: '\Drupal\Core\Config\Schema\Sequence'
-  definition_class: '\Drupal\Core\Config\Schema\SequenceDataDefinition'
+  definition_class: '\Drupal\Core\TypedData\ListDataDefinition'
 
 # Simple extended data types:
 
@@ -74,13 +71,6 @@ text:
   type: string
   label: 'Text'
   translatable: true
-
-# A UUID.
-uuid:
-  type: string
-  label: 'UUID'
-  constraints:
-    Uuid: {}
 
 # PHP Date format string that is translatable.
 date_format:
@@ -216,6 +206,23 @@ theme_settings:
       sequence:
         type: theme_settings.third_party.[%key]
 
+views_field_bulk_form:
+  type: views_field
+  label: 'Bulk operation'
+  mapping:
+    action_title:
+      type: label
+      label: 'Action title'
+    include_exclude:
+      type: string
+      label: 'Available actions'
+    selected_actions:
+      type: sequence
+      label: 'Available actions'
+      sequence:
+        type: string
+        label: 'Action'
+
 # Array of routes with route_name and route_params keys.
 route:
   type: mapping
@@ -268,7 +275,7 @@ config_entity:
   type: mapping
   mapping:
     uuid:
-      type: uuid
+      type: string
       label: 'UUID'
     langcode:
       type: string
@@ -286,9 +293,6 @@ config_entity:
         type: '[%parent.%parent.%type].third_party.[%key]'
     _core:
       type: _core_config_info
-
-block.settings.*:
-  type: block_settings
 
 block_settings:
   type: mapping
@@ -332,7 +336,8 @@ condition.plugin:
       type: boolean
       label: 'Negate'
     uuid:
-      type: uuid
+      type: string
+      label: 'UUID'
     context_mapping:
       type: sequence
       label: 'Context assignments'
@@ -353,7 +358,8 @@ display_variant.plugin:
       type: integer
       label: 'Weight'
     uuid:
-      type: uuid
+      type: string
+      label: 'UUID'
 
 layout_plugin.settings:
   type: mapping
@@ -596,7 +602,8 @@ field.value.entity_reference:
       type: string
       label: 'Value'
     target_uuid:
-      type: uuid
+      type: string
+      label: 'Target UUID'
 
 # Schema for the configuration of the Boolean field type.
 
@@ -746,16 +753,6 @@ field.value.float:
       type: float
       label: 'Value'
 
-# Schema for the configuration of the Timestamp field type.
-
-field.value.timestamp:
-  type: mapping
-  label: 'Timestamp value'
-  mapping:
-    value:
-      type: timestamp
-      label: 'Value'
-
 # Text with a text format.
 text_format:
   type: mapping
@@ -779,24 +776,11 @@ text_format:
       # The text format should not be translated as part of the string
       # translation system, so this is not marked as translatable.
 
-# Base schema for all entity reference selection handler schemas.
+# Schema for the configuration of the Entity reference selection plugins.
+
 entity_reference_selection:
   type: mapping
-  label: 'Entity reference selection handler settings'
-  mapping:
-    target_type:
-      type: string
-      label: 'Type of item to reference'
-
-# Schema for all entity reference selection handlers that are not providing a
-# specific schema.
-entity_reference_selection.*:
-  type: entity_reference_selection
-
-# Schema for the entity reference 'default' selection handler settings.
-entity_reference_selection.default:
-  type: entity_reference_selection
-  label: 'Default selection handler settings'
+  label: 'Entity reference selection plugin configuration'
   mapping:
     target_bundles:
       type: sequence
@@ -804,7 +788,7 @@ entity_reference_selection.default:
       nullable: true
       sequence:
         type: string
-        label: 'Bundle'
+        label: 'Type'
     sort:
       type: mapping
       label: 'Sort settings'
@@ -822,7 +806,5 @@ entity_reference_selection.default:
       type: string
       label: 'Bundle assigned to the auto-created entities.'
 
-# Schema for all entity reference 'default:*' selection handlers that are not
-# providing a specific schema.
-entity_reference_selection.default:*:
-  type: entity_reference_selection.default
+entity_reference_selection.*:
+  type: entity_reference_selection

@@ -7,8 +7,6 @@ use Drupal\Core\Url;
 
 /**
  * Provides a delete form for content menu links.
- *
- * @internal
  */
 class MenuLinkContentDeleteForm extends ContentEntityDeleteForm {
 

@@ -3,7 +3,7 @@
 namespace Drupal\Tests\Component\Utility;
 
 use Drupal\Component\Utility\Environment;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Test PHP Environment helper methods.
@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversDefaultClass \Drupal\Component\Utility\Environment
  */
-class EnvironmentTest extends TestCase {
+class EnvironmentTest extends UnitTestCase {
 
   /**
    * Tests \Drupal\Component\Utility\Environment::checkMemoryLimit().

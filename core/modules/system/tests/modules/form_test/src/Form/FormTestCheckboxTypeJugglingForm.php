@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Builds a form to test return values for checkboxes.
- *
- * @internal
  */
 class FormTestCheckboxTypeJugglingForm extends FormBase {
 

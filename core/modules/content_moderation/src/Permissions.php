@@ -7,8 +7,6 @@ use Drupal\workflows\Entity\Workflow;
 
 /**
  * Defines a class for dynamic permissions based on transitions.
- *
- * @internal
  */
 class Permissions {
 
@@ -24,11 +22,11 @@ class Permissions {
     $permissions = [];
     /** @var \Drupal\workflows\WorkflowInterface $workflow */
     foreach (Workflow::loadMultipleByType('content_moderation') as $id => $workflow) {
-      foreach ($workflow->getTypePlugin()->getTransitions() as $transition) {
+      foreach ($workflow->getTransitions() as $transition) {
         $permissions['use ' . $workflow->id() . ' transition ' . $transition->id()] = [
-          'title' => $this->t('%workflow workflow: Use %transition transition.', [
-            '%workflow' => $workflow->label(),
+          'title' => $this->t('Use %transition transition from %workflow workflow.', [
             '%transition' => $transition->label(),
+            '%workflow' => $workflow->label(),
           ]),
         ];
       }

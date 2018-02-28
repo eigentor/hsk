@@ -10,7 +10,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  *
  * @MigrateSource(
  *   id = "d6_field_instance",
- *   source_module = "content"
+ *   source_provider = "content"
  * )
  */
 class FieldInstance extends DrupalSqlBase {

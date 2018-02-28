@@ -49,6 +49,7 @@ class BooleanOperator extends FilterPluginBase {
   public $accept_null = FALSE;
 
 
+
   /**
    * {@inheritdoc}
    */

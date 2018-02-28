@@ -6,7 +6,6 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\Schema\ConfigSchemaAlterException;
 use Drupal\Core\Config\Schema\ConfigSchemaDiscovery;
-use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\Config\Schema\Undefined;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\TypedData\TypedDataManager;
@@ -46,18 +45,13 @@ class TypedConfigManager extends TypedDataManager implements TypedConfigManagerI
    *   The storage object to use for reading schema data
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   The cache backend to use for caching the definitions.
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
-   *   The module handler.
-   * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $class_resolver
-   *   (optional) The class resolver.
    */
-  public function __construct(StorageInterface $configStorage, StorageInterface $schemaStorage, CacheBackendInterface $cache, ModuleHandlerInterface $module_handler, ClassResolverInterface $class_resolver = NULL) {
+  public function __construct(StorageInterface $configStorage, StorageInterface $schemaStorage, CacheBackendInterface $cache, ModuleHandlerInterface $module_handler) {
     $this->configStorage = $configStorage;
     $this->schemaStorage = $schemaStorage;
     $this->setCacheBackend($cache, 'typed_config_definitions');
     $this->alterInfo('config_schema_info');
     $this->moduleHandler = $module_handler;
-    $this->classResolver = $class_resolver ?: \Drupal::service('class_resolver');
   }
 
   /**
@@ -75,7 +69,9 @@ class TypedConfigManager extends TypedDataManager implements TypedConfigManagerI
    */
   public function get($name) {
     $data = $this->configStorage->read($name);
-    return $this->createFromNameAndData($name, $data);
+    $type_definition = $this->getDefinition($name);
+    $data_definition = $this->buildDataDefinition($type_definition, $data);
+    return $this->create($data_definition, $data);
   }
 
   /**
@@ -188,7 +184,6 @@ class TypedConfigManager extends TypedDataManager implements TypedConfigManagerI
     $definition += [
       'definition_class' => '\Drupal\Core\TypedData\DataDefinition',
       'type' => $type,
-      'unwrap_for_canonical_representation' => TRUE,
     ];
     return $definition;
   }
@@ -383,15 +378,6 @@ class TypedConfigManager extends TypedDataManager implements TypedConfigManagerI
       }
       throw new ConfigSchemaAlterException($message);
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function createFromNameAndData($config_name, array $config_data) {
-    $definition = $this->getDefinition($config_name);
-    $data_definition = $this->buildDataDefinition($definition, $config_data);
-    return $this->create($data_definition, $config_data);
   }
 
 }

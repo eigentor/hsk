@@ -63,6 +63,7 @@ class EntityDisplayFormBaseTest extends KernelTestBase {
       ])
       ->shouldBeCalled();
 
+
     // An initially visible field, with a submitted region change.
     $entity->getComponent('field_start_visible_change_region')
       ->willReturn([

@@ -5,8 +5,6 @@
  * Hooks related to the Database system and the Schema API.
  */
 
-use Drupal\Core\Database\Query\Condition;
-
 /**
  * @defgroup database Database abstraction layer
  * @{
@@ -434,11 +432,11 @@ function hook_query_TAG_alter(Drupal\Core\Database\Query\AlterableInterface $que
     if (!\Drupal::currentUser()->hasPermission('bypass node access')) {
       // The node_access table has the access grants for any given node.
       $access_alias = $query->join('node_access', 'na', '%alias.nid = n.nid');
-      $or = new Condition('OR');
+      $or = db_or();
       // If any grant exists for the specified user, then user has access to the node for the specified operation.
       foreach (node_access_grants($op, $query->getMetaData('account')) as $realm => $gids) {
         foreach ($gids as $gid) {
-          $or->condition((new Condition('AND'))
+          $or->condition(db_and()
             ->condition($access_alias . '.gid', $gid)
             ->condition($access_alias . '.realm', $realm)
           );

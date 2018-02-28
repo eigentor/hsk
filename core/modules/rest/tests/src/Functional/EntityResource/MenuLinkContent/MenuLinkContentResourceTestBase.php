@@ -3,15 +3,12 @@
 namespace Drupal\Tests\rest\Functional\EntityResource\MenuLinkContent;
 
 use Drupal\menu_link_content\Entity\MenuLinkContent;
-use Drupal\Tests\rest\Functional\BcTimestampNormalizerUnixTestTrait;
 use Drupal\Tests\rest\Functional\EntityResource\EntityResourceTestBase;
 
 /**
  * ResourceTestBase for MenuLinkContent entity.
  */
 abstract class MenuLinkContentResourceTestBase extends EntityResourceTestBase {
-
-  use BcTimestampNormalizerUnixTestTrait;
 
   /**
    * {@inheritdoc}
@@ -164,7 +161,9 @@ abstract class MenuLinkContentResourceTestBase extends EntityResourceTestBase {
         ],
       ],
       'changed' => [
-        $this->formatExpectedTimestampItemValues($this->entity->getChangedTime()),
+        [
+          'value' => $this->entity->getChangedTime(),
+        ],
       ],
       'default_langcode' => [
         [

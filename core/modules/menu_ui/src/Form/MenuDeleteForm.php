@@ -10,8 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a confirmation form for deletion of a custom menu.
- *
- * @internal
  */
 class MenuDeleteForm extends EntityDeleteForm {
 

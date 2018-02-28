@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form to select the administration theme.
- *
- * @internal
  */
 class ThemeAdminForm extends ConfigFormBase {
 

@@ -6,6 +6,7 @@ use Drupal\views_test_data\Plugin\views\join\JoinTest as JoinTestPlugin;
 use Drupal\views\Plugin\views\join\JoinPluginBase;
 use Drupal\views\Views;
 
+
 /**
  * Tests the join plugin.
  *

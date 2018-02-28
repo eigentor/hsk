@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Generate form of id batch_test_simple_form.
- *
- * @internal
  */
 class BatchTestSimpleForm extends FormBase {
 

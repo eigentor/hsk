@@ -15,8 +15,6 @@ use Drupal\Core\Render\Element\PathElement;
 
 /**
  * Base form for contact form edit forms.
- *
- * @internal
  */
 class ContactFormEditForm extends EntityForm implements ContainerInjectionInterface {
   use ConfigFormBaseTrait;

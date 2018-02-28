@@ -36,11 +36,12 @@ class XmlFileLoader extends FileLoader
     public function loadClassMetadata(ClassMetadataInterface $classMetadata)
     {
         if (null === $this->classes) {
-            $this->classes = $this->getClassesFromXml();
-        }
+            $this->classes = array();
+            $xml = $this->parseFile($this->file);
 
-        if (!$this->classes) {
-            return false;
+            foreach ($xml->class as $class) {
+                $this->classes[(string) $class['name']] = $class;
+            }
         }
 
         $attributesMetadata = $classMetadata->getAttributesMetadata();
@@ -61,30 +62,12 @@ class XmlFileLoader extends FileLoader
                 foreach ($attribute->group as $group) {
                     $attributeMetadata->addGroup((string) $group);
                 }
-
-                if (isset($attribute['max-depth'])) {
-                    $attributeMetadata->setMaxDepth((int) $attribute['max-depth']);
-                }
             }
 
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * Return the names of the classes mapped in this file.
-     *
-     * @return string[] The classes names
-     */
-    public function getMappedClasses()
-    {
-        if (null === $this->classes) {
-            $this->classes = $this->getClassesFromXml();
-        }
-
-        return array_keys($this->classes);
     }
 
     /**
@@ -105,17 +88,5 @@ class XmlFileLoader extends FileLoader
         }
 
         return simplexml_import_dom($dom);
-    }
-
-    private function getClassesFromXml()
-    {
-        $xml = $this->parseFile($this->file);
-        $classes = array();
-
-        foreach ($xml->class as $class) {
-            $classes[(string) $class['name']] = $class;
-        }
-
-        return $classes;
     }
 }

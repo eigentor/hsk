@@ -1,7 +1,6 @@
 <?php
 
 namespace Drupal\Tests\file\Kernel\Migrate\d6;
-
 use Drupal\migrate\Plugin\MigrationInterface;
 
 /**

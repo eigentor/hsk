@@ -2,12 +2,10 @@
 
 namespace Drupal\Tests\Component\Serialization;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * Provides standard data to validate different YAML implementations.
  */
-abstract class YamlTestBase extends TestCase {
+abstract class YamlTestBase extends \PHPUnit_Framework_TestCase {
 
   /**
    * Some data that should be able to be serialized.

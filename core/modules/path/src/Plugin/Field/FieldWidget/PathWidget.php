@@ -5,6 +5,7 @@ namespace Drupal\path\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
@@ -25,6 +26,23 @@ class PathWidget extends WidgetBase {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $entity = $items->getEntity();
+    $path = [];
+    if (!$entity->isNew()) {
+      $conditions = ['source' => '/' . $entity->urlInfo()->getInternalPath()];
+      if ($items->getLangcode() != LanguageInterface::LANGCODE_NOT_SPECIFIED) {
+        $conditions['langcode'] = $items->getLangcode();
+      }
+      $path = \Drupal::service('path.alias_storage')->load($conditions);
+      if ($path === FALSE) {
+        $path = [];
+      }
+    }
+    $path += [
+      'pid' => NULL,
+      'source' => !$entity->isNew() ? '/' . $entity->urlInfo()->getInternalPath() : NULL,
+      'alias' => '',
+      'langcode' => $items->getLangcode(),
+    ];
 
     $element += [
       '#element_validate' => [[get_class($this), 'validateFormElement']],
@@ -32,22 +50,22 @@ class PathWidget extends WidgetBase {
     $element['alias'] = [
       '#type' => 'textfield',
       '#title' => $element['#title'],
-      '#default_value' => $items[$delta]->alias,
+      '#default_value' => $path['alias'],
       '#required' => $element['#required'],
       '#maxlength' => 255,
       '#description' => $this->t('Specify an alternative path by which this data can be accessed. For example, type "/about" when writing an about page.'),
     ];
     $element['pid'] = [
       '#type' => 'value',
-      '#value' => $items[$delta]->pid,
+      '#value' => $path['pid'],
     ];
     $element['source'] = [
       '#type' => 'value',
-      '#value' => !$entity->isNew() ? '/' . $entity->toUrl()->getInternalPath() : NULL,
-     ];
+      '#value' => $path['source'],
+    ];
     $element['langcode'] = [
       '#type' => 'value',
-      '#value' => $items[$delta]->langcode,
+      '#value' => $path['langcode'],
     ];
     return $element;
   }

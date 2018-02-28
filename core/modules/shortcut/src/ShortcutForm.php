@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form handler for the shortcut entity forms.
- *
- * @internal
  */
 class ShortcutForm extends ContentEntityForm {
 

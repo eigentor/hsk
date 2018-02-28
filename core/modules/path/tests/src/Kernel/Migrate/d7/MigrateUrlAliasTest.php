@@ -48,9 +48,7 @@ class MigrateUrlAliasTest extends MigrateDrupal7TestBase {
    * Test the URL alias migration.
    */
   public function testUrlAlias() {
-    $alias_storage = $this->container->get('path.alias_storage');
-
-    $path = $alias_storage->load([
+    $path = \Drupal::service('path.alias_storage')->load([
       'source' => '/taxonomy/term/4',
       'alias' => '/term33',
       'langcode' => 'und',
@@ -58,11 +56,6 @@ class MigrateUrlAliasTest extends MigrateDrupal7TestBase {
     $this->assertIdentical('/taxonomy/term/4', $path['source']);
     $this->assertIdentical('/term33', $path['alias']);
     $this->assertIdentical('und', $path['langcode']);
-
-    // Alias with no slash.
-    $path = $alias_storage->load(['alias' => '/source-noslash']);
-    $this->assertSame('/admin', $path['source']);
-    $this->assertSame('und', $path['langcode']);
   }
 
   /**

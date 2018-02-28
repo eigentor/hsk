@@ -2,13 +2,13 @@
 
 namespace Drupal\Tests\Component\Plugin;
 
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\Component\Plugin\PluginBase
  * @group Plugin
  */
-class PluginBaseTest extends TestCase {
+class PluginBaseTest extends UnitTestCase {
 
   /**
    * @dataProvider providerTestGetPluginId

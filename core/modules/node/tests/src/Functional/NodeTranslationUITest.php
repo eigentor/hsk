@@ -21,15 +21,13 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
    */
   protected $defaultCacheContexts = [
     'languages:language_interface',
+    'session',
     'theme',
     'route',
     'timezone',
     'url.path.parent',
     'url.query_args:_wrapper_format',
-    'user.roles',
-    // These two cache contexts are added by BigPipe.
-    'cookies:big_pipe_nojs',
-    'session.exists',
+    'user'
   ];
 
   /**
@@ -101,9 +99,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
       'source' => $default_langcode,
       'target' => $langcode
     ], ['language' => $language]);
-    $edit = $this->getEditValues($values, $langcode);
-    $edit['status[value]'] = FALSE;
-    $this->drupalPostForm($add_url, $edit, t('Save (this translation)'));
+    $this->drupalPostForm($add_url, $this->getEditValues($values, $langcode), t('Save and unpublish (this translation)'));
 
     $storage->resetCache([$this->entityId]);
     $entity = $storage->load($this->entityId);
@@ -143,6 +139,18 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
   /**
    * {@inheritdoc}
    */
+  protected function getFormSubmitAction(EntityInterface $entity, $langcode) {
+    if ($entity->getTranslation($langcode)->isPublished()) {
+      return t('Save and keep published') . $this->getFormSubmitSuffix($entity, $langcode);
+    }
+    else {
+      return t('Save and keep unpublished') . $this->getFormSubmitSuffix($entity, $langcode);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function doTestPublishedStatus() {
     $storage = $this->container->get('entity_type.manager')
       ->getStorage($this->entityTypeId);
@@ -150,18 +158,18 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
     $entity = $storage->load($this->entityId);
     $languages = $this->container->get('language_manager')->getLanguages();
 
-    $statuses = [
-      TRUE,
-      FALSE,
+    $actions = [
+      t('Save and keep published'),
+      t('Save and unpublish'),
     ];
 
-    foreach ($statuses as $index => $value) {
+    foreach ($actions as $index => $action) {
       // (Un)publish the node translations and check that the translation
       // statuses are (un)published accordingly.
       foreach ($this->langcodes as $langcode) {
         $options = ['language' => $languages[$langcode]];
         $url = $entity->urlInfo('edit-form', $options);
-        $this->drupalPostForm($url, ['status[value]' => $value], t('Save') . $this->getFormSubmitSuffix($entity, $langcode), $options);
+        $this->drupalPostForm($url, [], $action . $this->getFormSubmitSuffix($entity, $langcode), $options);
       }
       $storage->resetCache([$this->entityId]);
       $entity = $storage->load($this->entityId);

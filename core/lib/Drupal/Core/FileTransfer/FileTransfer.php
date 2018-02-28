@@ -115,7 +115,7 @@ abstract class FileTransfer {
    * @param string $destination
    *   The destination path.
    */
-  final public function copyDirectory($source, $destination) {
+  public final function copyDirectory($source, $destination) {
     $source = $this->sanitizePath($source);
     $destination = $this->fixRemotePath($destination);
     $this->checkPath($destination);
@@ -136,7 +136,7 @@ abstract class FileTransfer {
    *
    * @see http://php.net/chmod
    */
-  final public function chmod($path, $mode, $recursive = FALSE) {
+  public final function chmod($path, $mode, $recursive = FALSE) {
     if (!($this instanceof ChmodInterface)) {
       throw new FileTransferException('Unable to change file permissions');
     }
@@ -152,7 +152,7 @@ abstract class FileTransfer {
    * @param string $directory
    *   The directory to be created.
    */
-  final public function createDirectory($directory) {
+  public final function createDirectory($directory) {
     $directory = $this->fixRemotePath($directory);
     $this->checkPath($directory);
     $this->createDirectoryJailed($directory);
@@ -164,7 +164,7 @@ abstract class FileTransfer {
    * @param string $directory
    *   The directory to be removed.
    */
-  final public function removeDirectory($directory) {
+  public final function removeDirectory($directory) {
     $directory = $this->fixRemotePath($directory);
     $this->checkPath($directory);
     $this->removeDirectoryJailed($directory);
@@ -178,7 +178,7 @@ abstract class FileTransfer {
    * @param string $destination
    *   The destination file.
    */
-  final public function copyFile($source, $destination) {
+  public final function copyFile($source, $destination) {
     $source = $this->sanitizePath($source);
     $destination = $this->fixRemotePath($destination);
     $this->checkPath($destination);
@@ -191,7 +191,7 @@ abstract class FileTransfer {
    * @param string $destination
    *   The destination file to be removed.
    */
-  final public function removeFile($destination) {
+  public final function removeFile($destination) {
     $destination = $this->fixRemotePath($destination);
     $this->checkPath($destination);
     $this->removeFileJailed($destination);
@@ -205,10 +205,9 @@ abstract class FileTransfer {
    *
    * @throws \Drupal\Core\FileTransfer\FileTransferException
    */
-  final protected function checkPath($path) {
+  protected final function checkPath($path) {
     $full_jail = $this->chroot . $this->jail;
-    $full_path = \Drupal::service('file_system')
-      ->realpath(substr($this->chroot . $path, 0, strlen($full_jail)));
+    $full_path = drupal_realpath(substr($this->chroot . $path, 0, strlen($full_jail)));
     $full_path = $this->fixRemotePath($full_path, FALSE);
     if ($full_jail !== $full_path) {
       throw new FileTransferException('@directory is outside of the @jail', NULL, ['@directory' => $path, '@jail' => $this->jail]);
@@ -230,10 +229,9 @@ abstract class FileTransfer {
    * @return string
    *   The modified path.
    */
-  final protected function fixRemotePath($path, $strip_chroot = TRUE) {
+  protected final function fixRemotePath($path, $strip_chroot = TRUE) {
     $path = $this->sanitizePath($path);
-    // Strip out windows driveletter if its there.
-    $path = preg_replace('|^([a-z]{1}):|i', '', $path);
+    $path = preg_replace('|^([a-z]{1}):|i', '', $path); // Strip out windows driveletter if its there.
     if ($strip_chroot) {
       if ($this->chroot && strpos($path, $this->chroot) === 0) {
         $path = ($path == $this->chroot) ? '' : substr($path, strlen($this->chroot));
@@ -252,8 +250,7 @@ abstract class FileTransfer {
    *   The modified path.
    */
   public function sanitizePath($path) {
-    // Windows path sanitization.
-    $path = str_replace('\\', '/', $path);
+    $path = str_replace('\\', '/', $path); // Windows path sanitization.
     if (substr($path, -1) == '/') {
       $path = substr($path, 0, -1);
     }

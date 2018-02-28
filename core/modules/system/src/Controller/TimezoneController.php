@@ -24,7 +24,7 @@ class TimezoneController {
    *   Daylight saving time indicator. If abbr does not exist then the time
    *   zone is searched solely by offset and isdst.
    *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   * @return JsonResponse
    *   The timezone name in JsonResponse object.
    */
   public function getTimezone($abbreviation = '', $offset = -1, $is_daylight_saving_time = NULL) {

@@ -166,7 +166,7 @@ abstract class ImageToolkitOperationBase extends PluginBase implements ImageTool
   /**
    * {@inheritdoc}
    */
-  final public function apply(array $arguments) {
+  public final function apply(array $arguments) {
     $arguments = $this->prepareArguments($arguments);
     $arguments = $this->validateArguments($arguments);
     return $this->execute($arguments);

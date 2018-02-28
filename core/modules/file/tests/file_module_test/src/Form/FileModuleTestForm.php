@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form controller for file_module_test module.
- *
- * @internal
  */
 class FileModuleTestForm extends FormBase {
 

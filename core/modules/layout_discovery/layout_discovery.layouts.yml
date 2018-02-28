@@ -5,8 +5,6 @@ layout_onecol:
   library: layout_discovery/onecol
   category: 'Columns: 1'
   default_region: content
-  icon_map:
-    - [content]
   regions:
     content:
       label: Content
@@ -18,10 +16,6 @@ layout_twocol:
   library: layout_discovery/twocol
   category: 'Columns: 2'
   default_region: first
-  icon_map:
-    - [top]
-    - [first, second]
-    - [bottom]
   regions:
     top:
       label: Top
@@ -39,12 +33,6 @@ layout_twocol_bricks:
   library: layout_discovery/twocol_bricks
   category: 'Columns: 2'
   default_region: middle
-  icon_map:
-    - [top]
-    - [first_above, second_above]
-    - [middle]
-    - [first_below, second_below]
-    - [bottom]
   regions:
     top:
       label: Top
@@ -68,10 +56,6 @@ layout_threecol_25_50_25:
   library: layout_discovery/threecol_25_50_25
   category: 'Columns: 3'
   default_region: second
-  icon_map:
-    - [top]
-    - [first, second, second, third]
-    - [bottom]
   regions:
     top:
       label: Top
@@ -91,10 +75,6 @@ layout_threecol_33_34_33:
   library: layout_discovery/threecol_33_34_33
   category: 'Columns: 3'
   default_region: first
-  icon_map:
-    - [top]
-    - [first, second, third]
-    - [bottom]
   regions:
     top:
       label: Top

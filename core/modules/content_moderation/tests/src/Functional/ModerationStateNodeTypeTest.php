@@ -11,9 +11,6 @@ class ModerationStateNodeTypeTest extends ModerationStateTestBase {
 
   /**
    * A node type without moderation state disabled.
-   *
-   * @covers \Drupal\content_moderation\EntityTypeInfo::formAlter
-   * @covers \Drupal\content_moderation\Entity\Handler\NodeModerationHandler::enforceRevisionsBundleFormAlter
    */
   public function testNotModerated() {
     $this->drupalLogin($this->adminUser);
@@ -21,22 +18,19 @@ class ModerationStateNodeTypeTest extends ModerationStateTestBase {
     $this->assertText('The content type Not moderated has been added.');
     $this->grantUserPermissionToCreateContentOfType($this->adminUser, 'not_moderated');
     $this->drupalGet('node/add/not_moderated');
-    $this->assertRaw('Save');
+    $this->assertRaw('Save as unpublished');
     $this->drupalPostForm(NULL, [
       'title[0][value]' => 'Test',
-    ], t('Save'));
+    ], t('Save and publish'));
     $this->assertText('Not moderated Test has been created.');
   }
 
   /**
    * Tests enabling moderation on an existing node-type, with content.
-   *
-   * @covers \Drupal\content_moderation\EntityTypeInfo::formAlter
-   * @covers \Drupal\content_moderation\Entity\Handler\NodeModerationHandler::enforceRevisionsBundleFormAlter
    */
   public function testEnablingOnExistingContent() {
     $editor_permissions = [
-      'administer workflows',
+      'administer content moderation',
       'access administration pages',
       'administer content types',
       'administer nodes',
@@ -59,11 +53,20 @@ class ModerationStateNodeTypeTest extends ModerationStateTestBase {
     $this->drupalGet('node/add/not_moderated');
     $this->drupalPostForm(NULL, [
       'title[0][value]' => 'Test',
-    ], t('Save'));
+    ], t('Save and publish'));
     $this->assertText('Not moderated Test has been created.');
 
-    // Now enable moderation state.
-    $this->enableModerationThroughUi('not_moderated');
+    // Now enable moderation state, ensuring all the expected links and tabs are
+    // present.
+    $this->drupalGet('admin/structure/types');
+    $this->assertLinkByHref('admin/structure/types/manage/not_moderated/moderation');
+    $this->drupalGet('admin/structure/types/manage/not_moderated');
+    $this->assertLinkByHref('admin/structure/types/manage/not_moderated/moderation');
+    $this->drupalGet('admin/structure/types/manage/not_moderated/moderation');
+    $this->assertOptionSelected('edit-workflow', '');
+    $this->assertNoLink('Delete');
+    $edit['workflow'] = 'editorial';
+    $this->drupalPostForm(NULL, $edit, t('Save'));
 
     // And make sure it works.
     $nodes = \Drupal::entityTypeManager()->getStorage('node')
@@ -78,14 +81,14 @@ class ModerationStateNodeTypeTest extends ModerationStateTestBase {
     $this->assertLinkByHref('node/' . $node->id() . '/edit');
     $this->drupalGet('node/' . $node->id() . '/edit');
     $this->assertResponse(200);
-    $this->assertSession()->optionExists('moderation_state[0][state]', 'draft');
-    $this->assertSession()->optionNotExists('moderation_state[0][state]', 'published');
+    $this->assertRaw('Save and Create New Draft');
+    $this->assertNoRaw('Save and Publish');
 
     $this->drupalLogin($editor_with_publish);
     $this->drupalGet('node/' . $node->id() . '/edit');
     $this->assertResponse(200);
-    $this->assertSession()->optionExists('moderation_state[0][state]', 'draft');
-    $this->assertSession()->optionExists('moderation_state[0][state]', 'published');
+    $this->assertRaw('Save and Create New Draft');
+    $this->assertRaw('Save and Publish');
   }
 
 }

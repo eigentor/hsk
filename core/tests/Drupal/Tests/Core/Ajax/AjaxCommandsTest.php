@@ -25,7 +25,6 @@ use Drupal\Core\Ajax\SetDialogOptionCommand;
 use Drupal\Core\Ajax\SetDialogTitleCommand;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Ajax\UpdateBuildIdCommand;
-use Drupal\Core\Ajax\OpenDialogCommand;
 
 /**
  * Test coverage for various classes in the \Drupal\Core\Ajax namespace.
@@ -294,16 +293,27 @@ class AjaxCommandsTest extends UnitTestCase {
    * @covers \Drupal\Core\Ajax\OpenDialogCommand
    */
   public function testOpenDialogCommand() {
-    $command = new OpenDialogCommand('#some-dialog', 'Title', '<p>Text!</p>', [
-      'url' => FALSE,
-      'width' => 500,
-    ]);
+    $command = $this->getMockBuilder('Drupal\Core\Ajax\OpenDialogCommand')
+      ->setConstructorArgs([
+        '#some-dialog', 'Title', '<p>Text!</p>', [
+          'url' => FALSE,
+          'width' => 500,
+        ],
+      ])
+      ->setMethods(['getRenderedContent'])
+      ->getMock();
+
+    // This method calls the render service, which isn't available. We want it
+    // to do nothing so we mock it to return a known value.
+    $command->expects($this->once())
+      ->method('getRenderedContent')
+      ->willReturn('rendered content');
 
     $expected = [
       'command' => 'openDialog',
       'selector' => '#some-dialog',
       'settings' => NULL,
-      'data' => '<p>Text!</p>',
+      'data' => 'rendered content',
       'dialogOptions' => [
         'url' => FALSE,
         'width' => 500,
@@ -311,10 +321,6 @@ class AjaxCommandsTest extends UnitTestCase {
         'modal' => FALSE,
       ],
     ];
-    $this->assertEquals($expected, $command->render());
-
-    $command->setDialogTitle('New title');
-    $expected['dialogOptions']['title'] = 'New title';
     $this->assertEquals($expected, $command->render());
   }
 

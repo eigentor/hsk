@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Configure logging settings for this site.
- *
- * @internal
  */
 class LoggingForm extends ConfigFormBase {
 

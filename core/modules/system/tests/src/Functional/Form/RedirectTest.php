@@ -34,6 +34,7 @@ class RedirectTest extends BrowserTestBase {
     $this->drupalPostForm($path, $edit, t('Submit'));
     $this->assertUrl($edit['destination'], [], 'Basic redirection works.');
 
+
     // Test without redirection.
     $edit = [
       'redirection' => FALSE,

@@ -2,10 +2,9 @@
 
 namespace Drupal\search\Form;
 
-use Drupal\Core\Form\FormBase;
+use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\search\SearchPageInterface;
 
 /**
  * Provides a search form for site wide search.
@@ -15,13 +14,11 @@ use Drupal\search\SearchPageInterface;
  * submit, making sure to redirect with a GET parameter of 'keys' included, to
  * trigger the search being processed by the controller, and adding in any
  * additional query parameters they need to execute search.
- *
- * @internal
  */
-class SearchPageForm extends FormBase {
+class SearchPageForm extends EntityForm {
 
   /**
-   * The search page entity.
+   * {@inheritdoc}
    *
    * @var \Drupal\search\SearchPageInterface
    */
@@ -37,9 +34,7 @@ class SearchPageForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, SearchPageInterface $search_page = NULL) {
-    $this->entity = $search_page;
-
+  public function form(array $form, FormStateInterface $form_state) {
     $plugin = $this->entity->getPlugin();
     $form_state->set('search_page_id', $this->entity->id());
 
@@ -77,7 +72,16 @@ class SearchPageForm extends FormBase {
 
     // Allow the plugin to add to or alter the search form.
     $plugin->searchFormAlter($form, $form_state);
-    return $form;
+
+    return parent::form($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function actions(array $form, FormStateInterface $form_state) {
+    // The submit button is added in the form directly.
+    return [];
   }
 
   /**

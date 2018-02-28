@@ -22,8 +22,8 @@ use Drupal\migrate\MigrateSkipRowException;
  *   - process: Prevents further processing of the input property when the value
  *     is empty.
  * - message: (optional) A message to be logged in the {migrate_message_*} table
- *   for this row. Messages are only logged for the 'row' method. If not set,
- *   nothing is logged in the message table.
+ *   for this row. Messages are only logged for the 'row' skip level. If not
+ *   set, nothing is logged in the message table.
  *
  * Examples:
  *
@@ -33,10 +33,11 @@ use Drupal\migrate\MigrateSkipRowException;
  *     plugin: skip_on_empty
  *     method: row
  *     source: field_name
- *     message: 'Field field_name is missing'
+ *     message: 'Field field_name is missed'
  * @endcode
- * If 'field_name' is empty, the entire row is skipped and the message 'Field
- * field_name is missing' is logged in the message table.
+ *
+ * If field_name is empty, skips the entire row and the message 'Field
+ * field_name is missed' is logged in the message table.
  *
  * @code
  * process:
@@ -46,13 +47,12 @@ use Drupal\migrate\MigrateSkipRowException;
  *       method: process
  *       source: parent
  *     -
- *       plugin: migration_lookup
+ *       plugin: migration
  *       migration: d6_taxonomy_term
  * @endcode
- * If 'parent' is empty, any further processing of the property is skipped and
- * the next process plugin (migration_lookup) will not be run. Combining
- * skip_on_empty and migration_lookup is a typical process pipeline combination
- * for hierarchical entities where the root entity does not have a parent.
+ *
+ * If parent is empty, any further processing of the property is skipped - thus,
+ * the next plugin (migration) will not be run.
  *
  * @see \Drupal\migrate\Plugin\MigrateProcessInterface
  *

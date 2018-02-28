@@ -16,7 +16,8 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Validates Requests.
+ * Validates that the headers and other information indicating the
+ * client IP address of a request are consistent.
  *
  * @author Magnus Nordlander <magnus@fervo.se>
  */
@@ -24,6 +25,8 @@ class ValidateRequestListener implements EventSubscriberInterface
 {
     /**
      * Performs the validation.
+     *
+     * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
@@ -33,10 +36,9 @@ class ValidateRequestListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         if ($request::getTrustedProxies()) {
+            // This will throw an exception if the headers are inconsistent.
             $request->getClientIps();
         }
-
-        $request->getHost();
     }
 
     /**

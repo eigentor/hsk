@@ -114,11 +114,11 @@ interface FieldItemInterface extends ComplexDataInterface {
   /**
    * Magic method: Gets a property value.
    *
-   * @param string $property_name
+   * @param $property_name
    *   The name of the property to get; e.g., 'title' or 'name'.
    *
-   * @return mixed
-   *   The property value.
+   * @return \Drupal\Core\TypedData\TypedDataInterface
+   *   The property object.
    *
    * @throws \InvalidArgumentException
    *   If a not existing property is accessed.
@@ -128,9 +128,9 @@ interface FieldItemInterface extends ComplexDataInterface {
   /**
    * Magic method: Sets a property value.
    *
-   * @param string $property_name
+   * @param $property_name
    *   The name of the property to set; e.g., 'title' or 'name'.
-   * @param mixed $value
+   * @param $value
    *   The value to set, or NULL to unset the property. Optionally, a typed
    *   data object implementing Drupal\Core\TypedData\TypedDataInterface may be
    *   passed instead of a plain value.
@@ -143,7 +143,7 @@ interface FieldItemInterface extends ComplexDataInterface {
   /**
    * Magic method: Determines whether a property is set.
    *
-   * @param string $property_name
+   * @param $property_name
    *   The name of the property to get; e.g., 'title' or 'name'.
    *
    * @return bool
@@ -154,7 +154,7 @@ interface FieldItemInterface extends ComplexDataInterface {
   /**
    * Magic method: Unsets a property.
    *
-   * @param string $property_name
+   * @param $property_name
    *   The name of the property to get; e.g., 'title' or 'name'.
    */
   public function __unset($property_name);
@@ -364,7 +364,7 @@ interface FieldItemInterface extends ComplexDataInterface {
    * @param bool $has_data
    *   TRUE if the field already has data, FALSE if not.
    *
-   * @return array
+   * @return
    *   The form definition for the field settings.
    */
   public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data);

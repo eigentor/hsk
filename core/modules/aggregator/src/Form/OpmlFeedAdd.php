@@ -12,8 +12,6 @@ use GuzzleHttp\ClientInterface;
 
 /**
  * Imports feeds from OPML.
- *
- * @internal
  */
 class OpmlFeedAdd extends FormBase {
 

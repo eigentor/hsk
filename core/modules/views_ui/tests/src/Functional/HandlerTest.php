@@ -42,8 +42,6 @@ class HandlerTest extends UITestBase {
    * Overrides \Drupal\views\Tests\ViewTestBase::schemaDefinition().
    *
    * Adds a uid column to test the relationships.
-   *
-   * @internal
    */
   protected function schemaDefinition() {
     $schema = parent::schemaDefinition();

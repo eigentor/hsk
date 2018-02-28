@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides a confirmation form for cancelling user account.
- *
- * @internal
  */
 class UserCancelForm extends ContentEntityConfirmFormBase {
 

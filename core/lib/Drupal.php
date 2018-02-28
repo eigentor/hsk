@@ -6,9 +6,8 @@
  */
 
 use Drupal\Core\DependencyInjection\ContainerNotInitializedException;
-use Drupal\Core\Messenger\LegacyMessenger;
-use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Url;
 
 /**
  * Static Service Container wrapper.
@@ -82,7 +81,7 @@ class Drupal {
   /**
    * The current system version.
    */
-  const VERSION = '8.5.0-rc1';
+  const VERSION = '8.3.7';
 
   /**
    * Core API compatibility.
@@ -756,18 +755,6 @@ class Drupal {
    */
   public static function time() {
     return static::getContainer()->get('datetime.time');
-  }
-
-  /**
-   * Returns the messenger.
-   *
-   * @return \Drupal\Core\Messenger\MessengerInterface
-   *   The messenger.
-   */
-  public static function messenger() {
-    // @todo Replace with service once LegacyMessenger is removed in 9.0.0.
-    // @see https://www.drupal.org/node/2928994
-    return new LegacyMessenger();
   }
 
 }

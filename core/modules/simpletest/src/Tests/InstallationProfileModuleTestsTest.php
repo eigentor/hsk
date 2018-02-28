@@ -36,8 +36,6 @@ class InstallationProfileModuleTestsTest extends WebTestBase {
    *   contained in the Testing profile.
    *
    * @see \Drupal\drupal_system_listing_compatible_test\Tests\SystemListingCompatibleTest
-   *
-   * @var string
    */
   protected $profile = 'testing';
 

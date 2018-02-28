@@ -4,12 +4,13 @@ namespace Drupal\Core\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Filters routes based on the HTTP method.
  */
-class MethodFilter implements FilterInterface {
+class MethodFilter implements RouteFilterInterface {
 
   /**
    * {@inheritdoc}
@@ -44,6 +45,13 @@ class MethodFilter implements FilterInterface {
       return $collection;
     }
     throw new MethodNotAllowedException(array_unique($all_supported_methods));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function applies(Route $route) {
+    return !empty($route->getMethods());
   }
 
 }

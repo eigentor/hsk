@@ -31,6 +31,7 @@ class LinkNotExistingInternalConstraintValidatorTest extends UnitTestCase {
         ->method('addViolation');
     }
 
+
     $constraint = new LinkNotExistingInternalConstraint();
 
     $validator = new LinkNotExistingInternalConstraintValidator();

@@ -19,8 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides form for block instance forms.
- *
- * @internal
  */
 class BlockForm extends EntityForm {
 

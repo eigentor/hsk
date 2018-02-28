@@ -13,7 +13,7 @@ use Traversable;
  *
  * Example call:
  * @code
- *   assert(Inspector::assertAllStrings($array));
+ *   assert('Drupal\\Component\\Assertion\\Inspector::assertAllStrings($array)');
  * @endcode
  *
  * @ingroup php_assert
@@ -187,8 +187,8 @@ class Inspector {
    * As an example, this assertion tests for the keys of a theme registry.
    *
    * @code
-   *   assert(Inspector::assertAllHaveKey(
-   *     $arrayToTest, "type", "theme path", "function", "template", "variables", "render element", "preprocess functions"));
+   *   assert('Drupal\\Component\\Assertion\\Inspector::assertAllHaveKey(
+   *     $arrayToTest, "type", "theme path", "function", "template", "variables", "render element", "preprocess functions")');
    * @endcode
    *
    * Note: If a method requires certain keys to be present it will usually be
@@ -205,9 +205,9 @@ class Inspector {
    * @return bool
    *   TRUE if $traversable can be traversed and all members have all keys.
    */
-  public static function assertAllHaveKey($traversable) {
+  public static function assertAllHaveKey() {
     $args = func_get_args();
-    unset($args[0]);
+    $traversable = array_shift($args);
 
     if (static::assertTraversable($traversable)) {
       foreach ($traversable as $member) {
@@ -375,13 +375,16 @@ class Inspector {
    * Here are some examples:
    * @code
    *   // Just test all are objects, like a cache.
-   *   assert(Inspector::assertAllObjects($collection));
+   *   assert('Drupal\\Component\\Assertion\\Inspector::assertAllObjects(
+   *     $collection');
    *
    *   // Test if traversable objects (arrays won't pass this)
-   *   assert(Inspector::assertAllObjects($collection, '\\Traversable'));
+   *   assert('Drupal\\Component\\Assertion\\Inspector::assertAllObjects(
+   *     $collection', \'\\Traversable\');
    *
    *   // Test for the Foo class or Bar\None interface
-   *   assert(Inspector::assertAllObjects($collection, '\\Foo', '\\Bar\\None'));
+   *   assert('Drupal\\Component\\Assertion\\Inspector::assertAllObjects(
+   *     $collection', \'\\Foo\', \'\\Bar\\None\'');
    * @endcode
    *
    * @param mixed $traversable
@@ -393,9 +396,9 @@ class Inspector {
    *   TRUE if $traversable can be traversed and all members are objects with
    *   at least one of the listed classes or interfaces.
    */
-  public static function assertAllObjects($traversable) {
+  public static function assertAllObjects() {
     $args = func_get_args();
-    unset($args[0]);
+    $traversable = array_shift($args);
 
     if (static::assertTraversable($traversable)) {
       foreach ($traversable as $member) {

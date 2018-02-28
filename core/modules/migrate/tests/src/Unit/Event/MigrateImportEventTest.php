@@ -3,13 +3,12 @@
 namespace Drupal\Tests\migrate\Unit\Event;
 
 use Drupal\migrate\Event\MigrateImportEvent;
-use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\migrate\Event\MigrateImportEvent
  * @group migrate
  */
-class MigrateImportEventTest extends UnitTestCase {
+class MigrateImportEventTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * Test getMigration method.

@@ -9,8 +9,6 @@ use Drupal\Core\Url;
 
 /**
  * Defines a confirmation form for deleting a browser language negotiation mapping.
- *
- * @internal
  */
 class NegotiationBrowserDeleteForm extends ConfirmFormBase {
   use ConfigFormBaseTrait;

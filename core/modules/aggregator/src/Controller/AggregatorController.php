@@ -25,7 +25,7 @@ class AggregatorController extends ControllerBase {
    * Constructs a \Drupal\aggregator\Controller\AggregatorController object.
    *
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
-   *   The date formatter service.
+   *    The date formatter service.
    */
   public function __construct(DateFormatterInterface $date_formatter) {
     $this->dateFormatter = $date_formatter;
@@ -47,7 +47,10 @@ class AggregatorController extends ControllerBase {
    *   A form array as expected by drupal_render().
    */
   public function feedAdd() {
-    $feed = $this->entityManager()->getStorage('aggregator_feed')->create();
+    $feed = $this->entityManager()->getStorage('aggregator_feed')
+      ->create([
+        'refresh' => 3600,
+      ]);
     return $this->entityFormBuilder()->getForm($feed);
   }
 
@@ -93,7 +96,7 @@ class AggregatorController extends ControllerBase {
     $message = $aggregator_feed->refreshItems()
       ? $this->t('There is new syndicated content from %site.', ['%site' => $aggregator_feed->label()])
       : $this->t('There is no new syndicated content from %site.', ['%site' => $aggregator_feed->label()]);
-    $this->messenger()->addStatus($message);
+    drupal_set_message($message);
     return $this->redirect('aggregator.admin_overview');
   }
 

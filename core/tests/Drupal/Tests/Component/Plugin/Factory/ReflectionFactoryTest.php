@@ -10,13 +10,13 @@
 namespace Drupal\Tests\Component\Plugin\Factory;
 
 use Drupal\Component\Plugin\Factory\ReflectionFactory;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * @group Plugin
  * @coversDefaultClass \Drupal\Component\Plugin\Factory\ReflectionFactory
  */
-class ReflectionFactoryTest extends TestCase {
+class ReflectionFactoryTest extends UnitTestCase {
 
   /**
    * Data provider for testGetInstanceArguments.
@@ -123,12 +123,7 @@ class ReflectionFactoryTest extends TestCase {
     // us to use one data set for this test method as well as
     // testCreateInstance().
     if ($plugin_id == 'arguments_no_constructor') {
-      if (method_exists($this, 'expectException')) {
-        $this->expectException('\ReflectionException');
-      }
-      else {
-        $this->setExpectedException('\ReflectionException');
-      }
+      $this->setExpectedException('\ReflectionException');
     }
 
     // Finally invoke getInstanceArguments() on our mocked factory.
@@ -177,7 +172,9 @@ class ArgumentsPluginId {
  */
 class ArgumentsMany {
 
-  public function __construct($configuration, $plugin_definition, $plugin_id, $foo = 'default_value', $what_am_i_doing_here = 'what_default') {
+  public function __construct(
+  $configuration, $plugin_definition, $plugin_id, $foo = 'default_value', $what_am_i_doing_here = 'what_default'
+  ) {
     // No-op.
   }
 

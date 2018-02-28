@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\hal\Functional\Update;
 
-use Drupal\FunctionalTests\Update\UpdatePathTestBase;
+use Drupal\system\Tests\Update\UpdatePathTestBase;
 
 /**
  * 'link_domain' is migrated from 'rest.settings' to 'hal.settings'.

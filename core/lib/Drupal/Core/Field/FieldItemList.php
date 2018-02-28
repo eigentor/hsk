@@ -7,7 +7,6 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\TypedData\DataDefinitionInterface;
 use Drupal\Core\TypedData\Plugin\DataType\ItemList;
 
 /**
@@ -93,6 +92,18 @@ class FieldItemList extends ItemList implements FieldItemListInterface {
       return !$item->isEmpty();
     });
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   * @todo Revisit the need when all entity types are converted to NG entities.
+   */
+  public function getValue($include_computed = FALSE) {
+    $values = [];
+    foreach ($this->list as $delta => $item) {
+      $values[$delta] = $item->getValue($include_computed);
+    }
+    return $values;
   }
 
   /**
@@ -248,7 +259,7 @@ class FieldItemList extends ItemList implements FieldItemListInterface {
    */
   public function generateSampleItems($count = 1) {
     $field_definition = $this->getFieldDefinition();
-    $field_type_class = $field_definition->getItemDefinition()->getClass();
+    $field_type_class = \Drupal::service('plugin.manager.field.field_type')->getPluginClass($field_definition->getType());
     for ($delta = 0; $delta < $count; $delta++) {
       $values[$delta] = $field_type_class::generateSampleValue($field_definition);
     }
@@ -367,6 +378,7 @@ class FieldItemList extends ItemList implements FieldItemListInterface {
    * {@inheritdoc}
    */
   public function equals(FieldItemListInterface $list_to_compare) {
+    $columns = $this->getFieldDefinition()->getFieldStorageDefinition()->getColumns();
     $count1 = count($this);
     $count2 = count($list_to_compare);
     if ($count1 === 0 && $count2 === 0) {
@@ -384,13 +396,9 @@ class FieldItemList extends ItemList implements FieldItemListInterface {
     }
     // If the values are not equal ensure a consistent order of field item
     // properties and remove properties which will not be saved.
-    $property_definitions = $this->getFieldDefinition()->getFieldStorageDefinition()->getPropertyDefinitions();
-    $non_computed_properties = array_filter($property_definitions, function (DataDefinitionInterface $property) {
-      return !$property->isComputed();
-    });
-    $callback = function (&$value) use ($non_computed_properties) {
+    $callback = function (&$value) use ($columns) {
       if (is_array($value)) {
-        $value = array_intersect_key($value, $non_computed_properties);
+        $value = array_intersect_key($value, $columns);
         ksort($value);
       }
     };

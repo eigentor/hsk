@@ -9,8 +9,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  * Drupal config source from database.
  *
  * @MigrateSource(
- *   id = "d8_config",
- *   source_module = "system",
+ *   id = "d8_config"
  * )
  */
 class Config extends DrupalSqlBase {

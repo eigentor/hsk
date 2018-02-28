@@ -8,8 +8,6 @@ use Drupal\views\ViewExecutable;
 
 /**
  * Provides a form for configuring extra information for a Views UI item.
- *
- * @internal
  */
 class ConfigHandlerExtra extends ViewsFormBase {
 

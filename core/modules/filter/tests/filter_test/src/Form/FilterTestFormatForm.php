@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Shows a test form for testing the 'text_format' form element.
- *
- * @internal
  */
 class FilterTestFormatForm extends FormBase {
 

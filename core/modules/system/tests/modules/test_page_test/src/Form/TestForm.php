@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Defines a test form for testing assertions.
- *
- * @internal
  */
 class TestForm extends FormBase {
 
@@ -64,24 +62,6 @@ class TestForm extends FormBase {
         3 => 'three',
       ],
       '#default_value' => 2,
-    ];
-
-    $form['duplicate_button'] = [
-      '#type' => 'submit',
-      '#name' => 'duplicate_button',
-      '#value' => 'Duplicate button 1',
-    ];
-
-    $form['duplicate_button_2'] = [
-      '#type' => 'submit',
-      '#name' => 'duplicate_button',
-      '#value' => 'Duplicate button 2',
-    ];
-
-    $form['test_textarea_with_newline'] = [
-      '#type' => 'textarea',
-      '#title' => 'Textarea with newline',
-      '#default_value' => "Test text with\nnewline",
     ];
 
     $form['save'] = [

@@ -104,9 +104,7 @@ abstract class ViewsFormBase extends FormBase implements ViewsFormInterface {
       // Retrieve the first form from the stack without changing the integer keys,
       // as they're being used for the "2 of 3" progress indicator.
       reset($view->stack);
-      $key = key($view->stack);
-      $top = current($view->stack);
-      next($view->stack);
+      list($key, $top) = each($view->stack);
       unset($view->stack[$key]);
 
       if (array_shift($top) != $identifier) {

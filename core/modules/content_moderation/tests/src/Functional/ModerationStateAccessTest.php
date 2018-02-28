@@ -32,6 +32,7 @@ class ModerationStateAccessTest extends BrowserTestBase {
     $permissions = [
       'access content',
       'view all revisions',
+      'view content moderation',
     ];
     $editor1 = $this->drupalCreateUser($permissions);
     $this->drupalLogin($editor1);
@@ -68,6 +69,7 @@ class ModerationStateAccessTest extends BrowserTestBase {
     $permissions = [
       'access content',
       'view all revisions',
+      'administer content moderation',
     ];
     $admin1 = $this->drupalCreateUser($permissions);
     $this->drupalLogin($admin1);
@@ -88,11 +90,11 @@ class ModerationStateAccessTest extends BrowserTestBase {
    * @param string $machine_name
    *   The machine name of the type to create.
    *
-   * @return \Drupal\node\Entity\NodeType
+   * @return NodeType
    *   The node type just created.
    */
   protected function createNodeType($label, $machine_name) {
-    /** @var \Drupal\node\Entity\NodeType $node_type */
+    /** @var NodeType $node_type */
     $node_type = NodeType::create([
       'type' => $machine_name,
       'label' => $label,

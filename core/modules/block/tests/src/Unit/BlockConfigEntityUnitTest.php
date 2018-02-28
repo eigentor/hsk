@@ -3,7 +3,6 @@
 namespace Drupal\Tests\block\Unit;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Tests\Core\Plugin\Fixtures\TestConfigurablePlugin;
 use Drupal\Tests\UnitTestCase;
 
@@ -21,11 +20,11 @@ class BlockConfigEntityUnitTest extends UnitTestCase {
   protected $entityType;
 
   /**
-   * The entity type manager used for testing.
+   * The entity manager used for testing.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+   * @var \Drupal\Core\Entity\EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
    */
-  protected $entityTypeManager;
+  protected $entityManager;
 
   /**
    * The ID of the type of the entity under test.
@@ -52,8 +51,8 @@ class BlockConfigEntityUnitTest extends UnitTestCase {
       ->method('getProvider')
       ->will($this->returnValue('block'));
 
-    $this->entityTypeManager = $this->getMock(EntityTypeManagerInterface::class);
-    $this->entityTypeManager->expects($this->any())
+    $this->entityManager = $this->getMock('\Drupal\Core\Entity\EntityManagerInterface');
+    $this->entityManager->expects($this->any())
       ->method('getDefinition')
       ->with($this->entityTypeId)
       ->will($this->returnValue($this->entityType));
@@ -61,7 +60,7 @@ class BlockConfigEntityUnitTest extends UnitTestCase {
     $this->uuid = $this->getMock('\Drupal\Component\Uuid\UuidInterface');
 
     $container = new ContainerBuilder();
-    $container->set('entity_type.manager', $this->entityTypeManager);
+    $container->set('entity.manager', $this->entityManager);
     $container->set('uuid', $this->uuid);
     \Drupal::setContainer($container);
   }

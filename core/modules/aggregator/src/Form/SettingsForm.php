@@ -13,8 +13,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configures aggregator settings for this site.
- *
- * @internal
  */
 class SettingsForm extends ConfigFormBase {
 

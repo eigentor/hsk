@@ -224,7 +224,7 @@ class GDToolkit extends ImageToolkitBase {
         $destination = drupal_tempnam('temporary://', 'gd_');
       }
       // Convert stream wrapper URI to normal path.
-      $destination = \Drupal::service('file_system')->realpath($destination);
+      $destination = drupal_realpath($destination);
     }
 
     $function = 'image' . image_type_to_extension($this->getType(), FALSE);

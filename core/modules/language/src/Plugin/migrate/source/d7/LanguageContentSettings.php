@@ -10,7 +10,6 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  *
  * @MigrateSource(
  *   id = "d7_language_content_settings",
- *   source_module = "locale"
  * )
  */
 class LanguageContentSettings extends DrupalSqlBase {

@@ -18,7 +18,14 @@ namespace Symfony\Component\Serializer\NameConverter;
  */
 class CamelCaseToSnakeCaseNameConverter implements NameConverterInterface
 {
+    /**
+     * @var array|null
+     */
     private $attributes;
+
+    /**
+     * @var bool
+     */
     private $lowerCamelCase;
 
     /**
@@ -37,7 +44,19 @@ class CamelCaseToSnakeCaseNameConverter implements NameConverterInterface
     public function normalize($propertyName)
     {
         if (null === $this->attributes || in_array($propertyName, $this->attributes)) {
-            return strtolower(preg_replace('/[A-Z]/', '_\\0', lcfirst($propertyName)));
+            $lcPropertyName = lcfirst($propertyName);
+            $snakeCasedName = '';
+
+            $len = strlen($lcPropertyName);
+            for ($i = 0; $i < $len; ++$i) {
+                if (ctype_upper($lcPropertyName[$i])) {
+                    $snakeCasedName .= '_'.strtolower($lcPropertyName[$i]);
+                } else {
+                    $snakeCasedName .= strtolower($lcPropertyName[$i]);
+                }
+            }
+
+            return $snakeCasedName;
         }
 
         return $propertyName;

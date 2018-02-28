@@ -27,32 +27,7 @@ class LanguageSelectWidget extends WidgetBase {
     $element['value'] = $element + [
       '#type' => 'language_select',
       '#default_value' => $items[$delta]->value,
-      '#languages' => $this->getSetting('include_locked') ? LanguageInterface::STATE_ALL : LanguageInterface::STATE_CONFIGURABLE,
-    ];
-
-    return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultSettings() {
-    $settings = parent::defaultSettings();
-    $settings['include_locked'] = TRUE;
-
-    return $settings;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    $element = parent::settingsForm($form, $form_state);
-
-    $element['include_locked'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Include locked languages such as <em>Not specified</em> and <em>Not applicable</em>'),
-      '#default_value' => $this->getSetting('include_locked'),
+      '#languages' => LanguageInterface::STATE_ALL,
     ];
 
     return $element;

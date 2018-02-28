@@ -42,7 +42,7 @@ class MigrationTest extends KernelTestBase {
           'migration' => 'm1'
         ],
         'f3' => [
-          'plugin' => 'sub_process',
+          'plugin' => 'iterator',
           'process' => [
             'target_id' => [
               'plugin' => 'migration',

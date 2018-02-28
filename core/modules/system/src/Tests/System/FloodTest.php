@@ -34,9 +34,8 @@ class FloodTest extends WebTestBase {
     $window_expired = -1;
     $name = 'flood_test_cleanup';
 
-    $flood = \Drupal::flood();
-    $this->assertTrue($flood->isAllowed($name, $threshold));
     // Register expired event.
+    $flood = \Drupal::flood();
     $flood->register($name, $window_expired);
     // Verify event is not allowed.
     $this->assertFalse($flood->isAllowed($name, $threshold));
@@ -63,7 +62,6 @@ class FloodTest extends WebTestBase {
 
     $request_stack = \Drupal::service('request_stack');
     $flood = new MemoryBackend($request_stack);
-    $this->assertTrue($flood->isAllowed($name, $threshold));
     // Register expired event.
     $flood->register($name, $window_expired);
     // Verify event is not allowed.
@@ -92,7 +90,6 @@ class FloodTest extends WebTestBase {
     $connection = \Drupal::service('database');
     $request_stack = \Drupal::service('request_stack');
     $flood = new DatabaseBackend($connection, $request_stack);
-    $this->assertTrue($flood->isAllowed($name, $threshold));
     // Register expired event.
     $flood->register($name, $window_expired);
     // Verify event is not allowed.

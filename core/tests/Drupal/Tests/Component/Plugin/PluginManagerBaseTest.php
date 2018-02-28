@@ -3,13 +3,13 @@
 namespace Drupal\Tests\Component\Plugin;
 
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\Component\Plugin\PluginManagerBase
  * @group Plugin
  */
-class PluginManagerBaseTest extends TestCase {
+class PluginManagerBaseTest extends UnitTestCase {
 
   /**
    * A callback method for mocking FactoryInterface objects.
@@ -58,7 +58,7 @@ class PluginManagerBaseTest extends TestCase {
     $configuration_array = ['config' => 'something'];
     $result = $manager->createInstance('valid', $configuration_array);
     $this->assertEquals('valid', $result['plugin_id']);
-    $this->assertEquals($configuration_array, $result['configuration']);
+    $this->assertArrayEquals($configuration_array, $result['configuration']);
   }
 
   /**
@@ -81,13 +81,13 @@ class PluginManagerBaseTest extends TestCase {
     $factory_ref->setValue($manager, $this->getMockFactoryInterface(1));
     $no_fallback_result = $manager->createInstance('valid', $configuration_array);
     $this->assertEquals('valid', $no_fallback_result['plugin_id']);
-    $this->assertEquals($configuration_array, $no_fallback_result['configuration']);
+    $this->assertArrayEquals($configuration_array, $no_fallback_result['configuration']);
 
     // Test with fallback interface and invalid plugin_id.
     $factory_ref->setValue($manager, $this->getMockFactoryInterface(2));
     $fallback_result = $manager->createInstance('invalid', $configuration_array);
     $this->assertEquals('invalid_fallback', $fallback_result['plugin_id']);
-    $this->assertEquals($configuration_array, $fallback_result['configuration']);
+    $this->assertArrayEquals($configuration_array, $fallback_result['configuration']);
   }
 
 }

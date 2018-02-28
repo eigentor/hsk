@@ -20,7 +20,7 @@ class ViewsDataHelper {
   /**
    * A prepared list of all fields, keyed by base_table and handler type.
    *
-   * @var array
+   * @param array
    */
   protected $fields;
 

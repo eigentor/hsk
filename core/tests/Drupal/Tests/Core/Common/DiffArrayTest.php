@@ -66,7 +66,7 @@ class DiffArrayTest extends UnitTestCase {
       'new' => 'new',
     ];
 
-    $this->assertSame($expected, DiffArray::diffAssocRecursive($this->array1, $this->array2));
+    $this->assertSame(DiffArray::diffAssocRecursive($this->array1, $this->array2), $expected);
   }
 
 }

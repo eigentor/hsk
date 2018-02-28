@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form builder for testing preservation of values during a rebuild.
- *
- * @internal
  */
 class FormTestRebuildPreserveValuesForm extends FormBase {
 

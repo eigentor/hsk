@@ -30,16 +30,20 @@ class EntityRevisionRouteEnhancerTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::enhance
+   * @covers ::applies
+   * @dataProvider providerTestApplies
    */
-  public function testEnhanceWithoutParameter() {
-    $route = new Route('/test-path/{entity_test}');
+  public function testApplies(Route $route, $expected) {
+    $this->assertEquals($expected, $this->routeEnhancer->applies($route));
+  }
 
-    $request = Request::create('/test-path');
+  public function providerTestApplies() {
+    $data = [];
+    $data['no-parameter'] = [new Route('/test-path'), FALSE];
+    $data['none-revision-parameters'] = [new Route('/test-path/{entity_test}', [], [], ['parameters' => ['entity_test' => ['type' => 'entity:entity_test']]]), FALSE];
+    $data['with-revision-parameter'] = [new Route('/test-path/{entity_test_revision}', [], [], ['parameters' => ['entity_test_revision' => ['type' => 'entity_revision:entity_test']]]), TRUE];
 
-    $defaults = [];
-    $defaults[RouteObjectInterface::ROUTE_OBJECT] = $route;
-    $this->assertEquals($defaults, $this->routeEnhancer->enhance($defaults, $request));
+    return $data;
   }
 
   /**

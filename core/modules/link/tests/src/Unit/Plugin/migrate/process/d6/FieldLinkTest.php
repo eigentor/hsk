@@ -7,7 +7,6 @@ use Drupal\Tests\UnitTestCase;
 
 /**
  * @group Link
- * @group legacy
  */
 class FieldLinkTest extends UnitTestCase {
 

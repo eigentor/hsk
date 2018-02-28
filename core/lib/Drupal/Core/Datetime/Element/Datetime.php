@@ -45,7 +45,6 @@ class Datetime extends DateElementBase {
       ],
       '#process' => [
         [$class, 'processDatetime'],
-        [$class, 'processAjaxForm'],
         [$class, 'processGroup'],
       ],
       '#pre_render' => [
@@ -306,25 +305,6 @@ class Datetime extends DateElementBase {
             $callback($element, $form_state, $date);
           }
         }
-      }
-    }
-
-    return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function processAjaxForm(&$element, FormStateInterface $form_state, &$complete_form) {
-    $element = parent::processAjaxForm($element, $form_state, $complete_form);
-
-    // Copy the #ajax settings to the child elements.
-    if (isset($element['#ajax'])) {
-      if (isset($element['date'])) {
-        $element['date']['#ajax'] = $element['#ajax'];
-      }
-      if (isset($element['time'])) {
-        $element['time']['#ajax'] = $element['#ajax'];
       }
     }
 

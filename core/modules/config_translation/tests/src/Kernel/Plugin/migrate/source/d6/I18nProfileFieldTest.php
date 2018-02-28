@@ -9,7 +9,6 @@ use Drupal\Tests\migrate\Kernel\MigrateSqlSourceTestBase;
  *
  * @covers \Drupal\config_translation\Plugin\migrate\source\d6\I18nProfileField
  * @group migrate_drupal
- * @group legacy
  */
 class I18nProfileFieldTest extends MigrateSqlSourceTestBase {
 

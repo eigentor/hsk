@@ -6,8 +6,6 @@ use Drupal\Core\Url;
 
 /**
  * Provides a test confirmation form with a complex cancellation destination.
- *
- * @internal
  */
 class ConfirmFormArrayPathTestForm extends ConfirmFormTestForm {
 

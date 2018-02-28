@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form for adding workflows.
- *
- * @internal
  */
 class WorkflowAddForm extends EntityForm {
 
@@ -55,6 +53,7 @@ class WorkflowAddForm extends EntityForm {
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $workflow->label(),
+      '#description' => $this->t('Label for the Workflow.'),
       '#required' => TRUE,
     ];
 
@@ -66,8 +65,9 @@ class WorkflowAddForm extends EntityForm {
       ],
     ];
 
-    $workflow_types = array_column($this->workflowTypePluginManager->getDefinitions(), 'label', 'id');
-
+    $workflow_types = array_map(function ($plugin_definition) {
+      return $plugin_definition['label'];
+    }, $this->workflowTypePluginManager->getDefinitions());
     $form['workflow_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Workflow type'),
@@ -84,8 +84,10 @@ class WorkflowAddForm extends EntityForm {
   public function save(array $form, FormStateInterface $form_state) {
     /* @var \Drupal\workflows\WorkflowInterface $workflow */
     $workflow = $this->entity;
+    // Initialize the workflow using the selected type plugin.
+    $workflow = $workflow->getTypePlugin()->initializeWorkflow($workflow);
     $return = $workflow->save();
-    if (empty($workflow->getTypePlugin()->getStates())) {
+    if (empty($workflow->getStates())) {
       drupal_set_message($this->t('Created the %label Workflow. In order for the workflow to be enabled there needs to be at least one state.', [
         '%label' => $workflow->label(),
       ]));

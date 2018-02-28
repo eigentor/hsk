@@ -5,13 +5,13 @@ namespace Drupal\Tests\Component\Render;
 use Drupal\Component\Render\PlainTextOutput;
 use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Component\Render\MarkupInterface;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\Component\Render\PlainTextOutput
  * @group Utility
  */
-class PlainTextOutputTest extends TestCase {
+class PlainTextOutputTest extends UnitTestCase {
 
   /**
    * Tests ::renderFromHtml().

@@ -348,7 +348,8 @@ EOF;
     $result = $test_discovery->getTestClasses(NULL, ['PHPUnit-Kernel']);
     $this->assertCount(2, $result);
     $this->assertEquals([
-      'example' => [],
+      'example' => [
+      ],
       'example2' => [
         'Drupal\Tests\test_module\Kernel\KernelExampleTest3' => [
           'name' => 'Drupal\Tests\test_module\Kernel\KernelExampleTest3',

@@ -8,7 +8,6 @@ use Drupal\Tests\UnitTestCase;
 
 /**
  * @group migrate
- * @group legacy
  */
 class DateFieldTest extends UnitTestCase {
 

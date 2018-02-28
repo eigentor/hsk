@@ -7,8 +7,6 @@ use Drupal\Core\Url;
 
 /**
  * Provides the path edit form.
- *
- * @internal
  */
 class EditForm extends PathFormBase {
 

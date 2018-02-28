@@ -259,11 +259,4 @@ interface FieldDefinitionInterface extends ListDataDefinitionInterface, Cacheabl
    */
   public function getConfig($bundle);
 
-  /**
-   * Returns a unique identifier for the field.
-   *
-   * @return string
-   */
-  public function getUniqueIdentifier();
-
 }

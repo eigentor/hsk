@@ -96,6 +96,7 @@ class TokenReplaceKernelTest extends TokenReplaceKernelTestBase {
       ->set('mail', 'simpletest@example.com')
       ->save();
 
+
     // Generate and test tokens.
     $tests = [];
     $tests['[site:name]'] = Html::escape($config->get('name'));

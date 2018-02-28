@@ -46,7 +46,7 @@ class BcConfigSubscriber implements EventSubscriberInterface {
     $saved_config = $event->getConfig();
 
     if ($saved_config->getName() === 'serialization.settings') {
-      if ($event->isChanged('bc_primitives_as_strings') || $event->isChanged('bc_timestamp_normalizer_unix')) {
+      if ($event->isChanged('bc_primitives_as_strings')) {
         $this->kernel->invalidateContainer();
       }
     }

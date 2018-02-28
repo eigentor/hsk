@@ -8,7 +8,7 @@ use Drupal\Core\Serialization\Yaml;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\ChildDefinition;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
@@ -155,7 +155,7 @@ class YamlFileLoader
         }
 
         if (isset($service['parent'])) {
-            $definition = new ChildDefinition($service['parent']);
+            $definition = new DefinitionDecorator($service['parent']);
         } else {
             $definition = new Definition();
         }
@@ -168,8 +168,19 @@ class YamlFileLoader
             $definition->setShared($service['shared']);
         }
 
+        if (isset($service['scope'])) {
+            if ('request' !== $id) {
+                @trigger_error(sprintf('The "scope" key of service "%s" in file "%s" is deprecated since version 2.8 and will be removed in 3.0.', $id, $file), E_USER_DEPRECATED);
+            }
+            $definition->setScope($service['scope'], false);
+        }
+
         if (isset($service['synthetic'])) {
             $definition->setSynthetic($service['synthetic']);
+        }
+
+        if (isset($service['synchronized'])) {
+            $definition->setSynchronized($service['synchronized'], 'request' !== $id);
         }
 
         if (isset($service['lazy'])) {
@@ -202,15 +213,15 @@ class YamlFileLoader
         }
 
         if (isset($service['factory_class'])) {
-            $definition->setFactory($service['factory_class']);
+            $definition->setFactoryClass($service['factory_class']);
         }
 
         if (isset($service['factory_method'])) {
-            $definition->setFactory($service['factory_method']);
+            $definition->setFactoryMethod($service['factory_method']);
         }
 
         if (isset($service['factory_service'])) {
-            $definition->setFactory($service['factory_service']);
+            $definition->setFactoryService($service['factory_service']);
         }
 
         if (isset($service['file'])) {
@@ -329,10 +340,7 @@ class YamlFileLoader
             throw new InvalidArgumentException(sprintf('The service file "%s" is not valid.', $file));
         }
 
-        // @todo Remove preg_replace() once
-        //   https://github.com/symfony/symfony/pull/25787 is in Symfony 3.4.
-        $content = preg_replace('/:$\n^\s+{\s*}$/m', ': {}', file_get_contents($file));
-        return $this->validate(Yaml::decode($content), $file);
+        return $this->validate(Yaml::decode(file_get_contents($file)), $file);
     }
 
     /**

@@ -23,7 +23,7 @@ class MatcherDumperTest extends KernelTestBase {
   /**
    * A collection of shared fixture data for tests.
    *
-   * @var \Drupal\Tests\Core\Routing\RoutingFixtures
+   * @var RoutingFixtures
    */
   protected $fixtures;
 

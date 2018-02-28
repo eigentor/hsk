@@ -9,8 +9,7 @@ use Drupal\migrate\Row;
  * Drupal 6 user picture source from database.
  *
  * @MigrateSource(
- *   id = "d6_user_picture_file",
- *   source_module = "user"
+ *   id = "d6_user_picture_file"
  * )
  */
 class UserPictureFile extends DrupalSqlBase {

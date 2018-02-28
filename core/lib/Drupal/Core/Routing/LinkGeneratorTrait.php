@@ -2,6 +2,7 @@
 
 namespace Drupal\Core\Routing;
 
+
 use Drupal\Core\Url;
 use Drupal\Core\Utility\LinkGeneratorInterface;
 
@@ -15,8 +16,6 @@ use Drupal\Core\Utility\LinkGeneratorInterface;
  *
  * @deprecated in Drupal 8.0.0 and will be removed before Drupal 9.0.0.
  *   Use \Drupal\Core\Link instead.
- *
- * @see https://www.drupal.org/node/2614344
  */
 trait LinkGeneratorTrait {
 
@@ -40,7 +39,6 @@ trait LinkGeneratorTrait {
    * @deprecated in Drupal 8.0.0 and will be removed before Drupal 9.0.0.
    *   Use \Drupal\Core\Link instead.
    *
-   * @see https://www.drupal.org/node/2614344
    * @see \Drupal\Core\Utility\LinkGeneratorInterface::generate()
    */
   protected function l($text, Url $url) {

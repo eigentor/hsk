@@ -70,7 +70,7 @@ class AttachedAssetsTest extends KernelTestBase {
     $build['#attached']['library'][] = 'core/unknown';
     $assets = AttachedAssets::createFromRenderArray($build);
 
-    $this->assertSame([], $this->assetResolver->getJsAssets($assets, FALSE)[0], 'Unknown library was not added to the page.');
+    $this->assertIdentical([], $this->assetResolver->getJsAssets($assets, FALSE)[0], 'Unknown library was not added to the page.');
   }
 
   /**
@@ -299,8 +299,7 @@ class AttachedAssetsTest extends KernelTestBase {
       "-8_2",
       "-8_3",
       "-8_4",
-      // The external script.
-      "-5_1",
+      "-5_1", // The external script.
       "-3_1",
       "-3_2",
       "0_1",
@@ -436,12 +435,12 @@ class AttachedAssetsTest extends KernelTestBase {
     $dynamic_library = $library_discovery->getLibraryByName('common_test', 'dynamic_library');
     $this->assertTrue(is_array($dynamic_library));
     if ($this->assertTrue(isset($dynamic_library['version']))) {
-      $this->assertSame('1.0', $dynamic_library['version']);
+      $this->assertIdentical('1.0', $dynamic_library['version']);
     }
     // Make sure the dynamic library definition could be altered.
     // @see common_test_library_info_alter()
     if ($this->assertTrue(isset($dynamic_library['dependencies']))) {
-      $this->assertSame(['core/jquery'], $dynamic_library['dependencies']);
+      $this->assertIdentical(['core/jquery'], $dynamic_library['dependencies']);
     }
   }
 

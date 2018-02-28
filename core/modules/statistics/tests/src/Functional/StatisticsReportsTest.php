@@ -3,7 +3,7 @@
 namespace Drupal\Tests\statistics\Functional;
 
 use Drupal\Core\Cache\Cache;
-use Drupal\Tests\system\Functional\Cache\AssertPageCacheContextsAndTagsTrait;
+use Drupal\system\Tests\Cache\AssertPageCacheContextsAndTagsTrait;
 
 /**
  * Tests display of statistics report blocks.

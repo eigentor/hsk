@@ -2,7 +2,6 @@
 
 namespace Drupal\Core\Plugin;
 
-use Drupal\Component\Assertion\Inspector;
 use Drupal\Component\Plugin\Definition\PluginDefinitionInterface;
 use Drupal\Component\Plugin\Discovery\CachedDiscoveryInterface;
 use Drupal\Core\Cache\CacheableDependencyInterface;
@@ -149,14 +148,14 @@ class DefaultPluginManager extends PluginManagerBase implements PluginManagerInt
    *   definitions should be cleared along with other, related cache entries.
    */
   public function setCacheBackend(CacheBackendInterface $cache_backend, $cache_key, array $cache_tags = []) {
-    assert(Inspector::assertAllStrings($cache_tags), 'Cache Tags must be strings.');
+    assert('\Drupal\Component\Assertion\Inspector::assertAllStrings($cache_tags)', 'Cache Tags must be strings.');
     $this->cacheBackend = $cache_backend;
     $this->cacheKey = $cache_key;
     $this->cacheTags = $cache_tags;
   }
 
   /**
-   * Sets the alter hook name.
+   * Initializes the alter hook.
    *
    * @param string $alter_hook
    *   Name of the alter hook; for example, to invoke

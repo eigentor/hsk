@@ -4,8 +4,6 @@ namespace Drupal\system\Form;
 
 /**
  * Builds a confirmation form for enabling experimental modules.
- *
- * @internal
  */
 class ModulesListExperimentalConfirmForm extends ModulesListConfirmForm {
 

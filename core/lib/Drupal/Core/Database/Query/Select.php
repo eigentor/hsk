@@ -113,8 +113,6 @@ class Select extends Query implements SelectInterface {
 
   /**
    * The FOR UPDATE status
-   *
-   * @var bool
    */
   protected $forUpdate = FALSE;
 
@@ -130,7 +128,7 @@ class Select extends Query implements SelectInterface {
    * @param array $options
    *   Array of query options.
    */
-  public function __construct($table, $alias, Connection $connection, $options = []) {
+  public function __construct($table, $alias = NULL, Connection $connection, $options = []) {
     $options['return'] = Database::RETURN_STATEMENT;
     parent::__construct($connection, $options);
     $conjunction = isset($options['conjunction']) ? $options['conjunction'] : 'AND';
@@ -158,14 +156,14 @@ class Select extends Query implements SelectInterface {
    * {@inheritdoc}
    */
   public function hasAllTags() {
-    return !(boolean) array_diff(func_get_args(), array_keys($this->alterTags));
+    return !(boolean)array_diff(func_get_args(), array_keys($this->alterTags));
   }
 
   /**
    * {@inheritdoc}
    */
   public function hasAnyTag() {
-    return (boolean) array_intersect(func_get_args(), array_keys($this->alterTags));
+    return (boolean)array_intersect(func_get_args(), array_keys($this->alterTags));
   }
 
   /**
@@ -826,6 +824,7 @@ class Select extends Query implements SelectInterface {
       $fields[] = $expression['expression'] . ' AS ' . $this->connection->escapeAlias($expression['alias']);
     }
     $query .= implode(', ', $fields);
+
 
     // FROM - We presume all queries have a FROM, as any query that doesn't won't need the query builder anyway.
     $query .= "\nFROM ";

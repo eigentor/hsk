@@ -2,8 +2,6 @@
 
 namespace Drupal\Core\Cache;
 
-use Drupal\Component\Assertion\Inspector;
-
 /**
  * Stores cache items in the Alternative PHP Cache User Cache (APCu).
  */
@@ -163,7 +161,7 @@ class ApcuBackend implements CacheBackendInterface {
    * {@inheritdoc}
    */
   public function set($cid, $data, $expire = CacheBackendInterface::CACHE_PERMANENT, array $tags = []) {
-    assert(Inspector::assertAllStrings($tags), 'Cache tags must be strings.');
+    assert('\Drupal\Component\Assertion\Inspector::assertAllStrings($tags)', 'Cache tags must be strings.');
     $tags = array_unique($tags);
     $cache = new \stdClass();
     $cache->cid = $cid;

@@ -13,7 +13,7 @@ class PoItem {
   /**
    * The language code this translation is in.
    *
-   * @var string
+   * @car string
    */
   private $_langcode;
 
@@ -27,8 +27,7 @@ class PoItem {
   /**
    * The source string or array of strings if it has plurals.
    *
-   * @var string|array
-   *
+   * @var string or array
    * @see $_plural
    */
   private $_source;
@@ -50,7 +49,7 @@ class PoItem {
   /**
    * The translation string or array of strings if it has plurals.
    *
-   * @var string|array
+   * @var string or array
    * @see $_plural
    */
   private $_translation;
@@ -105,7 +104,7 @@ class PoItem {
    * Set the source string or the array of strings if the translation has
    * plurals.
    *
-   * @param string|array $source
+   * @param string or array $source
    */
   public function setSource($source) {
     $this->_source = $source;
@@ -125,7 +124,7 @@ class PoItem {
    * Set the translation string or the array of strings if the translation has
    * plurals.
    *
-   * @param string|array $translation
+   * @param string or array $translation
    */
   public function setTranslation($translation) {
     $this->_translation = $translation;

@@ -151,9 +151,4 @@ class QueryTest extends QueryPluginBase {
     ];
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function setFieldTimezoneOffset(&$field, $offset) {}
-
 }

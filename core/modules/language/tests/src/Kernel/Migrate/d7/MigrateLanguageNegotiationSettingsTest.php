@@ -28,10 +28,10 @@ class MigrateLanguageNegotiationSettingsTest extends MigrateDrupal7TestBase {
     ]);
 
     $config = $this->config('language.types');
-    $this->assertSame(['language_content', 'language_url', 'language_interface'], $config->get('all'));
-    $this->assertSame(['language_interface'], $config->get('configurable'));
-    $this->assertSame(['enabled' => ['language-interface' => 0]], $config->get('negotiation.language_content'));
-    $this->assertSame(['enabled' => ['language-url' => 0, 'language-url-fallback' => 1]], $config->get('negotiation.language_url'));
+    $this->assertSame($config->get('all'), ['language_content', 'language_url', 'language_interface']);
+    $this->assertSame($config->get('configurable'), ['language_interface']);
+    $this->assertSame($config->get('negotiation.language_content'), ['enabled' => ['language-interface' => 0]]);
+    $this->assertSame($config->get('negotiation.language_url'), ['enabled' => ['language-url' => 0, 'language-url-fallback' => 1]]);
     $expected_language_interface = [
       'enabled' => [
         'language-url' => -9,
@@ -46,7 +46,7 @@ class MigrateLanguageNegotiationSettingsTest extends MigrateDrupal7TestBase {
         'language-selected' => -6,
       ],
     ];
-    $this->assertSame($expected_language_interface, $config->get('negotiation.language_interface'));
+    $this->assertSame($config->get('negotiation.language_interface'), $expected_language_interface);
   }
 
   /**
@@ -60,14 +60,14 @@ class MigrateLanguageNegotiationSettingsTest extends MigrateDrupal7TestBase {
     ]);
 
     $config = $this->config('language.negotiation');
-    $this->assertSame('language', $config->get('session.parameter'));
-    $this->assertSame(LanguageNegotiationUrl::CONFIG_PATH_PREFIX, $config->get('url.source'));
-    $this->assertSame('site_default', $config->get('selected_langcode'));
+    $this->assertSame($config->get('session.parameter'), 'language');
+    $this->assertSame($config->get('url.source'), LanguageNegotiationUrl::CONFIG_PATH_PREFIX);
+    $this->assertSame($config->get('selected_langcode'), 'site_default');
     $expected_prefixes = [
       'en' => '',
       'is' => 'is',
     ];
-    $this->assertSame($expected_prefixes, $config->get('url.prefixes'));
+    $this->assertSame($config->get('url.prefixes'), $expected_prefixes);
   }
 
   /**
@@ -87,14 +87,14 @@ class MigrateLanguageNegotiationSettingsTest extends MigrateDrupal7TestBase {
 
     global $base_url;
     $config = $this->config('language.negotiation');
-    $this->assertSame('language', $config->get('session.parameter'));
-    $this->assertSame(LanguageNegotiationUrl::CONFIG_DOMAIN, $config->get('url.source'));
-    $this->assertSame('site_default', $config->get('selected_langcode'));
+    $this->assertSame($config->get('session.parameter'), 'language');
+    $this->assertSame($config->get('url.source'), LanguageNegotiationUrl::CONFIG_DOMAIN);
+    $this->assertSame($config->get('selected_langcode'), 'site_default');
     $expected_domains = [
       'en' => parse_url($base_url, PHP_URL_HOST),
       'is' => 'is.drupal.org',
     ];
-    $this->assertSame($expected_domains, $config->get('url.domains'));
+    $this->assertSame($config->get('url.domains'), $expected_domains);
   }
 
   /**
@@ -112,14 +112,14 @@ class MigrateLanguageNegotiationSettingsTest extends MigrateDrupal7TestBase {
     ]);
 
     $config = $this->config('language.negotiation');
-    $this->assertSame('language', $config->get('session.parameter'));
-    $this->assertSame(LanguageNegotiationUrl::CONFIG_PATH_PREFIX, $config->get('url.source'));
-    $this->assertSame('site_default', $config->get('selected_langcode'));
+    $this->assertSame($config->get('session.parameter'), 'language');
+    $this->assertSame($config->get('url.source'), LanguageNegotiationUrl::CONFIG_PATH_PREFIX);
+    $this->assertSame($config->get('selected_langcode'), 'site_default');
     $expected_prefixes = [
       'en' => '',
       'is' => 'is',
     ];
-    $this->assertSame($expected_prefixes, $config->get('url.prefixes'));
+    $this->assertSame($config->get('url.prefixes'), $expected_prefixes);
   }
 
 }

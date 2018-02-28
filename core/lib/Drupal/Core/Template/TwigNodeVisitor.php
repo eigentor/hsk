@@ -33,7 +33,7 @@ class TwigNodeVisitor extends \Twig_BaseNodeVisitor {
         return $node;
       }
       $class = get_class($node);
-      $line = $node->getTemplateLine();
+      $line = $node->getLine();
       return new $class(
         new \Twig_Node_Expression_Function('render_var', new \Twig_Node([$node->getNode('expr')]), $line),
         $line
@@ -46,8 +46,7 @@ class TwigNodeVisitor extends \Twig_BaseNodeVisitor {
         // Use our own escape filter that is SafeMarkup aware.
         $node->getNode('filter')->setAttribute('value', 'drupal_escape');
 
-        // Store that we have a filter active already that knows
-        // how to deal with render arrays.
+        // Store that we have a filter active already that knows how to deal with render arrays.
         $this->skipRenderVarFunction = TRUE;
       }
     }

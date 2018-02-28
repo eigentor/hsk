@@ -6,8 +6,6 @@ use Drupal\Core\Form\ConfigFormBase;
 
 /**
  * Tests the ConfigFormBase class.
- *
- * @internal
  */
 class SystemConfigFormTestForm extends ConfigFormBase {
 

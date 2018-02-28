@@ -9,7 +9,6 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\EnforcedResponseException;
 use Drupal\Core\Render\AttachmentsInterface;
 use Drupal\Core\Render\AttachmentsResponseProcessorInterface;
-use Drupal\Core\Render\HtmlResponse;
 use Drupal\Core\Render\HtmlResponseAttachmentsProcessor;
 use Drupal\Core\Render\RendererInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -58,7 +57,7 @@ class BigPipeResponseAttachmentsProcessor extends HtmlResponseAttachmentsProcess
    * {@inheritdoc}
    */
   public function processAttachments(AttachmentsInterface $response) {
-    assert($response instanceof HtmlResponse);
+    assert('$response instanceof \Drupal\Core\Render\HtmlResponse');
 
     // First, render the actual placeholders; this will cause the BigPipe
     // placeholder strategy to generate BigPipe placeholders. We need those to

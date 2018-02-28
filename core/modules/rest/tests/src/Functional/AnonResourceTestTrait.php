@@ -24,14 +24,13 @@ trait AnonResourceTestTrait {
   /**
    * {@inheritdoc}
    */
-  protected function assertResponseWhenMissingAuthentication($method, ResponseInterface $response) {
+  protected function assertResponseWhenMissingAuthentication(ResponseInterface $response) {
     throw new \LogicException('When testing for anonymous users, authentication cannot be missing.');
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function assertAuthenticationEdgeCases($method, Url $url, array $request_options) {
-  }
+  protected function assertAuthenticationEdgeCases($method, Url $url, array $request_options) {}
 
 }

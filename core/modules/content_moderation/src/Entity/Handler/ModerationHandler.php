@@ -14,8 +14,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Common customizations for most/all entities.
  *
  * This class is intended primarily as a base class.
- *
- * @internal
  */
 class ModerationHandler implements ModerationHandlerInterface, EntityHandlerInterface {
 

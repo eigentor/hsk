@@ -11,7 +11,6 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
-use Drupal\Core\Routing\RedirectDestinationInterface;
 use Drupal\entity_test\EntityTestListBuilder;
 use Drupal\Tests\UnitTestCase;
 
@@ -64,13 +63,6 @@ class EntityListBuilderTest extends UnitTestCase {
   protected $role;
 
   /**
-   * The redirect destination service.
-   *
-   * @var \Drupal\Core\Routing\RedirectDestinationInterface|\PHPUnit_Framework_MockObject_MockObject
-   */
-  protected $redirectDestination;
-
-  /**
    * The EntityListBuilder object to test.
    *
    * @var \Drupal\Core\Entity\EntityListBuilder
@@ -88,8 +80,7 @@ class EntityListBuilderTest extends UnitTestCase {
     $this->moduleHandler = $this->getMock('\Drupal\Core\Extension\ModuleHandlerInterface');
     $this->entityType = $this->getMock('\Drupal\Core\Entity\EntityTypeInterface');
     $this->translationManager = $this->getMock('\Drupal\Core\StringTranslation\TranslationInterface');
-    $this->entityListBuilder = new TestEntityListBuilder($this->entityType, $this->roleStorage);
-    $this->redirectDestination = $this->getMock(RedirectDestinationInterface::class);
+    $this->entityListBuilder = new TestEntityListBuilder($this->entityType, $this->roleStorage, $this->moduleHandler);
     $this->container = new ContainerBuilder();
     \Drupal::setContainer($this->container);
   }
@@ -123,20 +114,15 @@ class EntityListBuilderTest extends UnitTestCase {
     $url = $this->getMockBuilder('\Drupal\Core\Url')
       ->disableOriginalConstructor()
       ->getMock();
-    $url->expects($this->atLeastOnce())
-      ->method('mergeOptions')
-      ->with(['query' => ['destination' => '/foo/bar']]);
+    $url->expects($this->any())
+      ->method('toArray')
+      ->will($this->returnValue([]));
     $this->role->expects($this->any())
-      ->method('toUrl')
+      ->method('urlInfo')
       ->will($this->returnValue($url));
 
-    $this->redirectDestination->expects($this->atLeastOnce())
-      ->method('getAsArray')
-      ->willReturn(['destination' => '/foo/bar']);
-
-    $list = new EntityListBuilder($this->entityType, $this->roleStorage);
+    $list = new EntityListBuilder($this->entityType, $this->roleStorage, $this->moduleHandler);
     $list->setStringTranslation($this->translationManager);
-    $list->setRedirectDestination($this->redirectDestination);
 
     $operations = $list->getOperations($this->role);
     $this->assertInternalType('array', $operations);

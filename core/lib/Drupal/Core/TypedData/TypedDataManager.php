@@ -117,13 +117,7 @@ class TypedDataManager extends DefaultPluginManager implements TypedDataManagerI
       throw new \InvalidArgumentException("Invalid data type '$data_type' has been given");
     }
     $class = $type_definition['definition_class'];
-    $data_definition = $class::createFromDataType($data_type);
-
-    if (method_exists($data_definition, 'setTypedDataManager')) {
-      $data_definition->setTypedDataManager($this);
-    }
-
-    return $data_definition;
+    return $class::createFromDataType($data_type);
   }
 
   /**

@@ -1,7 +1,6 @@
 <?php
 
 namespace Drupal\Core\EventSubscriber;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

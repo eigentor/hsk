@@ -19,7 +19,7 @@ use Psr\Http\Message\StreamInterface;
 class Stream implements StreamInterface
 {
     /**
-     * @var resource|null
+     * @var resource
      */
     protected $resource;
 
@@ -48,10 +48,7 @@ class Stream implements StreamInterface
         }
 
         try {
-            if ($this->isSeekable()) {
-                $this->rewind();
-            }
-
+            $this->rewind();
             return $this->getContents();
         } catch (RuntimeException $e) {
             return '';

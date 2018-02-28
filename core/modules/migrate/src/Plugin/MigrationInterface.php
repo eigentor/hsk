@@ -153,7 +153,7 @@ interface MigrationInterface extends PluginInspectionInterface, DerivativeInspec
   /**
    * Set the current migration status.
    *
-   * @param int $status
+   * @param int $result
    *   One of the STATUS_* constants.
    */
   public function setStatus($status);
@@ -321,12 +321,5 @@ interface MigrationInterface extends PluginInspectionInterface, DerivativeInspec
    *   Migration tags.
    */
   public function getMigrationTags();
-
-  /**
-   * Indicates if the migration is auditable.
-   *
-   * @return bool
-   */
-  public function isAuditable();
 
 }

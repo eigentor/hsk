@@ -22,6 +22,7 @@ use Drupal\search\SearchPageInterface;
  *     "form" = {
  *       "add" = "Drupal\search\Form\SearchPageAddForm",
  *       "edit" = "Drupal\search\Form\SearchPageEditForm",
+ *       "search" = "Drupal\search\Form\SearchPageForm",
  *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
  *     }
  *   },

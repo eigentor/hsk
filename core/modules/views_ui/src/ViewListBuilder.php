@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 /**
  * Defines a class to build a listing of view entities.
@@ -256,17 +255,9 @@ class ViewListBuilder extends ConfigEntityListBuilder {
         if ($display->hasPath()) {
           $path = $display->getPath();
           if ($view->status() && strpos($path, '%') === FALSE) {
-            // Wrap this in a try/catch as trying to generate links to some
-            // routes may throw a NotAcceptableHttpException if they do not
-            // respond to HTML, such as RESTExports.
-            try {
-              // @todo Views should expect and store a leading /. See:
-              //   https://www.drupal.org/node/2423913
-              $rendered_path = \Drupal::l('/' . $path, Url::fromUserInput('/' . $path));
-            }
-            catch (NotAcceptableHttpException $e) {
-              $rendered_path = '/' . $path;
-            }
+            // @todo Views should expect and store a leading /. See:
+            //   https://www.drupal.org/node/2423913
+            $rendered_path = \Drupal::l('/' . $path, Url::fromUserInput('/' . $path));
           }
           else {
             $rendered_path = '/' . $path;

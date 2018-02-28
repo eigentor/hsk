@@ -8,7 +8,7 @@
 namespace Drupal\Tests\Component\HttpFoundation;
 
 use Drupal\Component\HttpFoundation\SecuredRedirectResponse;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * @group Routing
  * @coversDefaultClass \Drupal\Component\HttpFoundation\SecuredRedirectResponse
  */
-class SecuredRedirectResponseTest extends TestCase {
+class SecuredRedirectResponseTest extends UnitTestCase {
 
   /**
    * Test copying of redirect response.

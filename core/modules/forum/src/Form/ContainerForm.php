@@ -6,8 +6,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Base form for container term edit forms.
- *
- * @internal
  */
 class ContainerForm extends ForumForm {
 
@@ -22,8 +20,9 @@ class ContainerForm extends ForumForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
+    $taxonomy_term = $this->entity;
     // Build the bulk of the form from the parent forum form.
-    $form = parent::form($form, $form_state);
+    $form = parent::form($form, $form_state, $taxonomy_term);
 
     // Set the title and description of the name field.
     $form['name']['#title'] = $this->t('Container name');

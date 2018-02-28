@@ -133,6 +133,7 @@ class PathValidatorTest extends UnitTestCase {
       ->method('processInbound')
       ->willReturnArgument(0);
 
+
     $this->assertTrue($this->pathValidator->isValid('test-path'));
   }
 

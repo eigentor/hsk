@@ -86,6 +86,7 @@ function forum_views_data() {
     ],
   ];
 
+
   $data['forum_index']['created'] = [
     'title' => t('Post date'),
     'help' => t('The date the content was posted.'),

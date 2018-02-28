@@ -17,20 +17,15 @@ class DateFormatAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
-  protected $viewLabelOperation = TRUE;
-
-  /**
-   * {@inheritdoc}
-   */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
-    // There are no restrictions on viewing the label of a date format.
-    if ($operation === 'view label') {
+    // There are no restrictions on viewing a date format.
+    if ($operation == 'view') {
       return AccessResult::allowed();
     }
     // Locked date formats cannot be updated or deleted.
     elseif (in_array($operation, ['update', 'delete'])) {
       if ($entity->isLocked()) {
-        return AccessResult::forbidden('The DateFormat config entity is locked.')->addCacheableDependency($entity);
+        return AccessResult::forbidden()->addCacheableDependency($entity);
       }
       else {
         return parent::checkAccess($entity, $operation, $account)->addCacheableDependency($entity);

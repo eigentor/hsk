@@ -12,8 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides the site configuration form.
- *
- * @internal
  */
 class SiteConfigureForm extends ConfigFormBase {
 
@@ -206,7 +204,7 @@ class SiteConfigureForm extends ConfigFormBase {
       '#title' => $this->t('Default time zone'),
       // Use system timezone if set, but avoid throwing a warning in PHP >=5.4
       '#default_value' => @date_default_timezone_get(),
-      '#options' => system_time_zones(NULL, TRUE),
+      '#options' => system_time_zones(),
       '#description' => $this->t('By default, dates in this site will be displayed in the chosen time zone.'),
       '#weight' => 5,
       '#attributes' => ['class' => ['timezone-detect']],

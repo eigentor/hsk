@@ -190,11 +190,11 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
           }
 
           if (!empty($options['region']) && $options['region'] === 'hidden') {
-            $this->removeComponent($name);
+            $this->hidden[$name] = TRUE;
           }
           elseif ($options) {
             $options += ['region' => $default_region];
-            $this->setComponent($name, $options);
+            $this->content[$name] = $this->pluginManager->prepareConfiguration($definition->getType(), $options);
           }
           // Note: (base) fields that do not specify display options are not
           // tracked in the display at all, in order to avoid cluttering the
@@ -250,7 +250,7 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
   /**
    * {@inheritdoc}
    */
-  public function preSave(EntityStorageInterface $storage) {
+  public function preSave(EntityStorageInterface $storage, $update = TRUE) {
     // Ensure that a region is set on each component.
     foreach ($this->getComponents() as $name => $component) {
       $this->handleHiddenType($name, $component);
@@ -263,7 +263,7 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
 
     ksort($this->content);
     ksort($this->hidden);
-    parent::preSave($storage);
+    parent::preSave($storage, $update);
   }
 
   /**
@@ -439,7 +439,7 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
   /**
    * Determines if a field has options for a given display.
    *
-   * @param \Drupal\Core\Field\FieldDefinitionInterface $definition
+   * @param FieldDefinitionInterface $definition
    *   A field definition.
    * @return array|null
    */

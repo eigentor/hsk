@@ -89,12 +89,12 @@ class QuickEditIntegrationLoadingTest extends WebTestBase {
       $response = $this->drupalPost('editor/' . 'node/1/body/en/full', '', [], ['query' => [MainContentViewSubscriber::WRAPPER_FORMAT => 'drupal_ajax']]);
       $this->assertResponse(403);
       if (!$user->hasPermission('access in-place editing')) {
-        $message = "The 'access in-place editing' permission is required.";
+        $message = "A fatal error occurred: The 'access in-place editing' permission is required.";
+        $this->assertIdentical(Json::encode(['message' => $message]), $response);
       }
       else {
-        $message = '';
+        $this->assertIdentical('{}', $response);
       }
-      $this->assertIdentical(Json::encode(['message' => $message]), $response);
     }
   }
 

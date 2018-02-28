@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a form for reverting a node revision.
- *
- * @internal
  */
 class NodeRevisionDeleteForm extends ConfirmFormBase {
 

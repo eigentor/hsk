@@ -3,13 +3,13 @@
 namespace Drupal\Tests\Component\FileCache;
 
 use Drupal\Component\FileCache\FileCache;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\Component\FileCache\FileCache
  * @group FileCache
  */
-class FileCacheTest extends TestCase {
+class FileCacheTest extends UnitTestCase {
 
   /**
    * FileCache object used for the tests.

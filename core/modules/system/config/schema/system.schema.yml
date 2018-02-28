@@ -5,11 +5,8 @@ system.site:
   label: 'Site information'
   mapping:
     uuid:
-      type: uuid
+      type: string
       label: 'Site UUID'
-      constraints:
-        Uuid: []
-        NotNull: []
     name:
       type: label
       label: 'Site name'
@@ -188,6 +185,13 @@ system.performance:
         gzip:
           type: boolean
           label: 'Compress JavaScript files.'
+    response:
+      type: mapping
+      label: 'Response performance settings'
+      mapping:
+        gzip:
+          type: boolean
+          label: 'Compress cached pages'
     stale_file_threshold:
       type: integer
       label: 'Stale file threshold'

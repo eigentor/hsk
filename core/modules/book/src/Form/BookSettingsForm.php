@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Configure book settings for this site.
- *
- * @internal
  */
 class BookSettingsForm extends ConfigFormBase {
 

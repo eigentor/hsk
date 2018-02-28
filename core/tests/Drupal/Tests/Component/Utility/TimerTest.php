@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\Component\Utility;
 
+use Drupal\Tests\UnitTestCase;
 use Drupal\Component\Utility\Timer;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the Timer system.
@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversDefaultClass \Drupal\Component\Utility\Timer
  */
-class TimerTest extends TestCase {
+class TimerTest extends UnitTestCase {
 
   /**
    * Tests Timer::read() time accumulation accuracy across multiple restarts.

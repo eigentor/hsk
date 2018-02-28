@@ -57,40 +57,6 @@ class FormatDateTest extends MigrateProcessTestCase {
   }
 
   /**
-   * Tests that "timezone" configuration key triggers deprecation error.
-   *
-   * @covers ::transform
-   *
-   * @dataProvider providerTestDeprecatedTimezoneConfigurationKey
-   *
-   * @group legacy
-   * @expectedDeprecation Configuration key "timezone" is deprecated in 8.4.x and will be removed before Drupal 9.0.0, use "from_timezone" and "to_timezone" instead. See https://www.drupal.org/node/2885746
-   */
-  public function testDeprecatedTimezoneConfigurationKey($configuration, $value, $expected) {
-    $this->plugin = new FormatDate($configuration, 'test_format_date', []);
-    $actual = $this->plugin->transform($value, $this->migrateExecutable, $this->row, 'field_date');
-
-    $this->assertEquals($expected, $actual);
-  }
-
-  /**
-   * Data provider for testDeprecatedTimezoneConfigurationKey.
-   */
-  public function providerTestDeprecatedTimezoneConfigurationKey() {
-    return [
-      [
-        'configuration' => [
-          'from_format' => 'Y-m-d\TH:i:sO',
-          'to_format' => 'c e',
-          'timezone' => 'America/Managua',
-        ],
-        'value' => '2004-12-19T10:19:42-0600',
-        'expected' => '2004-12-19T10:19:42-06:00 -06:00'
-      ],
-    ];
-  }
-
-  /**
    * Tests transformation.
    *
    * @covers ::transform
@@ -130,10 +96,10 @@ class FormatDateTest extends MigrateProcessTestCase {
       'datetime_datetime' => [
         'configuration' => [
           'from_format' => 'm/d/Y H:i:s',
-          'to_format' => 'Y-m-d\TH:i:s e',
+          'to_format' => 'Y-m-d\TH:i:s',
         ],
         'value' => '01/05/1955 10:43:22',
-        'expected' => '1955-01-05T10:43:22 Australia/Sydney',
+        'expected' => '1955-01-05T10:43:22',
       ],
       'empty_values' => [
         'configuration' => [
@@ -143,37 +109,14 @@ class FormatDateTest extends MigrateProcessTestCase {
         'value' => '',
         'expected' => '',
       ],
-      'timezone_from_to' => [
+      'timezone' => [
         'configuration' => [
-          'from_format' => 'Y-m-d H:i:s',
-          'to_format' => 'Y-m-d H:i:s e',
-          'from_timezone' => 'America/Managua',
-          'to_timezone' => 'UTC',
+          'from_format' => 'Y-m-d\TH:i:sO',
+          'to_format' => 'Y-m-d\TH:i:s',
+          'timezone' => 'America/Managua',
         ],
-        'value' => '2004-12-19 10:19:42',
-        'expected' => '2004-12-19 16:19:42 UTC',
-      ],
-      'timezone_from' => [
-        'configuration' => [
-          'from_format' => 'Y-m-d h:i:s',
-          'to_format' => 'Y-m-d h:i:s e',
-          'from_timezone' => 'America/Managua',
-        ],
-        'value' => '2004-11-19 10:25:33',
-        // Unit tests use Australia/Sydney timezone, so date value will be
-        // converted from America/Managua to Australia/Sydney timezone.
-        'expected' => '2004-11-20 03:25:33 Australia/Sydney',
-      ],
-      'timezone_to' => [
-        'configuration' => [
-          'from_format' => 'Y-m-d H:i:s',
-          'to_format' => 'Y-m-d H:i:s e',
-          'to_timezone' => 'America/Managua',
-        ],
-        'value' => '2004-12-19 10:19:42',
-        // Unit tests use Australia/Sydney timezone, so date value will be
-        // converted from Australia/Sydney to America/Managua timezone.
-        'expected' => '2004-12-18 17:19:42 America/Managua',
+        'value' => '2004-12-19T10:19:42-0600',
+        'expected' => '2004-12-19T10:19:42',
       ],
     ];
   }

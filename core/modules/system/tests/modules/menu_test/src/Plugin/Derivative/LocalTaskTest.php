@@ -15,8 +15,7 @@ class LocalTaskTest extends DeriverBase {
       $this->derivatives[$key] = $base_plugin_definition;
       $this->derivatives[$key]['title'] = $title;
       $this->derivatives[$key]['route_parameters'] = ['placeholder' => $key];
-      // Ensure weights for testing.
-      $this->derivatives[$key]['weight'] = $weight++;
+      $this->derivatives[$key]['weight'] = $weight++; // ensure weights for testing.
     }
     return $this->derivatives;
   }

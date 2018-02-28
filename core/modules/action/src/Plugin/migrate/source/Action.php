@@ -10,7 +10,7 @@ use Drupal\migrate\Row;
  *
  * @MigrateSource(
  *   id = "action",
- *   source_module = "system"
+ *   source_provider = "system"
  * )
  */
 class Action extends DrupalSqlBase {

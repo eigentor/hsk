@@ -370,13 +370,12 @@ function template_preprocess_form(&$variables) {
  * @param array $variables
  *   An associative array containing:
  *   - element: An associative array containing the properties of the element.
- *     Properties used: #title, #value, #description, #rows, #cols, #maxlength,
- *     #placeholder, #required, #attributes, #resizable.
+ *     Properties used: #title, #value, #description, #rows, #cols,
+ *     #placeholder, #required, #attributes, #resizable
  */
 function template_preprocess_textarea(&$variables) {
   $element = $variables['element'];
-  $attributes = ['id', 'name', 'rows', 'cols', 'maxlength', 'placeholder'];
-  Element::setAttributes($element, $attributes);
+  Element::setAttributes($element, ['id', 'name', 'rows', 'cols', 'placeholder']);
   RenderElement::setAttributes($element, ['form-textarea']);
   $variables['wrapper_attributes'] = new Attribute();
   $variables['attributes'] = new Attribute($element['#attributes']);
@@ -787,8 +786,8 @@ function batch_set($batch_definition) {
  *   is omitted and no redirect response was returned by the 'finished'
  *   callback. Any query arguments will be automatically persisted.
  * @param \Drupal\Core\Url $url
- *   (optional) URL of the batch processing page. Should only be used for
- *   separate scripts like update.php.
+ *   (optional - should only be used for separate scripts like update.php)
+ *   URL of the batch processing page.
  * @param $redirect_callback
  *   (optional) Specify a function to be called to redirect to the progressive
  *   processing page.

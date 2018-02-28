@@ -7,6 +7,7 @@
 
 use Drupal\contact\Entity\ContactForm;
 
+
 /**
  * Initialize 'message' and 'redirect' field values to 'contact_form' entities.
  */

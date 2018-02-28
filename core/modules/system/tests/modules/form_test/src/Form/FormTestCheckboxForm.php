@@ -6,11 +6,6 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Form for testing checkbox.
- *
- * @internal
- */
 class FormTestCheckboxForm extends FormBase {
 
   /**

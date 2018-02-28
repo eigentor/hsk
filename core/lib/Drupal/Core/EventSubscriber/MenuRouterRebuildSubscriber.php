@@ -22,7 +22,7 @@ class MenuRouterRebuildSubscriber implements EventSubscriberInterface {
   /**
    * The menu link plugin manager.
    *
-   * @var \Drupal\Core\Menu\MenuLinkManagerInterface
+   * @var \Drupal\Core\Menu\MenuLinkManagerInterface $menuLinkManager
    */
   protected $menuLinkManager;
 

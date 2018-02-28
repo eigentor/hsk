@@ -6,8 +6,6 @@ use Drupal\Core\Entity\EntityDeleteForm;
 
 /**
  * Defines a confirmation form for deleting a language entity.
- *
- * @internal
  */
 class LanguageDeleteForm extends EntityDeleteForm {
 

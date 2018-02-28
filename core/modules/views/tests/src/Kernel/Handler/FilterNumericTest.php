@@ -288,7 +288,8 @@ class FilterNumericTest extends ViewsKernelTestBase {
     ]);
 
     $this->executeView($view);
-    $resultset = [];
+    $resultset = [
+    ];
     $this->assertIdenticalResultset($view, $resultset, $this->columnMap);
 
     $view->destroy();
@@ -344,7 +345,8 @@ class FilterNumericTest extends ViewsKernelTestBase {
     $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
-    $resultset = [];
+    $resultset = [
+    ];
     $this->assertIdenticalResultset($view, $resultset, $this->columnMap);
   }
 

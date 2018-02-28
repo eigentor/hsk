@@ -3,14 +3,14 @@
 namespace Drupal\Tests\Component\Bridge;
 
 use Drupal\Component\Bridge\ZfExtensionManagerSfContainer;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * @coversDefaultClass \Drupal\Component\Bridge\ZfExtensionManagerSfContainer
  * @group Bridge
  */
-class ZfExtensionManagerSfContainerTest extends TestCase {
+class ZfExtensionManagerSfContainerTest extends UnitTestCase {
 
   /**
    * @covers ::setContainer

@@ -33,8 +33,6 @@ use GuzzleHttp\Exception\RequestException;
  *
  * @deprecated in Drupal 8.3.x and will be removed before Drupal 9.0.0.
  *   Use \Drupal\user\UserInterface::TIMEZONE_DEFAULT instead.
- *
- * @see https://www.drupal.org/node/2831620
  */
 const DRUPAL_USER_TIMEZONE_DEFAULT = 0;
 
@@ -43,8 +41,6 @@ const DRUPAL_USER_TIMEZONE_DEFAULT = 0;
  *
  * @deprecated in Drupal 8.3.x and will be removed before Drupal 9.0.0.
  *   Use \Drupal\user\UserInterface::TIMEZONE_EMPTY instead.
- *
- * @see https://www.drupal.org/node/2831620
  */
 const DRUPAL_USER_TIMEZONE_EMPTY = 1;
 
@@ -53,8 +49,6 @@ const DRUPAL_USER_TIMEZONE_EMPTY = 1;
  *
  * @deprecated in Drupal 8.3.x and will be removed before Drupal 9.0.0.
  *   Use \Drupal\user\UserInterface::TIMEZONE_SELECT instead.
- *
- * @see https://www.drupal.org/node/2831620
  */
 const DRUPAL_USER_TIMEZONE_SELECT = 2;
 
@@ -80,7 +74,6 @@ const DRUPAL_REQUIRED = 2;
  *   Use \Drupal\block\BlockRepositoryInterface::REGIONS_VISIBLE instead.
  *
  * @see system_region_list()
- * @see https://www.drupal.org/node/2831620
  */
 const REGIONS_VISIBLE = 'visible';
 
@@ -91,7 +84,6 @@ const REGIONS_VISIBLE = 'visible';
  *   Use \Drupal\block\BlockRepositoryInterface::REGIONS_ALL instead.
  *
  * @see system_region_list()
- * @see https://www.drupal.org/node/2831620
  */
 const REGIONS_ALL = 'all';
 
@@ -258,7 +250,7 @@ function system_theme() {
       'file' => 'system.admin.inc',
     ],
     'admin_block' => [
-      'variables' => ['block' => NULL, 'attributes' => []],
+      'variables' => ['block' => NULL],
       'file' => 'system.admin.inc',
     ],
     'admin_block_content' => [
@@ -275,9 +267,6 @@ function system_theme() {
         'add_bundle_message' => NULL,
       ],
       'template' => 'entity-add-list',
-    ],
-    'off_canvas_page_wrapper' => [
-      'variables' => ['children' => NULL],
     ],
   ]);
 }
@@ -450,7 +439,7 @@ function template_preprocess_entity_add_list(&$variables) {
  *  $form_state->setRedirectUrl(system_authorized_get_url());
  * @endcode
  *
- * @param callable $callback
+ * @param $callback
  *   The name of the function to invoke once the user authorizes the operation.
  * @param $file
  *   The full path to the file where the callback function is implemented.
@@ -614,7 +603,7 @@ function system_page_attachments(array &$page) {
   }
 
   // Get the major Drupal version.
-  list($version,) = explode('.', \Drupal::VERSION);
+  list($version, ) = explode('.', \Drupal::VERSION);
 
   // Attach default meta tags.
   $meta_default = [
@@ -856,7 +845,7 @@ function system_user_timezone(&$form, FormStateInterface $form_state) {
     '#type' => 'select',
     '#title' => t('Time zone'),
     '#default_value' => $account->getTimezone() ? $account->getTimezone() : \Drupal::config('system.date')->get('timezone.default'),
-    '#options' => system_time_zones($account->id() != $user->id(), TRUE),
+    '#options' => system_time_zones($account->id() != $user->id()),
     '#description' => t('Select the desired local time and time zone. Dates and times throughout this site will be displayed using this time zone.'),
   ];
   $user_input = $form_state->getUserInput();
@@ -1066,6 +1055,7 @@ function _system_rebuild_module_data() {
   foreach ($modules as $module) {
     _system_rebuild_module_data_ensure_required($module, $modules);
   }
+
 
   if ($profile && isset($modules[$profile])) {
     // The installation profile is required, if it's a valid module.
@@ -1365,15 +1355,10 @@ function system_mail($key, &$message, $params) {
 /**
  * Generate an array of time zones and their local time&date.
  *
- * @param mixed $blank
+ * @param $blank
  *   If evaluates true, prepend an empty time zone option to the array.
- * @param bool $grouped
- *   (optional) Whether the timezones should be grouped by region.
- *
- * @return array
- *   An array or nested array containing time zones, keyed by the system name.
  */
-function system_time_zones($blank = NULL, $grouped = FALSE) {
+function system_time_zones($blank = NULL) {
   $zonelist = timezone_identifiers_list();
   $zones = $blank ? ['' => t('- None selected -')] : [];
   foreach ($zonelist as $zone) {
@@ -1386,27 +1371,6 @@ function system_time_zones($blank = NULL, $grouped = FALSE) {
   }
   // Sort the translated time zones alphabetically.
   asort($zones);
-  if ($grouped) {
-    $grouped_zones = [];
-    foreach ($zones as $key => $value) {
-      $split = explode('/', $value);
-      $city = array_pop($split);
-      $region = array_shift($split);
-      if (!empty($region)) {
-        $grouped_zones[$region][$key] = empty($split) ? $city : $city . ' (' . implode('/', $split) . ')';
-      }
-      else {
-        $grouped_zones[$key] = $value;
-      }
-    }
-    foreach ($grouped_zones as $key => $value) {
-      if (is_array($grouped_zones[$key])) {
-        asort($grouped_zones[$key]);
-      }
-    }
-    $zones = $grouped_zones;
-  }
-
   return $zones;
 }
 
@@ -1446,7 +1410,7 @@ function system_retrieve_file($url, $destination = NULL, $managed = FALSE, $repl
     $path = file_build_uri(drupal_basename($parsed_url['path']));
   }
   else {
-    if (is_dir(\Drupal::service('file_system')->realpath($destination))) {
+    if (is_dir(drupal_realpath($destination))) {
       // Prevent URIs with triple slashes when glueing parts together.
       $path = str_replace('///', '//', "$destination/") . drupal_basename($parsed_url['path']);
     }
@@ -1524,13 +1488,4 @@ function system_path_delete($path) {
 function system_query_entity_reference_alter(AlterableInterface $query) {
   $handler = $query->getMetadata('entity_reference_selection_handler');
   $handler->entityQueryAlter($query);
-}
-
-/**
- * Implements hook_element_info_alter().
- */
-function system_element_info_alter(&$type) {
-  if (isset($type['page'])) {
-    $type['page']['#theme_wrappers']['off_canvas_page_wrapper'] = ['#weight' => -1000];
-  }
 }

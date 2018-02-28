@@ -33,6 +33,8 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
 
     /**
      * Loads the container configuration.
+     *
+     * @param LoaderInterface $loader A LoaderInterface instance
      */
     public function registerContainerConfiguration(LoaderInterface $loader);
 
@@ -56,10 +58,18 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     public function getBundles();
 
     /**
-     * Returns a bundle and optionally its descendants by its name.
+     * Checks if a given class name belongs to an active bundle.
      *
-     * The second argument is deprecated as of 3.4 and will be removed in 4.0. This method
-     * will always return an instance of BundleInterface in 4.0.
+     * @param string $class A class name
+     *
+     * @return bool true if the class belongs to an active bundle, false otherwise
+     *
+     * @deprecated since version 2.6, to be removed in 3.0.
+     */
+    public function isClassInActiveBundle($class);
+
+    /**
+     * Returns a bundle and optionally its descendants by its name.
      *
      * @param string $name  Bundle name
      * @param bool   $first Whether to return the first bundle only or together with its descendants
@@ -122,9 +132,9 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     public function isDebug();
 
     /**
-     * Gets the application root dir (path of the project's Kernel class).
+     * Gets the application root dir.
      *
-     * @return string The Kernel root dir
+     * @return string The application root dir
      */
     public function getRootDir();
 

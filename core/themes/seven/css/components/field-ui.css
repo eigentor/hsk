@@ -4,10 +4,10 @@
   padding: 1px 8px;
 }
 #field-display-overview tr.field-plugin-settings-changed {
-  background: #ffb;
+  background: #ffffbb;
 }
 #field-display-overview tr.drag {
-  background: #fe7;
+  background: #ffee77;
 }
 #field-display-overview tr.field-plugin-settings-editing {
   background: #d5e9f2;

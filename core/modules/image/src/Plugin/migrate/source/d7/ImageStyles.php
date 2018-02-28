@@ -10,7 +10,7 @@ use Drupal\migrate\Row;
  *
  * @MigrateSource(
  *   id = "d7_image_styles",
- *   source_module = "image"
+ *   source_provider = "image"
  * )
  */
 class ImageStyles extends DrupalSqlBase {

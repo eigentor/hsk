@@ -17,11 +17,8 @@ class FieldInstanceSettings extends ProcessPluginBase {
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    list($instance_settings, $widget_settings, $field_definition) = $value;
+    list($instance_settings, $widget_settings, $field_settings) = $value;
     $widget_type = $widget_settings['type'];
-
-    $field_data = unserialize($field_definition['data']);
-    $field_settings = $field_data['settings'];
 
     // Get entityreference handler settings from source field configuration.
     if ($row->getSourceProperty('type') == "entityreference") {

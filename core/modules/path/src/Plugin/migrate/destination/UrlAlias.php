@@ -19,7 +19,7 @@ class UrlAlias extends DestinationBase implements ContainerFactoryPluginInterfac
   /**
    * The alias storage service.
    *
-   * @var \Drupal\Core\Path\AliasStorage
+   * @var \Drupal\Core\Path\AliasStorage $aliasStorage
    */
   protected $aliasStorage;
 

@@ -19,8 +19,6 @@ abstract class Schema implements PlaceholderInterface {
 
   /**
    * The placeholder counter.
-   *
-   * @var int
    */
   protected $placeholder = 0;
 
@@ -32,8 +30,6 @@ abstract class Schema implements PlaceholderInterface {
    * method.
    *
    * @see DatabaseSchema::getPrefixInfo()
-   *
-   * @var string
    */
   protected $defaultSchema = 'public';
 

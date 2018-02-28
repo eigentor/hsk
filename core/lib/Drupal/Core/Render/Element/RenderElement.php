@@ -308,7 +308,6 @@ abstract class RenderElement extends PluginBase implements ElementInterface {
         case 'radio':
         case 'checkbox':
         case 'select':
-        case 'date':
           $element['#ajax']['event'] = 'change';
           break;
 

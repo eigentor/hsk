@@ -8,8 +8,6 @@ use Drupal\Core\Form\ConfigFormBase;
 
 /**
  * Configure the selected language negotiation method for this site.
- *
- * @internal
  */
 class NegotiationSelectedForm extends ConfigFormBase {
 

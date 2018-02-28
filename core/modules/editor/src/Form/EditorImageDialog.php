@@ -15,8 +15,6 @@ use Drupal\Core\Entity\EntityStorageInterface;
 
 /**
  * Provides an image dialog for text editors.
- *
- * @internal
  */
 class EditorImageDialog extends FormBase {
 

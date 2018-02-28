@@ -9,8 +9,6 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\user\RoleInterface;
-use Drupal\user\StatusItem;
-use Drupal\user\TimeZoneItem;
 use Drupal\user\UserInterface;
 
 /**
@@ -500,13 +498,11 @@ class User extends ContentEntityBase implements UserInterface {
       ->addPropertyConstraints('value', [
         'AllowedValues' => ['callback' => __CLASS__ . '::getAllowedTimezones'],
       ]);
-    $fields['timezone']->getItemDefinition()->setClass(TimeZoneItem::class);
 
     $fields['status'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('User status'))
       ->setDescription(t('Whether the user is active or blocked.'))
       ->setDefaultValue(FALSE);
-    $fields['status']->getItemDefinition()->setClass(StatusItem::class);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))

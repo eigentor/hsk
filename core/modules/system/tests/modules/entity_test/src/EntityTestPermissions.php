@@ -32,7 +32,7 @@ class EntityTestPermissions {
   /**
    * Returns a list of entity test permissions for a given entity test bundle.
    *
-   * @param \Drupal\entity_test\Entity\EntityTestBundle $type
+   * @param EntityTestBundle $type
    *   The entity test bundle.
    *
    * @return array

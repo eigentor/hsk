@@ -3,13 +3,10 @@
 namespace Drupal\Tests\rest\Functional\EntityResource\EntityTestLabel;
 
 use Drupal\entity_test\Entity\EntityTestLabel;
-use Drupal\Tests\rest\Functional\BcTimestampNormalizerUnixTestTrait;
 use Drupal\Tests\rest\Functional\EntityResource\EntityResourceTestBase;
 use Drupal\user\Entity\User;
 
 abstract class EntityTestLabelResourceTestBase extends EntityResourceTestBase {
-
-  use BcTimestampNormalizerUnixTestTrait;
 
   /**
    * {@inheritdoc}
@@ -97,7 +94,9 @@ abstract class EntityTestLabelResourceTestBase extends EntityResourceTestBase {
         ],
       ],
       'created' => [
-        $this->formatExpectedTimestampItemValues((int) $this->entity->get('created')->value),
+        [
+          'value' => (int) $this->entity->get('created')->value,
+        ],
       ],
       'user_id' => [
         [
@@ -117,11 +116,7 @@ abstract class EntityTestLabelResourceTestBase extends EntityResourceTestBase {
    */
   protected function getNormalizedPostEntity() {
     return [
-      'type' => [
-        [
-          'value' => 'entity_test_label',
-        ],
-      ],
+      'type' => 'entity_test_label',
       'name' => [
         [
           'value' => 'label_llama',

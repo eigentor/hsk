@@ -8,8 +8,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form controller for the test entity edit forms.
- *
- * @internal
  */
 class EntityTestForm extends ContentEntityForm {
 

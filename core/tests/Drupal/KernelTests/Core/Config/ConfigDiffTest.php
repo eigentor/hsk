@@ -75,7 +75,7 @@ class ConfigDiffTest extends KernelTestBase {
 
     // Test diffing a renamed config entity.
     $test_entity_id = $this->randomMachineName();
-    $test_entity = \Drupal::entityTypeManager()->getStorage('config_test')->create([
+    $test_entity = entity_create('config_test', [
       'id' => $test_entity_id,
       'label' => $this->randomMachineName(),
     ]);

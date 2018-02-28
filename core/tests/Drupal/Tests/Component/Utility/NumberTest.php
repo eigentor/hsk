@@ -3,7 +3,7 @@
 namespace Drupal\Tests\Component\Utility;
 
 use Drupal\Component\Utility\Number;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests number manipulation utilities.
@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @see \Drupal\Component\Utility\Number
  */
-class NumberTest extends TestCase {
+class NumberTest extends UnitTestCase {
 
   /**
    * Tests Number::validStep() without offset.

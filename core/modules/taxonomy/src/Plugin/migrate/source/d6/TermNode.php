@@ -10,7 +10,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  *
  * @MigrateSource(
  *   id = "d6_term_node",
- *   source_module = "taxonomy"
+ *   source_provider = "taxonomy"
  * )
  */
 class TermNode extends DrupalSqlBase {

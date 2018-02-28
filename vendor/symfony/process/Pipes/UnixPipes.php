@@ -22,15 +22,18 @@ use Symfony\Component\Process\Process;
  */
 class UnixPipes extends AbstractPipes
 {
+    /** @var bool */
     private $ttyMode;
+    /** @var bool */
     private $ptyMode;
-    private $haveReadSupport;
+    /** @var bool */
+    private $disableOutput;
 
-    public function __construct($ttyMode, $ptyMode, $input, $haveReadSupport)
+    public function __construct($ttyMode, $ptyMode, $input, $disableOutput)
     {
         $this->ttyMode = (bool) $ttyMode;
         $this->ptyMode = (bool) $ptyMode;
-        $this->haveReadSupport = (bool) $haveReadSupport;
+        $this->disableOutput = (bool) $disableOutput;
 
         parent::__construct($input);
     }
@@ -45,7 +48,7 @@ class UnixPipes extends AbstractPipes
      */
     public function getDescriptors()
     {
-        if (!$this->haveReadSupport) {
+        if ($this->disableOutput) {
             $nullstream = fopen('/dev/null', 'c');
 
             return array(
@@ -99,7 +102,7 @@ class UnixPipes extends AbstractPipes
         unset($r[0]);
 
         // let's have a look if something changed in streams
-        if (($r || $w) && false === @stream_select($r, $w, $e, 0, $blocking ? Process::TIMEOUT_PRECISION * 1E6 : 0)) {
+        if (($r || $w) && false === $n = @stream_select($r, $w, $e, 0, $blocking ? Process::TIMEOUT_PRECISION * 1E6 : 0)) {
             // if a system call has been interrupted, forget about it, let's try again
             // otherwise, an error occurred, let's reset pipes
             if (!$this->hasSystemCallBeenInterrupted()) {
@@ -135,16 +138,21 @@ class UnixPipes extends AbstractPipes
     /**
      * {@inheritdoc}
      */
-    public function haveReadSupport()
-    {
-        return $this->haveReadSupport;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function areOpen()
     {
         return (bool) $this->pipes;
+    }
+
+    /**
+     * Creates a new UnixPipes instance.
+     *
+     * @param Process         $process
+     * @param string|resource $input
+     *
+     * @return static
+     */
+    public static function create(Process $process, $input)
+    {
+        return new static($process->isTty(), $process->isPty(), $input, $process->isOutputDisabled());
     }
 }

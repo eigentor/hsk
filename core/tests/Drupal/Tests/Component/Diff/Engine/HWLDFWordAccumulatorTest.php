@@ -3,7 +3,6 @@
 namespace Drupal\Tests\Component\Diff\Engine;
 
 use Drupal\Component\Diff\Engine\HWLDFWordAccumulator;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test HWLDFWordAccumulator.
@@ -12,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @group Diff
  */
-class HWLDFWordAccumulatorTest extends TestCase {
+class HWLDFWordAccumulatorTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * Verify that we only get back a NBSP from an empty accumulator.

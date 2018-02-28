@@ -1,7 +1,6 @@
 <?php
 
 namespace Drupal\Tests\views\Kernel\Handler;
-
 use Drupal\entity_test\Entity\EntityTest;
 
 /**

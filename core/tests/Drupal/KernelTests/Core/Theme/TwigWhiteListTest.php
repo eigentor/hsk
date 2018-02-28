@@ -42,7 +42,6 @@ class TwigWhiteListTest extends KernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    \Drupal::service('theme_handler')->install(['test_theme']);
     $this->installSchema('system', ['sequences']);
     $this->installEntitySchema('node');
     $this->installEntitySchema('user');

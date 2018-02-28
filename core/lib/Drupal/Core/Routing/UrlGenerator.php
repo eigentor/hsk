@@ -65,10 +65,8 @@ class UrlGenerator implements UrlGeneratorInterface {
     // the slash can be used to designate a hierarchical structure and we want allow using it with this meaning
     // some webservers don't allow the slash in encoded form in the path for security reasons anyway
     // see http://stackoverflow.com/questions/4069002/http-400-if-2f-part-of-get-url-in-jboss
-    // Map from these encoded characters.
-    '%2F',
-    // Map to these decoded characters.
-    '/',
+    '%2F', // Map from these encoded characters.
+    '/', // Map to these decoded characters.
   ];
 
   /**
@@ -148,7 +146,7 @@ class UrlGenerator implements UrlGeneratorInterface {
    * examined for changes in new Symfony releases.
    *
    * @param array $variables
-   *   The variables from the compiled route, corresponding to slugs in the
+   *   The variables form the compiled route, corresponding to slugs in the
    *   route path.
    * @param array $defaults
    *   The defaults from the route.

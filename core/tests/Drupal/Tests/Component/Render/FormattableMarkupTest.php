@@ -3,7 +3,7 @@
 namespace Drupal\Tests\Component\Render;
 
 use Drupal\Component\Render\FormattableMarkup;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests the TranslatableMarkup class.
@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  * @coversDefaultClass \Drupal\Component\Render\FormattableMarkup
  * @group utility
  */
-class FormattableMarkupTest extends TestCase {
+class FormattableMarkupTest extends UnitTestCase {
 
   /**
    * The error message of the last error in the error handler.

@@ -2,9 +2,8 @@
 
 namespace Drupal\contextual;
 
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\Render\RendererInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -12,32 +11,9 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 /**
  * Returns responses for Contextual module routes.
  */
-class ContextualController implements ContainerInjectionInterface {
+class ContextualController implements ContainerAwareInterface {
 
-  /**
-   * The renderer.
-   * @var \Drupal\Core\Render\RendererInterface
-   */
-  protected $render;
-
-  /**
-   * Constructors a new ContextualController
-   *
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer.
-   */
-  public function __construct(RendererInterface $renderer) {
-    $this->renderer = $renderer;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('renderer')
-    );
-  }
+  use ContainerAwareTrait;
 
   /**
    * Returns the requested rendered contextual links.
@@ -62,7 +38,7 @@ class ContextualController implements ContainerInjectionInterface {
         '#type' => 'contextual_links',
         '#contextual_links' => _contextual_id_to_links($id),
       ];
-      $rendered[$id] = $this->renderer->renderRoot($element);
+      $rendered[$id] = $this->container->get('renderer')->renderRoot($element);
     }
 
     return new JsonResponse($rendered);

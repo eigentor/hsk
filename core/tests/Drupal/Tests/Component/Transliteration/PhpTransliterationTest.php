@@ -4,8 +4,8 @@ namespace Drupal\Tests\Component\Transliteration;
 
 use Drupal\Component\Transliteration\PhpTransliteration;
 use Drupal\Component\Utility\Random;
+use Drupal\Tests\UnitTestCase;
 use org\bovigo\vfs\vfsStream;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Tests Transliteration component functionality.
@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversDefaultClass \Drupal\Component\Transliteration\PhpTransliteration
  */
-class PhpTransliterationTest extends TestCase {
+class PhpTransliterationTest extends UnitTestCase {
 
   /**
    * Tests the PhpTransliteration::removeDiacritics() function.
@@ -182,7 +182,7 @@ class PhpTransliterationTest extends TestCase {
     ]);
     $transliteration = new PhpTransliteration(vfsStream::url('transliteration/dir'));
     $transliterated = $transliteration->transliterate(chr(0xC2) . chr(0x82), '../index');
-    $this->assertSame('safe', $transliterated);
+    $this->assertSame($transliterated, 'safe');
   }
 
 }

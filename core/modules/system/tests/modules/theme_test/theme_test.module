@@ -66,10 +66,6 @@ function theme_test_theme($existing, $type, $theme, $path) {
       'bar' => '',
     ],
   ];
-  $items['theme_test_registered_by_module'] = [
-    'render element' => 'content',
-    'base hook' => 'container',
-  ];
   return $items;
 }
 
@@ -157,7 +153,7 @@ function template_preprocess_theme_test_render_element(&$variables) {
  *   - element: An associative array containing the properties of the element.
  */
 function theme_theme_test_render_element_children($variables) {
-  return \Drupal::service('renderer')->render($variables['element']);
+  return drupal_render($variables['element']);
 }
 
 /**
@@ -216,10 +212,4 @@ function theme_test_theme_suggestions_node(array $variables) {
   $suggestions[] = 'node__' . $xss;
 
   return $suggestions;
-}
-
-/**
- * Implements template_preprocess_HOOK() for theme_test_registered_by_module.
- */
-function template_preprocess_theme_test_registered_by_module() {
 }

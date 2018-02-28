@@ -48,35 +48,40 @@ class UserData implements UserDataInterface {
       }
       return NULL;
     }
-    $return = [];
     // If $module and $uid were passed, return data keyed by name.
-    if (isset($uid)) {
+    elseif (isset($uid)) {
+      $return = [];
       foreach ($result as $record) {
         $return[$record->name] = ($record->serialized ? unserialize($record->value) : $record->value);
       }
       return $return;
     }
     // If $module and $name were passed, return data keyed by uid.
-    if (isset($name)) {
+    elseif (isset($name)) {
+      $return = [];
       foreach ($result as $record) {
         $return[$record->uid] = ($record->serialized ? unserialize($record->value) : $record->value);
       }
       return $return;
     }
     // If only $module was passed, return data keyed by uid and name.
-    foreach ($result as $record) {
-      $return[$record->uid][$record->name] = ($record->serialized ? unserialize($record->value) : $record->value);
+    else {
+      $return = [];
+      foreach ($result as $record) {
+        $return[$record->uid][$record->name] = ($record->serialized ? unserialize($record->value) : $record->value);
+      }
+      return $return;
     }
-    return $return;
   }
 
   /**
    * {@inheritdoc}
    */
   public function set($module, $uid, $name, $value) {
-    $serialized = (int) !is_scalar($value);
-    if ($serialized) {
+    $serialized = 0;
+    if (!is_scalar($value)) {
       $value = serialize($value);
+      $serialized = 1;
     }
     $this->connection->merge('users_data')
       ->keys([

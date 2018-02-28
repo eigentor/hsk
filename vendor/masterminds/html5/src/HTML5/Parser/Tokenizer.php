@@ -83,8 +83,11 @@ class Tokenizer
      */
     public function parse()
     {
+        $p = 0;
         do {
+            $p = $this->scanner->position();
             $this->consumeData();
+
             // FIXME: Add infinite loop protection.
         } while ($this->carryOn);
     }
@@ -142,8 +145,7 @@ class Tokenizer
      */
     protected function characterData()
     {
-        $tok = $this->scanner->current();
-        if ($tok === false) {
+        if ($this->scanner->current() === false) {
             return false;
         }
         switch ($this->textMode) {
@@ -152,6 +154,7 @@ class Tokenizer
             case Elements::TEXT_RCDATA:
                 return $this->rcdata();
             default:
+                $tok = $this->scanner->current();
                 if (strspn($tok, "<&")) {
                     return false;
                 }
@@ -405,26 +408,24 @@ class Tokenizer
         if ($tok == '/') {
             $this->scanner->next();
             $this->scanner->whitespace();
-            $tok = $this->scanner->current();
-
-            if ($tok == '>') {
+            if ($this->scanner->current() == '>') {
                 $selfClose = true;
                 return true;
             }
-            if ($tok === false) {
+            if ($this->scanner->current() === false) {
                 $this->parseError("Unexpected EOF inside of tag.");
                 return true;
             }
             // Basically, we skip the / token and go on.
             // See 8.2.4.43.
-            $this->parseError("Unexpected '%s' inside of a tag.", $tok);
+            $this->parseError("Unexpected '%s' inside of a tag.", $this->scanner->current());
             return false;
         }
 
-        if ($tok == '>') {
+        if ($this->scanner->current() == '>') {
             return true;
         }
-        if ($tok === false) {
+        if ($this->scanner->current() === false) {
             $this->parseError("Unexpected EOF inside of tag.");
             return true;
         }
@@ -540,21 +541,15 @@ class Tokenizer
     {
         $stoplist = "\f" . $quote;
         $val = '';
-
-        while (true) {
-            $tokens = $this->scanner->charsUntil($stoplist.'&');
-            if ($tokens !== false) {
-                $val .= $tokens;
-            } else {
-                break;
-            }
-
-            $tok = $this->scanner->current();
+        $tok = $this->scanner->current();
+        while (strspn($tok, $stoplist) == 0 && $tok !== false) {
             if ($tok == '&') {
-                $val .= $this->decodeCharacterReference(true, $tok);
-                continue;
+                $val .= $this->decodeCharacterReference(true);
+                $tok = $this->scanner->current();
+            } else {
+                $val .= $tok;
+                $tok = $this->scanner->next();
             }
-            break;
         }
         $this->scanner->next();
         return $val;
@@ -596,18 +591,18 @@ class Tokenizer
      */
     protected function bogusComment($leading = '')
     {
+
+        // TODO: This can be done more efficiently when the
+        // scanner exposes a readUntil() method.
         $comment = $leading;
-        $tokens = $this->scanner->charsUntil('>');
-        if ($tokens !== false) {
-            $comment .= $tokens;
-        }
         $tok = $this->scanner->current();
-        if ($tok !== false) {
+        do {
             $comment .= $tok;
-        }
+            $tok = $this->scanner->next();
+        } while ($tok !== false && $tok != '>');
 
         $this->flushBuffer();
-        $this->events->comment($comment);
+        $this->events->comment($comment . $tok);
         $this->scanner->next();
 
         return true;
@@ -651,17 +646,15 @@ class Tokenizer
      */
     protected function isCommentEnd()
     {
-        $tok = $this->scanner->current();
-
         // EOF
-        if ($tok === false) {
+        if ($this->scanner->current() === false) {
             // Hit the end.
             $this->parseError("Unexpected EOF in a comment.");
             return true;
         }
 
         // If it doesn't start with -, not the end.
-        if ($tok != '-') {
+        if ($this->scanner->current() != '-') {
             return false;
         }
 
@@ -744,6 +737,7 @@ class Tokenizer
 
         $pub = strtoupper($this->scanner->getAsciiAlpha());
         $white = strlen($this->scanner->whitespace());
+        $tok = $this->scanner->current();
 
         // Get ID, and flag it as pub or system.
         if (($pub == 'PUBLIC' || $pub == 'SYSTEM') && $white > 0) {
@@ -944,11 +938,10 @@ class Tokenizer
         $len = strlen($sequence);
         $buffer = '';
         for ($i = 0; $i < $len; ++ $i) {
-            $tok = $this->scanner->current();
-            $buffer .= $tok;
+            $buffer .= $this->scanner->current();
 
             // EOF. Rewind and let the caller handle it.
-            if ($tok === false) {
+            if ($this->scanner->current() === false) {
                 $this->scanner->unconsume($i);
                 return false;
             }
@@ -1074,22 +1067,18 @@ class Tokenizer
                 }
                 $entity = CharacterReference::lookupDecimal($numeric);
             }
-        } elseif ($tok === '=' && $inAttribute) {
-            return '&';
-        } else { // String entity.
-
+        }         // String entity.
+        else {
             // Attempt to consume a string up to a ';'.
             // [a-zA-Z0-9]+;
-            $cname = $this->scanner->getAsciiAlphaNum();
+            $cname = $this->scanner->getAsciiAlpha();
             $entity = CharacterReference::lookupName($cname);
 
             // When no entity is found provide the name of the unmatched string
             // and continue on as the & is not part of an entity. The & will
             // be converted to &amp; elsewhere.
             if ($entity == null) {
-                if (!$inAttribute || strlen($cname) === 0) {
-                    $this->parseError("No match in entity table for '%s'", $cname);
-                }
+                $this->parseError("No match in entity table for '%s'", $cname);
                 $this->scanner->unconsume($this->scanner->position() - $start);
                 return '&';
             }

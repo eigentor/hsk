@@ -188,7 +188,7 @@ class EditorUploadImageScaleTest extends WebTestBase {
    */
   protected function uploadImage($uri) {
     $edit = [
-      'files[fid]' => \Drupal::service('file_system')->realpath($uri),
+      'files[fid]' => drupal_realpath($uri),
     ];
     $this->drupalGet('editor/dialog/image/basic_html');
     $this->drupalPostForm('editor/dialog/image/basic_html', $edit, t('Upload'));

@@ -65,7 +65,7 @@ trait SapiEmitterTrait
     {
         foreach ($response->getHeaders() as $header => $values) {
             $name  = $this->filterHeader($header);
-            $first = $name === 'Set-Cookie' ? false : true;
+            $first = true;
             foreach ($values as $value) {
                 header(sprintf(
                     '%s: %s',

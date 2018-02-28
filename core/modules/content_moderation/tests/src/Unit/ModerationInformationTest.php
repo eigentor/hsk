@@ -10,19 +10,18 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\content_moderation\ModerationInformation;
-use Drupal\Tests\UnitTestCase;
 use Drupal\workflows\WorkflowInterface;
 
 /**
  * @coversDefaultClass \Drupal\content_moderation\ModerationInformation
  * @group content_moderation
  */
-class ModerationInformationTest extends UnitTestCase {
+class ModerationInformationTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * Builds a mock user.
    *
-   * @return \Drupal\Core\Session\AccountInterface
+   * @return AccountInterface
    *   The mocked user.
    */
   protected function getUser() {
@@ -32,7 +31,7 @@ class ModerationInformationTest extends UnitTestCase {
   /**
    * Returns a mock Entity Type Manager.
    *
-   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @return EntityTypeManagerInterface
    *   The mocked entity type manager.
    */
   protected function getEntityTypeManager() {

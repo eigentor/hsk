@@ -299,18 +299,16 @@ class FormCacheTest extends UnitTestCase {
       ->method('isAnonymous')
       ->willReturn(TRUE);
 
-    $cached_form_state = [
-      'build_info' => [
-        'files' => [
-          [
-            'module' => 'a_module',
-            'type' => 'the_type',
-            'name' => 'some_name',
-          ],
-          ['module' => 'another_module'],
-        ],
+    $cached_form_state = ['build_info' => ['files' => [
+      [
+        'module' => 'a_module',
+        'type' => 'the_type',
+        'name' => 'some_name',
       ],
-    ];
+      [
+        'module' => 'another_module',
+      ],
+    ]]];
     $this->moduleHandler->expects($this->at(0))
       ->method('loadInclude')
       ->with('a_module', 'the_type', 'some_name');

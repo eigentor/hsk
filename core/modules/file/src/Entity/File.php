@@ -190,10 +190,7 @@ class File extends ContentEntityBase implements FileInterface {
 
     // The file itself might not exist or be available right now.
     $uri = $this->getFileUri();
-    $size = @filesize($uri);
-
-    // Set size unless there was an error.
-    if ($size !== FALSE) {
+    if ($size = @filesize($uri)) {
       $this->setSize($size);
     }
   }
@@ -243,7 +240,7 @@ class File extends ContentEntityBase implements FileInterface {
       ->setLabel(t('Filename'))
       ->setDescription(t('Name of the file with no path components.'));
 
-    $fields['uri'] = BaseFieldDefinition::create('file_uri')
+    $fields['uri'] = BaseFieldDefinition::create('uri')
       ->setLabel(t('URI'))
       ->setDescription(t('The URI to access the file (either local or remote).'))
       ->setSetting('max_length', 255)

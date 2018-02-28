@@ -15,7 +15,7 @@ class MockRouteProvider implements RouteProviderInterface {
   /**
    * A collection of routes for this route provider.
    *
-   * @var \Symfony\Component\Routing\RouteCollection
+   * @var RouteCollection
    */
   protected $routes;
 

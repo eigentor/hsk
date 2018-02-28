@@ -142,8 +142,6 @@ class NegotiationMiddlewareTest extends UnitTestCase {
 }
 
 class StubNegotiationMiddleware extends NegotiationMiddleware {
-  public function getContentType(Request $request) {
-    return parent::getContentType($request);
-  }
+  public function getContentType(Request $request) { return parent::getContentType($request); }
 
 }

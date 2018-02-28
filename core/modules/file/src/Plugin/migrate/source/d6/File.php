@@ -9,8 +9,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  * Drupal 6 file source from database.
  *
  * @MigrateSource(
- *   id = "d6_file",
- *   source_module = "system"
+ *   id = "d6_file"
  * )
  */
 class File extends DrupalSqlBase {

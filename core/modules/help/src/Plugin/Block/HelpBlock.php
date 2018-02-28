@@ -15,10 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @Block(
  *   id = "help_block",
- *   admin_label = @Translation("Help"),
- *   forms = {
- *     "settings_tray" = FALSE,
- *   },
+ *   admin_label = @Translation("Help")
  * )
  */
 class HelpBlock extends BlockBase implements ContainerFactoryPluginInterface {

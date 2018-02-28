@@ -3,7 +3,7 @@
 namespace Drupal\Tests\Component\Utility;
 
 use Drupal\Component\Utility\Bytes;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests bytes size parsing helper methods.
@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversDefaultClass \Drupal\Component\Utility\Bytes
  */
-class BytesTest extends TestCase {
+class BytesTest extends UnitTestCase {
 
   /**
    * Tests \Drupal\Component\Utility\Bytes::toInt().
@@ -52,10 +52,8 @@ class BytesTest extends TestCase {
       ['1 ZB'  , pow(Bytes::KILOBYTE, 7)],
       ['1 YB'  , pow(Bytes::KILOBYTE, 8)],
       ['23476892 bytes', 23476892],
-      // 76 MB.
-      ['76MRandomStringThatShouldBeIgnoredByParseSize.', 79691776],
-      // 76.24 GB (with typo).
-      ['76.24 Giggabyte', 81862076662],
+      ['76MRandomStringThatShouldBeIgnoredByParseSize.', 79691776], // 76 MB
+      ['76.24 Giggabyte', 81862076662], // 76.24 GB (with typo)
     ];
   }
 

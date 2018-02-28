@@ -48,8 +48,6 @@ abstract class Query implements PlaceholderInterface {
 
   /**
    * The placeholder counter.
-   *
-   * @var int
    */
   protected $nextPlaceholder = 0;
 

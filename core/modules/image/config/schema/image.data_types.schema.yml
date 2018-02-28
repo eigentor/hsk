@@ -14,7 +14,8 @@ field_default_image:
   type: mapping
   mapping:
     uuid:
-      type: uuid
+      type: string
+      label: 'Image'
     alt:
       type: label
       label: 'Alternative text'

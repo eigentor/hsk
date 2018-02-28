@@ -3,8 +3,8 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
- * (c) Armin Ronacher
+ * (c) 2009 Fabien Potencier
+ * (c) 2009 Armin Ronacher
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,10 +23,6 @@ class Twig_Node_Expression_GetAttr extends Twig_Node_Expression
 
     public function compile(Twig_Compiler $compiler)
     {
-        if ($this->getAttribute('disable_c_ext')) {
-            @trigger_error(sprintf('Using the "disable_c_ext" attribute on %s is deprecated since version 1.30 and will be removed in 2.0.', __CLASS__), E_USER_DEPRECATED);
-        }
-
         if (function_exists('twig_template_get_attributes') && !$this->getAttribute('disable_c_ext')) {
             $compiler->raw('twig_template_get_attributes($this, ');
         } else {
@@ -70,5 +66,3 @@ class Twig_Node_Expression_GetAttr extends Twig_Node_Expression
         $compiler->raw(')');
     }
 }
-
-class_alias('Twig_Node_Expression_GetAttr', 'Twig\Node\Expression\GetAttrExpression', false);

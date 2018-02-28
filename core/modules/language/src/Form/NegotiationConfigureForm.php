@@ -17,8 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure the selected language negotiation method for this site.
- *
- * @internal
  */
 class NegotiationConfigureForm extends ConfigFormBase {
 
@@ -215,7 +213,7 @@ class NegotiationConfigureForm extends ConfigFormBase {
    * @param string $type
    *   The language type to generate the table for.
    */
-  protected function configureFormTable(array &$form, $type) {
+  protected function configureFormTable(array &$form, $type)  {
     $info = $form['#language_types_info'][$type];
 
     $table_form = [

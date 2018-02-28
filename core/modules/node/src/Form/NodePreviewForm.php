@@ -12,8 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Contains a form for switching the view mode of a node during preview.
- *
- * @internal
  */
 class NodePreviewForm extends FormBase {
 

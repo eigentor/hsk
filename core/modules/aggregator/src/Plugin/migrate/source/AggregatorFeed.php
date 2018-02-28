@@ -9,7 +9,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  *
  * @MigrateSource(
  *   id = "aggregator_feed",
- *   source_module = "aggregator"
+ *   source_provider = "aggregator"
  * )
  */
 class AggregatorFeed extends DrupalSqlBase {

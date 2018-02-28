@@ -158,7 +158,7 @@ class EntityAccessControlHandler extends EntityHandlerBase implements EntityAcce
       return AccessResult::forbidden()->addCacheableDependency($entity);
     }
     if ($admin_permission = $this->entityType->getAdminPermission()) {
-      return AccessResult::allowedIfHasPermission($account, $admin_permission);
+      return AccessResult::allowedIfHasPermission($account, $this->entityType->getAdminPermission());
     }
     else {
       // No opinion.
@@ -316,17 +316,13 @@ class EntityAccessControlHandler extends EntityHandlerBase implements EntityAcce
     $default = $items ? $items->defaultAccess($operation, $account) : AccessResult::allowed();
 
     // Explicitly disallow changing the entity ID and entity UUID.
-    $entity = $items ? $items->getEntity() : NULL;
-    if ($operation === 'edit' && $entity) {
+    if ($operation === 'edit') {
       if ($field_definition->getName() === $this->entityType->getKey('id')) {
-        // String IDs can be set when creating the entity.
-        if (!($entity->isNew() && $field_definition->getType() === 'string')) {
-          return $return_as_object ? AccessResult::forbidden('The entity ID cannot be changed')->addCacheableDependency($entity) : FALSE;
-        }
+        return $return_as_object ? AccessResult::forbidden('The entity ID cannot be changed') : FALSE;
       }
       elseif ($field_definition->getName() === $this->entityType->getKey('uuid')) {
         // UUIDs can be set when creating an entity.
-        if (!$entity->isNew()) {
+        if ($items && ($entity = $items->getEntity()) && !$entity->isNew()) {
           return $return_as_object ? AccessResult::forbidden('The entity UUID cannot be changed')->addCacheableDependency($entity) : FALSE;
         }
       }

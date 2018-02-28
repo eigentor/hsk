@@ -2,6 +2,7 @@
 
 namespace Drupal\comment;
 
+
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;

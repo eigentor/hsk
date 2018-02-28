@@ -12,8 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base form handler for comment type edit forms.
- *
- * @internal
  */
 class CommentTypeForm extends EntityForm {
 

@@ -9,8 +9,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides an add form for image effects.
- *
- * @internal
  */
 class ImageEffectAddForm extends ImageEffectFormBase {
 

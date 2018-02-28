@@ -12,7 +12,7 @@ use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\Component\Render\MarkupTrait;
 use Drupal\Component\Utility\UrlHelper;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests marking strings as safe.
@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  * @group Utility
  * @coversDefaultClass \Drupal\Component\Utility\SafeMarkup
  */
-class SafeMarkupTest extends TestCase {
+class SafeMarkupTest extends UnitTestCase {
 
   /**
    * {@inheritdoc}
@@ -37,7 +37,7 @@ class SafeMarkupTest extends TestCase {
    * @covers ::isSafe
    */
   public function testIsSafe() {
-    $safe_string = $this->getMockBuilder('\Drupal\Component\Render\MarkupInterface')->getMock();
+    $safe_string = $this->getMock('\Drupal\Component\Render\MarkupInterface');
     $this->assertTrue(SafeMarkup::isSafe($safe_string));
     $string_object = new SafeMarkupTestString('test');
     $this->assertFalse(SafeMarkup::isSafe($string_object));

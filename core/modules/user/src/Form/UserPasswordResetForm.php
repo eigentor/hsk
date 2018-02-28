@@ -9,8 +9,6 @@ use Drupal\Core\Url;
 
 /**
  * Form controller for the user password forms.
- *
- * @internal
  */
 class UserPasswordResetForm extends FormBase {
 

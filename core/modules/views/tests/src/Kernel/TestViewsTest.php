@@ -34,8 +34,7 @@ class TestViewsTest extends KernelTestBase {
       \Drupal::service('config.storage'),
       new TestInstallStorage(InstallStorage::CONFIG_SCHEMA_DIRECTORY),
       \Drupal::service('cache.discovery'),
-      \Drupal::service('module_handler'),
-      \Drupal::service('class_resolver')
+      \Drupal::service('module_handler')
     );
 
     // Create a configuration storage with access to default configuration in

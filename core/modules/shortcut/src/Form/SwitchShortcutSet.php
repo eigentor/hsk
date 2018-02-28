@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Builds the shortcut set switch form.
- *
- * @internal
  */
 class SwitchShortcutSet extends FormBase {
 

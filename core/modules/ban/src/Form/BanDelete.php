@@ -11,8 +11,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Provides a form to unban IP addresses.
- *
- * @internal
  */
 class BanDelete extends ConfirmFormBase {
 

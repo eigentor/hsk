@@ -71,6 +71,7 @@ class EntityReverse extends RelationshipPluginBase {
     }
     $first_join = $this->joinManager->createInstance($id, $first);
 
+
     $this->first_alias = $this->query->addTable($this->definition['field table'], $this->relationship, $first_join);
 
     // Second, relate the field table to the entity specified using

@@ -6,8 +6,6 @@ use Drupal\Core\Entity\EntityDeleteForm;
 
 /**
  * Provides a deletion confirmation form for taxonomy vocabulary.
- *
- * @internal
  */
 class VocabularyDeleteForm extends EntityDeleteForm {
 

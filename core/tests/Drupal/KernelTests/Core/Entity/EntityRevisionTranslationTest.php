@@ -2,7 +2,6 @@
 
 namespace Drupal\KernelTests\Core\Entity;
 
-use Drupal\entity_test\Entity\EntityTestMul;
 use Drupal\entity_test\Entity\EntityTestMulRev;
 use Drupal\language\Entity\ConfigurableLanguage;
 
@@ -24,11 +23,9 @@ class EntityRevisionTranslationTest extends EntityKernelTestBase {
   protected function setUp() {
     parent::setUp();
 
-    // Enable some additional languages.
+    // Enable an additional language.
     ConfigurableLanguage::createFromLangcode('de')->save();
-    ConfigurableLanguage::createFromLangcode('it')->save();
 
-    $this->installEntitySchema('entity_test_mul');
     $this->installEntitySchema('entity_test_mulrev');
   }
 
@@ -91,9 +88,9 @@ class EntityRevisionTranslationTest extends EntityKernelTestBase {
   }
 
   /**
-   * Tests the translation values when saving a pending revision.
+   * Tests the translation values when saving a forward revision.
    */
-  public function testTranslationValuesWhenSavingPendingRevisions() {
+  public function testTranslationValuesWhenSavingForwardRevisions() {
     $user = $this->createUser();
     $storage = $this->entityManager->getStorage('entity_test_mulrev');
 
@@ -106,33 +103,33 @@ class EntityRevisionTranslationTest extends EntityKernelTestBase {
     $entity->addTranslation('de', ['name' => 'default revision - de']);
     $entity->save();
 
-    // Create a pending revision for the entity and change a field value for
+    // Create a forward revision for the entity and change a field value for
     // both languages.
-    $pending_revision = $this->reloadEntity($entity);
+    $forward_revision = $this->reloadEntity($entity);
 
-    $pending_revision->setNewRevision();
-    $pending_revision->isDefaultRevision(FALSE);
+    $forward_revision->setNewRevision();
+    $forward_revision->isDefaultRevision(FALSE);
 
-    $pending_revision->name = 'pending revision - en';
-    $pending_revision->save();
+    $forward_revision->name = 'forward revision - en';
+    $forward_revision->save();
 
-    $pending_revision_translation = $pending_revision->getTranslation('de');
-    $pending_revision_translation->name = 'pending revision - de';
-    $pending_revision_translation->save();
+    $forward_revision_translation = $forward_revision->getTranslation('de');
+    $forward_revision_translation->name = 'forward revision - de';
+    $forward_revision_translation->save();
 
-    $pending_revision_id = $pending_revision->getRevisionId();
-    $pending_revision = $storage->loadRevision($pending_revision_id);
+    $forward_revision_id = $forward_revision->getRevisionId();
+    $forward_revision = $storage->loadRevision($forward_revision_id);
 
-    // Change the value of the field in the default language, save the pending
+    // Change the value of the field in the default language, save the forward
     // revision and check that the value of the field in the second language is
-    // also taken from the pending revision, *not* from the default revision.
-    $pending_revision->name = 'updated pending revision - en';
-    $pending_revision->save();
+    // also taken from the forward revision, *not* from the default revision.
+    $forward_revision->name = 'updated forward revision - en';
+    $forward_revision->save();
 
-    $pending_revision = $storage->loadRevision($pending_revision_id);
+    $forward_revision = $storage->loadRevision($forward_revision_id);
 
-    $this->assertEquals($pending_revision->name->value, 'updated pending revision - en');
-    $this->assertEquals($pending_revision->getTranslation('de')->name->value, 'pending revision - de');
+    $this->assertEquals($forward_revision->name->value, 'updated forward revision - en');
+    $this->assertEquals($forward_revision->getTranslation('de')->name->value, 'forward revision - de');
   }
 
   /**
@@ -158,126 +155,6 @@ class EntityRevisionTranslationTest extends EntityKernelTestBase {
     $translation->isDefaultRevision(FALSE);
     $this->assertFalse($entity->isDefaultRevision());
     $this->assertFalse($translation->isDefaultRevision());
-  }
-
-  /**
-   * @covers \Drupal\Core\Entity\RevisionableInterface::setNewRevision
-   */
-  public function testSetNewRevision() {
-    $user = $this->createUser();
-
-    // All revisionable entity variations have to have the same results.
-    foreach (entity_test_entity_types(ENTITY_TEST_TYPES_REVISABLE) as $entity_type) {
-      $this->installEntitySchema($entity_type);
-
-      $entity = entity_create($entity_type, [
-        'name' => 'foo',
-        'user_id' => $user->id(),
-      ]);
-
-      $entity->save();
-      $entity_id = $entity->id();
-      $entity_rev_id = $entity->getRevisionId();
-      $entity = entity_load($entity_type, $entity_id, TRUE);
-
-      $entity->setNewRevision(TRUE);
-      $entity->setNewRevision(FALSE);
-      $entity->save();
-      $entity = entity_load($entity_type, $entity_id, TRUE);
-
-      $this->assertEquals($entity_rev_id, $entity->getRevisionId(), 'A new entity revision was not created.');
-    }
-  }
-
-  /**
-   * Tests that revision translations are correctly detected.
-   *
-   * @covers \Drupal\Core\Entity\ContentEntityStorageBase::isAnyStoredRevisionTranslated
-   */
-  public function testIsAnyStoredRevisionTranslated() {
-    /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
-    $storage = $this->entityManager->getStorage('entity_test_mul');
-    $method = new \ReflectionMethod(get_class($storage), 'isAnyStoredRevisionTranslated');
-    $method->setAccessible(TRUE);
-
-    // Check that a non-revisionable new entity is handled correctly.
-    $entity = EntityTestMul::create();
-    $this->assertEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertFalse($method->invoke($storage, $entity));
-    $entity->addTranslation('it');
-    $this->assertNotEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertFalse($method->invoke($storage, $entity));
-
-    // Check that not yet stored translations are handled correctly.
-    $entity = EntityTestMul::create();
-    $entity->save();
-    $entity->addTranslation('it');
-    $this->assertNotEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertFalse($method->invoke($storage, $entity));
-
-    // Check that removed translations are handled correctly.
-    $entity->save();
-    $entity->removeTranslation('it');
-    $this->assertEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertTrue($method->invoke($storage, $entity));
-    $entity->save();
-    $this->assertEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertFalse($method->invoke($storage, $entity));
-    $entity->addTranslation('de');
-    $entity->removeTranslation('de');
-    $this->assertEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertFalse($method->invoke($storage, $entity));
-
-    // Check that a non-revisionable not translated entity is handled correctly.
-    $entity = EntityTestMul::create();
-    $entity->save();
-    $this->assertEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertFalse($method->invoke($storage, $entity));
-
-    // Check that a non-revisionable translated entity is handled correctly.
-    $entity->addTranslation('it');
-    $entity->save();
-    $this->assertNotEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertTrue($method->invoke($storage, $entity));
-
-    /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
-    $storage = $this->entityManager->getStorage('entity_test_mulrev');
-
-    // Check that a revisionable new entity is handled correctly.
-    $entity = EntityTestMulRev::create();
-    $this->assertEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertFalse($method->invoke($storage, $entity));
-    $entity->addTranslation('it');
-    $this->assertNotEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertFalse($method->invoke($storage, $entity));
-
-    // Check that a revisionable not translated entity is handled correctly.
-    $entity = EntityTestMulRev::create();
-    $entity->save();
-    $this->assertEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertFalse($method->invoke($storage, $entity));
-
-    // Check that a revisionable translated pending revision is handled
-    // correctly.
-    /** @var \Drupal\Core\Entity\ContentEntityInterface $new_revision */
-    $new_revision = $storage->createRevision($entity, FALSE);
-    $new_revision->addTranslation('it');
-    $new_revision->save();
-    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    $entity = $storage->loadUnchanged($entity->id());
-    $this->assertEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertNotEmpty($new_revision->getTranslationLanguages(FALSE));
-    $this->assertTrue($method->invoke($storage, $entity));
-
-    // Check that a revisionable translated default revision is handled
-    // correctly.
-    $new_revision->isDefaultRevision(TRUE);
-    $new_revision->save();
-    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    $entity = $storage->loadUnchanged($entity->id());
-    $this->assertNotEmpty($entity->getTranslationLanguages(FALSE));
-    $this->assertNotEmpty($new_revision->getTranslationLanguages(FALSE));
-    $this->assertTrue($method->invoke($storage, $entity));
   }
 
 }

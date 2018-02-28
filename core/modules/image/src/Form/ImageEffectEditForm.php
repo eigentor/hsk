@@ -7,8 +7,6 @@ use Drupal\image\ImageStyleInterface;
 
 /**
  * Provides an edit form for image effects.
- *
- * @internal
  */
 class ImageEffectEditForm extends ImageEffectFormBase {
 

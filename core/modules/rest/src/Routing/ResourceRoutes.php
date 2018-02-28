@@ -3,18 +3,16 @@
 namespace Drupal\rest\Routing;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Routing\RouteBuildEvent;
-use Drupal\Core\Routing\RoutingEvents;
+use Drupal\Core\Routing\RouteSubscriberBase;
 use Drupal\rest\Plugin\Type\ResourcePluginManager;
 use Drupal\rest\RestResourceConfigInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Subscriber for REST-style routes.
  */
-class ResourceRoutes implements EventSubscriberInterface {
+class ResourceRoutes extends RouteSubscriberBase {
 
   /**
    * The plugin manager for REST plugins.
@@ -56,18 +54,18 @@ class ResourceRoutes implements EventSubscriberInterface {
   /**
    * Alters existing routes for a specific collection.
    *
-   * @param \Drupal\Core\Routing\RouteBuildEvent $event
-   *   The route build event.
+   * @param \Symfony\Component\Routing\RouteCollection $collection
+   *   The route collection for adding routes.
    * @return array
    */
-  public function onDynamicRouteEvent(RouteBuildEvent $event) {
+  protected function alterRoutes(RouteCollection $collection) {
     // Iterate over all enabled REST resource config entities.
     /** @var \Drupal\rest\RestResourceConfigInterface[] $resource_configs */
     $resource_configs = $this->resourceConfigStorage->loadMultiple();
     foreach ($resource_configs as $resource_config) {
       if ($resource_config->status()) {
         $resource_routes = $this->getRoutesForResourceConfig($resource_config);
-        $event->getRouteCollection()->addCollection($resource_routes);
+        $collection->addCollection($resource_routes);
       }
     }
   }
@@ -92,11 +90,8 @@ class ResourceRoutes implements EventSubscriberInterface {
       /** @var \Symfony\Component\Routing\Route $route */
       // @todo: Are multiple methods possible here?
       $methods = $route->getMethods();
-      // Only expose routes
-      // - that have an explicit method and allow >=1 format for that method
-      // - that exist for BC
-      // @see \Drupal\rest\RouteProcessor\RestResourceGetRouteProcessorBC
-      if (($methods && ($method = $methods[0]) && $supported_formats = $rest_resource_config->getFormats($method)) || $route->hasOption('bc_route')) {
+      // Only expose routes where the method is enabled in the configuration.
+      if ($methods && ($method = $methods[0]) && $supported_formats = $rest_resource_config->getFormats($method)) {
         $route->setRequirement('_csrf_request_header_token', 'TRUE');
 
         // Check that authentication providers are defined.
@@ -111,47 +106,29 @@ class ResourceRoutes implements EventSubscriberInterface {
           continue;
         }
 
-        // Remove BC routes for unsupported formats.
-        if ($route->getOption('bc_route') === TRUE) {
-          $format_requirement = $route->getRequirement('_format');
-          if ($format_requirement && !in_array($format_requirement, $rest_resource_config->getFormats($method))) {
-            continue;
-          }
+        // If the route has a format requirement, then verify that the
+        // resource has it.
+        $format_requirement = $route->getRequirement('_format');
+        if ($format_requirement && !in_array($format_requirement, $rest_resource_config->getFormats($method))) {
+          continue;
         }
 
         // The configuration has been validated, so we update the route to:
-        // - set the allowed response body content types/formats for methods
-        //   that may send response bodies
         // - set the allowed request body content types/formats for methods that
         //   allow request bodies to be sent
         // - set the allowed authentication providers
-        if (in_array($method, ['GET', 'HEAD', 'POST', 'PUT', 'PATCH'], TRUE)) {
-          $route->addRequirements(['_format' => implode('|', $rest_resource_config->getFormats($method))]);
-        }
         if (in_array($method, ['POST', 'PATCH', 'PUT'], TRUE)) {
+          // Restrict the incoming HTTP Content-type header to the allowed
+          // formats.
           $route->addRequirements(['_content_type_format' => implode('|', $rest_resource_config->getFormats($method))]);
         }
         $route->setOption('_auth', $rest_resource_config->getAuthenticationProviders($method));
         $route->setDefault('_rest_resource_config', $rest_resource_config->id());
-        $parameters = $route->getOption('parameters') ?: [];
-        $route->setOption('parameters', $parameters + [
-          '_rest_resource_config' => [
-            'type' => 'entity:' . $rest_resource_config->getEntityTypeId(),
-          ],
-        ]);
         $collection->add("rest.$name", $route);
       }
 
     }
     return $collection;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function getSubscribedEvents() {
-    $events[RoutingEvents::DYNAMIC] = 'onDynamicRouteEvent';
-    return $events;
   }
 
 }

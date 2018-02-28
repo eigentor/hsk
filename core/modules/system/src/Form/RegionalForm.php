@@ -10,8 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure regional settings for this site.
- *
- * @internal
  */
 class RegionalForm extends ConfigFormBase {
 
@@ -67,7 +65,7 @@ class RegionalForm extends ConfigFormBase {
     $system_date = $this->config('system.date');
 
     // Date settings:
-    $zones = system_time_zones(NULL, TRUE);
+    $zones = system_time_zones();
 
     $form['locale'] = [
       '#type' => 'details',

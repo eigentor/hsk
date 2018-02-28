@@ -9,7 +9,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  *
  * @MigrateSource(
  *   id = "d7_shortcut_set_users",
- *   source_module = "shortcut"
+ *   source_provider = "shortcut"
  * )
  */
 class ShortcutSetUsers extends DrupalSqlBase {

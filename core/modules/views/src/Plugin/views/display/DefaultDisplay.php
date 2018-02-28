@@ -28,9 +28,7 @@ class DefaultDisplay extends DisplayPluginBase {
    * Determine if this display is the 'default' display which contains
    * fallback settings
    */
-  public function isDefaultDisplay() {
-    return TRUE;
-  }
+  public function isDefaultDisplay() { return TRUE; }
 
   /**
    * The default execute handler fully renders the view.

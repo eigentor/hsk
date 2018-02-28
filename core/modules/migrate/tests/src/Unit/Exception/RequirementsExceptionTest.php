@@ -7,7 +7,7 @@ use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\migrate\Exception\RequirementsException
- * @group migrate
+ * @group migration
  */
 class RequirementsExceptionTest extends UnitTestCase {
 

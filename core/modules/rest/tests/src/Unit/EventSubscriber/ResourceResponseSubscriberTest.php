@@ -78,7 +78,12 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
    *
    * @dataProvider providerTestResponseFormat
    */
-  public function testResponseFormat($methods, array $supported_response_formats, array $supported_request_formats, $request_format, array $request_headers, $request_body, $expected_response_format, $expected_response_content_type, $expected_response_content) {
+  public function testResponseFormat($methods, array $supported_formats, $request_format, array $request_headers, $request_body, $expected_response_format, $expected_response_content_type, $expected_response_content) {
+    $parameters = [];
+    if ($request_format !== FALSE) {
+      $parameters['_format'] = $request_format;
+    }
+
     foreach ($request_headers as $key => $value) {
       unset($request_headers[$key]);
       $key = strtoupper(str_replace('-', '_', $key));
@@ -86,16 +91,9 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
     }
 
     foreach ($methods as $method) {
-      $request = Request::create('/rest/test', $method, [], [], [], $request_headers, $request_body);
-      // \Drupal\Core\StackMiddleware\NegotiationMiddleware normally takes care
-      // of this so we'll hard code it here.
-      if ($request_format) {
-        $request->setRequestFormat($request_format);
-      }
-
-      $route_requirements = $this->generateRouteRequirements($supported_response_formats, $supported_request_formats);
-
-      $route_match = new RouteMatch('test', new Route('/rest/test', ['_rest_resource_config' => $this->randomMachineName()], $route_requirements));
+      $request = Request::create('/rest/test', $method, $parameters, [], [], $request_headers, $request_body);
+      $route_requirement_key_format = $request->isMethodSafe() ? '_format' : '_content_type_format';
+      $route_match = new RouteMatch('test', new Route('/rest/test', ['_rest_resource_config' => $this->randomMachineName()], [$route_requirement_key_format => implode('|', $supported_formats)]));
 
       $resource_response_subscriber = new ResourceResponseSubscriber(
         $this->prophesize(SerializerInterface::class)->reveal(),
@@ -115,7 +113,14 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
    *
    * @dataProvider providerTestResponseFormat
    */
-  public function testOnResponseWithCacheableResponse($methods, array $supported_response_formats, array $supported_request_formats, $request_format, array $request_headers, $request_body, $expected_response_format, $expected_response_content_type, $expected_response_content) {
+  public function testOnResponseWithCacheableResponse($methods, array $supported_formats, $request_format, array $request_headers, $request_body, $expected_response_format, $expected_response_content_type, $expected_response_content) {
+    $rest_config_name = $this->randomMachineName();
+
+    $parameters = [];
+    if ($request_format !== FALSE) {
+      $parameters['_format'] = $request_format;
+    }
+
     foreach ($request_headers as $key => $value) {
       unset($request_headers[$key]);
       $key = strtoupper(str_replace('-', '_', $key));
@@ -123,16 +128,9 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
     }
 
     foreach ($methods as $method) {
-      $request = Request::create('/rest/test', $method, [], [], [], $request_headers, $request_body);
-      // \Drupal\Core\StackMiddleware\NegotiationMiddleware normally takes care
-      // of this so we'll hard code it here.
-      if ($request_format) {
-        $request->setRequestFormat($request_format);
-      }
-
-      $route_requirements = $this->generateRouteRequirements($supported_response_formats, $supported_request_formats);
-
-      $route_match = new RouteMatch('test', new Route('/rest/test', ['_rest_resource_config' => $this->randomMachineName()], $route_requirements));
+      $request = Request::create('/rest/test', $method, $parameters, [], [], $request_headers, $request_body);
+      $route_requirement_key_format = $request->isMethodSafe() ? '_format' : '_content_type_format';
+      $route_match = new RouteMatch('test', new Route('/rest/test', ['_rest_resource_config' => $rest_config_name], [$route_requirement_key_format => implode('|', $supported_formats)]));
 
       // The RequestHandler must return a ResourceResponseInterface object.
       $handler_response = new ResourceResponse($method !== 'DELETE' ? ['REST' => 'Drupal'] : NULL);
@@ -165,7 +163,14 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
    *
    * @dataProvider providerTestResponseFormat
    */
-  public function testOnResponseWithUncacheableResponse($methods, array $supported_response_formats, array $supported_request_formats, $request_format, array $request_headers, $request_body, $expected_response_format, $expected_response_content_type, $expected_response_content) {
+  public function testOnResponseWithUncacheableResponse($methods, array $supported_formats, $request_format, array $request_headers, $request_body, $expected_response_format, $expected_response_content_type, $expected_response_content) {
+    $rest_config_name = $this->randomMachineName();
+
+    $parameters = [];
+    if ($request_format !== FALSE) {
+      $parameters['_format'] = $request_format;
+    }
+
     foreach ($request_headers as $key => $value) {
       unset($request_headers[$key]);
       $key = strtoupper(str_replace('-', '_', $key));
@@ -173,16 +178,9 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
     }
 
     foreach ($methods as $method) {
-      $request = Request::create('/rest/test', $method, [], [], [], $request_headers, $request_body);
-      // \Drupal\Core\StackMiddleware\NegotiationMiddleware normally takes care
-      // of this so we'll hard code it here.
-      if ($request_format) {
-        $request->setRequestFormat($request_format);
-      }
-
-      $route_requirements = $this->generateRouteRequirements($supported_response_formats, $supported_request_formats);
-
-      $route_match = new RouteMatch('test', new Route('/rest/test', ['_rest_resource_config' => $this->randomMachineName()], $route_requirements));
+      $request = Request::create('/rest/test', $method, $parameters, [], [], $request_headers, $request_body);
+      $route_requirement_key_format = $request->isMethodSafe() ? '_format' : '_content_type_format';
+      $route_match = new RouteMatch('test', new Route('/rest/test', ['_rest_resource_config' => $rest_config_name], [$route_requirement_key_format => implode('|', $supported_formats)]));
 
       // The RequestHandler must return a ResourceResponseInterface object.
       $handler_response = new ModifiedResourceResponse($method !== 'DELETE' ? ['REST' => 'Drupal'] : NULL);
@@ -227,7 +225,6 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
         // @todo add 'HEAD' in https://www.drupal.org/node/2752325
         ['GET'],
         ['xml', 'json'],
-        [],
         'json',
         [],
         NULL,
@@ -239,7 +236,6 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
         // @todo add 'HEAD' in https://www.drupal.org/node/2752325
         ['GET'],
         ['xml', 'json'],
-        [],
         'xml',
         [],
         NULL,
@@ -251,7 +247,6 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
         // @todo add 'HEAD' in https://www.drupal.org/node/2752325
         ['GET'],
         ['json', 'xml'],
-        [],
         FALSE,
         [],
         NULL,
@@ -263,7 +258,6 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
         // @todo add 'HEAD' in https://www.drupal.org/node/2752325
         ['GET'],
         ['xml', 'json'],
-        [],
         FALSE,
         [],
         NULL,
@@ -277,7 +271,6 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
       'unsafe methods with response (POST, PATCH): client requested no format, response should use request body format (JSON)' => [
         ['POST', 'PATCH'],
         ['xml', 'json'],
-        ['xml', 'json'],
         FALSE,
         ['Content-Type' => 'application/json'],
         $json_encoded,
@@ -287,7 +280,6 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
       ],
       'unsafe methods with response (POST, PATCH): client requested no format, response should use request body format (XML)' => [
         ['POST', 'PATCH'],
-        ['xml', 'json'],
         ['xml', 'json'],
         FALSE,
         ['Content-Type' => 'text/xml'],
@@ -299,7 +291,6 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
       'unsafe methods with response (POST, PATCH): client requested format other than request body format (JSON): response format should use requested format (XML)' => [
         ['POST', 'PATCH'],
         ['xml', 'json'],
-        ['xml', 'json'],
         'xml',
         ['Content-Type' => 'application/json'],
         $json_encoded,
@@ -310,42 +301,18 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
       'unsafe methods with response (POST, PATCH): client requested format other than request body format (XML), but is allowed for the request body (JSON)' => [
         ['POST', 'PATCH'],
         ['xml', 'json'],
-        ['xml', 'json'],
         'json',
         ['Content-Type' => 'text/xml'],
         $xml_encoded,
         'json',
         'application/json',
         $json_encoded,
-      ],
-      'unsafe methods with response (POST, PATCH): client requested format other than request body format when only XML is allowed as a content type format' => [
-        ['POST', 'PATCH'],
-        ['xml'],
-        ['json'],
-        'json',
-        ['Content-Type' => 'text/xml'],
-        $xml_encoded,
-        'json',
-        'application/json',
-        $json_encoded,
-      ],
-      'unsafe methods with response (POST, PATCH): client requested format other than request body format when only JSON is allowed as a content type format' => [
-        ['POST', 'PATCH'],
-        ['json'],
-        ['xml'],
-        'xml',
-        ['Content-Type' => 'application/json'],
-        $json_encoded,
-        'xml',
-        'text/xml',
-        $xml_encoded,
       ],
     ];
 
     $unsafe_method_bodyless_test_cases = [
-      'unsafe methods without response bodies (DELETE): client requested no format, response should have no format' => [
+      'unsafe methods with response bodies (DELETE): client requested no format, response should have no format' => [
         ['DELETE'],
-        ['xml', 'json'],
         ['xml', 'json'],
         FALSE,
         ['Content-Type' => 'application/json'],
@@ -354,9 +321,8 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
         NULL,
         '',
       ],
-      'unsafe methods without response bodies (DELETE): client requested format (XML), response should have no format' => [
+      'unsafe methods with response bodies (DELETE): client requested format (XML), response should have no format' => [
         ['DELETE'],
-        ['xml', 'json'],
         ['xml', 'json'],
         'xml',
         ['Content-Type' => 'application/json'],
@@ -365,9 +331,8 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
         NULL,
         '',
       ],
-      'unsafe methods without response bodies (DELETE): client requested format (JSON), response should have no format' => [
+      'unsafe methods with response bodies (DELETE): client requested format (JSON), response should have no format' => [
         ['DELETE'],
-        ['xml', 'json'],
         ['xml', 'json'],
         'json',
         ['Content-Type' => 'application/json'],
@@ -401,28 +366,6 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
     );
 
     return $resource_response_subscriber;
-  }
-
-  /**
-   * Generates route requirements based on supported formats.
-   *
-   * @param array $supported_response_formats
-   *   The supported response formats to add to the route requirements.
-   * @param array $supported_request_formats
-   *   The supported request formats to add to the route requirements.
-   *
-   * @return array
-   *   An array of route requirements.
-   */
-  protected function generateRouteRequirements(array $supported_response_formats, array $supported_request_formats) {
-    $route_requirements = [
-      '_format' => implode('|', $supported_response_formats),
-    ];
-    if (!empty($supported_request_formats)) {
-      $route_requirements['_content_type_format'] = implode('|', $supported_request_formats);
-    }
-
-    return $route_requirements;
   }
 
 }

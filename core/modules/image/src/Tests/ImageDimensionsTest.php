@@ -173,6 +173,7 @@ class ImageDimensionsTest extends WebTestBase {
     $this->assertResponse(200, 'Image was generated at the URL.');
     $this->assertTrue(file_exists($generated_uri), 'Generated file does exist after we accessed it.');
 
+
     // Add a crop effect.
     $effect = [
       'id' => 'image_crop',
@@ -207,18 +208,14 @@ class ImageDimensionsTest extends WebTestBase {
 
     $effect_id = $style->addImageEffect($effect);
     $style->save();
-    // @todo Uncomment this once
-    //   https://www.drupal.org/project/drupal/issues/2670966 is resolved.
-    // $this->assertEqual($this->getImageTag($variables), '<img src="' . $url . '" width="41" height="41" alt="" class="image-style-test" />');
+    $this->assertEqual($this->getImageTag($variables), '<img src="' . $url . '" width="41" height="41" alt="" class="image-style-test" />');
     $this->assertFalse(file_exists($generated_uri), 'Generated file does not exist.');
     $this->drupalGet($this->getAbsoluteUrl($url));
     $this->assertResponse(200, 'Image was generated at the URL.');
     $this->assertTrue(file_exists($generated_uri), 'Generated file does exist after we accessed it.');
     $image_file = $image_factory->get($generated_uri);
-    // @todo Uncomment this once
-    //   https://www.drupal.org/project/drupal/issues/2670966 is resolved.
-    // $this->assertEqual($image_file->getWidth(), 41);
-    // $this->assertEqual($image_file->getHeight(), 41);
+    $this->assertEqual($image_file->getWidth(), 41);
+    $this->assertEqual($image_file->getHeight(), 41);
 
     $effect_plugin = $style->getEffect($effect_id);
     $style->deleteImageEffect($effect_plugin);

@@ -10,8 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configures image toolkit settings for this site.
- *
- * @internal
  */
 class ImageToolkitForm extends ConfigFormBase {
 

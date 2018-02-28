@@ -64,34 +64,25 @@ class JsonDescriptor extends Descriptor
     protected function describeApplication(Application $application, array $options = array())
     {
         $describedNamespace = isset($options['namespace']) ? $options['namespace'] : null;
-        $description = new ApplicationDescription($application, $describedNamespace, true);
+        $description = new ApplicationDescription($application, $describedNamespace);
         $commands = array();
 
         foreach ($description->getCommands() as $command) {
             $commands[] = $this->getCommandData($command);
         }
 
-        $data = array();
-        if ('UNKNOWN' !== $application->getName()) {
-            $data['application']['name'] = $application->getName();
-            if ('UNKNOWN' !== $application->getVersion()) {
-                $data['application']['version'] = $application->getVersion();
-            }
-        }
-
-        $data['commands'] = $commands;
-
-        if ($describedNamespace) {
-            $data['namespace'] = $describedNamespace;
-        } else {
-            $data['namespaces'] = array_values($description->getNamespaces());
-        }
+        $data = $describedNamespace
+            ? array('commands' => $commands, 'namespace' => $describedNamespace)
+            : array('commands' => $commands, 'namespaces' => array_values($description->getNamespaces()));
 
         $this->writeData($data, $options);
     }
 
     /**
      * Writes data as json.
+     *
+     * @param array $data
+     * @param array $options
      *
      * @return array|string
      */
@@ -101,6 +92,8 @@ class JsonDescriptor extends Descriptor
     }
 
     /**
+     * @param InputArgument $argument
+     *
      * @return array
      */
     private function getInputArgumentData(InputArgument $argument)
@@ -110,11 +103,13 @@ class JsonDescriptor extends Descriptor
             'is_required' => $argument->isRequired(),
             'is_array' => $argument->isArray(),
             'description' => preg_replace('/\s*[\r\n]\s*/', ' ', $argument->getDescription()),
-            'default' => INF === $argument->getDefault() ? 'INF' : $argument->getDefault(),
+            'default' => $argument->getDefault(),
         );
     }
 
     /**
+     * @param InputOption $option
+     *
      * @return array
      */
     private function getInputOptionData(InputOption $option)
@@ -126,11 +121,13 @@ class JsonDescriptor extends Descriptor
             'is_value_required' => $option->isValueRequired(),
             'is_multiple' => $option->isArray(),
             'description' => preg_replace('/\s*[\r\n]\s*/', ' ', $option->getDescription()),
-            'default' => INF === $option->getDefault() ? 'INF' : $option->getDefault(),
+            'default' => $option->getDefault(),
         );
     }
 
     /**
+     * @param InputDefinition $definition
+     *
      * @return array
      */
     private function getInputDefinitionData(InputDefinition $definition)
@@ -149,6 +146,8 @@ class JsonDescriptor extends Descriptor
     }
 
     /**
+     * @param Command $command
+     *
      * @return array
      */
     private function getCommandData(Command $command)
@@ -162,7 +161,6 @@ class JsonDescriptor extends Descriptor
             'description' => $command->getDescription(),
             'help' => $command->getProcessedHelp(),
             'definition' => $this->getInputDefinitionData($command->getNativeDefinition()),
-            'hidden' => $command->isHidden(),
         );
     }
 }

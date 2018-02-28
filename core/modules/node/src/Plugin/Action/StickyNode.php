@@ -2,8 +2,8 @@
 
 namespace Drupal\node\Plugin\Action;
 
-use Drupal\Core\Field\FieldUpdateActionBase;
-use Drupal\node\NodeInterface;
+use Drupal\Core\Action\ActionBase;
+use Drupal\Core\Session\AccountInterface;
 
 /**
  * Makes a node sticky.
@@ -14,13 +14,23 @@ use Drupal\node\NodeInterface;
  *   type = "node"
  * )
  */
-class StickyNode extends FieldUpdateActionBase {
+class StickyNode extends ActionBase {
 
   /**
    * {@inheritdoc}
    */
-  protected function getFieldsToUpdate() {
-    return ['sticky' => NodeInterface::STICKY];
+  public function execute($entity = NULL) {
+    $entity->setSticky(TRUE)->save();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
+    /** @var \Drupal\node\NodeInterface $object */
+    $access = $object->access('update', $account, TRUE)
+      ->andif($object->sticky->access('edit', $account, TRUE));
+    return $return_as_object ? $access : $access->isAllowed();
   }
 
 }

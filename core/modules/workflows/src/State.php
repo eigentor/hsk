@@ -4,6 +4,10 @@ namespace Drupal\workflows;
 
 /**
  * A value object representing a workflow state.
+ *
+ * @internal
+ *   The workflow system is currently experimental and should only be leveraged
+ *   by experimental modules and development releases of contributed modules.
  */
 class State implements StateInterface {
 
@@ -47,7 +51,7 @@ class State implements StateInterface {
    * @param int $weight
    *   The state's weight.
    */
-  public function __construct(WorkflowTypeInterface $workflow, $id, $label, $weight = 0) {
+  public function __construct(WorkflowInterface $workflow, $id, $label, $weight = 0) {
     $this->workflow = $workflow;
     $this->id = $id;
     $this->label = $label;
@@ -100,7 +104,7 @@ class State implements StateInterface {
   }
 
   /**
-   * Helper method to convert a State value object to a label.
+   * Helper method to convert a list of states to labels
    *
    * @param \Drupal\workflows\StateInterface $state
    *

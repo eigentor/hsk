@@ -10,8 +10,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  * @todo Support default picture?
  *
  * @MigrateSource(
- *   id = "d6_user_picture",
- *   source_module = "user"
+ *   id = "d6_user_picture"
  * )
  */
 class UserPicture extends DrupalSqlBase {

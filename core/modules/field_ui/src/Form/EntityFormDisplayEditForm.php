@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Edit form for the EntityFormDisplay entity type.
- *
- * @internal
  */
 class EntityFormDisplayEditForm extends EntityDisplayFormBase {
 

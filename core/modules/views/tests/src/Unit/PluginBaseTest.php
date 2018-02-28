@@ -79,7 +79,8 @@ class PluginBaseTest extends UnitTestCase {
       'storage' => [
         'key' => 'value',
       ],
-      'options' => [],
+      'options' => [
+      ],
       'definition' => [
         'key' => ['default' => 'value2'],
       ],
@@ -171,7 +172,9 @@ class PluginBaseTest extends UnitTestCase {
       ],
       'definition' => [
         'key0' => ['default' => 'value0'],
-        'key1' => ['contains' => ['key1:1' => ['default' => 'value1:1']]],
+        'key1' => ['contains' => [
+          'key1:1' => ['default' => 'value1:1'],
+        ]],
       ],
       'expected' => [
         'key0' => 'value',
@@ -185,29 +188,29 @@ class PluginBaseTest extends UnitTestCase {
         'key2' => [
           'key2:1' => [
             'key2:1:1' => 'value0',
-            'key2:1:2' => ['key2:1:2:1' => 'value1'],
+            'key2:1:2' => [
+              'key2:1:2:1' => 'value1',
+            ],
           ],
         ],
       ],
       'definition' => [
-        'key2' => [
-          'contains' => [
-            'key2:1' => [
-              'contains' => [
-                'key2:1:1' => ['default' => 'value2:1:2:1'],
-                'key2:1:2' => [
-                  'contains' => ['key2:1:2:1' => ['default' => 'value2:1:2:1']],
-                ],
-              ],
-            ],
-          ],
-        ],
+        'key2' => ['contains' => [
+          'key2:1' => ['contains' => [
+            'key2:1:1' => ['default' => 'value2:1:2:1'],
+            'key2:1:2' => ['contains' => [
+              'key2:1:2:1' => ['default' => 'value2:1:2:1'],
+            ]],
+          ]],
+        ]],
       ],
       'expected' => [
         'key2' => [
           'key2:1' => [
             'key2:1:1' => 'value0',
-            'key2:1:2' => ['key2:1:2:1' => 'value1'],
+            'key2:1:2' => [
+              'key2:1:2:1' => 'value1',
+            ],
           ],
         ],
       ],
@@ -258,12 +261,10 @@ class PluginBaseTest extends UnitTestCase {
       'storage' => [],
       'definition' => [
         'key' => ['default' => 'value'],
-        'key2' => [
-          'contains' => [
-            'key2:1' => ['default' => 'value2:1'],
-            'key2:2' => ['default' => 'value2:2'],
-          ],
-        ],
+        'key2' => ['contains' => [
+          'key2:1' => ['default' => 'value2:1'],
+          'key2:2' => ['default' => 'value2:2'],
+        ]],
       ],
       'expected' => [
         'key' => 'value',

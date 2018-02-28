@@ -138,7 +138,7 @@ class FileFieldAnonymousSubmissionTest extends FileFieldTestBase {
       $label = 'Save';
     }
     else {
-      $label = 'Save';
+      $label = 'Save and publish';
     }
     $this->drupalPostForm(NULL, $edit, $label);
     $this->assertResponse(200);

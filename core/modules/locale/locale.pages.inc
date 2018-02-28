@@ -13,14 +13,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * Manually checks the translation status without the use of cron.
  *
- * @deprecated in Drupal 8.5.0 and will be removed before 9.0.0. It is unused by
- *   Drupal core. Duplicate this function in your own extension if you need its
- *   behavior.
- *
- * @see https://www.drupal.org/node/2931188
+ * @see locale_menu()
  */
 function locale_translation_manual_status() {
-  @trigger_error('locale_translation_manual_status() is deprecated in Drupal 8.5.0 and will be removed before Drupal 9.0.0. It is unused by Drupal core. Duplicate this function in your own extension if you need its behavior.', E_USER_DEPRECATED);
   module_load_include('compare.inc', 'locale');
 
   // Check the translation status of all translatable projects in all languages.

@@ -2,6 +2,7 @@
 
 namespace Drupal\views\Annotation;
 
+
 /**
  * Defines a Plugin annotation object for views access plugins.
  *

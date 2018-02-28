@@ -45,19 +45,11 @@ trait DependencySerializationTrait {
    */
   public function __wakeup() {
     // Tests in isolation potentially unserialize in the parent process.
-    $phpunit_bootstrap = isset($GLOBALS['__PHPUNIT_BOOTSTRAP']);
-    if ($phpunit_bootstrap && !\Drupal::hasContainer()) {
+    if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP']) && !\Drupal::hasContainer()) {
       return;
     }
     $container = \Drupal::getContainer();
     foreach ($this->_serviceIds as $key => $service_id) {
-      // In rare cases, when test data is serialized in the parent process,
-      // there is a service container but it doesn't contain all expected
-      // services. To avoid fatal errors during the wrap-up of failing tests, we
-      // check for this case, too.
-      if ($phpunit_bootstrap && !$container->has($service_id)) {
-        continue;
-      }
       $this->$key = $container->get($service_id);
     }
     $this->_serviceIds = [];

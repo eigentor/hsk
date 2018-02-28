@@ -9,7 +9,6 @@ use Drupal\Core\Routing\RedirectDestinationTrait;
 use Drupal\Core\Routing\UrlGeneratorTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Messenger\MessengerTrait;
 
 /**
  * Utility base class for thin controllers.
@@ -36,7 +35,6 @@ abstract class ControllerBase implements ContainerInjectionInterface {
 
   use LinkGeneratorTrait;
   use LoggerChannelTrait;
-  use MessengerTrait;
   use RedirectDestinationTrait;
   use StringTranslationTrait;
   use UrlGeneratorTrait;

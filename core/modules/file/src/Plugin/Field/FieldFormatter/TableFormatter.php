@@ -15,7 +15,7 @@ use Drupal\Core\Field\FieldItemListInterface;
  *   }
  * )
  */
-class TableFormatter extends DescriptionAwareFileFormatterBase {
+class TableFormatter extends FileFormatterBase {
 
   /**
    * {@inheritdoc}
@@ -27,13 +27,11 @@ class TableFormatter extends DescriptionAwareFileFormatterBase {
       $header = [t('Attachment'), t('Size')];
       $rows = [];
       foreach ($files as $delta => $file) {
-        $item = $file->_referringItem;
         $rows[] = [
           [
             'data' => [
               '#theme' => 'file_link',
               '#file' => $file,
-              '#description' => $this->getSetting('use_description_as_link_text') ? $item->description : NULL,
               '#cache' => [
                 'tags' => $file->getCacheTags(),
               ],

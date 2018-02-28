@@ -25,7 +25,7 @@ class ExtractTest extends MigrateProcessTestCase {
    */
   public function testExtract() {
     $value = $this->plugin->transform(['foo' => 'bar'], $this->migrateExecutable, $this->row, 'destinationproperty');
-    $this->assertSame('bar', $value);
+    $this->assertSame($value, 'bar');
   }
 
   /**
@@ -50,7 +50,7 @@ class ExtractTest extends MigrateProcessTestCase {
   public function testExtractFailDefault() {
     $plugin = new Extract(['index' => ['foo'], 'default' => 'test'], 'map', []);
     $value = $plugin->transform(['bar' => 'foo'], $this->migrateExecutable, $this->row, 'destinationproperty');
-    $this->assertSame('test', $value, '');
+    $this->assertSame($value, 'test', '');
   }
 
 }

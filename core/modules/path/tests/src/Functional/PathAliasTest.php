@@ -92,8 +92,7 @@ class PathAliasTest extends PathTestBase {
     $pid = $this->getPID($edit['alias']);
 
     $previous = $edit['alias'];
-    // Lower-case letters.
-    $edit['alias'] = '/alias' .
+    $edit['alias'] = '/alias' . // Lower-case letters.
       // "Special" ASCII characters.
       "- ._~!$'\"()*@[]?&+%#,;=:" .
       // Characters that look like a percent-escaped string.
@@ -247,8 +246,7 @@ class PathAliasTest extends PathTestBase {
 
     $previous = $edit['path[0][alias]'];
     // Change alias to one containing "exotic" characters.
-    // Lower-case letters.
-    $edit['path[0][alias]'] = '/alias' .
+    $edit['path[0][alias]'] = '/alias' . // Lower-case letters.
       // "Special" ASCII characters.
       "- ._~!$'\"()*@[]?&+%#,;=:" .
       // Characters that look like a percent-escaped string.

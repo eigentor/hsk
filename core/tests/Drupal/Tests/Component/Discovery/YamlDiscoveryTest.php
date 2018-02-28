@@ -2,27 +2,18 @@
 
 namespace Drupal\Tests\Component\Discovery;
 
+use Drupal\Tests\UnitTestCase;
 use Drupal\Component\Discovery\YamlDiscovery;
-use Drupal\Component\FileCache\FileCacheFactory;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
 use org\bovigo\vfs\vfsStreamDirectory;
-use PHPUnit\Framework\TestCase;
 
 /**
  * YamlDiscovery component unit tests.
  *
  * @group Discovery
  */
-class YamlDiscoveryTest extends TestCase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    // Ensure that FileCacheFactory has a prefix.
-    FileCacheFactory::setPrefix('prefix');
-  }
+class YamlDiscoveryTest extends UnitTestCase {
 
   /**
    * Tests the YAML file discovery.

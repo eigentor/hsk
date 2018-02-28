@@ -85,18 +85,6 @@ class Page extends PathPluginBase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  protected function getRoute($view_id, $display_id) {
-    $route = parent::getRoute($view_id, $display_id);
-
-    // Explicitly set HTML as the format for Page displays.
-    $route->setRequirement('_format', 'html');
-
-    return $route;
-  }
-
-  /**
    * Sets the current page views render array.
    *
    * @param array $element

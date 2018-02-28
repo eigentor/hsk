@@ -13,10 +13,8 @@ use Drupal\tour\TourInterface;
  *   id = "tour",
  *   label = @Translation("Tour"),
  *   handlers = {
- *     "view_builder" = "Drupal\tour\TourViewBuilder",
- *     "access" = "Drupal\tour\TourAccessControlHandler",
+ *     "view_builder" = "Drupal\tour\TourViewBuilder"
  *   },
- *   admin_permission = "administer site configuration",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label"

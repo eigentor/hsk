@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form handler for node type forms.
- *
- * @internal
  */
 class NodeTypeForm extends BundleEntityFormBase {
 

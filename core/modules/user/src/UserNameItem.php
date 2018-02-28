@@ -2,7 +2,6 @@
 
 namespace Drupal\user;
 
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\StringItem;
 
 /**
@@ -22,16 +21,6 @@ class UserNameItem extends StringItem {
     }
 
     return $value === NULL || $value === '';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function generateSampleValue(FieldDefinitionInterface $field_definition) {
-    $values = parent::generateSampleValue($field_definition);
-    // User names larger than 60 characters won't pass validation.
-    $values['value'] = substr($values['value'], 0, UserInterface::USERNAME_MAX_LENGTH);
-    return $values;
   }
 
 }

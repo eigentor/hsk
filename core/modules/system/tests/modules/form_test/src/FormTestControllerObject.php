@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a test form object.
- *
- * @internal
  */
 class FormTestControllerObject extends ConfigFormBase {
 

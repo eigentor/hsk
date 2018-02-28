@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form controller for the role entity edit forms.
- *
- * @internal
  */
 class RoleForm extends EntityForm {
 

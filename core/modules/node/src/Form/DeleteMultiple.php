@@ -6,14 +6,12 @@ use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Provides a node deletion confirmation form.
- *
- * @internal
  */
 class DeleteMultiple extends ConfirmFormBase {
 
@@ -27,7 +25,7 @@ class DeleteMultiple extends ConfirmFormBase {
   /**
    * The tempstore factory.
    *
-   * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
+   * @var \Drupal\user\PrivateTempStoreFactory
    */
   protected $tempStoreFactory;
 
@@ -36,12 +34,12 @@ class DeleteMultiple extends ConfirmFormBase {
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $storage;
+  protected $manager;
 
   /**
    * Constructs a DeleteMultiple form object.
    *
-   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
+   * @param \Drupal\user\PrivateTempStoreFactory $temp_store_factory
    *   The tempstore factory.
    * @param \Drupal\Core\Entity\EntityManagerInterface $manager
    *   The entity manager.
@@ -56,7 +54,7 @@ class DeleteMultiple extends ConfirmFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('tempstore.private'),
+      $container->get('user.private_tempstore'),
       $container->get('entity.manager')
     );
   }

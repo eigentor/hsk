@@ -6,8 +6,6 @@ use Drupal\Core\Entity\ContentEntityDeleteForm;
 
 /**
  * Provides a form for deleting a node.
- *
- * @internal
  */
 class NodeDeleteForm extends ContentEntityDeleteForm {
 

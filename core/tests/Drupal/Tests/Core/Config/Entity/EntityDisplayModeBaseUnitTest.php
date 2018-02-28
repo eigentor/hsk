@@ -3,8 +3,6 @@
 namespace Drupal\Tests\Core\Config\Entity;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\Entity\EntityManager;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -35,13 +33,6 @@ class EntityDisplayModeBaseUnitTest extends UnitTestCase {
   protected $entityManager;
 
   /**
-   * The entity type manager used for testing.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface|\PHPUnit_Framework_MockObject_MockObject
-   */
-  protected $entityTypeManager;
-
-  /**
    * The ID of the type of the entity under test.
    *
    * @var string
@@ -66,21 +57,13 @@ class EntityDisplayModeBaseUnitTest extends UnitTestCase {
       ->method('getProvider')
       ->will($this->returnValue('entity'));
 
-    $this->entityTypeManager = $this->getMock(EntityTypeManagerInterface::class);
-
-    $this->entityManager = new EntityManager();
+    $this->entityManager = $this->getMock('\Drupal\Core\Entity\EntityManagerInterface');
 
     $this->uuid = $this->getMock('\Drupal\Component\Uuid\UuidInterface');
 
     $container = new ContainerBuilder();
     $container->set('entity.manager', $this->entityManager);
-    $container->set('entity_type.manager', $this->entityTypeManager);
     $container->set('uuid', $this->uuid);
-
-    // Inject the container into entity.manager so it can defer to
-    // entity_type.manager.
-    $this->entityManager->setContainer($container);
-
     \Drupal::setContainer($container);
   }
 
@@ -96,11 +79,11 @@ class EntityDisplayModeBaseUnitTest extends UnitTestCase {
       ->will($this->returnValue('test_module'));
     $values = ['targetEntityType' => $target_entity_type_id];
 
-    $this->entityTypeManager->expects($this->at(0))
+    $this->entityManager->expects($this->at(0))
       ->method('getDefinition')
       ->with($target_entity_type_id)
       ->will($this->returnValue($target_entity_type));
-    $this->entityTypeManager->expects($this->at(1))
+    $this->entityManager->expects($this->at(1))
       ->method('getDefinition')
       ->with($this->entityType)
       ->will($this->returnValue($this->entityInfo));

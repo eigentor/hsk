@@ -15,11 +15,11 @@ if (PHP_SAPI !== 'cli') {
   return;
 }
 
-$autoloader = require __DIR__ . '/../../autoload.php';
+require __DIR__ . '/../../autoload.php';
 require_once __DIR__ . '/../includes/bootstrap.inc';
 
 $request = Request::createFromGlobals();
-Settings::initialize(DRUPAL_ROOT, DrupalKernel::findSitePath($request), $autoloader);
+Settings::initialize(DrupalKernel::findSitePath($request));
 
 $timestamp = time();
 $token = Crypt::hmacBase64($timestamp, Settings::get('hash_salt'));

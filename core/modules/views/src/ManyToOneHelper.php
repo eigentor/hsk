@@ -2,7 +2,6 @@
 
 namespace Drupal\views;
 
-use Drupal\Core\Database\Query\Condition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\HandlerBase;
 
@@ -269,8 +268,8 @@ class ManyToOneHelper {
       $options['group'] = 0;
     }
 
-    // If $add_condition is set to FALSE, a single expression is enough. If it
-    // is set to TRUE, conditions will be added.
+    // add_condition determines whether a single expression is enough(FALSE) or the
+    // conditions should be added via an db_or()/db_and() (TRUE).
     $add_condition = TRUE;
     if ($operator == 'not') {
       $value = NULL;
@@ -327,7 +326,7 @@ class ManyToOneHelper {
 
     if ($add_condition) {
       $field = $this->handler->realField;
-      $clause = $operator == 'or' ? new Condition('OR') : new Condition('AND');
+      $clause = $operator == 'or' ? db_or() : db_and();
       foreach ($this->handler->tableAliases as $value => $alias) {
         $clause->condition("$alias.$field", $value);
       }

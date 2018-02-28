@@ -5,13 +5,11 @@ namespace Drupal\views_ui\Form;
 use Drupal\Core\Entity\EntityConfirmFormBase;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\TempStore\SharedTempStoreFactory;
+use Drupal\user\SharedTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Builds the form to break the lock of an edited view.
- *
- * @internal
  */
 class BreakLockForm extends EntityConfirmFormBase {
 
@@ -23,9 +21,9 @@ class BreakLockForm extends EntityConfirmFormBase {
   protected $entityManager;
 
   /**
-   * Stores the shared tempstore.
+   * Stores the user tempstore.
    *
-   * @var \Drupal\Core\TempStore\SharedTempStore
+   * @var \Drupal\user\SharedTempStore
    */
   protected $tempStore;
 
@@ -34,7 +32,7 @@ class BreakLockForm extends EntityConfirmFormBase {
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The Entity manager.
-   * @param \Drupal\Core\TempStore\SharedTempStoreFactory $temp_store_factory
+   * @param \Drupal\user\SharedTempStoreFactory $temp_store_factory
    *   The factory for the temp store object.
    */
   public function __construct(EntityManagerInterface $entity_manager, SharedTempStoreFactory $temp_store_factory) {
@@ -48,7 +46,7 @@ class BreakLockForm extends EntityConfirmFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity.manager'),
-      $container->get('tempstore.shared')
+      $container->get('user.shared_tempstore')
     );
   }
 
@@ -76,7 +74,7 @@ class BreakLockForm extends EntityConfirmFormBase {
       '#theme' => 'username',
       '#account' => $account,
     ];
-    return $this->t('By breaking this lock, any unsaved changes made by @user will be lost.', ['@user' => \Drupal::service('renderer')->render($username)]);
+    return $this->t('By breaking this lock, any unsaved changes made by @user will be lost.', ['@user' => drupal_render($username)]);
   }
 
   /**

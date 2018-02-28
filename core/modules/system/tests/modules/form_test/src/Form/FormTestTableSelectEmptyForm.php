@@ -4,11 +4,6 @@ namespace Drupal\form_test\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 
-/**
- * Builds a form to test table select with '#options' set to empty.
- *
- * @internal
- */
 class FormTestTableSelectEmptyForm extends FormTestTableSelectFormBase {
 
   /**

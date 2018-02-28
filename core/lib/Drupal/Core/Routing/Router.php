@@ -3,9 +3,9 @@
 namespace Drupal\Core\Routing;
 
 use Drupal\Core\Path\CurrentPathStack;
-use Drupal\Core\Routing\Enhancer\RouteEnhancerInterface;
+use Symfony\Cmf\Component\Routing\Enhancer\RouteEnhancerInterface as BaseRouteEnhancerInterface;
 use Symfony\Cmf\Component\Routing\LazyRouteCollection;
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Cmf\Component\Routing\NestedMatcher\RouteFilterInterface as BaseRouteFilterInterface;
 use Symfony\Cmf\Component\Routing\RouteProviderInterface as BaseRouteProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
@@ -53,16 +53,30 @@ class Router extends UrlMatcher implements RequestMatcherInterface, RouterInterf
   /**
    * The list of available enhancers.
    *
-   * @var \Drupal\Core\Routing\EnhancerInterface[]
+   * @var \Symfony\Cmf\Component\Routing\Enhancer\RouteEnhancerInterface[]
    */
   protected $enhancers = [];
 
   /**
+   * Cached sorted list of enhancers.
+   *
+   * @var \Symfony\Cmf\Component\Routing\Enhancer\RouteEnhancerInterface[]
+   */
+  protected $sortedEnhancers;
+
+  /**
    * The list of available route filters.
    *
-   * @var \Drupal\Core\Routing\FilterInterface[]
+   * @var \Symfony\Cmf\Component\Routing\NestedMatcher\RouteFilterInterface[]
    */
   protected $filters = [];
+
+  /**
+   * Cached sorted list route filters.
+   *
+   * @var \Symfony\Cmf\Component\Routing\NestedMatcher\RouteFilterInterface[]
+   */
+  protected $sortedFilters;
 
   /**
    * The URL generator.
@@ -88,23 +102,36 @@ class Router extends UrlMatcher implements RequestMatcherInterface, RouterInterf
   }
 
   /**
-   * Adds a route filter.
+   * Adds a route enhancer to the list of used route enhancers.
    *
-   * @param \Drupal\Core\Routing\FilterInterface $route_filter
-   *   The route filter.
+   * @param \Symfony\Cmf\Component\Routing\Enhancer\RouteEnhancerInterface $route_enhancer
+   *   A route enhancer.
+   * @param int $priority
+   *   (optional) The priority of the enhancer. Higher number enhancers will be
+   *   used first.
+   *
+   * @return $this
    */
-  public function addRouteFilter(FilterInterface $route_filter) {
-    $this->filters[] = $route_filter;
+  public function addRouteEnhancer(BaseRouteEnhancerInterface $route_enhancer, $priority = 0) {
+    $this->enhancers[$priority][] = $route_enhancer;
+    return $this;
   }
 
   /**
-   * Adds a route enhancer.
+   * Adds a route filter to the list of used route filters.
    *
-   * @param \Drupal\Core\Routing\EnhancerInterface $route_enhancer
-   *   The route enhancer.
+   * @param \Symfony\Cmf\Component\Routing\NestedMatcher\RouteFilterInterface $route_filter
+   *   A route filter.
+   * @param int $priority
+   *   (optional) The priority of the filter. Higher number filters will be used
+   *   first.
+   *
+   * @return $this
    */
-  public function addRouteEnhancer(EnhancerInterface $route_enhancer) {
-    $this->enhancers[] = $route_enhancer;
+  public function addRouteFilter(BaseRouteFilterInterface $route_filter, $priority = 0) {
+    $this->filters[$priority][] = $route_filter;
+
+    return $this;
   }
 
   /**
@@ -121,9 +148,6 @@ class Router extends UrlMatcher implements RequestMatcherInterface, RouterInterf
    */
   public function matchRequest(Request $request) {
     $collection = $this->getInitialRouteCollection($request);
-    if ($collection->count() === 0) {
-      throw new ResourceNotFoundException(sprintf('No routes found for "%s".', $this->currentPath->getPath()));
-    }
     $collection = $this->applyRouteFilters($collection, $request);
 
     if ($ret = $this->matchCollection(rawurldecode($this->currentPath->getPath($request)), $collection)) {
@@ -252,14 +276,44 @@ class Router extends UrlMatcher implements RequestMatcherInterface, RouterInterf
    *   from route enhancers.
    */
   protected function applyRouteEnhancers($defaults, Request $request) {
-    foreach ($this->enhancers as $enhancer) {
-      if ($enhancer instanceof RouteEnhancerInterface && !$enhancer->applies($defaults[RouteObjectInterface::ROUTE_OBJECT])) {
-        continue;
-      }
+    foreach ($this->getRouteEnhancers() as $enhancer) {
       $defaults = $enhancer->enhance($defaults, $request);
     }
 
     return $defaults;
+  }
+
+  /**
+   * Sorts the enhancers and flattens them.
+   *
+   * @return \Symfony\Cmf\Component\Routing\Enhancer\RouteEnhancerInterface[]
+   *   The enhancers ordered by priority.
+   */
+  public function getRouteEnhancers() {
+    if (!isset($this->sortedEnhancers)) {
+      $this->sortedEnhancers = $this->sortRouteEnhancers();
+    }
+
+    return $this->sortedEnhancers;
+  }
+
+  /**
+   * Sort enhancers by priority.
+   *
+   * The highest priority number is the highest priority (reverse sorting).
+   *
+   * @return \Symfony\Cmf\Component\Routing\Enhancer\RouteEnhancerInterface[]
+   *   The sorted enhancers.
+   */
+  protected function sortRouteEnhancers() {
+    $sortedEnhancers = [];
+    krsort($this->enhancers);
+
+    foreach ($this->enhancers as $enhancers) {
+      $sortedEnhancers = array_merge($sortedEnhancers, $enhancers);
+    }
+
+    return $sortedEnhancers;
   }
 
   /**
@@ -279,11 +333,44 @@ class Router extends UrlMatcher implements RequestMatcherInterface, RouterInterf
   protected function applyRouteFilters(RouteCollection $collection, Request $request) {
     // Route filters are expected to throw an exception themselves if they
     // end up filtering the list down to 0.
-    foreach ($this->filters as $filter) {
+    foreach ($this->getRouteFilters() as $filter) {
       $collection = $filter->filter($collection, $request);
     }
 
     return $collection;
+  }
+
+  /**
+   * Sorts the filters and flattens them.
+   *
+   * @return \Symfony\Cmf\Component\Routing\NestedMatcher\RouteFilterInterface[]
+   *   The filters ordered by priority
+   */
+  public function getRouteFilters() {
+    if (!isset($this->sortedFilters)) {
+      $this->sortedFilters = $this->sortFilters();
+    }
+
+    return $this->sortedFilters;
+  }
+
+  /**
+   * Sort filters by priority.
+   *
+   * The highest priority number is the highest priority (reverse sorting).
+   *
+   * @return \Symfony\Cmf\Component\Routing\NestedMatcher\RouteFilterInterface[]
+   *   The sorted filters.
+   */
+  protected function sortFilters() {
+    $sortedFilters = [];
+    krsort($this->filters);
+
+    foreach ($this->filters as $filters) {
+      $sortedFilters = array_merge($sortedFilters, $filters);
+    }
+
+    return $sortedFilters;
   }
 
   /**

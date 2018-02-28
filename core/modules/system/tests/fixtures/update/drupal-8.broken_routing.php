@@ -7,6 +7,7 @@
 
 use Drupal\Core\Database\Database;
 
+
 $connection = Database::getConnection();
 
 $config = unserialize($connection->query("SELECT data FROM {config} where name = :name", [':name' => 'core.extension'])->fetchField());

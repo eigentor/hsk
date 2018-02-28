@@ -5,11 +5,6 @@ namespace Drupal\block_test\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
-/**
- * Form that performs base block form test.
- *
- * @internal
- */
 class TestForm extends FormBase {
 
   /**

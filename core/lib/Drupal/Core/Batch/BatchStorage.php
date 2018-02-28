@@ -200,8 +200,6 @@ class BatchStorage implements BatchStorageInterface {
 
   /**
    * Defines the schema for the batch table.
-   *
-   * @internal
    */
   public function schemaDefinition() {
     return [

@@ -9,15 +9,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Determines whether a route is the "Latest version" tab of a node.
- *
- * @internal
  */
 class ContentPreprocess implements ContainerInjectionInterface {
 
   /**
    * The route match service.
    *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
+   * @var \Drupal\Core\Routing\RouteMatchInterface $routeMatch
    */
   protected $routeMatch;
 
@@ -41,10 +39,10 @@ class ContentPreprocess implements ContainerInjectionInterface {
   }
 
   /**
+   * Wrapper for hook_preprocess_HOOK().
+   *
    * @param array $variables
    *   Theme variables to preprocess.
-   *
-   * @see hook_preprocess_HOOK()
    */
   public function preprocessNode(array &$variables) {
     // Set the 'page' template variable when the node is being displayed on the

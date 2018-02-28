@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form builder to test programmatic form submissions.
- *
- * @internal
  */
 class FormTestProgrammaticForm extends FormBase {
 

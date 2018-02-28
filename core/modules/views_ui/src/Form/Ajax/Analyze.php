@@ -7,8 +7,6 @@ use Drupal\views\Views;
 
 /**
  * Displays analysis information for a view.
- *
- * @internal
  */
 class Analyze extends ViewsFormBase {
 

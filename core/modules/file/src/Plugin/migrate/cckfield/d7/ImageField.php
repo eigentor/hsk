@@ -2,32 +2,30 @@
 
 namespace Drupal\file\Plugin\migrate\cckfield\d7;
 
-@trigger_error('ImageField is deprecated in Drupal 8.3.x and will be removed before Drupal 9.0.x. Use \Drupal\file\Plugin\migrate\field\d7\ImageField instead.', E_USER_DEPRECATED);
-
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_drupal\Plugin\migrate\cckfield\CckFieldPluginBase;
 
 /**
  * @MigrateCckField(
  *   id = "image",
- *   core = {7},
- *   source_module = "image",
- *   destination_module = "file"
+ *   core = {7}
  * )
- *
- * @deprecated in Drupal 8.3.x, to be removed before Drupal 9.0.x. Use
- * \Drupal\file\Plugin\migrate\field\d7\ImageField instead.
- *
- * @see https://www.drupal.org/node/2751897
  */
 class ImageField extends CckFieldPluginBase {
 
   /**
    * {@inheritdoc}
    */
+  public function getFieldFormatterMap() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function processCckFieldValues(MigrationInterface $migration, $field_name, $data) {
     $process = [
-      'plugin' => 'sub_process',
+      'plugin' => 'iterator',
       'source' => $field_name,
       'process' => [
         'target_id' => 'fid',

@@ -38,8 +38,8 @@ class LinkViewsTokensTest extends ViewTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp($import_test_views = TRUE) {
-    parent::setUp($import_test_views);
+  protected function setUp() {
+    parent::setUp();
     ViewTestData::createTestViews(get_class($this), ['link_test_views']);
 
     // Create Basic page node type.

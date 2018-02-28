@@ -65,7 +65,7 @@ class SystemMenuBlockTest extends KernelTestBase {
   /**
    * The menu link plugin manager service.
    *
-   * @var \Drupal\Core\Menu\MenuLinkManagerInterface
+   * @var \Drupal\Core\Menu\MenuLinkManagerInterface $menuLinkManager
    */
   protected $menuLinkManager;
 

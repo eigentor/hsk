@@ -19,14 +19,9 @@ class Schema extends DatabaseSchema {
 
   /**
    * Override DatabaseSchema::$defaultSchema
-   *
-   * @var string
    */
   protected $defaultSchema = 'main';
 
-  /**
-   * {@inheritdoc}
-   */
   public function tableExists($table) {
     $info = $this->getPrefixInfo($table);
 
@@ -34,9 +29,6 @@ class Schema extends DatabaseSchema {
     return (bool) $this->connection->query('SELECT 1 FROM ' . $info['schema'] . '.sqlite_master WHERE type = :type AND name = :name', [':type' => 'table', ':name' => $info['table']])->fetchField();
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function fieldExists($table, $column) {
     $schema = $this->introspectSchema($table);
     return !empty($schema['fields'][$column]);
@@ -157,9 +149,9 @@ class Schema extends DatabaseSchema {
    * to be processed by db_processField().
    *
    * @param $name
-   *   Name of the field.
+   *    Name of the field.
    * @param $spec
-   *   The field specification, as per the schema data structure format.
+   *    The field specification, as per the schema data structure format.
    */
   protected function createFieldSql($name, $spec) {
     if (!empty($spec['auto_increment'])) {
@@ -209,7 +201,8 @@ class Schema extends DatabaseSchema {
   }
 
   /**
-   * {@inheritdoc}
+   * This maps a generic data type in combination with its data size
+   * to the engine-specific data type.
    */
   public function getFieldTypeMap() {
     // Put :normal last so it gets preserved by array_flip. This makes
@@ -254,9 +247,6 @@ class Schema extends DatabaseSchema {
     return $map;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function renameTable($table, $new_name) {
     if (!$this->tableExists($table)) {
       throw new SchemaObjectDoesNotExistException(t("Cannot rename @table to @table_new: table @table doesn't exist.", ['@table' => $table, '@table_new' => $new_name]));
@@ -294,9 +284,6 @@ class Schema extends DatabaseSchema {
     }
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function dropTable($table) {
     if (!$this->tableExists($table)) {
       return FALSE;
@@ -306,9 +293,6 @@ class Schema extends DatabaseSchema {
     return TRUE;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function addField($table, $field, $specification, $keys_new = []) {
     if (!$this->tableExists($table)) {
       throw new SchemaObjectDoesNotExistException(t("Cannot add field @table.@field: table doesn't exist.", ['@field' => $field, '@table' => $table]));
@@ -413,7 +397,7 @@ class Schema extends DatabaseSchema {
 
     // Now add the fields.
     foreach ($mapping as $field_alias => $field_source) {
-      // Just ignore this field (ie. use its default value).
+      // Just ignore this field (ie. use it's default value).
       if (!isset($field_source)) {
         continue;
       }
@@ -450,7 +434,7 @@ class Schema extends DatabaseSchema {
    *   Name of the table.
    *
    * @return
-   *   An array representing the schema.
+   *   An array representing the schema, from drupal_get_schema().
    *
    * @throws \Exception
    *   If a column of the table could not be parsed.
@@ -516,9 +500,6 @@ class Schema extends DatabaseSchema {
     return $schema;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function dropField($table, $field) {
     if (!$this->fieldExists($table, $field)) {
       return FALSE;
@@ -550,9 +531,6 @@ class Schema extends DatabaseSchema {
     return TRUE;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function changeField($table, $field, $field_new, $spec, $keys_new = []) {
     if (!$this->fieldExists($table, $field)) {
       throw new SchemaObjectDoesNotExistException(t("Cannot change the definition of field @table.@name: field doesn't exist.", ['@table' => $table, '@name' => $field]));
@@ -636,18 +614,12 @@ class Schema extends DatabaseSchema {
     }
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function indexExists($table, $name) {
     $info = $this->getPrefixInfo($table);
 
     return $this->connection->query('PRAGMA ' . $info['schema'] . '.index_info(' . $info['table'] . '_' . $name . ')')->fetchField() != '';
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function dropIndex($table, $name) {
     if (!$this->indexExists($table, $name)) {
       return FALSE;
@@ -659,9 +631,6 @@ class Schema extends DatabaseSchema {
     return TRUE;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function addUniqueKey($table, $name, $fields) {
     if (!$this->tableExists($table)) {
       throw new SchemaObjectDoesNotExistException(t("Cannot add unique key @name to table @table: table doesn't exist.", ['@table' => $table, '@name' => $name]));
@@ -677,9 +646,6 @@ class Schema extends DatabaseSchema {
     }
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function dropUniqueKey($table, $name) {
     if (!$this->indexExists($table, $name)) {
       return FALSE;
@@ -691,9 +657,6 @@ class Schema extends DatabaseSchema {
     return TRUE;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function addPrimaryKey($table, $fields) {
     if (!$this->tableExists($table)) {
       throw new SchemaObjectDoesNotExistException(t("Cannot add primary key to table @table: table doesn't exist.", ['@table' => $table]));
@@ -710,9 +673,6 @@ class Schema extends DatabaseSchema {
     $this->alterTable($table, $old_schema, $new_schema);
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function dropPrimaryKey($table) {
     $old_schema = $this->introspectSchema($table);
     $new_schema = $old_schema;
@@ -726,9 +686,6 @@ class Schema extends DatabaseSchema {
     return TRUE;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function fieldSetDefault($table, $field, $default) {
     if (!$this->fieldExists($table, $field)) {
       throw new SchemaObjectDoesNotExistException(t("Cannot set default value of field @table.@field: field doesn't exist.", ['@table' => $table, '@field' => $field]));
@@ -741,9 +698,6 @@ class Schema extends DatabaseSchema {
     $this->alterTable($table, $old_schema, $new_schema);
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function fieldSetNoDefault($table, $field) {
     if (!$this->fieldExists($table, $field)) {
       throw new SchemaObjectDoesNotExistException(t("Cannot remove default value of field @table.@field: field doesn't exist.", ['@table' => $table, '@field' => $field]));

@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -33,11 +34,18 @@ class RangeValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_numeric($value) && !$value instanceof \DateTimeInterface) {
-            $this->context->buildViolation($constraint->invalidMessage)
-                ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
-                ->setCode(Range::INVALID_CHARACTERS_ERROR)
-                ->addViolation();
+        if (!is_numeric($value) && !$value instanceof \DateTime && !$value instanceof \DateTimeInterface) {
+            if ($this->context instanceof ExecutionContextInterface) {
+                $this->context->buildViolation($constraint->invalidMessage)
+                    ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
+                    ->setCode(Range::INVALID_CHARACTERS_ERROR)
+                    ->addViolation();
+            } else {
+                $this->buildViolation($constraint->invalidMessage)
+                    ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
+                    ->setCode(Range::INVALID_CHARACTERS_ERROR)
+                    ->addViolation();
+            }
 
             return;
         }
@@ -49,7 +57,7 @@ class RangeValidator extends ConstraintValidator
         // This allows to compare with any date/time value supported by
         // the DateTime constructor:
         // http://php.net/manual/en/datetime.formats.php
-        if ($value instanceof \DateTimeInterface) {
+        if ($value instanceof \DateTime || $value instanceof \DateTimeInterface) {
             if (is_string($min)) {
                 $min = new \DateTime($min);
             }
@@ -60,21 +68,37 @@ class RangeValidator extends ConstraintValidator
         }
 
         if (null !== $constraint->max && $value > $max) {
-            $this->context->buildViolation($constraint->maxMessage)
-                ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
-                ->setParameter('{{ limit }}', $this->formatValue($max, self::PRETTY_DATE))
-                ->setCode(Range::TOO_HIGH_ERROR)
-                ->addViolation();
+            if ($this->context instanceof ExecutionContextInterface) {
+                $this->context->buildViolation($constraint->maxMessage)
+                    ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
+                    ->setParameter('{{ limit }}', $this->formatValue($max, self::PRETTY_DATE))
+                    ->setCode(Range::TOO_HIGH_ERROR)
+                    ->addViolation();
+            } else {
+                $this->buildViolation($constraint->maxMessage)
+                    ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
+                    ->setParameter('{{ limit }}', $this->formatValue($max, self::PRETTY_DATE))
+                    ->setCode(Range::TOO_HIGH_ERROR)
+                    ->addViolation();
+            }
 
             return;
         }
 
         if (null !== $constraint->min && $value < $min) {
-            $this->context->buildViolation($constraint->minMessage)
-                ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
-                ->setParameter('{{ limit }}', $this->formatValue($min, self::PRETTY_DATE))
-                ->setCode(Range::TOO_LOW_ERROR)
-                ->addViolation();
+            if ($this->context instanceof ExecutionContextInterface) {
+                $this->context->buildViolation($constraint->minMessage)
+                    ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
+                    ->setParameter('{{ limit }}', $this->formatValue($min, self::PRETTY_DATE))
+                    ->setCode(Range::TOO_LOW_ERROR)
+                    ->addViolation();
+            } else {
+                $this->buildViolation($constraint->minMessage)
+                    ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
+                    ->setParameter('{{ limit }}', $this->formatValue($min, self::PRETTY_DATE))
+                    ->setCode(Range::TOO_LOW_ERROR)
+                    ->addViolation();
+            }
         }
     }
 }

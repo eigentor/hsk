@@ -67,7 +67,7 @@ class RouteMatch implements RouteMatchInterface {
   /**
    * Creates a RouteMatch from a request.
    *
-   * @param \Symfony\Component\HttpFoundation\Request $request
+   * @param Request $request
    *   A request object.
    *
    * @return \Drupal\Core\Routing\RouteMatchInterface

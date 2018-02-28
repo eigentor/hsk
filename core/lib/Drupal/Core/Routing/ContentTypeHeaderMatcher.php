@@ -4,21 +4,21 @@ namespace Drupal\Core\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Filters routes based on the HTTP Content-type header.
  */
-class ContentTypeHeaderMatcher implements FilterInterface {
+class ContentTypeHeaderMatcher implements RouteFilterInterface {
 
   /**
    * {@inheritdoc}
    */
   public function filter(RouteCollection $collection, Request $request) {
     // The Content-type header does not make sense on GET requests, because GET
-    // requests do not carry any content. Nothing to filter in this case. Same
-    // for all other safe methods.
-    if ($request->isMethodSafe(FALSE)) {
+    // requests do not carry any content. Nothing to filter in this case.
+    if ($request->isMethod('GET')) {
       return $collection;
     }
 
@@ -48,6 +48,13 @@ class ContentTypeHeaderMatcher implements FilterInterface {
     else {
       throw new UnsupportedMediaTypeHttpException('No route found that matches "Content-Type: ' . $request->headers->get('Content-Type') . '"');
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function applies(Route $route) {
+    return TRUE;
   }
 
 }

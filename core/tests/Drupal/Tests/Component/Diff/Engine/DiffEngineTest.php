@@ -7,7 +7,6 @@ use Drupal\Component\Diff\Engine\DiffOpAdd;
 use Drupal\Component\Diff\Engine\DiffOpCopy;
 use Drupal\Component\Diff\Engine\DiffOpChange;
 use Drupal\Component\Diff\Engine\DiffOpDelete;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test DiffEngine class.
@@ -16,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @group Diff
  */
-class DiffEngineTest extends TestCase {
+class DiffEngineTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * @return array
@@ -84,23 +83,6 @@ class DiffEngineTest extends TestCase {
     foreach ($expected as $index => $op_class) {
       $this->assertEquals($op_class, get_class($diff[$index]));
     }
-  }
-
-  /**
-   * Tests that two files can be successfully diffed.
-   *
-   * @covers ::diff
-   */
-  public function testDiffInfiniteLoop() {
-    $from = explode("\n", file_get_contents(__DIR__ . '/fixtures/file1.txt'));
-    $to = explode("\n", file_get_contents(__DIR__ . '/fixtures/file2.txt'));
-    $diff_engine = new DiffEngine();
-    $diff = $diff_engine->diff($from, $to);
-    $this->assertCount(4, $diff);
-    $this->assertEquals($diff[0], new DiffOpDelete(['    - image.style.max_650x650']));
-    $this->assertEquals($diff[1], new DiffOpCopy(['    - image.style.max_325x325']));
-    $this->assertEquals($diff[2], new DiffOpAdd(['    - image.style.max_650x650', '_core:', '  default_config_hash: 3mjM9p-kQ8syzH7N8T0L9OnCJDSPvHAZoi3q6jcXJKM']));
-    $this->assertEquals($diff[3], new DiffOpCopy(['fallback_image_style: max_325x325', '']));
   }
 
 }

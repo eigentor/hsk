@@ -15,7 +15,7 @@ use Drupal\Core\Field\FieldItemListInterface;
  *   }
  * )
  */
-class GenericFileFormatter extends DescriptionAwareFileFormatterBase {
+class GenericFileFormatter extends FileFormatterBase {
 
   /**
    * {@inheritdoc}
@@ -28,7 +28,7 @@ class GenericFileFormatter extends DescriptionAwareFileFormatterBase {
       $elements[$delta] = [
         '#theme' => 'file_link',
         '#file' => $file,
-        '#description' => $this->getSetting('use_description_as_link_text') ? $item->description : NULL,
+        '#description' => $item->description,
         '#cache' => [
           'tags' => $file->getCacheTags(),
         ],

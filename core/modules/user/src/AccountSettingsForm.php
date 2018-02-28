@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure user settings for this site.
- *
- * @internal
  */
 class AccountSettingsForm extends ConfigFormBase {
 

@@ -8,7 +8,6 @@
 namespace Drupal\Tests\Component\DependencyInjection\Dumper {
 
   use Drupal\Component\Utility\Crypt;
-  use PHPUnit\Framework\TestCase;
   use Symfony\Component\DependencyInjection\Definition;
   use Symfony\Component\DependencyInjection\Reference;
   use Symfony\Component\DependencyInjection\Parameter;
@@ -22,7 +21,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
    * @coversDefaultClass \Drupal\Component\DependencyInjection\Dumper\OptimizedPhpArrayDumper
    * @group DependencyInjection
    */
-  class OptimizedPhpArrayDumperTest extends TestCase {
+  class OptimizedPhpArrayDumperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * The container builder instance.
@@ -68,7 +67,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
       $this->containerBuilder->getAliases()->willReturn([]);
       $this->containerBuilder->getParameterBag()->willReturn(new ParameterBag());
       $this->containerBuilder->getDefinitions()->willReturn(NULL);
-      $this->containerBuilder->isCompiled()->willReturn(TRUE);
+      $this->containerBuilder->isFrozen()->willReturn(TRUE);
 
       $definition = [];
       $definition['aliases'] = [];
@@ -147,7 +146,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
 
       $parameter_bag = new ParameterBag($parameters);
       $this->containerBuilder->getParameterBag()->willReturn($parameter_bag);
-      $this->containerBuilder->isCompiled()->willReturn($is_frozen);
+      $this->containerBuilder->isFrozen()->willReturn($is_frozen);
 
       if (isset($parameters['reference'])) {
         $definition = new Definition('\stdClass');
@@ -212,8 +211,6 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      * @covers ::getParameterCall
      *
      * @dataProvider getDefinitionsDataProvider
-     *
-     * @group legacy
      */
     public function testGetServiceDefinitions($services, $definition_services) {
       $this->containerDefinition['services'] = $definition_services;
@@ -251,6 +248,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
         'arguments_count' => 0,
         'properties' => [],
         'calls' => [],
+        'scope' => ContainerInterface::SCOPE_CONTAINER,
         'shared' => TRUE,
         'factory' => FALSE,
         'configurator' => FALSE,
@@ -363,6 +361,11 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
       ] + $base_service_definition;
 
       $service_definitions[] = [
+        'scope' => ContainerInterface::SCOPE_PROTOTYPE,
+        'shared' => FALSE,
+      ] + $base_service_definition;
+
+      $service_definitions[] = [
           'shared' => FALSE,
         ] + $base_service_definition;
 
@@ -404,6 +407,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
         $definition->getArguments()->willReturn($service_definition['arguments']);
         $definition->getProperties()->willReturn($service_definition['properties']);
         $definition->getMethodCalls()->willReturn($service_definition['calls']);
+        $definition->getScope()->willReturn($service_definition['scope']);
         $definition->isShared()->willReturn($service_definition['shared']);
         $definition->getDecoratedService()->willReturn(NULL);
         $definition->getFactory()->willReturn($service_definition['factory']);
@@ -435,6 +439,9 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
             unset($filtered_service_definition[$expected]);
           }
         }
+
+        // Remove any remaining scope.
+        unset($filtered_service_definition['scope']);
 
         if (isset($filtered_service_definition['public']) && $filtered_service_definition['public'] === FALSE) {
           $services_provided[] = [
@@ -474,13 +481,26 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
     }
 
     /**
+     * Tests that the correct InvalidArgumentException is thrown for getScope().
+     *
+     * @covers ::getServiceDefinition
+     */
+    public function testGetServiceDefinitionWithInvalidScope() {
+      $bar_definition = new Definition('\stdClass');
+      $bar_definition->setScope('foo_scope');
+      $services['bar'] = $bar_definition;
+
+      $this->containerBuilder->getDefinitions()->willReturn($services);
+      $this->setExpectedException(InvalidArgumentException::class);
+      $this->dumper->getArray();
+    }
+
+    /**
      * Tests that references to aliases work correctly.
      *
      * @covers ::getReferenceCall
      *
      * @dataProvider publicPrivateDataProvider
-     *
-     * @group legacy
      */
     public function testGetServiceDefinitionWithReferenceToAlias($public) {
       $bar_definition = new Definition('\stdClass');
@@ -536,8 +556,6 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      * getDecoratedService().
      *
      * @covers ::getServiceDefinition
-     *
-     * @group legacy
      */
     public function testGetServiceDefinitionForDecoratedService() {
       $bar_definition = new Definition('\stdClass');
@@ -545,12 +563,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
       $services['bar'] = $bar_definition;
 
       $this->containerBuilder->getDefinitions()->willReturn($services);
-      if (method_exists($this, 'expectException')) {
-        $this->expectException(InvalidArgumentException::class);
-      }
-      else {
-        $this->setExpectedException(InvalidArgumentException::class);
-      }
+      $this->setExpectedException(InvalidArgumentException::class);
       $this->dumper->getArray();
     }
 
@@ -567,12 +580,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
       $services['bar'] = $bar_definition;
 
       $this->containerBuilder->getDefinitions()->willReturn($services);
-      if (method_exists($this, 'expectException')) {
-        $this->expectException(RuntimeException::class);
-      }
-      else {
-        $this->setExpectedException(RuntimeException::class);
-      }
+      $this->setExpectedException(RuntimeException::class);
       $this->dumper->getArray();
     }
 
@@ -589,12 +597,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
       $services['bar'] = $bar_definition;
 
       $this->containerBuilder->getDefinitions()->willReturn($services);
-      if (method_exists($this, 'expectException')) {
-        $this->expectException(RuntimeException::class);
-      }
-      else {
-        $this->setExpectedException(RuntimeException::class);
-      }
+      $this->setExpectedException(RuntimeException::class);
       $this->dumper->getArray();
     }
 
@@ -611,12 +614,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
       $services['bar'] = $bar_definition;
 
       $this->containerBuilder->getDefinitions()->willReturn($services);
-      if (method_exists($this, 'expectException')) {
-        $this->expectException(RuntimeException::class);
-      }
-      else {
-        $this->setExpectedException(RuntimeException::class);
-      }
+      $this->setExpectedException(RuntimeException::class);
       $this->dumper->getArray();
     }
 
@@ -666,7 +664,6 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
  * define a dummy, else it cannot be tested.
  */
 namespace Symfony\Component\ExpressionLanguage {
-
   if (!class_exists('\Symfony\Component\ExpressionLanguage\Expression')) {
     /**
      * Dummy class to ensure non-existent Symfony component can be tested.

@@ -3,6 +3,7 @@
 namespace Drupal\Core\Field\TypedData;
 
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
 
 /**
@@ -13,7 +14,7 @@ use Drupal\Core\TypedData\DataDefinition;
  * by the field definitions, this class does not benefit and thus does not
  * extend from MapDefinition or ComplexDataDefinitionBase.
  */
-class FieldItemDataDefinition extends DataDefinition implements FieldItemDataDefinitionInterface {
+class FieldItemDataDefinition extends DataDefinition implements ComplexDataDefinitionInterface {
 
   /**
    * The field definition the item definition belongs to.
@@ -73,18 +74,13 @@ class FieldItemDataDefinition extends DataDefinition implements FieldItemDataDef
   }
 
   /**
-   * {@inheritdoc}
+   * Gets the field item's field definition.
+   *
+   * @return \Drupal\Core\Field\FieldDefinitionInterface
+   *   The field definition for this field item.
    */
   public function getFieldDefinition() {
     return $this->fieldDefinition;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setFieldDefinition($field_definition) {
-    $this->fieldDefinition = $field_definition;
-    return $this;
   }
 
 }

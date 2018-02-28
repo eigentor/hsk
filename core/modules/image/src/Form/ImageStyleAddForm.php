@@ -6,8 +6,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Controller for image style addition forms.
- *
- * @internal
  */
 class ImageStyleAddForm extends ImageStyleFormBase {
 

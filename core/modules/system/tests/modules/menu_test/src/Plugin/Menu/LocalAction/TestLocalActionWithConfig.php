@@ -6,7 +6,6 @@ use Drupal\Core\Config\Config;
 use Drupal\Core\Menu\LocalActionDefault;
 use Drupal\Core\Routing\RouteProviderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Defines a test local action plugin class.
@@ -21,7 +20,7 @@ class TestLocalActionWithConfig extends LocalActionDefault {
   /**
    * {@inheritdoc}
    */
-  public function getTitle(Request $request = NULL) {
+  public function getTitle() {
     return $this->config->get('title');
   }
 

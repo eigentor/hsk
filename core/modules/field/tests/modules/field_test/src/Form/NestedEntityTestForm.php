@@ -10,8 +10,6 @@ use Drupal\Core\Entity\Entity\EntityFormDisplay;
 
 /**
  * Provides a form for field_test routes.
- *
- * @internal
  */
 class NestedEntityTestForm extends FormBase {
 

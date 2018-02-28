@@ -3,8 +3,6 @@
 namespace Drupal\Tests\Component\Diff\Engine;
 
 use Drupal\Component\Diff\Engine\DiffOp;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Error\Error;
 
 /**
  * Test DiffOp base class.
@@ -17,7 +15,7 @@ use PHPUnit\Framework\Error\Error;
  *
  * @group Diff
  */
-class DiffOpTest extends TestCase {
+class DiffOpTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * DiffOp::reverse() always throws an error.
@@ -25,12 +23,7 @@ class DiffOpTest extends TestCase {
    * @covers ::reverse
    */
   public function testReverse() {
-    if (method_exists($this, 'expectException')) {
-      $this->expectException(Error::class);
-    }
-    else {
-      $this->setExpectedException(\PHPUnit_Framework_Error::class);
-    }
+    $this->setExpectedException(\PHPUnit_Framework_Error::class);
     $op = new DiffOp();
     $result = $op->reverse();
   }

@@ -21,8 +21,7 @@ use Drupal\Core\Session\AnonymousUserSession;
  *   description = @Translation("This field manages configuration and presentation of comments on an entity."),
  *   list_class = "\Drupal\comment\CommentFieldItemList",
  *   default_widget = "comment_default",
- *   default_formatter = "comment_default",
- *   cardinality = 1,
+ *   default_formatter = "comment_default"
  * )
  */
 class CommentItem extends FieldItemBase implements CommentItemInterface {

@@ -28,6 +28,8 @@ class CompiledRoute implements \Serializable
     private $hostTokens;
 
     /**
+     * Constructor.
+     *
      * @param string      $staticPrefix  The static prefix of the compiled route
      * @param string      $regex         The regular expression to use to match this route
      * @param array       $tokens        An array of tokens to use to generate URL for this route
@@ -71,12 +73,7 @@ class CompiledRoute implements \Serializable
      */
     public function unserialize($serialized)
     {
-        if (\PHP_VERSION_ID >= 70000) {
-            $data = unserialize($serialized, array('allowed_classes' => false));
-        } else {
-            $data = unserialize($serialized);
-        }
-
+        $data = unserialize($serialized);
         $this->variables = $data['vars'];
         $this->staticPrefix = $data['path_prefix'];
         $this->regex = $data['path_regex'];

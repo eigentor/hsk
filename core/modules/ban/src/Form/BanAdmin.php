@@ -10,8 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Displays banned IP addresses.
- *
- * @internal
  */
 class BanAdmin extends FormBase {
 

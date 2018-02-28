@@ -4,9 +4,6 @@ namespace Drupal\Tests\language\Unit;
 
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\Entity\EntityManager;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\EntityTypeRepositoryInterface;
 use Drupal\language\Entity\ContentLanguageSettings;
 use Drupal\Tests\UnitTestCase;
 
@@ -29,13 +26,6 @@ class ContentLanguageSettingsUnitTest extends UnitTestCase {
    * @var \Drupal\Core\Entity\EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $entityManager;
-
-  /**
-   * The entity type manager used for testing.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface|\PHPUnit_Framework_MockObject_MockObject
-   */
-  protected $entityTypeManager;
 
   /**
    * The ID of the type of the entity under test.
@@ -72,8 +62,7 @@ class ContentLanguageSettingsUnitTest extends UnitTestCase {
     $this->entityTypeId = $this->randomMachineName();
     $this->entityType = $this->getMock('\Drupal\Core\Entity\EntityTypeInterface');
 
-    $this->entityManager = new EntityManager();
-    $this->entityTypeManager = $this->getMock(EntityTypeManagerInterface::class);
+    $this->entityManager = $this->getMock('\Drupal\Core\Entity\EntityManagerInterface');
 
     $this->uuid = $this->getMock('\Drupal\Component\Uuid\UuidInterface');
 
@@ -83,13 +72,9 @@ class ContentLanguageSettingsUnitTest extends UnitTestCase {
 
     $container = new ContainerBuilder();
     $container->set('entity.manager', $this->entityManager);
-    $container->set('entity_type.manager', $this->entityTypeManager);
     $container->set('uuid', $this->uuid);
     $container->set('config.typed', $this->typedConfigManager);
     $container->set('config.storage', $this->configEntityStorageInterface);
-    // Inject the container into entity.manager so it can defer to other entity
-    // services.
-    $this->entityManager->setContainer($container);
     \Drupal::setContainer($container);
   }
 
@@ -103,7 +88,7 @@ class ContentLanguageSettingsUnitTest extends UnitTestCase {
       ->method('getBundleConfigDependency')
       ->will($this->returnValue(['type' => 'config', 'name' => 'test.test_entity_type.id']));
 
-    $this->entityTypeManager->expects($this->any())
+    $this->entityManager->expects($this->any())
       ->method('getDefinition')
       ->with('test_entity_type')
       ->will($this->returnValue($target_entity_type));
@@ -269,19 +254,15 @@ class ContentLanguageSettingsUnitTest extends UnitTestCase {
       ->method('create')
       ->will($this->returnValue($nullConfig));
 
-    $this->entityTypeManager
+    $this->entityManager
       ->expects($this->any())
       ->method('getStorage')
       ->with('language_content_settings')
       ->will($this->returnValue($this->configEntityStorageInterface));
-
-    $entity_type_repository = $this->getMockForAbstractClass(EntityTypeRepositoryInterface::class);
-    $entity_type_repository->expects($this->any())
+    $this->entityManager->expects($this->any())
       ->method('getEntityTypeFromClass')
-      ->with(ContentLanguageSettings::class)
+      ->with('Drupal\language\Entity\ContentLanguageSettings')
       ->willReturn('language_content_settings');
-
-    \Drupal::getContainer()->set('entity_type.repository', $entity_type_repository);
 
     $config = ContentLanguageSettings::loadByEntityTypeBundle($type, $bundle);
 

@@ -36,8 +36,8 @@ abstract class UITestBase extends ViewTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp($import_test_views = TRUE) {
-    parent::setUp($import_test_views);
+  protected function setUp() {
+    parent::setUp();
 
     $this->enableViewsTestModule();
 

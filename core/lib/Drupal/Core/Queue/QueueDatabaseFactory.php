@@ -12,7 +12,7 @@ class QueueDatabaseFactory {
   /**
    * The database connection.
    *
-   * @var \Drupal\Core\Database\Connection
+   * @var \Drupal\Core\Database\Connection $connection
    */
   protected $connection;
 

@@ -14,8 +14,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * Form for the Gettext translation files export form.
- *
- * @internal
  */
 class ExportForm extends FormBase {
 
@@ -167,7 +165,7 @@ class ExportForm extends FormBase {
       $header->setLanguageName($language_name);
 
       $writer = new PoStreamWriter();
-      $writer->setURI($uri);
+      $writer->setUri($uri);
       $writer->setHeader($header);
 
       $writer->open();

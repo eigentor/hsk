@@ -140,9 +140,12 @@ class FormErrorHandlerTest extends UnitTestCase {
   }
 
   /**
-   * Tests that opting out of Inline Form Errors works.
+   * Test that Quick Edit forms show non-inline errors.
+   *
+   * @covers ::handleFormErrors
+   * @covers ::displayErrorMessages
    */
-  public function testDisplayErrorMessagesNotInline() {
+  public function testDisplayErrorMessagesNotInlineQuickEdit() {
     $form_error_handler = $this->getMockBuilder(FormErrorHandler::class)
       ->setConstructorArgs([$this->getStringTranslationStub(), $this->getMock(LinkGeneratorInterface::class), $this->getMock(RendererInterface::class)])
       ->setMethods(['drupalSetMessage'])
@@ -154,7 +157,7 @@ class FormErrorHandlerTest extends UnitTestCase {
 
     $form = [
       '#parents' => [],
-      '#disable_inline_form_errors' => TRUE,
+      '#form_id' => 'quickedit_field_form',
       '#array_parents' => [],
     ];
     $form['test'] = [
@@ -162,7 +165,7 @@ class FormErrorHandlerTest extends UnitTestCase {
       '#title' => 'Test',
       '#parents' => ['test'],
       '#id' => 'edit-test',
-      '#array_parents' => ['test'],
+      '#array_parents' => ['test']
     ];
     $form_state = new FormState();
     $form_state->setErrorByName('test', 'invalid');

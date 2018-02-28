@@ -2,14 +2,14 @@
 
 namespace Drupal\Tests\Component\Plugin\Discovery;
 
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\Component\Plugin\Discovery\DiscoveryCachedTrait
  * @uses \Drupal\Component\Plugin\Discovery\DiscoveryTrait
  * @group Plugin
  */
-class DiscoveryCachedTraitTest extends TestCase {
+class DiscoveryCachedTraitTest extends UnitTestCase {
 
   /**
    * Data provider for testGetDefinition().
@@ -46,7 +46,7 @@ class DiscoveryCachedTraitTest extends TestCase {
       $trait->expects($this->once())
         ->method('getDefinitions')
         // Use a callback method, so we can perform the side-effects.
-        ->willReturnCallback(function () use ($reflection_definitions, $trait, $get_definitions) {
+        ->willReturnCallback(function() use ($reflection_definitions, $trait, $get_definitions) {
           $reflection_definitions->setValue($trait, $get_definitions);
           return $get_definitions;
         });

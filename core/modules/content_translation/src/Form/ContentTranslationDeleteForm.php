@@ -8,8 +8,6 @@ use Drupal\Core\Language\LanguageInterface;
 
 /**
  * Delete translation form for content_translation module.
- *
- * @internal
  */
 class ContentTranslationDeleteForm extends ContentEntityDeleteForm {
 

@@ -591,15 +591,4 @@ abstract class FieldConfigBase extends ConfigEntityBase implements FieldConfigIn
     return $this;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function isInternal() {
-    // Respect the definition, otherwise default to TRUE for computed fields.
-    if (isset($this->definition['internal'])) {
-      return $this->definition['internal'];
-    }
-    return $this->isComputed();
-  }
-
 }

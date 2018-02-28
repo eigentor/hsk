@@ -67,15 +67,12 @@ class FieldLayoutBuilder implements ContainerInjectionInterface {
       $regions = array_fill_keys($layout_definition->getRegionNames(), []);
 
       foreach ($fields as $name => $field) {
-        // If the region is controlled by the layout, move the field from the
-        // top-level of $build into a region-specific section. Custom regions
-        // could be set by other code at run-time; these should be ignored.
+        // Move the field from the top-level of $build into a region-specific
+        // section.
         // @todo Ideally the array structure would remain unchanged, see
         //   https://www.drupal.org/node/2846393.
-        if (isset($regions[$field['region']])) {
-          $regions[$field['region']][$name] = $build[$name];
-          unset($build[$name]);
-        }
+        $regions[$field['region']][$name] = $build[$name];
+        unset($build[$name]);
       }
       // Ensure this will not conflict with any existing array elements by
       // prefixing with an underscore.
@@ -106,7 +103,7 @@ class FieldLayoutBuilder implements ContainerInjectionInterface {
         // avoids breaking hook_form_alter() implementations by not actually
         // moving the field in the form structure. If a #group is already set,
         // do not overwrite it.
-        if (isset($regions[$field['region']]) && !isset($build[$name]['#group'])) {
+        if (!isset($build[$name]['#group'])) {
           $build[$name]['#group'] = $field['region'];
         }
       }

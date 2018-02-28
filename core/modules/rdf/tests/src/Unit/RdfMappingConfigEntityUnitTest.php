@@ -3,8 +3,6 @@
 namespace Drupal\Tests\rdf\Unit;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\Entity\EntityManager;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\rdf\Entity\RdfMapping;
 
@@ -27,13 +25,6 @@ class RdfMappingConfigEntityUnitTest extends UnitTestCase {
    * @var \Drupal\Core\Entity\EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $entityManager;
-
-  /**
-   * The entity type manager used for testing.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface|\PHPUnit_Framework_MockObject_MockObject
-   */
-  protected $entityTypeManager;
 
   /**
    * The ID of the type of the entity under test.
@@ -60,16 +51,13 @@ class RdfMappingConfigEntityUnitTest extends UnitTestCase {
       ->method('getProvider')
       ->will($this->returnValue('entity'));
 
-    $this->entityManager = new EntityManager();
-    $this->entityTypeManager = $this->getMock(EntityTypeManagerInterface::class);
+    $this->entityManager = $this->getMock('\Drupal\Core\Entity\EntityManagerInterface');
 
     $this->uuid = $this->getMock('\Drupal\Component\Uuid\UuidInterface');
 
     $container = new ContainerBuilder();
     $container->set('entity.manager', $this->entityManager);
-    $container->set('entity_type.manager', $this->entityTypeManager);
     $container->set('uuid', $this->uuid);
-    $this->entityManager->setContainer($container);
     \Drupal::setContainer($container);
 
   }
@@ -89,11 +77,11 @@ class RdfMappingConfigEntityUnitTest extends UnitTestCase {
       ->method('getBundleEntityType')
       ->will($this->returnValue(NULL));
 
-    $this->entityTypeManager->expects($this->at(0))
+    $this->entityManager->expects($this->at(0))
       ->method('getDefinition')
       ->with($target_entity_type_id)
       ->will($this->returnValue($target_entity_type));
-    $this->entityTypeManager->expects($this->at(1))
+    $this->entityManager->expects($this->at(1))
       ->method('getDefinition')
       ->with($this->entityTypeId)
       ->will($this->returnValue($this->entityType));
@@ -120,11 +108,11 @@ class RdfMappingConfigEntityUnitTest extends UnitTestCase {
       ->method('getBundleConfigDependency')
       ->will($this->returnValue(['type' => 'config', 'name' => 'test_module.type.' . $bundle_id]));
 
-    $this->entityTypeManager->expects($this->at(0))
+    $this->entityManager->expects($this->at(0))
       ->method('getDefinition')
       ->with($target_entity_type_id)
       ->will($this->returnValue($target_entity_type));
-    $this->entityTypeManager->expects($this->at(1))
+    $this->entityManager->expects($this->at(1))
       ->method('getDefinition')
       ->with($this->entityTypeId)
       ->will($this->returnValue($this->entityType));

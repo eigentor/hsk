@@ -7,8 +7,6 @@ use Drupal\Core\Url;
 
 /**
  * Provides a form for deleting a feed.
- *
- * @internal
  */
 class FeedDeleteForm extends ContentEntityDeleteForm {
 

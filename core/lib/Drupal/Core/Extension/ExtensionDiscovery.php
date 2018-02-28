@@ -381,7 +381,7 @@ class ExtensionDiscovery {
   }
 
   /**
-   * Recursively scans a base directory for the extensions it contains.
+   * Recursively scans a base directory for the requested extension type.
    *
    * @param string $dir
    *   A relative base directory path to scan, without trailing slash.

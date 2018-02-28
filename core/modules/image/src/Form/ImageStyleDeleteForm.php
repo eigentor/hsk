@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Creates a form to delete an image style.
- *
- * @internal
  */
 class ImageStyleDeleteForm extends EntityDeleteForm {
 

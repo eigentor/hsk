@@ -7,9 +7,8 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\content_moderation\StateTransitionValidation;
-use Drupal\Tests\UnitTestCase;
-use Drupal\workflow_type_test\Plugin\WorkflowType\TestType;
 use Drupal\workflows\Entity\Workflow;
+use Drupal\workflows\WorkflowTypeInterface;
 use Drupal\workflows\WorkflowTypeManager;
 use Prophecy\Argument;
 
@@ -17,7 +16,7 @@ use Prophecy\Argument;
  * @coversDefaultClass \Drupal\content_moderation\StateTransitionValidation
  * @group content_moderation
  */
-class StateTransitionValidationTest extends UnitTestCase {
+class StateTransitionValidationTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * Verifies user-aware transition validation.
@@ -62,14 +61,16 @@ class StateTransitionValidationTest extends UnitTestCase {
     // Create a container so that the plugin manager and workflow type can be
     // mocked.
     $container = new ContainerBuilder();
+    $workflow_type = $this->prophesize(WorkflowTypeInterface::class);
+    $workflow_type->decorateState(Argument::any())->willReturnArgument(0);
+    $workflow_type->decorateTransition(Argument::any())->willReturnArgument(0);
     $workflow_manager = $this->prophesize(WorkflowTypeManager::class);
-    $workflow_manager->createInstance('content_moderation', Argument::any())->willReturn(new TestType([], '', []));
+    $workflow_manager->createInstance('content_moderation', Argument::any())->willReturn($workflow_type->reveal());
     $container->set('plugin.manager.workflows.type', $workflow_manager->reveal());
     \Drupal::setContainer($container);
 
     $workflow = new Workflow(['id' => 'process', 'type' => 'content_moderation'], 'workflow');
     $workflow
-      ->getTypePlugin()
       ->addState('draft', 'draft')
       ->addState('needs_review', 'needs_review')
       ->addState('published', 'published')

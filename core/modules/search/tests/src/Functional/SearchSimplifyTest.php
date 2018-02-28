@@ -1,7 +1,6 @@
 <?php
 
 namespace Drupal\Tests\search\Functional;
-
 use Drupal\Component\Utility\Unicode;
 
 /**

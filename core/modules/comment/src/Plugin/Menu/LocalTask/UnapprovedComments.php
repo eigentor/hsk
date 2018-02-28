@@ -7,7 +7,6 @@ use Drupal\Core\Menu\LocalTaskDefault;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a local task that shows the amount of unapproved comments.
@@ -54,7 +53,7 @@ class UnapprovedComments extends LocalTaskDefault implements ContainerFactoryPlu
   /**
    * {@inheritdoc}
    */
-  public function getTitle(Request $request = NULL) {
+  public function getTitle() {
     return $this->t('Unapproved comments (@count)', ['@count' => $this->commentStorage->getUnapprovedCount()]);
   }
 

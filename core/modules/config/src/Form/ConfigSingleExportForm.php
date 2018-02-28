@@ -15,8 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a form for exporting a single configuration file.
- *
- * @internal
  */
 class ConfigSingleExportForm extends FormBase {
 

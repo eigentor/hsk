@@ -2,8 +2,6 @@
 
 namespace Drupal\comment\Plugin\migrate\source\d7;
 
-@trigger_error('CommentType is deprecated in Drupal 8.4.x and will be removed before Drupal 9.0.x. Use \Drupal\node\Plugin\migrate\source\d7\NodeType instead.', E_USER_DEPRECATED);
-
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\migrate\Row;
 use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
@@ -13,11 +11,8 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  *
  * @MigrateSource(
  *   id = "d7_comment_type",
- *   source_module = "comment"
+ *   source_provider = "comment"
  * )
- *
- * @deprecated in Drupal 8.4.x, to be removed before Drupal 9.0.x. Use
- * \Drupal\node\Plugin\migrate\source\d7\NodeType instead.
  */
 class CommentType extends DrupalSqlBase {
 

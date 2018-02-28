@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\Component\Utility;
 
+use Drupal\Tests\UnitTestCase;
 use Drupal\Component\Utility\Unicode;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test unicode handling features implemented in Unicode component.
@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversDefaultClass \Drupal\Component\Utility\Unicode
  */
-class UnicodeTest extends TestCase {
+class UnicodeTest extends UnitTestCase {
 
   /**
    * {@inheritdoc}
@@ -33,12 +33,7 @@ class UnicodeTest extends TestCase {
    */
   public function testStatus($value, $expected, $invalid = FALSE) {
     if ($invalid) {
-      if (method_exists($this, 'expectException')) {
-        $this->expectException('InvalidArgumentException');
-      }
-      else {
-        $this->setExpectedException('InvalidArgumentException');
-      }
+      $this->setExpectedException('InvalidArgumentException');
     }
     Unicode::setStatus($value);
     $this->assertEquals($expected, Unicode::getStatus());
@@ -376,7 +371,7 @@ class UnicodeTest extends TestCase {
    *     - (optional) Boolean for the $add_ellipsis flag. Defaults to FALSE.
    */
   public function providerTruncate() {
-    $tests = [
+    return [
       ['frànçAIS is über-åwesome', 24, 'frànçAIS is über-åwesome'],
       ['frànçAIS is über-åwesome', 23, 'frànçAIS is über-åwesom'],
       ['frànçAIS is über-åwesome', 17, 'frànçAIS is über-'],
@@ -422,24 +417,6 @@ class UnicodeTest extends TestCase {
       ['Help! Help! Help!', 3, 'He…', TRUE, TRUE],
       ['Help! Help! Help!', 2, 'H…', TRUE, TRUE],
     ];
-
-    // Test truncate on text with multiple lines.
-    $multi_line = <<<EOF
-This is a text that spans multiple lines.
-Line 2 goes here.
-EOF;
-    $multi_line_wordsafe = <<<EOF
-This is a text that spans multiple lines.
-Line 2
-EOF;
-    $multi_line_non_wordsafe = <<<EOF
-This is a text that spans multiple lines.
-Line 2 go
-EOF;
-    $tests[] = [$multi_line, 51, $multi_line_wordsafe, TRUE];
-    $tests[] = [$multi_line, 51, $multi_line_non_wordsafe, FALSE];
-
-    return $tests;
   }
 
   /**

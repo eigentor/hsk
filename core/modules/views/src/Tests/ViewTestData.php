@@ -58,8 +58,6 @@ class ViewTestData {
 
   /**
    * Returns the schema definition.
-   *
-   * @internal
    */
   public static function schemaDefinition() {
     $schema['views_test_data'] = [
@@ -82,8 +80,7 @@ class ViewTestData {
           'type' => 'int',
           'unsigned' => TRUE,
           'not null' => TRUE,
-          'default' => 0,
-        ],
+          'default' => 0],
         'job' => [
           'description' => "The person's job",
           'type' => 'varchar',

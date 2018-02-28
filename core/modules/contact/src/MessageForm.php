@@ -14,8 +14,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form controller for contact message forms.
- *
- * @internal
  */
 class MessageForm extends ContentEntityForm {
 

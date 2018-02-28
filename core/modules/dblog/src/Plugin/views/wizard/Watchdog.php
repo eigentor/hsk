@@ -18,8 +18,6 @@ class Watchdog extends WizardPluginBase {
 
   /**
    * Set the created column.
-   *
-   * @var string
    */
   protected $createdColumn = 'timestamp';
 

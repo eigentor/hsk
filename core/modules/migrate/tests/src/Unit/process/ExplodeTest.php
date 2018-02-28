@@ -29,7 +29,7 @@ class ExplodeTest extends MigrateProcessTestCase {
    */
   public function testTransform() {
     $value = $this->plugin->transform('foo,bar,tik', $this->migrateExecutable, $this->row, 'destinationproperty');
-    $this->assertSame(['foo', 'bar', 'tik'], $value);
+    $this->assertSame($value, ['foo', 'bar', 'tik']);
   }
 
   /**
@@ -38,7 +38,7 @@ class ExplodeTest extends MigrateProcessTestCase {
   public function testTransformLimit() {
     $plugin = new Explode(['delimiter' => '_', 'limit' => 2], 'map', []);
     $value = $plugin->transform('foo_bar_tik', $this->migrateExecutable, $this->row, 'destinationproperty');
-    $this->assertSame(['foo', 'bar_tik'], $value);
+    $this->assertSame($value, ['foo', 'bar_tik']);
   }
 
   /**
@@ -49,7 +49,7 @@ class ExplodeTest extends MigrateProcessTestCase {
 
     $concat = new Concat([], 'map', []);
     $concatenated = $concat->transform($exploded, $this->migrateExecutable, $this->row, 'destinationproperty');
-    $this->assertSame('foobartik', $concatenated);
+    $this->assertSame($concatenated, 'foobartik');
   }
 
   /**

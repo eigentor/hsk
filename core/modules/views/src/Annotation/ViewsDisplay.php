@@ -111,7 +111,7 @@ class ViewsDisplay extends ViewsPluginAnnotationBase {
   /**
    * The theme function used to render the display's output.
    *
-   * @var string
+   * @return string
    */
   public $theme;
 

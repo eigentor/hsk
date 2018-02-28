@@ -8,8 +8,6 @@ use Drupal\Core\Url;
 
 /**
  * Provides a deletion confirmation form for items that belong to a feed.
- *
- * @internal
  */
 class FeedItemsDeleteForm extends ContentEntityConfirmFormBase {
 

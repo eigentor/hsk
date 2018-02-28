@@ -8,8 +8,6 @@ use Drupal\Core\Url;
 
 /**
  * Form builder to detect form redirect.
- *
- * @internal
  */
 class FormTestRedirectForm extends FormBase {
 

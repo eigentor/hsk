@@ -420,7 +420,7 @@ class BigPipe {
       }
 
       $placeholder = $fragment;
-      assert(isset($no_js_placeholders[$placeholder]));
+      assert('isset($no_js_placeholders[$placeholder])');
       $token = Crypt::randomBytesBase64(55);
 
       // Render the placeholder, but include the cumulative settings assets, so
@@ -445,6 +445,7 @@ class BigPipe {
           continue;
         }
       }
+
 
       // Create a new HtmlResponse. Ensure the CSS and (non-bottom) JS is sent
       // before the HTML they're associated with. In other words: ensure the
@@ -481,6 +482,7 @@ class BigPipe {
           continue;
         }
       }
+
 
       // Send this embedded HTML response.
       $this->sendChunk($html_response);
@@ -629,7 +631,7 @@ EOF;
    *   AJAX page state.
    */
   protected function filterEmbeddedResponse(Request $fake_request, Response $embedded_response) {
-    assert($embedded_response instanceof HtmlResponse || $embedded_response instanceof AjaxResponse);
+    assert('$embedded_response instanceof \Drupal\Core\Render\HtmlResponse || $embedded_response instanceof \Drupal\Core\Ajax\AjaxResponse');
     return $this->filterResponse($fake_request, HttpKernelInterface::SUB_REQUEST, $embedded_response);
   }
 
@@ -649,7 +651,7 @@ EOF;
    *   The filtered response.
    */
   protected function filterResponse(Request $request, $request_type, Response $response) {
-    assert($request_type === HttpKernelInterface::MASTER_REQUEST || $request_type === HttpKernelInterface::SUB_REQUEST);
+    assert('$request_type === \Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST || $request_type === \Symfony\Component\HttpKernel\HttpKernelInterface::SUB_REQUEST');
     $this->requestStack->push($request);
     $event = new FilterResponseEvent($this->httpKernel, $request, $request_type, $response);
     $this->eventDispatcher->dispatch(KernelEvents::RESPONSE, $event);

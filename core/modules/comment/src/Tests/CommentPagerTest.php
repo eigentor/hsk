@@ -266,18 +266,12 @@ class CommentPagerTest extends CommentTestBase {
     $this->setCommentSettings('default_mode', CommentManagerInterface::COMMENT_MODE_FLAT, 'Comment paging changed.');
 
     $expected_pages = [
-      // Page of comment 5
-      1 => 5,
-      // Page of comment 4
-      2 => 4,
-      // Page of comment 3
-      3 => 3,
-      // Page of comment 2
-      4 => 2,
-      // Page of comment 1
-      5 => 1,
-      // Page of comment 0
-      6 => 0,
+      1 => 5, // Page of comment 5
+      2 => 4, // Page of comment 4
+      3 => 3, // Page of comment 3
+      4 => 2, // Page of comment 2
+      5 => 1, // Page of comment 1
+      6 => 0, // Page of comment 0
     ];
 
     $node = Node::load($node->id());
@@ -290,18 +284,12 @@ class CommentPagerTest extends CommentTestBase {
     $this->setCommentSettings('default_mode', CommentManagerInterface::COMMENT_MODE_THREADED, 'Switched to threaded mode.');
 
     $expected_pages = [
-      // Page of comment 5
-      1 => 5,
-      // Page of comment 4
-      2 => 1,
-      // Page of comment 4
-      3 => 1,
-      // Page of comment 4
-      4 => 1,
-      // Page of comment 4
-      5 => 1,
-      // Page of comment 0
-      6 => 0,
+      1 => 5, // Page of comment 5
+      2 => 1, // Page of comment 4
+      3 => 1, // Page of comment 4
+      4 => 1, // Page of comment 4
+      5 => 1, // Page of comment 4
+      6 => 0, // Page of comment 0
     ];
 
     \Drupal::entityManager()->getStorage('node')->resetCache([$node->id()]);

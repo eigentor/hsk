@@ -42,7 +42,7 @@ interface MenuParentFormSelectorInterface {
    *   (optional) ID of a link plugin. This will exclude the link and its
    *   children from being selected.
    * @param array $menus
-   *   (optional) Array of menu names as keys and titles as values to limit
+   *   (optional) array of menu names as keys and titles as values to limit
    *   the values that may be selected. If NULL, all menus will be included.
    *
    * @return array

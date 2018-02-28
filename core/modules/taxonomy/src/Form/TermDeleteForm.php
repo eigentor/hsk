@@ -8,8 +8,6 @@ use Drupal\Core\Url;
 
 /**
  * Provides a deletion confirmation form for taxonomy term.
- *
- * @internal
  */
 class TermDeleteForm extends ContentEntityDeleteForm {
 

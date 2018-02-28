@@ -12,8 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a form for removing a field from a bundle.
- *
- * @internal
  */
 class FieldConfigDeleteForm extends EntityDeleteForm {
 

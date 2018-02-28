@@ -328,8 +328,7 @@ class UserCancelTest extends BrowserTestBase {
     $revision = $revision_node->getRevisionId();
     $settings = get_object_vars($revision_node);
     $settings['revision'] = 1;
-    // Set new/current revision to someone else.
-    $settings['uid'] = 1;
+    $settings['uid'] = 1; // Set new/current revision to someone else.
     $revision_node = $this->drupalCreateNode($settings);
 
     // Attempt to cancel account.
@@ -455,8 +454,7 @@ class UserCancelTest extends BrowserTestBase {
     $revision = $revision_node->getRevisionId();
     $settings = get_object_vars($revision_node);
     $settings['revision'] = 1;
-    // Set new/current revision to someone else.
-    $settings['uid'] = 1;
+    $settings['uid'] = 1; // Set new/current revision to someone else.
     $revision_node = $this->drupalCreateNode($settings);
 
     // Attempt to cancel account.

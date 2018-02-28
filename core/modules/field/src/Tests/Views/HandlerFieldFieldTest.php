@@ -41,8 +41,8 @@ class HandlerFieldFieldTest extends FieldTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp($import_test_views = TRUE) {
-    parent::setUp($import_test_views);
+  protected function setUp() {
+    parent::setUp();
 
     // Setup basic fields.
     $this->setUpFieldStorages(3);

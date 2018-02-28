@@ -92,6 +92,7 @@ class EntityTest extends UnitTestCase {
       ->method('getStyle')
       ->willReturn($this->stylePlugin);
 
+
     $token = $this->getMockBuilder('Drupal\Core\Utility\Token')
       ->disableOriginalConstructor()
       ->getMock();

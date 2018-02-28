@@ -2,7 +2,8 @@
 
 namespace Drupal\datetime_range;
 
-use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItem;
 
 /**
  * Provides friendly methods for datetime range.
@@ -10,40 +11,68 @@ use Drupal\Core\Field\FieldItemListInterface;
 trait DateTimeRangeTrait {
 
   /**
-   * {@inheritdoc}
+   * Creates a render array from a date object.
+   *
+   * @param \Drupal\Core\Datetime\DrupalDateTime $date
+   *   A date object.
+   *
+   * @return array
+   *   A render array.
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = [];
-    $separator = $this->getSetting('separator');
+  protected function buildDate(DrupalDateTime $date) {
+    if ($this->getFieldSetting('datetime_type') == DateTimeItem::DATETIME_TYPE_DATE) {
+      // A date without time will pick up the current time, use the default.
+      datetime_date_default_time($date);
+    }
+    $this->setTimeZone($date);
 
-    foreach ($items as $delta => $item) {
-      if (!empty($item->start_date) && !empty($item->end_date)) {
-        /** @var \Drupal\Core\Datetime\DrupalDateTime $start_date */
-        $start_date = $item->start_date;
-        /** @var \Drupal\Core\Datetime\DrupalDateTime $end_date */
-        $end_date = $item->end_date;
+    $build = [
+      '#plain_text' => $this->formatDate($date),
+      '#cache' => [
+        'contexts' => [
+          'timezone',
+        ],
+      ],
+    ];
 
-        if ($start_date->getTimestamp() !== $end_date->getTimestamp()) {
-          $elements[$delta] = [
-            'start_date' => $this->buildDateWithIsoAttribute($start_date),
-            'separator' => ['#plain_text' => ' ' . $separator . ' '],
-            'end_date' => $this->buildDateWithIsoAttribute($end_date),
-          ];
-        }
-        else {
-          $elements[$delta] = $this->buildDateWithIsoAttribute($start_date);
+    return $build;
+  }
 
-          if (!empty($item->_attributes)) {
-            $elements[$delta]['#attributes'] += $item->_attributes;
-            // Unset field item attributes since they have been included in the
-            // formatter output and should not be rendered in the field template.
-            unset($item->_attributes);
-          }
-        }
-      }
+  /**
+   * Creates a render array from a date object with ISO date attribute.
+   *
+   * @param \Drupal\Core\Datetime\DrupalDateTime $date
+   *   A date object.
+   *
+   * @return array
+   *   A render array.
+   */
+  protected function buildDateWithIsoAttribute(DrupalDateTime $date) {
+    if ($this->getFieldSetting('datetime_type') == DateTimeItem::DATETIME_TYPE_DATE) {
+      // A date without time will pick up the current time, use the default.
+      datetime_date_default_time($date);
     }
 
-    return $elements;
+    // Create the ISO date in Universal Time.
+    $iso_date = $date->format("Y-m-d\TH:i:s") . 'Z';
+
+    $this->setTimeZone($date);
+
+    $build = [
+      '#theme' => 'time',
+      '#text' => $this->formatDate($date),
+      '#html' => FALSE,
+      '#attributes' => [
+        'datetime' => $iso_date,
+      ],
+      '#cache' => [
+        'contexts' => [
+          'timezone',
+        ],
+      ],
+    ];
+
+    return $build;
   }
 
 }

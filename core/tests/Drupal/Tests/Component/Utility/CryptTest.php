@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\Component\Utility;
 
+use Drupal\Tests\UnitTestCase;
 use Drupal\Component\Utility\Crypt;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Tests random byte generation.
@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversDefaultClass \Drupal\Component\Utility\Crypt
  */
-class CryptTest extends TestCase {
+class CryptTest extends UnitTestCase {
 
   /**
    * Tests random byte generation.
@@ -77,12 +77,7 @@ class CryptTest extends TestCase {
    *   Key to use in hashing process.
    */
   public function testHmacBase64Invalid($data, $key) {
-    if (method_exists($this, 'expectException')) {
-      $this->expectException('InvalidArgumentException');
-    }
-    else {
-      $this->setExpectedException('InvalidArgumentException');
-    }
+    $this->setExpectedException(\InvalidArgumentException::class);
     Crypt::hmacBase64($data, $key);
   }
 

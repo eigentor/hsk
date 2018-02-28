@@ -11,7 +11,6 @@ use Drupal\migrate\Row;
  *
  * @MigrateSource(
  *   id = "menu_link",
- *   source_module = "menu"
  * )
  */
 class MenuLink extends DrupalSqlBase {

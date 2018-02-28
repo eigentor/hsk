@@ -63,9 +63,7 @@ class BlockContentCreationTest extends BlockContentTestBase {
     $this->assertNoFieldByXPath('//select[@name="settings[view_mode]"]', NULL, 'View mode setting hidden because only one exists');
 
     // Check that the block exists in the database.
-    $blocks = \Drupal::entityTypeManager()
-      ->getStorage('block_content')
-      ->loadByProperties(['info' => $edit['info[0][value]']]);
+    $blocks = entity_load_multiple_by_properties('block_content', ['info' => $edit['info[0][value]']]);
     $block = reset($blocks);
     $this->assertTrue($block, 'Custom Block found in database.');
 
@@ -145,9 +143,7 @@ class BlockContentCreationTest extends BlockContentTestBase {
     $this->assertFieldByXPath('//select[@name="settings[view_mode]"]/option[@selected="selected"]', 'test_view_mode', 'View mode changed to Test View Mode');
 
     // Check that the block exists in the database.
-    $blocks = \Drupal::entityTypeManager()
-      ->getStorage('block_content')
-      ->loadByProperties(['info' => $edit['info[0][value]']]);
+    $blocks = entity_load_multiple_by_properties('block_content', ['info' => $edit['info[0][value]']]);
     $block = reset($blocks);
     $this->assertTrue($block, 'Custom Block found in database.');
 
@@ -182,9 +178,7 @@ class BlockContentCreationTest extends BlockContentTestBase {
     ]), 'Basic block created.');
 
     // Check that the block exists in the database.
-    $blocks = \Drupal::entityTypeManager()
-      ->getStorage('block_content')
-      ->loadByProperties(['info' => $edit['info[0][value]']]);
+    $blocks = entity_load_multiple_by_properties('block_content', ['info' => $edit['info[0][value]']]);
     $block = reset($blocks);
     $this->assertTrue($block, 'Default Custom Block found in database.');
   }

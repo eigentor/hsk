@@ -28,8 +28,7 @@ class ModerationStateNodeTest extends ModerationStateTestBase {
   public function testCreatingContent() {
     $this->drupalPostForm('node/add/moderated_content', [
       'title[0][value]' => 'moderated content',
-      'moderation_state[0][state]' => 'draft',
-    ], t('Save'));
+    ], t('Save and Create New Draft'));
     $node = $this->getNodeByTitle('moderated content');
     if (!$node) {
       $this->fail('Test node was not saved correctly.');
@@ -38,9 +37,7 @@ class ModerationStateNodeTest extends ModerationStateTestBase {
 
     $path = 'node/' . $node->id() . '/edit';
     // Set up published revision.
-    $this->drupalPostForm($path, [
-      'moderation_state[0][state]' => 'published',
-    ], t('Save'));
+    $this->drupalPostForm($path, [], t('Save and Publish'));
     \Drupal::entityTypeManager()->getStorage('node')->resetCache([$node->id()]);
     /* @var \Drupal\node\NodeInterface $node */
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($node->id());
@@ -55,8 +52,9 @@ class ModerationStateNodeTest extends ModerationStateTestBase {
     $this->assertText(t('The Moderated content moderated content has been deleted.'));
 
     // Disable content moderation.
-    $edit['bundles[moderated_content]'] = FALSE;
-    $this->drupalPostForm('admin/config/workflow/workflows/manage/editorial/type/node', $edit, t('Save'));;
+    $this->drupalPostForm('admin/structure/types/manage/moderated_content/moderation', ['workflow' => ''], t('Save'));
+    $this->drupalGet('admin/structure/types/manage/moderated_content/moderation');
+    $this->assertOptionSelected('edit-workflow', '');
     // Ensure the parent environment is up-to-date.
     // @see content_moderation_workflow_insert()
     \Drupal::service('entity_type.bundle.info')->clearCachedBundles();
@@ -65,7 +63,7 @@ class ModerationStateNodeTest extends ModerationStateTestBase {
     // Create a new node.
     $this->drupalPostForm('node/add/moderated_content', [
       'title[0][value]' => 'non-moderated content',
-    ], t('Save'));
+    ], t('Save and publish'));
 
     $node = $this->getNodeByTitle('non-moderated content');
     if (!$node) {
@@ -82,8 +80,7 @@ class ModerationStateNodeTest extends ModerationStateTestBase {
     $this->drupalPostForm('node/add/moderated_content', [
       'title[0][value]' => 'Some moderated content',
       'body[0][value]' => 'First version of the content.',
-      'moderation_state[0][state]' => 'draft',
-    ], t('Save'));
+    ], t('Save and Create New Draft'));
 
     $node = $this->drupalGetNodeByTitle('Some moderated content');
     $edit_path = sprintf('node/%d/edit', $node->id());
@@ -97,8 +94,7 @@ class ModerationStateNodeTest extends ModerationStateTestBase {
     // URL, but viewing the second revision.
     $this->drupalPostForm($edit_path, [
       'body[0][value]' => 'Second version of the content.',
-      'moderation_state[0][state]' => 'draft',
-    ], t('Save'));
+    ], t('Save and Create New Draft'));
     $this->assertUrl(Url::fromRoute('entity.node.canonical', ['node' => $node->id()]));
     $this->assertText('Second version of the content.');
 
@@ -106,17 +102,15 @@ class ModerationStateNodeTest extends ModerationStateTestBase {
     // canonical URL.
     $this->drupalPostForm($edit_path, [
       'body[0][value]' => 'Third version of the content.',
-      'moderation_state[0][state]' => 'published',
-    ], t('Save'));
+    ], t('Save and Publish'));
     $this->assertUrl(Url::fromRoute('entity.node.canonical', ['node' => $node->id()]));
     $this->assertText('Third version of the content.');
 
-    // Make a new pending revision; after saving, we should be on the "Latest
+    // Make a new forward revision; after saving, we should be on the "Latest
     // version" tab.
     $this->drupalPostForm($edit_path, [
       'body[0][value]' => 'Fourth version of the content.',
-      'moderation_state[0][state]' => 'draft',
-    ], t('Save'));
+    ], t('Save and Create New Draft'));
     $this->assertUrl(Url::fromRoute('entity.node.latest_version', ['node' => $node->id()]));
     $this->assertText('Fourth version of the content.');
   }
@@ -142,48 +136,6 @@ class ModerationStateNodeTest extends ModerationStateTestBase {
     $query = [];
     parse_str(parse_url($url, PHP_URL_QUERY), $query);
     $this->assertEqual(0, $query['page']);
-  }
-
-  /**
-   * Tests the workflow when a user has no Content Moderation permissions.
-   */
-  public function testNoContentModerationPermissions() {
-    $session_assert = $this->assertSession();
-
-    // Create a user with quite advanced node permissions but no content
-    // moderation permissions.
-    $limited_user = $this->createUser([
-      'administer nodes',
-      'bypass node access',
-    ]);
-    $this->drupalLogin($limited_user);
-
-    // Check the user can add content, but can't see the moderation state
-    // select.
-    $this->drupalGet('node/add/moderated_content');
-    $session_assert->statusCodeEquals(200);
-    $session_assert->fieldNotExists('moderation_state[0][state]');
-    $this->drupalPostForm(NULL, [
-      'title[0][value]' => 'moderated content',
-    ], 'Save');
-
-    // Manually move the content to archived because the user doesn't have
-    // permission to do this.
-    $node = $this->getNodeByTitle('moderated content');
-    $node->moderation_state->value = 'archived';
-    $node->save();
-
-    // Check the user can see the current state but not the select.
-    $this->drupalGet('node/' . $node->id() . '/edit');
-    $session_assert->statusCodeEquals(200);
-    $session_assert->pageTextContains('Archived');
-    $session_assert->fieldNotExists('moderation_state[0][state]');
-    $this->drupalPostForm(NULL, [], 'Save');
-
-    // When saving they should still be on the edit form, and see the validation
-    // error message.
-    $session_assert->pageTextContains('Edit Moderated content moderated content');
-    $session_assert->pageTextContains('Invalid state transition from Archived to Archived');
   }
 
 }

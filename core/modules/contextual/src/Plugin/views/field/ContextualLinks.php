@@ -138,7 +138,7 @@ class ContextualLinks extends FieldPluginBase {
         '#type' => 'contextual_links_placeholder',
         '#id' => _contextual_links_to_id($contextual_links),
       ];
-      return \Drupal::service('renderer')->render($element);
+      return drupal_render($element);
     }
     else {
       return '';
@@ -148,6 +148,6 @@ class ContextualLinks extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function query() {}
+  public function query() { }
 
 }

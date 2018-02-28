@@ -7,8 +7,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Provides a form for adding a filter format.
- *
- * @internal
  */
 class FilterFormatEditForm extends FilterFormatFormBase {
 

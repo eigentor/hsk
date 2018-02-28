@@ -1,6 +1,3 @@
 identity: drupal
-# The default facility setting depends on the operating system, and will be
-# overwritten during installation.
-# @see syslog_install().
-facility: 8
+facility: ''
 format: '!base_url|!timestamp|!type|!ip|!request_uri|!referer|!uid|!link|!message'

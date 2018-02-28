@@ -33,10 +33,7 @@ class Date extends FormElement {
     return [
       '#input' => TRUE,
       '#theme' => 'input__date',
-      '#process' => [
-        [$class, 'processAjaxForm'],
-        [$class, 'processDate'],
-      ],
+      '#process' => [[$class, 'processDate']],
       '#pre_render' => [[$class, 'preRenderDate']],
       '#theme_wrappers' => ['form_element'],
       '#attributes' => ['type' => 'date'],

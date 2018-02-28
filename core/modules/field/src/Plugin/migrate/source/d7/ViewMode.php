@@ -2,33 +2,31 @@
 
 namespace Drupal\field\Plugin\migrate\source\d7;
 
+use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
+
 /**
- * The view mode source class.
- *
  * @MigrateSource(
- *   id = "d7_view_mode",
- *   source_module = "field"
+ *  id = "d7_view_mode"
  * )
  */
-class ViewMode extends FieldInstance {
+class ViewMode extends DrupalSqlBase {
 
   /**
    * {@inheritdoc}
    */
   protected function initializeIterator() {
-    $instances = parent::initializeIterator();
-
     $rows = [];
-    foreach ($instances->getArrayCopy() as $instance) {
-      $data = unserialize($instance['data']);
+    $result = $this->prepareQuery()->execute();
+    foreach ($result as $field_instance) {
+      $data = unserialize($field_instance['data']);
       foreach (array_keys($data['display']) as $view_mode) {
-        $key = $instance['entity_type'] . '.' . $view_mode;
-        $rows[$key] = array_merge($instance, [
+        $key = $field_instance['entity_type'] . '.' . $view_mode;
+        $rows[$key] = [
+          'entity_type' => $field_instance['entity_type'],
           'view_mode' => $view_mode,
-        ]);
+        ];
       }
     }
-
     return new \ArrayIterator($rows);
   }
 
@@ -36,9 +34,18 @@ class ViewMode extends FieldInstance {
    * {@inheritdoc}
    */
   public function fields() {
-    return array_merge(parent::fields(), [
+    return [
       'view_mode' => $this->t('The view mode ID.'),
-    ]);
+      'entity_type' => $this->t('The entity type ID.'),
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function query() {
+    return $this->select('field_config_instance', 'fci')
+      ->fields('fci', ['entity_type', 'data']);
   }
 
   /**
@@ -53,6 +60,13 @@ class ViewMode extends FieldInstance {
         'type' => 'string',
       ],
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function count() {
+    return $this->initializeIterator()->count();
   }
 
 }

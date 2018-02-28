@@ -82,8 +82,7 @@ function book_entity_type_build(array &$entity_types) {
   $entity_types['node']
     ->setFormClass('book_outline', 'Drupal\book\Form\BookOutlineForm')
     ->setLinkTemplate('book-outline-form', '/node/{node}/outline')
-    ->setLinkTemplate('book-remove-form', '/node/{node}/outline/remove')
-    ->addConstraint('BookOutline', []);
+    ->setLinkTemplate('book-remove-form', '/node/{node}/outline/remove');
 }
 
 /**
@@ -438,7 +437,7 @@ function template_preprocess_book_navigation(&$variables) {
   }
 
   if (!empty($build)) {
-    \Drupal::service('renderer')->render($build);
+    drupal_render($build);
   }
 
   $variables['has_links'] = FALSE;

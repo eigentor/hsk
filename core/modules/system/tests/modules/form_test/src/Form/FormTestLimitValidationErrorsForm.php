@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Builds a simple form with a button triggering partial validation.
- *
- * @internal
  */
 class FormTestLimitValidationErrorsForm extends FormBase {
 

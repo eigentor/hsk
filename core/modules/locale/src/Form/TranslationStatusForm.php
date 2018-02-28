@@ -10,8 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a translation status form.
- *
- * @internal
  */
 class TranslationStatusForm extends FormBase {
 
@@ -42,7 +40,7 @@ class TranslationStatusForm extends FormBase {
   /**
    * Constructs a TranslationStatusForm object.
    *
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   * @param ModuleHandlerInterface $module_handler
    *   A module handler.
    * @param \Drupal\Core\State\StateInterface $state
    *   The state service.

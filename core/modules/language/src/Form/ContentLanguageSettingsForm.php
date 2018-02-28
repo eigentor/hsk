@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure the content language settings for this site.
- *
- * @internal
  */
 class ContentLanguageSettingsForm extends FormBase {
 

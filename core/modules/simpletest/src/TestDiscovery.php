@@ -144,8 +144,8 @@ class TestDiscovery {
    *   An array of tests keyed by the the group name.
    * @code
    *     $groups['block'] => array(
-   *       'Drupal\Tests\block\Functional\BlockTest' => array(
-   *         'name' => 'Drupal\Tests\block\Functional\BlockTest',
+   *       'Drupal\block\Tests\BlockTest' => array(
+   *         'name' => 'Drupal\block\Tests\BlockTest',
    *         'description' => 'Tests block UI CRUD functionality.',
    *         'group' => 'block',
    *       ),
@@ -189,17 +189,14 @@ class TestDiscovery {
         // abstract class, trait or test fixture.
         continue;
       }
-      // Skip this test class if it is a Simpletest-based test and requires
-      // unavailable modules. TestDiscovery should not filter out module
-      // requirements for PHPUnit-based test classes.
-      // @todo Move this behavior to \Drupal\simpletest\TestBase so tests can be
-      //       marked as skipped, instead.
+      // Skip this test class if it requires unavailable modules.
+      // @todo PHPUnit skips tests with unmet requirements when executing a test
+      //   (instead of excluding them upfront). Refactor test runner to follow
+      //   that approach.
       // @see https://www.drupal.org/node/1273478
-      if ($info['type'] == 'Simpletest') {
-        if (!empty($info['requires']['module'])) {
-          if (array_diff($info['requires']['module'], $this->availableExtensions['module'])) {
-            continue;
-          }
+      if (!empty($info['requires']['module'])) {
+        if (array_diff($info['requires']['module'], $this->availableExtensions['module'])) {
+          continue;
         }
       }
 
@@ -312,7 +309,7 @@ class TestDiscovery {
   /**
    * Retrieves information about a test class for UI purposes.
    *
-   * @param string $classname
+   * @param string $class
    *   The test classname.
    * @param string $doc_comment
    *   (optional) The class PHPDoc comment. If not passed in reflection will be

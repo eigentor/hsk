@@ -1,7 +1,7 @@
 services:
   paramconverter.latest_revision:
     class: Drupal\content_moderation\ParamConverter\EntityRevisionConverter
-    parent: paramconverter.entity
+    arguments: ['@entity.manager', '@content_moderation.moderation_information']
     tags:
       - { name: paramconverter, priority: 5 }
   content_moderation.state_transition_validation:
@@ -15,13 +15,8 @@ services:
     arguments: ['@content_moderation.moderation_information']
     tags:
       - { name: access_check, applies_to: _content_moderation_latest_version }
-  content_moderation.config_import_subscriber:
-    class: Drupal\content_moderation\EventSubscriber\ConfigImportSubscriber
-    arguments: ['@config.manager', '@entity_type.manager']
+  content_moderation.revision_tracker:
+    class: Drupal\content_moderation\RevisionTracker
+    arguments: ['@database']
     tags:
-      - { name: event_subscriber }
-  content_moderation.route_subscriber:
-    class: Drupal\content_moderation\Routing\ContentModerationRouteSubscriber
-    arguments: ['@entity_type.manager']
-    tags:
-      - { name: event_subscriber }
+     - { name: backend_overridable }

@@ -8,8 +8,6 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Defines a form for testing form element description display options.
  *
- * @internal
- *
  * @see \Drupal\system\Tests\Form\ElementsLabelsTest::testFormDescriptions()
  */
 class FormTestDescriptionForm extends FormBase {

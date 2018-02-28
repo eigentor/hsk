@@ -1,7 +1,6 @@
 <?php
 
 namespace Drupal\KernelTests\Core\Entity;
-
 use Drupal\entity_test\Entity\EntityTestMulRev;
 use Drupal\language\Entity\ConfigurableLanguage;
 

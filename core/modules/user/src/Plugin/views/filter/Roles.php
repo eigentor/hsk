@@ -74,20 +74,10 @@ class Roles extends ManyToOne {
    */
   public function calculateDependencies() {
     $dependencies = [];
-
     if (in_array($this->operator, ['empty', 'not empty'])) {
       return $dependencies;
     }
-
-    // The value might be a string due to the wrong plugin being used for role
-    // field data, and subsequently the incorrect config schema object and
-    // value. In the empty case stop early. Otherwise we cast it to an array
-    // later.
-    if (is_string($this->value) && $this->value === '') {
-      return [];
-    }
-
-    foreach ((array) $this->value as $role_id) {
+    foreach ($this->value as $role_id) {
       $role = $this->roleStorage->load($role_id);
       $dependencies[$role->getConfigDependencyKey()][] = $role->getConfigDependencyName();
     }

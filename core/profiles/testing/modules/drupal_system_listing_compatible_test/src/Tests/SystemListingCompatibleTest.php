@@ -29,8 +29,6 @@ class SystemListingCompatibleTest extends WebTestBase {
    * asserts that this test is found.
    *
    * @see SimpleTestInstallationProfileModuleTestsTestCase
-   *
-   * @var string
    */
   protected $profile = 'minimal';
 

@@ -40,23 +40,22 @@ class ConfigSchemaTest extends KernelTestBase {
    */
   public function testSchemaMapping() {
     // Nonexistent configuration key will have Undefined as metadata.
-    $this->assertSame(FALSE, \Drupal::service('config.typed')->hasConfigSchema('config_schema_test.no_such_key'));
+    $this->assertIdentical(FALSE, \Drupal::service('config.typed')->hasConfigSchema('config_schema_test.no_such_key'));
     $definition = \Drupal::service('config.typed')->getDefinition('config_schema_test.no_such_key');
     $expected = [];
     $expected['label'] = 'Undefined';
     $expected['class'] = Undefined::class;
     $expected['type'] = 'undefined';
     $expected['definition_class'] = '\Drupal\Core\TypedData\DataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
     $this->assertEqual($definition, $expected, 'Retrieved the right metadata for nonexistent configuration.');
 
     // Configuration file without schema will return Undefined as well.
-    $this->assertSame(FALSE, \Drupal::service('config.typed')->hasConfigSchema('config_schema_test.noschema'));
+    $this->assertIdentical(FALSE, \Drupal::service('config.typed')->hasConfigSchema('config_schema_test.noschema'));
     $definition = \Drupal::service('config.typed')->getDefinition('config_schema_test.noschema');
     $this->assertEqual($definition, $expected, 'Retrieved the right metadata for configuration with no schema.');
 
     // Configuration file with only some schema.
-    $this->assertSame(TRUE, \Drupal::service('config.typed')->hasConfigSchema('config_schema_test.someschema'));
+    $this->assertIdentical(TRUE, \Drupal::service('config.typed')->hasConfigSchema('config_schema_test.someschema'));
     $definition = \Drupal::service('config.typed')->getDefinition('config_schema_test.someschema');
     $expected = [];
     $expected['label'] = 'Schema test data';
@@ -68,7 +67,6 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['mapping']['testlist'] = ['label' => 'Test list'];
     $expected['type'] = 'config_schema_test.someschema';
     $expected['definition_class'] = '\Drupal\Core\TypedData\MapDataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
     $this->assertEqual($definition, $expected, 'Retrieved the right metadata for configuration with only some schema.');
 
     // Check type detection on elements with undefined types.
@@ -79,7 +77,6 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['class'] = Undefined::class;
     $expected['type'] = 'undefined';
     $expected['definition_class'] = '\Drupal\Core\TypedData\DataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
     $this->assertEqual($definition, $expected, 'Automatic type detected for a scalar is undefined.');
     $definition = $config->get('testlist')->getDataDefinition()->toArray();
     $expected = [];
@@ -87,7 +84,6 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['class'] = Undefined::class;
     $expected['type'] = 'undefined';
     $expected['definition_class'] = '\Drupal\Core\TypedData\DataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
     $this->assertEqual($definition, $expected, 'Automatic type detected for a list is undefined.');
     $definition = $config->get('testnoschema')->getDataDefinition()->toArray();
     $expected = [];
@@ -95,7 +91,6 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['class'] = Undefined::class;
     $expected['type'] = 'undefined';
     $expected['definition_class'] = '\Drupal\Core\TypedData\DataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
     $this->assertEqual($definition, $expected, 'Automatic type detected for an undefined integer is undefined.');
 
     // Simple case, straight metadata.
@@ -114,7 +109,6 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['mapping']['_core']['type'] = '_core_config_info';
     $expected['type'] = 'system.maintenance';
     $expected['definition_class'] = '\Drupal\Core\TypedData\MapDataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
     $this->assertEqual($definition, $expected, 'Retrieved the right metadata for system.maintenance');
 
     // Mixed schema with ignore elements.
@@ -145,7 +139,6 @@ class ConfigSchemaTest extends KernelTestBase {
       'type' => 'integer',
     ];
     $expected['type'] = 'config_schema_test.ignore';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
 
     $this->assertEqual($definition, $expected);
 
@@ -156,7 +149,6 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['label'] = 'Irrelevant';
     $expected['class'] = Ignore::class;
     $expected['definition_class'] = '\Drupal\Core\TypedData\DataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
     $this->assertEqual($definition, $expected);
     $definition = \Drupal::service('config.typed')->get('config_schema_test.ignore')->get('indescribable')->getDataDefinition()->toArray();
     $expected['label'] = 'Indescribable';
@@ -168,9 +160,8 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['label'] = 'Image style';
     $expected['class'] = Mapping::class;
     $expected['definition_class'] = '\Drupal\Core\TypedData\MapDataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
     $expected['mapping']['name']['type'] = 'string';
-    $expected['mapping']['uuid']['type'] = 'uuid';
+    $expected['mapping']['uuid']['type'] = 'string';
     $expected['mapping']['uuid']['label'] = 'UUID';
     $expected['mapping']['langcode']['type'] = 'string';
     $expected['mapping']['langcode']['label'] = 'Language code';
@@ -186,7 +177,7 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['mapping']['effects']['sequence']['mapping']['id']['type'] = 'string';
     $expected['mapping']['effects']['sequence']['mapping']['data']['type'] = 'image.effect.[%parent.id]';
     $expected['mapping']['effects']['sequence']['mapping']['weight']['type'] = 'integer';
-    $expected['mapping']['effects']['sequence']['mapping']['uuid']['type'] = 'uuid';
+    $expected['mapping']['effects']['sequence']['mapping']['uuid']['type'] = 'string';
     $expected['mapping']['third_party_settings']['type'] = 'sequence';
     $expected['mapping']['third_party_settings']['label'] = 'Third party settings';
     $expected['mapping']['third_party_settings']['sequence']['type'] = '[%parent.%parent.%type].third_party.[%key]';
@@ -202,7 +193,6 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['label'] = 'Image scale';
     $expected['class'] = Mapping::class;
     $expected['definition_class'] = '\Drupal\Core\TypedData\MapDataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
     $expected['mapping']['width']['type'] = 'integer';
     $expected['mapping']['width']['label'] = 'Width';
     $expected['mapping']['height']['type'] = 'integer';
@@ -210,6 +200,7 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['mapping']['upscale']['type'] = 'boolean';
     $expected['mapping']['upscale']['label'] = 'Upscale';
     $expected['type'] = 'image.effect.image_scale';
+
 
     $this->assertEqual($definition, $expected, 'Retrieved the right metadata for image.effect.image_scale');
 
@@ -229,7 +220,6 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['label'] = 'Mapping';
     $expected['class'] = Mapping::class;
     $expected['definition_class'] = '\Drupal\Core\TypedData\MapDataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
     $expected['mapping'] = [
       'integer' => ['type' => 'integer'],
       'string' => ['type' => 'string'],
@@ -251,7 +241,6 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['mapping']['testdescription']['label'] = 'Description';
     $expected['type'] = 'config_schema_test.someschema.somemodule.*.*';
     $expected['definition_class'] = '\Drupal\Core\TypedData\MapDataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
 
     $this->assertEqual($definition, $expected, 'Retrieved the right metadata for config_schema_test.someschema.somemodule.section_one.subsection');
 
@@ -274,7 +263,6 @@ class ConfigSchemaTest extends KernelTestBase {
       'label' => 'Test item nested one level',
       'class' => StringData::class,
       'definition_class' => '\Drupal\Core\TypedData\DataDefinition',
-      'unwrap_for_canonical_representation' => TRUE,
     ];
     $this->assertEqual($definition, $expected);
 
@@ -286,7 +274,6 @@ class ConfigSchemaTest extends KernelTestBase {
       'label' => 'Test item nested two levels',
       'class' => StringData::class,
       'definition_class' => '\Drupal\Core\TypedData\DataDefinition',
-      'unwrap_for_canonical_representation' => TRUE,
     ];
     $this->assertEqual($definition, $expected);
 
@@ -298,7 +285,6 @@ class ConfigSchemaTest extends KernelTestBase {
       'label' => 'Test item nested three levels',
       'class' => StringData::class,
       'definition_class' => '\Drupal\Core\TypedData\DataDefinition',
-      'unwrap_for_canonical_representation' => TRUE,
     ];
     $this->assertEqual($definition, $expected);
   }
@@ -335,7 +321,7 @@ class ConfigSchemaTest extends KernelTestBase {
     $effect = $effects->get($uuid)->getElements();
     $this->assertTrue(!$effect['data']->isEmpty() && $effect['id']->getValue() == 'image_scale', 'Got data for the image scale effect from metadata.');
     $this->assertTrue($effect['data']->get('width') instanceof IntegerInterface, 'Got the right type for the scale effect width.');
-    $this->assertEqual($effect['data']->get('width')->getValue(), 480, 'Got the right value for the scale effect width.');
+    $this->assertEqual($effect['data']->get('width')->getValue(), 480, 'Got the right value for the scale effect width.' );
   }
 
   /**
@@ -410,76 +396,6 @@ class ConfigSchemaTest extends KernelTestBase {
   }
 
   /**
-   * Tests configuration sequence sorting using schemas.
-   */
-  public function testConfigSaveWithSequenceSorting() {
-    $data = [
-      'keyed_sort' => [
-        'b' => '1',
-        'a' => '2',
-      ],
-      'no_sort' => [
-        'b' => '2',
-        'a' => '1',
-      ],
-    ];
-    // Save config which has a schema that enforces sorting.
-    $this->config('config_schema_test.schema_sequence_sort')
-      ->setData($data)
-      ->save();
-    $this->assertSame(['a' => '2', 'b' => '1'], $this->config('config_schema_test.schema_sequence_sort')->get('keyed_sort'));
-    $this->assertSame(['b' => '2', 'a' => '1'], $this->config('config_schema_test.schema_sequence_sort')->get('no_sort'));
-
-    $data = [
-      'value_sort' => ['b', 'a'],
-      'no_sort' => ['b', 'a'],
-    ];
-    // Save config which has a schema that enforces sorting.
-    $this->config('config_schema_test.schema_sequence_sort')
-      ->setData($data)
-      ->save();
-
-    $this->assertSame(['a', 'b'], $this->config('config_schema_test.schema_sequence_sort')->get('value_sort'));
-    $this->assertSame(['b', 'a'], $this->config('config_schema_test.schema_sequence_sort')->get('no_sort'));
-
-    // Value sort does not preserve keys - this is intentional.
-    $data = [
-      'value_sort' => [1 => 'b', 2 => 'a'],
-      'no_sort' => [1 => 'b', 2 => 'a'],
-    ];
-    // Save config which has a schema that enforces sorting.
-    $this->config('config_schema_test.schema_sequence_sort')
-      ->setData($data)
-      ->save();
-
-    $this->assertSame(['a', 'b'], $this->config('config_schema_test.schema_sequence_sort')->get('value_sort'));
-    $this->assertSame([1 => 'b', 2 => 'a'], $this->config('config_schema_test.schema_sequence_sort')->get('no_sort'));
-
-    // Test sorts do not destroy complex values.
-    $data = [
-      'complex_sort_value' => [['foo' => 'b', 'bar' => 'b'] , ['foo' => 'a', 'bar' => 'a']],
-      'complex_sort_key' => ['b' => ['foo' => '1', 'bar' => '1'] , 'a' => ['foo' => '2', 'bar' => '2']],
-    ];
-    $this->config('config_schema_test.schema_sequence_sort')
-      ->setData($data)
-      ->save();
-    $this->assertSame([['foo' => 'a', 'bar' => 'a'], ['foo' => 'b', 'bar' => 'b']], $this->config('config_schema_test.schema_sequence_sort')->get('complex_sort_value'));
-    $this->assertSame(['a' => ['foo' => '2', 'bar' => '2'], 'b' => ['foo' => '1', 'bar' => '1']], $this->config('config_schema_test.schema_sequence_sort')->get('complex_sort_key'));
-
-    // Swap the previous test scenario around.
-    $data = [
-      'complex_sort_value' => ['b' => ['foo' => '1', 'bar' => '1'] , 'a' => ['foo' => '2', 'bar' => '2']],
-      'complex_sort_key' => [['foo' => 'b', 'bar' => 'b'] , ['foo' => 'a', 'bar' => 'a']],
-    ];
-    $this->config('config_schema_test.schema_sequence_sort')
-      ->setData($data)
-      ->save();
-    $this->assertSame([['foo' => '1', 'bar' => '1'], ['foo' => '2', 'bar' => '2']], $this->config('config_schema_test.schema_sequence_sort')->get('complex_sort_value'));
-    $this->assertSame([['foo' => 'b', 'bar' => 'b'], ['foo' => 'a', 'bar' => 'a']], $this->config('config_schema_test.schema_sequence_sort')->get('complex_sort_key'));
-
-  }
-
-  /**
    * Tests fallback to a greedy wildcard.
    */
   public function testSchemaFallback() {
@@ -489,7 +405,6 @@ class ConfigSchemaTest extends KernelTestBase {
     $expected['label'] = 'Schema wildcard fallback test';
     $expected['class'] = Mapping::class;
     $expected['definition_class'] = '\Drupal\Core\TypedData\MapDataDefinition';
-    $expected['unwrap_for_canonical_representation'] = TRUE;
     $expected['mapping']['langcode']['type'] = 'string';
     $expected['mapping']['langcode']['label'] = 'Language code';
     $expected['mapping']['_core']['type'] = '_core_config_info';
@@ -503,8 +418,8 @@ class ConfigSchemaTest extends KernelTestBase {
 
     $definition2 = \Drupal::service('config.typed')->getDefinition('config_schema_test.wildcard_fallback.something.something');
     // This should be the schema of config_schema_test.wildcard_fallback.* as
-    // well.
-    $this->assertSame($definition, $definition2);
+    //well.
+    $this->assertIdentical($definition, $definition2);
   }
 
   /**

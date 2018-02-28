@@ -2,7 +2,6 @@
 
 namespace Drupal\Core\Cache;
 
-use Drupal\Component\Assertion\Inspector;
 use Drupal\Core\PhpStorage\PhpStorageFactory;
 use Drupal\Component\Utility\Crypt;
 
@@ -144,8 +143,7 @@ class PhpBackend implements CacheBackendInterface {
    * {@inheritdoc}
    */
   public function set($cid, $data, $expire = Cache::PERMANENT, array $tags = []) {
-    assert(Inspector::assertAllStrings($tags), 'Cache Tags must be strings.');
-
+    assert('\Drupal\Component\Assertion\Inspector::assertAllStrings($tags)', 'Cache Tags must be strings.');
     $item = (object) [
       'cid' => $cid,
       'data' => $data,

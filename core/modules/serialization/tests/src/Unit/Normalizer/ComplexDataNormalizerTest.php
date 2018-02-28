@@ -8,6 +8,7 @@
 namespace Drupal\Tests\serialization\Unit\Normalizer;
 
 use Drupal\Core\TypedData\ComplexDataInterface;
+use Drupal\Core\TypedData\TraversableTypedDataInterface;
 use Drupal\serialization\Normalizer\ComplexDataNormalizer;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\Serializer\Serializer;
@@ -17,8 +18,6 @@ use Symfony\Component\Serializer\Serializer;
  * @group serialization
  */
 class ComplexDataNormalizerTest extends UnitTestCase {
-
-  use InternalTypedDataTestTrait;
 
   /**
    * Test format string.
@@ -45,77 +44,103 @@ class ComplexDataNormalizerTest extends UnitTestCase {
    * @covers ::supportsNormalization
    */
   public function testSupportsNormalization() {
-    $complex_data = $this->prophesize(ComplexDataInterface::class)->reveal();
-    $this->assertTrue($this->normalizer->supportsNormalization($complex_data));
+    $this->assertTrue($this->normalizer->supportsNormalization(new TestComplexData()));
     // Also test that an object not implementing ComplexDataInterface fails.
     $this->assertFalse($this->normalizer->supportsNormalization(new \stdClass()));
   }
 
   /**
-   * Test normalizing complex data.
-   *
    * @covers ::normalize
    */
-  public function testNormalizeComplexData() {
+  public function testNormalize() {
+    $context = ['test' => 'test'];
+
     $serializer_prophecy = $this->prophesize(Serializer::class);
 
-    $non_internal_property = $this->getTypedDataProperty(FALSE);
-
-    $serializer_prophecy->normalize($non_internal_property, static::TEST_FORMAT, [])
-      ->willReturn('A-normalized')
+    $serializer_prophecy->normalize('A', static::TEST_FORMAT, $context)
+      ->shouldBeCalled();
+    $serializer_prophecy->normalize('B', static::TEST_FORMAT, $context)
       ->shouldBeCalled();
 
     $this->normalizer->setSerializer($serializer_prophecy->reveal());
 
-    $complex_data = $this->prophesize(ComplexDataInterface::class);
-    $complex_data->getProperties(TRUE)
-      ->willReturn([
-        'prop:a' => $non_internal_property,
-        'prop:internal' => $this->getTypedDataProperty(TRUE),
-      ])
-      ->shouldBeCalled();
-
-    $normalized = $this->normalizer->normalize($complex_data->reveal(), static::TEST_FORMAT);
-    $this->assertEquals(['prop:a' => 'A-normalized'], $normalized);
-  }
-
-  /**
-   * Test normalize() where $object does not implement ComplexDataInterface.
-   *
-   * Normalizers extending ComplexDataNormalizer may have a different supported
-   * class.
-   *
-   * @covers ::normalize
-   */
-  public function testNormalizeNonComplex() {
-    $normalizer = new TestExtendedNormalizer();
-    $serialization_context = ['test' => 'test'];
-
-    $serializer_prophecy = $this->prophesize(Serializer::class);
-    $serializer_prophecy->normalize('A', static::TEST_FORMAT, $serialization_context)
-      ->willReturn('A-normalized')
-      ->shouldBeCalled();
-    $serializer_prophecy->normalize('B', static::TEST_FORMAT, $serialization_context)
-      ->willReturn('B-normalized')
-      ->shouldBeCalled();
-
-    $normalizer->setSerializer($serializer_prophecy->reveal());
-
-    $stdClass = new \stdClass();
-    $stdClass->a = 'A';
-    $stdClass->b = 'B';
-
-    $normalized = $normalizer->normalize($stdClass, static::TEST_FORMAT, $serialization_context);
-    $this->assertEquals(['a' => 'A-normalized', 'b' => 'B-normalized'], $normalized);
+    $complex_data = new TestComplexData(['a' => 'A', 'b' => 'B']);
+    $this->normalizer->normalize($complex_data, static::TEST_FORMAT, $context);
 
   }
 
 }
 
 /**
- * Test normalizer with a different supported class.
+ * Test class implementing ComplexDataInterface and IteratorAggregate.
  */
-class TestExtendedNormalizer extends ComplexDataNormalizer {
-  protected $supportedInterfaceOrClass = \stdClass::class;
+class TestComplexData implements \IteratorAggregate, ComplexDataInterface {
+
+  private $values;
+
+  public function __construct(array $values = []) {
+    $this->values = $values;
+  }
+
+  public function getIterator() {
+    return new \ArrayIterator($this->values);
+  }
+
+  public function applyDefaultValue($notify = TRUE) {
+  }
+
+  public static function createInstance($definition, $name = NULL, TraversableTypedDataInterface $parent = NULL) {
+  }
+
+  public function get($property_name) {
+  }
+
+  public function getConstraints() {
+  }
+
+  public function getDataDefinition() {
+  }
+
+  public function getName() {
+  }
+
+  public function getParent() {
+  }
+
+  public function getProperties($include_computed = FALSE) {
+  }
+
+  public function getPropertyPath() {
+  }
+
+  public function getRoot() {
+  }
+
+  public function getString() {
+  }
+
+  public function getValue() {
+  }
+
+  public function isEmpty() {
+  }
+
+  public function onChange($name) {
+  }
+
+  public function set($property_name, $value, $notify = TRUE) {
+  }
+
+  public function setContext($name = NULL, TraversableTypedDataInterface $parent = NULL) {
+  }
+
+  public function setValue($value, $notify = TRUE) {
+  }
+
+  public function toArray() {
+  }
+
+  public function validate() {
+  }
 
 }

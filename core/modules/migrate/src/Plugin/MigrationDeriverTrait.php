@@ -25,9 +25,6 @@ trait MigrationDeriverTrait {
       'destination' => [
         'plugin' => 'null',
       ],
-      'idMap' => [
-        'plugin' => 'null',
-      ],
     ];
     return \Drupal::service('plugin.manager.migration')->createStubMigration($definition)->getSourcePlugin();
   }

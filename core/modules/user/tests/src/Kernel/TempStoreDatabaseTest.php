@@ -12,8 +12,7 @@ use Drupal\Core\Database\Database;
  * Tests the temporary object storage system.
  *
  * @group user
- * @group legacy
- * @see \Drupal\user\SharedTempStore
+ * @see \Drupal\Core\TempStore\TempStore.
  */
 class TempStoreDatabaseTest extends KernelTestBase {
 
@@ -68,9 +67,6 @@ class TempStoreDatabaseTest extends KernelTestBase {
 
   /**
    * Tests the UserTempStore API.
-   *
-   * @expectedDeprecation \Drupal\user\SharedTempStoreFactory is scheduled for removal in Drupal 9.0.0. Use \Drupal\Core\TempStore\SharedTempStoreFactory instead. See https://www.drupal.org/node/2935639.
-   * @expectedDeprecation \Drupal\user\SharedTempStore is scheduled for removal in Drupal 9.0.0. Use \Drupal\Core\TempStore\SharedTempStore instead. See https://www.drupal.org/node/2935639.
    */
   public function testUserTempStore() {
     // Create a key/value collection.

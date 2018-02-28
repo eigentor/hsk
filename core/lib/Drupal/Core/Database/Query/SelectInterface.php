@@ -95,7 +95,7 @@ interface SelectInterface extends ConditionInterface, AlterableInterface, Extend
    * Note that this method must be called by reference as well:
    *
    * @code
-   * $tables =& $query->getTables();
+   * $fields =& $query->getTables();
    * @endcode
    *
    * @return
@@ -346,8 +346,6 @@ interface SelectInterface extends ConditionInterface, AlterableInterface, Extend
    *   db_query('A')->rightJoin('B') is identical to
    *   db_query('B')->leftJoin('A'). This functionality has been deprecated
    *   because SQLite does not support it.
-   *
-   * @see https://www.drupal.org/node/2765249
    */
   public function rightJoin($table, $alias = NULL, $condition = NULL, $arguments = []);
 

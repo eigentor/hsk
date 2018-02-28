@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides a test form object that needs arguments.
- *
- * @internal
  */
 class FormTestArgumentsObject extends ConfigFormBase {
 

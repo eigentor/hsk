@@ -22,6 +22,7 @@ class RequiredStatesTest extends KernelTestBase {
 
   /**
    * @covers ::getRequiredStates
+   * @covers ::initializeWorkflow
    * @covers ::__construct
    */
   public function testGetRequiredStates() {
@@ -29,14 +30,15 @@ class RequiredStatesTest extends KernelTestBase {
       'id' => 'test',
       'type' => 'workflow_type_required_state_test',
     ], 'workflow');
+    $workflow = $workflow->getTypePlugin()->initializeWorkflow($workflow);
     $workflow->save();
     $this->assertEquals(['fresh', 'rotten'], $workflow->getTypePlugin()
       ->getRequiredStates());
 
     // Ensure that the workflow has the default configuration.
-    $this->assertTrue($workflow->getTypePlugin()->hasState('rotten'));
-    $this->assertTrue($workflow->getTypePlugin()->hasState('fresh'));
-    $this->assertTrue($workflow->getTypePlugin()->hasTransitionFromStateToState('fresh', 'rotten'));
+    $this->assertTrue($workflow->hasState('rotten'));
+    $this->assertTrue($workflow->hasState('fresh'));
+    $this->assertTrue($workflow->hasTransitionFromStateToState('fresh', 'rotten'));
   }
 
   /**
@@ -47,11 +49,11 @@ class RequiredStatesTest extends KernelTestBase {
       'id' => 'test',
       'type' => 'workflow_type_required_state_test',
     ], 'workflow');
+    $workflow = $workflow->getTypePlugin()->initializeWorkflow($workflow);
     $workflow->save();
     // Ensure that required states can't be deleted.
     $this->setExpectedException(RequiredStateMissingException::class, "Required State Type Test' requires states with the ID 'fresh' in workflow 'test'");
-    $workflow->getTypePlugin()->deleteState('fresh');
-    $workflow->save();
+    $workflow->deleteState('fresh')->save();
   }
 
   /**
@@ -61,9 +63,6 @@ class RequiredStatesTest extends KernelTestBase {
     $workflow = new Workflow([
       'id' => 'test',
       'type' => 'workflow_type_required_state_test',
-      'type_settings' => [
-        'states' => [],
-      ],
     ], 'workflow');
     $this->setExpectedException(RequiredStateMissingException::class, "Required State Type Test' requires states with the ID 'fresh', 'rotten' in workflow 'test'");
     $workflow->save();
@@ -77,49 +76,45 @@ class RequiredStatesTest extends KernelTestBase {
       'id' => 'test',
       'type' => 'workflow_type_required_state_test',
     ], 'workflow');
+    $workflow = $workflow->getTypePlugin()->initializeWorkflow($workflow);
     $workflow->save();
 
     // Ensure states added by default configuration can be changed.
-    $this->assertEquals('Fresh', $workflow->getTypePlugin()->getState('fresh')->label());
+    $this->assertEquals('Fresh', $workflow->getState('fresh')->label());
     $workflow
-      ->getTypePlugin()
-      ->setStateLabel('fresh', 'Fresher');
-    $workflow->save();
-    $this->assertEquals('Fresher', $workflow->getTypePlugin()->getState('fresh')->label());
+      ->setStateLabel('fresh', 'Fresher')
+      ->save();
+    $this->assertEquals('Fresher', $workflow->getState('fresh')->label());
 
     // Ensure transitions can be altered.
     $workflow
-      ->getTypePlugin()
       ->addState('cooked', 'Cooked')
-      ->setTransitionFromStates('rot', ['fresh', 'cooked']);
-    $workflow->save();
-    $this->assertTrue($workflow->getTypePlugin()->hasTransitionFromStateToState('fresh', 'rotten'));
-    $this->assertTrue($workflow->getTypePlugin()->hasTransitionFromStateToState('cooked', 'rotten'));
+      ->setTransitionFromStates('rot', ['fresh', 'cooked'])
+      ->save();
+    $this->assertTrue($workflow->hasTransitionFromStateToState('fresh', 'rotten'));
+    $this->assertTrue($workflow->hasTransitionFromStateToState('cooked', 'rotten'));
 
     $workflow
-      ->getTypePlugin()
-      ->setTransitionFromStates('rot', ['cooked']);
-    $workflow->save();
-    $this->assertFalse($workflow->getTypePlugin()->hasTransitionFromStateToState('fresh', 'rotten'));
-    $this->assertTrue($workflow->getTypePlugin()->hasTransitionFromStateToState('cooked', 'rotten'));
+      ->setTransitionFromStates('rot', ['cooked'])
+      ->save();
+    $this->assertFalse($workflow->hasTransitionFromStateToState('fresh', 'rotten'));
+    $this->assertTrue($workflow->hasTransitionFromStateToState('cooked', 'rotten'));
 
     // Ensure the default configuration does not cause ordering issues.
-    $workflow->getTypePlugin()->addTransition('cook', 'Cook', ['fresh'], 'cooked');
-    $workflow->save();
+    $workflow->addTransition('cook', 'Cook', ['fresh'], 'cooked')->save();
     $this->assertSame([
       'cooked',
       'fresh',
       'rotten',
-    ], array_keys($workflow->getTypePlugin()->getConfiguration()['states']));
+    ], array_keys($workflow->get('states')));
     $this->assertSame([
       'cook',
       'rot',
-    ], array_keys($workflow->getTypePlugin()->getConfiguration()['transitions']));
+    ], array_keys($workflow->get('transitions')));
 
     // Ensure that transitions can be deleted.
-    $workflow->getTypePlugin()->deleteTransition('rot');
-    $workflow->save();
-    $this->assertFalse($workflow->getTypePlugin()->hasTransition('rot'));
+    $workflow->deleteTransition('rot')->save();
+    $this->assertFalse($workflow->hasTransition('rot'));
   }
 
 }

@@ -7,7 +7,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\Variable;
 /**
  * @MigrateSource(
  *   id = "contact_settings",
- *   source_module = "contact"
+ *   source_provider = "contact"
  * )
  */
 class ContactSettings extends Variable {

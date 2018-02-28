@@ -93,9 +93,6 @@ class FieldLayoutBuilderTest extends UnitTestCase {
       'test1' => [
         '#markup' => 'Test1',
       ],
-      'test2' => [
-        '#markup' => 'Test2',
-      ],
       'non_configurable_field' => [
         '#markup' => 'Non-configurable',
       ],
@@ -114,9 +111,6 @@ class FieldLayoutBuilderTest extends UnitTestCase {
       'test1' => [
         'region' => 'right',
       ],
-      'test2' => [
-        'region' => 'unknown_region',
-      ],
       'non_configurable_field' => [
         'region' => 'left',
       ],
@@ -126,9 +120,6 @@ class FieldLayoutBuilderTest extends UnitTestCase {
     ]);
 
     $expected = [
-      'test2' => [
-        '#markup' => 'Test2',
-      ],
       'non_configurable_field' => [
         '#markup' => 'Non-configurable',
       ],
@@ -178,9 +169,6 @@ class FieldLayoutBuilderTest extends UnitTestCase {
         '#markup' => 'Test2',
         '#group' => 'existing_group',
       ],
-      'test3' => [
-        '#markup' => 'Test3',
-      ],
       'field_layout' => [
         '#markup' => 'Field created through the UI happens to be named "Layout"',
       ],
@@ -202,9 +190,6 @@ class FieldLayoutBuilderTest extends UnitTestCase {
       'test2' => [
         'region' => 'left',
       ],
-      'test3' => [
-        'region' => 'unknown_region',
-      ],
       'field_layout' => [
         'region' => 'right',
       ],
@@ -221,9 +206,6 @@ class FieldLayoutBuilderTest extends UnitTestCase {
       'test2' => [
         '#markup' => 'Test2',
         '#group' => 'existing_group',
-      ],
-      'test3' => [
-        '#markup' => 'Test3',
       ],
       'field_layout' => [
         '#markup' => 'Field created through the UI happens to be named "Layout"',

@@ -164,8 +164,7 @@ trait TestFileCreationTrait {
     }
 
     // Create filename.
-    $filename = 'public://' . $filename . '.txt';
-    file_put_contents($filename, $text);
+    file_put_contents('public://' . $filename . '.txt', $text);
     return $filename;
   }
 

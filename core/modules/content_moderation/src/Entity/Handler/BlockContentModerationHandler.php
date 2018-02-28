@@ -6,8 +6,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Customizations for block content entities.
- *
- * @internal
  */
 class BlockContentModerationHandler extends ModerationHandler {
 
@@ -15,9 +13,9 @@ class BlockContentModerationHandler extends ModerationHandler {
    * {@inheritdoc}
    */
   public function enforceRevisionsEntityFormAlter(array &$form, FormStateInterface $form_state, $form_id) {
-    $form['revision']['#default_value'] = TRUE;
-    $form['revision']['#disabled'] = TRUE;
-    $form['revision']['#description'] = $this->t('Revisions must be required when moderation is enabled.');
+    $form['revision_information']['revision']['#default_value'] = TRUE;
+    $form['revision_information']['revision']['#disabled'] = TRUE;
+    $form['revision_information']['revision']['#description'] = $this->t('Revisions must be required when moderation is enabled.');
   }
 
   /**

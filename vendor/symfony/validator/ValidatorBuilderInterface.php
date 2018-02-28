@@ -12,10 +12,9 @@
 namespace Symfony\Component\Validator;
 
 use Doctrine\Common\Annotations\Reader;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Mapping\Cache\CacheInterface;
-use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * A configurable builder for ValidatorInterface objects.
@@ -27,6 +26,8 @@ interface ValidatorBuilderInterface
     /**
      * Adds an object initializer to the validator.
      *
+     * @param ObjectInitializerInterface $initializer The initializer
+     *
      * @return $this
      */
     public function addObjectInitializer(ObjectInitializerInterface $initializer);
@@ -34,7 +35,7 @@ interface ValidatorBuilderInterface
     /**
      * Adds a list of object initializers to the validator.
      *
-     * @param ObjectInitializerInterface[] $initializers
+     * @param array $initializers The initializer
      *
      * @return $this
      */
@@ -52,7 +53,7 @@ interface ValidatorBuilderInterface
     /**
      * Adds a list of XML constraint mapping files to the validator.
      *
-     * @param string[] $paths The paths to the mapping files
+     * @param array $paths The paths to the mapping files
      *
      * @return $this
      */
@@ -70,7 +71,7 @@ interface ValidatorBuilderInterface
     /**
      * Adds a list of YAML constraint mappings file to the validator.
      *
-     * @param string[] $paths The paths to the mapping files
+     * @param array $paths The paths to the mapping files
      *
      * @return $this
      */
@@ -88,7 +89,7 @@ interface ValidatorBuilderInterface
     /**
      * Enables constraint mapping using the given static methods.
      *
-     * @param string[] $methodNames The names of the methods
+     * @param array $methodNames The names of the methods
      *
      * @return $this
      */
@@ -96,6 +97,8 @@ interface ValidatorBuilderInterface
 
     /**
      * Enables annotation based constraint mapping.
+     *
+     * @param Reader $annotationReader The annotation reader to be used
      *
      * @return $this
      */
@@ -111,12 +114,16 @@ interface ValidatorBuilderInterface
     /**
      * Sets the class metadata factory used by the validator.
      *
+     * @param MetadataFactoryInterface $metadataFactory The metadata factory
+     *
      * @return $this
      */
     public function setMetadataFactory(MetadataFactoryInterface $metadataFactory);
 
     /**
      * Sets the cache for caching class metadata.
+     *
+     * @param CacheInterface $cache The cache instance
      *
      * @return $this
      */
@@ -125,12 +132,16 @@ interface ValidatorBuilderInterface
     /**
      * Sets the constraint validator factory used by the validator.
      *
+     * @param ConstraintValidatorFactoryInterface $validatorFactory The validator factory
+     *
      * @return $this
      */
     public function setConstraintValidatorFactory(ConstraintValidatorFactoryInterface $validatorFactory);
 
     /**
      * Sets the translator used for translating violation messages.
+     *
+     * @param TranslatorInterface $translator The translator instance
      *
      * @return $this
      */
@@ -148,6 +159,30 @@ interface ValidatorBuilderInterface
      * @return $this
      */
     public function setTranslationDomain($translationDomain);
+
+    /**
+     * Sets the property accessor for resolving property paths.
+     *
+     * @param PropertyAccessorInterface $propertyAccessor The property accessor
+     *
+     * @return $this
+     *
+     * @deprecated since version 2.5, to be removed in 3.0.
+     */
+    public function setPropertyAccessor(PropertyAccessorInterface $propertyAccessor);
+
+    /**
+     * Sets the API version that the returned validator should support.
+     *
+     * @param int $apiVersion The required API version
+     *
+     * @return $this
+     *
+     * @see Validation::API_VERSION_2_5
+     * @see Validation::API_VERSION_2_5_BC
+     * @deprecated since version 2.7, to be removed in 3.0.
+     */
+    public function setApiVersion($apiVersion);
 
     /**
      * Builds and returns a new validator object.

@@ -10,22 +10,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Builds the form to delete a path alias.
- *
- * @internal
  */
 class DeleteForm extends ConfirmFormBase {
 
   /**
    * The alias storage service.
    *
-   * @var \Drupal\Core\Path\AliasStorageInterface
+   * @var AliasStorageInterface $path
    */
   protected $aliasStorage;
 
   /**
    * The path alias being deleted.
    *
-   * @var array
+   * @var array $pathAlias
    */
   protected $pathAlias;
 

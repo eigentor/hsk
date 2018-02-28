@@ -27,8 +27,8 @@ class ContainerBuilder extends SymfonyContainerBuilder {
    * {@inheritdoc}
    */
   public function __construct(ParameterBagInterface $parameterBag = NULL) {
-    parent::__construct($parameterBag);
     $this->setResourceTracking(FALSE);
+    parent::__construct($parameterBag);
   }
 
   /**
@@ -46,15 +46,20 @@ class ContainerBuilder extends SymfonyContainerBuilder {
   }
 
   /**
-   * A 1to1 copy of parent::shareService.
-   *
-   * @todo https://www.drupal.org/project/drupal/issues/2937010 Since Symfony
-   *   3.4 this is not a 1to1 copy.
+   * Direct copy of the parent function.
    */
-  protected function shareService(Definition $definition, $service, $id, array &$inlineServices)
+  protected function shareService(Definition $definition, $service, $id)
   {
-    if ($definition->isShared()) {
+    if ($definition->isShared() && self::SCOPE_PROTOTYPE !== $scope = $definition->getScope(false)) {
+      if (self::SCOPE_CONTAINER !== $scope && !isset($this->scopedServices[$scope])) {
+        throw new InactiveScopeException($id, $scope);
+      }
+
       $this->services[$lowerId = strtolower($id)] = $service;
+
+      if (self::SCOPE_CONTAINER !== $scope) {
+        $this->scopedServices[$scope][$lowerId] = $service;
+      }
     }
   }
 
@@ -69,11 +74,11 @@ class ContainerBuilder extends SymfonyContainerBuilder {
    *   ContainerBuilder class should be fixed to allow setting synthetic
    *   services in a frozen builder.
    */
-  public function set($id, $service) {
+  public function set($id, $service, $scope = self::SCOPE_CONTAINER) {
     if (strtolower($id) !== $id) {
       throw new \InvalidArgumentException("Service ID names must be lowercase: $id");
     }
-    SymfonyContainer::set($id, $service);
+    SymfonyContainer::set($id, $service, $scope);
 
     // Ensure that the _serviceId property is set on synthetic services as well.
     if (isset($this->services[$id]) && is_object($this->services[$id]) && !isset($this->services[$id]->_serviceId)) {
@@ -94,32 +99,6 @@ class ContainerBuilder extends SymfonyContainerBuilder {
   /**
    * {@inheritdoc}
    */
-  public function setAlias($alias, $id) {
-    $alias = parent::setAlias($alias, $id);
-    // As of Symfony 3.4 all aliases are private by default.
-    $alias->setPublic(TRUE);
-    return $alias;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setDefinition($id, Definition $definition) {
-    $definition = parent::setDefinition($id, $definition);
-    // As of Symfony 3.4 all definitions are private by default.
-    // \Symfony\Component\DependencyInjection\Compiler\ResolvePrivatesPassOnly
-    // removes services marked as private from the container even if they are
-    // also marked as public. Drupal requires services that are public to
-    // remain in the container and not be removed.
-    if ($definition->isPublic()) {
-      $definition->setPrivate(FALSE);
-    }
-    return $definition;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function setParameter($name, $value) {
     if (strtolower($name) !== $name) {
       throw new \InvalidArgumentException("Parameter names must be lowercase: $name");
@@ -129,11 +108,8 @@ class ContainerBuilder extends SymfonyContainerBuilder {
 
   /**
    * A 1to1 copy of parent::callMethod.
-   *
-   * @todo https://www.drupal.org/project/drupal/issues/2937010 Since Symfony
-   *   3.4 this is not a 1to1 copy.
    */
-  protected function callMethod($service, $call, array &$inlineServices = array()) {
+  protected function callMethod($service, $call) {
     $services = self::getServiceConditionals($call[1]);
 
     foreach ($services as $s) {

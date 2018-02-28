@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides the path admin overview filter form.
- *
- * @internal
  */
 class PathFilterForm extends FormBase {
 
@@ -32,7 +30,7 @@ class PathFilterForm extends FormBase {
     ];
     $form['basic']['filter'] = [
       '#type' => 'search',
-      '#title' => $this->t('Path alias'),
+      '#title' => 'Path alias',
       '#title_display' => 'invisible',
       '#default_value' => $keys,
       '#maxlength' => 128,

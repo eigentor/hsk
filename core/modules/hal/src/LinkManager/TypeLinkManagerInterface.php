@@ -31,7 +31,7 @@ interface TypeLinkManagerInterface extends ConfigurableLinkManagerInterface {
    * @param array $context
    *   Context from the normalizer/serializer operation.
    *
-   * @return array|bool
+   * @return array | boolean
    *   If the URI matches a bundle, returns an array containing entity_type and
    *   bundle. Otherwise, returns false.
    */

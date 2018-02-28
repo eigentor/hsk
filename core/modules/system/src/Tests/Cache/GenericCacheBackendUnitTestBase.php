@@ -69,7 +69,7 @@ abstract class GenericCacheBackendUnitTestBase extends KernelTestBase {
    * @return \Drupal\Core\Cache\CacheBackendInterface
    *   Cache backend to test.
    */
-  abstract protected function createCacheBackend($bin);
+  protected abstract function createCacheBackend($bin);
 
   /**
    * Allows specific implementation to change the environment before a test run.
@@ -303,11 +303,9 @@ abstract class GenericCacheBackendUnitTestBase extends KernelTestBase {
     $reference = [
       'test3',
       'test7',
-      // Cid does not exist.
-      'test21',
+      'test21', // Cid does not exist.
       'test6',
-      // Cid does not exist until added before second getMultiple().
-      'test19',
+      'test19', // Cid does not exist until added before second getMultiple().
       'test2',
     ];
 
@@ -445,16 +443,13 @@ abstract class GenericCacheBackendUnitTestBase extends KernelTestBase {
     $backend->set('test7', 17);
 
     $backend->delete('test1');
-    // Nonexistent key should not cause an error.
-    $backend->delete('test23');
+    $backend->delete('test23'); // Nonexistent key should not cause an error.
     $backend->deleteMultiple([
       'test3',
       'test5',
       'test7',
-      // Nonexistent key should not cause an error.
-      'test19',
-      // Nonexistent key should not cause an error.
-      'test21',
+      'test19', // Nonexistent key should not cause an error.
+      'test21', // Nonexistent key should not cause an error.
     ]);
 
     // Test if expected keys have been deleted.

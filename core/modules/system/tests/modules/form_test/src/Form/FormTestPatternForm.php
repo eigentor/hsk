@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Builds a simple form using the FAPI #pattern property.
- *
- * @internal
  */
 class FormTestPatternForm extends FormBase {
 

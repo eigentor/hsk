@@ -10,8 +10,6 @@ use Drupal\Core\Database\Connection;
 
 /**
  * Builds the shortcut set deletion form.
- *
- * @internal
  */
 class ShortcutSetDeleteForm extends EntityDeleteForm {
 

@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Builds a form to test the placeholder attribute.
- *
- * @internal
  */
 class FormTestPlaceholderForm extends FormBase {
 

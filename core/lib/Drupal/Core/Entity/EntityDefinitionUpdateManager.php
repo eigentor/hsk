@@ -311,8 +311,7 @@ class EntityDefinitionUpdateManager implements EntityDefinitionUpdateManagerInte
     }
 
     // @todo Support deleting entity definitions when we support base field
-    //   purging.
-    // @see https://www.drupal.org/node/2907779
+    //   purging. See https://www.drupal.org/node/2282119.
 
     $this->entityManager->useCaches(TRUE);
 

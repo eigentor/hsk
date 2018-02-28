@@ -9,8 +9,7 @@ use Drupal\migrate\Row;
  * Drupal 7 filter source from database.
  *
  * @MigrateSource(
- *   id = "d7_filter_format",
- *   source_module = "filter"
+ *   id = "d7_filter_format"
  * )
  */
 class FilterFormat extends DrupalSqlBase {

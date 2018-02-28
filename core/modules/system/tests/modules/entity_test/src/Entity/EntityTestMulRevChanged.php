@@ -71,7 +71,6 @@ class EntityTestMulRevChanged extends EntityTestMulChanged {
     $fields['name']->setRevisionable(TRUE);
     $fields['user_id']->setRevisionable(TRUE);
     $fields['changed']->setRevisionable(TRUE);
-    $fields['not_translatable']->setRevisionable(TRUE);
 
     return $fields;
   }

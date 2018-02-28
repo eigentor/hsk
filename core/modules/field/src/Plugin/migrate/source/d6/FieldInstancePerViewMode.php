@@ -9,7 +9,7 @@ use Drupal\node\Plugin\migrate\source\d6\ViewModeBase;
  *
  * @MigrateSource(
  *   id = "d6_field_instance_per_view_mode",
- *   source_module = "content"
+ *   source_provider = "content"
  * )
  */
 class FieldInstancePerViewMode extends ViewModeBase {

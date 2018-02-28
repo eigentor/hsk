@@ -7,8 +7,6 @@ use Drupal\Core\Url;
 
 /**
  * Provides the entity_test delete form.
- *
- * @internal
  */
 class EntityTestDeleteForm extends ContentEntityDeleteForm {
 

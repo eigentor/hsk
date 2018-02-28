@@ -28,7 +28,6 @@ class ProfileValues extends Migration {
         'ignore_map' => TRUE,
       ] + $this->source;
       $definition['destination']['plugin'] = 'null';
-      $definition['idMap']['plugin'] = 'null';
       try {
         $profile_field_migration = $this->migrationPluginManager->createStubMigration($definition);
         $source_plugin = $profile_field_migration->getSourcePlugin();

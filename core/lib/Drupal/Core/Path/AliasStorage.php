@@ -406,8 +406,6 @@ class AliasStorage implements AliasStorageInterface {
 
   /**
    * Defines the schema for the {url_alias} table.
-   *
-   * @internal
    */
   public static function schemaDefinition() {
     return [

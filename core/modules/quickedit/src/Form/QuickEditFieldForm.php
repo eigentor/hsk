@@ -10,21 +10,19 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
-use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Builds and process a form for editing a single entity field.
- *
- * @internal
  */
 class QuickEditFieldForm extends FormBase {
 
   /**
    * Stores the tempstore factory.
    *
-   * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
+   * @var \Drupal\user\PrivateTempStoreFactory
    */
   protected $tempStoreFactory;
 
@@ -52,7 +50,7 @@ class QuickEditFieldForm extends FormBase {
   /**
    * Constructs a new EditFieldForm.
    *
-   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
+   * @param \Drupal\user\PrivateTempStoreFactory $temp_store_factory
    *   The tempstore factory.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
@@ -73,7 +71,7 @@ class QuickEditFieldForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('tempstore.private'),
+      $container->get('user.private_tempstore'),
       $container->get('module_handler'),
       $container->get('entity.manager')->getStorage('node_type'),
       $container->get('typed_data_manager')->getValidator()
@@ -115,10 +113,6 @@ class QuickEditFieldForm extends FormBase {
       '#value' => t('Save'),
       '#attributes' => ['class' => ['quickedit-form-submit']],
     ];
-
-    // Use the non-inline form error display for Quick Edit forms, because in
-    // this case the errors are already near the form element.
-    $form['#disable_inline_form_errors'] = TRUE;
 
     // Simplify it for optimal in-place use.
     $this->simplify($form, $form_state);

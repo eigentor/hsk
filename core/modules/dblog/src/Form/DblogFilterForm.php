@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides the database logging filter form.
- *
- * @internal
  */
 class DblogFilterForm extends FormBase {
 

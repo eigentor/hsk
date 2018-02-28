@@ -77,7 +77,7 @@ class ConfigTranslationOverviewTest extends BrowserTestBase {
     // Make sure there is only a single operation for each dropbutton, either
     // 'List' or 'Translate'.
     foreach ($this->cssSelect('ul.dropbutton') as $i => $dropbutton) {
-      $this->assertIdentical(1, count($dropbutton->findAll('xpath', 'li')));
+      $this->assertIdentical(1, count($dropbutton->find('xpath', 'li')));
       $this->assertTrue(($dropbutton->getText() === 'Translate') || ($dropbutton->getText() === 'List'));
     }
 
@@ -87,9 +87,8 @@ class ConfigTranslationOverviewTest extends BrowserTestBase {
       $this->randomString(),
     ];
 
-    $storage = \Drupal::entityTypeManager()->getStorage('config_test');
     foreach ($labels as $label) {
-      $test_entity = $storage->create([
+      $test_entity = entity_create('config_test', [
         'id' => $this->randomMachineName(),
         'label' => $label,
       ]);
@@ -103,7 +102,7 @@ class ConfigTranslationOverviewTest extends BrowserTestBase {
       // Make sure there is only a single 'Translate' operation for each
       // dropbutton.
       foreach ($this->cssSelect('ul.dropbutton') as $i => $dropbutton) {
-        $this->assertIdentical(1, count($dropbutton->findAll('xpath', 'li')));
+        $this->assertIdentical(1, count($dropbutton->find('xpath', 'li')));
         $this->assertIdentical('Translate', $dropbutton->getText());
       }
 

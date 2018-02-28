@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form handler for the shortcut set entity edit forms.
- *
- * @internal
  */
 class ShortcutSetForm extends BundleEntityFormBase {
 

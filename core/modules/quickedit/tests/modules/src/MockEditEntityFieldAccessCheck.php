@@ -2,9 +2,19 @@
 
 namespace Drupal\quickedit_test;
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\quickedit\Access\EditEntityFieldAccessCheckInterface;
+
 /**
- * @deprecated in Drupal 8.4.x and will be removed before Drupal 9.0.0.
+ * Access check for editing entity fields.
  */
-class MockEditEntityFieldAccessCheck extends MockQuickEditEntityFieldAccessCheck {
+class MockEditEntityFieldAccessCheck implements EditEntityFieldAccessCheckInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function accessEditEntityField(EntityInterface $entity, $field_name) {
+    return TRUE;
+  }
 
 }

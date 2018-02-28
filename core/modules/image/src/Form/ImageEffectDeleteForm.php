@@ -8,8 +8,6 @@ use Drupal\image\ImageStyleInterface;
 
 /**
  * Form for deleting an image effect.
- *
- * @internal
  */
 class ImageEffectDeleteForm extends ConfirmFormBase {
 

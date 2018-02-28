@@ -24,7 +24,7 @@ interface LanguageNegotiationMethodInterface {
   /**
    * Injects the configuration factory.
    *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory.
    */
   public function setConfig(ConfigFactoryInterface $config);

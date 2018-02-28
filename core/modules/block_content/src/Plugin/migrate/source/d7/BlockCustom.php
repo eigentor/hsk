@@ -8,8 +8,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  * Drupal 7 custom block source from database.
  *
  * @MigrateSource(
- *   id = "d7_block_custom",
- *   source_module = "block"
+ *   id = "d7_block_custom"
  * )
  */
 class BlockCustom extends DrupalSqlBase {

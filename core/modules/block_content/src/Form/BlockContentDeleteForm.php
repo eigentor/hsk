@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides a confirmation form for deleting a custom block entity.
- *
- * @internal
  */
 class BlockContentDeleteForm extends ContentEntityDeleteForm {
 

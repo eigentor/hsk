@@ -26,6 +26,13 @@ class NodeListBuilder extends EntityListBuilder {
   protected $dateFormatter;
 
   /**
+   * The redirect destination service.
+   *
+   * @var \Drupal\Core\Routing\RedirectDestinationInterface
+   */
+  protected $redirectDestination;
+
+  /**
    * Constructs a new NodeListBuilder object.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
@@ -103,7 +110,7 @@ class NodeListBuilder extends EntityListBuilder {
     $row['title']['data'] = [
       '#type' => 'link',
       '#title' => $entity->label(),
-      '#suffix' => ' ' . \Drupal::service('renderer')->render($mark),
+      '#suffix' => ' ' . drupal_render($mark),
       '#url' => $uri,
     ];
     $row['type'] = node_get_type_label($entity);
@@ -119,6 +126,19 @@ class NodeListBuilder extends EntityListBuilder {
     }
     $row['operations']['data'] = $this->buildOperations($entity);
     return $row + parent::buildRow($entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getDefaultOperations(EntityInterface $entity) {
+    $operations = parent::getDefaultOperations($entity);
+
+    $destination = $this->redirectDestination->getAsArray();
+    foreach ($operations as $key => $operation) {
+      $operations[$key]['query'] = $destination;
+    }
+    return $operations;
   }
 
 }

@@ -10,8 +10,6 @@ use Drupal\views\ViewExecutable;
 
 /**
  * Provides a rearrange form for Views handlers.
- *
- * @internal
  */
 class Rearrange extends ViewsFormBase {
 
@@ -127,13 +125,11 @@ class Rearrange extends ViewsFormBase {
         '#attributes' => ['class' => ['views-remove-checkbox']],
         '#default_value' => 0,
         '#suffix' => \Drupal::l(SafeMarkup::format('<span>@text</span>', ['@text' => $this->t('Remove')]),
-          Url::fromRoute('<none>', [], [
-            'attributes' => [
-              'id' => 'views-remove-link-' . $id,
-              'class' => ['views-hidden', 'views-button-remove', 'views-remove-link'],
-              'alt' => $this->t('Remove this item'),
-              'title' => $this->t('Remove this item'),
-            ],
+          Url::fromRoute('<none>', [], ['attributes' => [
+            'id' => 'views-remove-link-' . $id,
+            'class' => ['views-hidden', 'views-button-remove', 'views-remove-link'],
+            'alt' => $this->t('Remove this item'),
+            'title' => $this->t('Remove this item')],
           ])
         ),
       ];

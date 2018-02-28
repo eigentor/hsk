@@ -8,8 +8,6 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form builder for \Drupal\Core\Form\FormState::cleanValues() test.
- *
- * @internal
  */
 class FormTestFormStateValuesCleanForm extends FormBase {
 

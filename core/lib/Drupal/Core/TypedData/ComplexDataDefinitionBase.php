@@ -42,7 +42,7 @@ abstract class ComplexDataDefinitionBase extends DataDefinition implements Compl
   public function __sleep() {
     // Do not serialize the cached property definitions.
     $vars = get_object_vars($this);
-    unset($vars['propertyDefinitions'], $vars['typedDataManager']);
+    unset($vars['propertyDefinitions']);
     return array_keys($vars);
   }
 
