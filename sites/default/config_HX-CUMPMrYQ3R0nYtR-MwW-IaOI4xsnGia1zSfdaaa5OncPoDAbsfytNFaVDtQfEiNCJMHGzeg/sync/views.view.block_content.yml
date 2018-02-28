@@ -42,11 +42,11 @@ display:
         options:
           submit_button: Apply
           reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
       pager:
         type: mini
         options:
@@ -59,10 +59,10 @@ display:
             next: 'Weiter >'
           expose:
             items_per_page: false
-            items_per_page_label: 'Items per page'
+            items_per_page_label: 'Elemente pro Seite'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
+            items_per_page_options_all_label: '- Alle -'
             offset: false
             offset_label: Offset
       style:
@@ -378,6 +378,7 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -471,12 +472,12 @@ display:
         - url
         - url.query_args
         - user.permissions
-      max-age: 0
+      max-age: -1
       tags: {  }
   page_1:
     display_plugin: page
     id: page_1
-    display_title: Page
+    display_title: Seite
     position: 1
     display_options:
       display_extenders: {  }
@@ -498,5 +499,5 @@ display:
         - url
         - url.query_args
         - user.permissions
-      max-age: 0
+      max-age: -1
       tags: {  }

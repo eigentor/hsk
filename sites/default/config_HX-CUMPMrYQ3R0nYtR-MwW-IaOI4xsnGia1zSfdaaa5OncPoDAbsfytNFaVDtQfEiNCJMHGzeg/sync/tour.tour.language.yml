@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: LlLH_HQYhZxal4iB88sQSB45acF-8GJH0PJcvziEmqg
 id: language
-label: Language
+label: Sprache
 module: language
 routes:
   -
