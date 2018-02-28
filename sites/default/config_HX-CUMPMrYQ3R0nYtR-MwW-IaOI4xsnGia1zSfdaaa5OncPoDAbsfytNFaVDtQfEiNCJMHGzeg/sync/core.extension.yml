@@ -18,7 +18,6 @@ module:
   content_access: 0
   contextual: 0
   ctools: 0
-  ctools_views: 0
   datetime: 0
   dblog: 0
   devel: 0
@@ -56,7 +55,6 @@ module:
   node_class: 0
   node_clone: 0
   options: 0
-  override_node_options: 0
   page_cache: 0
   path: 0
   quickedit: 0

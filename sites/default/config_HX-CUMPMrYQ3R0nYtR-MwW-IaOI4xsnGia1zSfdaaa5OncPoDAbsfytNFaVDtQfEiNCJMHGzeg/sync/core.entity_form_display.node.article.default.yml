@@ -82,8 +82,7 @@ content:
   langcode:
     type: language_select
     weight: 5
-    settings:
-      include_locked: true
+    settings: {  }
     third_party_settings: {  }
     region: content
   node_class:
@@ -105,13 +104,6 @@ content:
     settings:
       display_label: true
     weight: 9
-    third_party_settings: {  }
-    region: content
-  status:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 121
     third_party_settings: {  }
     region: content
   sticky:

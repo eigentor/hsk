@@ -521,7 +521,6 @@ display:
               administrator: '0'
               redakteur: '0'
               chefredakteur: '0'
-            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -583,7 +582,7 @@ display:
       arguments: {  }
       display_extenders: {  }
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -612,7 +611,7 @@ display:
         context: '0'
         menu_name: main
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'

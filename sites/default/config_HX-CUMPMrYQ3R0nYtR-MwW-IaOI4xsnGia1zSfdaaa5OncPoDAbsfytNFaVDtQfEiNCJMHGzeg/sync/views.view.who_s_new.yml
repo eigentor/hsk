@@ -41,11 +41,11 @@ display:
         options:
           submit_button: Apply
           reset_button: false
-          reset_button_label: Zurücksetzen
-          exposed_sorts_label: 'Sortieren nach'
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
           expose_sort_order: true
-          sort_asc_label: Aufsteigend
-          sort_desc_label: Absteigend
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       pager:
         type: some
         options:
@@ -129,9 +129,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
-            min_placeholder: ''
-            max_placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -185,7 +182,7 @@ display:
     display_options:
       display_description: 'A list of new users'
       block_description: 'Neue Mitglieder'
-      block_category: Benutzer
+      block_category: User
       display_extenders: {  }
     cache_metadata:
       contexts:
