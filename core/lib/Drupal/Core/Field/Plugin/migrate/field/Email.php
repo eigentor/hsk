@@ -11,7 +11,9 @@ use Drupal\migrate_drupal\Plugin\migrate\field\FieldPluginBase;
  *   core = {6,7},
  *   type_map = {
  *     "email" = "email"
- *   }
+ *   },
+ *   source_module = "email",
+ *   destination_module = "core"
  * )
  */
 class Email extends FieldPluginBase {
@@ -42,7 +44,7 @@ class Email extends FieldPluginBase {
    */
   public function processFieldValues(MigrationInterface $migration, $field_name, $data) {
     $process = [
-      'plugin' => 'iterator',
+      'plugin' => 'sub_process',
       'source' => $field_name,
       'process' => [
         'value' => 'email',

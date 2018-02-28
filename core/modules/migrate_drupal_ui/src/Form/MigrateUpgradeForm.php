@@ -2,687 +2,38 @@
 
 namespace Drupal\migrate_drupal_ui\Form;
 
+use Drupal\Core\Database\DatabaseExceptionWrapper;
 use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\Url;
+use Drupal\migrate\Audit\IdAuditor;
+use Drupal\migrate\Plugin\migrate\destination\EntityContentBase;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
+use Drupal\migrate_drupal\Plugin\MigrateFieldPluginManagerInterface;
 use Drupal\migrate_drupal_ui\Batch\MigrateUpgradeImportBatch;
 use Drupal\migrate_drupal\MigrationConfigurationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a multi-step form for performing direct site upgrades.
+ *
+ * @internal
  */
 class MigrateUpgradeForm extends ConfirmFormBase {
 
   use MigrationConfigurationTrait;
 
   /**
-   * Mapping of known migrations and their source and destination modules.
+   * The current form step.
    *
-   * @todo https://www.drupal.org/node/2569805 Hardcoding this information is
-   *   not robust - the migrations themselves should hold the necessary
-   *   information.
-   *
-   * @var array[]
+   * @var string
    */
-  protected $moduleUpgradePaths = [
-    'action_settings' => [
-      'source_module' => 'system',
-      'destination_module' => 'action',
-    ],
-    'd6_aggregator_feed' => [
-      'source_module' => 'aggregator',
-      'destination_module' => 'aggregator',
-    ],
-    'd6_aggregator_item' => [
-      'source_module' => 'aggregator',
-      'destination_module' => 'aggregator',
-    ],
-    'd6_aggregator_settings' => [
-      'source_module' => 'aggregator',
-      'destination_module' => 'aggregator',
-    ],
-    'd7_aggregator_feed' => [
-      'source_module' => 'aggregator',
-      'destination_module' => 'aggregator',
-    ],
-    'd7_aggregator_item' => [
-      'source_module' => 'aggregator',
-      'destination_module' => 'aggregator',
-    ],
-    'd7_aggregator_settings' => [
-      'source_module' => 'aggregator',
-      'destination_module' => 'aggregator',
-    ],
-    'd7_blocked_ips' => [
-      'source_module' => 'system',
-      'destination_module' => 'ban',
-    ],
-    'd6_block' => [
-      'source_module' => 'block',
-      'destination_module' => 'block',
-    ],
-    'd7_block' => [
-      'source_module' => 'block',
-      'destination_module' => 'block',
-    ],
-    'block_content_entity_form_display' => [
-      'source_module' => 'block',
-      'destination_module' => 'block_content',
-    ],
-    'block_content_entity_display' => [
-      'source_module' => 'block',
-      'destination_module' => 'block_content',
-    ],
-    'block_content_body_field' => [
-      'source_module' => 'block',
-      'destination_module' => 'block_content',
-    ],
-    'block_content_type' => [
-      'source_module' => 'block',
-      'destination_module' => 'block_content',
-    ],
-    'd6_custom_block' => [
-      'source_module' => 'block',
-      'destination_module' => 'block_content',
-    ],
-    'd7_custom_block' => [
-      'source_module' => 'block',
-      'destination_module' => 'block_content',
-    ],
-    'd6_book' => [
-      'source_module' => 'book',
-      'destination_module' => 'book',
-    ],
-    'd6_book_settings' => [
-      'source_module' => 'book',
-      'destination_module' => 'book',
-    ],
-    'd6_comment' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd6_comment_entity_display' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd6_comment_entity_form_display' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd6_comment_entity_form_display_subject' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd6_comment_field' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd6_comment_field_instance' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd6_comment_type' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd7_comment' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd7_comment_entity_display' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd7_comment_entity_form_display' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd7_comment_entity_form_display_subject' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd7_comment_field' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd7_comment_field_instance' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'd7_comment_type' => [
-      'source_module' => 'comment',
-      'destination_module' => 'comment',
-    ],
-    'contact_category' => [
-      'source_module' => 'contact',
-      'destination_module' => 'contact',
-    ],
-    'd6_contact_settings' => [
-      'source_module' => 'contact',
-      'destination_module' => 'contact',
-    ],
-    'd7_contact_settings' => [
-      'source_module' => 'contact',
-      'destination_module' => 'contact',
-    ],
-    'd6_dblog_settings' => [
-      'source_module' => 'dblog',
-      'destination_module' => 'dblog',
-    ],
-    'd7_dblog_settings' => [
-      'source_module' => 'dblog',
-      'destination_module' => 'dblog',
-    ],
-    'default_language' => [
-      'source_module' => 'locale',
-      'destination_module' => 'language',
-    ],
-    'd6_field' => [
-      'source_module' => 'content',
-      'destination_module' => 'field',
-    ],
-    'd6_field_formatter_settings' => [
-      'source_module' => 'content',
-      'destination_module' => 'field',
-    ],
-    'd6_field_instance' => [
-      'source_module' => 'content',
-      'destination_module' => 'field',
-    ],
-    'd6_field_instance_widget_settings' => [
-      'source_module' => 'content',
-      'destination_module' => 'field',
-    ],
-    'd7_field' => [
-      'source_module' => 'field',
-      'destination_module' => 'field',
-    ],
-    'd7_field_formatter_settings' => [
-      'source_module' => 'field',
-      'destination_module' => 'field',
-    ],
-    'd7_field_instance' => [
-      'source_module' => 'field',
-      'destination_module' => 'field',
-    ],
-    'd7_field_instance_widget_settings' => [
-      'source_module' => 'field',
-      'destination_module' => 'field',
-    ],
-    'd7_view_modes' => [
-      'source_module' => 'field',
-      'destination_module' => 'field',
-    ],
-    'd6_file' => [
-      'source_module' => 'system',
-      'destination_module' => 'file',
-    ],
-    'file_settings' => [
-      'source_module' => 'system',
-      'destination_module' => 'file',
-    ],
-    'd6_upload' => [
-      'source_module' => 'upload',
-      'destination_module' => 'file',
-    ],
-    'd6_upload_entity_display' => [
-      'source_module' => 'upload',
-      'destination_module' => 'file',
-    ],
-    'd6_upload_entity_form_display' => [
-      'source_module' => 'upload',
-      'destination_module' => 'file',
-    ],
-    'd6_upload_field' => [
-      'source_module' => 'upload',
-      'destination_module' => 'file',
-    ],
-    'd6_upload_field_instance' => [
-      'source_module' => 'upload',
-      'destination_module' => 'file',
-    ],
-    'd7_file' => [
-      'source_module' => 'file',
-      'destination_module' => 'file',
-    ],
-    'd7_file_private' => [
-      'source_module' => 'file',
-      'destination_module' => 'file',
-    ],
-    'd6_filter_format' => [
-      'source_module' => 'filter',
-      'destination_module' => 'filter',
-    ],
-    'd7_filter_format' => [
-      'source_module' => 'filter',
-      'destination_module' => 'filter',
-    ],
-    'd7_filter_settings' => [
-      'source_module' => 'filter',
-      'destination_module' => 'filter',
-    ],
-    'd6_forum_settings' => [
-      'source_module' => 'forum',
-      'destination_module' => 'forum',
-    ],
-    'd7_forum_settings' => [
-      'source_module' => 'forum',
-      'destination_module' => 'forum',
-    ],
-    'd7_global_theme_settings' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd6_imagecache_presets' => [
-      'source_module' => 'imagecache',
-      'destination_module' => 'image',
-    ],
-    'd7_image_settings' => [
-      'source_module' => 'image',
-      'destination_module' => 'image',
-    ],
-    'd7_image_styles' => [
-      'source_module' => 'image',
-      'destination_module' => 'image',
-    ],
-    'd6_language_content_settings' => [
-      'source_module' => 'locale',
-      'destination_module' => 'language',
-    ],
-    'd7_language_content_settings' => [
-      'source_module' => 'locale',
-      'destination_module' => 'language',
-    ],
-    'd6_language_negotiation_settings' => [
-      'source_module' => 'locale',
-      'destination_module' => 'language',
-    ],
-    'd7_language_negotiation_settings' => [
-      'source_module' => 'locale',
-      'destination_module' => 'language',
-    ],
-    'language_prefixes_and_domains' => [
-      'source_module' => 'locale',
-      'destination_module' => 'language',
-    ],
-    'd6_language_types' => [
-      'source_module' => 'locale',
-      'destination_module' => 'language',
-    ],
-    'language' => [
-      'source_module' => 'locale',
-      'destination_module' => 'language',
-    ],
-    'd7_language_types' => [
-      'source_module' => 'locale',
-      'destination_module' => 'language',
-    ],
-    'locale_settings' => [
-      'source_module' => 'locale',
-      'destination_module' => 'locale',
-    ],
-    'd6_menu_links' => [
-      'source_module' => 'menu',
-      'destination_module' => 'menu_link_content',
-    ],
-    'menu_settings' => [
-      'source_module' => 'menu',
-      'destination_module' => 'menu_ui',
-    ],
-    'd7_menu_links' => [
-      'source_module' => 'menu',
-      'destination_module' => 'menu_link_content',
-    ],
-    'd6_node' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd6_node_translation' => [
-      'source_module' => 'translation',
-      'destination_module' => 'content_translation',
-    ],
-    'd6_node_revision' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd6_node_setting_promote' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd6_node_setting_status' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd6_node_setting_sticky' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd6_node_settings' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd6_node_type' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd6_view_modes' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd7_node' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd7_node_revision' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd7_node_settings' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd7_node_translation' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd7_node_title_label' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd7_node_type' => [
-      'source_module' => 'node',
-      'destination_module' => 'node',
-    ],
-    'd6_url_alias' => [
-      'source_module' => 'path',
-      'destination_module' => 'path',
-    ],
-    'd7_url_alias' => [
-      'source_module' => 'path',
-      'destination_module' => 'path',
-    ],
-    'search_page' => [
-      'source_module' => 'search',
-      'destination_module' => 'search',
-    ],
-    'd6_search_settings' => [
-      'source_module' => 'search',
-      'destination_module' => 'search',
-    ],
-    'd7_search_settings' => [
-      'source_module' => 'search',
-      'destination_module' => 'search',
-    ],
-    'd7_shortcut' => [
-      'source_module' => 'shortcut',
-      'destination_module' => 'shortcut',
-    ],
-    'd7_shortcut_set' => [
-      'source_module' => 'shortcut',
-      'destination_module' => 'shortcut',
-    ],
-    'd7_shortcut_set_users' => [
-      'source_module' => 'shortcut',
-      'destination_module' => 'shortcut',
-    ],
-    'd6_simpletest_settings' => [
-      'source_module' => 'simpletest',
-      'destination_module' => 'simpletest',
-    ],
-    'd7_simpletest_settings' => [
-      'source_module' => 'simpletest',
-      'destination_module' => 'simpletest',
-    ],
-    'statistics_settings' => [
-      'source_module' => 'statistics',
-      'destination_module' => 'statistics',
-    ],
-    'd6_syslog_settings' => [
-      'source_module' => 'syslog',
-      'destination_module' => 'syslog',
-    ],
-    'd7_syslog_settings' => [
-      'source_module' => 'syslog',
-      'destination_module' => 'syslog',
-    ],
-    'd6_date_formats' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd6_system_cron' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd6_system_date' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd6_system_file' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'system_image' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'system_image_gd' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'system_logging' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'system_maintenance' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd6_system_performance' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'system_rss' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'system_site' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd7_system_authorize' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd7_system_cron' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd7_system_date' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd7_system_file' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd7_system_mail' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd7_system_performance' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd6_menu' => [
-      'source_module' => 'menu',
-      'destination_module' => 'system',
-    ],
-    'd7_menu' => [
-      'source_module' => 'menu',
-      'destination_module' => 'system',
-    ],
-    'taxonomy_settings' => [
-      'source_module' => 'taxonomy',
-      'destination_module' => 'taxonomy',
-    ],
-    'd6_taxonomy_term' => [
-      'source_module' => 'taxonomy',
-      'destination_module' => 'taxonomy',
-    ],
-    'd6_taxonomy_term_translation' => [
-      'source_module' => 'i18n',
-      'destination_module' => 'taxonomy',
-    ],
-    'd6_taxonomy_vocabulary' => [
-      'source_module' => 'taxonomy',
-      'destination_module' => 'taxonomy',
-    ],
-    'd6_taxonomy_vocabulary_translation' => [
-      'source_module' => 'i18n',
-      'destination_module' => 'taxonomy',
-    ],
-    'd6_term_node' => [
-      'source_module' => 'taxonomy',
-      'destination_module' => 'taxonomy',
-    ],
-    'd6_term_node_revision' => [
-      'source_module' => 'taxonomy',
-      'destination_module' => 'taxonomy',
-    ],
-    'd6_vocabulary_entity_display' => [
-      'source_module' => 'taxonomy',
-      'destination_module' => 'taxonomy',
-    ],
-    'd6_vocabulary_entity_form_display' => [
-      'source_module' => 'taxonomy',
-      'destination_module' => 'taxonomy',
-    ],
-    'd6_vocabulary_field' => [
-      'source_module' => 'taxonomy',
-      'destination_module' => 'taxonomy',
-    ],
-    'd6_vocabulary_field_instance' => [
-      'source_module' => 'taxonomy',
-      'destination_module' => 'taxonomy',
-    ],
-    'd7_taxonomy_term' => [
-      'source_module' => 'taxonomy',
-      'destination_module' => 'taxonomy',
-    ],
-    'd7_taxonomy_vocabulary' => [
-      'source_module' => 'taxonomy',
-      'destination_module' => 'taxonomy',
-    ],
-    'text_settings' => [
-      'source_module' => 'text',
-      'destination_module' => 'text',
-    ],
-    'd7_tracker_node' => [
-      'source_module' => 'tracker',
-      'destination_module' => 'tracker',
-    ],
-    'd7_tracker_settings' => [
-      'source_module' => 'tracker',
-      'destination_module' => 'tracker',
-    ],
-    'd7_tracker_user' => [
-      'source_module' => 'tracker',
-      'destination_module' => 'tracker',
-    ],
-    'update_settings' => [
-      'source_module' => 'update',
-      'destination_module' => 'update',
-    ],
-    'd6_profile_values' => [
-      'source_module' => 'profile',
-      'destination_module' => 'user',
-    ],
-    'd7_theme_settings' => [
-      'source_module' => 'system',
-      'destination_module' => 'system',
-    ],
-    'd6_user' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'd6_user_contact_settings' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'd6_user_mail' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'd6_user_picture_file' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'd6_user_role' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'd6_user_settings' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'd7_user' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'd7_user_flood' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'd7_user_mail' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'd7_user_role' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'user_picture_entity_display' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'user_picture_entity_form_display' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'user_picture_field' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'user_picture_field_instance' => [
-      'source_module' => 'user',
-      'destination_module' => 'user',
-    ],
-    'user_profile_entity_display' => [
-      'source_module' => 'profile',
-      'destination_module' => 'user',
-    ],
-    'user_profile_entity_form_display' => [
-      'source_module' => 'profile',
-      'destination_module' => 'user',
-    ],
-    'user_profile_field' => [
-      'source_module' => 'profile',
-      'destination_module' => 'user',
-    ],
-    'user_profile_field_instance' => [
-      'source_module' => 'profile',
-      'destination_module' => 'user',
-    ],
-    'd6_i18n_user_profile_field_instance' => [
-      'source_module' => 'i18n',
-      'destination_module' => 'user',
-    ],
-  ];
+  protected $step;
 
   /**
    * The state service.
@@ -713,6 +64,123 @@ class MigrateUpgradeForm extends ConfirmFormBase {
   protected $pluginManager;
 
   /**
+   * The field plugin manager.
+   *
+   * @var \Drupal\migrate_drupal\Plugin\MigrateFieldPluginManagerInterface
+   */
+  protected $fieldPluginManager;
+
+  /**
+   * The module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * List of extensions that do not need an upgrade path.
+   *
+   * This property is an array where the keys are the major Drupal core version
+   * from which we are upgrading, and the values are arrays of extension names
+   * that do not need an upgrade path.
+   *
+   * @var array[]
+   */
+  protected $noUpgradePaths = [
+    '6' => [
+      'blog',
+      'blogapi',
+      'calendarsignup',
+      'color',
+      'content_copy',
+      'content_multigroup',
+      'content_permissions',
+      'date_api',
+      'date_locale',
+      'date_php4',
+      'date_popup',
+      'date_repeat',
+      'date_timezone',
+      'date_tools',
+      'datepicker',
+      'ddblock',
+      'event',
+      'fieldgroup',
+      'filefield_meta',
+      'help',
+      'i18n',
+      'i18nstrings',
+      'imageapi',
+      'imageapi_gd',
+      'imageapi_imagemagick',
+      'imagecache_ui',
+      'jquery_ui',
+      'nodeaccess',
+      'number',
+      'openid',
+      'php',
+      'ping',
+      'poll',
+      'throttle',
+      'tracker',
+      'translation',
+      'trigger',
+      'variable',
+      'variable_admin',
+      'views_export',
+      'views_ui',
+    ],
+    '7' => [
+      'blog',
+      'bulk_export',
+      'contextual',
+      'ctools',
+      'ctools_access_ruleset',
+      'ctools_ajax_sample',
+      'ctools_custom_content',
+      'dashboard',
+      'date_all_day',
+      'date_api',
+      'date_context',
+      'date_migrate',
+      'date_popup',
+      'date_repeat',
+      'date_repeat_field',
+      'date_tools',
+      'date_views',
+      'entity',
+      'entity_feature',
+      'entity_token',
+      'entityreference',
+      'field_ui',
+      'help',
+      'openid',
+      'overlay',
+      'page_manager',
+      'php',
+      'poll',
+      'search_embedded_form',
+      'search_extra_type',
+      'search_node_tags',
+      'simpletest',
+      'stylizer',
+      'term_depth',
+      'toolbar',
+      'translation',
+      'trigger',
+      'views_content',
+      'views_ui',
+    ],
+  ];
+
+  /**
    * Constructs the MigrateUpgradeForm.
    *
    * @param \Drupal\Core\State\StateInterface $state
@@ -723,12 +191,19 @@ class MigrateUpgradeForm extends ConfirmFormBase {
    *   The renderer service.
    * @param \Drupal\migrate\Plugin\MigrationPluginManagerInterface $plugin_manager
    *   The migration plugin manager.
+   * @param \Drupal\migrate_drupal\Plugin\MigrateFieldPluginManagerInterface $field_plugin_manager
+   *   The field plugin manager.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
    */
-  public function __construct(StateInterface $state, DateFormatterInterface $date_formatter, RendererInterface $renderer, MigrationPluginManagerInterface $plugin_manager) {
+  public function __construct(StateInterface $state, DateFormatterInterface $date_formatter, RendererInterface $renderer, MigrationPluginManagerInterface $plugin_manager, MigrateFieldPluginManagerInterface $field_plugin_manager, ModuleHandlerInterface $module_handler, MessengerInterface $messenger) {
     $this->state = $state;
     $this->dateFormatter = $date_formatter;
     $this->renderer = $renderer;
     $this->pluginManager = $plugin_manager;
+    $this->fieldPluginManager = $field_plugin_manager;
+    $this->moduleHandler = $module_handler;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -739,7 +214,10 @@ class MigrateUpgradeForm extends ConfirmFormBase {
       $container->get('state'),
       $container->get('date.formatter'),
       $container->get('renderer'),
-      $container->get('plugin.manager.migration')
+      $container->get('plugin.manager.migration'),
+      $container->get('plugin.manager.migrate.field'),
+      $container->get('module_handler'),
+      $container->get('messenger')
     );
   }
 
@@ -754,19 +232,22 @@ class MigrateUpgradeForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $step = $form_state->get('step') ?: 'overview';
-    switch ($step) {
+    $this->step = $form_state->get('step') ?: 'overview';
+    switch ($this->step) {
       case 'overview':
         return $this->buildOverviewForm($form, $form_state);
 
       case 'credentials':
         return $this->buildCredentialForm($form, $form_state);
 
+      case 'confirm_id_conflicts':
+        return $this->buildIdConflictForm($form, $form_state);
+
       case 'confirm':
         return $this->buildConfirmForm($form, $form_state);
 
       default:
-        drupal_set_message($this->t('Unrecognized form step @step', ['@step' => $step]), 'error');
+        $this->messenger->addError($this->t('Unrecognized form step @step', ['@step' => $this->step]));
         return [];
     }
   }
@@ -794,28 +275,42 @@ class MigrateUpgradeForm extends ConfirmFormBase {
     $form['#title'] = $this->t('Upgrade');
 
     if ($date_performed = $this->state->get('migrate_drupal_ui.performed')) {
-      // @todo Add back support for rollbacks and incremental migrations.
-      //   https://www.drupal.org/node/2687843
+      // @todo Add back support for rollbacks.
       //   https://www.drupal.org/node/2687849
       $form['upgrade_option_item'] = [
         '#type' => 'item',
-        '#prefix' => $this->t('An upgrade has already been performed on this site. To perform a new migration, create a clean and empty new install of Drupal 8. Rollbacks and incremental migrations are not yet supported through the user interface. For more information, see the <a href=":url">upgrading handbook</a>.', [':url' => 'https://www.drupal.org/upgrade/migrate']),
+        '#prefix' => $this->t('An upgrade has already been performed on this site. To perform a new migration, create a clean and empty new install of Drupal 8. Rollbacks are not yet supported through the user interface. For more information, see the <a href=":url">upgrading handbook</a>.', [':url' => 'https://www.drupal.org/upgrade/migrate']),
         '#description' => $this->t('Last upgrade: @date', ['@date' => $this->dateFormatter->format($date_performed)]),
+      ];
+      $form['actions']['incremental'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Import new configuration and content from old site'),
+        '#button_type' => 'primary',
+        '#validate' => ['::validateIncrementalForm'],
+        '#submit' => ['::submitIncrementalForm'],
       ];
       return $form;
     }
     else {
       $form['info_header'] = [
-        '#markup' => '<p>' . $this->t('Upgrade a site by importing it into a clean and empty new install of Drupal 8. You will lose any existing configuration once you import your site into it. See the <a href=":url">online documentation for Drupal site upgrades</a> for more detailed information.', [
+        '#markup' => '<p>' . $this->t('Upgrade a site by importing its files and the data from its database into a clean and empty new install of Drupal 8. See the <a href=":url">Drupal site upgrades handbook</a> for more information.', [
           ':url' => 'https://www.drupal.org/upgrade/migrate',
         ]),
       ];
 
-      $info[] = $this->t('<strong>Back up the database for this site</strong>. Upgrade will change the database for this site.');
-      $info[] = $this->t('Make sure that the host this site is on has access to the database for your previous site.');
-      $info[] = $this->t('If your previous site has private files to be migrated, a copy of your files directory must be accessible on the host this site is on.');
-      $info[] = $this->t('In general, enable all modules on this site that are enabled on the previous site. For example, if you have used the book module on the previous site then you must enable the book module on this site for that data to be available on this site.');
-      $info[] = $this->t('Do not add any information on this site (including but not limited to user accounts, taxonomy terms, and node content) before upgrading. Any pre-existing information on the site risks being overwritten by the upgrade process. See <a href=":url">the upgrade preparation guide</a> for more information.', [
+      $form['legend']['#markup'] = '';
+      $form['legend']['#markup'] .= '<h3>' . $this->t('Definitions') . '</h3>';
+      $form['legend']['#markup'] .= '<dl>';
+      $form['legend']['#markup'] .= '<dt>' . $this->t('Old site') . '</dt>';
+      $form['legend']['#markup'] .= '<dd>' . $this->t('The site you want to upgrade.') . '</dd>';
+      $form['legend']['#markup'] .= '<dt>' . $this->t('New site') . '</dt>';
+      $form['legend']['#markup'] .= '<dd>' . $this->t('This empty Drupal 8 installation you will import the old site to.') . '</dd>';
+      $form['legend']['#markup'] .= '</dl>';
+
+      $info[] = $this->t('Make sure that <strong>access to the database</strong> for the old site is available from this new site.');
+      $info[] = $this->t('<strong>If the old site has private files</strong>, a copy of its files directory must also be accessible on the host of this new site.');
+      $info[] = $this->t('<strong>Enable all modules on this new site</strong> that are enabled on the old site. For example, if the old site uses the book module, then enable the book module on this new site so that the existing data can be imported to it.');
+      $info[] = $this->t('<strong>Do not add any content to the new site</strong> before upgrading. Any existing content is likely to be overwritten by the upgrade process. See <a href=":url">the upgrade preparation guide</a>.', [
         ':url' => 'https://www.drupal.org/docs/8/upgrade/preparing-an-upgrade#dont_create_content',
       ]);
       $info[] = $this->t('Put this site into <a href=":url">maintenance mode</a>.', [
@@ -824,12 +319,13 @@ class MigrateUpgradeForm extends ConfirmFormBase {
 
       $form['info'] = [
         '#theme' => 'item_list',
+        '#title' => $this->t('Preparation steps'),
         '#list_type' => 'ol',
         '#items' => $info,
       ];
 
       $form['info_footer'] = [
-        '#markup' => '<p>' . $this->t('This upgrade can take a long time. It is better to import a local copy of your site instead of directly importing from your live site.'),
+        '#markup' => '<p>' . $this->t('The upgrade can take a long time. It is better to upgrade from a local copy of your site instead of directly from your live site.'),
       ];
 
       $validate = [];
@@ -855,8 +351,50 @@ class MigrateUpgradeForm extends ConfirmFormBase {
    *   The current state of the form.
    */
   public function submitOverviewForm(array &$form, FormStateInterface $form_state) {
-    $form_state->set('step', 'credentials');
-    $form_state->setRebuild();
+    $form_state->set('step', 'credentials')->setRebuild();
+  }
+
+  /**
+   * Validation handler for the incremental overview form.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function validateIncrementalForm(array &$form, FormStateInterface $form_state) {
+    // Retrieve the database driver from state.
+    $database_state_key = $this->state->get('migrate.fallback_state_key', '');
+    if ($database_state_key) {
+      try {
+        $database = $this->state->get($database_state_key, [])['database'];
+        if ($connection = $this->getConnection($database)) {
+          if ($version = $this->getLegacyDrupalVersion($connection)) {
+            $this->setupMigrations($database, $form_state);
+            $valid_legacy_database = TRUE;
+          }
+        }
+      }
+      catch (DatabaseExceptionWrapper $exception) {
+        // Hide DB exceptions and forward to the DB credentials form. In that
+        // form we can more properly display errors and accept new credentials.
+      }
+    }
+    if (empty($valid_legacy_database)) {
+      $form_state->setValue('step', 'credentials')->setRebuild();
+    }
+  }
+
+  /**
+   * Form submission handler for the incremental overview form.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function submitIncrementalForm(array &$form, FormStateInterface $form_state) {
+    $form_state->set('step', 'confirm_id_conflicts')->setRebuild();
   }
 
   /**
@@ -889,12 +427,11 @@ class MigrateUpgradeForm extends ConfirmFormBase {
 
     $default_options = [];
 
-
     $form['version'] = [
       '#type' => 'radios',
       '#default_value' => 7,
       '#title' => $this->t('Drupal version of the source site'),
-      '#options' => [6 => $this->t('Drupal 6'), 7 => $this->t('Drupal 7')],
+      '#options' => ['6' => $this->t('Drupal 6'), '7' => $this->t('Drupal 7')],
       '#required' => TRUE,
     ];
 
@@ -957,7 +494,7 @@ class MigrateUpgradeForm extends ConfirmFormBase {
       '#description' => $this->t('To import files from your current Drupal site, enter a local file directory containing your site (e.g. /var/www/docroot), or your site address (for example http://example.com).'),
       '#states' => [
         'visible' => [
-          ':input[name="version"]' => ['value' => 6],
+          ':input[name="version"]' => ['value' => '6'],
         ],
       ],
     ];
@@ -968,7 +505,7 @@ class MigrateUpgradeForm extends ConfirmFormBase {
       '#description' => $this->t('To import public files from your current Drupal site, enter a local file directory containing your site (e.g. /var/www/docroot), or your site address (for example http://example.com).'),
       '#states' => [
         'visible' => [
-          ':input[name="version"]' => ['value' => 7],
+          ':input[name="version"]' => ['value' => '7'],
         ],
       ],
     ];
@@ -980,7 +517,7 @@ class MigrateUpgradeForm extends ConfirmFormBase {
       '#description' => $this->t('To import private files from your current Drupal site, enter a local file directory containing your site (e.g. /var/www/docroot).'),
       '#states' => [
         'visible' => [
-          ':input[name="version"]' => ['value' => 7],
+          ':input[name="version"]' => ['value' => '7'],
         ],
       ],
     ];
@@ -1029,37 +566,18 @@ class MigrateUpgradeForm extends ConfirmFormBase {
 
     try {
       $connection = $this->getConnection($database);
-      $version = $this->getLegacyDrupalVersion($connection);
+      $version = (string) $this->getLegacyDrupalVersion($connection);
       if (!$version) {
         $form_state->setErrorByName($database['driver'] . '][0', $this->t('Source database does not contain a recognizable Drupal version.'));
       }
-      elseif ($version != $form_state->getValue('version')) {
+      elseif ($version !== (string) $form_state->getValue('version')) {
         $form_state->setErrorByName($database['driver'] . '][0', $this->t('Source database is Drupal version @version but version @selected was selected.', [
           '@version' => $version,
           '@selected' => $form_state->getValue('version'),
         ]));
       }
       else {
-        $this->createDatabaseStateSettings($database, $version);
-        $migrations = $this->getMigrations('migrate_drupal_' . $version, $version);
-
-        // Get the system data from source database.
-        $system_data = $this->getSystemData($connection);
-
-        // Convert the migration object into array
-        // so that it can be stored in form storage.
-        $migration_array = [];
-        foreach ($migrations as $migration) {
-          $migration_array[$migration->id()] = $migration->label();
-        }
-
-        // Store the retrieved migration IDs in form storage.
-        $form_state->set('migrations', $migration_array);
-        $form_state->set('source_base_path', $form_state->getValue('source_base_path'));
-        $form_state->set('source_private_file_path', $form_state->getValue('source_private_file_path'));
-
-        // Store the retrived system data in form storage.
-        $form_state->set('system_data', $system_data);
+        $this->setupMigrations($database, $form_state);
       }
     }
     catch (\Exception $e) {
@@ -1082,12 +600,166 @@ class MigrateUpgradeForm extends ConfirmFormBase {
    */
   public function submitCredentialForm(array &$form, FormStateInterface $form_state) {
     // Indicate the next step is confirmation.
+    $form_state->set('step', 'confirm_id_conflicts');
+    $form_state->setRebuild();
+  }
+
+  /**
+   * Confirmation form for ID conflicts.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return array
+   *   The form structure.
+   */
+  public function buildIdConflictForm(array &$form, FormStateInterface $form_state) {
+    // Check if there are conflicts. If none, just skip this form!
+    $migration_ids = array_keys($form_state->get('migrations'));
+    $migrations = $this->pluginManager->createInstances($migration_ids);
+
+    $translated_content_conflicts = $content_conflicts = [];
+
+    $results = (new IdAuditor())->auditMultiple($migrations);
+
+    /** @var \Drupal\migrate\Audit\AuditResult $result */
+    foreach ($results as $result) {
+      $destination = $result->getMigration()->getDestinationPlugin();
+      if ($destination instanceof EntityContentBase && $destination->isTranslationDestination()) {
+        // Translations are not yet supperted by the audit system. For now, we
+        // only warn the user to be cautious when migrating translated content.
+        // I18n support should be added in https://www.drupal.org/node/2905759.
+        $translated_content_conflicts[] = $result;
+      }
+      elseif (!$result->passed()) {
+        $content_conflicts[] = $result;
+      }
+
+    }
+    if (empty($content_conflicts) && empty($translated_content_conflicts)) {
+      $form_state->set('step', 'confirm');
+      return $this->buildForm($form, $form_state);
+    }
+
+    $this->messenger->addWarning($this->t('WARNING: Content may be overwritten on your new site.'));
+
+    $form = parent::buildForm($form, $form_state);
+    $form['actions']['submit']['#submit'] = ['::submitConfirmIdConflictForm'];
+    $form['actions']['submit']['#value'] = $this->t('I acknowledge I may lose data. Continue anyway.');
+
+    if ($content_conflicts) {
+      $form = $this->conflictsForm($form, $form_state, $content_conflicts);
+    }
+    if ($translated_content_conflicts) {
+      $form = $this->i18nWarningForm($form, $form_state, $translated_content_conflicts);
+    }
+    return $form;
+  }
+
+  /**
+   * Build the markup for conflict warnings.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   * @param \Drupal\migrate\Audit\AuditResult[] $conflicts
+   *   The failing audit results.
+   *
+   * @return array
+   *   The form structure.
+   */
+  protected function conflictsForm(array &$form, FormStateInterface $form_state, array $conflicts) {
+    $form['conflicts'] = [
+      '#title' => $this->t('There is conflicting content of these types:'),
+      '#theme' => 'item_list',
+      '#items' => $this->formatConflicts($conflicts),
+    ];
+
+    $form['warning'] = [
+      '#type' => 'markup',
+      '#markup' => '<p>' . $this->t('It looks like you have content on your new site which <strong>may be overwritten</strong> if you continue to run this upgrade. The upgrade should be performed on a clean Drupal 8 installation. For more information see the <a target="_blank" href=":id-conflicts-handbook">upgrade handbook</a>.', [':id-conflicts-handbook' => 'https://www.drupal.org/docs/8/upgrade/known-issues-when-upgrading-from-drupal-6-or-7-to-drupal-8#id_conflicts']) . '</p>',
+    ];
+
+    return $form;
+  }
+
+  /**
+   * Formats a set of failing audit results as strings.
+   *
+   * Each string is the label of the destination plugin of the migration that
+   * failed the audit, keyed by the destination plugin ID in order to prevent
+   * duplication.
+   *
+   * @param \Drupal\migrate\Audit\AuditResult[] $conflicts
+   *   The failing audit results.
+   *
+   * @return string[]
+   *   The formatted audit results.
+   */
+  protected function formatConflicts(array $conflicts) {
+    $items = [];
+
+    foreach ($conflicts as $conflict) {
+      $definition = $conflict->getMigration()->getDestinationPlugin()->getPluginDefinition();
+      $id = $definition['id'];
+      $items[$id] = $definition['label'];
+    }
+    sort($items, SORT_STRING);
+
+    return $items;
+  }
+
+  /**
+   * Build the markup for i18n warnings.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   * @param \Drupal\migrate\Audit\AuditResult[] $conflicts
+   *   The failing audit results.
+   *
+   * @return array
+   *   The form structure.
+   */
+  protected function i18nWarningForm(array &$form, FormStateInterface $form_state, array $conflicts) {
+    $form['i18n'] = [
+      '#title' => $this->t('There is translated content of these types:'),
+      '#theme' => 'item_list',
+      '#items' => $this->formatConflicts($conflicts),
+    ];
+
+    $form['i18n_warning'] = [
+      '#type' => 'markup',
+      '#markup' => '<p>' . $this->t('It looks like you are migrating translated content from your old site. Possible ID conflicts for translations are not automatically detected in the current version of Drupal. Refer to the <a target="_blank" href=":id-conflicts-handbook">upgrade handbook</a> for instructions on how to avoid ID conflicts with translated content.', [':id-conflicts-handbook' => 'https://www.drupal.org/docs/8/upgrade/known-issues-when-upgrading-from-drupal-6-or-7-to-drupal-8#id_conflicts']) . '</p>',
+    ];
+
+    return $form;
+  }
+
+  /**
+   * Submission handler for the confirmation form.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function submitConfirmIdConflictForm(array &$form, FormStateInterface $form_state) {
     $form_state->set('step', 'confirm');
     $form_state->setRebuild();
   }
 
   /**
-   * Confirmation form for missing migrations, etc.
+   * Confirmation form showing available and missing migration paths.
+   *
+   * The confirmation form uses the source_module and destination_module
+   * properties on the source, destination and field plugins as well as the
+   * system data from the source to determine if there is a migration path for
+   * each module in the source.
    *
    * @param array $form
    *   An associative array containing the structure of the form.
@@ -1103,39 +775,82 @@ class MigrateUpgradeForm extends ConfirmFormBase {
 
     $form['actions']['submit']['#value'] = $this->t('Perform upgrade');
 
+    $version = $form_state->get('version');
+
+    // Get the source_module and destination_module for each migration.
+    $migrations = $this->getMigrations('migrate_drupal_' . $version, $version);
     $table_data = [];
-    $system_data = [];
-    foreach ($form_state->get('migrations') as $migration_id => $migration_label) {
-      // Fetch the system data at the first opportunity.
-      if (empty($system_data)) {
-        $system_data = $form_state->get('system_data');
+    foreach ($migrations as $migration) {
+      $migration_id = $migration->getPluginId();
+      $source_module = $migration->getSourcePlugin()->getSourceModule();
+      if (!$source_module) {
+        $this->messenger->addError($this->t('Source module not found for @migration_id.', ['@migration_id' => $migration_id]));
+      }
+      $destination_module = $migration->getDestinationPlugin()->getDestinationModule();
+      if (!$destination_module) {
+        $this->messenger->addError($this->t('Destination module not found for @migration_id.', ['@migration_id' => $migration_id]));
       }
 
-      // Handle derivatives.
-      list($migration_id,) = explode(':', $migration_id, 2);
-      $source_module = $this->moduleUpgradePaths[$migration_id]['source_module'];
-      $destination_module = $this->moduleUpgradePaths[$migration_id]['destination_module'];
-      $table_data[$source_module][$destination_module][$migration_id] = $migration_label;
+      if ($source_module && $destination_module) {
+        $table_data[$source_module][$destination_module][$migration_id] = $migration->label();
+      }
     }
+
+    // Get the source_module and destination_module from the field plugins.
+    $definitions = $this->fieldPluginManager->getDefinitions();
+    foreach ($definitions as $definition) {
+      // This is not strict so that we find field plugins with an annotation
+      // where the Drupal core version is an integer and when it is a string.
+      if (in_array($version, $definition['core'])) {
+        $source_module = $definition['source_module'];
+        $destination_module = $definition['destination_module'];
+        $table_data[$source_module][$destination_module][$definition['id']] = $definition['id'];
+      }
+    }
+
+    // Fetch the system data at the first opportunity.
+    $system_data = $form_state->get('system_data');
+
+    // Add source_module and destination_module for modules that do not need an
+    // upgrade path and are enabled on the source site.
+    foreach ($this->noUpgradePaths[$version] as $extension) {
+      if ($system_data['module'][$extension]['status']) {
+        $table_data[$extension]['core'][$extension] = $extension;
+      }
+    }
+
     // Sort the table by source module names and within that destination
     // module names.
     ksort($table_data);
     foreach ($table_data as $source_module => $destination_module_info) {
       ksort($table_data[$source_module]);
     }
+
+    // Remove core profiles from the system data.
+    foreach (['standard', 'minimal'] as $profile) {
+      unset($system_data['module'][$profile]);
+    }
+
     $unmigrated_source_modules = array_diff_key($system_data['module'], $table_data);
 
     // Missing migrations.
-    $form['missing_module_list_title'] = [
-      '#type' => 'item',
-      '#title' => $this->t('Missing upgrade paths'),
-      '#description' => $this->t('The following items will not be upgraded. For more information see <a href=":migrate">Upgrading from Drupal 6 or 7 to Drupal 8</a>.', [':migrate' => 'https://www.drupal.org/upgrade/migrate']),
+    $missing_module_list = [
+      '#type' => 'details',
+      '#open' => TRUE,
+      '#title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#value' => $this->t('Modules that will not be upgraded'),
+        '#attributes' => ['id' => ['error']],
+      ],
+      '#description' => $this->t('There are no modules installed on your new site to replace these modules. If you proceed with the upgrade now, configuration and/or content needed by these modules will not be available on your new site. For more information, see <a href=":review">Review the pre-upgrade analysis</a> in the <a href=":migrate">Upgrading to Drupal 8</a> handbook.', [':review' => 'https://www.drupal.org/docs/8/upgrade/upgrade-using-web-browser#pre-upgrade-analysis', ':migrate' => 'https://www.drupal.org/docs/8/upgrade']),
+      '#weight' => 2,
     ];
-    $form['missing_module_list'] = [
+    $missing_module_list['module_list'] = [
       '#type' => 'table',
       '#header' => [
-        $this->t('Source'),
-        $this->t('Destination'),
+        $this->t('Drupal @version', ['@version' => $version]),
+        $this->t('Drupal 8'),
       ],
     ];
     $missing_count = 0;
@@ -1143,24 +858,40 @@ class MigrateUpgradeForm extends ConfirmFormBase {
     foreach ($unmigrated_source_modules as $source_module => $module_data) {
       if ($module_data['status']) {
         $missing_count++;
-        $form['missing_module_list'][$source_module] = [
-          'source_module' => ['#plain_text' => $source_module],
-          'destination_module' => ['#plain_text' => 'Missing'],
+        $missing_module_list['module_list'][$source_module] = [
+          'source_module' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $source_module,
+            '#attributes' => [
+              'class' => [
+                'upgrade-analysis-report__status-icon',
+                'upgrade-analysis-report__status-icon--error',
+              ],
+            ],
+          ],
+          'destination_module' => ['#plain_text' => 'Not upgraded'],
         ];
       }
     }
+
     // Available migrations.
-    $form['available_module_list'] = [
-      '#tree' => TRUE,
+    $available_module_list = [
       '#type' => 'details',
-      '#title' => $this->t('Available upgrade paths'),
+      '#title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#value' => $this->t('Modules that will be upgraded'),
+        '#attributes' => ['id' => ['checked']],
+      ],
+      '#weight' => 3,
     ];
 
-    $form['available_module_list']['module_list'] = [
+    $available_module_list['module_list'] = [
       '#type' => 'table',
       '#header' => [
-        $this->t('Source'),
-        $this->t('Destination'),
+        $this->t('Drupal @version', ['@version' => $version]),
+        $this->t('Drupal 8'),
       ],
     ];
 
@@ -1174,20 +905,53 @@ class MigrateUpgradeForm extends ConfirmFormBase {
           '#plain_text' => $destination_module,
         ];
       }
-      $form['available_module_list']['module_list'][$source_module] = [
-        'source_module' => ['#plain_text' => $source_module],
+      $available_module_list['module_list'][$source_module] = [
+        'source_module' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => $source_module,
+          '#attributes' => [
+            'class' => [
+              'upgrade-analysis-report__status-icon',
+              'upgrade-analysis-report__status-icon--checked',
+            ],
+          ],
+        ],
         'destination_module' => $destination_details,
       ];
     }
-    $form['counts'] = [
-      '#title' => 'Upgrade analysis report',
-      '#theme' => 'item_list',
-      '#items' => [
-        $this->formatPlural($available_count, '@count available upgrade path', '@count available upgrade paths'),
-        $this->formatPlural($missing_count, '@count missing upgrade path', '@count missing upgrade paths'),
-      ],
-      '#weight' => -15,
+
+    $counters = [];
+    $general_info = [];
+
+    if ($missing_count) {
+      $counters[] = [
+        '#theme' => 'status_report_counter',
+        '#amount' => $missing_count,
+        '#text' => $this->formatPlural($missing_count, 'Module will not be upgraded', 'Modules will not be upgraded'),
+        '#severity' => 'error',
+        '#weight' => 0,
+      ];
+      $general_info[] = $missing_module_list;
+    }
+    if ($available_count) {
+      $counters[] = [
+        '#theme' => 'status_report_counter',
+        '#amount' => $available_count,
+        '#text' => $this->formatPlural($available_count, 'Module will be upgraded', 'Modules will be upgraded'),
+        '#severity' => 'checked',
+        '#weight' => 1,
+      ];
+      $general_info[] = $available_module_list;
+    }
+
+    $form['status_report_page'] = [
+      '#theme' => 'status_report_page',
+      '#counters' => $counters,
+      '#general_info' => $general_info,
     ];
+
+    $form['#attached']['library'][] = 'migrate_drupal_ui/base';
 
     return $form;
   }
@@ -1236,10 +1000,55 @@ class MigrateUpgradeForm extends ConfirmFormBase {
   }
 
   /**
+   * Puts migrations information in form state.
+   *
+   * Gets all the migrations, converts each to an array and stores it in the
+   * form state. The source base path for public and private files is also
+   * put into form state.
+   *
+   * @param array $database
+   *   Database array representing the source Drupal database.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  protected function setupMigrations(array $database, FormStateInterface $form_state) {
+    $connection = $this->getConnection($database);
+    $version = $this->getLegacyDrupalVersion($connection);
+    $this->createDatabaseStateSettings($database, $version);
+    $migrations = $this->getMigrations('migrate_drupal_' . $version, $version);
+
+    // Get the system data from source database.
+    $system_data = $this->getSystemData($connection);
+
+    // Convert the migration object into array
+    // so that it can be stored in form storage.
+    $migration_array = [];
+    foreach ($migrations as $migration) {
+      $migration_array[$migration->id()] = $migration->label();
+    }
+
+    // Store the retrieved migration IDs in form storage.
+    $form_state->set('version', $version);
+    $form_state->set('migrations', $migration_array);
+    if ($version == 6) {
+      $form_state->set('source_base_path', $form_state->getValue('d6_source_base_path'));
+    }
+    else {
+      $form_state->set('source_base_path', $form_state->getValue('source_base_path'));
+    }
+    $form_state->set('source_private_file_path', $form_state->getValue('source_private_file_path'));
+    // Store the retrieved system data in form storage.
+    $form_state->set('system_data', $system_data);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Are you sure?');
+    if ($this->step === 'confirm_id_conflicts') {
+      return $this->t('Upgrade analysis report');
+    }
+    return $this->t('What will be upgraded?');
   }
 
   /**
