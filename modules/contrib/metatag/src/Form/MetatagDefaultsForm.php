@@ -2,9 +2,9 @@
 
 namespace Drupal\metatag\Form;
 
+use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityForm;
-use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -25,7 +25,7 @@ class MetatagDefaultsForm extends EntityForm {
     $form['#ajax_wrapper_id'] = 'metatag-defaults-form-ajax-wrapper';
     $ajax = [
       'wrapper' => $form['#ajax_wrapper_id'],
-      'callback' => '::rebuildForm'
+      'callback' => '::rebuildForm',
     ];
     $form['#prefix'] = '<div id="' . $form['#ajax_wrapper_id'] . '">';
     $form['#suffix'] = '</div>';
@@ -53,7 +53,11 @@ class MetatagDefaultsForm extends EntityForm {
         '#options' => $options,
         '#required' => TRUE,
         '#default_value' => $default_type,
-        '#ajax' => $ajax + ['trigger_as' => ['name' => 'select_id_submit']]
+        '#ajax' => $ajax + [
+          'trigger_as' => [
+            'name' => 'select_id_submit',
+          ],
+        ],
       ];
       $form['select_id_submit'] = [
         '#type' => 'submit',
@@ -61,8 +65,8 @@ class MetatagDefaultsForm extends EntityForm {
         '#name' => 'select_id_submit',
         '#ajax' => $ajax,
         '#attributes' => [
-          'class' => ['js-hide']
-        ]
+          'class' => ['js-hide'],
+        ],
       ];
       $values = [];
     }
@@ -98,7 +102,8 @@ class MetatagDefaultsForm extends EntityForm {
     if ($form_state->getTriggeringElement()['#name'] == 'select_id_submit') {
       $form_state->set('default_type', $form_state->getValue('id'));
       $form_state->setRebuild();
-    } else {
+    }
+    else {
       parent::submitForm($form, $form_state);
     }
   }
@@ -112,17 +117,25 @@ class MetatagDefaultsForm extends EntityForm {
     // Set the label on new defaults.
     if ($metatag_defaults->isNew()) {
       $metatag_defaults_id = $form_state->getValue('id');
-      list($entity_type, $entity_bundle) = explode('__', $metatag_defaults_id);
+
+      $type_parts = explode('__', $metatag_defaults_id);
+      $entity_type = $type_parts[0];
+      $entity_bundle = isset($type_parts[1]) ? $type_parts[1] : NULL;
+
       // Get the entity label.
       $entity_manager = \Drupal::service('entity_type.manager');
       $entity_info = $entity_manager->getDefinitions();
       $entity_label = (string) $entity_info[$entity_type]->get('label');
-      // Get the bundle label.
-      $bundle_manager = \Drupal::service('entity_type.bundle.info');
-      $bundle_info = $bundle_manager->getBundleInfo($entity_type);
-      $bundle_label = $bundle_info[$entity_bundle]['label'];
+
+      if (!is_null($entity_bundle)) {
+        // Get the bundle label.
+        $bundle_manager = \Drupal::service('entity_type.bundle.info');
+        $bundle_info = $bundle_manager->getBundleInfo($entity_type);
+        $entity_label .= ': ' . $bundle_info[$entity_bundle]['label'];
+      }
+
       // Set the label to the config entity.
-      $this->entity->set('label', $entity_label . ': ' . $bundle_label);
+      $this->entity->set('label', $entity_label);
     }
 
     // Set tags within the Metatag entity.
@@ -131,8 +144,8 @@ class MetatagDefaultsForm extends EntityForm {
     $tag_values = [];
     foreach ($tags as $tag_id => $tag_definition) {
       if ($form_state->hasValue($tag_id)) {
-        // Some plugins need to process form input before storing it.
-        // Hence, we set it and then get it.
+        // Some plugins need to process form input before storing it. Hence, we
+        // set it and then get it.
         $tag = $tag_manager->createInstance($tag_id);
         $tag->setValue($form_state->getValue($tag_id));
         if (!empty($tag->value())) {
@@ -149,6 +162,7 @@ class MetatagDefaultsForm extends EntityForm {
           '%label' => $metatag_defaults->label(),
         ]));
         break;
+
       default:
         drupal_set_message($this->t('Saved the %label Metatag defaults.', [
           '%label' => $metatag_defaults->label(),
@@ -166,26 +180,95 @@ class MetatagDefaultsForm extends EntityForm {
    */
   protected function getAvailableBundles() {
     $options = [];
-    // @TODO discover supported entities.
-    $entity_types = [
-      'node' => 'Node',
-      'taxonomy_term' => 'Taxonomy term',
-    ];
-    /** @var EntityTypeManagerInterface $entity_manager */
+    $entity_types = $this->getSupportedEntityTypes();
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_manager */
     $entity_manager = \Drupal::service('entity_type.manager');
-    /** @var EntityTypeBundleInfoInterface $bundle_info */
+    /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
     $bundle_info = \Drupal::service('entity_type.bundle.info');
+    $metatags_defaults_manager = $entity_manager->getStorage('metatag_defaults');
     foreach ($entity_types as $entity_type => $entity_label) {
+      if (empty($metatags_defaults_manager->load($entity_type))) {
+        $options[$entity_label][$entity_type] = "$entity_label (Default)";
+      }
+
       $bundles = $bundle_info->getBundleInfo($entity_type);
       foreach ($bundles as $bundle_id => $bundle_metadata) {
         $metatag_defaults_id = $entity_type . '__' . $bundle_id;
-        $metatags_defaults_manager = $entity_manager->getStorage('metatag_defaults');
+
         if (empty($metatags_defaults_manager->load($metatag_defaults_id))) {
           $options[$entity_label][$metatag_defaults_id] = $bundle_metadata['label'];
         }
       }
     }
     return $options;
+  }
+
+  /**
+   * Returns a list of supported entity types.
+   *
+   * @return array
+   *   A list of available entity types as $machine_name => $label.
+   */
+  protected function getSupportedEntityTypes() {
+    $entity_types = [];
+
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_manager */
+    $entity_manager = \Drupal::service('entity_type.manager');
+
+    // A list of entity types that are not supported.
+    $unsupported_types = [
+      // Custom blocks.
+      'block_content',
+      // Comments.
+      'comment',
+      // Contact messages are the messages submitted on individual contact forms
+      // so obviously shouldn't get meta tags.
+      'contact_message',
+      // Menu items.
+      'menu_link_content',
+      // Shortcut items.
+      'shortcut',
+    ];
+
+    // Make a list of supported content types.
+    foreach ($entity_manager->getDefinitions() as $entity_name => $definition) {
+      // Skip some entity types that we don't want to support.
+      if (in_array($entity_name, $unsupported_types)) {
+        continue;
+      }
+
+      // Identify supported entities.
+      if ($definition instanceof ContentEntityType) {
+        // Only work with entity types that have a list of links, i.e. publicly
+        // viewable.
+        $links = $definition->get('links');
+        if (!empty($links)) {
+          $entity_types[$entity_name] = $this->getEntityTypeLabel($definition);
+        }
+      }
+    }
+
+    return $entity_types;
+  }
+
+  /**
+   * Returns the text label for the entity type specified.
+   *
+   * @param Drupal\Core\Entity\EntityTypeInterface $entityType
+   *   The entity type to process.
+   *
+   * @return string
+   *   A label.
+   */
+  protected function getEntityTypeLabel(EntityTypeInterface $entityType) {
+    $label = $entityType->getLabel();
+
+    if (is_a($label, 'Drupal\Core\StringTranslation\TranslatableMarkup')) {
+      /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $label */
+      $label = $label->render();
+    }
+
+    return $label;
   }
 
 }

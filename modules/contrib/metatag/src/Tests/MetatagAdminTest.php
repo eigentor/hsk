@@ -7,7 +7,7 @@ use Drupal\simpletest\WebTestBase;
 /**
  * Tests the Metatag administration.
  *
- * @group Metatag
+ * @group metatag
  */
 class MetatagAdminTest extends WebTestBase {
 
@@ -20,6 +20,17 @@ class MetatagAdminTest extends WebTestBase {
     'test_page_test',
     'token',
     'metatag',
+
+    // @see testAvailableConfigEntities
+    'block',
+    'block_content',
+    'comment',
+    'contact',
+    'menu_link_content',
+    'menu_ui',
+    'shortcut',
+    'taxonomy',
+    'entity_test',
   ];
 
   /**
@@ -45,7 +56,7 @@ class MetatagAdminTest extends WebTestBase {
   /**
    * Tests the interface to manage metatag defaults.
    */
-  function testDefaults() {
+  public function testDefaults() {
     // Save the default title to test the Revert operation at the end.
     $metatag_defaults = \Drupal::config('metatag.metatag_defaults.global');
     $default_title = $metatag_defaults->get('tags')['title'];
@@ -63,8 +74,8 @@ class MetatagAdminTest extends WebTestBase {
     $this->assertLinkByHref('admin/config/search/metatag/global', 0, t('Global defaults were created on installation.'));
 
     // Check that Global and entity defaults can't be deleted.
-    $this->assertNoLinkByHref('admin/config/search/metatag/global/delete', 0, t('Global defaults can\'t be deleted'));
-    $this->assertNoLinkByHref('admin/config/search/metatag/node/delete', 0, t('Entity defaults can\'t be deleted'));
+    $this->assertNoLinkByHref('admin/config/search/metatag/global/delete', 0, t("Global defaults can't be deleted"));
+    $this->assertNoLinkByHref('admin/config/search/metatag/node/delete', 0, t("Entity defaults can't be deleted"));
 
     // Check that the module defaults were injected into the Global config
     // entity.
@@ -133,9 +144,51 @@ class MetatagAdminTest extends WebTestBase {
   }
 
   /**
+   * Confirm the available entity types show on the add-default page.
+   */
+  public function testAvailableConfigEntities() {
+    // Initiate session with a user who can manage metatags.
+    $permissions = [
+      'administer site configuration',
+      'administer meta tags',
+    ];
+    $account = $this->drupalCreateUser($permissions);
+    $this->drupalLogin($account);
+
+    // Load the default-add page.
+    $this->drupalGet('admin/config/search/metatag/add');
+    $this->assertResponse(200);
+
+    // Confirm the 'type' field exists.
+    $this->assertFieldByName('id');
+
+    // Compile a list of entities from the list.
+    $xpath = $this->xpath("//select[@name='id']");
+    $this->verbose('<pre>' . print_r($xpath, TRUE) . '</pre>');
+    $types = [];
+    foreach ($xpath[0]->children() as $item) {
+      if (!empty($item->option)) {
+        $data = (array) $item->option;
+        $types[$data['@attributes']['value']] = $data[0];
+      }
+    }
+    $this->verbose('<pre>' . print_r($types, TRUE) . '</pre>');
+
+    // Check through the values that are in the 'select' list, make sure that
+    // unwanted items are not present.
+    $this->assertFalse(isset($types['block_content']), 'Custom block entities are not supported.');
+    $this->assertFalse(isset($types['comment']), 'Comment entities are not supported.');
+    $this->assertFalse(isset($types['menu_link_content']), 'Menu link entities are not supported.');
+    $this->assertFalse(isset($types['shortcut']), 'Shortcut entities are not supported.');
+    $this->assertTrue(isset($types['node__page']), 'Nodes are supported.');
+    $this->assertTrue(isset($types['user__user']), 'Users are supported.');
+    $this->assertTrue(isset($types['entity_test']), 'Test entities are supported.');
+  }
+
+  /**
    * Tests special pages.
    */
-  function testSpecialPages() {
+  public function testSpecialPages() {
     // Initiate session with a user who can manage metatags.
     $permissions = ['administer site configuration', 'administer meta tags'];
     $account = $this->drupalCreateUser($permissions);
@@ -184,7 +237,7 @@ class MetatagAdminTest extends WebTestBase {
   /**
    * Tests entity and bundle overrides.
    */
-  function testOverrides() {
+  public function testOverrides() {
     // Initiate session with a user who can manage metatags.
     $permissions = [
       'administer site configuration',
@@ -221,10 +274,8 @@ class MetatagAdminTest extends WebTestBase {
       $this->assertRaw($value, t('Node metatag @tag overrides Global defaults.', ['@tag' => $metatag]));
     }
 
-    /**
-     * Check that when the node defaults don't define a metatag, the Global one
-     * is used.
-     */
+    // Check that when the node defaults don't define a metatag, the Global one
+    // is used.
     // First unset node defaults.
     $this->drupalGet('admin/config/search/metatag/node');
     $this->assertResponse(200);
@@ -250,7 +301,7 @@ class MetatagAdminTest extends WebTestBase {
     // return cached results.
     // @todo BookTest.php resets the cache of a single node, which is way more
     // performant than creating a node for every set of assertions.
-    // @see BookTest::testDelete().
+    // @see BookTest::testDelete()
     $node = $this->drupalCreateNode([
       'title' => t('Hello, world!'),
       'type' => 'article',
@@ -292,8 +343,9 @@ class MetatagAdminTest extends WebTestBase {
   }
 
   /**
-   * Test that the entity default values load on the entity form, and that they
-   * can then be overridden correctly.
+   * Test that the entity default values load on the entity form.
+   *
+   * And that they can then be overridden correctly.
    */
   public function testEntityDefaultInheritence() {
     // Initiate session with a user who can manage metatags and content type

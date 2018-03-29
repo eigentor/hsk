@@ -2,20 +2,20 @@
 
 namespace Drupal\metatag_google_plus\Tests;
 
-use Drupal\simpletest\WebTestBase;
 use Drupal\metatag\Tests\MetatagTagsTestBase;
 
 /**
  * Tests that each of the Metatag Google Plus tags work correctly.
  *
- * @group Metatag
+ * @group metatag
  */
 class MetatagGooglePlusTagsTest extends MetatagTagsTestBase {
 
   /**
    * {@inheritdoc}
    */
-  public $tags = [
+  private $tags = [
+    'google_plus_author',
     'google_plus_description',
     'google_plus_image',
     'google_plus_name',
@@ -23,9 +23,9 @@ class MetatagGooglePlusTagsTest extends MetatagTagsTestBase {
   ];
 
   /**
-   * The attribute to look for to indicate which tag.
+   * {@inheritdoc}
    */
-  public $test_name_attribute = 'itemprop';
+  private $testNameAttribute = 'itemprop';
 
   /**
    * {@inheritdoc}
@@ -38,7 +38,7 @@ class MetatagGooglePlusTagsTest extends MetatagTagsTestBase {
   /**
    * Each of these meta tags has a different tag name vs its internal name.
    */
-  public function get_test_tag_name($tag_name) {
+  private function getTestTagName($tag_name) {
     $tag_name = str_replace('google_plus_', 'itemprop:', $tag_name);
     if ($tag_name == 'itemprop:publisher') {
       $tag_name = 'publisher';
@@ -47,16 +47,30 @@ class MetatagGooglePlusTagsTest extends MetatagTagsTestBase {
   }
 
   /**
-   * Implements {meta_tag_name}_test_name_attribute() for 'publisher'.
+   * Implements {tag_name}TestNameAttribute() for 'author'.
    */
-  public function google_plus_publisher_test_output_xpath() {
+  private function googlePlusAuthorTestOutputXpath() {
+    return "//link[@rel='author']";
+  }
+
+  /**
+   * Implements {tag_name}TestValueAttribute() for 'author'.
+   */
+  private function googlePlusAuthorTestValueAttribute() {
+    return 'href';
+  }
+
+  /**
+   * Implements {tag_name}TestNameAttribute() for 'publisher'.
+   */
+  private function googlePlusPublisherTestOutputXpath() {
     return "//link[@rel='publisher']";
   }
 
   /**
-   * Implements {meta_tag_name}_test_value_attribute() for 'publisher'.
+   * Implements {tag_name}TestValueAttribute() for 'publisher'.
    */
-  public function google_plus_publisher_test_value_attribute() {
+  private function googlePlusPublisherTestValueAttribute() {
     return 'href';
   }
 
