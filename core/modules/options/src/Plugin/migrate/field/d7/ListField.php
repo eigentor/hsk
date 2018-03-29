@@ -12,9 +12,7 @@ use Drupal\migrate_drupal\Plugin\migrate\field\FieldPluginBase;
  *     "list_integer" = "list_integer",
  *     "list_text" = "list_string",
  *   },
- *   core = {7},
- *   source_module = "list",
- *   destination_module = "options"
+ *   core = {7}
  * )
  */
 class ListField extends FieldPluginBase {}

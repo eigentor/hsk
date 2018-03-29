@@ -8,9 +8,7 @@ use Drupal\migrate_drupal\Plugin\migrate\field\FieldPluginBase;
 /**
  * @MigrateField(
  *   id = "image",
- *   core = {7},
- *   source_module = "image",
- *   destination_module = "file"
+ *   core = {7}
  * )
  */
 class ImageField extends FieldPluginBase {

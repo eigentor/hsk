@@ -162,7 +162,7 @@ class SystemMenuBlock extends BlockBase implements ContainerFactoryPluginInterfa
         }
       }
       else {
-        return array();
+        return [];
       }
     }
 
