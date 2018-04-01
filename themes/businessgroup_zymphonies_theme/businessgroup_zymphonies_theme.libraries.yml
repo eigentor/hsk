@@ -3,7 +3,7 @@ bootstrap:
   css:
     theme:
       includes/bootstrap/css/bootstrap.min.css: {}
-  js:
+  #js:
     #includes/bootstrap/js/bootstrap.min.js: {}
   dependencies:
     - core/jquery
@@ -21,7 +21,7 @@ global-components:
       css/font-awesome.css: {}
       css/custom-style.css: {}
       css/custom-media.css: {}
-  js:  
+  #js:
     #js/jquery.smartmenus.min.js: {}
     #js/custom.js: {}
   dependencies:

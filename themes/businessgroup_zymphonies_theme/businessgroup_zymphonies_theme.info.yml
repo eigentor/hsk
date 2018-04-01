@@ -3,7 +3,7 @@ type: theme
 description: 'Zymphonies Business Group Responsive Theme. Developed & Designed by <a href=http://www.zymphonies.com>Zymphonies</a><br/>Contact us for Drupal Design & Development <a href=mailto:info@zymphonies.com>info@zymphonies.com</a>'
 package: core
 # core: 8.x
-base theme: classy
+
 #Libraries
 libraries:
   - businessgroup_zymphonies_theme/bootstrap
@@ -34,8 +34,8 @@ regions:
   footer_menu: 'Footer Menu'
   google_map: 'Google Map'
   auto_hidden_block: 'Auto hidden blocks'
-# Information added by Drupal.org packaging script on 2016-02-04
-version: '8.x-1.0'
+# Information added by Drupal.org packaging script on 2017-11-17
+version: '8.x-1.1'
 core: '8.x'
 project: 'businessgroup_zymphonies_theme'
-datestamp: 1454606643
+datestamp: 1510948391
