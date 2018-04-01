@@ -9,7 +9,7 @@
       //     window.location = $(this).attr('href');
       // });
 
-      $('#block-hsk-zymphonies-main-menu > ul.menu').addClass('sm')
+      $('#block-hsk-zymphonies-main-menu > ul#main-menu').addClass('sm')
         .addClass('menu-base-theme').smartmenus({
         showTimeout: 100,
         hideTimeout: 100
