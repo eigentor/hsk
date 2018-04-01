@@ -26,7 +26,7 @@
     margin-bottom: 40px
 
 .sidebar
-  ul.menu
+  ul#main-menu
     li
       display: block
       float: none
@@ -39,9 +39,10 @@
         border-bottom: 0
         > a
           border-bottom: 1px solid #ccc
-      &.menu-item--active-trail
+      &.active
         > a
           color: $link-color
+          background: none
       a
         color: $light-grey-text
         padding: 7px 0 7px 4px

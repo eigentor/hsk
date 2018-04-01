@@ -1591,37 +1591,38 @@ button.btn, a.btn {
   .content_layout .region-content {
     margin-bottom: 40px; }
 
-.sidebar ul.menu li {
+.sidebar ul#main-menu li {
   display: block;
   float: none;
   text-transform: uppercase;
   border-bottom: 1px solid #ccc;
   font-family: "Roboto Slab", serif; }
-  .sidebar ul.menu li.menu-item--expanded {
+  .sidebar ul#main-menu li.menu-item--expanded {
     list-style-image: none;
     list-style-type: none;
     border-bottom: 0; }
-    .sidebar ul.menu li.menu-item--expanded > a {
+    .sidebar ul#main-menu li.menu-item--expanded > a {
       border-bottom: 1px solid #ccc; }
-  .sidebar ul.menu li.menu-item--active-trail > a {
-    color: #E27500; }
-  .sidebar ul.menu li a {
+  .sidebar ul#main-menu li.active > a {
+    color: #E27500;
+    background: none; }
+  .sidebar ul#main-menu li a {
     color: #888;
     padding: 7px 0 7px 4px;
     display: block;
     hyphens: auto; }
-    .sidebar ul.menu li a:hover {
+    .sidebar ul#main-menu li a:hover {
       text-decoration: none;
       color: #E27500; }
-    .sidebar ul.menu li a.is-active {
+    .sidebar ul#main-menu li a.is-active {
       color: #E27500; }
-  .sidebar ul.menu li ul {
+  .sidebar ul#main-menu li ul {
     display: block;
     position: static; }
-    .sidebar ul.menu li ul li a {
+    .sidebar ul#main-menu li ul li a {
       font-size: 13.175px;
       font-size: 0.85rem; }
-      .sidebar ul.menu li ul li a:before {
+      .sidebar ul#main-menu li ul li a:before {
         content: "•";
         color: #bbb;
         margin-right: 5px; }
