@@ -32,7 +32,7 @@ header
 nav#block-hsk-zymphonies-main-menu
   @include legacy-pie-clearfix
   clear: both
-  ul.menu
+  ul#main-menu
     margin: 0
     padding: 0
     li
@@ -124,9 +124,13 @@ nav#block-hsk-footer
 +breakpoint($breakpoint-tablet)
   header
     padding-top: 30px
+    //.navbar-toggle
+    //  display: block
 
   .search-block-form
     display: block
+
+
 
 
 
@@ -140,10 +144,15 @@ nav#block-hsk-footer
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop-narrow)
   header
+    //.navbar-toggle
+    //  display: none
+    //  position: relative
+    //  float: right
     &.main-header
       nav
         padding-bottom: 15px
         .region-primary-menu
+          display: block
           margin-top: 8px
     #block-hsk-branding
       width: auto
@@ -173,12 +182,11 @@ nav#block-hsk-footer
 
 
 
-    .region-primary-menu
-      display: block
+
 
     nav#block-hsk-zymphonies-main-menu
       +legacy-pie-clearfix
-      ul.menu
+      ul#main-menu
         li
           display: inline
           float: left
@@ -187,7 +195,7 @@ nav#block-hsk-footer
           font-family: $roboto-slab
           &:hover
             background: none
-          &.menu-item--active-trail
+          &.active
             a
               background: $primary-color
               color: white

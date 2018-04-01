@@ -13,7 +13,6 @@
         .addClass('menu-base-theme').smartmenus({
         showTimeout: 100,
         hideTimeout: 100
-
       });
 
       //Mobile menu toggle
@@ -30,17 +29,19 @@
       //   });
       // }
 
-
-      var startheading = $('h1.page-title').offset();
-      var widthheading = $('h1.page-title').innerWidth();
-      var endheading = startheading.left + widthheading;
-      var offset_pieces = endheading + 50;
-      $('#page-title').css('background-position', offset_pieces);
-      console.log(offset_pieces);
+      // Position the chess pieces background image dynamically
+      // on every page where the proper h1 exists (not in front page)
+      if($('h1.js-quickedit-page-title').length != 0) {
+        var startheading = $('h1.js-quickedit-page-title').offset();
+        var widthheading = $('h1.js-quickedit-page-title').innerWidth();
+        var endheading = startheading.left + widthheading;
+        var offset_pieces = endheading + 50;
+        $('#page-title').css('background-position', offset_pieces);
+      }
 
       $( window ).resize(function() {
-        var startheading = $('h1.page-title').offset();
-        var widthheading = $('h1.page-title').innerWidth();
+        var startheading = $('h1.js-quickedit-page-title').offset();
+        var widthheading = $('h1.js-quickedit-page-title').innerWidth();
         var endheading = startheading.left + widthheading;
         var offset_pieces = endheading + 50;
         $('#page-title').css('background-position', offset_pieces);
