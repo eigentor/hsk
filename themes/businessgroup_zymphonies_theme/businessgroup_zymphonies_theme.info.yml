@@ -3,6 +3,7 @@ type: theme
 description: 'Zymphonies Business Group Responsive Theme. Developed & Designed by <a href=http://www.zymphonies.com>Zymphonies</a><br/>Contact us for Drupal Design & Development <a href=mailto:info@zymphonies.com>info@zymphonies.com</a>'
 package: core
 # core: 8.x
+base theme: classy
 
 #Libraries
 libraries:
