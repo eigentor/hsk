@@ -2193,7 +2193,7 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
   border-top: 0;
   padding: 25px 22px 12px; }
   .page-node-type-turnier #info-tabs .details-wrapper {
-    padding: 0; }
+    padding: 1em 0 0; }
   .page-node-type-turnier #info-tabs > .field {
     display: none; }
     .page-node-type-turnier #info-tabs > .field:first-child {
@@ -2210,7 +2210,8 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
 .page-node-type-team .group-team-results .details-wrapper {
   overflow-x: auto; }
 .page-node-type-team .group-team-results .horizontal-tabs {
-  border: none; }
+  border: none;
+  padding-top: 0; }
   .page-node-type-team .group-team-results .horizontal-tabs .horizontal-tabs-list {
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
@@ -2254,9 +2255,10 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
 .page-node-type-team .group-team-results .horizontal-tabs-panes {
   border: 1px solid #ccc;
   border-top: 0;
-  padding: 25px 22px 12px; }
+  padding: 25px 22px 12px;
+  padding-top: 0.7em; }
   .page-node-type-team .group-team-results .horizontal-tabs-panes .details-wrapper {
-    padding: 0; }
+    padding: 1em 0 0; }
 .page-node-type-team .group-team-results .view-kader-2 {
   *zoom: 1; }
   .page-node-type-team .group-team-results .view-kader-2:after {
