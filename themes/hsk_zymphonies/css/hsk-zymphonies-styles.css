@@ -1628,12 +1628,16 @@ button.btn, a.btn {
         margin-right: 5px; }
 
 .footer-menu {
-  background: #999; }
+  background: #999;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em; }
   .footer-menu a {
     color: white; }
 
 .copyright {
-  background: #818181; }
+  background: #818181;
+  padding-top: 4px;
+  padding-bottom: 7px; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2299,6 +2303,24 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
     .page-node-type-team .group-team-results .view-kader-2 .views-row .views-field-field-player-image img {
       width: 45px;
       height: auto; }
+
+div#sliding-popup {
+  background: transparent; }
+  div#sliding-popup .eu-cookie-compliance-banner {
+    background: #6A7BA8;
+    padding-top: 0.5em; }
+    div#sliding-popup .eu-cookie-compliance-banner p {
+      font-weight: normal;
+      line-height: 1.7; }
+    div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button {
+      background: #ED8600;
+      text-shadow: none;
+      border: none;
+      box-shadow: none;
+      color: white;
+      margin-top: 0.7em; }
+      div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
+        background: #ba6900; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */

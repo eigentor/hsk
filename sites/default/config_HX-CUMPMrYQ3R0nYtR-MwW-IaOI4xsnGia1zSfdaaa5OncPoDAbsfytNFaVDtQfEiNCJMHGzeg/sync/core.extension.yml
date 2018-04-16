@@ -28,6 +28,7 @@ module:
   entity_embed: 0
   entity_reference_revisions: 0
   entityconnect: 0
+  eu_cookie_compliance: 0
   eva: 0
   field: 0
   field_collection: 0

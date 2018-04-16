@@ -40,7 +40,7 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Anwenden
+          submit_button: Apply
           reset_button: false
           reset_button_label: Zurücksetzen
           exposed_sorts_label: 'Sortieren nach'

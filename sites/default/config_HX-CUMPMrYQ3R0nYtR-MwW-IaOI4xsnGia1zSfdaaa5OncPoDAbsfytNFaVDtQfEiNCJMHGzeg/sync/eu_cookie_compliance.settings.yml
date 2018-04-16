@@ -1,0 +1,47 @@
+cookie_lifetime: 100
+domain: ''
+domains_option: 1
+domains_list: ''
+eu_only: null
+eu_only_js: null
+exclude_paths: "/admin\r\n/admin/*\r\n/batch\r\n/node/add*\r\n/node/*/*\r\n/user/*/*"
+exclude_admin_theme: false
+langcode: de
+popup_agreed:
+  value: '<h2>Thank you for accepting cookies</h2><p>You can now hide this message or find out more about cookies.</p>'
+  format: restricted_html
+popup_agree_button_message: 'Ich stimme zu'
+popup_agreed_enabled: false
+popup_bg_hex: 0779bf
+popup_clicking_confirmation: true
+popup_scrolling_confirmation: false
+popup_delay: 1000
+show_disagree_button: false
+popup_disagree_button_message: 'Give me more info'
+popup_enabled: true
+popup_find_more_button_message: 'Weitere Informationen'
+popup_height: null
+popup_hide_agreed: false
+popup_hide_button_message: Hide
+popup_info:
+  value: "<p>Wir benutzen Cookies auf dieser Seite, um die Bedienbarkeit für Sie zu verbessern.<br />\r\nWeitere Informationen zu Cookies finden Sie auf unserer <a data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"caad7246-a0d5-4bce-af94-bd9257a69321\" href=\"/node/359\">Datenschutzerklärung</a>.</p>\r\n"
+  format: basic_html
+mobile_popup_info:
+  value: ''
+  format: basic_html
+mobile_breakpoint: 768
+popup_link: /node/359
+popup_link_new_window: false
+popup_position: false
+fixed_top_position: true
+popup_text_hex: ffffff
+popup_width: 100%
+use_bare_css: false
+disagree_do_not_show_popup: false
+reload_page: false
+cookie_name: ''
+exclude_uid_1: false
+better_support_for_screen_readers: false
+use_mobile_message: false
+_core:
+  default_config_hash: OlBvbDcm2PUT2i28p3oNpuKaUKbbK4qjfrAyYxvd0B8
