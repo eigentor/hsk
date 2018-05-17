@@ -1,0 +1,14 @@
+uuid: d3bda4cf-1071-4fd0-9c02-f2c3a2851885
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.structure_admin
+  module:
+    - user
+id: user_remove_role_action.structure_admin
+label: 'Remove the Struktur-Admin role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: structure_admin

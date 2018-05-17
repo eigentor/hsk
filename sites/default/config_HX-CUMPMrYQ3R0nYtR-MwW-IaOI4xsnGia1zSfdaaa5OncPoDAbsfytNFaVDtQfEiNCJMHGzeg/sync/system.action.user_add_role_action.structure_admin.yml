@@ -1,0 +1,14 @@
+uuid: a2380deb-f09a-439b-b759-3e4c373715fd
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.structure_admin
+  module:
+    - user
+id: user_add_role_action.structure_admin
+label: 'Add the Struktur-Admin role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: structure_admin

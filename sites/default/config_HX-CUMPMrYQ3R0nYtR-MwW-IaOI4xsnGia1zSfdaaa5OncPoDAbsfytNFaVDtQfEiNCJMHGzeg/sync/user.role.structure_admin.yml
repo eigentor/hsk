@@ -1,0 +1,11 @@
+uuid: f0ef360d-d09b-4bc8-9712-cdb327f64af8
+langcode: de
+status: true
+dependencies: {  }
+id: structure_admin
+label: Struktur-Admin
+weight: 5
+is_admin: null
+permissions:
+  - 'administer menu'
+  - 'use text format full_html'
