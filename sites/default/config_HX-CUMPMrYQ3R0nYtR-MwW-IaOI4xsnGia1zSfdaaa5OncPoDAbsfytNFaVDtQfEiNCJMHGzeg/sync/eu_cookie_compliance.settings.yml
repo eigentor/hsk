@@ -24,7 +24,7 @@ popup_height: null
 popup_hide_agreed: false
 popup_hide_button_message: Hide
 popup_info:
-  value: "<p>Wir benutzen Cookies auf dieser Seite, um die Bedienbarkeit für Sie zu verbessern.<br />\r\nWeitere Informationen zu Cookies finden Sie auf unserer <a data-entity-type=\"node\" data-entity-uuid=\"caad7246-a0d5-4bce-af94-bd9257a69321\" href=\"/node/359\">Datenschutzerklärung</a>.</p>\r\n"
+  value: "<p>Wir benutzen Cookies auf dieser Seite, um die Bedienbarkeit für Sie zu verbessern.<br />\r\nWeitere Informationen zu Cookies finden Sie auf unserer <a data-entity-type=\"node\" data-entity-uuid=\"17550b5d-3da7-4a52-96e8-beb8878510cc\" href=\"/node/368\">Datenschutzerklärung</a>.</p>\r\n"
   format: basic_html
 mobile_popup_info:
   value: ''
@@ -32,7 +32,7 @@ mobile_popup_info:
 mobile_breakpoint: 768
 popup_link: /node/359
 popup_link_new_window: false
-popup_position: false
+popup_position: true
 fixed_top_position: true
 popup_text_hex: ffffff
 popup_width: 100%
