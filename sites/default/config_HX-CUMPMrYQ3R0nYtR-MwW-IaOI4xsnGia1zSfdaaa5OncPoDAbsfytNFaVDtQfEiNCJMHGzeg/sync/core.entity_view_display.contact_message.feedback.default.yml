@@ -1,0 +1,31 @@
+uuid: 1e16ca0c-10d9-47b2-8ade-942553e15c5a
+langcode: de
+status: true
+dependencies:
+  config:
+    - contact.form.feedback
+    - field.field.contact_message.feedback.field_contact_privacy_notice
+  module:
+    - markup
+id: contact_message.feedback.default
+targetEntityType: contact_message
+bundle: feedback
+mode: default
+content:
+  field_contact_privacy_notice:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: markup
+    region: content
+  message:
+    type: string
+    weight: 0
+    label: above
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  langcode: true
