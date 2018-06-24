@@ -11,22 +11,26 @@ function hsk_zymphonies_preprocess_page(&$variables) {
     $variables['#attached']['library'][] = 'hsk_zymphonies/header-slideshow';
   }
 
+  if(!is_string($variables['node'])) {
+
     // Load the JS Tabs Script only if we are on the content Type 'turnier'
-  if( array_key_exists('node', $variables)) {
-      if($variables['node']->getType() == 'turnier') {
+    if (array_key_exists('node', $variables)) {
+      if ($variables['node']->getType() == 'turnier') {
         $variables['#attached']['library'][] = 'hsk_zymphonies/hsk-js-tabs';
       }
-  }
-
-  // Load Colorbox for content types "News(article)" and "page", but not on the homepage
-  if( array_key_exists('node', $variables)) {
-    if($variables['node']->getType() == 'article' || $variables['node']->getType() == 'page' &&(\Drupal::service('path.matcher')->isFrontPage() == FALSE)) {
-      $variables['#attached']['library'][] = 'hsk_zymphonies/colorbox';
     }
-  }
-  if( array_key_exists('node', $variables)) { 
-    if($variables['node']->getType() == 'turnier') {
-      $variables['#attached']['library'][] = 'hsk_zymphonies/tablesaw';
+
+    // Load Colorbox for content types "News(article)" and "page", but not on the homepage
+    if (array_key_exists('node', $variables)) {
+      if ($variables['node']->getType() == 'article' || $variables['node']->getType() == 'page' && (\Drupal::service('path.matcher')
+            ->isFrontPage() == FALSE)) {
+        $variables['#attached']['library'][] = 'hsk_zymphonies/colorbox';
+      }
+    }
+    if (array_key_exists('node', $variables)) {
+      if ($variables['node']->getType() == 'turnier') {
+        $variables['#attached']['library'][] = 'hsk_zymphonies/tablesaw';
+      }
     }
   }
 }
@@ -38,12 +42,14 @@ function hsk_zymphonies_preprocess_page(&$variables) {
 function hsk_zymphonies_preprocess_html(&$variables) {
   // Add the node classes from the node_class Module as body class
   if ($node = \Drupal::request()->attributes->get('node')) {
-    // Get classes set with the node_class Module
-    $classes = $node->get('node_class')->getValue();
-    if(!empty($classes)) {
-      $node_class = ($classes['0']['value']);
-      // Add the class to the body classes as "node-"[class]
-      $variables['attributes']['class'][] = 'node-' . $node_class;
+    if(!is_string($node)) {
+      // Get classes set with the node_class Module
+      $classes = $node->get('node_class')->getValue();
+      if(!empty($classes)) {
+        $node_class = ($classes['0']['value']);
+        // Add the class to the body classes as "node-"[class]
+        $variables['attributes']['class'][] = 'node-' . $node_class;
+      }
     }
   }
 }
