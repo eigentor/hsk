@@ -1,0 +1,15 @@
+uuid: 42e52199-2d05-4a84-8e70-1b5197a85a7a
+langcode: de
+status: true
+dependencies: {  }
+name: inhaltsbild_mobile_volle_breite
+label: 'Inhaltsbild Mobile volle Breite'
+effects:
+  2cef9b7c-e05b-4d8e-a914-74325d7f2018:
+    uuid: 2cef9b7c-e05b-4d8e-a914-74325d7f2018
+    id: image_scale
+    weight: 1
+    data:
+      width: 480
+      height: null
+      upscale: false

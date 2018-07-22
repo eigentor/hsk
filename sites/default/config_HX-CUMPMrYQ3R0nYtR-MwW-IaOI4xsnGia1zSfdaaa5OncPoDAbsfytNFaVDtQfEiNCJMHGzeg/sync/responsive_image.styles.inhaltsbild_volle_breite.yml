@@ -1,0 +1,29 @@
+uuid: 7837352f-03d6-478f-a753-6a138fd13967
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.inhaltsbild_mobile_volle_breite
+    - image.style.inline_full_width
+  theme:
+    - hsk_zymphonies
+id: inhaltsbild_volle_breite
+label: 'Inhaltsbild volle Breite'
+image_style_mappings:
+  -
+    breakpoint_id: hsk_zymphonies.desktop_narrow
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: inline_full_width
+  -
+    breakpoint_id: hsk_zymphonies.tablet_portrait
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: inline_full_width
+  -
+    breakpoint_id: hsk_zymphonies.mobile
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: inhaltsbild_mobile_volle_breite
+breakpoint_group: hsk_zymphonies
+fallback_image_style: inline_full_width

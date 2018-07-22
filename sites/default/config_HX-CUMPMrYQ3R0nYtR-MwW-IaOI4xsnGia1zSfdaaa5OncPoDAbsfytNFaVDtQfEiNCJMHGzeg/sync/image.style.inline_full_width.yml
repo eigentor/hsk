@@ -1,0 +1,15 @@
+uuid: b57f87d5-7709-413a-83cc-ae4a17845f1d
+langcode: de
+status: true
+dependencies: {  }
+name: inline_full_width
+label: 'Inhaltsbild volle Breite'
+effects:
+  8710a3c1-b07c-4224-ba52-b405d9704ded:
+    uuid: 8710a3c1-b07c-4224-ba52-b405d9704ded
+    id: image_scale
+    weight: 1
+    data:
+      width: 755
+      height: null
+      upscale: false

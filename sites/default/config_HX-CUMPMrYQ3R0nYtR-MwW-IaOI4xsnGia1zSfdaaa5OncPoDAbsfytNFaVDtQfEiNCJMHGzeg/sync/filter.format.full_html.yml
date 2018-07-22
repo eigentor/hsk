@@ -5,6 +5,7 @@ dependencies:
   module:
     - editor
     - entity_embed
+    - inline_responsive_images
     - linkit
     - spamspan
 _core:
@@ -73,3 +74,34 @@ filters:
     status: true
     weight: 0
     settings: {  }
+  filter_imagestyle:
+    id: filter_imagestyle
+    provider: inline_responsive_images
+    status: false
+    weight: 0
+    settings:
+      image_style_gallery_full: '0'
+      image_style_header_slideshow: '0'
+      image_style_image_gallery_thumb: '0'
+      image_style_inhaltsbild_mobile_volle_breite: '0'
+      image_style_inline_full_width: '0'
+      image_style_large: '0'
+      image_style_linkit_result_thumbnail: '0'
+      image_style_max_1300x1300: '0'
+      image_style_max_2600x2600: '0'
+      image_style_max_325x325: '0'
+      image_style_max_650x650: '0'
+      image_style_medium: '0'
+      image_style_portrait: '0'
+      image_style_portrait_medium: '0'
+      image_style_portrait_tiny: '0'
+      image_style_thumbnail: '0'
+  filter_responsive_image_style:
+    id: filter_responsive_image_style
+    provider: inline_responsive_images
+    status: true
+    weight: 0
+    settings:
+      responsive_style_inhaltsbild_volle_breite: '1'
+      responsive_style_narrow: '0'
+      responsive_style_wide: '0'
