@@ -33,6 +33,14 @@
       text-transform: uppercase
       border-bottom: 1px solid #ccc
       font-family: $roboto-slab
+      ul
+        border: none
+        li
+          list-style-type: none
+          list-style-image: none
+          background: none
+          &:last-child
+            border: none
       &.menu-item--expanded
         list-style-image: none
         list-style-type: none
@@ -51,6 +59,8 @@
         &:hover
           text-decoration: none
           color: $link-color
+          background: none
+          border: none
         &.is-active
           color: $link-color
       ul
