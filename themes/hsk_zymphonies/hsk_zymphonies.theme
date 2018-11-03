@@ -10,26 +10,27 @@ function hsk_zymphonies_preprocess_page(&$variables) {
   if (\Drupal::service('path.matcher')->isFrontPage()) {
     $variables['#attached']['library'][] = 'hsk_zymphonies/header-slideshow';
   }
+  if(array_key_exists('node', $variables)) {
+    if (!is_string($variables['node'])) {
 
-  if(!is_string($variables['node'])) {
-
-    // Load the JS Tabs Script only if we are on the content Type 'turnier'
-    if (array_key_exists('node', $variables)) {
-      if ($variables['node']->getType() == 'turnier') {
-        $variables['#attached']['library'][] = 'hsk_zymphonies/hsk-js-tabs';
+      // Load the JS Tabs Script only if we are on the content Type 'turnier'
+      if (array_key_exists('node', $variables)) {
+        if ($variables['node']->getType() == 'turnier') {
+          $variables['#attached']['library'][] = 'hsk_zymphonies/hsk-js-tabs';
+        }
       }
-    }
 
-    // Load Colorbox for content types "News(article)" and "page", but not on the homepage
-    if (array_key_exists('node', $variables)) {
-      if ($variables['node']->getType() == 'article' || $variables['node']->getType() == 'page' && (\Drupal::service('path.matcher')
-            ->isFrontPage() == FALSE)) {
-        $variables['#attached']['library'][] = 'hsk_zymphonies/colorbox';
+      // Load Colorbox for content types "News(article)" and "page", but not on the homepage
+      if (array_key_exists('node', $variables)) {
+        if ($variables['node']->getType() == 'article' || $variables['node']->getType() == 'page' && (\Drupal::service('path.matcher')
+              ->isFrontPage() == FALSE)) {
+          $variables['#attached']['library'][] = 'hsk_zymphonies/colorbox';
+        }
       }
-    }
-    if (array_key_exists('node', $variables)) {
-      if ($variables['node']->getType() == 'turnier') {
-        $variables['#attached']['library'][] = 'hsk_zymphonies/tablesaw';
+      if (array_key_exists('node', $variables)) {
+        if ($variables['node']->getType() == 'turnier') {
+          $variables['#attached']['library'][] = 'hsk_zymphonies/tablesaw';
+        }
       }
     }
   }
