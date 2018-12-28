@@ -25,6 +25,7 @@ permissions:
   - 'skip comment approval'
   - 'translate interface'
   - 'use text format basic_html'
+  - 'use text format full_html'
   - 'use text format tables_only'
   - 'view any unpublished content'
   - 'view any webform submission'

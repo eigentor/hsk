@@ -36,6 +36,8 @@ content:
   masquerade:
     weight: 50
     region: content
+    settings: {  }
+    third_party_settings: {  }
   member_for:
     weight: 5
     settings: {  }

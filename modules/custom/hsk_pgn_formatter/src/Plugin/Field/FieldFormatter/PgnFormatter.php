@@ -9,10 +9,10 @@ use Drupal\Core\Field\FormatterBase;
  * Formatter to display PGN Code inside a textfield with the Chessbase PGN Viewer.
  *
  * @FieldFormatter (
- *   id = 'hsk_pgn_display',
+ *   id = "hsk_pgn_display",
  *   label = @Translation("Display PGN Code with the Chessbase PGN Viewer"),
  *   field_types = {
- *   'text_long'
+ *   "text_long"
  *   }
  * )
  */

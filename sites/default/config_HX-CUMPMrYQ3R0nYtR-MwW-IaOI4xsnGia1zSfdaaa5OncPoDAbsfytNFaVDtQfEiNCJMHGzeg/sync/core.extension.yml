@@ -28,7 +28,6 @@ module:
   entity_embed: 0
   entity_reference_revisions: 0
   entityconnect: 0
-  eu_cookie_compliance: 0
   eva: 0
   field: 0
   field_collection: 0
@@ -88,6 +87,7 @@ module:
   paragraphs: 11
   better_formats: 100
   standard: 1000
+  eu_cookie_compliance: 1001
 theme:
   stable: 0
   classy: 0
