@@ -12,7 +12,7 @@ use Drupal\Core\Field\FormatterBase;
  *   id = "hsk_pgn_display",
  *   label = @Translation("Display PGN Code with the Chessbase PGN Viewer"),
  *   field_types = {
- *   "text_long"
+ *     "string_long"
  *   }
  * )
  */
@@ -22,7 +22,8 @@ class PgnFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
+    $elements = [];
     // TODO: Implement viewElements() method.
-    return $element;
+    return $elements;
   }
 }
