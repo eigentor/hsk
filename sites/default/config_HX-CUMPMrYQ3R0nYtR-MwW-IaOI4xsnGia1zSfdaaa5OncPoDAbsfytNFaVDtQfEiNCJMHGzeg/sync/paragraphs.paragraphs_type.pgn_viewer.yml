@@ -1,0 +1,9 @@
+uuid: 5d702d39-eb51-472a-acef-3f8660d8f0fb
+langcode: de
+status: true
+dependencies: {  }
+id: pgn_viewer
+label: 'PGN Viewer'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

@@ -1,0 +1,19 @@
+uuid: 85afd83e-6b76-435c-95a2-87c86529c066
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_pgn_txt_pgn
+field_name: field_pgn_txt_pgn
+entity_type: paragraph
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

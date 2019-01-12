@@ -1,0 +1,19 @@
+uuid: e43fb514-2338-42ff-a8eb-0df2f374fe85
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_pgn_txt_pgn
+    - paragraphs.paragraphs_type.pgn_viewer
+id: paragraph.pgn_viewer.field_pgn_txt_pgn
+field_name: field_pgn_txt_pgn
+entity_type: paragraph
+bundle: pgn_viewer
+label: pgn_txt_pgn
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

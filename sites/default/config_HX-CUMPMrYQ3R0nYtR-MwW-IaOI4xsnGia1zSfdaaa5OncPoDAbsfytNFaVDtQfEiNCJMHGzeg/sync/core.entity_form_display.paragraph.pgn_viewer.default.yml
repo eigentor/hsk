@@ -1,0 +1,24 @@
+uuid: 2eb70502-9c28-45c4-bb91-b29ef1d86aef
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.pgn_viewer.field_pgn_txt_pgn
+    - paragraphs.paragraphs_type.pgn_viewer
+id: paragraph.pgn_viewer.default
+targetEntityType: paragraph
+bundle: pgn_viewer
+mode: default
+content:
+  field_pgn_txt_pgn:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

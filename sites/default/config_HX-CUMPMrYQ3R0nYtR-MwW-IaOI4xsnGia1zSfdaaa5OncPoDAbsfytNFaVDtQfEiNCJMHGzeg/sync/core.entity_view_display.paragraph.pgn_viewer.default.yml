@@ -1,0 +1,20 @@
+uuid: 0c36a375-f8c0-4f1d-8743-8209d5a73b84
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.pgn_viewer.field_pgn_txt_pgn
+    - paragraphs.paragraphs_type.pgn_viewer
+id: paragraph.pgn_viewer.default
+targetEntityType: paragraph
+bundle: pgn_viewer
+mode: default
+content:
+  field_pgn_txt_pgn:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden: {  }
