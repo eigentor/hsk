@@ -9,8 +9,8 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
-use Drupal\simpletest\ContentTypeCreationTrait;
-use Drupal\simpletest\NodeCreationTrait;
+use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
+use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
  * Tests the entity_reference_revisions composite relationship.
@@ -34,6 +34,21 @@ class EntityReferenceRevisionsCompositeTest extends EntityKernelTestBase {
     'entity_composite_relationship_test',
     'language'
   );
+
+  /**
+   * The current database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   *
+   */
+  protected $entityTypeManager;
 
   /**
    * {@inheritdoc}
@@ -63,6 +78,10 @@ class EntityReferenceRevisionsCompositeTest extends EntityKernelTestBase {
       'translatable' => FALSE,
     ));
     $field->save();
+
+    // Inject database connection and entity type manager for the tests.
+    $this->database = \Drupal::database();
+    $this->entityTypeManager = \Drupal::entityTypeManager();
   }
 
   /**
@@ -83,11 +102,14 @@ class EntityReferenceRevisionsCompositeTest extends EntityKernelTestBase {
     $this->assertEquals(1, $composite_revisions_count);
 
     // Create a node with a reference to the test composite entity.
+    /** @var \Drupal\node\NodeInterface $node */
     $node = Node::create(array(
       'title' => $this->randomMachineName(),
       'type' => 'article',
-      'composite_reference' => $composite,
     ));
+    $node->save();
+    $node->set('composite_reference', $composite);
+    $this->assertTrue($node->hasTranslationChanges());
     $node->save();
 
     // Assert that there is only 1 revision when creating a node.
@@ -118,7 +140,7 @@ class EntityReferenceRevisionsCompositeTest extends EntityKernelTestBase {
     $this->assertEqual($node_revisions_count, 2);
 
     // Revert to first revision of the node.
-    $node = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($original_node_revision);
+    $node = $this->entityTypeManager->getStorage('node')->loadRevision($original_node_revision);
     $node->setNewRevision();
     $node->isDefaultRevision(TRUE);
     $node->save();
@@ -126,6 +148,14 @@ class EntityReferenceRevisionsCompositeTest extends EntityKernelTestBase {
     // Check the revision of the node.
     $this->assertNotEqual('2nd revision', $node->getTitle(), 'Node did not keep changed title after reversion.');
     $this->assertNotEqual($original_composite_revision, $node->composite_reference[0]->target_revision_id, 'Composite entity got new revision when its host reverted to an old revision.');
+
+    // Test that removing/changing composite references results in translation
+    // changes.
+    $node->set('composite_reference', []);
+    $this->assertTrue($node->hasTranslationChanges());
+
+    // Revert the changes to avoid interfering with the delete test.
+    $node->set('composite_reference', $composite);
 
     // Test that the composite entity is deleted when its parent is deleted.
     $node->delete();
@@ -164,15 +194,20 @@ class EntityReferenceRevisionsCompositeTest extends EntityKernelTestBase {
     $this->assertEqual($composite->parent_field_name->value, 'composite_reference');
     $this->assertTrue($composite->hasTranslation('de'));
 
-    // Test that the composite entity is not when the german translation of the
-    // parent is deleted.
+    // Test that the composite entity is not deleted when the german translation
+    // of the parent is deleted.
     $node->removeTranslation('de');
     $node->save();
     $composite = EntityTestCompositeRelationship::load($composite->id());
     $this->assertNotNull($composite);
-    // @todo Support deleting translations of a composite reference.
-    //   @see https://www.drupal.org/node/2834314.
-    //$this->assertFalse($composite->hasTranslation('de'));
+    $this->assertFalse($composite->hasTranslation('de'));
+
+    // Change the language of the entity, ensure that doesn't try to delete
+    // the default translation.
+    $node->set('langcode', 'de');
+    $node->save();
+    $composite = EntityTestCompositeRelationship::load($composite->id());
+    $this->assertNotNull($composite);
 
     // Test that the composite entity is deleted when its parent is deleted.
     $node->delete();
@@ -216,7 +251,7 @@ class EntityReferenceRevisionsCompositeTest extends EntityKernelTestBase {
     // Test that the composite entity is not when the german translation of the parent is deleted.
     $node->removeTranslation('de');
     $node->save();
-    //\Drupal::entityTypeManager()->getStorage('entity_test_composite')->resetCache();
+    //$this->entityTypeManager->getStorage('entity_test_composite')->resetCache();
     $composite = EntityTestCompositeRelationship::load($composite->id());
     $this->assertNotNull($composite);
 
@@ -258,29 +293,130 @@ class EntityReferenceRevisionsCompositeTest extends EntityKernelTestBase {
     $this->assertEqual($composite->parent_field_name->value, 'composite_reference');
 
     $node->setNewRevision(TRUE);
-    // @todo Enforce this when saving a new revision.
-    $node->composite_reference->entity->setNeedsSave(TRUE);
-    $node->composite_reference->entity->setNewRevision(TRUE);
     $node->save();
-
     // Ensure that we saved a new revision ID.
     $composite = EntityTestCompositeRelationship::load($composite->id());
     $this->assertNotEqual($composite->getRevisionId(), $composite_original_revision_id);
 
     // Test that deleting the first revision does not delete the composite.
-    \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($node_original_revision_id);
+    $this->entityTypeManager->getStorage('node')->deleteRevision($node_original_revision_id);
     $composite = EntityTestCompositeRelationship::load($composite->id());
     $this->assertNotNull($composite);
 
     // Ensure that the composite revision was deleted as well.
-    $composite_revision = \Drupal::entityTypeManager()->getStorage('entity_test_composite')->loadRevision($composite_original_revision_id);
-    // @todo Support host revision delete.
-    //   @see https://www.drupal.org/node/2771523.
-    // $this->assertNull($composite_revision);
+    $composite_revision = $this->entityTypeManager->getStorage('entity_test_composite')->loadRevision($composite_original_revision_id);
+    $this->assertNull($composite_revision);
 
     // Test that the composite entity is deleted when its parent is deleted.
     $node->delete();
     $composite = EntityTestCompositeRelationship::load($composite->id());
+    $this->assertNull($composite);
+  }
+
+  /**
+   * Tests that the composite revision is not deleted if it is the default one.
+   */
+  function testCompositeRelationshipDefaultRevision() {
+    // Create a node with a reference to a test composite entity.
+    $composite = EntityTestCompositeRelationship::create([
+      'uuid' => $this->randomMachineName(),
+      'name' => $this->randomMachineName(),
+    ]);
+    $composite->save();
+    $node = Node::create([
+      'title' => $this->randomMachineName(),
+      'type' => 'article',
+      'composite_reference' => $composite,
+    ]);
+    $node->save();
+
+    $composite = EntityTestCompositeRelationship::load($composite->id());
+    $composite_original_revision_id = $composite->getRevisionId();
+    $node_original_revision_id = $node->getRevisionId();
+
+    // Set a new revision, composite entity should have a new revision as well.
+    $node->setNewRevision(TRUE);
+    $node->save();
+    // Ensure that we saved a new revision ID.
+    $composite2 = EntityTestCompositeRelationship::load($composite->id());
+    $composite2_rev_id = $composite2->getRevisionId();
+    $this->assertNotEquals($composite2_rev_id, $composite_original_revision_id);
+
+    // Revert default composite entity revision to the original revision.
+    $composite_original = $this->entityTypeManager->getStorage('entity_test_composite')->loadRevision($composite_original_revision_id);
+    $composite_original->isDefaultRevision(TRUE);
+    $composite_original->save();
+    // Check the default composite revision is the original composite revision.
+    $this->assertEquals($composite_original_revision_id, $composite_original->getrevisionId());
+
+    // Test deleting the first node revision, referencing to the default
+    // composite revision, does not delete the default composite revision.
+    $this->entityTypeManager->getStorage('node')->deleteRevision($node_original_revision_id);
+    $composite_default = EntityTestCompositeRelationship::load($composite_original->id());
+    $this->assertNotNull($composite_default);
+    $composite_default_revision = $this->entityTypeManager->getStorage('entity_test_composite')->loadRevision($composite_original->getrevisionId());
+    $this->assertNotNull($composite_default_revision);
+    // Ensure the second revision still exists.
+    $composite2_revision = $this->entityTypeManager->getStorage('entity_test_composite')->loadRevision($composite2_rev_id);
+    $this->assertNotNull($composite2_revision);
+  }
+
+  /**
+   * Tests that the composite revision is not deleted if it is still in use.
+   */
+  function testCompositeRelationshipDuplicatedRevisions() {
+    // Create a node with a reference to a test composite entity.
+    $composite = EntityTestCompositeRelationship::create([
+      'uuid' => $this->randomMachineName(),
+      'name' => $this->randomMachineName(),
+    ]);
+    $composite->save();
+    $node = Node::create([
+      'title' => $this->randomMachineName(),
+      'type' => 'article',
+      'composite_reference' => $composite,
+    ]);
+    $node->save();
+
+    $composite = EntityTestCompositeRelationship::load($composite->id());
+    $composite_original_revision_id = $composite->getRevisionId();
+    $node_original_revision_id = $node->getRevisionId();
+
+    // Set a new revision, composite entity should have a new revision as well.
+    $node->setNewRevision(TRUE);
+    $node->save();
+    // Ensure that we saved a new revision ID.
+    $composite2 = EntityTestCompositeRelationship::load($composite->id());
+    $composite2_rev_id = $composite2->getRevisionId();
+    $this->assertNotEquals($composite2_rev_id, $composite_original_revision_id);
+
+    // Set the new node revision to reference to the original composite
+    // revision as well to test this composite revision will not be deleted.
+    $this->database->update('node__composite_reference')
+      ->fields(['composite_reference_target_revision_id' => $composite_original_revision_id])
+      ->condition('revision_id', $node->getRevisionId())
+      ->execute();
+    $this->database->update('node_revision__composite_reference')
+      ->fields(['composite_reference_target_revision_id' => $composite_original_revision_id])
+      ->condition('revision_id', $node->getRevisionId())
+      ->execute();
+
+    // Test deleting the first revision does not delete the composite.
+    $this->entityTypeManager->getStorage('node')->deleteRevision($node_original_revision_id);
+    $composite2 = EntityTestCompositeRelationship::load($composite2->id());
+    $this->assertNotNull($composite2);
+
+    // Ensure the original composite revision is not deleted because it is
+    // still referenced by the second node revision.
+    $composite_original_revision = $this->entityTypeManager->getStorage('entity_test_composite')->loadRevision($composite_original_revision_id);
+    $this->assertNotNull($composite_original_revision);
+    // Ensure the second revision still exists.
+    $composite2_revision = $this->entityTypeManager->getStorage('entity_test_composite')->loadRevision($composite2_rev_id);
+    $this->assertNotNull($composite2_revision);
+
+    // Test that the composite entity is deleted when its parent is deleted.
+    $node->delete();
+    $composite = EntityTestCompositeRelationship::load($composite2->id());
     $this->assertNull($composite);
   }
 

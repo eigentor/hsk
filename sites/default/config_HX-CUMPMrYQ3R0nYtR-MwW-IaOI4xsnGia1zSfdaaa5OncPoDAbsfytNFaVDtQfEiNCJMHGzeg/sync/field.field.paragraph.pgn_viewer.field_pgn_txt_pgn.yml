@@ -9,7 +9,7 @@ id: paragraph.pgn_viewer.field_pgn_txt_pgn
 field_name: field_pgn_txt_pgn
 entity_type: paragraph
 bundle: pgn_viewer
-label: pgn_txt_pgn
+label: PGN
 description: ''
 required: false
 translatable: false

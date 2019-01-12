@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.field.paragraph.pgn_viewer.field_pgn_txt_pgn
     - paragraphs.paragraphs_type.pgn_viewer
+  module:
+    - hsk_pgn_formatter
 id: paragraph.pgn_viewer.default
 targetEntityType: paragraph
 bundle: pgn_viewer
@@ -12,9 +14,9 @@ mode: default
 content:
   field_pgn_txt_pgn:
     weight: 0
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    type: hsk_pgn_display
     region: content
 hidden: {  }

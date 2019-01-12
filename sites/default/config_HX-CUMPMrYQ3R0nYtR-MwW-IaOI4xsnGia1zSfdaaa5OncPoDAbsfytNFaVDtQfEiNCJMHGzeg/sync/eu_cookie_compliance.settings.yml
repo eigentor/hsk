@@ -17,7 +17,7 @@ popup_clicking_confirmation: false
 popup_scrolling_confirmation: false
 popup_delay: 1000
 show_disagree_button: false
-popup_disagree_button_message: 'Give me more info'
+popup_disagree_button_message: 'Weitere Informationen'
 popup_enabled: true
 popup_find_more_button_message: 'Weitere Informationen'
 popup_height: null

@@ -1,0 +1,39 @@
+uuid: 84843c4d-cd99-47ea-b15c-d0c80be52bab
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_new_par_various
+    - node.type.article
+    - paragraphs.paragraphs_type.pgn_viewer
+    - paragraphs.paragraphs_type.text
+  module:
+    - entity_reference_revisions
+id: node.article.field_new_par_various
+field_name: field_new_par_various
+entity_type: node
+bundle: article
+label: Inhaltselemente
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      text: text
+      pgn_viewer: pgn_viewer
+    target_bundles_drag_drop:
+      text:
+        enabled: true
+        weight: 4
+      image_gallery:
+        weight: 5
+        enabled: false
+      pgn_viewer:
+        enabled: true
+        weight: 6
+field_type: entity_reference_revisions

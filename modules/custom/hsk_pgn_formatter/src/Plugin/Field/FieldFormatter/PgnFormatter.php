@@ -24,6 +24,16 @@ class PgnFormatter extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
     // TODO: Implement viewElements() method.
+    foreach($items as $delta => $item) {
+      $elements[$delta] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'class' => 'cbreplay'
+        ],
+        '#value' => $item->value,
+      ];
+    }
     return $elements;
   }
 }
