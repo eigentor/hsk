@@ -6,7 +6,8 @@ pgn_viewer:
     #js/hsk_jquerynoconflict.js: {}
     #'https://pgn.chessbase.com/jquery-3.0.0.min.js': { type: external }
     # js/pgn_viewer.js: {}
-    'https://pgn.chessbase.com/cbreplay.js': { type: external }
+    #'https://pgn.chessbase.com/cbreplay.js': { type: external, attributes: { defer: true }  }
+    js/pgn_delay.js: {}
   dependencies:
     - core/jquery
     - core/drupal
