@@ -3,6 +3,9 @@ pgn_viewer:
     theme:
       'https://pgn.chessbase.com/CBReplay.css': { type: external }
   js:
-    'https://pgn.chessbase.com/jquery-3.0.0.min.js': { type: external }
     js/hsk_jquerynoconflict.js: {}
-    js/pgn_viewer.js: {}
+    'https://pgn.chessbase.com/jquery-3.0.0.min.js': { type: external }
+    # js/pgn_viewer.js: {}
+    'https://pgn.chessbase.com/cbreplay.js': { type: external }
+  dependencies:
+

@@ -2,6 +2,6 @@
 
 function hsk_pgn_formatter_preprocess_paragraph(&$variables) {
   if($variables['elements']['#paragraph']->getType() == 'pgn_viewer') {
-    $variables['#attached']['library'][] = 'hsk_pgn_formatter/pgn_viewer';
+//    $variables['#attached']['library'][] = 'hsk_pgn_formatter/pgn_viewer';
   }
 }
