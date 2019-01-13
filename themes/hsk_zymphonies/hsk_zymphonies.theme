@@ -53,4 +53,20 @@ function hsk_zymphonies_preprocess_html(&$variables) {
       }
     }
   }
+
+
+  $theme_handler = \Drupal::service('theme_handler');
+  $default_theme = $theme_handler->getDefault();
+  $theme_path = $theme_handler->getTheme($default_theme)->getPath();
+
+  $raw_pgn_viewer = '<script type="text/javascript" src="/' . $theme_path . '/js/hsk_jquerynoconflict.js"></script>';
+  $raw_pgn_viewer .= '<link type="text/css" rel="stylesheet" href="https://pgn.chessbase.com/CBReplay.css" />';
+  $raw_pgn_viewer .= '<script type="text/javascript" src="https://pgn.chessbase.com/jquery-3.0.0.min.js"></script>';
+  $raw_pgn_viewer .= '<script type="text/javascript" src="https://pgn.chessbase.com/cbreplay.js"></script>';
+  $variables['pgn_viewer'] = [
+    '#type' => 'processed_text',
+    '#text' => $raw_pgn_viewer,
+    '#format' => 'full_html',
+    ];
+  $variables['pgn_viewer'] = '';
 }
