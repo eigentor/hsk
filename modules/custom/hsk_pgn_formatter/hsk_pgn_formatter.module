@@ -2,6 +2,24 @@
 
 function hsk_pgn_formatter_preprocess_paragraph(&$variables) {
   if($variables['elements']['#paragraph']->getType() == 'pgn_viewer') {
-    $variables['#attached']['library'][] = 'hsk_pgn_formatter/pgn_viewer';
+    #$variables['#attached']['library'][] = 'hsk_pgn_formatter/pgn_viewer';
   }
+}
+
+function hsk_pgn_formatter_preprocess_node(&$variables) {
+  ksm($variables);
+  if($variables['node']->getType() == 'article'){
+    if(!empty($variables['node']->field_new_par_various->getValue())) {
+      // Get all paragraph entities from the paragraph reference field
+      $paragraphs = $variables['node']->field_new_par_various->referencedEntities();
+      $pgn_viewer = FALSE;
+      // Check if there is a paragraph of type pgn_viewer. If so, set the variable
+      // $pgn_viewer to TRUE.
+      foreach($paragraphs as $item) {
+        if($item->getType() == 'pgn_viewer'){
+          $pgn_viewer = TRUE;
+        };
+      }
+    }
+  };
 }

@@ -23,7 +23,15 @@ class PgnFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-    // TODO: Implement viewElements() method.
+
+//    $raw_pgn_viewer = '<link type="text/css" rel="stylesheet" href="https://pgn.chessbase.com/CBReplay.css" />';
+//    $raw_pgn_viewer .= '<script type="text/javascript" src="https://pgn.chessbase.com/jquery-3.0.0.min.js"></script>';
+//    $raw_pgn_viewer .= '<script type="text/javascript" src="https://pgn.chessbase.com/cbreplay.js"></script>';
+//    $elements[0] = [
+//      '#type' => 'processed_text',
+//      '#text' => $raw_pgn_viewer,
+//      '#format' => 'full_html',
+//    ];
     foreach($items as $delta => $item) {
       $elements[$delta] = [
         '#type' => 'html_tag',
