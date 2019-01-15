@@ -1,0 +1,20 @@
+uuid: da4ae824-c11f-4ffc-acaf-1124a7f2e49b
+langcode: de
+status: true
+dependencies:
+  module:
+    - masquerade
+  theme:
+    - seven_hsk
+id: seven_hsk_masquerade
+theme: seven_hsk
+region: content
+weight: -1
+provider: null
+plugin: masquerade
+settings:
+  id: masquerade
+  label: Masquerade
+  provider: masquerade
+  label_display: '0'
+visibility: {  }

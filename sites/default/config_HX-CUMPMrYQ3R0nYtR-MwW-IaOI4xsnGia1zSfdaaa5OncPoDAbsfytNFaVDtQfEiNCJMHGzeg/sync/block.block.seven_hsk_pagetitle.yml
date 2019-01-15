@@ -1,0 +1,18 @@
+uuid: 58827744-99d6-4eee-b991-384012802ca7
+langcode: de
+status: true
+dependencies:
+  theme:
+    - seven_hsk
+id: seven_hsk_pagetitle
+theme: seven_hsk
+region: header
+weight: -5
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,22 @@
+uuid: 9e6cd3bf-1f35-41a3-9873-2fcbb4c97c45
+langcode: de
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - seven_hsk
+_core:
+  default_config_hash: mHlwUVEUZgexqEoFGLghbBsl2C0SmKgZh5KrtvGBc6Y
+id: seven_hsk_messages
+theme: seven_hsk
+region: highlighted
+weight: -5
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }

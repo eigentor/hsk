@@ -1,0 +1,22 @@
+uuid: e2336bca-8222-4f7f-9faf-3cef13b39a85
+langcode: de
+status: true
+dependencies:
+  theme:
+    - seven_hsk
+_core:
+  default_config_hash: srZFd6APviawb6xx2Z2LxPodIzyh_shuaw--HGyiEpU
+id: seven_hsk_local_tasks
+theme: seven_hsk
+region: header
+weight: -4
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: false
+visibility: {  }

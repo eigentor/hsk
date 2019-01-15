@@ -7,7 +7,6 @@ function hsk_pgn_formatter_preprocess_paragraph(&$variables) {
 }
 
 function hsk_pgn_formatter_preprocess_node(&$variables) {
-  ksm($variables);
   if($variables['node']->getType() == 'article'){
     if(!empty($variables['node']->field_new_par_various->getValue())) {
       // Get all paragraph entities from the paragraph reference field
@@ -19,6 +18,17 @@ function hsk_pgn_formatter_preprocess_node(&$variables) {
         if($item->getType() == 'pgn_viewer'){
           $pgn_viewer = TRUE;
         };
+      }
+      if($pgn_viewer == TRUE) {
+        $raw_pgn_viewer = '<link type="text/css" rel="stylesheet" href="https://pgn.chessbase.com/CBReplay.css" />';
+        $raw_pgn_viewer .= '<script type="text/javascript" src="https://pgn.chessbase.com/jquery-3.0.0.min.js"></script>';
+        $raw_pgn_viewer .= '<script type="text/javascript" src="https://pgn.chessbase.com/cbreplay.js"></script>';
+        $variables['pgn_viewer_script'] = [
+          '#type' => 'processed_text',
+          '#text' => $raw_pgn_viewer,
+          '#format' => 'full_html',
+        ];
+//        $variables['content']['field_new_par_various']['#prefix'] = 'Alter Schwede';
       }
     }
   };
