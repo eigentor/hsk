@@ -40,6 +40,7 @@ class PgnFormatter extends FormatterBase {
           'class' => 'cbreplay'
         ],
         '#value' => $item->value,
+        '#suffix' =>'<span class="description" >©️ für den PGN Viewer <a href="https://schach.de/howto/embedtools">Chessbase GmbH</a></span>'
       ];
     }
     return $elements;
