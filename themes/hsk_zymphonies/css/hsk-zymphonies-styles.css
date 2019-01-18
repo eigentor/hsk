@@ -2332,6 +2332,15 @@ div#sliding-popup {
       div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
         background: #ba6900; }
 
+.field--name-field-pgn-txt-pgn .cbreplay {
+  margin-bottom: 13px; }
+.field--name-field-pgn-txt-pgn .description {
+  display: block;
+  margin-bottom: 25px;
+  font-size: 11.625px;
+  font-size: 0.75rem;
+  color: #777; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
