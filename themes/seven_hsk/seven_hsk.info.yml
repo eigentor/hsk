@@ -1,4 +1,4 @@
-name: Seven Presseclub
+name: Seven HSK
 type: theme
 description: 'Modified Version of Seven Admin Theme'
 package: Core
@@ -7,9 +7,8 @@ core: 8.x
 base theme: seven
 
 libraries:
-  - seven_presseclub/global-styling
-  - seven_presseclub/timepicker
-  - seven/global-styling
+  - seven_hsk/global-styling
+  - seven_hsk/timepicker
 libraries-override:
   core/drupal.vertical-tabs:
     css:

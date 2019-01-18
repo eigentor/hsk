@@ -31,7 +31,7 @@ id: paragraph.text.field_txt_txt_text
 field_name: field_txt_txt_text
 entity_type: paragraph
 bundle: text
-label: txt_txt_text
+label: Text
 description: ''
 required: false
 translatable: false

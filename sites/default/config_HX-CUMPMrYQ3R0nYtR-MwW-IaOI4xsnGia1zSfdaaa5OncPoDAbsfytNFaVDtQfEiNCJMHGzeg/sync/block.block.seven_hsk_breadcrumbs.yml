@@ -1,17 +1,17 @@
-uuid: 69312cce-80bd-4c8a-885e-7c01ebe542b4
+uuid: de6c616f-a011-4a3b-9c48-f668d5a06d1a
 langcode: de
-status: false
+status: true
 dependencies:
   module:
     - system
   theme:
-    - hsk_zymphonies
+    - seven_hsk
 _core:
   default_config_hash: 8hFnuAR_exGkng3kwI3vUa1WD6tx-nvOyhaiIWtwFKk
-id: hsk_zymphonies_breadcrumbs
-theme: hsk_zymphonies
-region: header
-weight: -6
+id: seven_hsk_breadcrumbs
+theme: seven_hsk
+region: breadcrumb
+weight: -5
 provider: null
 plugin: system_breadcrumb_block
 settings:

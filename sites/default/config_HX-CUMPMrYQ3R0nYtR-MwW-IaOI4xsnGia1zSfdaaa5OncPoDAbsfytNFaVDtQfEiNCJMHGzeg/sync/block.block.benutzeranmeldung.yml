@@ -1,0 +1,20 @@
+uuid: 3823c45a-cd3b-4bc4-9dcb-27d6a6b31262
+langcode: de
+status: true
+dependencies:
+  module:
+    - user
+  theme:
+    - seven_hsk
+id: benutzeranmeldung
+theme: seven_hsk
+region: content
+weight: -2
+provider: null
+plugin: user_login_block
+settings:
+  id: user_login_block
+  label: Benutzeranmeldung
+  provider: user
+  label_display: visible
+visibility: {  }

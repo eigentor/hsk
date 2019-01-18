@@ -1,0 +1,22 @@
+uuid: 42dd7e65-e75a-46be-88ee-dcac5d681077
+langcode: de
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - seven_hsk
+_core:
+  default_config_hash: JzaWkoC9Wrt0iNmNY2nI_xBR_1RB9DDTzmg0PR3aAvc
+id: seven_hsk_help
+theme: seven_hsk
+region: help
+weight: -5
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  provider: help
+  label_display: '0'
+visibility: {  }
