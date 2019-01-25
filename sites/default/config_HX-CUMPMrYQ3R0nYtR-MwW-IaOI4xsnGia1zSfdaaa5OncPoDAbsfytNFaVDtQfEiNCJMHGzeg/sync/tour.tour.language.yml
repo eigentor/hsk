@@ -17,43 +17,43 @@ tips:
     id: language-overview
     plugin: text
     label: Languages
-    body: '<p>The "Languages" page allows you to add, edit, delete, and reorder languages for the site.</p>'
+    body: '<p>Die Seite „Sprachen“ erlaubt es, Sprachen zur Website hinzuzufügen, zu bearbeiten, zu löschen und neu zu ordnen.</p>'
     weight: 1
   language-add:
     id: language-add
     plugin: text
-    label: 'Adding languages'
-    body: '<p>To add more languages to your site, click the "Add language" button.</p><p>Added languages will be displayed in the language list and can then be edited or deleted.</p>'
+    label: 'Sprachen hinzufügen'
+    body: '<p>Um weitere Sprachen zu dieser Website hinzuzufügen, den <em>Sprache hinzufügen</em> Button klicken.</p><p>Hinzugefügte Sprachen werden in der nachfolgenden Liste angezeigt und können dort bearbeitet oder gelöscht werden.</p>'
     weight: 2
     attributes:
       data-class: button-action
   language-reorder:
     id: language-reorder
     plugin: text
-    label: 'Reordering languages'
-    body: '<p>To reorder the languages on your site, use the drag icons next to each language.</p><p>The order shown here is the display order for language lists on the site such as in the language switcher blocks provided by the Interface Translation and Content Translation modules.</p><p>When you are done with reordering the languages, click the "Save configuration" button for the changes to take effect.</p>'
+    label: 'Sprachen neu anordnen'
+    body: '<p>Um die Priorität der Sprachen auf der Website neu festzulegen nutzen Sie das Symbol neben der jeweiligen Sprache um diese an die gewünschte Position zu ziehen.</p><p>Die hier angegebene Reihenfolge ist die Vorgabe für alle Sprachbezogenen Listen auf der Seite wie beispielsweise die Sprachblöcke, die vom Modul zum Übersetzen der Benutzeroberfläche und vom Modul zur Übersetzung der Inhalte der Website bereitgestellt werden.</p>'
     weight: 3
     attributes:
       data-class: draggable
   language-default:
     id: language-default
     plugin: text
-    label: 'Set a language as default'
-    body: '<p>You can change the default language of the site by choosing one of your configured languages as default. The site will use the default language in situations where no choice is made but a language should be set, for example as the language of the displayed interface.</p>'
+    label: 'Eine Sprache als Standard setzen'
+    body: '<p>Die Standardsprache der Website kann durch die Auswahl einer der eingerichteten Sprachen als neuen Standard geändert werden. Die Website verwendet die Standardsprache im Fall, dass keine Auswahl getroffen wurde, aber eine Sprache angegeben sein sollte, zum Beispiel die Sprache der angezeigten Benutzeroberfläche.</p>'
     weight: 4
     attributes:
       data-class: js-form-item-site-default-language
   language-operations:
     id: language-operations
     plugin: text
-    label: 'Modifying languages'
-    body: '<p>Operations are provided for editing and deleting your languages.</p><p>You can edit the name and the direction of the language.</p><p>Deleted languages can be added back at a later time. Deleting a language will remove all interface translations associated with it, and content in this language will be set to be language neutral. Note that you cannot delete the default language of the site.</p>'
+    label: 'Sprachen anpassen'
+    body: '<p>Es werden Manipulationen für das Bearbeiten und Löschen einer Sprache bereit gestellt.</p><p>Der Name und die Schreibrichtung der Sprache kann bearbeitet werden.</p><p>Gelöschte Sprachen können zu einem späteren Zeitpunkt wieder hinzugefügt werden. Beim Löschen einer Sprache werden sämtliche Übersetzungen der Benutzeroberfläche entfernt und Inhalte in dieser Sprache werden auf eine neutrale Sprache zurückgesetzt. Bitte beachten, dass sich die Standardsprache einer Website nicht löschen lässt.</p>'
     weight: 5
     attributes:
       data-class: dropbutton-wrapper
   language-continue:
     id: language-continue
     plugin: text
-    label: 'Continuing on'
+    label: 'Übersetzungen wiederverwenden'
     body: '<p>Now that you have an overview of the "Languages" page, you can continue by:<ul><li><a href="[site:url]/admin/config/regional/language/add">Adding a language</a></li><li>Reordering languages</li><li>Editing a language</li><li>Deleting a language</li></ul></p>'
     weight: 6

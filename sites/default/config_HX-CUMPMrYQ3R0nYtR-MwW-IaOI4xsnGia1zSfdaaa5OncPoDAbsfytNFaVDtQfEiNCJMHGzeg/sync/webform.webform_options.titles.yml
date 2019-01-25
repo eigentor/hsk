@@ -8,5 +8,5 @@ dependencies:
 _core:
   default_config_hash: Onwyr2kH5zCeHvMfSSPDJIKUKrvX7x7tAr-7Uv_-k-c
 id: titles
-label: Titles
-options: "Miss: Miss\nMs: Ms\nMr: Mr\nMrs: Mrs\nDr: Dr\n"
+label: Titel
+options: "Fräulein: Fräulein\nFrau: Frau\nHerr: Herr\nMrs: Mrs\nDr: Dr\n"

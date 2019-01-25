@@ -8,5 +8,5 @@ dependencies:
 _core:
   default_config_hash: 6iKOLiv3WqdDwbLEYesK2txBl-1W8frLFe3PbT8-AaE
 id: employment_status
-label: 'Employment status'
-options: "'Full Time': 'Full Time'\n'Part Time': 'Part Time'\n'Military': 'Military'\nUnemployed: Unemployed\nRetired: Retired\n"
+label: Arbeitsverhältnis
+options: "Vollzeit: Vollzeit\r\nTeilzeit: Teilzeit\r\nMilitär: Militär\r\nArbeitslos: Arbeitslos\r\n'Im Ruhestand': 'Im Ruhestand'\n"

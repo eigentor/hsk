@@ -8,5 +8,5 @@ dependencies:
 _core:
   default_config_hash: saeeZhVt98h_n7CVmx4DOg02g7x3cIdctN_E7BYzMgs
 id: likert_comparison
-label: 'Likert: Comparison'
-options: "1: Strongly Disagree\n2: Disagree\n3: Neutral\n4: Agree\n5: Strongly Agree\n"
+label: 'Likert: Vergleich'
+options: "1: Stimme überhaupt nicht zu\r\n2: Stimme nicht zu\r\n3: Neutral\r\n4: Stimme zu\r\n5: Stimme stark zu\n"

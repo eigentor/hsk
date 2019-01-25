@@ -177,12 +177,12 @@ display:
             items_per_page_options_all: false
             items_per_page_options_all_label: '- Alle -'
             offset: false
-            offset_label: Offset
+            offset_label: Versatz
           tags:
             previous: '< Zurück'
             next: 'Weiter >'
-            first: '« First'
-            last: 'Last »'
+            first: '« Anfang'
+            last: 'Ende »'
           quantity: 9
       query:
         type: views_query

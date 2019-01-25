@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: eYyOjXVghEin1Ed7t7vr9X0dSn018_zeZegu2Ao-j4Q
 id: language-edit
-label: 'Editing languages'
+label: 'Sprachen bearbeiten'
 module: language
 routes:
   -
@@ -16,14 +16,14 @@ tips:
   language-edit-overview:
     id: language-edit-overview
     plugin: text
-    label: 'Editing languages'
-    body: '<p>This page provides the ability to edit a language on your site, including custom languages.</p>'
+    label: 'Sprachen bearbeiten'
+    body: '<p>Diese Seite bietet die Möglichkeit, eine Sprache auf Ihrer Website zu bearbeiten, einschließlich benutzerdefinierter Sprachen.</p>'
     weight: 1
   language-edit-langcode:
     id: language-edit-langcode
     plugin: text
     label: 'Language code'
-    body: '<p>You cannot change the code of a language on the site, since it is used by the system to keep track of the language.</p>'
+    body: '<p>Das Sprachkürzel einer Sprache kann auf der Website nicht geändert werde, da es vom System zum Identifizieren der Sprache genutzt wird.</p>'
     weight: 2
     attributes:
       data-id: edit-langcode-view
@@ -31,7 +31,7 @@ tips:
     id: language-edit-label
     plugin: text
     label: 'Language name'
-    body: '<p>The language name is used throughout the site for all users and is written in English. Names of built-in languages can be translated using the Interface Translation module, and names of both built-in and custom languages can be translated using the Configuration Translation module.</p>'
+    body: '<p>Der Name der Sprache wird für alle Benutzer der Website in Englisch angezeigt. Die Namen von mitgelieferten Sprachen können mit dem Interface-Translation-Modul und Namen von mitgelieferten sowie benutzerdefinierten Sprache können mit dem Configuration-Translation-Modul übersetzt werden.</p>'
     weight: 3
     attributes:
       data-id: edit-label
@@ -39,13 +39,13 @@ tips:
     id: language-edit-direction
     plugin: text
     label: 'Language direction'
-    body: '<p>Choose if the language is a "Left to right" or "Right to left" language.</p><p>Note that not all themes support "Right to left" layouts, so test your theme if you are using "Right to left".</p>'
+    body: '<p>Auswählen ob es sich um eine „Links-nach-rechts“ oder „Rechts-nach-links“ Sprache handelt.</p><p>Bitte beachten, dass nicht alle Themes „Rechts-nach-links“-Layouts unterstützen. Sollte „Rechts-nach-links“ ausgewählt sein, sollte das verwendete Theme im Hinblick darauf getestet werden.</p>'
     weight: 4
     attributes:
       data-id: edit-direction--wrapper--description
   language-edit-continue:
     id: language-edit-continue
     plugin: text
-    label: 'Continuing on'
-    body: '<p>Now that you have an overview of the "Edit language" feature, you can continue by:<ul><li>Editing a language</li><li><a href="[site:url]/admin/config/regional/language">Viewing configured languages</a></li></ul></p>'
+    label: 'Übersetzungen wiederverwenden'
+    body: '<p>Jetzt, da Sie einen Überblick über die Funktion „Sprache bearbeiten“ haben, können Sie fortfahren mit:<ul><li>Eine Sprache bearbeiten</li><li><a href="[site:url]admin/config/regional/language">Eingerichtete Sprachen anzeigen</a></li></ul></p>'
     weight: 5

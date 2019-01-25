@@ -5,7 +5,7 @@ dependencies: {  }
 _core:
   default_config_hash: 0ziF0ShQzLTglyja9_chf5qouy7Ce3i-254JN-PWmk4
 id: entire_site
-label: 'Entire Site'
+label: 'Gesamte Website'
 type: EntireSite
 config:
   name: 'Entire Site'

@@ -10,7 +10,7 @@ _core:
 id: block_content
 label: 'Bibliothek benutzerdefinierter Blöcke'
 module: views
-description: 'Find and manage custom blocks.'
+description: 'Benutzerdefinierte Blöcke finden und verwalten.'
 tag: default
 base_table: block_content_field_data
 base_field: id
@@ -64,7 +64,7 @@ display:
             items_per_page_options_all: false
             items_per_page_options_all_label: '- Alle -'
             offset: false
-            offset_label: Offset
+            offset_label: Versatz
       style:
         type: table
         options:

@@ -8,5 +8,5 @@ dependencies:
 _core:
   default_config_hash: VtI_OJow8fKXIo4jyhi2UF_WmE6MQf94_fR9qctlv7s
 id: likert_ten_scale
-label: 'Likert: Ten Scale'
+label: 'Likert: Zehnerskala'
 options: "1: 1\n2: 2\n3: 3\n4: 4\n5: 5\n6: 6\n7: 7\n8: 8\n9: 9\n10: 10\n"

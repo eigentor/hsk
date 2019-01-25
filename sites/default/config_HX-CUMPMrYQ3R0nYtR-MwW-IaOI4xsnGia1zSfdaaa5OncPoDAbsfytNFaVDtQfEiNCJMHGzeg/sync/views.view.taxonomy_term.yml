@@ -13,7 +13,7 @@ _core:
 id: taxonomy_term
 label: Taxonomie-Begriff
 module: taxonomy
-description: 'Content belonging to a certain taxonomy term.'
+description: 'Inhalt, der zu einem bestimmten Taxonomie-Begriff gehört.'
 tag: default
 base_table: node_field_data
 base_field: nid
@@ -64,7 +64,7 @@ display:
             items_per_page_options_all: false
             items_per_page_options_all_label: '- Alle -'
             offset: false
-            offset_label: Offset
+            offset_label: Versatz
           tags:
             previous: ‹‹
             next: ››

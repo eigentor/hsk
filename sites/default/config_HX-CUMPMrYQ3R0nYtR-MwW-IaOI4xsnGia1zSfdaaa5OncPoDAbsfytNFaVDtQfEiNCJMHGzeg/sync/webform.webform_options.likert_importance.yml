@@ -8,5 +8,5 @@ dependencies:
 _core:
   default_config_hash: UZmRfKwhC1I8mlY5XuVV3DF7MpWAbFxyynhNFR9kuOo
 id: likert_importance
-label: 'Likert: Importance'
-options: "1: Not at all Important\n2: Somewhat Important\n3: Neutral\n4: Important\n5: Very Important\n"
+label: 'Likert: Wichtigkeit'
+options: "1: Überhaupt nicht wichtig\r\n2: Etwas Wichtig\r\n3: Neutral\r\n4: Wichtig\r\n5: Sehr wichtig\n"

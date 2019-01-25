@@ -8,5 +8,5 @@ dependencies:
 _core:
   default_config_hash: kyCI0E0VJVJXi_Z61m6Mom95_ot1haYPehpPr_IxdcM
 id: likert_quality
-label: 'Likert: Quality'
-options: "1: Poor\n2: Fair\n3: Good\n4: Very good\n5: Excellent\n"
+label: 'Likert: Qualität'
+options: "1: Sehr schlecht\r\n2: Schlecht\r\n3: Neutral \r\n4: Gut\r\n5: Sehr gut\n"

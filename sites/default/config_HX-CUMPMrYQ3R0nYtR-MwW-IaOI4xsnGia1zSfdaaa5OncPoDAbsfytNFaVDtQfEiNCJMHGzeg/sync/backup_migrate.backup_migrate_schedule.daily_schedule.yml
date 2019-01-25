@@ -7,7 +7,7 @@ _core:
 id: daily_schedule
 label: 'Daily Schedule'
 enabled: true
-keep: 50
+keep: 80
 period: 86400
 cron: null
 source_id: default_db

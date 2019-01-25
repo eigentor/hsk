@@ -55,8 +55,8 @@ display:
           tags:
             previous: '< Zurück'
             next: 'Weiter >'
-            first: '« First'
-            last: 'Last »'
+            first: '« Anfang'
+            last: 'Ende »'
           expose:
             items_per_page: false
             items_per_page_label: 'Elemente pro Seite'
@@ -64,7 +64,7 @@ display:
             items_per_page_options_all: false
             items_per_page_options_all_label: '- Alle -'
             offset: false
-            offset_label: Offset
+            offset_label: Versatz
           quantity: 9
       style:
         type: table
@@ -592,7 +592,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: 'Name or email contains'
+            label: 'Name oder E-Mail-Adresse enthält'
             description: ''
             use_operator: false
             operator: combine_op

@@ -7,8 +7,8 @@ search_contains: false
 disable_search: false
 allow_single_deselect: false
 placeholder_text_multiple: 'Filteroptionen auswählen'
-placeholder_text_single: 'Choose an option'
-no_results_text: 'No results match'
+placeholder_text_single: 'Eine Option auswählen'
+no_results_text: 'Keine passenden Resultate'
 disabled_themes:
   bartik: '0'
   seven: '0'

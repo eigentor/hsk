@@ -8,4 +8,4 @@ id: taxonomy_term
 label: Taxonomie-Begriff
 tags:
   title: '[term:name] | [site:name]'
-  description: '[term:description]'
+  description: '[Begriff:description]'

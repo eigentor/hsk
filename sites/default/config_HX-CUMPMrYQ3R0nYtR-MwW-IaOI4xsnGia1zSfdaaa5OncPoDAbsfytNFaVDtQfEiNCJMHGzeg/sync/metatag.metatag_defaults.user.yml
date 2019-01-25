@@ -7,5 +7,5 @@ _core:
 id: user
 label: Benutzer
 tags:
-  title: '[user:name] | [site:name]'
+  title: '[Benutzer:name] | [Website:name]'
   description: '[site:name]'

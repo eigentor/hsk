@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: AMWw3H7E7fuBLMW6LmsCJvYFYQiWwSCl0Fbwe0wiIrU
 id: language-add
-label: 'Adding languages'
+label: 'Sprachen hinzufügen'
 module: language
 routes:
   -
@@ -16,20 +16,20 @@ tips:
   language-add-overview:
     id: language-add-overview
     plugin: text
-    label: 'Adding languages'
-    body: '<p>This page provides the ability to add common languages to your site.</p><p>If the desired language is not available, you can add a custom language.</p>'
+    label: 'Sprachen hinzufügen'
+    body: '<p>Diese Seite bietet die Möglichkeit verbreitete Sprachen zur Website hinzuzufügen.</p><p>Falls die gewünschte Sprache nicht verfügbar ist, kann eine benutzerdefinierte Sprache hinzugefügt werden.</p>'
     weight: 1
   language-add-choose:
     id: language-add-choose
     plugin: text
     label: 'Select language'
-    body: '<p>Choose a language from the list, or choose "Custom language..." at the end of the list.</p><p>Click the "Add language" button when you are done choosing your language.</p><p>When adding a custom language, you will get an additional form where you can provide the name, code, and direction of the language.</p>'
+    body: '<p>Eine Sprache aus der Liste oder „Benutzerdefinierte Sprache...“ am Ende der selben auswählen.</p><p>Wenn die Sprache ausgewählt wurde, den „Sprache hinzufügen“-Button klicken.</p><p>Beim Hinzufügen einer benutzerdefinierten Sprache, wird ein zusätzliches Formular angezeigt. In diesem kann der Name, das Sprachkürzel sowie die Leserichtung der Sprache angeben werden.</p>'
     weight: 2
     attributes:
       data-id: edit-predefined-langcode
   language-add-continue:
     id: language-add-continue
     plugin: text
-    label: 'Continuing on'
-    body: '<p>Now that you have an overview of the "Add languages" feature, you can continue by:<ul><li>Adding a language</li><li>Adding a custom language</li><li><a href="[site:url]/admin/config/regional/language">Viewing configured languages</a></li></ul></p>'
+    label: 'Übersetzungen wiederverwenden'
+    body: '<p>Jetzt, da Sie einen Überblick über die Funktion „Sprachen hinzufügen“ haben, können Sie fortfahren mit:<ul><li>Eine Sprache hinzufügen</li><li>Eine benutzerdefinierte Sprache hinzufügen</li><li><a href="[site:url]admin/config/regional/language">Eingerichtete Sprachen anzeigen</a></li></ul></p>'
     weight: 3

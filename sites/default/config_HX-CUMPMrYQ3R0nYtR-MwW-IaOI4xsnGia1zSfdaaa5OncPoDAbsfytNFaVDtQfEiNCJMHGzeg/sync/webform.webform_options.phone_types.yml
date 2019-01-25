@@ -8,5 +8,5 @@ dependencies:
 _core:
   default_config_hash: HTQyVQb-cumvmKyHdJ8uUqH8fKnU1YehyNSQ4le0AyA
 id: phone_types
-label: 'Phone type'
-options: "Home: Home\nOffice: Office\nCell: Cell\n"
+label: Telefontyp
+options: "Zuhause: Zuhause\nArbeit: Arbeit\nMobil: Mobil\n"

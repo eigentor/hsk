@@ -10,7 +10,7 @@ _core:
 id: files
 label: Dateien
 module: file
-description: 'Find and manage files.'
+description: 'Dateien suchen und verwalten.'
 tag: default
 base_table: file_managed
 base_field: fid
@@ -64,7 +64,7 @@ display:
             items_per_page_options_all: false
             items_per_page_options_all_label: '- Alle -'
             offset: false
-            offset_label: Offset
+            offset_label: Versatz
       style:
         type: table
         options:
@@ -733,7 +733,7 @@ display:
   page_1:
     display_plugin: page
     id: page_1
-    display_title: 'Files overview'
+    display_title: Dateiübersicht
     position: 1
     display_options:
       path: admin/content/files
@@ -772,7 +772,7 @@ display:
   page_2:
     display_plugin: page
     id: page_2
-    display_title: 'File usage'
+    display_title: Dateinutzung
     position: 2
     display_options:
       display_description: ''
@@ -807,7 +807,7 @@ display:
             items_per_page_options_all: false
             items_per_page_options_all_label: '- Alle -'
             offset: false
-            offset_label: Offset
+            offset_label: Versatz
       filters: {  }
       filter_groups:
         operator: AND
@@ -919,7 +919,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Registering module'
+          label: 'Registrierendes Modul'
           exclude: false
           alter:
             alter_text: false
@@ -1019,7 +1019,7 @@ display:
           suffix: ''
           plugin_id: numeric
       group_by: false
-      title: 'File usage'
+      title: Dateinutzung
       arguments:
         fid:
           id: fid
@@ -1034,7 +1034,7 @@ display:
             title_enable: false
             title: Alle
           title_enable: true
-          title: 'File usage information for {{ arguments.fid }}'
+          title: 'Dateiverwendungsinformationen für {{ arguments.fid }}'
           default_argument_type: fixed
           default_argument_options:
             argument: ''

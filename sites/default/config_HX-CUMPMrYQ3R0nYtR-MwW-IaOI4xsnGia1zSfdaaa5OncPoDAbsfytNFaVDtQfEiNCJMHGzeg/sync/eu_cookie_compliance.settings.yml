@@ -8,7 +8,7 @@ exclude_paths: "/admin\r\n/admin/*\r\n/batch\r\n/node/add*\r\n/node/*/*\r\n/user
 exclude_admin_theme: false
 langcode: de
 popup_agreed:
-  value: '<h2>Thank you for accepting cookies</h2><p>You can now hide this message or find out more about cookies.</p>'
+  value: '<h2>Vielen Dank für das Akzeptieren der Cookies</h2><p>Sie können diese Meldung jetzt ausblenden oder mehr über Cookies erfahren.</p>'
   format: restricted_html
 popup_agree_button_message: 'Ich stimme zu'
 popup_agreed_enabled: false
@@ -46,13 +46,13 @@ use_mobile_message: false
 _core:
   default_config_hash: OlBvbDcm2PUT2i28p3oNpuKaUKbbK4qjfrAyYxvd0B8
 method: default
-disagree_button_label: 'No, thanks'
+disagree_button_label: 'Nein, danke'
 disabled_javascripts: ''
 whitelisted_cookies: ''
 consent_storage_method: do_not_store
 withdraw_message:
   value: '<h2>We use cookies on this site to enhance your user experience</h2><p>You have given your consent for us to set cookies.</p>'
   format: basic_html
-withdraw_action_button_label: 'Withdraw consent'
-withdraw_tab_button_label: 'Privacy settings'
+withdraw_action_button_label: 'Zustimmung zurückziehen'
+withdraw_tab_button_label: Datenschutzeinstellungen
 withdraw_enabled: false

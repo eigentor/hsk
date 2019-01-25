@@ -12,7 +12,7 @@ _core:
 id: glossary
 label: Glossar
 module: node
-description: 'All content, by letter.'
+description: 'Gesamter Inhalt, alphabetisch'
 tag: default
 base_table: node_field_data
 base_field: nid
@@ -64,7 +64,7 @@ display:
             items_per_page_options_all: false
             items_per_page_options_all_label: '- Alle -'
             offset: false
-            offset_label: Offset
+            offset_label: Versatz
           tags:
             previous: ‹‹
             next: ››

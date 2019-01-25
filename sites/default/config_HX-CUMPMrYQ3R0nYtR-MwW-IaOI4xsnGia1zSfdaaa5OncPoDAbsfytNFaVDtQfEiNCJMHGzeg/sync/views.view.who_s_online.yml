@@ -7,9 +7,9 @@ dependencies:
 _core:
   default_config_hash: DWLCIpl8ku4NbiI9t3GgDeuW13KSOy2l1zho7ReP_Bg
 id: who_s_online
-label: 'Who''s online block'
+label: 'Wer ist online Block'
 module: user
-description: 'Shows the user names of the most recently active users, and the total number of active users.'
+description: 'Zeigt die Benutzernamen der zuletzt aktiven Benutzer und die Gesamtzahl der aktiven Benutzer.'
 tag: default
 base_table: users_field_data
 base_field: uid
@@ -182,7 +182,7 @@ display:
           group_type: group
           admin_label: ''
           empty: false
-          content: 'There are currently @total users online.'
+          content: 'Momentan sind @total Benutzer online.'
           plugin_id: result
       footer: {  }
       empty:
@@ -195,7 +195,7 @@ display:
           admin_label: ''
           empty: true
           tokenize: false
-          content: 'There are currently 0 users online.'
+          content: 'Momentan sind keine Benutzer online.'
           plugin_id: text_custom
       relationships: {  }
       arguments: {  }
@@ -214,7 +214,7 @@ display:
     position: 1
     display_options:
       block_description: 'Wer ist online'
-      display_description: 'A list of users that are currently logged in.'
+      display_description: 'Eine Liste der derzeit angemeldeten Benutzer.'
       display_extenders: {  }
     cache_metadata:
       contexts:

@@ -9,7 +9,7 @@ _core:
 id: who_s_new
 label: 'Neue Mitglieder'
 module: user
-description: 'Shows a list of the newest user accounts on the site.'
+description: 'Zeigt eine Liste der neuesten Benutzerkonten der Website.'
 tag: default
 base_table: users_field_data
 base_field: uid
@@ -183,7 +183,7 @@ display:
     display_title: 'Neue Mitglieder'
     position: 1
     display_options:
-      display_description: 'A list of new users'
+      display_description: 'Eine Liste neuer Benutzer'
       block_description: 'Neue Mitglieder'
       block_category: Benutzer
       display_extenders: {  }

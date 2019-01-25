@@ -8,5 +8,5 @@ dependencies:
 _core:
   default_config_hash: KAEJv6Gks8rU-P0XcmUfjRuk-92T32qbkBCn1LQgKr8
 id: yes_no
-label: Yes/No
-options: "Yes: Yes\nNo: No\n"
+label: Ja/Nein
+options: "Ja: Ja\nNein: Nein\n"

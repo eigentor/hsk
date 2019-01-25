@@ -8,5 +8,5 @@ dependencies:
 _core:
   default_config_hash: T744d_CMtx_CsVZD1MNNvyiSNlemzmFgmzVdBKtuKq8
 id: days
-label: Days
-options: "Sunday: Sunday\nMonday: Monday\nTuesday: Tuesday\nWednesday: Wednesday\nThursday: Thursday\nFriday: Friday\nSaturday: Saturday\n"
+label: Tage
+options: "Sonntag: Sonntag\nMontag: Montag\nDienstag: Dienstag\nMittwoch: Mittwoch\nDonnerstag: Donnerstag\nFreitag: Freitag\nSamstag: Samstag\n"

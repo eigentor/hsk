@@ -8,5 +8,5 @@ dependencies:
 _core:
   default_config_hash: Ai9t0SUFQABCrwdqoi8LBqhaMzROfaFHGgsURpEWnm4
 id: creditcard_codes
-label: 'Credit card codes'
-options: "VI: 'Visa'\nMC: 'Mastercard'\nAE: 'American Express'\nDC: 'Discover'\n"
+label: Kreditkartencodes
+options: "VI: ,Visa’\r\nMC: ,Mastercard’\r\nAE: ,American Express’\r\nDC: ,Discover’\n"

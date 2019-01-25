@@ -44,8 +44,8 @@ display:
           tags:
             previous: '< Zurück'
             next: 'Weiter >'
-            first: '« First'
-            last: 'Last »'
+            first: '« Anfang'
+            last: 'Ende »'
       style:
         type: table
         options:
