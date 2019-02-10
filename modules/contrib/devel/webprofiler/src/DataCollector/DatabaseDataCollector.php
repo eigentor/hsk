@@ -41,30 +41,52 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
-    $queries = $this->database->getLogger()->get('webprofiler');
+    $connections = [];
+    foreach (Database::getAllConnectionInfo() as $key => $info) {
+      try {
+        $database = Database::getConnection('default', $key);
 
-    foreach ($queries as &$query) {
-      // Remove caller args.
-      unset($query['caller']['args']);
-
-      // Remove query args element if empty.
-      if(empty($query['args'])) {
-        unset($query['args']);
+        if ($database->getLogger()) {
+          $connections[$key] = $database->getLogger()->get('webprofiler');
+        }
+      } catch(\Exception $e) {
+        // There was some error during database connection, maybe a stale
+        // configuration in settings.php or wrong values used for a migration.
       }
-
-      // Save time in milliseconds.
-      $query['time'] = $query['time'] * 1000;
     }
 
-    $querySort = $this->configFactory->get('webprofiler.config')->get('query_sort');
-    if('duration' === $querySort) {
-      usort($queries, [
-        "Drupal\\webprofiler\\DataCollector\\DatabaseDataCollector",
-        "orderQueryByTime",
-      ]);
+    $this->data['connections'] = array_keys($connections);
+
+    $data = [];
+    foreach ($connections as $key => $queries) {
+      foreach ($queries as $query) {
+        // Remove caller args.
+        unset($query['caller']['args']);
+
+        // Remove query args element if empty.
+        if (isset($query['args']) && empty($query['args'])) {
+          unset($query['args']);
+        }
+
+        // Save time in milliseconds.
+        $query['time'] = $query['time'] * 1000;
+        $query['database'] = $key;
+        $data[] = $query;
+      }
     }
 
-    $this->data['queries'] = $queries;
+    $querySort = $this->configFactory->get('webprofiler.config')
+      ->get('query_sort');
+    if ('duration' === $querySort) {
+      usort(
+        $data, [
+          "Drupal\\webprofiler\\DataCollector\\DatabaseDataCollector",
+          "orderQueryByTime",
+        ]
+      );
+    }
+
+    $this->data['queries'] = $data;
 
     $options = $this->database->getConnectionOptions();
 
@@ -209,8 +231,11 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
       $query['type'] = $type;
 
       $quoted = [];
-      foreach ((array) $query['args'] as $key => $val) {
-        $quoted[$key] = is_null($val) ? 'NULL' : $conn->quote($val);
+
+      if (isset($query['args'])) {
+        foreach ((array) $query['args'] as $key => $val) {
+          $quoted[$key] = is_null($val) ? 'NULL' : $conn->quote($val);
+        }
       }
 
       $query['query_args'] = strtr($query['query'], $quoted);

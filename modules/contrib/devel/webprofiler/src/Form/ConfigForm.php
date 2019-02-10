@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\webprofiler\Form\ConfigForm.
- */
-
 namespace Drupal\webprofiler\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -139,7 +134,7 @@ class ConfigForm extends ConfigFormBase {
       '#states' => array(
         'visible' => array(
           array(
-            ':input[name="active_toolbar_items[database]' => array('checked' => TRUE),
+            'input[name="active_toolbar_items[database]"]' => array('checked' => TRUE),
           ),
         ),
       ),
@@ -170,7 +165,8 @@ class ConfigForm extends ConfigFormBase {
       '#open' => FALSE,
     ];
 
-    $form['purge']['purge'] = [
+    $form['purge']['actions'] = ['#type' => 'actions'];
+    $form['purge']['actions']['purge'] = [
       '#type' => 'submit',
       '#value' => $this->t('Purge'),
       '#submit' => [[$this, 'purge']],

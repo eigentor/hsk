@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\devel\Form\ConfigEditor.
- */
-
 namespace Drupal\devel\Form;
 
 use Drupal\Component\Serialization\Exception\InvalidDataTypeException;
@@ -37,7 +32,7 @@ class ConfigEditor extends FormBase {
       return;
     }
 
-    $data = $config->get();
+    $data = $config->getOriginal();
 
     if (empty($data)) {
       drupal_set_message(t('Config @name exists but has no data.', array('@name' => $config_name)), 'warning');
@@ -74,11 +69,11 @@ class ConfigEditor extends FormBase {
       '#required' => TRUE,
     );
 
-    $form['actions'] = array('#type' => 'actions');
-    $form['actions']['submit'] = array(
+    $form['actions'] = ['#type' => 'actions'];
+    $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Save'),
-    );
+    ];
     $form['actions']['cancel'] = array(
       '#type' => 'link',
       '#title' => $this->t('Cancel'),

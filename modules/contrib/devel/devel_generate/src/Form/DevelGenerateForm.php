@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\devel_generate\Form\DevelGenerateForm.
- */
-
 namespace Drupal\devel_generate\Form;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
@@ -82,14 +77,23 @@ class DevelGenerateForm extends FormBase {
     $plugin_id = $this->getPluginIdFromRequest();
     $instance = $this->getPluginInstance($plugin_id);
     $form = $instance->settingsForm($form, $form_state);
-    $form['actions'] = array('#type' => 'actions');
-    $form['actions']['submit'] = array(
+    $form['actions'] = ['#type' => 'actions'];
+    $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Generate'),
       '#button_type' => 'primary',
-    );
+    ];
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $plugin_id = $this->getPluginIdFromRequest();
+    $instance = $this->getPluginInstance($plugin_id);
+    $instance->settingsFormValidate($form, $form_state);
   }
 
   /**

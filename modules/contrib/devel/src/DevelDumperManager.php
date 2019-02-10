@@ -1,19 +1,17 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\devel\DevelDumperManager.
- */
-
 namespace Drupal\devel;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
- * Class DevelDumperManager
+ * Class DevelDumperManager.
  */
 class DevelDumperManager implements DevelDumperManagerInterface {
+
+  use StringTranslationTrait;
 
   /**
    * The devel config.
@@ -101,12 +99,11 @@ class DevelDumperManager implements DevelDumperManagerInterface {
    * {@inheritdoc}
    */
   public function debug($input, $name = NULL, $plugin_id = NULL) {
-    $name = $name ? $name . ': ' : '';
-    $output = $this->export($input, $name, $plugin_id) . "\n";
+    $output = $this->createInstance($plugin_id)->export($input, $name) . "\n";
     // The temp directory does vary across multiple simpletest instances.
     $file = file_directory_temp() . '/drupal_debug.txt';
     if (file_put_contents($file, $output, FILE_APPEND) === FALSE && $this->hasAccessToDevelInformation()) {
-      drupal_set_message(t('Devel was unable to write to %file.', ['%file' => $file]), 'error');
+      drupal_set_message($this->t('Devel was unable to write to %file.', ['%file' => $file]), 'error');
       return FALSE;
     }
   }
