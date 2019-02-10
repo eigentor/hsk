@@ -1,7 +1,10 @@
 uuid: d8df8d8d-77c2-472f-8ba6-ab4da2b3d238
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  enforced:
+    module:
+      - devel
 _core:
   default_config_hash: Oe-hUZWKhrDlkhNaPdZx5srE63OeNZBa2YgAW0IctCg
 id: devel
