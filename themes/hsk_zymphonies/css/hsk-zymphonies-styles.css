@@ -2026,6 +2026,8 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
   .node .comment-submitted {
     border: none;
     padding: 0; }
+  .node ul.links.inline .comment-forbidden {
+    display: none; }
   .node .field--name-field-tags {
     clear: left; }
     .node .field--name-field-tags .field__label {
