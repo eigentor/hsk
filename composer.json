@@ -7,7 +7,8 @@
         "composer/installers": "^1.0.24",
         "wikimedia/composer-merge-plugin": "^1.4",
         "drush/drush": "^9.5",
-        "drupal/paragraphs_features": "^1.4"
+        "drupal/paragraphs_features": "^1.4",
+        "drupal/masquerade": "^2.0@beta"
     },
     "replace": {
         "drupal/core": "^8.6"
