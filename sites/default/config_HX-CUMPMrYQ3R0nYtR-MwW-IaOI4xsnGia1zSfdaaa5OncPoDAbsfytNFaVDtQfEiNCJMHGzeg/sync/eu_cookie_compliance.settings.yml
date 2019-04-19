@@ -26,6 +26,7 @@ popup_hide_button_message: Hide
 popup_info:
   value: "<p>Wir benutzen Cookies auf dieser Seite, um die Bedienbarkeit für Sie zu verbessern.<br />\r\nWeitere Informationen zu Cookies finden Sie auf unserer <a data-entity-type=\"node\" data-entity-uuid=\"17550b5d-3da7-4a52-96e8-beb8878510cc\" href=\"/node/368\">Datenschutzerklärung</a>.</p>\r\n"
   format: basic_html
+popup_info_template: new
 mobile_popup_info:
   value: ''
   format: basic_html
