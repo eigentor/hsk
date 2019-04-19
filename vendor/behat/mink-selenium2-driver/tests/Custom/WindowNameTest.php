@@ -6,17 +6,24 @@ use Behat\Mink\Tests\Driver\TestCase;
 
 class WindowNameTest extends TestCase
 {
-    public function testWindowNames()
+    const WINDOW_NAME_REGEXP = '/(?:[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}|^\d++$)/i';
+
+    public function testPatternGetWindowNames()
     {
         $session = $this->getSession();
-        $session->start();
 
         $windowNames = $session->getWindowNames();
         $this->assertArrayHasKey(0, $windowNames);
 
-        $windowName = $session->getWindowName();
+        foreach ($windowNames as $name) {
+            $this->assertRegExp(self::WINDOW_NAME_REGEXP, $name);
+        }
+    }
 
-        $this->assertInternalType('string', $windowName);
-        $this->assertContains($windowName, $windowNames, 'The current window name is one of the available window names.');
+    public function testGetWindowName()
+    {
+        $session = $this->getSession();
+
+        $this->assertRegExp(self::WINDOW_NAME_REGEXP, $session->getWindowName());
     }
 }

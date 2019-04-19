@@ -189,7 +189,14 @@ class Selenium2Driver extends CoreDriver
     {
         return array(
             'browserName'       => 'firefox',
+            'version'           => '9',
+            'platform'          => 'ANY',
+            'browserVersion'    => '9',
+            'browser'           => 'firefox',
             'name'              => 'Behat Test',
+            'deviceOrientation' => 'portrait',
+            'deviceType'        => 'tablet',
+            'selenium-version'  => '2.31.0'
         );
     }
 
@@ -676,20 +683,7 @@ JS;
         }
 
         $element->postValue(array('value' => array($value)));
-        // Remove the focus from the element if the field still has focus in
-        // order to trigger the change event. By doing this instead of simply
-        // triggering the change event for the given xpath we ensure that the
-        // change event will not be triggered twice for the same element if it
-        // has lost focus in the meanwhile. If the element has lost focus
-        // already then there is nothing to do as this will already have caused
-        // the triggering of the change event for that element.
-        $script = <<<JS
-var node = {{ELEMENT}};
-if (document.activeElement === node) {
-  document.activeElement.blur();
-}
-JS;
-        $this->executeJsOnElement($element, $script);
+        $this->trigger($xpath, 'change');
     }
 
     /**

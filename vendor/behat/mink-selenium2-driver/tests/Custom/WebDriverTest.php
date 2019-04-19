@@ -9,10 +9,8 @@ class WebDriverTest extends TestCase
 {
     public function testGetWebDriverSessionId()
     {
-        $session = $this->getSession();
-        $session->start();
         /** @var Selenium2Driver $driver */
-        $driver = $session->getDriver();
+        $driver = $this->getSession()->getDriver();
         $this->assertNotEmpty($driver->getWebDriverSessionId(), 'Started session has an ID');
 
         $driver = new Selenium2Driver();
