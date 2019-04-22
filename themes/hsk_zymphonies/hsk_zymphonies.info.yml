@@ -15,6 +15,9 @@ libraries:
   - hsk_zymphonies/base-styling
   - hsk_zymphonies/hsk-menu
 
+ckeditor_stylesheets:
+  - css/ckeditor-custom.css
+
 regions:
   header: 'Header'
   primary_menu: 'Primary Menu'
