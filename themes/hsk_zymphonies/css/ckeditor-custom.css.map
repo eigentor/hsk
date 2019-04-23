@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "",
-"sources": [],
+"mappings": "AACE,mBAAa;EACX,MAAM,EAAE,MAAM",
+"sources": ["../sass/ckeditor-custom.sass"],
 "names": [],
 "file": "ckeditor-custom.css"
 }
