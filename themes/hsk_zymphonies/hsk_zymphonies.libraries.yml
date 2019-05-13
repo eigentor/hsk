@@ -3,6 +3,7 @@ base-styling:
   css:
     theme:
       css/hsk-zymphonies-styles.css: {}
+      css/ckeditor-custom.css: {}
 
 header-slideshow:
   version: VERSION

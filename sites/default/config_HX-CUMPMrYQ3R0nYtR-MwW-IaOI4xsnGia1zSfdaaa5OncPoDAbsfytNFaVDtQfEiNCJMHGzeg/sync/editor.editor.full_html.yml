@@ -54,6 +54,7 @@ settings:
           name: 'Block Formatting'
           items:
             - Format
+            - Styles
         -
           name: Tools
           items:
@@ -70,7 +71,7 @@ settings:
     language:
       language_list: un
     stylescombo:
-      styles: ''
+      styles: "table.center-table|Tabelle zentrieren\r\ntable.no-style|Tabelle Format zurücksetzen"
 image_upload:
   status: true
   scheme: public
