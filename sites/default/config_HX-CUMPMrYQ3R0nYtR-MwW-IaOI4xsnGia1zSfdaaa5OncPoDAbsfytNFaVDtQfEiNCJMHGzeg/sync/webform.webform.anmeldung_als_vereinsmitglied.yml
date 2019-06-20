@@ -56,7 +56,7 @@ settings:
   draft_loaded_message: ''
   confirmation_type: page
   confirmation_title: ''
-  confirmation_message: "Vielen Dank f&uuml;r Ihre Anmeldung. Sie h&ouml;ren umgehend von uns.<br />\r\n<br />\r\nHSK Lister Turm"
+  confirmation_message: "Vielen Dank f&uuml;r Ihre Anmeldung.<br />\r\n<br />\r\nHSK Lister Turm"
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -134,7 +134,7 @@ handlers:
       from_mail: info@schachklub-hannover.de
       from_name: default
       subject: 'Ihre Anmeldung als Vereinsmitglied beim HSK Lister Turm'
-      body: "Sehr geehrter  Sehr geehrter [webform_submission:values:vorname] [webform_submission:values:nachname],\n\nSie haben sich als Vereinsmitglied beim HSK Lister Turm angemeldet.\n\nIhre eingegebenen Daten:\n\n[webform_submission:values]\n\nIhre Kontoverbindung haben wir aus\nSicherheitsgründen in dieser Email ausgelassen.\n\nVielen Dank, Sie hören in Kürze von uns.\n\n------------------------------------\nHSK Lister Turm\nGerhard Hayen\nGoebenstraße 36\n30163 Hannover\n"
+      body: "Sehr geehrter  Sehr geehrter [webform_submission:values:vorname] [webform_submission:values:nachname],\r\n\r\nSie haben sich als Vereinsmitglied beim HSK Lister Turm angemeldet.\r\n\r\nIhre eingegebenen Daten:\r\n\r\n[webform_submission:values]\r\n\r\nIhre Kontoverbindung haben wir aus\r\nSicherheitsgründen in dieser Email ausgelassen.\r\n\r\nVielen Dank.\r\n\r\n------------------------------------\r\nHSK Lister Turm e.V.\r\nLukas Hoffmann\r\nGeibelstr. 34\r\n30173 Hannover\r\n"
       excluded_elements:
         iban: iban
         bic: bic
