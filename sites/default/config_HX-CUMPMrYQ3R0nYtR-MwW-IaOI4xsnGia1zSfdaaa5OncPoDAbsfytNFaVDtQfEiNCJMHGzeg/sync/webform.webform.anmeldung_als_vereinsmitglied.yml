@@ -56,7 +56,7 @@ settings:
   draft_loaded_message: ''
   confirmation_type: page
   confirmation_title: ''
-  confirmation_message: "Vielen Dank f&uuml;r Ihre Anmeldung.<br />\r\n<br />\r\nHSK Lister Turm"
+  confirmation_message: "<div id=\"AppleMailSignature\">Vielen Dank f&uuml;r deine Anmeldung. Deine Angaben werden nun gepr&uuml;ft. Ich freue mich, dich demn&auml;chst in unserem Verein pers&ouml;nlich zu begr&uuml;&szlig;en.<br />\r\n&nbsp;</div>\r\n\r\n<div id=\"AppleMailSignature\">Lukas Hoffmann</div>\r\n\r\n<div id=\"AppleMailSignature\">1. Vorsitzender HSK Lister Turm</div>"
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -133,8 +133,8 @@ handlers:
       bcc_mail: ''
       from_mail: info@schachklub-hannover.de
       from_name: default
-      subject: 'Ihre Anmeldung als Vereinsmitglied beim HSK Lister Turm'
-      body: "Sehr geehrter  Sehr geehrter [webform_submission:values:vorname] [webform_submission:values:nachname],\r\n\r\nSie haben sich als Vereinsmitglied beim HSK Lister Turm angemeldet.\r\n\r\nIhre eingegebenen Daten:\r\n\r\n[webform_submission:values]\r\n\r\nIhre Kontoverbindung haben wir aus\r\nSicherheitsgründen in dieser Email ausgelassen.\r\n\r\nVielen Dank.\r\n\r\n------------------------------------\r\nHSK Lister Turm e.V.\r\nLukas Hoffmann\r\nGeibelstr. 34\r\n30173 Hannover\r\n"
+      subject: 'Deine Anmeldung als Vereinsmitglied beim HSK Lister Turm'
+      body: "Hallo [webform_submission:values:vorname] [webform_submission:values:nachname],\r\n\r\nDu hast dich als Vereinsmitglied beim HSK Lister Turm angemeldet.\r\n\r\nDeine eingegebenen Daten:\r\n\r\n[webform_submission:values]\r\n\r\nDeine Kontoverbindung haben wir aus\r\nSicherheitsgründen in dieser Email ausgelassen.\r\n\r\n------------------------------------\r\nHSK Lister Turm e.V.\r\nLukas Hoffmann\r\nGeibelstr. 34\r\n30173 Hannover\r\n"
       excluded_elements:
         iban: iban
         bic: bic
