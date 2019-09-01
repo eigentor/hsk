@@ -861,7 +861,7 @@ display:
           plugin_id: text_custom
       use_more: false
       use_more_always: false
-      use_more_text: mehr
+      use_more_text: '» weiterlesen'
       display_comment: ''
       use_ajax: false
       hide_attachment_summary: false
