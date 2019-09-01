@@ -3123,8 +3123,7 @@ nav#block-hsk-footer {
       width: 50%; } }
 @media only screen and (min-width: 992px) {
     .path-frontpage #block-views-block-news-block-1 .views-row .views-field-field-image {
-      float: left;
-      margin-top: 2px; } }
+      margin-top: 3px; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
