@@ -7,5 +7,4 @@ _core:
 name: Tags
 vid: tags
 description: 'Mit Schlagwörtern können Artikel zu verwandten Themen in Kategorien zusammengefasst werden.'
-hierarchy: 0
 weight: 0
