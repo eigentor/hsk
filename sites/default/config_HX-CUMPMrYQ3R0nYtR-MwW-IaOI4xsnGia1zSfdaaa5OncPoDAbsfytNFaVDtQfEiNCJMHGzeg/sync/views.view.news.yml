@@ -194,6 +194,9 @@ display:
         row: false
         fields: false
         pager: false
+        use_more: false
+        use_more_always: false
+        use_more_text: false
       row:
         type: fields
         options:
@@ -480,7 +483,7 @@ display:
             max_length: 175
             word_boundary: true
             ellipsis: true
-            more_link: true
+            more_link: false
             more_link_text: ''
             more_link_path: ''
             strip_tags: true
@@ -519,6 +522,9 @@ display:
           items_per_page: 3
           offset: 0
       display_description: ''
+      use_more: false
+      use_more_always: true
+      use_more_text: more
     cache_metadata:
       max-age: -1
       contexts:
