@@ -2964,6 +2964,13 @@ nav#block-hsk-footer {
       margin-right: 0.3em; }
 .path-frontpage #block-views-block-news-block-1 h2.title {
   margin-bottom: 15px; }
+.path-frontpage #block-views-block-news-block-1 .more-link {
+  margin-top: -20px; }
+  .path-frontpage #block-views-block-news-block-1 .more-link a {
+    font-size: 12.4px;
+    font-size: 0.8rem;
+    color: #888;
+    padding-right: 30px; }
 .path-frontpage #block-views-block-news-block-1 .views-row {
   *zoom: 1;
   margin-bottom: 15px; }
@@ -2988,13 +2995,6 @@ nav#block-hsk-footer {
   .path-frontpage #block-views-block-news-block-1 .views-row .views-field-field-image {
     float: left;
     margin: 5px 15px 0 0; }
-  .path-frontpage #block-views-block-news-block-1 .views-row a.views-more-link {
-    color: #999;
-    padding-left: 5px;
-    font-size: 13.175px;
-    font-size: 0.85rem; }
-    .path-frontpage #block-views-block-news-block-1 .views-row a.views-more-link:hover {
-      color: #E27500; }
 .path-frontpage #block-views-block-news-block-1 .views-field-created {
   font-size: 12.4px;
   font-size: 0.8rem;

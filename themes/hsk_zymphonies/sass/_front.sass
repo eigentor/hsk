@@ -71,6 +71,11 @@
   #block-views-block-news-block-1
     h2.title
       margin-bottom: 15px
+    .more-link
+      margin-top: -20px
+      a
+        +small-grey-links
+        padding-right: 30px
     .views-row
       +legacy-pie-clearfix
       margin-bottom: 15px
@@ -86,12 +91,12 @@
       .views-field-field-image
         float: left
         margin: 5px 15px 0 0
-      a.views-more-link
-        color: #999
-        padding-left: 5px
-        +x-rem(font-size, 0.85)
-        &:hover
-          color: $link-color
+      //a.views-more-link
+      //  color: #999
+      //  padding-left: 5px
+      //  +x-rem(font-size, 0.85)
+      //  &:hover
+      //    color: $link-color
 
     .views-field-created
       +small-grey-links
