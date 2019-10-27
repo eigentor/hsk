@@ -2109,6 +2109,12 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
   .page-node-type-article .field--name-field-image img {
     display: block;
     margin: auto; }
+.page-node-type-article .field--name-field-new-txt-capt-main-img {
+  font-size: 13.175px;
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 20px;
+  margin-top: -5px; }
 
 .page-node-type-page .node-turniere .content-box {
   text-align: center;
@@ -2365,8 +2371,16 @@ div#sliding-popup {
       font-size: 1.1rem; }
 
   .page-node-type-article .field--name-field-image {
-    float: left;
-    margin: 5px 15px 5px 0; }
+    *zoom: 1; }
+    .page-node-type-article .field--name-field-image:after {
+      content: "\0020";
+      display: block;
+      height: 0;
+      clear: both;
+      overflow: hidden;
+      visibility: hidden; }
+    .page-node-type-article .field--name-field-image img {
+      float: left; }
 
   .page-node-type-page .node-turniere {
     margin-left: -15px;

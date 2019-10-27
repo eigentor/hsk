@@ -81,7 +81,11 @@
     img
       display: block
       margin: auto
-
+  .field--name-field-new-txt-capt-main-img
+    +x-rem(font-size, 0.85)
+    color: $light-grey-text
+    margin-bottom: 20px
+    margin-top: -5px
 .page-node-type-page
   .node-turniere
     .content-box
@@ -272,8 +276,10 @@ div#sliding-popup
 
   .page-node-type-article
     .field--name-field-image
-      float: left
-      margin: 5px 15px 5px 0
+      +legacy-pie-clearfix
+      img
+        float: left
+
 
   .page-node-type-page
     .node-turniere

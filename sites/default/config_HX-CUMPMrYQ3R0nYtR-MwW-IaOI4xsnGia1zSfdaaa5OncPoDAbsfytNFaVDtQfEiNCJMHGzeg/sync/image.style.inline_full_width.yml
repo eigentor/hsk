@@ -5,11 +5,11 @@ dependencies: {  }
 name: inline_full_width
 label: 'Inhaltsbild volle Breite'
 effects:
-  8710a3c1-b07c-4224-ba52-b405d9704ded:
-    uuid: 8710a3c1-b07c-4224-ba52-b405d9704ded
+  b708ee62-45df-4519-9e37-7803d161b344:
+    uuid: b708ee62-45df-4519-9e37-7803d161b344
     id: image_scale
     weight: 1
     data:
       width: 755
-      height: null
+      height: 650
       upscale: false

@@ -1,0 +1,19 @@
+uuid: c855a4bf-a41a-43a4-a789-9b758dde7c63
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_new_txt_capt_main_img
+    - node.type.article
+id: node.article.field_new_txt_capt_main_img
+field_name: field_new_txt_capt_main_img
+entity_type: node
+bundle: article
+label: 'Bildunterschrift Hauptbild'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
