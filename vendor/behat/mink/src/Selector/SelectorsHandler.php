@@ -56,7 +56,7 @@ class SelectorsHandler
      *
      * @param string $name selector engine name
      *
-     * @return boolean
+     * @return Boolean
      */
     public function isSelectorRegistered($name)
     {

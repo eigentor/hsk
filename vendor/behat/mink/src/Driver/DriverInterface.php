@@ -53,7 +53,7 @@ interface DriverInterface
     /**
      * Checks whether driver is started.
      *
-     * @return boolean
+     * @return Boolean
      */
     public function isStarted();
 
@@ -142,7 +142,7 @@ interface DriverInterface
     /**
      * Sets HTTP Basic authentication parameters.
      *
-     * @param string|boolean $user     user name or false to disable authentication
+     * @param string|Boolean $user     user name or false to disable authentication
      * @param string         $password password
      *
      * @throws UnsupportedDriverActionException When operation not supported by the driver
@@ -343,7 +343,7 @@ interface DriverInterface
      *
      * @param string $xpath
      *
-     * @return string|bool|array|null
+     * @return string|bool|array
      *
      * @throws UnsupportedDriverActionException When operation not supported by the driver
      * @throws DriverException                  When the operation cannot be done
@@ -394,7 +394,7 @@ interface DriverInterface
      *
      * @param string $xpath
      *
-     * @return boolean
+     * @return Boolean
      *
      * @throws UnsupportedDriverActionException When operation not supported by the driver
      * @throws DriverException                  When the operation cannot be done
@@ -408,7 +408,7 @@ interface DriverInterface
      *
      * @param string  $xpath
      * @param string  $value
-     * @param boolean $multiple
+     * @param Boolean $multiple
      *
      * @throws UnsupportedDriverActionException When operation not supported by the driver
      * @throws DriverException                  When the operation cannot be done
@@ -422,7 +422,7 @@ interface DriverInterface
      *
      * @param string $xpath
      *
-     * @return boolean
+     * @return Boolean
      *
      * @throws UnsupportedDriverActionException When operation not supported by the driver
      * @throws DriverException                  When the operation cannot be done
@@ -479,7 +479,7 @@ interface DriverInterface
      *
      * @param string $xpath
      *
-     * @return boolean
+     * @return Boolean
      *
      * @throws UnsupportedDriverActionException When operation not supported by the driver
      * @throws DriverException                  When the operation cannot be done

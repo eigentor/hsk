@@ -11,8 +11,6 @@ class TimeoutTest extends TestCase
      */
     public function testInvalidTimeoutSettingThrowsException()
     {
-        $this->getSession()->start();
-
         $this->getSession()->getDriver()->setTimeouts(array('invalid' => 0));
     }
 

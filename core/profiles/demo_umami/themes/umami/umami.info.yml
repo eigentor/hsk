@@ -33,7 +33,7 @@ regions:
   page_top: 'Page top' # Needed by Drupal Core
   page_bottom: 'Page bottom' # Needed by Drupal Core
 
-# Information added by Drupal.org packaging script on 2019-09-04
-version: '8.7.7'
+# Information added by Drupal.org packaging script on 2019-12-18
+version: '8.7.11'
 project: 'drupal'
-datestamp: 1567593218
+datestamp: 1576696282

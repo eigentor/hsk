@@ -110,7 +110,7 @@ class NodeElement extends TraversableElement
      *
      * @param string $name
      *
-     * @return boolean
+     * @return Boolean
      */
     public function hasAttribute($name)
     {
@@ -198,11 +198,11 @@ class NodeElement extends TraversableElement
      *
      * Calling this method on any other elements is not allowed.
      *
-     * @return boolean
+     * @return Boolean
      */
     public function isChecked()
     {
-        return (boolean) $this->getDriver()->isChecked($this->getXpath());
+        return (Boolean) $this->getDriver()->isChecked($this->getXpath());
     }
 
     /**
@@ -216,7 +216,7 @@ class NodeElement extends TraversableElement
      * Calling this method on any other elements is not allowed.
      *
      * @param string  $option
-     * @param boolean $multiple whether the option should be added to the selection for multiple selects
+     * @param Boolean $multiple whether the option should be added to the selection for multiple selects
      *
      * @throws ElementNotFoundException when the option is not found in the select box
      */
@@ -242,11 +242,11 @@ class NodeElement extends TraversableElement
      *
      * Calling this method on any other elements is not allowed.
      *
-     * @return boolean
+     * @return Boolean
      */
     public function isSelected()
     {
-        return (boolean) $this->getDriver()->isSelected($this->getXpath());
+        return (Boolean) $this->getDriver()->isSelected($this->getXpath());
     }
 
     /**
@@ -264,11 +264,11 @@ class NodeElement extends TraversableElement
     /**
      * Checks whether current node is visible on page.
      *
-     * @return boolean
+     * @return Boolean
      */
     public function isVisible()
     {
-        return (boolean) $this->getDriver()->isVisible($this->getXpath());
+        return (Boolean) $this->getDriver()->isVisible($this->getXpath());
     }
 
     /**
