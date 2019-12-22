@@ -1,13 +1,12 @@
 name: Eva
 description: Provides a Views display type that can be attached to entities.
-# core: 8.x
+core: 8.x
 type: module
-dependencies:
-  - views
 package: Views
+dependencies:
+  - drupal:views
 
-# Information added by Drupal.org packaging script on 2017-03-17
-version: '8.x-1.1-rc1+4-dev'
-core: '8.x'
+# Information added by Drupal.org packaging script on 2019-11-05
+version: '8.x-2.0'
 project: 'eva'
-datestamp: 1489714086
+datestamp: 1572917287
