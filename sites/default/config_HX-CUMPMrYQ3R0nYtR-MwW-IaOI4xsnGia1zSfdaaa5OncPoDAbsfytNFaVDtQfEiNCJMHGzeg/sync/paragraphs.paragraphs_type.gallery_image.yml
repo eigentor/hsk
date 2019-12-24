@@ -1,0 +1,9 @@
+uuid: de031a30-30c9-4bf9-8764-52e0d30231e2
+langcode: de
+status: true
+dependencies: {  }
+id: gallery_image
+label: Bild
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

@@ -34,6 +34,7 @@ third_party_settings:
         id: info-tabs
         classes: ''
       label: Tabellen
+      region: content
 id: node.turnier.default
 targetEntityType: node
 bundle: turnier

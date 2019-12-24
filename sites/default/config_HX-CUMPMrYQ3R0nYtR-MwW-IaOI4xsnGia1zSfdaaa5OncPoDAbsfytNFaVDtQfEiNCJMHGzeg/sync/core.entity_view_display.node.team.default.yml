@@ -36,6 +36,7 @@ third_party_settings:
         id: ''
         classes: group-top
       label: Top
+      region: content
     group_team_middle:
       children:
         - field_league
@@ -53,6 +54,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Middle
+      region: content
     group_kader:
       children: {  }
       parent_name: ''
@@ -68,6 +70,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Kader
+      region: content
     group_team_and_results:
       children:
         - group_team
@@ -82,6 +85,7 @@ third_party_settings:
         id: ''
         classes: group-team-results
       label: 'Kader und Ergebnisse'
+      region: content
     group_team:
       children:
         - kader_2_entity_view_1
@@ -94,6 +98,7 @@ third_party_settings:
         formatter: closed
         description: ''
       label: Kader
+      region: content
     group_results:
       children:
         - field_team_results
@@ -106,6 +111,7 @@ third_party_settings:
         formatter: closed
         description: ''
       label: Ergebnisse
+      region: content
     group_tabelle:
       children:
         - field_team_standings
@@ -118,6 +124,7 @@ third_party_settings:
         formatter: closed
         description: ''
       label: Tabelle
+      region: content
 id: node.team.default
 targetEntityType: node
 bundle: team

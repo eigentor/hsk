@@ -3,15 +3,29 @@ langcode: de
 status: true
 dependencies:
   config:
+    - field.field.paragraph.image_gallery.field_gal_image_item
     - field.field.paragraph.image_gallery.field_gallery_images
     - paragraphs.paragraphs_type.image_gallery
   module:
     - field_collection
+    - paragraphs
 id: paragraph.image_gallery.default
 targetEntityType: paragraph
 bundle: image_gallery
 mode: default
 content:
+  field_gal_image_item:
+    type: entity_reference_paragraphs
+    weight: 1
+    settings:
+      title: Seitenabschnitt
+      title_plural: Seitenabschnitte
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
   field_gallery_images:
     weight: 0
     settings: {  }

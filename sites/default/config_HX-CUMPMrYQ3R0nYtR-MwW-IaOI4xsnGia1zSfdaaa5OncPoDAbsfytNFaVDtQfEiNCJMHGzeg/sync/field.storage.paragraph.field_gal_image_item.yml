@@ -1,20 +1,19 @@
-uuid: 5fc9ff1f-5360-4ced-a78a-7f7f3e4dea12
+uuid: b0c78917-d244-4386-bb88-327ffac4d595
 langcode: de
 status: true
 dependencies:
   module:
     - entity_reference_revisions
-    - node
     - paragraphs
-id: node.field_gallery_below_body
-field_name: field_gallery_below_body
-entity_type: node
+id: paragraph.field_gal_image_item
+field_name: field_gal_image_item
+entity_type: paragraph
 type: entity_reference_revisions
 settings:
   target_type: paragraph
 module: entity_reference_revisions
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
