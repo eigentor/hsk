@@ -4,9 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.gallery_image.field_gallery_image
+    - field.field.paragraph.gallery_image.field_gallery_image_caption
+    - image.style.image_gallery_thumb
+    - image.style.max_1300x1300
     - paragraphs.paragraphs_type.gallery_image
   module:
-    - image
+    - colorbox
 id: paragraph.gallery_image.default
 targetEntityType: paragraph
 bundle: gallery_image
@@ -16,9 +19,15 @@ content:
     weight: 0
     label: above
     settings:
-      image_style: ''
-      image_link: ''
+      colorbox_node_style: image_gallery_thumb
+      colorbox_node_style_first: ''
+      colorbox_image_style: max_1300x1300
+      colorbox_gallery: field_page
+      colorbox_gallery_custom: ''
+      colorbox_caption: custom
+      colorbox_caption_custom: '[paragraph:field_gallery_image_caption]'
     third_party_settings: {  }
-    type: image
+    type: colorbox
     region: content
-hidden: {  }
+hidden:
+  field_gallery_image_caption: true

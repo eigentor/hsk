@@ -1,0 +1,40 @@
+uuid: fb61a7de-9eeb-403e-aad6-cb82ac331dab
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_gal_image_item
+    - paragraphs.paragraphs_type.gallery_image
+    - paragraphs.paragraphs_type.image_gallery
+  module:
+    - entity_reference_revisions
+id: paragraph.image_gallery.field_gal_image_item
+field_name: field_gal_image_item
+entity_type: paragraph
+bundle: image_gallery
+label: Bilder
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      gallery_image: gallery_image
+    target_bundles_drag_drop:
+      gallery_image:
+        enabled: true
+        weight: 5
+      image_gallery:
+        weight: 6
+        enabled: false
+      pgn_viewer:
+        weight: 7
+        enabled: false
+      text:
+        weight: 8
+        enabled: false
+field_type: entity_reference_revisions

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.gallery_image.field_gallery_image
+    - field.field.paragraph.gallery_image.field_gallery_image_caption
     - image.style.thumbnail
     - paragraphs.paragraphs_type.gallery_image
   module:
@@ -20,6 +21,14 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
+    region: content
+  field_gallery_image_caption:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
 hidden:
   created: true

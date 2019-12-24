@@ -3,7 +3,7 @@ langcode: de
 status: true
 dependencies: {  }
 id: gallery_image
-label: 'Bild in Bildergalerie'
+label: Bild
 icon_uuid: null
 description: ''
 behavior_plugins: {  }

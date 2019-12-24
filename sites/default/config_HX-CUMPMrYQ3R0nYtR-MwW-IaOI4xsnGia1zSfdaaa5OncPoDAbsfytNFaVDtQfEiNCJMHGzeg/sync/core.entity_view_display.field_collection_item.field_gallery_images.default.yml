@@ -24,8 +24,8 @@ content:
       colorbox_image_style: gallery_full
       colorbox_gallery: page
       colorbox_gallery_custom: ''
-      colorbox_caption: auto
-      colorbox_caption_custom: ''
+      colorbox_caption: custom
+      colorbox_caption_custom: '[field_collection_item:field_gallery_image_caption]'
     third_party_settings: {  }
     type: colorbox
     region: content
