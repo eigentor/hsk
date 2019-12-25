@@ -4,23 +4,21 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.image_gallery.field_gal_image_item
-    - field.field.paragraph.image_gallery.field_gallery_images
     - paragraphs.paragraphs_type.image_gallery
   module:
-    - field_collection
+    - entity_reference_revisions
 id: paragraph.image_gallery.default
 targetEntityType: paragraph
 bundle: image_gallery
 mode: default
 content:
-  field_gallery_images:
-    type: field_collection_items
+  field_gal_image_item:
+    type: entity_reference_revisions_entity_view
     weight: 0
     region: content
     label: hidden
     settings:
       view_mode: default
-      link: false
+      link: ''
     third_party_settings: {  }
-hidden:
-  field_gal_image_item: true
+hidden: {  }

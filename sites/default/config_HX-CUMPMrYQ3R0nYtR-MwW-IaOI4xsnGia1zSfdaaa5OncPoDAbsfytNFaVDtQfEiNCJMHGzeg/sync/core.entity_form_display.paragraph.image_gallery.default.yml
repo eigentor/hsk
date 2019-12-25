@@ -4,10 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.image_gallery.field_gal_image_item
-    - field.field.paragraph.image_gallery.field_gallery_images
     - paragraphs.paragraphs_type.image_gallery
   module:
-    - field_collection
     - paragraphs
 id: paragraph.image_gallery.default
 targetEntityType: paragraph
@@ -25,12 +23,6 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
-  field_gallery_images:
-    weight: 0
-    settings: {  }
-    third_party_settings: {  }
-    type: field_collection_embed
     region: content
 hidden:
   created: true
