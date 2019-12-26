@@ -1,0 +1,20 @@
+uuid: 720a9972-1703-4b52-9fec-e54f9787daeb
+langcode: de
+status: true
+dependencies:
+  module:
+    - entity_reference_revisions
+    - paragraphs
+id: paragraph.field_sl_image
+field_name: field_sl_image
+entity_type: paragraph
+type: entity_reference_revisions
+settings:
+  target_type: paragraph
+module: entity_reference_revisions
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

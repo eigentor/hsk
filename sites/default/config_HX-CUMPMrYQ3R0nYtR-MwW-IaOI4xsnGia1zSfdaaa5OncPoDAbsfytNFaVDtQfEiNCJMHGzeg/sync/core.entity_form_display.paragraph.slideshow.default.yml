@@ -1,0 +1,29 @@
+uuid: 2d11f093-4b01-4d88-acd5-099fb9ac7aae
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.slideshow.field_sl_image
+    - paragraphs.paragraphs_type.slideshow
+  module:
+    - paragraphs
+id: paragraph.slideshow.default
+targetEntityType: paragraph
+bundle: slideshow
+mode: default
+content:
+  field_sl_image:
+    type: entity_reference_paragraphs
+    weight: 0
+    settings:
+      title: Seitenabschnitt
+      title_plural: Seitenabschnitte
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+hidden:
+  created: true
+  status: true

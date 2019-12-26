@@ -1,0 +1,21 @@
+uuid: dbde98f7-2d7d-443f-9626-7cf1220daceb
+langcode: de
+status: true
+dependencies:
+  module:
+    - entity_reference_revisions
+    - node
+    - paragraphs
+id: node.field_par_slideshow
+field_name: field_par_slideshow
+entity_type: node
+type: entity_reference_revisions
+settings:
+  target_type: paragraph
+module: entity_reference_revisions
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

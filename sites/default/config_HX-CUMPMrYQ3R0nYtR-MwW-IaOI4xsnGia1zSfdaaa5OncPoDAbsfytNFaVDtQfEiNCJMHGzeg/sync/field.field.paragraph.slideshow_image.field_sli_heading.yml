@@ -1,0 +1,19 @@
+uuid: a4d45896-21ae-41e1-bc4f-a220922d0edf
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_sli_heading
+    - paragraphs.paragraphs_type.slideshow_image
+id: paragraph.slideshow_image.field_sli_heading
+field_name: field_sli_heading
+entity_type: paragraph
+bundle: slideshow_image
+label: Überschrift
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

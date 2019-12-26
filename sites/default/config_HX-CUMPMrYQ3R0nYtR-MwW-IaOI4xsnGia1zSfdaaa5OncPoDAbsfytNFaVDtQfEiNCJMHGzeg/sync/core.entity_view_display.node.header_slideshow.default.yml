@@ -3,9 +3,11 @@ langcode: de
 status: true
 dependencies:
   config:
+    - field.field.node.header_slideshow.field_par_slideshow
     - field.field.node.header_slideshow.field_sl_image
     - node.type.header_slideshow
   module:
+    - entity_reference_revisions
     - field_collection
     - user
 id: node.header_slideshow.default
@@ -13,6 +15,15 @@ targetEntityType: node
 bundle: header_slideshow
 mode: default
 content:
+  field_par_slideshow:
+    type: entity_reference_revisions_entity_view
+    weight: 103
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
   field_sl_image:
     weight: 102
     label: above

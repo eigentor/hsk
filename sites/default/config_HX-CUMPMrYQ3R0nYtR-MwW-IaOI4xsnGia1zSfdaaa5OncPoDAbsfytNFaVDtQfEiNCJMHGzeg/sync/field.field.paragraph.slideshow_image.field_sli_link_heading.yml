@@ -1,0 +1,23 @@
+uuid: f5020a98-b62d-4848-8ea9-6449f2c79428
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_sli_link_heading
+    - paragraphs.paragraphs_type.slideshow_image
+  module:
+    - link
+id: paragraph.slideshow_image.field_sli_link_heading
+field_name: field_sli_link_heading
+entity_type: paragraph
+bundle: slideshow_image
+label: 'Verlinkung Überschrift'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 1
+  title: 1
+field_type: link

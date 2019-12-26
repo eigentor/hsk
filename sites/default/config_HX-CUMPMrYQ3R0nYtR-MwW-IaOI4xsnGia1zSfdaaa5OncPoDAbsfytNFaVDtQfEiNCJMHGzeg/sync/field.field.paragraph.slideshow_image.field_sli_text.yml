@@ -1,0 +1,41 @@
+uuid: bf7f5573-5a33-4a47-ac19-6c122b52d7ba
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_sli_text
+    - paragraphs.paragraphs_type.slideshow_image
+  module:
+    - better_formats
+    - text
+third_party_settings:
+  better_formats:
+    allowed_formats_toggle: 1
+    allowed_formats:
+      basic_html: basic_html
+      restricted_html: 0
+      tables_only: 0
+      full_html: 0
+    default_order_toggle: 0
+    default_order_wrapper:
+      formats:
+        basic_html:
+          weight: '0'
+        restricted_html:
+          weight: '0'
+        tables_only:
+          weight: '0'
+        full_html:
+          weight: '1'
+id: paragraph.slideshow_image.field_sli_text
+field_name: field_sli_text
+entity_type: paragraph
+bundle: slideshow_image
+label: Text
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

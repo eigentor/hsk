@@ -1,0 +1,23 @@
+uuid: 9371ea9a-40c4-4414-9dec-16f18373e72f
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_sl_image
+    - paragraphs.paragraphs_type.slideshow
+  module:
+    - entity_reference_revisions
+id: paragraph.slideshow.field_sl_image
+field_name: field_sl_image
+entity_type: paragraph
+bundle: slideshow
+label: Bilder
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings: {  }
+field_type: entity_reference_revisions

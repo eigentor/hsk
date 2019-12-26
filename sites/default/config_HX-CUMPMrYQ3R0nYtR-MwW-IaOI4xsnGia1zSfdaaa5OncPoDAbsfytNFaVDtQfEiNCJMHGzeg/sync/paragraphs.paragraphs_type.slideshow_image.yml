@@ -1,0 +1,9 @@
+uuid: c0b664eb-e219-44bc-a644-0b16b9be8d4f
+langcode: de
+status: true
+dependencies: {  }
+id: slideshow_image
+label: 'Bild in Slideshow'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

@@ -1,0 +1,19 @@
+uuid: 3f691718-636e-4254-9683-1a1e15b692d9
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - text
+id: paragraph.field_sli_text
+field_name: field_sli_text
+entity_type: paragraph
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

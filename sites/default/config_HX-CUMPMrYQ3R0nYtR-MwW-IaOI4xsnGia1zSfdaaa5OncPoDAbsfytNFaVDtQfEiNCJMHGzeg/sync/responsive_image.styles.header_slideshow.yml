@@ -1,0 +1,18 @@
+uuid: aec34134-ba84-48fa-a9a2-6bafa31d35ec
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.header_slideshow
+  theme:
+    - hsk_zymphonies
+id: header_slideshow
+label: 'Header Slideshow'
+image_style_mappings:
+  -
+    breakpoint_id: hsk_zymphonies.desktop_narrow
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: header_slideshow
+breakpoint_group: hsk_zymphonies
+fallback_image_style: header_slideshow
