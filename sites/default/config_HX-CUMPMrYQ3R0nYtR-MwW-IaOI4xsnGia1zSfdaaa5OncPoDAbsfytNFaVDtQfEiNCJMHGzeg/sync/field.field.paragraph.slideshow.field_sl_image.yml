@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.paragraph.field_sl_image
     - paragraphs.paragraphs_type.slideshow
+    - paragraphs.paragraphs_type.slideshow_image
   module:
     - entity_reference_revisions
 id: paragraph.slideshow.field_sl_image
@@ -19,5 +20,27 @@ default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:paragraph'
-  handler_settings: {  }
+  handler_settings:
+    negate: 0
+    target_bundles:
+      slideshow_image: slideshow_image
+    target_bundles_drag_drop:
+      gallery_image:
+        weight: 7
+        enabled: false
+      image_gallery:
+        weight: 8
+        enabled: false
+      pgn_viewer:
+        weight: 9
+        enabled: false
+      slideshow:
+        weight: 10
+        enabled: false
+      slideshow_image:
+        enabled: true
+        weight: 11
+      text:
+        weight: 12
+        enabled: false
 field_type: entity_reference_revisions

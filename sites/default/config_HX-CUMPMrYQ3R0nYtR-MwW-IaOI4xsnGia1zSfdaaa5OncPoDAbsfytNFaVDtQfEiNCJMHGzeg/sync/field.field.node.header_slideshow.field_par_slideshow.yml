@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_par_slideshow
     - node.type.header_slideshow
-    - paragraphs.paragraphs_type.slideshow_image
+    - paragraphs.paragraphs_type.slideshow
   module:
     - entity_reference_revisions
 id: node.header_slideshow.field_par_slideshow
@@ -23,7 +23,7 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
-      slideshow_image: slideshow_image
+      slideshow: slideshow
     target_bundles_drag_drop:
       gallery_image:
         weight: 7
@@ -35,11 +35,11 @@ settings:
         weight: 9
         enabled: false
       slideshow:
-        weight: 10
-        enabled: false
-      slideshow_image:
         enabled: true
+        weight: 10
+      slideshow_image:
         weight: 11
+        enabled: false
       text:
         weight: 12
         enabled: false
