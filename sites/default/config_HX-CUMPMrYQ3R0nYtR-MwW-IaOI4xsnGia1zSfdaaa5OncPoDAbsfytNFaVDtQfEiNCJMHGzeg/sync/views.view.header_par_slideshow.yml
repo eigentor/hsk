@@ -1,7 +1,13 @@
 uuid: 71971043-3089-4aad-8de7-93d3bcdb53b7
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - field.storage.paragraph.field_sli_image
+    - responsive_image.styles.header_slideshow
+  module:
+    - paragraphs
+    - responsive_image
 id: header_par_slideshow
 label: 'Header Slideshow'
 module: views
@@ -51,14 +57,11 @@ display:
       row:
         type: fields
       fields:
-        id:
-          table: paragraphs_item_revision_field_data
-          field: id
-          id: id
-          entity_type: null
-          entity_field: id
-          plugin_id: field
-          relationship: none
+        field_sli_image:
+          id: field_sli_image
+          table: paragraph__field_sli_image
+          field: field_sli_image
+          relationship: field_sl_image
           group_type: group
           admin_label: ''
           label: ''
@@ -94,7 +97,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -102,10 +105,12 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings: {  }
-          group_column: value
+          click_sort_column: target_id
+          type: responsive_image
+          settings:
+            responsive_image_style: header_slideshow
+            image_link: ''
+          group_column: ''
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -115,6 +120,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
       filters:
         status:
           value: '1'
@@ -129,13 +135,13 @@ display:
           group: 1
         parent_field_name:
           id: parent_field_name
-          table: paragraphs_item_revision_field_data
+          table: paragraphs_item_field_data
           field: parent_field_name
-          relationship: none
+          relationship: field_sl_image
           group_type: group
           admin_label: ''
           operator: '='
-          value: field_par_slideshow
+          value: field_sl_image
           group: 1
           exposed: false
           expose:
@@ -171,7 +177,16 @@ display:
       header: {  }
       footer: {  }
       empty: {  }
-      relationships: {  }
+      relationships:
+        field_sl_image:
+          id: field_sl_image
+          table: paragraph_revision__field_sl_image
+          field: field_sl_image
+          relationship: none
+          group_type: group
+          admin_label: 'field_sl_image: Seitenabschnitt'
+          required: false
+          plugin_id: standard
       arguments: {  }
       display_extenders: {  }
     cache_metadata:
@@ -179,7 +194,8 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-      tags: {  }
+      tags:
+        - 'config:field.storage.paragraph.field_sli_image'
   block_1:
     display_plugin: block
     id: block_1
@@ -192,4 +208,5 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-      tags: {  }
+      tags:
+        - 'config:field.storage.paragraph.field_sli_image'
