@@ -15,7 +15,20 @@
         slidesToScroll: 1,
         slide: 'div.views-row',
       });
-      
+
+
+      $('.path-frontpage #block-views-block-header-par-slideshow-block-1 .view-content').slick({
+        infinite: true,
+        autoplay: true,
+        arrows: true,
+        autoplaySpeed: 6000,
+        speed: 700,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        slidesToScroll: 1,
+        slide: 'div.views-row',
+      });
+
 
     } // end of attach function
   };

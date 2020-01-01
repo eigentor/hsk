@@ -80,7 +80,7 @@
       <div class="col-md-8">
         {% if page.primary_menu %}
           {{ page.primary_menu }}
-        {% endif %}      
+        {% endif %}
       </div>
       <!--End Navigation -->
 
@@ -89,7 +89,7 @@
   </nav>
 
   <!-- Banner -->
-  {% if is_front and page.slideshow %}  
+  {% if is_front and page.slideshow %}
     <div class="{#container#} slideshow">
       {#<div class="row">#}
         <div class="{#col-md-12#}">
@@ -131,12 +131,12 @@
 
 
 <!-- Start Top Widget -->
-{% if is_front %}  
+{% if is_front %}
   {% if page.topwidget_first or page.topwidget_second or page.topwidget_third %}
     <div class="topwidget">
       <!-- start: Container -->
       <div class="container">
-        
+
         <div class="row">
           <!-- Top widget first region -->
           <div class = {{ topwidget_class }}>
@@ -185,7 +185,7 @@
 <div id="wrapper">
   <!-- start: Container -->
   <div class="container">
-    
+
     <!--Content top-->
       {% if page.content_top %}
         <div class="row">
@@ -193,7 +193,7 @@
         </div>
       {% endif %}
     <!--End Content top-->
-    
+
     <!--start:content -->
     <div class="row">
       <div class="col-md-12">{{ page.breadcrumb }}</div>
@@ -229,7 +229,7 @@
         </div>
       {% endif %}
       <!---End Right SideBar -->
-      
+
     </div>
     <!--End Content -->
 
@@ -250,7 +250,7 @@
 {% if  is_front and (page.footer_first or page.footer_second or page.footer_third) %}
   <div class="footerwidget">
     <div class="container">
-      
+
       <div class="row">
 
         <!-- Start Footer First Region -->
@@ -285,12 +285,12 @@
 
 
 <!-- Start bottom -->
-{% if is_front %}  
+{% if is_front %}
   {% if page.bottom_first or page.bottom_second or page.bottom_third %}
     <div class="bottom-widgets">
       <!-- Start Container -->
       <div class="container">
-        
+
         <div class="row">
 
           <!-- Start Bottom First Region -->
@@ -387,7 +387,7 @@
         </div>
       {% endif %}
       <!-- End Credit link -->
-      
+
     </div>
   </div>
 </div>

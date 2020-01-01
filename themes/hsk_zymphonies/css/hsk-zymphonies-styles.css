@@ -1700,6 +1700,22 @@ button.btn, a.btn {
       color: white; }
   .path-frontpage .view-header-slideshow .views-row .views-field-field-fc-sl-image img {
     width: 100%; }
+.path-frontpage #block-views-block-header-par-slideshow-block-1.block {
+  margin-bottom: 0; }
+.path-frontpage .view-header-par-slideshow .views-row {
+  position: relative; }
+  .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-heading {
+    background: #888;
+    color: white;
+    font-size: 17.05px;
+    font-size: 1.1rem;
+    padding: 7px; }
+    .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-heading p {
+      margin-bottom: 0; }
+    .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-heading a {
+      color: white; }
+  .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-image img {
+    width: 100%; }
 
 .sidebar .view-events-list .view-header {
   display: none; }
@@ -1882,6 +1898,26 @@ button.btn, a.btn {
         width: 100%;
         background: none; }
         .path-frontpage #block-views-block-header-slideshow-block-1 .view-header-slideshow .views-row .views-field-field-sl-text a {
+          background: rgba(125, 125, 125, 0.6);
+          color: white;
+          padding: 15px 20px;
+          font-size: 20.15px;
+          font-size: 1.3rem;
+          float: left;
+          max-width: 50%;
+          text-align: left;
+          line-height: 1.35; }
+  .path-frontpage #block-views-block-header-par-slideshow-block-1 {
+    width: 100%;
+    overflow: hidden; }
+    .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row {
+      max-height: 400px; }
+      .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-heading {
+        position: absolute;
+        bottom: 20px;
+        width: 100%;
+        background: none; }
+        .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-heading a {
           background: rgba(125, 125, 125, 0.6);
           color: white;
           padding: 15px 20px;

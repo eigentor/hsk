@@ -21,6 +21,23 @@
       .views-field-field-fc-sl-image
         img
           width: 100%
+  #block-views-block-header-par-slideshow-block-1.block
+    margin-bottom: 0
+  .view-header-par-slideshow
+    .views-row
+      position: relative
+      .views-field-field-sli-heading
+        background: #888
+        color: white
+        +x-rem(font-size, 1.1)
+        padding: 7px
+        p
+          margin-bottom: 0
+        a
+          color: white
+      .views-field-field-sli-image
+        img
+          width: 100%
 
 .sidebar
   .view-events-list
@@ -219,6 +236,27 @@
         .views-row
           max-height: 400px
           .views-field-field-sl-text
+            position: absolute
+            bottom: 20px
+            width: 100%
+            background: none
+            a
+              background: rgba(125,125,125,0.6)
+              color: white
+              padding: 15px 20px
+              +x-rem(font-size, 1.3)
+              float: left
+              max-width: 50%
+              text-align: left
+              line-height: 1.35
+
+    #block-views-block-header-par-slideshow-block-1
+      width: 100%
+      overflow: hidden
+      .view-header-par-slideshow
+        .views-row
+          max-height: 400px
+          .views-field-field-sli-heading
             position: absolute
             bottom: 20px
             width: 100%
