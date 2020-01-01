@@ -1704,16 +1704,17 @@ button.btn, a.btn {
   margin-bottom: 0; }
 .path-frontpage .view-header-par-slideshow .views-row {
   position: relative; }
-  .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-heading {
-    background: #888;
-    color: white;
-    font-size: 17.05px;
-    font-size: 1.1rem;
-    padding: 7px; }
-    .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-heading p {
-      margin-bottom: 0; }
-    .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-heading a {
-      color: white; }
+  .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-text {
+    background: #888; }
+    .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-text .slide-headline {
+      color: white;
+      font-size: 17.05px;
+      font-size: 1.1rem;
+      padding: 7px; }
+      .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-text .slide-headline p {
+        margin-bottom: 0; }
+      .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-text .slide-headline a {
+        color: white; }
   .path-frontpage .view-header-par-slideshow .views-row .views-field-field-sli-image img {
     width: 100%; }
 
@@ -1912,21 +1913,35 @@ button.btn, a.btn {
     overflow: hidden; }
     .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row {
       max-height: 400px; }
-      .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-heading {
+      .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text {
         position: absolute;
         bottom: 20px;
         width: 100%;
-        background: none; }
-        .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-heading a {
-          background: rgba(125, 125, 125, 0.6);
-          color: white;
+        background: none;
+        text-align: left; }
+        .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container {
+          position: relative;
+          min-height: 1px;
+          padding-left: 15px;
+          padding-right: 15px;
           padding: 15px 20px;
-          font-size: 20.15px;
-          font-size: 1.3rem;
-          float: left;
-          max-width: 50%;
-          text-align: left;
-          line-height: 1.35; }
+          background: rgba(70, 70, 70, 0.7);
+          color: white; } }
+        @media only screen and (min-width: 992px) and (min-width: 992px) {
+          .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container {
+            float: left;
+            width: 50%; } }
+@media only screen and (min-width: 992px) {
+          .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container h3.slide-headline {
+            padding: 0;
+            margin-bottom: 0.1em;
+            font-family: "Open Sans", sans-serif; }
+          .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container a {
+            color: white;
+            font-size: 20.15px;
+            font-size: 1.3rem;
+            text-align: left;
+            line-height: 1.35; }
 
   .path-news .view-news .views-row {
     *zoom: 1; }
@@ -1960,6 +1975,10 @@ button.btn, a.btn {
 /*------------------------------------------- */
 @media only screen and (min-width: 1200px) {
   .path-frontpage #block-views-block-header-slideshow-block-1 {
+    max-height: 400px;
+    max-width: 1600px;
+    margin: auto; }
+  .path-frontpage #block-views-block-header-par-slideshow-block-1 {
     max-height: 400px;
     max-width: 1600px;
     margin: auto; } }

@@ -201,7 +201,7 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -266,8 +266,8 @@ display:
           label: ''
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: "<div class=\"row\">\r\n       <div class=\"inner-container\">\r\n          <h3 class=\"slide-headline\">{{ field_sli_heading }}</h3>\r\n          <div class=\"slide-text\">{{ field_sli_text }}</div>\r\n  </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
@@ -293,7 +293,7 @@ display:
             preserve_tags: ''
             html: false
           element_type: ''
-          element_class: ''
+          element_class: container
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
