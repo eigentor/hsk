@@ -3,6 +3,7 @@ langcode: de
 status: true
 dependencies:
   config:
+    - field.field.paragraph.slideshow_image.field_gbl_css_class
     - field.field.paragraph.slideshow_image.field_sli_heading
     - field.field.paragraph.slideshow_image.field_sli_image
     - field.field.paragraph.slideshow_image.field_sli_link_heading
@@ -41,4 +42,5 @@ content:
     type: text_default
     region: content
 hidden:
+  field_gbl_css_class: true
   field_sli_link_heading: true

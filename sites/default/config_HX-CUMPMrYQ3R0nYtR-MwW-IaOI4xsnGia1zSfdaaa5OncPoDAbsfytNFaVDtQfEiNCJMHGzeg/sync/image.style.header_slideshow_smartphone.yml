@@ -1,0 +1,15 @@
+uuid: 86003a1a-4457-4dcd-be1b-c42a78457568
+langcode: de
+status: true
+dependencies: {  }
+name: header_slideshow_smartphone
+label: 'Header Slideshow Smartphone'
+effects:
+  57e40eac-4813-4007-8c5d-5625e7811938:
+    uuid: 57e40eac-4813-4007-8c5d-5625e7811938
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 480
+      height: 160
+      anchor: center-center

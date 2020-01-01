@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - image.style.header_slideshow
+    - image.style.header_slideshow_smartphone
+    - image.style.header_slideshow_tablet_portrait
   theme:
     - hsk_zymphonies
 id: header_slideshow
@@ -14,5 +16,15 @@ image_style_mappings:
     multiplier: 1x
     image_mapping_type: image_style
     image_mapping: header_slideshow
+  -
+    breakpoint_id: hsk_zymphonies.tablet_portrait
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: header_slideshow_tablet_portrait
+  -
+    breakpoint_id: hsk_zymphonies.mobile
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: header_slideshow_smartphone
 breakpoint_group: hsk_zymphonies
 fallback_image_style: header_slideshow

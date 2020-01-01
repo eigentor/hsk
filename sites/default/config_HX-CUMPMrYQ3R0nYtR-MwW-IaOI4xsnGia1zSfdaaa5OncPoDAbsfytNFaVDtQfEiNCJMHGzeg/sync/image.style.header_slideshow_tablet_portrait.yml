@@ -1,0 +1,15 @@
+uuid: 1d9b64b4-aead-4f50-ae85-27a1eb2123f5
+langcode: de
+status: true
+dependencies: {  }
+name: header_slideshow_tablet_portrait
+label: 'Header Slideshow Tablet Hochformat'
+effects:
+  6ff2d9e7-fe54-46ad-8097-a5cab0a64568:
+    uuid: 6ff2d9e7-fe54-46ad-8097-a5cab0a64568
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 768
+      height: 256
+      anchor: center-center
