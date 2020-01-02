@@ -21,24 +21,25 @@
       .views-field-field-fc-sl-image
         img
           width: 100%
-  #block-views-block-header-par-slideshow-block-1.block
+  #block-views-block-header-par-slideshow-block-1
     margin-bottom: 0
-  .view-header-par-slideshow
-    .views-row
-      position: relative
-      .views-field-field-sli-text
-        background: #888
-        .slide-headline
-          color: white
-          +x-rem(font-size, 1.1)
-          padding: 7px
-          p
-            margin-bottom: 0
-          a
+    .view-header-par-slideshow
+      .views-row
+        position: relative
+        .views-field-field-sli-text
+          background: #888
+          +x-rem(font-size, 0.95)
+          .slide-headline
             color: white
-      .views-field-field-sli-image
-        img
-          width: 100%
+            +x-rem(font-size, 1.35)
+            padding: 7px
+            p
+              margin-bottom: 0
+            a
+              color: white
+        .views-field-field-sli-image
+          img
+            width: 100%
 
 .sidebar
   .view-events-list
@@ -264,19 +265,21 @@
             background: none
             text-align: left
             .inner-container
-              +make-md-column(6)
-              padding: 15px 20px
-              background: rgba(70,70,70,0.7)
+              +make-md-column(5)
+              padding: 10px 20px 15px
+              background: rgba(70,70,70,0.6)
               color: white
               h3.slide-headline
                 padding: 0
-                margin-bottom: 0.1em
+                margin-bottom: 0.25em
                 font-family: $open-sans
               a
                 color: white
                 +x-rem(font-size, 1.3)
                 text-align: left
                 line-height: 1.35
+              p
+                margin-bottom: 0
   .path-news
     .view-news
       .views-row
