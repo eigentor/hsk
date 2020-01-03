@@ -1,4 +1,4 @@
-uuid: 91a5e2a6-b9f9-4b95-8d04-b46208bfba63
+uuid: 19494834-4a7c-4e2a-b7d1-853229b70655
 langcode: de
 status: true
 dependencies:
@@ -12,14 +12,14 @@ dependencies:
 id: views_block__header_slideshow_block_1
 theme: hsk_zymphonies
 region: slideshow
-weight: -7
+weight: 0
 provider: null
 plugin: 'views_block:header_slideshow-block_1'
 settings:
   id: 'views_block:header_slideshow-block_1'
   label: ''
   provider: views
-  label_display: '0'
+  label_display: visible
   views_label: ''
   items_per_page: none
 visibility:

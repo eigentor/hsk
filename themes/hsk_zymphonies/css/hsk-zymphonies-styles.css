@@ -1528,14 +1528,14 @@ button.btn, a.btn {
     display: block;
     left: 35px;
     width: 42px;
-    height: 42px; }
+    height: 44px; }
     button.slick-prev:before, button.slick-next:before {
       position: absolute;
       top: 0px;
       left: 0;
       background: white;
-      width: 42px;
-      height: 42px;
+      width: 41px;
+      height: 41px;
       line-height: 44px;
       text-align: center;
       padding-right: 5px;
@@ -1917,7 +1917,7 @@ button.btn, a.btn {
       max-height: 400px; }
       .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text {
         position: absolute;
-        bottom: 20px;
+        bottom: 30px;
         width: 100%;
         background: none;
         text-align: left; }
