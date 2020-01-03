@@ -2010,20 +2010,22 @@ button.btn, a.btn {
     max-height: 400px;
     max-width: 1600px;
     margin: auto; }
-    .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container {
-      position: relative;
-      min-height: 1px;
-      padding-left: 15px;
-      padding-right: 15px;
-      padding: 10px 20px 15px; } }
-    @media only screen and (min-width: 1600px) and (min-width: 992px) {
+    .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text {
+      bottom: 30px; }
       .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container {
-        float: left;
-        width: 41.6666666667%; } }
+        position: relative;
+        min-height: 1px;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding: 10px 20px 15px; } }
+      @media only screen and (min-width: 1600px) and (min-width: 992px) {
+        .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container {
+          float: left;
+          width: 41.6666666667%; } }
 @media only screen and (min-width: 1600px) {
-      .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container h3.slide-headline {
-        margin-top: 0.4em;
-        margin-bottom: 0.1em; } }
+        .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container h3.slide-headline {
+          margin-top: 0.4em;
+          margin-bottom: 0.1em; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
