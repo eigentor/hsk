@@ -1702,10 +1702,12 @@ button.btn, a.btn {
     width: 100%; }
 .path-frontpage #block-views-block-header-par-slideshow-block-1 {
   margin-bottom: 0; }
+  .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .slick-slider {
+    margin-bottom: 0; }
   .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row {
     position: relative; }
     .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text {
-      background: #666;
+      background: #959595;
       font-size: 14.725px;
       font-size: 0.95rem;
       color: white;
@@ -1922,9 +1924,11 @@ button.btn, a.btn {
     overflow: hidden; }
     .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row {
       max-height: 400px; }
+      .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-image .field-content {
+        display: flex; }
       .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text {
         position: absolute;
-        bottom: 30px;
+        bottom: 20px;
         width: 100%;
         background: none;
         text-align: left;
@@ -1934,17 +1938,19 @@ button.btn, a.btn {
           min-height: 1px;
           padding-left: 15px;
           padding-right: 15px;
-          padding: 10px 20px 15px;
+          padding: 7px 15px 10px;
           background: rgba(70, 70, 70, 0.6);
           color: white; } }
         @media only screen and (min-width: 992px) and (min-width: 992px) {
           .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container {
             float: left;
-            width: 41.6666666667%; } }
+            width: 50%; } }
 @media only screen and (min-width: 992px) {
           .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container h3.slide-headline {
             padding: 0;
-            margin-bottom: 0.25em; }
+            margin-bottom: 0.25em;
+            margin-top: 0.2em;
+            margin-bottom: 0em; }
           .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container a {
             color: white;
             font-size: 20.15px;
@@ -1999,7 +2005,25 @@ button.btn, a.btn {
 /*------------------------------------------- */
 @media only screen and (min-width: 1600px) {
   .path-frontpage .region-slideshow {
-    background: #888; } }
+    background: #888; }
+  .path-frontpage #block-views-block-header-par-slideshow-block-1 {
+    max-height: 400px;
+    max-width: 1600px;
+    margin: auto; }
+    .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container {
+      position: relative;
+      min-height: 1px;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding: 10px 20px 15px; } }
+    @media only screen and (min-width: 1600px) and (min-width: 992px) {
+      .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container {
+        float: left;
+        width: 41.6666666667%; } }
+@media only screen and (min-width: 1600px) {
+      .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container h3.slide-headline {
+        margin-top: 0.4em;
+        margin-bottom: 0.1em; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2968,6 +2992,7 @@ nav#block-hsk-footer {
 .path-frontpage .content_layout {
   margin-top: 0; }
   .path-frontpage .content_layout .region-content {
+    margin-top: 20px;
     margin-bottom: 15px; }
 .path-frontpage #block-hsk-zymphonies-content {
   margin: 0; }
@@ -3175,9 +3200,9 @@ nav#block-hsk-footer {
 /*------------------------------------------- */
 @media only screen and (min-width: 992px) {
   .path-frontpage .content_layout .region-content {
+    margin-top: 30px;
     margin-left: -15px;
-    margin-right: -15px;
-    margin-top: 30px; }
+    margin-right: -15px; }
     .path-frontpage .content_layout .region-content:before, .path-frontpage .content_layout .region-content:after {
       content: " ";
       display: table; }

@@ -1,25 +1,25 @@
-uuid: 19494834-4a7c-4e2a-b7d1-853229b70655
+uuid: 7869e319-4648-48eb-96f6-27d20b224cf9
 langcode: de
 status: true
 dependencies:
   config:
-    - views.view.header_slideshow
+    - views.view.header_par_slideshow
   module:
     - system
     - views
   theme:
     - hsk_zymphonies
-id: views_block__header_slideshow_block_1
+id: views_block__header_par_slideshow_block_1
 theme: hsk_zymphonies
 region: slideshow
 weight: 0
 provider: null
-plugin: 'views_block:header_slideshow-block_1'
+plugin: 'views_block:header_par_slideshow-block_1'
 settings:
-  id: 'views_block:header_slideshow-block_1'
+  id: 'views_block:header_par_slideshow-block_1'
   label: ''
   provider: views
-  label_display: visible
+  label_display: '0'
   views_label: ''
   items_per_page: none
 visibility:
