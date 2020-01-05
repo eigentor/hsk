@@ -4,11 +4,9 @@ status: true
 dependencies:
   config:
     - field.field.node.header_slideshow.field_par_slideshow
-    - field.field.node.header_slideshow.field_sl_image
     - node.type.header_slideshow
   module:
     - entity_reference_revisions
-    - field_collection
     - user
 id: node.header_slideshow.default
 targetEntityType: node
@@ -23,13 +21,6 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    region: content
-  field_sl_image:
-    weight: 102
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: field_collection_items
     region: content
   links:
     weight: 100

@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.header_slideshow.field_sl_image
+    - field.field.node.header_slideshow.field_par_slideshow
     - node.type.header_slideshow
   module:
     - user
@@ -20,5 +20,5 @@ content:
     third_party_settings: {  }
 hidden:
   body: true
-  field_sl_image: true
+  field_par_slideshow: true
   langcode: true

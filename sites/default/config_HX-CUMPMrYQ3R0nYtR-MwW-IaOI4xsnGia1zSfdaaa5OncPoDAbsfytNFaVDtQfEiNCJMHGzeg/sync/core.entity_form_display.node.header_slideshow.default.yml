@@ -4,10 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.header_slideshow.field_par_slideshow
-    - field.field.node.header_slideshow.field_sl_image
     - node.type.header_slideshow
   module:
-    - field_collection
     - paragraphs
     - path
 id: node.header_slideshow.default
@@ -32,12 +30,6 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
-  field_sl_image:
-    weight: 8
-    settings: {  }
-    third_party_settings: {  }
-    type: field_collection_embed
     region: content
   langcode:
     type: language_select
