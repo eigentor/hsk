@@ -1352,7 +1352,7 @@ body {
   color: #333;
   font-family: "Open Sans", sans-serif;
   /*- Desktop narrow - */ }
-  @media only screen and (min-width: 992px) {
+  @media only screen and (min-width: 991px) {
     body {
       font-size: 13.95px;
       font-size: 0.9rem; } }
@@ -1396,7 +1396,7 @@ p {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   h2 {
     font-size: 23.25px;
     font-size: 1.5rem; }
@@ -1513,7 +1513,7 @@ button.btn, a.btn {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   table {
     font-size: 13.95px;
     font-size: 0.9rem; }
@@ -1898,7 +1898,7 @@ button.btn, a.btn {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   .path-frontpage #block-views-block-header-slideshow-block-1 {
     width: 100%;
     overflow: hidden; }
@@ -1941,11 +1941,11 @@ button.btn, a.btn {
           padding: 7px 15px 10px;
           background: rgba(70, 70, 70, 0.6);
           color: white; } }
-        @media only screen and (min-width: 992px) and (min-width: 992px) {
+        @media only screen and (min-width: 991px) and (min-width: 992px) {
           .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container {
             float: left;
             width: 41.6666666667%; } }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
           .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container h3.slide-headline {
             padding: 0;
             margin-bottom: 0.25em;
@@ -2660,19 +2660,19 @@ figure figcaption {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   .page-node-type-page .node-turniere .content-box {
     position: relative;
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px;
     min-height: 320px; } }
-  @media only screen and (min-width: 992px) and (min-width: 992px) {
+  @media only screen and (min-width: 991px) and (min-width: 992px) {
     .page-node-type-page .node-turniere .content-box {
       float: left;
       width: 33.3333333333%; } }
 
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   .page-node-type-turnier #info-tabs .field--name-field-standings table {
     width: 100%; }
   .page-node-type-turnier #info-tabs .field--name-field-current-results table {
@@ -2799,7 +2799,7 @@ nav#block-useraccountmenu {
         font-size: 13.95px;
         font-size: 0.9rem;
         color: #666; }
-        @media only screen and (min-width: 992px) {
+        @media only screen and (min-width: 991px) {
           nav#block-useraccountmenu ul li a {
             font-size: 13.95px;
             font-size: 0.9rem; } }
@@ -2820,7 +2820,7 @@ nav#block-hsk-footer {
         font-size: 13.95px;
         font-size: 0.9rem;
         color: #666; }
-        @media only screen and (min-width: 992px) {
+        @media only screen and (min-width: 991px) {
           nav#block-hsk-footer ul li a {
             font-size: 13.95px;
             font-size: 0.9rem; } }
@@ -2855,6 +2855,8 @@ nav#block-hsk-footer {
       margin-top: 8px;
       margin-right: 15px;
       margin-bottom: 8px; }
+    header.main-header .navigation {
+      clear: both; }
 
   .search-block-form {
     display: block; } }
@@ -2864,7 +2866,7 @@ nav#block-hsk-footer {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   header .navbar-toggle {
     display: none; }
   header.main-header nav {
@@ -2872,6 +2874,8 @@ nav#block-hsk-footer {
     header.main-header nav .region-primary-menu {
       display: block;
       margin-top: 8px; }
+  header.main-header .navigation {
+    clear: none; }
   header #block-hsk-branding {
     width: auto; }
     header #block-hsk-branding .logo img {
@@ -3210,7 +3214,7 @@ nav#block-hsk-footer {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   .path-frontpage .content_layout .region-content {
     margin-top: 30px;
     margin-left: -15px;
@@ -3225,21 +3229,21 @@ nav#block-hsk-footer {
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px; } }
-  @media only screen and (min-width: 992px) and (min-width: 992px) {
+  @media only screen and (min-width: 991px) and (min-width: 992px) {
     .path-frontpage #block-views-block-events-list-block-1 {
       float: left;
       width: 50%; } }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   .path-frontpage #block-views-block-news-block-1 {
     position: relative;
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px; } }
-  @media only screen and (min-width: 992px) and (min-width: 992px) {
+  @media only screen and (min-width: 991px) and (min-width: 992px) {
     .path-frontpage #block-views-block-news-block-1 {
       float: left;
       width: 50%; } }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
     .path-frontpage #block-views-block-news-block-1 .views-row .views-field-field-image {
       margin-top: 3px; } }
 /* End Media Query Tablet */
