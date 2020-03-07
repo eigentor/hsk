@@ -2038,9 +2038,9 @@ button.btn, a.btn {
 #block-masquerade input.form-text {
   color: #333; }
 
-form#webform-submission-anmeldung-als-vereinsmitglied-form input {
+form.webform-submission-anmeldung-als-vereinsmitglied-form input {
   width: 100%; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form input#edit-sepa-consent {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form input#edit-sepa-consent {
     width: auto;
     margin-right: 5px; }
 
@@ -2056,35 +2056,35 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
 /*------------------------------------------- */
 /*------------------------------------------- */
 @media only screen and (min-width: 768px) {
-  form#webform-submission-anmeldung-als-vereinsmitglied-form .description {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .description {
     margin-left: 147px;
     margin-top: 2px;
     font-size: 13.175px;
     font-size: 0.85rem;
     color: #888; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form .form-required:after {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .form-required:after {
     background-image: url(../../../../core/misc/icons/ee0000/required.svg);
     margin-left: 6px; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form fieldset {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form fieldset {
     margin-top: 25px; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form input {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form input {
     width: auto; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form label {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form label {
     width: 140px; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form #edit-area-code-city {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form #edit-area-code-city {
     display: flex; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form .form-item-area-code {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-area-code {
     display: flex;
     align-items: center; }
-    form#webform-submission-anmeldung-als-vereinsmitglied-form .form-item-area-code label {
+    form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-area-code label {
       width: 50px; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city {
     flex: none;
     webkit-flex: 0; }
-    form#webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city label {
+    form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city label {
       width: auto;
       padding-left: 30px; }
-    form#webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city input {
+    form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city input {
       width: 75%; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
