@@ -3,21 +3,20 @@
 namespace Drupal\webform_ui\Form;
 
 use Drupal\Component\Render\FormattableMarkup;
-use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\webform\WebformDialogTrait;
+use Drupal\webform\Form\WebformDeleteFormBase;
+use Drupal\webform\Plugin\WebformElementManagerInterface;
+use Drupal\webform\Plugin\WebformElementVariantInterface;
+use Drupal\webform\WebformEntityElementsValidatorInterface;
 use Drupal\webform\WebformInterface;
-use Drupal\webform\WebformEntityElementsValidator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Webform for deleting a webform element.
  */
-class WebformUiElementDeleteForm extends ConfirmFormBase {
-
-  use WebformDialogTrait;
+class WebformUiElementDeleteForm extends WebformDeleteFormBase {
 
   /**
    * The renderer.
@@ -27,9 +26,16 @@ class WebformUiElementDeleteForm extends ConfirmFormBase {
   protected $renderer;
 
   /**
+   * Webform element manager.
+   *
+   * @var \Drupal\webform\Plugin\WebformElementManagerInterface
+   */
+  protected $elementManager;
+
+  /**
    * Webform element validator.
    *
-   * @var \Drupal\webform\WebformEntityElementsValidator
+   * @var \Drupal\webform\WebformEntityElementsValidatorInterface
    */
   protected $elementsValidator;
 
@@ -43,7 +49,7 @@ class WebformUiElementDeleteForm extends ConfirmFormBase {
   /**
    * A webform element.
    *
-   * @var \Drupal\webform\WebformElementInterface
+   * @var \Drupal\webform\Plugin\WebformElementInterface
    */
   protected $webformElement;
 
@@ -66,11 +72,14 @@ class WebformUiElementDeleteForm extends ConfirmFormBase {
    *
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
-   * @param \Drupal\webform\WebformEntityElementsValidator $elements_validator
+   * @param \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager
+   *   The webform element manager.
+   * @param \Drupal\webform\WebformEntityElementsValidatorInterface $elements_validator
    *   Webform element validator.
    */
-  public function __construct(RendererInterface $renderer, WebformEntityElementsValidator $elements_validator) {
+  public function __construct(RendererInterface $renderer, WebformElementManagerInterface $element_manager, WebformEntityElementsValidatorInterface $elements_validator) {
     $this->renderer = $renderer;
+    $this->elementManager = $element_manager;
     $this->elementsValidator = $elements_validator;
   }
 
@@ -80,38 +89,147 @@ class WebformUiElementDeleteForm extends ConfirmFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('renderer'),
+      $container->get('plugin.manager.webform.element'),
       $container->get('webform.elements_validator')
     );
+  }
+
+  /****************************************************************************/
+  // Delete form.
+  /****************************************************************************/
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getQuestion() {
+    if ($this->isDialog()) {
+      $t_args = [
+        '@title' => $this->getElementTitle(),
+      ];
+      return $this->t("Delete the '@title' element?", $t_args);
+    }
+    else {
+      $t_args = [
+        '%webform' => $this->webform->label(),
+        '%title' => $this->getElementTitle(),
+      ];
+      return $this->t('Delete the %title element from the %webform webform?', $t_args);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWarning() {
+    $t_args = ['%title' => $this->getElementTitle()];
+    return [
+      '#type' => 'webform_message',
+      '#message_type' => 'warning',
+      '#message_message' => $this->t('Are you sure you want to delete the %title element?', $t_args) . '<br/>' .
+        '<strong>' . $this->t('This action cannot be undone.') . '</strong>',
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDescription() {
-    $t_args = [
-      '%element' => $this->getElementTitle(),
-      '%webform' => $this->webform->label(),
-    ];
+    $element_plugin = $this->getWebformElementPlugin();
 
-    $build = [];
-    if ($this->webformElement->isContainer($this->element)) {
-      $build['warning'] = [
-        '#markup' => $this->t('This will immediately delete the %element container and all nested elements within %element from the %webform webform. This cannot be undone.', $t_args),
+    $items = [];
+    $items[] = $this->t('Remove this element');
+    $items[] = $this->t('Delete any submission data associated with this element');
+    if ($element_plugin->isContainer($this->element)) {
+      $items[] = $this->t('Delete all child elements');
+    }
+    if ($element_plugin instanceof WebformElementVariantInterface) {
+      $items[] = $this->t('Delete all related variants');
+    }
+    return [
+      'title' => [
+        '#markup' => $this->t('This action will…'),
+      ],
+      'list' => [
+        '#theme' => 'item_list',
+        '#items' => $items,
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDetails() {
+    $elements = $this->getDeletedElementsItemList($this->element['#webform_children']);
+    if ($elements) {
+      return [
+        '#type' => 'details',
+        '#title' => $this->t('Nested elements being deleted'),
+        'elements' => $elements,
       ];
     }
     else {
-      $build['warning'] = [
-        '#markup' => $this->t('This will immediately delete the %element element from the %webform webform. This cannot be undone.', $t_args),
-      ];
+      return [];
     }
-
-    if ($this->element['#webform_children']) {
-      $build['elements'] = $this->getDeletedElementsItemList($this->element['#webform_children']);
-      $build['elements']['#title'] = t('The below nested elements will be also deleted.');
-    }
-
-    return $this->renderer->render($build);
   }
+
+  /****************************************************************************/
+  // Form methods.
+  /****************************************************************************/
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCancelUrl() {
+    return $this->webform->toUrl('edit-form');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormId() {
+    return 'webform_ui_element_delete_form';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state, WebformInterface $webform = NULL, $key = NULL) {
+    $this->webform = $webform;
+    $this->key = $key;
+    $this->element = $webform->getElement($key);
+
+    if ($this->element === NULL) {
+      throw new NotFoundHttpException();
+    }
+
+    $form = parent::buildForm($form, $form_state);
+    $form = $this->buildDialogConfirmForm($form, $form_state);
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $this->webform->deleteElement($this->key);
+    $this->webform->save();
+
+    $this->messenger()->addStatus($this->t('The webform element %title has been deleted.', ['%title' => $this->getElementTitle()]));
+
+    $query = [];
+    // Variants require the entire page to be reloaded so that Variants tab
+    // can be hidden.
+    if ($this->getWebformElementPlugin() instanceof WebformElementVariantInterface) {
+      $query = ['reload' => 'true'];
+    }
+
+    $form_state->setRedirectUrl($this->webform->toUrl('edit-form', ['query' => $query]));
+  }
+
+  /****************************************************************************/
+  // Helper methods.
+  /****************************************************************************/
 
   /**
    * Get deleted elements as item list.
@@ -149,67 +267,6 @@ class WebformUiElementDeleteForm extends ConfirmFormBase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function getQuestion() {
-    return $this->t('Are you sure you want to delete the %title element from the %webform webform?', ['%webform' => $this->webform->label(), '%title' => $this->getElementTitle()]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfirmText() {
-    return $this->t('Delete');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCancelUrl() {
-    return $this->webform->toUrl('edit-form');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'webform_ui_element_delete_form';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, WebformInterface $webform = NULL, $key = NULL) {
-    $this->webform = $webform;
-    $this->key = $key;
-    $this->element = $webform->getElement($key);
-
-    if ($this->element === NULL) {
-      throw new NotFoundHttpException();
-    }
-
-    /** @var \Drupal\webform\WebformElementManagerInterface $element_manager */
-    $element_manager = \Drupal::service('plugin.manager.webform.element');
-    $plugin_id = $element_manager->getElementPluginId($this->element);
-    $this->webformElement = $element_manager->createInstance($plugin_id, $this->element);
-
-    $form = parent::buildForm($form, $form_state);
-    $form = $this->buildConfirmFormDialog($form, $form_state);
-    return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->webform->deleteElement($this->key);
-    $this->webform->save();
-
-    drupal_set_message($this->t('The webform element %title has been deleted.', ['%title' => $this->getElementTitle()]));
-    $form_state->setRedirectUrl($this->webform->toUrl('edit-form'));
-  }
-
-  /**
    * Get the webform element's title or key.
    *
    * @return string
@@ -217,6 +274,16 @@ class WebformUiElementDeleteForm extends ConfirmFormBase {
    */
   protected function getElementTitle() {
     return (!empty($this->element['#title'])) ? $this->element['#title'] : $this->key;
+  }
+
+  /**
+   * Return the webform element plugin associated with this form.
+   *
+   * @return \Drupal\webform\Plugin\WebformElementInterface
+   *   A webform element.
+   */
+  protected function getWebformElementPlugin() {
+    return $this->elementManager->getElementInstance($this->element);
   }
 
 }

@@ -12,10 +12,10 @@ use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformRequestInterface;
 use Drupal\webform\WebformSubmissionExporterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller routines for webform submission export.
@@ -95,7 +95,7 @@ class WebformResultsExportController extends ControllerBase implements Container
         $route_name = $this->requestHandler->getRouteName($webform, $source_entity, 'webform.results_export_file');
         $route_parameters = $this->requestHandler->getRouteParameters($webform, $source_entity) + ['filename' => $query['filename']];
         $file_url = Url::fromRoute($route_name, $route_parameters, ['absolute' => TRUE])->toString();
-        drupal_set_message($this->t('Export creation complete. Your download should begin now. If it does not start, <a href=":href">download the file here</a>. This file may only be downloaded once.', [':href' => $file_url]));
+        $this->messenger()->addStatus($this->t('Export creation complete. Your download should begin now. If it does not start, <a href=":href">download the file here</a>. This file may only be downloaded once.', [':href' => $file_url]));
         $build['#attached']['html_head'][] = [
           [
             '#tag' => 'meta',
@@ -110,19 +110,21 @@ class WebformResultsExportController extends ControllerBase implements Container
 
       return $build;
     }
-    elseif ($query && empty($query['ajax_form'])) {
-      if (!empty($query['excluded_columns']) && is_string($query['excluded_columns'])) {
-        $excluded_columns = explode(',', $query['excluded_columns']);
-        $query['excluded_columns'] = array_combine($excluded_columns, $excluded_columns);
+    elseif ($query && empty($query['ajax_form']) && isset($query['download'])) {
+      $default_options = $this->submissionExporter->getDefaultExportOptions();
+      foreach ($query as $key => $value) {
+        if (isset($default_options[$key]) && is_array($default_options[$key]) && is_string($value)) {
+          $query[$key] = explode(',', $value);
+        }
       }
-
-      $export_options = $query + $this->submissionExporter->getDefaultExportOptions();
+      if (!empty($query['excluded_columns'])) {
+        $query['excluded_columns'] = array_combine($query['excluded_columns'], $query['excluded_columns']);
+      }
+      $export_options = $query + $default_options;
       $this->submissionExporter->setExporter($export_options);
       if ($this->submissionExporter->isBatch()) {
-        self::batchSet($webform, $source_entity, $export_options);
-        $route_name = $this->requestHandler->getRouteName($webform, $source_entity, 'webform.results_export');
-        $route_parameters = $this->requestHandler->getRouteParameters($webform, $source_entity);
-        return batch_process(Url::fromRoute($route_name, $route_parameters));
+        static::batchSet($webform, $source_entity, $export_options);
+        return batch_process($this->requestHandler->getUrl($webform, $source_entity, 'webform.results_export'));
       }
       else {
         $this->submissionExporter->generate();
@@ -154,10 +156,8 @@ class WebformResultsExportController extends ControllerBase implements Container
 
     $file_path = $this->submissionExporter->getFileTempDirectory() . '/' . $filename;
     if (!file_exists($file_path)) {
-      $route_name = $this->requestHandler->getRouteName($webform, $source_entity, 'webform.results_export');
-      $route_parameters = $this->requestHandler->getRouteParameters($webform, $source_entity);
       $t_args = [
-        ':href' => Url::fromRoute($route_name, $route_parameters)->toString(),
+        ':href' => $this->requestHandler->getUrl($webform, $source_entity, 'webform.results_export')->toString(),
       ];
       $build = [
         '#markup' => $this->t('No export file ready for download. The file may have already been downloaded by your browser. Visit the <a href=":href">download export webform</a> to create a new export.', $t_args),
@@ -181,30 +181,22 @@ class WebformResultsExportController extends ControllerBase implements Container
    *   A response object containing the CSV file.
    */
   public function downloadFile($file_path, $download = TRUE) {
-    // Return the export file.
-    $contents = file_get_contents($file_path);
-    unlink($file_path);
+    $headers = [];
 
-    $content_type = $this->mimeTypeGuesser->guess($file_path);
-
-    if ($download) {
-      $headers = [
-        'Content-Length' => strlen($contents),
-        'Content-Type' => $content_type,
-        'Content-Disposition' => 'attachment; filename="' . basename($file_path) . '"',
-      ];
-    }
-    else {
-      if ($content_type != 'text/html') {
-        $content_type = 'text/plain';
-      }
-      $headers = [
-        'Content-Length' => strlen($contents),
-        'Content-Type' => $content_type . '; charset=utf-8',
-      ];
+    // If the file is not meant to be downloaded, allow CSV files to be
+    // displayed as plain text.
+    if (!$download && preg_match('/\.csv$/', $file_path)) {
+      $headers['Content-Type'] = 'text/plain';
     }
 
-    return new Response($contents, 200, $headers);
+    $response = new BinaryFileResponse($file_path, 200, $headers, FALSE, $download ? 'attachment' : 'inline');
+    // Don't delete the file during automatted tests.
+    // @see \Drupal\webform\Tests\WebformResultsExportDownloadTest
+    // @see \Drupal\Tests\webform_entity_print\Functional\WebformEntityPrintFunctionalTest
+    if (!drupal_valid_test_ua()) {
+      $response->deleteFileAfterSend(TRUE);
+    }
+    return $response;
   }
 
   /****************************************************************************/
@@ -276,7 +268,7 @@ class WebformResultsExportController extends ControllerBase implements Container
 
     if (empty($context['sandbox'])) {
       $context['sandbox']['progress'] = 0;
-      $context['sandbox']['current_sid'] = 0;
+      $context['sandbox']['offset'] = 0;
       $context['sandbox']['max'] = $submission_exporter->getQuery()->count()->execute();
       // Store entity ids and not the actual webform or source entity in the
       // $context to prevent "The container was serialized" errors.
@@ -290,17 +282,16 @@ class WebformResultsExportController extends ControllerBase implements Container
 
     // Write CSV records.
     $query = $submission_exporter->getQuery();
-    $query->condition('sid', $context['sandbox']['current_sid'], '>');
-    $query->range(0, $submission_exporter->getBatchLimit());
+    $query->range($context['sandbox']['offset'], $submission_exporter->getBatchLimit());
     $entity_ids = $query->execute();
     $webform_submissions = WebformSubmission::loadMultiple($entity_ids);
     $submission_exporter->writeRecords($webform_submissions);
 
     // Track progress.
     $context['sandbox']['progress'] += count($webform_submissions);
-    $context['sandbox']['current_sid'] = ($webform_submissions) ? end($webform_submissions)->id() : 0;
+    $context['sandbox']['offset'] += $submission_exporter->getBatchLimit();
 
-    $context['message'] = t('Exported @count of @total submissions...', ['@count' => $context['sandbox']['progress'], '@total' => $context['sandbox']['max']]);
+    $context['message'] = t('Exported @count of @total submissions…', ['@count' => $context['sandbox']['progress'], '@total' => $context['sandbox']['max']]);
 
     // Track finished.
     if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
@@ -344,7 +335,7 @@ class WebformResultsExportController extends ControllerBase implements Container
       @unlink($file_path);
       $archive_path = $submission_exporter->getArchiveFilePath();
       @unlink($archive_path);
-      drupal_set_message(t('Finished with an error.'));
+      \Drupal::messenger()->addStatus(t('Finished with an error.'));
     }
     else {
       $submission_exporter->writeFooter();
@@ -358,9 +349,7 @@ class WebformResultsExportController extends ControllerBase implements Container
 
       /** @var \Drupal\webform\WebformRequestInterface $request_handler */
       $request_handler = \Drupal::service('webform.request');
-      $route_name = $request_handler->getRouteName($webform, $source_entity, 'webform.results_export');
-      $route_parameters = $request_handler->getRouteParameters($webform, $source_entity);
-      $redirect_url = Url::fromRoute($route_name, $route_parameters, ['query' => ['filename' => $filename], 'absolute' => TRUE]);
+      $redirect_url = $request_handler->getUrl($webform, $source_entity, 'webform.results_export', ['query' => ['filename' => $filename], 'absolute' => TRUE]);
       return new RedirectResponse($redirect_url->toString());
     }
   }

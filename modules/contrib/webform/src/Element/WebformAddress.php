@@ -12,7 +12,14 @@ class WebformAddress extends WebformCompositeBase {
   /**
    * {@inheritdoc}
    */
-  public static function getCompositeElements() {
+  public function getInfo() {
+    return parent::getInfo() + ['#theme' => 'webform_composite_address'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getCompositeElements(array $element) {
     $elements = [];
     $elements['address'] = [
       '#type' => 'textfield',
@@ -26,6 +33,9 @@ class WebformAddress extends WebformCompositeBase {
       '#type' => 'textfield',
       '#title' => t('City/Town'),
     ];
+    // Any webform options prefixed with 'states_province' will automatically
+    // be included within the Composite Element UI.
+    // @see \Drupal\webform\Plugin\WebformElement\WebformCompositeBase::getCompositeElementOptions
     $elements['state_province'] = [
       '#type' => 'select',
       '#title' => t('State/Province'),
@@ -33,8 +43,11 @@ class WebformAddress extends WebformCompositeBase {
     ];
     $elements['postal_code'] = [
       '#type' => 'textfield',
-      '#title' => t('Zip/Postal Code'),
+      '#title' => t('ZIP/Postal Code'),
     ];
+    // Any webform options prefixed with 'country' will automatically
+    // be included within the Composite Element UI.
+    // @see \Drupal\webform\Plugin\WebformElement\WebformCompositeBase::getCompositeElementOptions
     $elements['country'] = [
       '#type' => 'select',
       '#title' => t('Country'),

@@ -11,7 +11,7 @@
   .webform-flexbox {
     display: -webkit-flex;
     display: flex;
-    margin: 1em -.5em;
+    margin: 1em -0.5em;
   }
 
   .webform-flexbox .webform-flexbox {
@@ -38,7 +38,7 @@
   }
 
   .webform-flex--container {
-    margin: 0 .5em;
+    margin: 0 0.5em;
   }
 
   .webform-flex--container > .form-item {
@@ -65,6 +65,21 @@
   .webform-flex--container > .webform-has-field-prefix.webform-flex.webform-has-field-suffix > input,
   .webform-flex--container > .webform-has-field-prefix.webform-flex.webform-has-field-suffix > select {
     width: 70%;
+  }
+
+  .webform-flex--container > .webform-element-help-container--element > input,
+  .webform-flex--container > .webform-element-help-container--element > select {
+    width: 85%;
+  }
+
+  .webform-flex--container > .webform-has-field-prefix.webform-element-help-container--element > input,
+  .webform-flex--container > .webform-has-field-suffix.webform-element-help-container--element > select {
+    width: 70%;
+  }
+
+  .webform-flex--container > .webform-has-field-prefix.webform-has-field-suffix.webform-element-help-container--element > input,
+  .webform-flex--container > .webform-has-field-prefix.webform-has-field-suffix.webform-element-help-container--element > select {
+    width: 50%;
   }
 
   .webform-flex--1 {
@@ -139,7 +154,7 @@
   }
 
   .webform-flex--container > .form-type-webform-select-other .form-item + .form-item {
-    margin-top: .5em;
+    margin-top: 0.5em;
   }
 
   /**
@@ -153,15 +168,14 @@
    * Composite.
    */
   .form-composite > .webform-flexbox {
-    margin: 1em -.5em;
+    margin: 1em -0.5em;
   }
 
   /**
    * Radios/checkboxes.
    */
-  .form-type-checkbox,
-  .form-type-radio {
+  .webform-flex--container .form-type-checkbox,
+  .webform-flex--container .form-type-radio {
     white-space: nowrap;
   }
-
 }

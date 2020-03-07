@@ -3,10 +3,9 @@
 namespace Drupal\webform\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\webform\WebformElementBase;
+use Drupal\Core\Render\Element;
+use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\webform\WebformInterface;
-use Drupal\Component\Utility\Unicode;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
@@ -17,7 +16,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *   api = "https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!Element!Table.php/class/Table",
  *   label = @Translation("Table"),
  *   description = @Translation("Provides an element to render a table."),
- *   category = @Translation("Markup elements"),
+ *   hidden = TRUE,
  * )
  */
 class Table extends WebformElementBase {
@@ -57,7 +56,7 @@ class Table extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$element, WebformSubmissionInterface $webform_submission) {
+  public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
 
     // Add .js-form.wrapper to fix #states handling.
@@ -94,28 +93,42 @@ class Table extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
-  public function formatHtmlItem(array &$element, $value, array $options = []) {
-    // Undo webform submission elements and convert rows back into a simple
-    // render array.
+  protected function format($type, array &$element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $item_function = 'format' . $type . 'Item';
+    return $this->$item_function($element, $webform_submission, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $rows = [];
-    foreach ($value as $row_key => $row_element) {
+    foreach ($element as $row_key => $row_element) {
+      if (Element::property($row_key)) {
+        continue;
+      }
+
       $element[$row_key] = [];
-      foreach ($row_element['#value'] as $column_key => $column_element) {
-        if (isset($column_element['#value'])) {
-          if (is_string($column_element['#value']) || $column_element['#value'] instanceof TranslatableMarkup) {
-            $value = ['#markup' => $column_element['#value']];
-          }
-          else {
-            $value = $column_element['#value'];
-          }
+      foreach ($row_element as $column_key => $column_element) {
+        if (Element::property($column_key)) {
+          continue;
         }
-        elseif (isset($column_element['#markup'])) {
-          $value = ['#markup' => $column_element['#markup']];
+
+        // Get column element plugin and get formatted HTML value.
+        $column_element_plugin = $this->elementManager->getElementInstance($column_element);
+        $column_value = $column_element_plugin->format('html', $column_element, $webform_submission, $options);
+
+        // If column value is empty see if we can use #markup.
+        if (empty($column_value) && isset($column_element['#markup'])) {
+          $column_value = $column_element['#markup'];
+        }
+
+        if (is_array($column_value)) {
+          $rows[$row_key][$column_key] = ['data' => $column_value];
         }
         else {
-          $value = '';
+          $rows[$row_key][$column_key] = ['data' => ['#markup' => $column_value]];
         }
-        $rows[$row_key][$column_key] = ['data' => $value];
       }
     }
     return $rows + $element;
@@ -124,9 +137,9 @@ class Table extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
-  public function formatTextItem(array &$element, $value, array $options = []) {
+  protected function formatTextItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     // Render the HTML table.
-    $build = $this->formatHtml($element, $value, $options);
+    $build = $this->formatHtml($element, $webform_submission, $options);
     $html = \Drupal::service('renderer')->renderPlain($build);
 
     // Convert table in pipe delimited plain text.
@@ -144,7 +157,7 @@ class Table extends WebformElementBase {
     // Add divider between (optional) header.
     if (!empty($element['#header'])) {
       $lines = explode(PHP_EOL, trim($html));
-      $lines[0] .= PHP_EOL . str_repeat('-', Unicode::strlen($lines[0]));
+      $lines[0] .= PHP_EOL . str_repeat('-', mb_strlen($lines[0]));
       $html = implode(PHP_EOL, $lines);
     }
 

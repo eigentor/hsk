@@ -3,17 +3,18 @@
 namespace Drupal\webform\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Provides a 'flexbox' element.
  *
  * @WebformElement(
  *   id = "webform_flexbox",
+ *   default_key = "flexbox",
  *   api = "http://www.w3schools.com/css/css3_flexbox.asp",
  *   label = @Translation("Flexbox layout"),
  *   description = @Translation("Provides a flex(ible) box container used to layout elements in multiple columns."),
  *   category = @Translation("Containers"),
- *   states_wrapper = TRUE,
  * )
  */
 class WebformFlexbox extends Container {
@@ -22,17 +23,26 @@ class WebformFlexbox extends Container {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    return parent::getDefaultProperties() + [
+    return [
       // Flexbox.
       'align_items' => 'flex-start',
-    ];
+    ] + parent::getDefaultProperties();
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function build($format, array &$element, $value, array $options = []) {
-    return $value;
+  protected function build($format, array &$element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    /** @var \Drupal\webform\WebformSubmissionViewBuilderInterface $view_builder */
+    $view_builder = \Drupal::entityTypeManager()->getViewBuilder('webform_submission');
+    return $view_builder->buildElements($element, $webform_submission, $options, $format);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function preview() {
+    return [];
   }
 
   /**

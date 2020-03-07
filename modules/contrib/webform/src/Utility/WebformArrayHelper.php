@@ -122,7 +122,7 @@ class WebformArrayHelper {
    *   A key.
    *
    * @return string|null
-   *   The next key in an array or NULL is there is no next key.
+   *   The next key in an array or NULL if there is no next key.
    */
   public static function getNextKey(array $array, $key) {
     return self::getKey($array, $key, 'next');
@@ -137,7 +137,7 @@ class WebformArrayHelper {
    *   A key.
    *
    * @return string|null
-   *   The prev(ious) key in an array or NULL is there is no previous key.
+   *   The prev(ious) key in an array or NULL if there is no previous key.
    */
   public static function getPreviousKey(array $array, $key) {
     return self::getKey($array, $key, 'prev');
@@ -151,7 +151,7 @@ class WebformArrayHelper {
    * @param string $key
    *   A array key.
    * @param string $direction
-   *   The direction of the  key to retrieve.
+   *   The direction of the key to retrieve.
    *
    * @return string|null
    *   The next or prev(ious) array key or NULL if no key is found.
@@ -232,6 +232,169 @@ class WebformArrayHelper {
       $random[$key] = $array[$key];
     }
     return $random;
+  }
+
+  /**
+   * Checks if multiple keys exist in an array.
+   *
+   * @param array $array
+   *   An associative array.
+   * @param array $keys
+   *   Keys.
+   *
+   * @return bool
+   *   TRUE if multiple keys exist in an array.
+   *
+   * @see https://wpscholar.com/blog/check-multiple-array-keys-exist-php/
+   */
+  public static function keysExist(array $array, array $keys) {
+    $count = 0;
+    foreach ($keys as $key) {
+      if (array_key_exists($key, $array)) {
+        $count++;
+      }
+    }
+
+    return count($keys) === $count;
+  }
+
+  /**
+   * Get duplicate values in an array.
+   *
+   * @param array $array
+   *   An array.
+   *
+   * @return array
+   *   An array container duplicate values.
+   *
+   * @see https://magp.ie/2011/02/02/find-duplicates-in-an-array-with-php/
+   */
+  public static function getDuplicates(array $array) {
+    return array_unique(array_diff_assoc($array, array_unique($array)));
+  }
+
+  /**
+   * Traverse an associative array and collect references to all key/value pairs in an associative array.
+   *
+   * @param array $build
+   *   An array.
+   *
+   * @return array
+   *   An associative array of key/value pairs by reference.
+   */
+  public static function &flattenAssoc(array &$build) {
+    $array = [];
+    $duplicate_array_keys = [];
+    self::flattenAssocRecursive($build, $array, $duplicate_array_keys);
+    return $array;
+  }
+
+  /**
+   * TTraverse an associative array and collect references to all key/value pairs in an associative array.
+   *
+   * @param array $build
+   *   An array.
+   * @param array $array
+   *   An empty array that will be populated with references to key/value pairs.
+   * @param array $duplicate_array_keys
+   *   An array used to track key/value pairs with duplicate keys.
+   */
+  protected static function flattenAssocRecursive(array &$build, array &$array, array &$duplicate_array_keys) {
+    foreach ($build as $key => &$item) {
+      // If there are duplicate array keys create an array of referenced
+      // key/value pairs.
+      if (isset($array[$key])) {
+        // If this is the second key/value pairs, we need to restructure to
+        // first key/value's reference to be an array of references.
+        if (empty($duplicate_array_keys[$key])) {
+          // Store a temporary references to the first key/value pair.
+          $first_element = &$array[$key];
+          // Use unset() to break the reference.
+          unset($array[$key]);
+          // Create an array of element references.
+          $array[$key] = [];
+          // Append the first to the array of key/value references.
+          $array[$key][] = &$first_element;
+        }
+        // Now append the current key/value pair to array of key/value pair
+        // references.
+        $array[$key][] = &$build[$key];
+        // Finally track key/value pairs with duplicate keys.
+        $duplicate_array_keys[$key] = TRUE;
+      }
+      else {
+        $array[$key] = &$build[$key];
+      }
+
+      if (is_array($item)) {
+        self::flattenAssocRecursive($item, $array, $duplicate_array_keys);
+      }
+    }
+  }
+
+  /**
+   * Inserts a new key/value before the key in the array.
+   *
+   * @param array &$array
+   *   An array to insert in to.
+   * @param string $target_key
+   *   The key to insert before.
+   * @param string $new_key
+   *   The key to insert.
+   * @param mixed $new_value
+   *   An value to insert.
+   */
+  public static function insertBefore(array &$array, $target_key, $new_key, $new_value) {
+    $new = [];
+    foreach ($array as $k => $value) {
+      if ($k === $target_key) {
+        $new[$new_key] = $new_value;
+      }
+      $new[$k] = $value;
+    }
+    $array = $new;
+  }
+
+  /**
+   * Inserts a new key/value after the key in the array.
+   *
+   * @param array &$array
+   *   An array to insert in to.
+   * @param string $target_key
+   *   The key to insert after.
+   * @param string $new_key
+   *   The key to insert.
+   * @param mixed $new_value
+   *   An value to insert.
+   */
+  public static function insertAfter(array &$array, $target_key, $new_key, $new_value) {
+    $new = [];
+    foreach ($array as $key => $value) {
+      $new[$key] = $value;
+      if ($key === $target_key) {
+        $new[$new_key] = $new_value;
+      }
+    }
+    $array = $new;
+  }
+
+  /**
+   * Remove value from an array.
+   *
+   * @param array &$array
+   *   An array.
+   * @param mixed $value
+   *   A value.
+   *
+   * @see https://stackoverflow.com/questions/7225070/php-array-delete-by-value-not-key
+   */
+  public static function removeValue(array &$array, $value) {
+    if (($key = array_search($value, $array)) !== FALSE) {
+      unset($array[$key]);
+    }
+    if (static::isSequential($array)) {
+      array_values($array);
+    }
   }
 
 }

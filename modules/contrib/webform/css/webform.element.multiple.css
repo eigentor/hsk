@@ -17,34 +17,44 @@
 
 .webform-multiple-table td {
   white-space: nowrap;
+  vertical-align: top;
 }
 
-.webform-multiple-table td:first-child {
+.webform-multiple-table td .description,
+.webform-multiple-table td .form-item--error-message {
+  white-space: normal;
+}
+
+.webform-multiple-table td.webform-multiple-table--handle {
   padding: 0 0 0 1em;
   width: 26px;
   vertical-align: middle;
   text-align: center;
 }
 
-.webform-multiple-table td:last-child {
+.webform-multiple-table td.webform-multiple-table--weight {
+  width: 20px;
+}
+
+.webform-multiple-table td.webform-multiple-table--operations {
   padding: 0 2px;
   vertical-align: middle;
   text-align: center;
+  width: 30px;
+}
+.webform-multiple-table td.webform-multiple-table--operations-two {
   width: 60px;
 }
 
-
-.webform-multiple-table td:last-child input {
+.webform-multiple-table td.webform-multiple-table--operations input {
   margin: 0 2px;
-}
-
-.webform-multiple-table td:last-child input {
   opacity: 0.4;
+  background: none;
 }
 
-.webform-multiple-table td:last-child input:hover,
-.webform-multiple-table td:last-child input:focus,
-.webform-multiple-table td:last-child input:active {
+.webform-multiple-table td.webform-multiple-table--operations input:hover,
+.webform-multiple-table td.webform-multiple-table--operations input:focus,
+.webform-multiple-table td.webform-multiple-table--operations input:active {
   opacity: 1;
   background: none;
 }
@@ -58,7 +68,8 @@
 .webform-multiple-table td .form-type-webform-autocomplete input {
   width: 100%;
 }
-.webform-multiple-table td .form-type-datelist select,
+
+.webform-multiple-table td .container-inline select,
 .form-type-webform-multiple.webform-has-field-prefix td select,
 .form-type-webform-multiple.webform-has-field-suffix td select,
 .form-type-webform-multiple.webform-has-field-prefix td input,
@@ -66,14 +77,27 @@
   width: auto;
 }
 
+.webform-multiple-table td .form-type-datetime .form-type-textfield input {
+  width: 12em;
+}
 .webform-multiple-table .webform-multiple-sort-weight {
   width: 4em;
 }
 
 .webform-multiple-table td input[type="image"] {
-  padding: 0;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: auto;
+  min-width: initial;
+  max-width: initial;
+  box-sizing: border-box;
+  margin: 0;
+  border: 2px solid #333;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.webform-multiple-table td input[type="image"] + input[type="image"] {
+  margin-left: 2px;
 }
 
 .webform-multiple-table .container-inline input[type="submit"] {
@@ -81,10 +105,26 @@
 }
 
 /**
- * Hide AJAX throbber.
+ * Add margin between stacked form items.
  */
-.form-type-webform-multiple .ajax-progress-throbber {
-  display: none;
+.webform-multiple-table .form-item + .form-item {
+  margin-top: 0.2em;
+}
+
+/**
+ * Fix margin be checkboxes and radios.
+ */
+.webform-multiple-table .form-checkboxes .form-item,
+.webform-multiple-table .form-radios .form-item {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+/**
+ * Remove margin from no messages.
+ */
+.webform-multiple-table--no-items-message .messages__wrapper {
+  padding: 0;
 }
 
 /**
@@ -98,6 +138,69 @@
 /**
  * Tweak tabledrag toggle weight.
  */
-.webform-multiple-tabledrag-toggle-weight {
+.tabledrag-toggle-weight-wrapper.webform-multiple-tabledrag-toggle-weight {
   float: right;
+  display: inherit;
+  position: inherit;
+}
+
+.tabledrag-toggle-weight-wrapper.webform-multiple-tabledrag-toggle-weight button {
+  position: inherit;
+  top: inherit;
+  right: inherit;
+}
+
+/**
+ * IMCE tweaks
+ */
+.webform-multiple-table .imce-url-button {
+  display: block;
+}
+
+/**
+ * Mobile support to multiple table.
+ */
+@media (max-width: 768px) {
+  .webform-multiple-table-responsive thead {
+    display: none;
+  }
+
+  .webform-multiple-table-responsive tr {
+    display: block;
+    padding: 0.5em 0;
+  }
+
+  .webform-multiple-table-responsive td {
+    display: block;
+    border: 0;
+    background: transparent;
+    text-align: inherit;
+    width: inherit;
+    padding: 0.5em 1em;
+  }
+
+  .webform-multiple-table-responsive td:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .webform-multiple-table-responsive td.webform-multiple-table--handle,
+  .webform-multiple-table-responsive td.webform-multiple-table--operations {
+    display: none;
+  }
+
+  .webform-multiple-table-responsive td.webform-multiple-table--weight {
+    width: 100%;
+  }
+
+  .webform-multiple-table-responsive td > div > label.visually-hidden {
+    display: block;
+    position: inherit !important;
+    clip: inherit;
+    overflow: inherit;
+    height: inherit;
+    width: inherit;
+    margin: 0.2em 0;
+  }
 }

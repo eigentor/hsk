@@ -1,11 +1,11 @@
 /**
  * @file
- * Javascript behaviors for other elements.
+ * JavaScript behaviors for other elements.
  */
 
 (function ($, Drupal) {
 
-  "use strict";
+  'use strict';
 
   /**
    * Toggle other input (text) field.
@@ -14,21 +14,41 @@
    *   TRUE will display the text field. FALSE with hide and clear the text field.
    * @param {object} $element
    *   The input (text) field to be toggled.
+   * @param {string} effect
+   *   Effect.
    */
-  function toggleOther(show, $element) {
+  function toggleOther(show, $element, effect) {
     var $input = $element.find('input');
+    var hideEffect = (effect === false) ? 'hide' : 'slideUp';
+    var showEffect = (effect === false) ? 'show' : 'slideDown';
+
     if (show) {
       // Limit the other inputs width to the parent's container.
-      $element.width($element.parent().width());
+      // If the parent container is not visible it's width will be 0
+      // and ignored.
+      var width = $element.parent().width();
+      if (width) {
+        $element.width(width);
+      }
+
       // Display the element.
-      $element.slideDown();
-      // Focus and require the input.
-      $input.focus().prop('required', true);
+      $element[showEffect]();
+      // If not initializing, then focus the other element.
+      if (effect !== false) {
+        $input.focus();
+      }
+      // Require the input.
+      $input.prop('required', true).attr('aria-required', 'true');
       // Restore the input's value.
       var value = $input.data('webform-value');
-      if (value !== undefined) {
+      if (typeof value !== 'undefined') {
         $input.val(value);
-        $input.get(0).setSelectionRange(0, 0);
+        var input = $input.get(0);
+        // Move cursor to the beginning of the other text input.
+        // @see https://stackoverflow.com/questions/21177489/selectionstart-selectionend-on-input-type-number-no-longer-allowed-in-chrome
+        if ($.inArray(input.type, ['text', 'search', 'url', 'tel', 'password']) !== -1) {
+          input.setSelectionRange(0, 0);
+        }
       }
       // Refresh CodeMirror used as other element.
       $element.parent().find('.CodeMirror').each(function (index, $element) {
@@ -36,11 +56,12 @@
       });
     }
     else {
-      $element.slideUp();
+      // Hide the element.
+      $element[hideEffect]();
       // Save the input's value.
       $input.data('webform-value', $input.val());
       // Empty and un-required the input.
-      $input.val('').prop('required', false);
+      $input.val('').prop('required', false).removeAttr('aria-required');
     }
   }
 
@@ -55,16 +76,19 @@
         var $element = $(this);
 
         var $select = $element.find('select');
-        var $otherOption = $element.find('option[value="_other_"]');
         var $input = $element.find('.js-webform-select-other-input');
 
-        if ($otherOption.is(':selected')) {
-          $input.show().find('input').prop('required', true);
-        }
-
         $select.on('change', function () {
-          toggleOther($otherOption.is(':selected'), $input);
+          var isOtherSelected = $select
+            .find('option[value="_other_"]')
+            .is(':selected');
+          toggleOther(isOtherSelected, $input);
         });
+
+        var isOtherSelected = $select
+          .find('option[value="_other_"]')
+          .is(':selected');
+        toggleOther(isOtherSelected, $input, false);
       });
     }
   };
@@ -81,13 +105,11 @@
         var $checkbox = $element.find('input[value="_other_"]');
         var $input = $element.find('.js-webform-checkboxes-other-input');
 
-        if ($checkbox.is(':checked')) {
-          $input.show().find('input').prop('required', true);
-        }
-
         $checkbox.on('change', function () {
           toggleOther(this.checked, $input);
         });
+
+        toggleOther($checkbox.is(':checked'), $input, false);
       });
     }
   };
@@ -105,13 +127,11 @@
         var $radios = $element.find('input[type="radio"]');
         var $input = $element.find('.js-webform-radios-other-input');
 
-        if ($radios.filter(':checked').val() === '_other_') {
-          $input.show().find('input').prop('required', true);
-        }
-
         $radios.on('change', function () {
           toggleOther(($radios.filter(':checked').val() === '_other_'), $input);
         });
+
+        toggleOther(($radios.filter(':checked').val() === '_other_'), $input, false);
       });
     }
   };
@@ -128,28 +148,14 @@
 
         var $buttons = $element.find('input[type="radio"]');
         var $input = $element.find('.js-webform-buttons-other-input');
+        var $container = $(this).find('.js-webform-webform-buttons');
 
-        if ($buttons.filter(':checked').val() === '_other_') {
-          $input.show().find('input').prop('required', true);
-        }
-
-        // Note: Initializing buttonset here so that we can set the onchange
-        // event handler.
-        // @see Drupal.behaviors.webformButtons
-        var $container = $(this).find('.form-radios');
-        // Remove all div and classes around radios and labels.
-        $container.html($container.find('input[type="radio"], label').removeClass());
-        // Create buttonset and set onchange handler.
-        $container.buttonset().change(function () {
+        // Create set onchange handler.
+        $container.change(function () {
           toggleOther(($(this).find(':radio:checked').val() === '_other_'), $input);
         });
-        // Disable buttonset.
-        $container.buttonset('option', 'disabled', $container.find('input[type="radio"]:disabled').length);
-        // Turn buttonset off/on when the input is disabled/enabled.
-        // @see webform.states.js
-        $container.on('webform:disabled', function () {
-          $container.buttonset('option', 'disabled', $container.find('input[type="radio"]:disabled').length);
-        });
+
+        toggleOther(($buttons.filter(':checked').val() === '_other_'), $input, false);
       });
     }
   };

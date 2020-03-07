@@ -6,8 +6,9 @@ use Drupal\Core\Condition\ConditionPluginBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\webform\Utility\WebformElementHelper;
+use Drupal\webform\WebformEntityReferenceManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\webform\Plugin\Field\FieldType\WebformEntityReferenceItem;
 
 /**
  * Provides a 'Webform' condition.
@@ -32,10 +33,15 @@ class Webform extends ConditionPluginBase implements ContainerFactoryPluginInter
   protected $entityStorage;
 
   /**
+   * The webform entity reference manager.
+   *
+   * @var \Drupal\webform\WebformEntityReferenceManagerInterface
+   */
+  protected $webformEntityReferenceManager;
+
+  /**
    * Creates a new Webform instance.
    *
-   * @param \Drupal\Core\Entity\EntityStorageInterface $entity_storage
-   *   The entity storage.
    * @param array $configuration
    *   The plugin configuration, i.e. an array with configuration values keyed
    *   by configuration option name. The special key 'context' may be used to
@@ -45,10 +51,15 @@ class Webform extends ConditionPluginBase implements ContainerFactoryPluginInter
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $entity_storage
+   *   The entity storage.
+   * @param \Drupal\webform\WebformEntityReferenceManagerInterface $webform_entity_reference_manager
+   *   The webform entity reference manager.
    */
-  public function __construct(EntityStorageInterface $entity_storage, array $configuration, $plugin_id, $plugin_definition) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityStorageInterface $entity_storage, WebformEntityReferenceManagerInterface $webform_entity_reference_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityStorage = $entity_storage;
+    $this->webformEntityReferenceManager = $webform_entity_reference_manager;
   }
 
   /**
@@ -56,10 +67,11 @@ class Webform extends ConditionPluginBase implements ContainerFactoryPluginInter
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      $container->get('entity.manager')->getStorage('webform'),
       $configuration,
       $plugin_id,
-      $plugin_definition
+      $plugin_definition,
+      $container->get('entity_type.manager')->getStorage('webform'),
+      $container->get('webform.entity_reference_manager')
     );
   }
 
@@ -78,10 +90,10 @@ class Webform extends ConditionPluginBase implements ContainerFactoryPluginInter
       '#type' => 'select',
       '#options' => $options,
       '#multiple' => $options,
+      '#select2' => TRUE,
       '#default_value' => $this->configuration['webforms'],
-      '#attached' => ['library' => ['webform/webform.element.select2']],
-      '#attributes' => ['class' => ['js-webform-select2', 'webform-select2']],
     ];
+    WebformElementHelper::process($form['webforms']);
 
     if (empty($this->configuration['context_mapping'])) {
       $form['message'] = [
@@ -98,11 +110,6 @@ class Webform extends ConditionPluginBase implements ContainerFactoryPluginInter
     $form['context_mapping']['webform_submission']['#title'] = $this->t('Select a @context value:', ['@context' => $this->t('webform submission')]);
     $form['context_mapping']['webform_submission']['#description'] = $this->t("Select 'Webform submission from URL' to display this block, when the current request's path contains a webform submission that was created from the selected webform.");
     $form['context_mapping']['node']['#description'] = $this->t("Select 'Node from URL' to display this block, when the current request's path contains a node that references the selected webform using a dedicated webform field or node.");
-
-    // Hide 'Negate the condition', which does not make sense.
-    if (isset($form['negate'])) {
-      $form['negate']['#access'] = FALSE;
-    }
 
     // Attached library to summarize configuration settings.
     $form['#attached']['library'][] = 'webform/webform.block';
@@ -124,7 +131,9 @@ class Webform extends ConditionPluginBase implements ContainerFactoryPluginInter
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $this->configuration['webforms'] = array_filter($form_state->getValue('webforms'));
+    $values = $form_state->getValue('webforms') ?: [];
+    $values = array_filter($values);
+    $this->configuration['webforms'] = array_combine($values, $values);
     parent::submitConfigurationForm($form, $form_state);
   }
 
@@ -178,9 +187,8 @@ class Webform extends ConditionPluginBase implements ContainerFactoryPluginInter
       return $webform;
     }
     if ($node = $this->getContextValue('node')) {
-      $webform_field_name = WebformEntityReferenceItem::getEntityWebformFieldName($node);
-      if ($webform_field_name && $node->$webform_field_name->entity) {
-        return $node->$webform_field_name->entity;
+      if ($webform_target = $this->webformEntityReferenceManager->getWebform($node)) {
+        return $webform_target;
       }
     }
     return NULL;

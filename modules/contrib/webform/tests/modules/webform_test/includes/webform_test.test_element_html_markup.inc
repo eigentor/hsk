@@ -5,7 +5,7 @@
  * Generate examples of all elements using HTML markup.
  */
 
-module_load_include('inc', 'webform_test', 'includes/webform_test.example_elements');
+module_load_include('inc', 'webform_test', 'includes/webform_test.test_example_elements');
 
 /**
  * Generate examples of all elements using HTML markup.
@@ -14,7 +14,7 @@ module_load_include('inc', 'webform_test', 'includes/webform_test.example_elemen
  *   An array containing examples of all elements using HTML markup.
  */
 function webform_test_test_element_html_markup() {
-  $elements = webform_test_example_elements();
+  $elements = webform_test_test_example_elements();
   _webform_test_test_element_html_markup_recursive($elements);
   return $elements;
 }
@@ -27,7 +27,7 @@ function webform_test_test_element_html_markup() {
  */
 function _webform_test_test_element_html_markup_recursive(array &$elements) {
   foreach ($elements as $key => &$property) {
-    if (in_array($key, ['#title', '#field_prefix', '#field_suffix'])) {
+    if (is_string($property) && is_string($key) && in_array($key, ['#title', '#field_prefix', '#field_suffix'])) {
       $property = '<u>' . $property . '</u>';
     }
 

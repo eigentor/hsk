@@ -2,7 +2,13 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Datetime\Element\Datelist as DatelistElement;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\webform\WebformSubmissionConditionsValidator;
+use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Provides a 'datelist' element.
@@ -21,7 +27,9 @@ class DateList extends DateBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    return parent::getDefaultProperties() + [
+    return [
+      'date_min' => '',
+      'date_max' => '',
       // Date settings.
       'date_part_order' => [
         'year',
@@ -30,12 +38,30 @@ class DateList extends DateBase {
         'hour',
         'minute',
       ],
-      'date_text_parts' => [
-        'year',
-      ],
+      'date_text_parts' => [],
       'date_year_range' => '1900:2050',
+      'date_year_range_reverse' => FALSE,
       'date_increment' => 1,
-    ];
+      'date_abbreviate' => TRUE,
+    ] + parent::getDefaultProperties();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    parent::prepare($element, $webform_submission);
+
+    // Remove month abbreviation.
+    // @see \Drupal\Core\Datetime\Element\Datelist::processDatelist
+    if (isset($element['#date_abbreviate']) && $element['#date_abbreviate'] === FALSE) {
+      $element['#date_date_callbacks'][] = '_webform_datelist_date_date_callback';
+    }
+
+    // Remove 'for' from the element's label.
+    $element['#label_attributes']['webform-remove-for-attribute'] = TRUE;
+
+    $element['#attached']['library'][] = 'webform/webform.element.datelist';
   }
 
   /**
@@ -65,12 +91,58 @@ class DateList extends DateBase {
   /**
    * {@inheritdoc}
    */
+  public function getElementSelectorInputValue($selector, $trigger, array $element, WebformSubmissionInterface $webform_submission) {
+    $value = $this->getRawValue($element, $webform_submission);
+    if (empty($value)) {
+      return NULL;
+    }
+
+    // Return date part value.
+    // @see \Drupal\Core\Datetime\Element\Datelist::valueCallback
+    $input_name = WebformSubmissionConditionsValidator::getSelectorInputName($selector);
+    $part = WebformSubmissionConditionsValidator::getInputNameAsArray($input_name, 1);
+    switch ($part) {
+      case 'day':
+        $format = 'j';
+        break;
+
+      case 'month':
+        $format = 'n';
+        break;
+
+      case 'year':
+        $format = 'Y';
+        break;
+
+      case 'hour':
+        $format = in_array('ampm', $element['#date_part_order']) ? 'g' : 'G';
+        break;
+
+      case 'minute':
+        $format = 'i';
+        break;
+
+      case 'second':
+        $format = 's';
+        break;
+
+      case 'ampm':
+        $format = 'a';
+        break;
+
+      default:
+        $format = '';
+    }
+    $date = DrupalDateTime::createFromTimestamp(strtotime($value));
+    return $date->format($format);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
-    $form['date'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Date list settings'),
-    ];
+    $form['date']['#title'] = $this->t('Date list settings');
     $form['date']['date_part_order_label'] = [
       '#type' => 'item',
       '#title' => $this->t('Date part and order'),
@@ -92,6 +164,7 @@ class DateList extends DateBase {
     ];
     $form['date']['date_text_parts'] = [
       '#type' => 'checkboxes',
+      '#options_display' => 'side_by_side',
       '#title' => $this->t('Date text parts'),
       '#description' => $this->t("Select date parts that should be presented as text fields instead of drop-down selectors."),
       '#options' => [
@@ -107,7 +180,13 @@ class DateList extends DateBase {
       '#type' => 'textfield',
       '#title' => $this->t('Date year range'),
       '#description' => $this->t("A description of the range of years to allow, like '1900:2050', '-3:+3' or '2000:+3', where the first value describes the earliest year and the second the latest year in the range.") . ' ' .
-      $this->t('Use min/max validation to define a more specific date range.'),
+        $this->t('Use min/max validation to define a more specific date range.'),
+    ];
+    $form['date']['date_year_range_reverse'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Date year range reverse'),
+      '#description' => $this->t('If checked date year range will be listed from max to min.'),
+      '#return_type' => TRUE,
     ];
     $form['date']['date_increment'] = [
       '#type' => 'number',
@@ -115,7 +194,15 @@ class DateList extends DateBase {
       '#description' => $this->t('The increment to use for minutes and seconds'),
       '#min' => 1,
       '#size' => 4,
+      '#weight' => 10,
     ];
+    $form['date']['date_abbreviate'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Abbreviate month'),
+      '#description' => $this->t('If checked, month will be abbreviated to three letters.'),
+      '#return_value' => TRUE,
+    ];
+
     return $form;
   }
 
@@ -138,6 +225,73 @@ class DateList extends DateBase {
       $element_properties[$property_name] = array_combine($element_properties[$property_name], $element_properties[$property_name]);
     }
     parent::setConfigurationFormDefaultValue($form, $element_properties, $property_element, $property_name);
+  }
+
+  /**
+   * After build handler for Datelist element.
+   */
+  public static function afterBuild(array $element, FormStateInterface $form_state) {
+    $element = parent::afterBuild($element, $form_state);
+
+    // Reverse years from min:max to max:min.
+    // @see \Drupal\Core\Datetime\Element\DateElementBase::datetimeRangeYears
+    if (!empty($element['#date_year_range_reverse']) && isset($element['year']) && isset($element['year']['#options'])) {
+      $options = $element['year']['#options'];
+      $element['year']['#options'] = ['' => $options['']] + array_reverse($options, TRUE);
+    }
+    // Suppress inline error messages for datelist sub-elements.
+    foreach (Element::children($element) as $child_key) {
+      $element[$child_key]['#error_no_message'] = TRUE;
+    }
+
+    // Override Datelist validate callback so that we can support custom
+    // #required_error message.
+    foreach ($element['#element_validate'] as &$validate_callback) {
+      if (is_array($validate_callback) && $validate_callback[0] === 'Drupal\Core\Datetime\Element\Datelist') {
+        $validate_callback[0] = DateList::class;
+      }
+    }
+    return $element;
+  }
+
+  /**
+   * Override validation callback for a datelist element and set #required_error.
+   *
+   * @param array $element
+   *   The element being processed.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   * @param array $complete_form
+   *   The complete form structure.
+   */
+  public static function validateDatelist(&$element, FormStateInterface $form_state, &$complete_form) {
+    $has_required_error = (!empty($element['#required']) && !empty($element['#required_error']));
+    if (!$has_required_error) {
+      DatelistElement::validateDatelist($element, $form_state, $complete_form);
+      return;
+    }
+
+    // Clone the $form_state so that we can capture and
+    // set #required_error message.
+    // Note: We are not using SubformState because we are just trying clone
+    // the $form_state.
+    $temp_form_state = clone $form_state;
+
+    // Validate the date list element.
+    DatelistElement::validateDatelist($element, $temp_form_state, $complete_form);
+
+    // Copy $temp_form_state errors to $form_state error and alter
+    // override default required error message is applicable.
+    $original_errors = $form_state->getErrors();
+    $errors = $temp_form_state->getErrors();
+    foreach ($errors as $name => $message) {
+      if (empty($original_errors[$name])) {
+        if ($message instanceof TranslatableMarkup && $message->getUntranslatedString() === "The %field date is required.") {
+          $message = $element['#required_error'];
+        }
+        $form_state->setErrorByName($name, $message);
+      }
+    }
   }
 
 }

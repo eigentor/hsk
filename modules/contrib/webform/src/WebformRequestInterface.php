@@ -5,12 +5,17 @@ namespace Drupal\webform;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Helper class webform entity methods.
- */
-/**
  * Provides an interface defining a webform request handler.
  */
 interface WebformRequestInterface {
+
+  /**
+   * Determine if the current request is a webform admin route.
+   *
+   * @return bool
+   *   TRUE if the current request is a webform admin route.
+   */
+  public function isWebformAdminRoute();
 
   /**
    * Get the current request's source entity.
@@ -30,6 +35,40 @@ interface WebformRequestInterface {
    *   The current request's webform.
    */
   public function getCurrentWebform();
+
+  /**
+   * Get webform submission associated with the current request.
+   *
+   * @return \Drupal\webform\WebformSubmissionInterface|null
+   *   The current request's webform submission.
+   */
+  public function getCurrentWebformSubmission();
+
+  /**
+   * Get the URL for the current webform and source entity.
+   *
+   * @param string $route_name
+   *   The route name.
+   * @param array $route_options
+   *   The route options.
+   *
+   * @return \Drupal\Core\Url
+   *   The URL for a form/submission and source entity.
+   */
+  public function getCurrentWebformUrl($route_name, array $route_options = []);
+
+  /**
+   * Get the URL for the current webform submission and source entity.
+   *
+   * @param string $route_name
+   *   The route name.
+   * @param array $route_options
+   *   The route options.
+   *
+   * @return \Drupal\Core\Url
+   *   The URL for a form/submission and source entity.
+   */
+  public function getCurrentWebformSubmissionUrl($route_name, array $route_options = []);
 
   /**
    * Get the webform and source entity for the current request.
@@ -56,6 +95,23 @@ interface WebformRequestInterface {
    *   TRUE if the current request is an Ajax request.
    */
   public function isAjax();
+
+  /**
+   * Get the URL for a form/submission and source entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $webform_entity
+   *   A webform or webform submission.
+   * @param \Drupal\Core\Entity\EntityInterface|null $source_entity
+   *   A webform submission's source entity.
+   * @param string $route_name
+   *   The route name.
+   * @param array $route_options
+   *   The route options.
+   *
+   * @return \Drupal\Core\Url
+   *   The URL for a form/submission and source entity.
+   */
+  public function getUrl(EntityInterface $webform_entity, EntityInterface $source_entity = NULL, $route_name, array $route_options = []);
 
   /**
    * Get the route name for a form/submission and source entity.

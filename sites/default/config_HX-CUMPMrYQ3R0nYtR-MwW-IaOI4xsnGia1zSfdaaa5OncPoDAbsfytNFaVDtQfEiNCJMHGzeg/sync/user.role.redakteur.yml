@@ -21,6 +21,7 @@ permissions:
   - 'entityconnect add button'
   - 'entityconnect edit button'
   - 'override all published option'
+  - 'skip comment approval'
   - 'view any unpublished article content'
   - 'view any unpublished content'
   - 'view any unpublished page content'

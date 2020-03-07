@@ -1,35 +1,11 @@
 /**
  * @file
- * Javascript behaviors for help.
+ * JavaScript behaviors for help.
  */
 
 (function ($, Drupal) {
 
   'use strict';
-
-  /**
-   * Handles help accordion.
-   *
-   * @type {Drupal~behavior}
-   *
-   * @prop {Drupal~behaviorAttach} attach
-   *   Attaches the behavior for help accordion.
-   */
-  Drupal.behaviors.webformHelpAccordion = {
-    attach: function (context) {
-      var $widget = $(context).find('.webform-help-accordion');
-      $widget.once('webform-help-accordion').accordion({
-        collapsible: true,
-        heightStyle: "content"
-      });
-
-      var $container = $('h3' + location.hash, $widget);
-      if ($container.length) {
-        var active = $widget.find($widget.accordion('option', 'header')).index($container);
-        $widget.accordion('option', 'active', active);
-      }
-    }
-  };
 
   /**
    * Handles disabling help dialog for mobile devices.
@@ -47,7 +23,7 @@
         }
       }).each(function () {
         // Must make sure that this click event handler is execute first and
-        // before the AJAX dialog handler.
+        // before the Ajax dialog handler.
         // @see http://stackoverflow.com/questions/2360655/jquery-event-handlers-always-execute-in-order-they-were-bound-any-way-around-t
         var handlers = $._data(this, 'events')['click'];
         var handler = handlers.pop();

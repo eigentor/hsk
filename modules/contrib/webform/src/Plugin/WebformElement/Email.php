@@ -2,7 +2,7 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
-use Drupal\webform\WebformElementBase;
+use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Provides a 'email' element.
@@ -15,27 +15,24 @@ use Drupal\webform\WebformElementBase;
  *   category = @Translation("Advanced elements"),
  * )
  */
-class Email extends WebformElementBase {
+class Email extends TextBase {
 
   /**
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    return parent::getDefaultProperties() + [
-      'multiple' => FALSE,
-      'multiple__header_label' => '',
-      'size' => '',
-      'minlength' => '',
-      'maxlength' => '',
-      'placeholder' => '',
-      'autocomplete' => 'on',
-    ];
+    return [
+      'input_hide' => FALSE,
+    ] + parent::getDefaultProperties()
+      + $this->getDefaultMultipleProperties();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function formatHtmlItem(array &$element, $value, array $options = []) {
+  protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $value = $this->getValue($element, $webform_submission, $options);
+
     if (empty($value)) {
       return '';
     }
@@ -50,7 +47,7 @@ class Email extends WebformElementBase {
         ];
 
       default:
-        return parent::formatHtmlItem($element, $value, $options);
+        return parent::formatHtmlItem($element, $webform_submission, $options);
     }
   }
 

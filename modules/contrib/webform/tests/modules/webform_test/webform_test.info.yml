@@ -2,12 +2,11 @@ name: 'Webform module tests'
 type: module
 description: 'Support module for webform that provides working examples for all supported features.'
 package: Testing
-# core: 8.x
+core: 8.x
 dependencies:
-  - 'drupal:webform'
+  - 'webform:webform'
 
-# Information added by Drupal.org packaging script on 2017-03-05
-version: '8.x-5.0-beta9'
-core: '8.x'
+# Information added by Drupal.org packaging script on 2020-01-21
+version: '8.x-5.8'
 project: 'webform'
-datestamp: 1488753802
+datestamp: 1579637592

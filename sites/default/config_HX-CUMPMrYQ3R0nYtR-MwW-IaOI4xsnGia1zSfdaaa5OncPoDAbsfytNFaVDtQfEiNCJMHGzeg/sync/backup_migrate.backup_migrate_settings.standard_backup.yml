@@ -27,6 +27,7 @@ config:
       cache_dynamic_page_cache: cache_dynamic_page_cache
       cache_entity: cache_entity
       cache_menu: cache_menu
+      cache_page: cache_page
       cache_render: cache_render
       cache_toolbar: cache_toolbar
       sessions: sessions
