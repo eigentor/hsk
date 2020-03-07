@@ -1,11 +1,16 @@
 /**
  * @file
- * Javascript behaviors for Telephone element.
+ * JavaScript behaviors for Telephone element.
  */
 
 (function ($, Drupal, drupalSettings) {
 
   'use strict';
+
+  // @see https://github.com/jackocnr/intl-tel-input#options
+  Drupal.webform = Drupal.webform || {};
+  Drupal.webform.intlTelInput = Drupal.webform.intlTelInput || {};
+  Drupal.webform.intlTelInput.options = Drupal.webform.intlTelInput.options || {};
 
   /**
    * Initialize Telephone international element.
@@ -14,25 +19,42 @@
    */
   Drupal.behaviors.webformTelephoneInternational = {
     attach: function (context) {
+      if (!$.fn.intlTelInput) {
+        return;
+      }
+
       $(context).find('input.js-webform-telephone-international').once('webform-telephone-international').each(function () {
         var $telephone = $(this);
 
         // Add error message container.
         var $error = $('<div class="form-item--error-message">' + Drupal.t('Invalid phone number') + '</div>').hide();
-        $telephone.closest('.form-item').append($error);
+        $telephone.closest('.js-form-item').append($error);
 
-        // @todo: Figure out how to lazy load utilsScript (build/js/utils.js).
-        // @see https://github.com/jackocnr/intl-tel-input#utilities-script
-        $telephone.intlTelInput({
-          'nationalMode': false
-        });
+        var options = {
+          // The utilsScript is fetched when the page has finished.
+          // @see \Drupal\webform\Plugin\WebformElement\Telephone::prepare
+          // @see https://github.com/jackocnr/intl-tel-input
+          utilsScript: drupalSettings.webform.intlTelInput.utilsScript,
+          nationalMode: false
+        };
 
-        var reset = function() {
+        // Parse data attributes.
+        if ($telephone.attr('data-webform-telephone-international-initial-country')) {
+          options.initialCountry = $telephone.attr('data-webform-telephone-international-initial-country');
+        }
+        if ($telephone.attr('data-webform-telephone-international-preferred-countries')) {
+          options.preferredCountries = JSON.parse($telephone.attr('data-webform-telephone-international-preferred-countries'));
+        }
+
+        options = $.extend(options, Drupal.webform.intlTelInput.options);
+        $telephone.intlTelInput(options);
+
+        var reset = function () {
           $telephone.removeClass('error');
           $error.hide();
         };
 
-        $telephone.blur(function() {
+        $telephone.blur(function () {
           reset();
           if ($.trim($telephone.val())) {
             if (!$telephone.intlTelInput('isValidNumber')) {
@@ -43,7 +65,7 @@
         });
 
         $telephone.on('keyup change', reset);
-      })
+      });
     }
   };
 

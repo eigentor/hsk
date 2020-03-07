@@ -3,8 +3,9 @@
 namespace Drupal\webform\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\webform\WebformElementBase;
+use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\webform\WebformInterface;
+use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Provides a 'webform_codemirror' element.
@@ -23,20 +24,25 @@ class WebformCodeMirror extends WebformElementBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    return parent::getDefaultProperties() + [
-      // Codemirror setings.
+    return [
+      // Codemirror settings.
+      'placeholder' => '',
       'mode' => 'text',
-    ];
+      'wrap' => TRUE,
+    ] + parent::getDefaultProperties();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function formatHtmlItem(array &$element, $value, array $options = []) {
+  protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $value = $this->getValue($element, $webform_submission, $options);
+
     if (empty($value)) {
       return '';
     }
 
+    $element += ['#mode' => 'text'];
     $format = $this->getItemFormat($element);
     switch ($format) {
       case 'code':
@@ -47,7 +53,7 @@ class WebformCodeMirror extends WebformElementBase {
         ];
 
       default:
-        return parent::formatHtmlItem($element, $value, $options);
+        return parent::formatHtmlItem($element, $webform_submission, $options);
     }
   }
 
@@ -70,6 +76,15 @@ class WebformCodeMirror extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
+  public function preview() {
+    return parent::preview() + [
+      '#mode' => 'yaml',
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getTestValues(array $element, WebformInterface $webform, array $options = []) {
     $element += ['#mode' => 'text'];
     switch ($element['#mode']) {
@@ -86,7 +101,6 @@ class WebformCodeMirror extends WebformElementBase {
         return [];
 
     }
-
   }
 
   /**
@@ -94,6 +108,10 @@ class WebformCodeMirror extends WebformElementBase {
    */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
+
+    $form['default']['default_value']['#type'] = 'webform_codemirror';
+    $form['default']['default_value']['#rows'] = 3;
+
     $form['codemirror'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('CodeMirror settings'),
@@ -102,11 +120,21 @@ class WebformCodeMirror extends WebformElementBase {
       '#title' => $this->t('Mode'),
       '#type' => 'select',
       '#options' => [
+        'text' => $this->t('Plain text'),
         'yaml' => $this->t('YAML'),
         'html' => $this->t('HTML'),
-        'text' => $this->t('Plain text'),
+        'htmlmixed' => $this->t('HTML (CSS & JavaScript)'),
+        'css' => 'CSS',
+        'javascript' => 'JavaScript',
+        'php' => 'PHP',
+        'twig' => 'Twig',
       ],
       '#required' => TRUE,
+    ];
+    $form['codemirror']['wrap'] = [
+      '#title' => $this->t('Wrap long lines of text'),
+      '#type' => 'checkbox',
+      '#return_value' => TRUE,
     ];
     return $form;
   }

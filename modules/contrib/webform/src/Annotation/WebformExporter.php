@@ -13,9 +13,9 @@ use Drupal\Component\Annotation\Plugin;
  * \Drupal\webform\Plugin\WebformExporter\DelimitedText/WebformExporter
  *
  * @see hook_webform_exporter_info_alter()
- * @see \Drupal\webform\WebformExporterInterface
- * @see \Drupal\webform\WebformExporterBase
- * @see \Drupal\webform\WebformExporterManager
+ * @see \Drupal\webform\Plugin\WebformExporterInterface
+ * @see \Drupal\webform\Plugin\WebformExporterBase
+ * @see \Drupal\webform\Plugin\WebformExporterManager
  * @see plugin_api
  *
  * @Annotation
@@ -64,6 +64,13 @@ class WebformExporter extends Plugin {
    * @var bool
    */
   public $archive = FALSE;
+
+  /**
+   * Download uploaded files (in a zipped archive).
+   *
+   * @var bool
+   */
+  public $files = TRUE;
 
   /**
    * Using export options.

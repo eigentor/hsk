@@ -29,10 +29,10 @@ interface WebformUiElementFormInterface extends FormInterface, ContainerInjectio
   /**
    * Return the webform element associated with this form.
    *
-   * @return \Drupal\webform\WebformElementInterface
+   * @return \Drupal\webform\Plugin\WebformElementInterface
    *   A webform element.
    */
-  public function getWebformElement();
+  public function getWebformElementPlugin();
 
   /**
    * Return the render element associated with this form.
@@ -45,6 +45,9 @@ interface WebformUiElementFormInterface extends FormInterface, ContainerInjectio
   /**
    * Return the render element's key associated with this form.
    *
+   * This method allows form alter hooks to know the element's key, which
+   * is not included in the element's properties.
+   *
    * @return string
    *   The render element's key.
    */
@@ -52,6 +55,9 @@ interface WebformUiElementFormInterface extends FormInterface, ContainerInjectio
 
   /**
    * Return the render element's parent key associated with this form.
+   *
+   * This method allows form alter hooks to know the element's parent key, which
+   * is not included in the element's properties.
    *
    * @return string
    *   The render element's parent key.

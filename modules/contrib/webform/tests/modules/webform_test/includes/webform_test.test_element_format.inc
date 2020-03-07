@@ -2,10 +2,9 @@
 
 /**
  * @file
- * Generate test elements with Flexbox wrappers.
+ * Generate test elements with formatting.
  */
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\webform\WebformInterface;
 
 /**
@@ -15,17 +14,14 @@ use Drupal\webform\WebformInterface;
  *   An array containing test elements formats.
  */
 function webform_test_test_element_format(WebformInterface $webform, $composite = FALSE, $multiple = FALSE) {
-  // Elements to be ignored.
-  $skipped_elements = [
-    'hidden',
+  // Element types to be ignored.
+  $skipped_element_types = [
     'language_select',
     'text_format_raw',
     'text_format_value',
-    'value',
-    'webform_element',
-    'webform_test',
+    'webform_composite',
+    'webform_same',
     // @todo Fix file display
-    'managed_file',
     'webform_audio_file',
     'webform_document_file',
     'webform_image_file',
@@ -33,10 +29,17 @@ function webform_test_test_element_format(WebformInterface $webform, $composite 
     'webform_signature_raw',
   ];
 
+  // Element default properties.
+  $element_properties = [
+    'managed_file' => [
+      '#file_extensions' => 'txt',
+    ],
+  ];
+
   /** @var \Drupal\webform\WebformSubmissionGenerateInterface $submission_generate */
   $submission_generate = \Drupal::service('webform_submission.generate');
 
-  /** @var \Drupal\webform\WebformElementManagerInterface $element_manager */
+  /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
   $element_manager = \Drupal::service('plugin.manager.webform.element');
 
   $definitions = $element_manager->getDefinitions();
@@ -47,14 +50,13 @@ function webform_test_test_element_format(WebformInterface $webform, $composite 
     'basic_elements' => [],
     'advanced_elements' => [],
   ];
-  foreach ($definitions as $definition) {
-    $element_type = $definition['id'];
-    if (in_array($element_type, $skipped_elements)) {
+  foreach ($definitions as $element_type => $definition) {
+    if (in_array($element_type, $skipped_element_types)) {
       continue;
     }
 
     $webform_element = $elements[$element_type];
-    $element = _webform_test_get_example_element($element_type, ['issues' => FALSE]);
+    $element = _webform_test_get_element_preview($element_type, ['issues' => FALSE]);
     if (!$element || !$webform_element->isInput($element)) {
       continue;
     }
@@ -89,11 +91,21 @@ function webform_test_test_element_format(WebformInterface $webform, $composite 
     }
 
     // Set default (test) value.
-    $element['#default_value'] = $submission_generate->getTestValue($webform, $element_type, $element, ['random' => FALSE]);
+    if (strpos($element_type, 'date') === 0) {
+      $element['#default_value'] = ($multiple) ? ['1942-06-18', '1940-07-07', '1943-02-25'] : '1942-06-18';
+    }
+    elseif ($default_value = $submission_generate->getTestValue($webform, $element_type, $element, ['random' => FALSE])) {
+      $element['#default_value'] = $default_value;
+    }
+
+    // Set default properties.
+    if (isset($element_properties[$element_type])) {
+      $element += $element_properties[$element_type];
+    }
 
     // Set element category.
     $category_name = (string) $webform_element->getPluginDefinition()['category'] ?: 'Other elements';
-    $category_id = preg_replace('/[^a-zA-Z0-9]+/', '_', Unicode::strtolower($category_name));
+    $category_id = preg_replace('/[^a-zA-Z0-9]+/', '_', mb_strtolower($category_name));
     if (empty($data[$category_id])) {
       $data[$category_id] = [
         '#type' => 'details',
@@ -107,7 +119,7 @@ function webform_test_test_element_format(WebformInterface $webform, $composite 
     ];
     foreach ($item_formats as $item_format_name => $item_format_title) {
       // Skip unsupported element type formats.
-      if (in_array($element_type . '_' . $item_format_name, $skipped_elements)) {
+      if (in_array($element_type . '_' . $item_format_name, $skipped_element_types)) {
         continue;
       }
 

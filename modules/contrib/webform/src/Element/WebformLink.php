@@ -12,7 +12,14 @@ class WebformLink extends WebformCompositeBase {
   /**
    * {@inheritdoc}
    */
-  public static function getCompositeElements() {
+  public function getInfo() {
+    return parent::getInfo() + ['#theme' => 'webform_composite_link'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getCompositeElements(array $element) {
     $elements = [];
     $elements['title'] = [
       '#type' => 'textfield',

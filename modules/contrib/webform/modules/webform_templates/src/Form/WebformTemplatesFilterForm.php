@@ -2,13 +2,15 @@
 
 namespace Drupal\webform_templates\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides the webform templates filter webform.
  */
-class WebformtemplatesFilterForm extends FormBase {
+class WebformTemplatesFilterForm extends FormBase {
 
   /**
    * {@inheritdoc}
@@ -18,9 +20,35 @@ class WebformtemplatesFilterForm extends FormBase {
   }
 
   /**
+   * The webform storage.
+   *
+   * @var \Drupal\webform\WebformEntityStorageInterface
+   */
+  protected $webformStorage;
+
+  /**
+   * Constructs a WebformResultsCustomForm object.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->webformStorage = $entity_type_manager->getStorage('webform');
+  }
+
+  /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $search = NULL) {
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state, $search = NULL, $category = NULL) {
     $form['#attributes'] = ['class' => ['webform-filter-form']];
     $form['filter'] = [
       '#type' => 'details',
@@ -38,6 +66,17 @@ class WebformtemplatesFilterForm extends FormBase {
       '#autocomplete_route_name' => 'entity.webform.templates.autocomplete',
       '#default_value' => $search,
     ];
+    $form['filter']['category'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Category'),
+      '#title_display' => 'invisible',
+      '#options' => $this->webformStorage->getCategories(TRUE),
+      '#empty_option' => ($category) ? $this->t('Show all webforms') : $this->t('Filter by category'),
+      '#default_value' => $category,
+    ];
+    if (empty($form['filter']['category']['#options'])) {
+      $form['filter']['category']['#access'] = FALSE;
+    }
     $form['filter']['submit'] = [
       '#type' => 'submit',
       '#button_type' => 'primary',
@@ -59,6 +98,7 @@ class WebformtemplatesFilterForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $query = [
       'search' => trim($form_state->getValue('search')),
+      'category' => trim($form_state->getValue('category')),
     ];
     $form_state->setRedirect($this->getRouteMatch()->getRouteName(), $this->getRouteMatch()->getRawParameters()->all(), [
       'query' => $query ,

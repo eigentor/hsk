@@ -6,7 +6,6 @@
  */
 
 use Drupal\webform\Entity\Webform;
-use Drupal\Core\Serialization\Yaml;
 
 /**
  * Generate test elements with #states.
@@ -14,7 +13,7 @@ use Drupal\Core\Serialization\Yaml;
  * @return array
  *   An array containing test elements with #states.
  */
-function webform_test_test_form_states() {
+function webform_test_test_states() {
   $elements = [];
 
   // Visible.
@@ -26,7 +25,7 @@ function webform_test_test_form_states() {
     '#type' => 'checkbox',
     '#title' => 'Displays and require elements',
   ];
-  $elements['visible'] += _webform_test_form_states('visible', [
+  $elements['visible'] += _webform_test_states('visible', [
     '#states' => [
       'visible' => [
         ':input[name="visible_trigger"]' => [
@@ -50,7 +49,7 @@ function webform_test_test_form_states() {
     '#type' => 'checkbox',
     '#title' => 'Hide and empty elements',
   ];
-  $elements['invisible'] += _webform_test_form_states('invisible', [
+  $elements['invisible'] += _webform_test_states('invisible', [
     '#states' => [
       'invisible' => [
         ':input[name="invisible_trigger"]' => [
@@ -69,7 +68,7 @@ function webform_test_test_form_states() {
     '#type' => 'checkbox',
     '#title' => 'Disable elements',
   ];
-  $elements['disabled'] += _webform_test_form_states('disabled', [
+  $elements['disabled'] += _webform_test_states('disabled', [
     '#states' => [
       'disabled' => [
         ':input[name="disabled_trigger"]' => [
@@ -93,27 +92,7 @@ function webform_test_test_form_states() {
  * @return array
  *   A render array of example elements
  */
-function _webform_test_form_states($type, array $default_properties = []) {
-  // Track issues related to elements #states API.
-  $issues = _webform_test_issues();
-
-  // Elements to be ignored.
-  $skipped_elements = [
-    'hidden',
-    'webform_test',
-    'webform_wizard_page',
-  ];
-  // Some tests don't install the filter.module so we should skip elements
-  // that is depend on the filter.module.
-  if (!\Drupal::moduleHandler()->moduleExists('filter')) {
-    $skipped_elements[] = 'processed_text';
-    $skipped_elements[] = 'text_format';
-  }
-
-  // Default element properties.
-  $yaml = file_get_contents(drupal_get_path('module', 'webform_test') . '/includes/webform_test.example_elements.yml');
-  $default_elements = Yaml::decode($yaml);
-
+function _webform_test_states($type, array $default_properties = []) {
   $data = [
     'containers' => [],
     'elements' => [],
@@ -125,40 +104,13 @@ function _webform_test_form_states($type, array $default_properties = []) {
   /** @var \Drupal\webform\WebformSubmissionGenerateInterface $generate */
   $generate = \Drupal::service('webform_submission.generate');
 
-  /** @var \Drupal\webform\WebformElementManagerInterface $element_manager */
+  /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
   $element_manager = \Drupal::service('plugin.manager.webform.element');
   $elements = $element_manager->getInstances();
   foreach ($elements as $element_type => $webform_element) {
-    if (in_array($element_type, $skipped_elements)) {
+    $element = _webform_test_get_element_preview($element_type);
+    if (!$element) {
       continue;
-    }
-
-    $element = [
-      '#type' => $webform_element->getTypeName(),
-      '#title' => (string) $webform_element->getPluginLabel(),
-    ];
-
-    // Add known issues to #description.
-    if (isset($issues[$element_type])) {
-      $items = [];
-      foreach ($issues[$element_type] as $issue_number => $issue_title) {
-        $items[$issue_number] = "<a href=\"https://www.drupal.org/node/$issue_number\">Issue #$issue_number: $issue_title</a>";
-      }
-      $element['#description'] = '<b>' . t('Known Issues') . ':</b><br/>' . implode('<br/>', $items);
-    }
-
-    // Set default element properties.
-    if (isset($default_elements[$element_type])) {
-      $element += $default_elements[$element_type];
-    }
-
-    // Set default options.
-    if ($webform_element->hasProperty('options')) {
-      $element['#options'] = [
-        'One' => 'One',
-        'Two' => 'Two',
-        'Three' => 'Three',
-      ];
     }
 
     // Set default container content.
@@ -166,11 +118,6 @@ function _webform_test_form_states($type, array $default_properties = []) {
       // Containers can't be disabled.
       if ($type == 'disabled') {
         continue;
-      }
-      if (!in_array($element_type, ['captcha', 'webform_wizard_page'])) {
-        $element[$type . '_' . $element_type . '_content'] = [
-          '#markup' => 'This is a ' . $webform_element->getPluginLabel() . ' container.',
-        ];
       }
     }
     else {
@@ -206,7 +153,7 @@ function _webform_test_form_states($type, array $default_properties = []) {
 function webform_test_elements_states_issues_markdown() {
   $issues = _webform_test_issues();
 
-  /** @var \Drupal\webform\WebformElementManagerInterface $element_manager */
+  /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
   $element_manager = \Drupal::service('plugin.manager.webform.element');
 
   $markdown = [];

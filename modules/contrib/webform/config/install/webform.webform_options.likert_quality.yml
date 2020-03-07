@@ -6,6 +6,8 @@ dependencies:
       - webform
 id: likert_quality
 label: 'Likert: Quality'
+category: Likert
+likert: true
 options: |
   1: Poor
   2: Fair

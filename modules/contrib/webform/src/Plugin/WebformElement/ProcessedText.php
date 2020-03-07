@@ -4,12 +4,14 @@ namespace Drupal\webform\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Mail\MailFormatHelper;
+use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Provides a 'processed_text' element.
  *
  * @WebformElement(
  *   id = "processed_text",
+ *   default_key = "processed_text",
  *   label = @Translation("Advanced HTML/Text"),
  *   category = @Translation("Markup elements"),
  *   description = @Translation("Provides an element to render advanced HTML markup and processed text."),
@@ -22,11 +24,25 @@ class ProcessedText extends WebformMarkupBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    return parent::getDefaultProperties() + [
+    if (function_exists('filter_formats')) {
+      // Works around filter_default_format() throwing fatal error when
+      // user is not allowed to use any filter formats.
+      // @see filter_default_format.
+      $formats = filter_formats(\Drupal::currentUser());
+      $format = reset($formats);
+      $default_format = $format ? $format->id() : filter_fallback_format();
+    }
+    else {
+      $default_format = '';
+    }
+
+    return [
+      'wrapper_attributes' => [],
+      'label_attributes' => [],
       // Markup settings.
       'text' => '',
-      'format' => (function_exists('filter_default_format')) ? filter_default_format(\Drupal::currentUser()) : '',
-    ];
+      'format' => $default_format ,
+    ] + parent::getDefaultProperties();
   }
 
   /**
@@ -39,7 +55,7 @@ class ProcessedText extends WebformMarkupBase {
   /**
    * {@inheritdoc}
    */
-  public function buildText(array &$element, $value, array $options = []) {
+  public function buildText(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     // Copy to element so that we can render it without altering the actual
     // $element.
     $render_element = $element;
@@ -49,7 +65,14 @@ class ProcessedText extends WebformMarkupBase {
     // Must remove #type, #text, and #format.
     unset($element['#type'], $element['#text'], $element['#format']);
 
-    return parent::buildText($element, $value, $options);
+    return parent::buildText($element, $webform_submission, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function preview() {
+    return (\Drupal::moduleHandler()->moduleExists('filter')) ? parent::preview() : [];
   }
 
   /**
@@ -61,7 +84,7 @@ class ProcessedText extends WebformMarkupBase {
     // which closes the original modal.
     // @todo Remove the below workaround once this issue is resolved.
     if (!$form_state->getUserInput() && \Drupal::currentUser()->hasPermission('administer webform')) {
-      drupal_set_message($this->t('Processed text element can not be opened within a modal. Please see <a href="https://www.drupal.org/node/2741877">Issue #2741877: Nested modals don\'t work</a>.'), 'warning');
+      $this->messenger()->addWarning($this->t('Processed text element can not be opened within a modal. Please see <a href="https://www.drupal.org/node/2741877">Issue #2741877: Nested modals don\'t work</a>.'));
     }
     $form = parent::form($form, $form_state);
 

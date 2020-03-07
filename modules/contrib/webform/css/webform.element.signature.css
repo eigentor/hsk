@@ -2,7 +2,6 @@
  * @file
  * Signature element styles.
  *
- * @see /webform/example_elements
  * @see https://css-tricks.com/snippets/sass/maintain-aspect-ratio-mixin/
  */
 
@@ -26,6 +25,11 @@
   bottom: 0;
   display: block;
   cursor: crosshair;
+}
+
+input[disabled] + .webform-signature-pad canvas,
+input[readonly] + .webform-signature-pad canvas {
+  cursor: no-drop;
 }
 
 /* Position 'Reset' button in right hand corner of the canvas */

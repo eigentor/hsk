@@ -2,6 +2,8 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
+use Drupal\webform\WebformSubmissionInterface;
+
 /**
  * Provides a 'url' element.
  *
@@ -19,16 +21,18 @@ class Url extends TextBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    return parent::getDefaultProperties() + [
-      'multiple' => FALSE,
-      'multiple__header_label' => '',
-    ];
+    return [
+      'input_hide' => FALSE,
+    ] + parent::getDefaultProperties()
+      + $this->getDefaultMultipleProperties();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function formatHtmlItem(array &$element, $value, array $options = []) {
+  protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $value = $this->getValue($element, $webform_submission, $options);
+
     if (empty($value)) {
       return '';
     }
@@ -43,7 +47,7 @@ class Url extends TextBase {
         ];
 
       default:
-        return parent::formatHtmlItem($element, $value, $options);
+        return parent::formatHtmlItem($element, $webform_submission, $options);
     }
   }
 

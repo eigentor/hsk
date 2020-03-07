@@ -12,7 +12,7 @@ use Drupal\webform\WebformSubmissionStorageInterface;
  *
  * @group webform
  */
-class WebfromSubmissionStorageTest extends KernelTestBase {
+class WebformSubmissionStorageTest extends KernelTestBase {
 
   /**
    * Modules to enable.
@@ -26,10 +26,32 @@ class WebfromSubmissionStorageTest extends KernelTestBase {
    */
   public function setUp() {
     parent::setUp();
-
+    // @todo Remove once Drupal 8.8.x is only supported.
+    if (floatval(\Drupal::VERSION) >= 8.8) {
+      $this->installEntitySchema('path_alias');
+    }
+    $this->installSchema('webform', ['webform']);
     $this->installConfig('webform');
     $this->installEntitySchema('webform_submission');
     $this->installEntitySchema('user');
+  }
+
+  /**
+   * Test webform submission storage.
+   */
+  public function testStorage() {
+    $webform = Webform::create([
+      'id' => $this->randomMachineName(),
+    ]);
+    $webform->save();
+    $webform_submission = WebformSubmission::create([
+      'webform_id' => $webform->id(),
+    ]);
+    $webform_submission->save();
+
+    // Check load by entities.
+    $webform_submissions = \Drupal::entityTypeManager()->getStorage('webform_submission')->loadByEntities($webform);
+    $this->assertEquals($webform_submission->id(), key($webform_submissions));
   }
 
   /**
@@ -38,6 +60,7 @@ class WebfromSubmissionStorageTest extends KernelTestBase {
    * @dataProvider providerPurge
    */
   public function testPurge($webform_purging, $webform_submissions_definition, $purged) {
+    $request_time = \Drupal::time()->getRequestTime();
     $days_to_seconds = 60 * 60 * 24;
     $purge_days = 10;
     $purge_amount = 2;
@@ -61,7 +84,7 @@ class WebfromSubmissionStorageTest extends KernelTestBase {
           'webform_id' => $v->id(),
         ]);
         $webform_submission->in_draft = $definition[0];
-        $webform_submission->setCreatedTime($definition[1] ? (REQUEST_TIME - ($purge_days + 1) * $days_to_seconds) : REQUEST_TIME);
+        $webform_submission->setCreatedTime($definition[1] ? ($request_time - ($purge_days + 1) * $days_to_seconds) : $request_time);
         $webform_submission->save();
       }
     }
@@ -71,11 +94,13 @@ class WebfromSubmissionStorageTest extends KernelTestBase {
     // Make sure nothing has been purged in the webform where purging is
     // disabled.
     $query = \Drupal::entityTypeManager()->getStorage('webform_submission')->getQuery();
+    $query->accessCheck(FALSE);
     $query->condition('webform_id', $webform_no_purging->id());
     $result = $query->execute();
     $this->assertEquals(count($webform_submissions_definition), count($result), 'No purging is executed when webform not not set up to purge.');
 
     $query = \Drupal::entityTypeManager()->getStorage('webform_submission')->getQuery();
+    $query->accessCheck(FALSE);
     $query->condition('webform_id', $webform->id());
     $result = [];
     foreach (\Drupal::entityTypeManager()->getStorage('webform_submission')->loadMultiple($query->execute()) as $submission) {
