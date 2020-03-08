@@ -2,7 +2,8 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
-use Drupal\webform\WebformSubmissionInterface;
+use Drupal\Core\Form\FormState;
+use Drupal\webform\Element\WebformContact as WebformContactElement;
 
 /**
  * Provides a 'contact' element.
@@ -17,42 +18,28 @@ use Drupal\webform\WebformSubmissionInterface;
  *   states_wrapper = TRUE,
  * )
  */
-class WebformContact extends WebformCompositeBase {
+class WebformContact extends WebformAddress {
 
   /**
    * {@inheritdoc}
    */
-  protected function formatHtmlItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    $lines = $this->formatTextItemValue($element, $webform_submission, $options);
-    if (!empty($lines['email'])) {
-      $lines['email'] = [
-        '#type' => 'link',
-        '#title' => $lines['email'],
-        '#url' => \Drupal::pathValidator()->getUrlIfValid('mailto:' . $lines['email']),
-      ];
-    }
-    return $lines;
+  protected function getCompositeElements() {
+    return WebformContactElement::getCompositeElements();
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function formatTextItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    $value = $this->getValue($element, $webform_submission, $options);
+  protected function getInitializedCompositeElement(array &$element) {
+    $form_state = new FormState();
+    $form_completed = [];
+    return WebformContactElement::processWebformComposite($element, $form_state, $form_completed);
+  }
 
-    $location = '';
-    if (!empty($value['city'])) {
-      $location .= $value['city'];
-    }
-    if (!empty($value['state_province'])) {
-      $location .= ($location) ? ', ' : '';
-      $location .= $value['state_province'];
-    }
-    if (!empty($value['postal_code'])) {
-      $location .= ($location) ? '. ' : '';
-      $location .= $value['postal_code'];
-    }
-
+  /**
+   * {@inheritdoc}
+   */
+  protected function formatTextItemValue(array $element, array $value) {
     $lines = [];
     if (!empty($value['name'])) {
       $lines['name'] = $value['name'];
@@ -60,18 +47,7 @@ class WebformContact extends WebformCompositeBase {
     if (!empty($value['company'])) {
       $lines['company'] = $value['company'];
     }
-    if (!empty($value['address'])) {
-      $lines['address'] = $value['address'];
-    }
-    if (!empty($value['address_2'])) {
-      $lines['address_2'] = $value['address_2'];
-    }
-    if ($location) {
-      $lines['location'] = $location;
-    }
-    if (!empty($value['country'])) {
-      $lines['country'] = $value['country'];
-    }
+    $lines += parent::formatTextItemValue($element, $value);
     if (!empty($value['email'])) {
       $lines['email'] = $value['email'];
     }

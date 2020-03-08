@@ -2,9 +2,9 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Locale\CountryManager;
-use Drupal\webform\WebformSubmissionInterface;
+use Drupal\webform\Element\WebformTelephone as WebformTelephoneElement;
 
 /**
  * Provides a 'telephone' (composite) element.
@@ -15,7 +15,6 @@ use Drupal\webform\WebformSubmissionInterface;
  *   category = @Translation("Composite elements"),
  *   description = @Translation("Provides a form element to display a telephone number with type and extension."),
  *   composite = TRUE,
- *   states_wrapper = TRUE,
  * )
  */
 class WebformTelephone extends WebformCompositeBase {
@@ -24,12 +23,27 @@ class WebformTelephone extends WebformCompositeBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    $properties = parent::getDefaultProperties();
-    $properties['title_display'] = '';
-    $properties['phone__international'] = TRUE;
-    $properties['phone__international_initial_country'] = '';
-    unset($properties['flexbox']);
-    return $properties;
+    $default_properties = parent::getDefaultProperties();
+    $default_properties['title_display'] = '';
+    $default_properties['phone__international'] = TRUE;
+    unset($default_properties['flexbox']);
+    return $default_properties;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getCompositeElements() {
+    return WebformTelephoneElement::getCompositeElements();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getInitializedCompositeElement(array &$element) {
+    $form_state = new FormState();
+    $form_completed = [];
+    return WebformTelephoneElement::processWebformComposite($element, $form_state, $form_completed);
   }
 
   /**
@@ -45,9 +59,7 @@ class WebformTelephone extends WebformCompositeBase {
   /**
    * {@inheritdoc}
    */
-  protected function formatHtmlItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    $value = $this->getValue($element, $webform_submission, $options);
-
+  protected function formatHtmlItemValue(array $element, array $value) {
     $t_args = [
       ':tel' => 'tel:' . $value['phone'],
       '@tel' => $value['phone'],
@@ -72,9 +84,7 @@ class WebformTelephone extends WebformCompositeBase {
   /**
    * {@inheritdoc}
    */
-  protected function formatTextItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    $value = $this->getValue($element, $webform_submission, $options);
-
+  protected function formatTextItemValue(array $element, array $value) {
     $t_args = [
       '@tel' => $value['phone'],
       '@ext' => $value['ext'],
@@ -102,27 +112,9 @@ class WebformTelephone extends WebformCompositeBase {
     $form['composite']['phone__international'] = [
       '#title' => $this->t('Enhance support for international phone numbers'),
       '#type' => 'checkbox',
-      '#description' => $this->t('Enhance the telephone element\'s international support using the jQuery <a href=":href">International Telephone Input</a> plugin.', [':href' => 'http://intl-tel-input.com/']),
       '#return_value' => TRUE,
+      '#description' => $this->t('Enhance the telephone element\'s international support using the jQuery <a href=":href">International Telephone Input</a> plugin.', [':href' => 'http://intl-tel-input.com/']),
     ];
-    $form['composite']['phone__international_initial_country'] = [
-      '#title' => $this->t('Initial country'),
-      '#type' => 'select',
-      '#empty_option' => $this->t('- None -'),
-      '#options' => [
-        'auto' => $this->t('Auto detect'),
-      ] + CountryManager::getStandardList(),
-      '#states' => [
-        'visible' => [
-          ':input[name="properties[phone__international]"]' => ['checked' => TRUE],
-        ],
-      ],
-    ];
-    if ($this->librariesManager->isExcluded('jquery.intl-tel-input')) {
-      $form['composite']['phone__international']['#access'] = FALSE;
-      $form['composite']['phone__international_initial_country']['#access'] = FALSE;
-    }
-
     return $form;
   }
 

@@ -11,6 +11,7 @@ namespace Drupal\webform\Plugin\WebformElement;
  *   label = @Translation("Table select"),
  *   description = @Translation("Provides a form element for a table with radios or checkboxes in left column."),
  *   category = @Translation("Options elements"),
+ *   states_wrapper = TRUE,
  * )
  */
 class TableSelect extends OptionsBase {
@@ -21,13 +22,13 @@ class TableSelect extends OptionsBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    return [
+    return parent::getDefaultProperties() + [
       // Options settings.
       'multiple' => TRUE,
       'multiple_error' => '',
       // Table settings.
       'js_select' => TRUE,
-    ] + parent::getDefaultProperties();
+    ];
   }
 
   /**

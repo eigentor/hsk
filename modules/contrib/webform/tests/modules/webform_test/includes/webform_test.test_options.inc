@@ -50,10 +50,6 @@ function webform_test_test_options() {
   $webform_options = WebformOptions::loadMultiple();
   ksort($webform_options);
   foreach ($webform_options as $id => $webform_option) {
-    if ($id == 'test_translation') {
-      continue;
-    }
-
     $title = $webform_option->label() . ' (' . $id . ')';
     if (strpos($id, 'likert') === 0) {
       $data['likert_options'][$id] = [
@@ -74,7 +70,7 @@ function webform_test_test_options() {
       elseif (preg_match('/(months|days)/', $id)) {
         $group = 'date_options';
       }
-      elseif (preg_match('/(time_zones|yes_no|days|size)/', $id)) {
+      elseif (preg_match('/(time_zones|creditcard|yes_no|days|size)/', $id)) {
         $group = 'general_options';
       }
       elseif ($id == 'test') {

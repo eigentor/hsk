@@ -6,15 +6,13 @@ dependencies:
       - webform
 id: state_province_codes
 label: 'State/Province codes'
-category: Geographic
-likert: false
 options: |
   AL: Alabama
   AK: Alaska
   AS: 'American Samoa'
   AZ: Arizona
   AR: Arkansas
-  AE: 'Armed Forces (Canada, Europe, Africa, or Middle East)'
+  AE: 'Armed Forces (Canada, Europe, Africa, or Middle East'
   AA: 'Armed Forces Americas'
   AP: 'Armed Forces Pacific'
   CA: California
@@ -22,7 +20,7 @@ options: |
   CT: Connecticut
   DE: Delaware
   DC: 'District of Columbia'
-  FM: 'Federated States of Micronesia'
+  FM: 'Federate States of Micronesia'
   FL: Florida
   GA: Georgia
   GU: Guam

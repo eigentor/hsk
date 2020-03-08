@@ -19,25 +19,10 @@ class Fieldset extends ContainerBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    return [
-      // Description/Help.
-      'help' => '',
-      'help_title' => '',
-      'help_display' => '',
-      'description' => '',
-      'more' => '',
-      'more_title' => '',
-      // Title.
-      'title_display' => '',
-      'description_display' => '',
-    ] + parent::getDefaultProperties();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getItemDefaultFormat() {
-    return 'fieldset';
+    return parent::getDefaultProperties() + [
+      // Form display.
+      'open' => FALSE,
+    ];
   }
 
 }

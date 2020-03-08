@@ -2,16 +2,17 @@ name: 'Webform Node'
 type: module
 description: 'Provides a Webform content type which allows webforms to be integrated into a website as nodes.'
 package: Webform
-core: 8.x
+# core: 8.x
 dependencies:
   - 'drupal:field'
   - 'drupal:node'
   - 'drupal:path'
   - 'drupal:text'
   - 'drupal:user'
-  - 'webform:webform'
+  - 'drupal:webform'
 
-# Information added by Drupal.org packaging script on 2020-01-21
-version: '8.x-5.8'
+# Information added by Drupal.org packaging script on 2017-03-05
+version: '8.x-5.0-beta9'
+core: '8.x'
 project: 'webform'
-datestamp: 1579637592
+datestamp: 1488753802

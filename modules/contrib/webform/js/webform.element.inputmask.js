@@ -1,6 +1,6 @@
 /**
  * @file
- * JavaScript behaviors for jquery.inputmask integration.
+ * Javascript behaviors for jquery.inputmask integration.
  */
 
 (function ($, Drupal) {
@@ -12,13 +12,9 @@
    *
    * @type {Drupal~behavior}
    */
-  Drupal.behaviors.webformInputMask = {
+  Drupal.behaviors.webformElementMask = {
     attach: function (context) {
-      if (!$.fn.inputmask) {
-        return;
-      }
-
-      $(context).find('input.js-webform-input-mask').once('webform-input-mask').inputmask();
+      $(context).find('input.js-webform-element-mask').once('webform-element-mask').inputmask();
     }
   };
 

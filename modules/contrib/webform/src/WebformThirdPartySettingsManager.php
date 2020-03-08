@@ -4,7 +4,9 @@ namespace Drupal\webform;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Path\PathValidatorInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
@@ -36,7 +38,7 @@ class WebformThirdPartySettingsManager implements WebformThirdPartySettingsManag
   protected $pathValidator;
 
   /**
-   * The webform add-ons manager.
+   * Add-ons manager.
    *
    * @var \Drupal\webform\WebformAddonsManagerInterface
    */
@@ -59,7 +61,7 @@ class WebformThirdPartySettingsManager implements WebformThirdPartySettingsManag
    * @param \Drupal\Core\Path\PathValidatorInterface $path_validator
    *   The path validator.
    * @param \Drupal\webform\WebformAddonsManagerInterface $addons_manager
-   *   The webform add-ons manager.
+   *   The add-ons manager.
    */
   public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, PathValidatorInterface $path_validator, WebformAddonsManagerInterface $addons_manager) {
     $this->configFactory = $config_factory;
@@ -67,15 +69,8 @@ class WebformThirdPartySettingsManager implements WebformThirdPartySettingsManag
     $this->pathValidator = $path_validator;
     $this->addonsManager = $addons_manager;
 
-    $this->config = $this->configFactory->get('webform.settings');
+    $this->config = $this->configFactory->getEditable('webform.settings');
     $this->loadIncludes();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function alter($type, &$data, &$context1 = NULL, &$context2 = NULL) {
-    $this->moduleHandler->alter($type, $data, $context1, $context2);
   }
 
   /**
@@ -97,10 +92,58 @@ class WebformThirdPartySettingsManager implements WebformThirdPartySettingsManag
   /**
    * {@inheritdoc}
    */
+  public function alter($type, &$data, &$context1 = NULL, &$context2 = NULL) {
+    $this->moduleHandler->alter($type, $data, $context1, $context2);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    $form['third_party_settings'] = [
+      '#tree' => TRUE,
+    ];
+    $form['#after_build'] = [[$this, 'afterBuild']];
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function afterBuild(array $form, FormStateInterface $form_state) {
+    // If third party settings are empty.
+    if (!isset($form['third_party_settings']) || !Element::children($form['third_party_settings'])) {
+      // Hide all actions including the 'Save configuration' button.
+      $form['actions']['#access'] = FALSE;
+
+      // Display a warning.
+      drupal_set_message($this->t('There are no third party settings available. Please install a contributed module that integrates with the Webform module.'), 'warning');
+
+      // Link to supported Third party settings modules.
+      $form['supported'] = [
+        'title' => [
+          '#markup' => $this->t('Supported modules.'),
+          '#prefix' => '<h3>',
+          '#suffix' => '</h3>',
+        ],
+        'modules' => [
+          '#theme' => 'admin_block_content',
+          '#content' => $this->addonsManager->getThirdPartySettings(),
+        ],
+      ];
+    }
+    else {
+      ksort($form['third_party_settings']);
+    }
+
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function setThirdPartySetting($module, $key, $value) {
-    $config = $this->configFactory->getEditable('webform.settings');
-    $config->set("third_party_settings.$module.$key", $value);
-    $config->save();
+    $this->config->set("third_party_settings.$module.$key", $value);
     return $this;
   }
 
@@ -123,14 +166,12 @@ class WebformThirdPartySettingsManager implements WebformThirdPartySettingsManag
    * {@inheritdoc}
    */
   public function unsetThirdPartySetting($module, $key) {
-    $config = $this->configFactory->getEditable('webform.settings');
-    $config->clear("third_party_settings.$module.$key");
+    $this->config->clear("third_party_settings.$module.$key");
     // If the third party is no longer storing any information, completely
     // remove the array holding the settings for this module.
-    if (!$config->get("third_party_settings.$module")) {
-      $config->clear("third_party_settings.$module");
+    if (!$this->config->get("third_party_settings.$module")) {
+      $this->config->clear("third_party_settings.$module");
     }
-    $config->save();
     return $this;
   }
 

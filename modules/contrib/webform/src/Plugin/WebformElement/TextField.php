@@ -21,26 +21,23 @@ class TextField extends TextBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    return [
+    return parent::getDefaultProperties() + [
+      'multiple' => FALSE,
+      'multiple__header_label' => '',
       // Form display.
       'input_mask' => '',
-      'input_hide' => FALSE,
       // Form validation.
       'counter_type' => '',
-      'counter_minimum' => '',
-      'counter_minimum_message' => '',
       'counter_maximum' => '',
-      'counter_maximum_message' => '',
-    ] + parent::getDefaultProperties() + $this->getDefaultMultipleProperties();
+      'counter_message' => '',
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
-    if (!array_key_exists('#maxlength', $element)) {
-      $element['#maxlength'] = 255;
-    }
+  public function prepare(array &$element, WebformSubmissionInterface $webform_submission) {
+    $element['#maxlength'] = (!isset($element['#maxlength'])) ? 255 : $element['#maxlength'];
     parent::prepare($element, $webform_submission);
   }
 

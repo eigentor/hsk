@@ -6,8 +6,6 @@ dependencies:
       - webform
 id: state_names
 label: 'State names'
-category: Geographic
-likert: false
 options: |
   Alabama: Alabama
   Alaska: Alaska

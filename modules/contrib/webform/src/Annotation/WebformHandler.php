@@ -3,7 +3,7 @@
 namespace Drupal\webform\Annotation;
 
 use Drupal\Component\Annotation\Plugin;
-use Drupal\webform\Plugin\WebformHandlerInterface;
+use Drupal\webform\WebformHandlerInterface;
 
 /**
  * Defines a webform handler annotation object.
@@ -14,9 +14,9 @@ use Drupal\webform\Plugin\WebformHandlerInterface;
  * \Drupal\webform\Plugin\WebformHandler\EmailWebformHandler
  *
  * @see hook_webform_handler_info_alter()
- * @see \Drupal\webform\Plugin\WebformHandlerInterface
- * @see \Drupal\webform\Plugin\WebformHandlerBase
- * @see \Drupal\webform\Plugin\WebformHandlerManager
+ * @see \Drupal\webform\WebformHandlerInterface
+ * @see \Drupal\webform\WebformHandlerBase
+ * @see \Drupal\webform\WebformHandlerManager
  * @see plugin_api
  *
  * @Annotation
@@ -63,8 +63,8 @@ class WebformHandler extends Plugin {
    * The maximum number of instances allowed for this webform handler.
    *
    * Possible values are positive integers or
-   * \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED or
-   * \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_SINGLE.
+   * \Drupal\webform\WebformHandlerInterface::CARDINALITY_UNLIMITED or
+   * \Drupal\webform\WebformHandlerInterface::CARDINALITY_SINGLE.
    *
    * @var int
    */
@@ -78,30 +78,5 @@ class WebformHandler extends Plugin {
    * @var bool
    */
   public $results = WebformHandlerInterface::RESULTS_IGNORED;
-
-  /**
-   * Indicated whether handler supports condition logic.
-   *
-   * Most handlers will support conditional logic, this flat allows custom
-   * handlers and custom modules to easily disabled conditional logic for
-   * a handler.
-   *
-   * @var bool
-   */
-  public $conditions = TRUE;
-
-  /**
-   * Indicated whether handler supports tokens.
-   *
-   * @var bool
-   */
-  public $tokens = FALSE;
-
-  /**
-   * Indicated whether submission must be stored in the database for this handler processes results.
-   *
-   * @var bool
-   */
-  public $submission = WebformHandlerInterface::SUBMISSION_OPTIONAL;
 
 }

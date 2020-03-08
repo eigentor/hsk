@@ -11,9 +11,6 @@ namespace Drupal\webform\Plugin\WebformElement;
  *   description = @Translation("Provides a form element for uploading and saving a video file."),
  *   category = @Translation("File upload elements"),
  *   states_wrapper = TRUE,
- *   dependencies = {
- *     "file",
- *   }
  * )
  */
 class WebformVideoFile extends WebformManagedFileBase {

@@ -4,9 +4,8 @@ namespace Drupal\webform\ContextProvider;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Plugin\Context\Context;
+use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
-use Drupal\Core\Plugin\Context\EntityContext;
-use Drupal\Core\Plugin\Context\EntityContextDefinition;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
@@ -25,7 +24,7 @@ class WebformRouteContext implements ContextProviderInterface {
   protected $routeMatch;
 
   /**
-   * Constructs a WebformRouteContext.
+   * Constructs a new WebformRouteContext.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match object.
@@ -38,8 +37,8 @@ class WebformRouteContext implements ContextProviderInterface {
    * {@inheritdoc}
    */
   public function getRuntimeContexts(array $unqualified_context_ids) {
-    $context_definition = EntityContextDefinition::fromEntityTypeId('webform')->setLabel(NULL)->setRequired(FALSE);
-
+    $result = [];
+    $context_definition = new ContextDefinition('entity:webform', NULL, FALSE);
     $value = NULL;
     if (($route_object = $this->routeMatch->getRouteObject()) && ($route_contexts = $route_object->getOption('parameters')) && isset($route_contexts['webform'])) {
       if ($webform = $this->routeMatch->getParameter('webform')) {
@@ -52,15 +51,16 @@ class WebformRouteContext implements ContextProviderInterface {
 
     $context = new Context($context_definition, $value);
     $context->addCacheableDependency($cacheability);
+    $result['webform'] = $context;
 
-    return ['webform' => $context];
+    return $result;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getAvailableContexts() {
-    $context = EntityContext::fromEntityTypeId('webform', $this->t('Webform from URL'));
+    $context = new Context(new ContextDefinition('entity:webform', $this->t('Webform from URL')));
     return ['webform' => $context];
   }
 

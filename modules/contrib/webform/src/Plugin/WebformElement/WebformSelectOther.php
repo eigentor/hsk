@@ -2,8 +2,6 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
-use Drupal\webform\Plugin\WebformElementOtherInterface;
-
 /**
  * Provides a 'select_other' element.
  *
@@ -14,4 +12,13 @@ use Drupal\webform\Plugin\WebformElementOtherInterface;
  *   category = @Translation("Options elements"),
  * )
  */
-class WebformSelectOther extends Select implements WebformElementOtherInterface {}
+class WebformSelectOther extends Select {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultProperties() {
+    return parent::getDefaultProperties() + self::getOtherProperties();
+  }
+
+}

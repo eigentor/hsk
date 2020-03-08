@@ -6,6 +6,4 @@ dependencies:
       - webform_test_options
 id: test
 label: Test
-category: Test
-likert: false
 options: ''

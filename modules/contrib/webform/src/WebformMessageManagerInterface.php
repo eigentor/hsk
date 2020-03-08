@@ -10,89 +10,58 @@ use Drupal\Core\Entity\EntityInterface;
 interface WebformMessageManagerInterface {
 
   /****************************************************************************/
-  // Hardcode message or custom messages with arguments constants.
+  // Hardcode message constants.
   /****************************************************************************/
 
   /**
-   * Admin closed.
+   * Admin only access.
    */
-  const ADMIN_CLOSED = 'admin_closed';
-
-  /**
-   * Admin page.
-   */
-  const ADMIN_PAGE = 'admin_page';
-
-  /**
-   * Admin archived.
-   */
-  const ADMIN_ARCHIVED = 'admin_archived';
+  const ADMIN_ACCESS = 1;
 
   /**
    * Default submission confirmation.
    */
-  const SUBMISSION_DEFAULT_CONFIRMATION = 'submission_default_confirmation';
-
-  /**
-   * Submission updates.
-   */
-  const SUBMISSION_UPDATED = 'submission_updated';
-
-  /**
-   * Submission test.
-   */
-  const SUBMISSION_TEST = 'submission_test';
-
-  /**
-   * Webform not saving or sending any data.
-   */
-  const FORM_SAVE_EXCEPTION = 'form_save_exception';
-
-  /**
-   * Webform not able to handle file uploads.
-   */
-  const FORM_FILE_UPLOAD_EXCEPTION = 'form_file_upload_exception';
-
-  /**
-   * Handler submission test.
-   */
-  const HANDLER_SUBMISSION_REQUIRED = 'handler_submission_required';
-
-  /****************************************************************************/
-  // Configurable custom message constants with :href argument.
-  // Values corresponds to admin config and webform settings
-  // with *_message appended.
-  /****************************************************************************/
+  const SUBMISSION_DEFAULT_CONFIRMATION = 2;
 
   /**
    * Submission previous.
    */
-  const PREVIOUS_SUBMISSION = 'previous_submission';
+  const SUBMISSION_PREVIOUS = 3;
 
   /**
    * Submissions previous.
    */
-  const PREVIOUS_SUBMISSIONS = 'previous_submissions';
+  const SUBMISSIONS_PREVIOUS = 4;
 
   /**
-   * Draft pending single.
+   * Submission updates.
    */
-  const DRAFT_PENDING_SINGLE = 'draft_pending_single';
+  const SUBMISSION_UPDATED = 5;
 
   /**
-   * Draft pending multiple.
+   * Submission test.
    */
-  const DRAFT_PENDING_MULTIPLE = 'draft_pending_multiple';
+  const SUBMISSION_TEST = 6;
+
+  /**
+   * Webform not saving or sending any data.
+   */
+  const FORM_SAVE_EXCEPTION = 7;
+
+  /**
+   * Webform not able to handle file uploads.
+   */
+  const FORM_FILE_UPLOAD_EXCEPTION = 8;
 
   /****************************************************************************/
-  // Configurable custom message constants.
+  // Configurable message constants.
   // Values corresponds to admin config and webform settings.
   /****************************************************************************/
 
   /**
    * Webform exception.
    */
-  const FORM_EXCEPTION_MESSAGE = 'form_exception_message';
+  const FORM_EXCEPTION = 'form_exception_message';
 
   /**
    * Webform preview.
@@ -100,14 +69,9 @@ interface WebformMessageManagerInterface {
   const FORM_PREVIEW_MESSAGE = 'preview_message';
 
   /**
-   * Webform opening.
-   */
-  const FORM_OPEN_MESSAGE = 'form_open_message';
-
-  /**
    * Webform closed.
    */
-  const FORM_CLOSE_MESSAGE = 'form_close_message';
+  const FORM_CLOSED_MESSAGE = 'form_closed_message';
 
   /**
    * Webform confidential.
@@ -127,57 +91,22 @@ interface WebformMessageManagerInterface {
   /**
    * Submission draft saved.
    */
-  const SUBMISSION_DRAFT_SAVED_MESSAGE = 'draft_saved_message';
+  const SUBMISSION_DRAFT_SAVED = 'draft_saved_message';
 
   /**
    * Submission draft loaded.
    */
-  const SUBMISSION_DRAFT_LOADED_MESSAGE = 'draft_loaded_message';
+  const SUBMISSION_DRAFT_LOADED = 'draft_loaded_message';
 
   /**
    * Submission confirmation.
    */
-  const SUBMISSION_CONFIRMATION_MESSAGE = 'confirmation_message';
+  const SUBMISSION_CONFIRMATION = 'confirmation_message';
 
   /**
-   * Submission exception.
-   */
-  const SUBMISSION_EXCEPTION_MESSAGE = 'submission_exception_message';
-
-  /**
-   * Submission exception.
-   */
-  const SUBMISSION_LOCKED_MESSAGE = 'submission_locked_message';
-
-  /**
-   * Template preview.
+   * Submission confirmation.
    */
   const TEMPLATE_PREVIEW = 'template_preview';
-
-  /**
-   * Autofill.
-   */
-  const AUTOFILL_MESSAGE = 'autofill_message';
-
-  /**
-   * Prepopulate source entity required.
-   */
-  const PREPOPULATE_SOURCE_ENTITY_REQUIRED = 'prepopulate_source_entity_required';
-
-  /**
-   * Prepopulate source entity type.
-   */
-  const PREPOPULATE_SOURCE_ENTITY_TYPE = 'prepopulate_source_entity_type';
-
-  /**
-   * Set the webform submission used for token replacement.
-   *
-   * Webform and source entity will also be set using the webform submission.
-   *
-   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
-   *   A webform submission.
-   */
-  public function setWebformSubmission(WebformSubmissionInterface $webform_submission = NULL);
 
   /**
    * Set the webform used for custom messages and token replacement.
@@ -196,6 +125,14 @@ interface WebformMessageManagerInterface {
   public function setSourceEntity(EntityInterface $entity = NULL);
 
   /**
+   * Set the webform submission used for token replacement.
+   *
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   A webform submission.
+   */
+  public function setWebformSubmission(WebformSubmissionInterface $webform_submission = NULL);
+
+  /**
    * Get message.
    *
    * @param string $key
@@ -205,25 +142,6 @@ interface WebformMessageManagerInterface {
    *   A message or FALSE if no message is found.
    */
   public function get($key);
-
-  /**
-   * Append inline message message to a render array.
-   *
-   * @param array $build
-   *   A render array.
-   * @param string $key
-   *   The name of webform settings message to be displayed.
-   * @param string $type
-   *   (optional) The message's type. Defaults to 'status'. These values are
-   *   supported:
-   *   - 'status'.
-   *   - 'warning'.
-   *   - 'error'.
-   *
-   * @return array
-   *   The render array with webform inline message appended.
-   */
-  public function append(array $build, $key, $type = 'status');
 
   /**
    * Display message.
@@ -236,16 +154,11 @@ interface WebformMessageManagerInterface {
    *   - 'status'.
    *   - 'warning'.
    *   - 'error'.
+   *
+   * @return bool
+   *   TRUE if message was displayed.
    */
   public function display($key, $type = 'status');
-
-  /**
-   * Render message.
-   *
-   * @return \Drupal\Core\Render\Markup|null
-   *   A rendered message.
-   */
-  public function render($key);
 
   /**
    * Build message.

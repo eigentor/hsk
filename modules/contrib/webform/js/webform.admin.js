@@ -1,9 +1,9 @@
 /**
  * @file
- * JavaScript behaviors for admin pages.
+ * Javascript behaviors for admin pages.
  */
 
-(function ($, Drupal, debounce) {
+(function ($, Drupal) {
 
   'use strict';
 
@@ -42,12 +42,8 @@
     attach: function (context) {
       // Only attach the click event handler to the entire table and determine
       // which row triggers the event.
-      $('.webform-results-table', context).once('webform-results-table').click(function (event) {
-        if (event.target.tagName === 'A' || event.target.tagName === 'BUTTON') {
-          return true;
-        }
-
-        if ($(event.target).parents('a[href]').length) {
+      $('.webform-results__table', context).once('webform-results-table').click(function (event) {
+        if (event.target.tagName == 'A' || event.target.tagName == 'BUTTON') {
           return true;
         }
 
@@ -62,4 +58,4 @@
     }
   };
 
-})(jQuery, Drupal, Drupal.debounce);
+})(jQuery, Drupal);

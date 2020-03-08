@@ -3,6 +3,7 @@
 namespace Drupal\Tests\webform\Kernel;
 
 use Drupal\Core\Url;
+use Drupal\webform\WebformEntityElementsValidator;
 use Drupal\KernelTests\KernelTestBase;
 
 /**
@@ -22,7 +23,7 @@ class WebformEntityElementsValidationTest extends KernelTestBase {
   /**
    * The webform elements validator.
    *
-   * @var \Drupal\webform\WebformEntityElementsValidatorInterface
+   * @var \Drupal\webform\WebformEntityElementsValidator
    */
   protected $validator;
 
@@ -31,7 +32,7 @@ class WebformEntityElementsValidationTest extends KernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->validator = \Drupal::service('webform.elements_validator');
+    $this->validator = new WebformEntityElementsValidator();
   }
 
   /**
@@ -64,15 +65,6 @@ class WebformEntityElementsValidationTest extends KernelTestBase {
         ],
       ],
 
-      // Check names.
-      [
-        'getElementsRaw' => "Not Valid:
-  '#type': textfield",
-        'messages' => [
-          'The element key <em class="placeholder">Not Valid</em> on line 1 must contain only lowercase letters, numbers, and underscores.',
-        ],
-      ],
-
       // Check duplicate names.
       [
         'getElementsRaw' => "name:
@@ -81,7 +73,7 @@ duplicate:
   name:
     '#type': textfield",
         'messages' => [
-          'Elements contain a duplicate element key <em class="placeholder">name</em> found on lines 1 and 4.',
+          'Elements contain a duplicate element name <em class="placeholder">name</em> found on lines 1 and 4.',
         ],
       ],
 
@@ -93,19 +85,7 @@ duplicate:
   name:
     '#type': textfield",
         'messages' => [
-          'Elements contain a duplicate element key <em class="placeholder">name</em> found on lines 1 and 4.',
-        ],
-      ],
-
-      // Check reserved names.
-      [
-        'getElementsRaw' => "name:
-  '#type': textfield
-duplicate:
-  add:
-    '#type': textfield",
-        'messages' => [
-          'The element key <em class="placeholder">add</em> on line 4 is a reserved key.',
+          'Elements contain a duplicate element name <em class="placeholder">name</em> found on lines 1 and 4.',
         ],
       ],
 
@@ -210,9 +190,9 @@ duplicate:
       ];
 
       /** @var \Drupal\webform\WebformInterface $webform */
-      $webform = $this->createMock('\Drupal\webform\WebformInterface');
+      $webform = $this->getMock('\Drupal\webform\WebformInterface');
       $methods = $test;
-      unset($methods['messages']);
+      unset($methods['message']);
       foreach ($methods as $method => $returnValue) {
         $webform->expects($this->any())
           ->method($method)

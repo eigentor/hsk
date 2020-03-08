@@ -6,8 +6,6 @@ dependencies:
       - webform
 id: days
 label: Days
-category: 'Date and time'
-likert: false
 options: |
   Sunday: Sunday
   Monday: Monday

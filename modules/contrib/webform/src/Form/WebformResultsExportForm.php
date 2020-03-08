@@ -2,6 +2,7 @@
 
 namespace Drupal\webform\Form;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\WebformSubmissionExporterInterface;
@@ -54,7 +55,7 @@ class WebformResultsExportForm extends FormBase {
     $settings_options = $this->config('webform.settings')->get('export');
     $saved_options = $this->submissionExporter->getWebformOptions();
     $user_options = $this->submissionExporter->getValuesFromInput($form_state->getUserInput());
-    $export_options = $user_options + $saved_options + $settings_options;
+    $export_options = NestedArray::mergeDeep($settings_options, $saved_options, $user_options);
 
     // Build the webform.
     $this->submissionExporter->buildExportOptionsForm($form, $form_state, $export_options);
@@ -80,11 +81,6 @@ class WebformResultsExportForm extends FormBase {
       '#access' => ($saved_options) ? TRUE : FALSE,
       '#submit' => ['::delete'],
     ];
-
-    // Disable single submit.
-    $form['#attributes']['class'][] = 'webform-remove-single-submit';
-    $form['#attached']['library'][] = 'webform/webform.form';
-
     return $form;
   }
 
@@ -92,14 +88,11 @@ class WebformResultsExportForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $default_options = $this->submissionExporter->getDefaultExportOptions();
     $export_options = $this->submissionExporter->getValuesFromInput($form_state->getValues());
-    // Implode arrays.
-    foreach ($export_options as $key => $value) {
-      if (is_array($default_options[$key]) && is_array($value)) {
-        $export_options[$key] = implode(',', $value);
-      }
-    }
+
+    // Implode exclude columns.
+    $export_options['excluded_columns'] = implode(',', $export_options['excluded_columns']);
+
     if ($source_entity = $this->submissionExporter->getSourceEntity()) {
       $entity_type = $source_entity->getEntityTypeId();
       $entity_id = $source_entity->id();
@@ -126,7 +119,7 @@ class WebformResultsExportForm extends FormBase {
     // Save the export options to the webform's state.
     $export_options = $this->submissionExporter->getValuesFromInput($form_state->getValues());
     $this->submissionExporter->setWebformOptions($export_options);
-    $this->messenger()->addStatus($this->t('The download settings have been saved.'));
+    drupal_set_message($this->t('The download settings have been saved.'));
   }
 
   /**
@@ -139,7 +132,7 @@ class WebformResultsExportForm extends FormBase {
    */
   public function delete(array &$form, FormStateInterface $form_state) {
     $this->submissionExporter->deleteWebformOptions();
-    $this->messenger()->addStatus($this->t('The download settings have been reset.'));
+    drupal_set_message($this->t('The download settings have been reset.'));
   }
 
 }

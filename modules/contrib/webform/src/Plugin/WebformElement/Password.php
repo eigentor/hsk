@@ -2,8 +2,7 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
-use Drupal\webform\Plugin\WebformElementBase;
-use Drupal\webform\WebformSubmissionInterface;
+use Drupal\webform\WebformElementBase;
 
 /**
  * Provides a 'password' element.
@@ -21,9 +20,7 @@ class Password extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
-  protected function formatTextItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    $value = $this->getValue($element, $webform_submission, $options);
-
+  public function formatTextItem(array &$element, $value, array $options = []) {
     // Return empty value.
     if ($value === '' || $value === NULL) {
       return '';
@@ -35,7 +32,7 @@ class Password extends WebformElementBase {
         return '********';
 
       default:
-        return parent::formatTextItem($element, $webform_submission, $options);
+        return parent::formatTextItem($element, $value, $options);
     }
   }
 

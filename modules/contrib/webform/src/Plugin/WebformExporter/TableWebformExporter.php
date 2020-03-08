@@ -29,13 +29,20 @@ class TableWebformExporter extends TabularBaseWebformExporter {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form = parent::buildConfigurationForm($form, $form_state);
+    if (isset($form['excel'])) {
+      return $form;
+    }
+
     $form['excel'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Open HTML table in Excel'),
       '#description' => $this->t('If checked, the download file extension will be change from .html to .xls.'),
-      '#return_value' => TRUE,
       '#default_value' => $this->configuration['excel'],
+      '#states' => [
+        'visible' => [
+          [':input.js-webform-exporter' => ['value' => 'table']],
+        ],
+      ],
     ];
     return $form;
   }
@@ -66,9 +73,6 @@ class TableWebformExporter extends TabularBaseWebformExporter {
     fwrite($file_handle, '<!doctype html>');
     fwrite($file_handle, '<html>');
     fwrite($file_handle, '<head>');
-    // Force Excel to keep field values containing p- or br-tags within the same
-    // cell.
-    fwrite($file_handle, '<style>p, br {mso-data-placement:same-cell;}</style>');
     fwrite($file_handle, '<meta charset="utf-8">');
     if ($title) {
       fwrite($file_handle, '<title>' . $title . '</title>');

@@ -3,7 +3,8 @@
 namespace Drupal\webform\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\webform\Plugin\WebformElementBase;
+use Drupal\webform\WebformElementBase;
+use Drupal\Core\Url as UrlGenerator;
 
 /**
  * Provides a 'generic' element. Used as a fallback.
@@ -26,20 +27,6 @@ class WebformElement extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
-  public function isInput(array $element) {
-    return (!empty($element['#type']) && !in_array($element['#type'], ['submit'])) ? TRUE : FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function preview() {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function form(array $form, FormStateInterface $form_state) {
     $form['element'] = [
       '#type' => 'details',
@@ -54,18 +41,18 @@ class WebformElement extends WebformElementBase {
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
-    $form['custom']['#type'] = 'fieldset';
     $form['custom']['#title'] = $this->t('Element settings');
-    $form['custom']['#weight'] = 100;
     $form['custom']['custom']['#title'] = $this->t('Properties');
-    return $form;
-  }
 
-  /**
-   * {@inheritdoc}
-   */
-  protected function buildConfigurationFormTabs(array $form, FormStateInterface $form_state) {
-    // Generic elements do not need use tabs.
+    // Add link to theme API documentation.
+    $theme = (isset($this->configuration['#theme'])) ? $this->configuration['#theme'] : '';
+    if (function_exists('template_preprocess_' . $theme)) {
+      $t_args = [
+        ':href' => UrlGenerator::fromUri('https://api.drupal.org/api/drupal/core!includes!theme.inc/function/template_preprocess_' . $theme)->toString(),
+        '%label' => $theme,
+      ];
+      $form['custom']['#description'] = $this->t('Read the the %label template\'s <a href=":href">API documentation</a>.', $t_args);
+    }
     return $form;
   }
 

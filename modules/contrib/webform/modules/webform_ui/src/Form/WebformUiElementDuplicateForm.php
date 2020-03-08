@@ -14,12 +14,7 @@ class WebformUiElementDuplicateForm extends WebformUiElementFormBase {
   /**
    * {@inheritdoc}
    */
-  protected $operation = 'duplicate';
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, WebformInterface $webform = NULL, $key = NULL, $parent_key = NULL, $type = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, WebformInterface $webform = NULL, $key = NULL) {
     if (empty($key)) {
       throw new NotFoundHttpException();
     }
@@ -31,8 +26,9 @@ class WebformUiElementDuplicateForm extends WebformUiElementFormBase {
 
     $element_initialized = $webform->getElement($key);
 
-    $t_args = ['@title' => $element_initialized['#admin_title'] ?: $element_initialized['#title']];
-    $form['#title'] = $this->t('Duplicate @title element', $t_args);
+    $form['#title'] = $this->t('Duplicate @title element', [
+      '@title' => (!empty($this->element['#title'])) ? $this->element['#title'] : $key,
+    ]);
 
     $this->action = $this->t('created');
     return parent::buildForm($form, $form_state, $webform, NULL, $element_initialized['#webform_parent_key']);

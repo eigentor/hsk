@@ -2,10 +2,8 @@
 
 namespace Drupal\webform;
 
-use Drupal\Core\Session\AccountInterface;
 use Drupal\user\EntityOwnerInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\user\UserInterface;
 
 /**
  * Provides an interface defining a webform submission entity.
@@ -18,19 +16,9 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
   const STATE_UNSAVED = 'unsaved';
 
   /**
-   * Return status for submission in draft created.
+   * Return status for submission in draft.
    */
   const STATE_DRAFT = 'draft';
-
-  /**
-   * Return status for submission in draft created.
-   */
-  const STATE_DRAFT_CREATED = 'draft_created';
-
-  /**
-   * Return status for submission in draft updated.
-   */
-  const STATE_DRAFT_UPDATED = 'draft_updated';
 
   /**
    * Return status for submission that has been completed.
@@ -38,24 +26,9 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
   const STATE_COMPLETED = 'completed';
 
   /**
-   * Return status for submission that has been locked.
-   */
-  const STATE_LOCKED = 'locked';
-
-  /**
    * Return status for submission that has been updated.
    */
   const STATE_UPDATED = 'updated';
-
-  /**
-   * Return status for submission that has been deleted.
-   */
-  const STATE_DELETED = 'deleted';
-
-  /**
-   * Return status for submission that has been converted from anonymous to authenticated.
-   */
-  const STATE_CONVERTED = 'converted';
 
   /**
    * Gets the serial number.
@@ -156,24 +129,6 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
   public function setSticky($sticky);
 
   /**
-   * Get the submission's locked status.
-   *
-   * @return string
-   *   The submission's lock status.
-   */
-  public function isLocked();
-
-  /**
-   * Sets the submission's locked flag.
-   *
-   * @param bool $locked
-   *   The submission's locked flag.
-   *
-   * @return $this
-   */
-  public function setLocked($locked);
-
-  /**
    * Gets the remote IP address of the submission.
    *
    * @return string
@@ -226,15 +181,6 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
   public function isDraft();
 
   /**
-   * Is the current submission being converted from anonymous to authenticated.
-   *
-   * @return bool
-   *   TRUE if the current submission being converted from anonymous to
-   *   authenticated.
-   */
-  public function isConverting();
-
-  /**
    * Is the current submission completed.
    *
    * @return bool
@@ -251,17 +197,6 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
   public function isSticky();
 
   /**
-   * Test whether the provided account is owner of this webform submission.
-   *
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   Account whose ownership to test.
-   *
-   * @return bool
-   *   Whether the provided account is owner of this webform submission.
-   */
-  public function isOwner(AccountInterface $account);
-
-  /**
    * Checks submission notes.
    *
    * @return bool
@@ -272,69 +207,43 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
   /**
    * Track the state of a submission.
    *
-   * @return string
-   *   Either STATE_UNSAVED, STATE_DRAFT_CREATED, STATE_DRAFT_UPDATED,
-   *   STATE_COMPLETED, STATE_UPDATED, STATE_LOCKED, or STATE_CONVERTED
+   * @return int
+   *   Either STATE_NEW, STATE_DRAFT, STATE_COMPLETED, or STATE_UPDATED,
    *   depending on the last save operation performed.
    */
   public function getState();
 
   /**
-   * Get a webform submission element's data.
+   * Gets the webform submission's data.
    *
    * @param string $key
-   *   An webform submission element's key.
-   *
-   * @return mixed
-   *   An webform submission element's data/value.
-   */
-  public function getElementData($key);
-
-  /**
-   * Set a webform submission element's data.
-   *
-   * @param string $key
-   *   An webform submission element's key.
-   * @param mixed $value
-   *   A value.
-   *
-   * @return $this
-   */
-  public function setElementData($key, $value);
-
-  /**
-   * Gets the webform submission's raw data.
+   *   A string that maps to a key in the submission's data.
+   *   If no key is specified, then the entire data array is returned.
    *
    * @return array
-   *   The webform submission raw data.
+   *   The webform submission data.
    */
-  public function getRawData();
-
-  /**
-   * Gets the webform submission's data with computed valued.
-   *
-   * @return array
-   *   The webform submission data with computed valued.
-   */
-  public function getData();
+  public function getData($key = NULL);
 
   /**
    * Set the webform submission's data.
    *
    * @param array $data
    *   The webform submission data.
-   *
-   * @return $this
    */
   public function setData(array $data);
 
   /**
-   * Gets the webform submission's original data before any changes.
+   * Gets the webform submission's original data before any changes..
+   *
+   * @param string $key
+   *   A string that maps to a key in the submission's original data.
+   *   If no key is specified, then the entire data array is returned.
    *
    * @return array
    *   The webform submission original data.
    */
-  public function getOriginalData();
+  public function getOriginalData($key = NULL);
 
   /**
    * Set the webform submission's original data.
@@ -345,17 +254,6 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
    * @return $this
    */
   public function setOriginalData(array $data);
-
-  /**
-   * Get a webform submission element's original data.
-   *
-   * @param string $key
-   *   An webform submission element's key.
-   *
-   * @return mixed
-   *   An webform submission element's original data/value.
-   */
-  public function getElementOriginalData($key);
 
   /**
    * Gets the webform submission's token.
@@ -376,13 +274,10 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
   /**
    * Gets the webform submission's source entity.
    *
-   * @param bool $translate
-   *   (optional) If TRUE the source entity will be translated.
-   *
    * @return \Drupal\Core\Entity\EntityInterface|null
    *   The entity that this webform submission was created from.
    */
-  public function getSourceEntity($translate = FALSE);
+  public function getSourceEntity();
 
   /**
    * Gets the webform submission's source URL.
@@ -395,22 +290,16 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
   /**
    * Gets the webform submission's secure tokenized URL.
    *
-   * @param string $operation
-   *   Token URL's operation. Defaults to update.
-   *
    * @return \Drupal\Core\Url
-   *   The webform submission's secure tokenized URL.
+   *   The the webform submission's secure tokenized URL.
    */
-  public function getTokenUrl($operation = 'update');
+  public function getTokenUrl();
 
   /**
    * Invoke all webform handlers method.
    *
    * @param string $method
    *   The webform handler method to be invoked.
-   *
-   * @return \Drupal\Core\Access\AccessResult|null
-   *   If 'access' method is invoked an AccessResult is returned.
    */
   public function invokeWebformHandlers($method);
 
@@ -423,27 +312,13 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
   public function invokeWebformElements($method);
 
   /**
-   * Convert anonymous submission to authenticated.
-   *
-   * @param \Drupal\user\UserInterface $account
-   *   An authenticated user account.
-   */
-  public function convert(UserInterface $account);
-
-  /**
-   * Resave a webform submission without trigger any hooks or handlers.
-   */
-  public function resave();
-
-  /**
    * Gets an array of all property values.
    *
    * @param bool $custom
    *   If TRUE, return customized array that contains simplified properties
-   *   and webform submission (element) data.
+   *   and webform submission data.
    * @param bool $check_access
-   *   If $custom and $check_access is TRUE, view access is checked
-   *   for webform submission (element) data.
+   *   If TRUE, view access is checked for element data.
    *
    * @return mixed[]
    *   An array of property values, keyed by property name.

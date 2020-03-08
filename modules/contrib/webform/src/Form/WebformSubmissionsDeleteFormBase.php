@@ -3,23 +3,17 @@
 namespace Drupal\webform\Form;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformRequestInterface;
+use Drupal\webform\WebformSubmissionStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base webform for deleting webform submission.
  */
-abstract class WebformSubmissionsDeleteFormBase extends WebformDeleteFormBase {
-
-  /**
-   * Total number of submissions.
-   *
-   * @var int
-   */
-  protected $submissionTotal;
+abstract class WebformSubmissionsDeleteFormBase extends ConfirmFormBase {
 
   /**
    * Default number of submission to be deleted during batch processing.
@@ -43,13 +37,6 @@ abstract class WebformSubmissionsDeleteFormBase extends WebformDeleteFormBase {
   protected $sourceEntity;
 
   /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
    * The webform submission storage.
    *
    * @var \Drupal\webform\WebformSubmissionStorageInterface
@@ -66,17 +53,14 @@ abstract class WebformSubmissionsDeleteFormBase extends WebformDeleteFormBase {
   /**
    * Constructs a WebformResultsDeleteFormBase object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
+   * @param \Drupal\webform\WebformSubmissionStorageInterface $webform_submission_storage
+   *   The webform submission storage.
    * @param \Drupal\webform\WebformRequestInterface $request_handler
    *   The webform request handler.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, WebformRequestInterface $request_handler) {
-    $this->entityTypeManager = $entity_type_manager;
-    $this->submissionStorage = $entity_type_manager->getStorage('webform_submission');
+  public function __construct(WebformSubmissionStorageInterface $webform_submission_storage, WebformRequestInterface $request_handler) {
+    $this->submissionStorage = $webform_submission_storage;
     $this->requestHandler = $request_handler;
-
-    list($this->webform, $this->sourceEntity) = $this->requestHandler->getWebformEntities();
   }
 
   /**
@@ -84,7 +68,7 @@ abstract class WebformSubmissionsDeleteFormBase extends WebformDeleteFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager'),
+      $container->get('entity.manager')->getStorage('webform_submission'),
       $container->get('webform.request')
     );
   }
@@ -99,32 +83,22 @@ abstract class WebformSubmissionsDeleteFormBase extends WebformDeleteFormBase {
   /**
    * {@inheritdoc}
    */
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    list($this->webform, $this->sourceEntity) = $this->requestHandler->getWebformEntities();
+    return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->setRedirectUrl($this->getCancelUrl());
     if ($this->submissionStorage->getTotal($this->webform, $this->sourceEntity) < $this->getBatchLimit()) {
       $this->submissionStorage->deleteAll($this->webform, $this->sourceEntity);
-      $this->messenger()->addStatus($this->getFinishedMessage());
+      drupal_set_message($this->getFinishedMessage());
     }
     else {
       $this->batchSet($this->webform, $this->sourceEntity);
-    }
-  }
-
-  /**
-   * Get webform or source entity label.
-   *
-   * @return null|string
-   *   Webform or source entity label.
-   */
-  public function getLabel() {
-    if ($this->sourceEntity) {
-      return $this->sourceEntity->label();
-    }
-    elseif ($this->webform->label()) {
-      return $this->webform->label();
-    }
-    else {
-      return '';
     }
   }
 
@@ -137,10 +111,6 @@ abstract class WebformSubmissionsDeleteFormBase extends WebformDeleteFormBase {
   public function getFinishedMessage() {
     return $this->t('Webform submissions cleared.');
   }
-
-  /****************************************************************************/
-  // Batch API.
-  /****************************************************************************/
 
   /**
    * Batch API; Initialize batch operations.
@@ -202,7 +172,7 @@ abstract class WebformSubmissionsDeleteFormBase extends WebformDeleteFormBase {
 
     if (empty($context['sandbox'])) {
       $context['sandbox']['progress'] = 0;
-      $context['sandbox']['max'] = $this->submissionStorage->getTotal($webform, $entity, NULL, ['in_draft' => NULL]);
+      $context['sandbox']['max'] = $this->submissionStorage->getTotal($webform, $entity);
       $context['results']['webform'] = $webform;
       $context['results']['entity'] = $entity;
     }
@@ -210,7 +180,7 @@ abstract class WebformSubmissionsDeleteFormBase extends WebformDeleteFormBase {
     // Track progress.
     $context['sandbox']['progress'] += $this->submissionStorage->deleteAll($webform, $entity, $this->getBatchLimit(), $max_sid);
 
-    $context['message'] = $this->t('Deleting @count of @total submissions…', ['@count' => $context['sandbox']['progress'], '@total' => $context['sandbox']['max']]);
+    $context['message'] = $this->t('Deleting @count of @total submissions...', ['@count' => $context['sandbox']['progress'], '@total' => $context['sandbox']['max']]);
 
     // Track finished.
     if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
@@ -230,24 +200,11 @@ abstract class WebformSubmissionsDeleteFormBase extends WebformDeleteFormBase {
    */
   public function batchFinish($success = FALSE, array $results, array $operations) {
     if (!$success) {
-      $this->messenger()->addStatus($this->t('Finished with an error.'));
+      drupal_set_message($this->t('Finished with an error.'));
     }
     else {
-      $this->messenger()->addStatus($this->getFinishedMessage());
+      drupal_set_message($this->getFinishedMessage());
     }
-  }
-
-  /**
-   * Get total number of submissions.
-   *
-   * @return int
-   *   Total number of submissions.
-   */
-  protected function getSubmissionTotal() {
-    if (!isset($this->submissionTotal)) {
-      $this->submissionTotal = $this->submissionStorage->getTotal($this->webform, $this->sourceEntity, NULL, ['in_draft' => NULL]);
-    }
-    return $this->submissionTotal;
   }
 
 }

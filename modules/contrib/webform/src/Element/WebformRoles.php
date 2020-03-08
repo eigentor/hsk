@@ -6,7 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\Checkboxes;
 
 /**
- * Provides a webform roles (checkboxes) element.
+ * Provides a roles entity reference webform element.
  *
  * @FormElement("webform_roles")
  */
@@ -26,25 +26,27 @@ class WebformRoles extends Checkboxes {
   }
 
   /**
-   * Processes a webform roles (checkboxes) element.
+   * Processes a checkboxes webform element.
    */
   public static function processCheckboxes(&$element, FormStateInterface $form_state, &$complete_form) {
-    $membersonly = (empty($element['#include_anonymous'])) ? TRUE : FALSE;
-    $element['#options'] = array_map('\Drupal\Component\Utility\Html::escape', user_role_names($membersonly));
+    $element['#options'] = array_map('\Drupal\Component\Utility\Html::escape', user_role_names());
+
+    // Check if anonymous is included.
+    if (empty($element['#include_anonymous'])) {
+      unset($element['#options']['anonymous']);
+    }
+
     $element['#attached']['library'][] = 'webform/webform.element.roles';
     $element['#attributes']['class'][] = 'js-webform-roles-role';
     return parent::processCheckboxes($element, $form_state, $complete_form);
   }
 
   /**
-   * Webform element validation handler for webform roles (checkboxes) element.
+   * Webform element validation handler for webform_users elements.
    */
   public static function validateWebformRoles(&$element, FormStateInterface $form_state, &$complete_form) {
     $value = $form_state->getValue($element['#parents'], []);
-    $value = array_values(array_filter($value));
-
-    $element['#value'] = $value;
-    $form_state->setValueForElement($element, $value);
+    $form_state->setValueForElement($element, array_values(array_filter($value)));
   }
 
 }

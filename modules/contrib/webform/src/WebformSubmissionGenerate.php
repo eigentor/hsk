@@ -5,7 +5,6 @@ namespace Drupal\webform;
 use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\webform\Plugin\WebformElementManagerInterface;
 
 /**
  * Webform submission generator.
@@ -25,14 +24,14 @@ class WebformSubmissionGenerate implements WebformSubmissionGenerateInterface {
   /**
    * The webform token manager.
    *
-   * @var \Drupal\webform\WebformTokenManagerInterface
+   * @var \Drupal\webform\WebformTokenManager
    */
   protected $tokenManager;
 
   /**
    * The webform element manager.
    *
-   * @var \Drupal\webform\Plugin\WebformElementManagerInterface
+   * @var \Drupal\webform\WebformElementManagerInterface
    */
   protected $elementManager;
 
@@ -55,12 +54,12 @@ class WebformSubmissionGenerate implements WebformSubmissionGenerateInterface {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration object factory.
-   * @param \Drupal\webform\WebformTokenManagerInterface $token_manager
+   * @param \Drupal\webform\WebformTokenManager $token_manager
    *   The webform token manager.
-   * @param \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager
+   * @param \Drupal\webform\WebformElementManagerInterface $element_manager
    *   The webform element manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, WebformTokenManagerInterface $token_manager, WebformElementManagerInterface $element_manager) {
+  public function __construct(ConfigFactoryInterface $config_factory, WebformTokenManager $token_manager, WebformElementManagerInterface $element_manager) {
     $this->configFactory = $config_factory;
     $this->tokenManager = $token_manager;
     $this->elementManager = $element_manager;
@@ -95,12 +94,12 @@ class WebformSubmissionGenerate implements WebformSubmissionGenerateInterface {
       'random' => TRUE,
     ];
 
-    /** @var \Drupal\webform\Plugin\WebformElementInterface $element_plugin */
+    /** @var \Drupal\webform\WebformElementInterface $element_handler */
     $plugin_id = $this->elementManager->getElementPluginId($element);
-    $element_plugin = $this->elementManager->createInstance($plugin_id);
+    $element_handler = $this->elementManager->createInstance($plugin_id);
 
     // Exit if element does not have a value.
-    if (!$element_plugin->isInput($element)) {
+    if (!$element_handler->isInput($element)) {
       return NULL;
     }
 
@@ -114,44 +113,14 @@ class WebformSubmissionGenerate implements WebformSubmissionGenerateInterface {
       $values = [$values];
     }
 
-    // Apply #maxlength to values.
-    // @see \Drupal\webform\Plugin\WebformElement\TextBase
-    if (!empty($element['#maxlength'])) {
-      $maxlength = $element['#maxlength'];
-    }
-    elseif (!empty($element['#counter_type']) && !empty($element['#counter_maximum']) && $element['#counter_type'] === 'character') {
-      $maxlength = $element['#counter_maximum'];
-    }
-    else {
-      $maxlength = NULL;
-    }
-    if ($maxlength) {
-      foreach ($values as $index => $value) {
-        $values[$index] = mb_substr($value, 0, $maxlength);
-      }
-    }
-
     // $values = $this->tokenManager->replace($values, $webform);.
     // Elements that use multiple values require an array as the
     // default value.
-    if ($element_plugin->hasMultipleValues($element)) {
+    if ($element_handler->hasMultipleValues($element)) {
       if ($options['random']) {
         shuffle($values);
       }
-
-      $limit = 3;
-      if (isset($element['#multiple'])) {
-        // #multiple: FALSE is only applicable to webform_custom_composite element.
-        // @see \Drupal\webform\Plugin\WebformElement\WebformComposite
-        if ($element['#multiple'] === FALSE) {
-          $limit = 1;
-        }
-        elseif ($element['#multiple'] > 1 && $element['#multiple'] < 3) {
-          $limit = $element['#multiple'];
-        }
-      }
-
-      return array_slice($values, 0, $limit);
+      return array_slice($values, 0, 3);
     }
     else {
       return ($options['random']) ? $values[array_rand($values)] : reset($values);
@@ -177,6 +146,11 @@ class WebformSubmissionGenerate implements WebformSubmissionGenerateInterface {
     // Get test value from the actual element.
     if (isset($element['#test'])) {
       return $element['#test'];
+    }
+
+    // Never populate hidden and value elements.
+    if (in_array($element['#type'], ['hidden', 'value'])) {
+      return NULL;
     }
 
     // Invoke WebformElement::test and get a test value.

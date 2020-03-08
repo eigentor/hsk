@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\webform\Unit\Utility;
 
-use Drupal\Core\Render\Markup;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\Tests\UnitTestCase;
 
@@ -44,6 +43,7 @@ class WebformElementHelperTest extends UnitTestCase {
     $tests[] = [['#title' => ''], FALSE];
     $tests[] = [['#title' => NULL], FALSE];
     $tests[] = [['#title' => 'Test', '#title_display' => 'invisible'], FALSE];
+    $tests[] = [['#title' => 'Test', '#title_display' => 'attribute'], FALSE];
     return $tests;
   }
 
@@ -94,14 +94,14 @@ class WebformElementHelperTest extends UnitTestCase {
   }
 
   /**
-   * Tests WebformElementHelper::removeIgnoredProperties().
+   * Tests WebformElementHelper::RemoveIgnoredProperties().
    *
    * @param array $element
-   *   The array to run through WebformElementHelper::removeIgnoredProperties().
+   *   The array to run through WebformElementHelper::RemoveIgnoredProperties().
    * @param string $expected
    *   The expected result from calling the function.
    *
-   * @see WebformElementHelper::removeIgnoredProperties()
+   * @see WebformElementHelper::RemoveIgnoredProperties()
    *
    * @dataProvider providerRemoveIgnoredProperties
    */
@@ -137,99 +137,6 @@ class WebformElementHelperTest extends UnitTestCase {
       ['#value' => 'text'],
     ];
     return $tests;
-  }
-
-  /**
-   * Tests WebformElementHelper::convertRenderMarkupToStrings().
-   *
-   * @param array $elements
-   *   The array to run through WebformElementHelper::convertRenderMarkupToStrings().
-   * @param string $expected
-   *   The expected result from calling the function.
-   *
-   * @see WebformElementHelper::convertRenderMarkupToStrings()
-   *
-   * @dataProvider providerConvertRenderMarkupToStrings
-   */
-  public function testConvertRenderMarkupToStrings(array $elements, $expected) {
-    WebformElementHelper::convertRenderMarkupToStrings($elements);
-    $this->assertEquals($expected, $elements);
-  }
-
-  /**
-   * Data provider for testConvertRenderMarkupToStrings().
-   *
-   * @see testConvertRenderMarkupToStrings()
-   */
-  public function providerConvertRenderMarkupToStrings() {
-    return [
-      [
-        ['test' => Markup::create('markup')],
-        ['test' => 'markup'],
-      ],
-      [
-        ['test' => ['nested' => Markup::create('markup')]],
-        ['test' => ['nested' => 'markup']],
-      ],
-    ];
-  }
-
-  /**
-   * Tests WebformElementHelper::hasProperty().
-   *
-   * @param array $elements
-   *   The array to run through WebformElementHelper::convertRenderMarkupToStrings().
-   * @param bool $expected
-   *   The expected result from calling the function.
-   *
-   * @see WebformElementHelper::HasProperty()
-   *
-   * @dataProvider providerHasProperty
-   */
-  public function testHasProperty(array $arguments, $expected) {
-    $result = WebformElementHelper::hasProperty($arguments[0], $arguments[1], $arguments[2]);
-    $this->assertEquals($expected, $result);
-  }
-
-  /**
-   * Data provider for testConvertRenderMarkupToStrings().
-   *
-   * @see testHasProperty()
-   */
-  public function providerHasProperty() {
-    return [
-      [
-        [[], '#required', NULL],
-        FALSE,
-        'Does not have #required',
-      ],
-      [
-        [['#required' => TRUE], '#required', NULL],
-        TRUE,
-        'Has #required',
-      ],
-      [
-        [['#required' => TRUE], '#required', 'value'],
-        FALSE,
-        '#required !== value',
-      ],
-      [
-        [['#required' => 'value'], '#required', 'value'],
-        TRUE,
-        '#required == value',
-      ],
-      [
-        [['nested' => ['#required' => TRUE]], '#required', NULL],
-        TRUE,
-        'Has nested #required',
-      ],
-      [
-        [['nested' => ['#required' => 'value']], '#required', 'value'],
-        TRUE,
-        'nested #required == value',
-      ],
-
-    ];
   }
 
 }

@@ -20,32 +20,50 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class WebformEntityReferenceAutocompleteWidget extends EntityReferenceAutocompleteWidget {
 
-  use WebformEntityReferenceWidgetTrait;
-
   /**
    * {@inheritdoc}
    */
-  public function getTargetIdElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    // Get default value.
-    $referenced_entities = $items->referencedEntities();
-    $default_value = isset($referenced_entities[$delta]) ? $referenced_entities[$delta] : NULL;
+  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+    if (!isset($items[$delta]->status)) {
+      $items[$delta]->status = 1;
+    }
 
-    // Append the match operation to the selection settings.
-    $selection_settings = $this->getFieldSetting('handler_settings') + ['match_operator' => $this->getSetting('match_operator')];
+    $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
-    return [
-      '#type' => 'entity_autocomplete',
-      '#target_type' => $this->getFieldSetting('target_type'),
-      '#selection_handler' => $this->getFieldSetting('handler'),
-      '#selection_settings' => $selection_settings,
-      // Entity reference field items are handling validation themselves via
-      // the 'ValidReference' constraint.
-      '#validate_reference' => FALSE,
-      '#maxlength' => 1024,
-      '#default_value' => $default_value,
-      '#size' => $this->getSetting('size'),
-      '#placeholder' => $this->getSetting('placeholder'),
+    // Set element 'target_id' default properties.
+    $element['target_id'] += [
+      '#weight' => 0,
     ];
+
+    // Get weight.
+    $weight = $element['target_id']['#weight'];
+
+    $element['default_data'] = [
+      '#type' => 'webform_codemirror',
+      '#mode' => 'yaml',
+      '#title' => $this->t('Default webform submission data (YAML)'),
+      '#description' => $this->t('Enter webform submission data as name and value pairs which will be used to prepopulate the selected webform. You may use tokens.'),
+      '#weight' => $weight++,
+      '#default_value' => $items[$delta]->default_data,
+    ];
+
+    /** @var \Drupal\webform\WebformTokenManagerInterface $token_manager */
+    $token_manager = \Drupal::service('webform.token_manager');
+    $element['token_tree_link'] = $token_manager->buildTreeLink();
+
+    $element['status'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Webform status'),
+      '#description' => $this->t('Closing a webform prevents any further submissions by any users.'),
+      '#options' => [
+        1 => $this->t('Open'),
+        0 => $this->t('Closed'),
+      ],
+      '#weight' => $weight++,
+      '#default_value' => ($items[$delta]->status == 1) ? 1 : 0,
+    ];
+
+    return $element;
   }
 
 }

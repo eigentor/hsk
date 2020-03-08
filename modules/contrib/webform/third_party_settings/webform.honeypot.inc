@@ -57,7 +57,7 @@ function _webform_honeypot_form(array &$form, FormStateInterface $form_state, $h
   $t_args = [
     '%label' => $label,
     ':href_honeypot' => Url::fromRoute('honeypot.config')->toString(),
-    ':href_webform' => Url::fromRoute('webform.config')->toString(),
+    ':href_webform' => Url::fromRoute('webform.settings')->toString(),
   ];
 
   // Honeypot.
@@ -71,7 +71,6 @@ function _webform_honeypot_form(array &$form, FormStateInterface $form_state, $h
     '#type' => 'checkbox',
     '#title' => t('Protect %label with Honeypot', $t_args),
     '#default_value' => $honeypot,
-    '#return_value' => TRUE,
   ];
 
   if ($honeypot_state != WEBFORM_HONEYPOT_NEUTRAL) {
@@ -91,9 +90,7 @@ function _webform_honeypot_form(array &$form, FormStateInterface $form_state, $h
   $form['third_party_settings']['honeypot']['time_restriction'] = [
     '#type' => 'checkbox',
     '#title' => t('Add time restriction to %label', $t_args),
-    '#description' => '',
     '#default_value' => $time_restriction,
-    '#return_value' => TRUE,
   ];
 
   if ($time_restriction_state != WEBFORM_HONEYPOT_NEUTRAL) {
@@ -109,9 +106,6 @@ function _webform_honeypot_form(array &$form, FormStateInterface $form_state, $h
     }
   }
 
-  $form['third_party_settings']['honeypot']['time_restriction']['#description'] = ($form['third_party_settings']['honeypot']['time_restriction']['#description'] ? '<br/>' : '')
-    . '<strong>' . t('Page caching will be disabled when a time restriction is applied to a webform.') . '</strong>';
-
   $form['#validate'][] = '_webform_honeypot_form_validate';
 
 }
@@ -121,22 +115,19 @@ function _webform_honeypot_form(array &$form, FormStateInterface $form_state, $h
  */
 function _webform_honeypot_form_validate(&$form, FormStateInterface $form_state) {
   $third_party_settings = $form_state->getValue('third_party_settings');
-  if ($form_state->get('honeypot_disabled') || empty($third_party_settings['honeypot']['honeypot'])) {
+  if ($form_state->get('honeypot_disabled')) {
     unset($third_party_settings['honeypot']['honeypot']);
   }
-  if ($form_state->get('time_restriction_disabled') || empty($third_party_settings['honeypot']['time_restriction'])) {
+  if ($form_state->get('time_restriction_disabled')) {
     unset($third_party_settings['honeypot']['time_restriction']);
-  }
-  if (empty($third_party_settings['honeypot'])) {
-    unset($third_party_settings['honeypot']);
   }
   $form_state->setValue('third_party_settings', $third_party_settings);
 }
 
 /**
- * Implements hook_webform_admin_third_party_settings_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
-function honeypot_webform_admin_third_party_settings_form_alter(&$form, FormStateInterface $form_state) {
+function honeypot_form_webform_admin_third_party_settings_form_alter(&$form, FormStateInterface $form_state) {
   /** @var \Drupal\webform\WebformThirdPartySettingsManagerInterface $third_party_settings_manager */
   $third_party_settings_manager = \Drupal::service('webform.third_party_settings_manager');
 
@@ -158,9 +149,9 @@ function honeypot_webform_admin_third_party_settings_form_alter(&$form, FormStat
 }
 
 /**
- * Implements hook_webform_third_party_settings_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
-function honeypot_webform_third_party_settings_form_alter(&$form, FormStateInterface $form_state) {
+function honeypot_form_webform_third_party_settings_form_alter(&$form, FormStateInterface $form_state) {
   /** @var \Drupal\webform\WebformThirdPartySettingsManagerInterface $third_party_settings_manager */
   $third_party_settings_manager = \Drupal::service('webform.third_party_settings_manager');
 
@@ -205,7 +196,7 @@ function honeypot_webform_third_party_settings_form_alter(&$form, FormStateInter
  */
 function honeypot_webform_submission_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Only add a Honeypot when a webform is initially load.
-  // After a webform is submitted, via a multi-step webform and/or saving a draft,
+  // After a webform is submitted, via a multistep webform and/or saving a draft,
   // we can skip adding a Honeypot.
   if ($form_state->isSubmitted()) {
     return;

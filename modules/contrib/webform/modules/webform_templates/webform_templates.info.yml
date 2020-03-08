@@ -1,12 +1,13 @@
 name: 'Webform Templates'
 type: module
-description: 'Provides starter templates that can be used to create new webforms.'
+description: 'Provides starter templates that can be used create new webforms.'
 package: Webform
-core: 8.x
+# core: 8.x
 dependencies:
-  - 'webform:webform'
+  - 'drupal:webform'
 
-# Information added by Drupal.org packaging script on 2020-01-21
-version: '8.x-5.8'
+# Information added by Drupal.org packaging script on 2017-03-05
+version: '8.x-5.0-beta9'
+core: '8.x'
 project: 'webform'
-datestamp: 1579637592
+datestamp: 1488753802

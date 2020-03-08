@@ -19,15 +19,15 @@ trait WebformEntityOptionsTrait {
       'selection_handler' => '',
       'selection_settings' => [],
     ];
-    unset($properties['options'], $properties['options_description_display']);
+    unset($properties['options']);
     return $properties;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
-    $this->setOptions($element, ['webform_submission' => $webform_submission]);
+  public function prepare(array &$element, WebformSubmissionInterface $webform_submission) {
+    $this->setOptions($element);
     parent::prepare($element, $webform_submission);
   }
 
@@ -37,14 +37,6 @@ trait WebformEntityOptionsTrait {
   protected function getElementSelectorInputsOptions(array $element) {
     $this->setOptions($element);
     return parent::getElementSelectorInputsOptions($element);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getElementSelectorSourceValues(array $element) {
-    $this->setOptions($element);
-    return parent::getElementSelectorSourceValues($element);
   }
 
 }

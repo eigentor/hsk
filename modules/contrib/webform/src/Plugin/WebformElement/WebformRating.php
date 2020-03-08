@@ -23,46 +23,52 @@ class WebformRating extends Range {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    $properties = [
-      // Number settings.
-      'max' => 5,
+    $properties = parent::getDefaultProperties();
+    unset(
+      $properties['range__output'],
+      $properties['range__output_prefix'],
+      $properties['range__output_suffix']
+    );
+    $properties += [
       // General settings.
       'default_value' => 0,
       // Rating settings.
       'star_size' => 'medium',
       'reset' => FALSE,
-    ] + parent::getDefaultProperties();
-    unset(
-      $properties['output'],
-      $properties['output__field_prefix'],
-      $properties['output__field_suffix'],
-      $properties['output__attributes']
-    );
+    ];
     return $properties;
   }
 
   /**
    * {@inheritdoc}
    */
+  public function prepare(array &$element, WebformSubmissionInterface $webform_submission) {
+    if (!isset($element['#step'])) {
+      $element['#step'] = 1;
+    }
+    parent::prepare($element, $webform_submission);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getTestValues(array $element, WebformInterface $webform, array $options = []) {
-    $element += ['#min' => 0, '#max' => 5];
+    $element += ['#min' => 1, '#max' => 5];
     return parent::getTestValues($element, $webform, $options);
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    $value = $this->getValue($element, $webform_submission, $options);
-
+  public function formatHtmlItem(array &$element, $value, array $options = []) {
     $format = $this->getItemFormat($element);
 
     switch ($format) {
       case 'star':
         // Always return the raw value when the rating widget is included in an
-        // email or PDF.
-        if (!empty($options['email']) || !empty($options['pdf'])) {
-          return parent::formatTextItem($element, $webform_submission, $options);
+        // email.
+        if (!empty($options['email'])) {
+          return parent::formatTextItem($element, $value, $options);
         }
 
         $build = [
@@ -72,7 +78,7 @@ class WebformRating extends Range {
         return WebformRatingElement::buildRateIt($build);
 
       default:
-        return parent::formatHtmlItem($element, $webform_submission, $options);
+        return parent::formatHtmlItem($element, $value, $options);
     }
   }
 
@@ -89,16 +95,6 @@ class WebformRating extends Range {
   public function getItemFormats() {
     return parent::getItemFormats() + [
       'star' => $this->t('Star'),
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function preview() {
-    return [
-      '#type' => $this->getTypeName(),
-      '#title' => $this->getPluginLabel(),
     ];
   }
 
@@ -124,15 +120,6 @@ class WebformRating extends Range {
       '#description' => $this->t('If checked, a reset button will be placed before the rating element.'),
       '#return_value' => TRUE,
     ];
-
-    // Only allow a rating element to be required if the min value can be
-    // set to 0.
-    $form['validation']['required_container']['#states'] = [
-      'visible' => [
-        ':input[name="properties[min]"]' => ['value' => '0'],
-      ],
-    ];
-
     return $form;
   }
 

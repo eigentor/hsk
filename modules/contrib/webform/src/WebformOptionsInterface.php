@@ -10,14 +10,6 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
 interface WebformOptionsInterface extends ConfigEntityInterface {
 
   /**
-   * Determine if options should be used as Likert scale.
-   *
-   * @return bool
-   *   TRUE if options should be used as Likert scale.
-   */
-  public function isLikert();
-
-  /**
    * Set options (YAML) value.
    *
    * @param array $options
@@ -31,7 +23,7 @@ interface WebformOptionsInterface extends ConfigEntityInterface {
    * Get options (YAML) as an associative array.
    *
    * @return array|bool
-   *   Options as an associative array. Returns FALSE if options YAML is invalid.
+   *   Options as an associative array. Returns FALSE is options YAML is invalid.
    */
   public function getOptions();
 
@@ -55,6 +47,6 @@ interface WebformOptionsInterface extends ConfigEntityInterface {
    * @return array
    *   An associative array of options.
    */
-  public static function getElementOptions(array &$element, $property_name = '#options');
+  public static function getElementOptions(array $element, $property_name = '#options');
 
 }

@@ -52,17 +52,6 @@ interface WebformEmailProviderInterface {
   public function getModuleName();
 
   /**
-   * Determine if mail module is installed and enabled.
-   *
-   * @param string $module
-   *   Mail module name.
-   *
-   * @return bool
-   *   TRUE if mail module is installed and enabled.
-   */
-  public function moduleEnabled($module);
-
-  /**
    * Get the mail back-end plugin id.
    *
    * @return string

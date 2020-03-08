@@ -15,7 +15,7 @@ class WebformTelephone extends WebformCompositeBase {
    * {@inheritdoc}
    */
   public function getInfo() {
-    $info = parent::getInfo() + ['#theme' => 'webform_composite_telephone'];
+    $info = parent::getInfo();
     unset($info['#title_display']);
     return $info;
   }
@@ -23,7 +23,7 @@ class WebformTelephone extends WebformCompositeBase {
   /**
    * {@inheritdoc}
    */
-  public static function getCompositeElements(array $element) {
+  public static function getCompositeElements() {
     $elements = [];
     $elements['type'] = [
       '#type' => 'select',
@@ -52,10 +52,7 @@ class WebformTelephone extends WebformCompositeBase {
    */
   public static function processWebformComposite(&$element, FormStateInterface $form_state, &$complete_form) {
     $element = parent::processWebformComposite($element, $form_state, $complete_form);
-    if (!empty($element['#phone__international']) && \Drupal::service('webform.libraries_manager')->isIncluded('jquery.intl-tel-input')) {
-      $element['#attached']['library'][] = 'webform/webform.telephone';
-    }
+    $element['#attached']['library'][] = 'webform/webform.element.composite_telephone';
     return $element;
   }
-
 }

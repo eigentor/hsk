@@ -6,8 +6,6 @@ dependencies:
       - webform
 id: phone_types
 label: 'Phone type'
-category: Demographic
-likert: false
 options: |
   Home: Home
   Office: Office
