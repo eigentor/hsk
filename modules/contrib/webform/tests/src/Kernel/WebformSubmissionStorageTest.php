@@ -12,7 +12,7 @@ use Drupal\webform\WebformSubmissionStorageInterface;
  *
  * @group webform
  */
-class WebfromSubmissionStorageTest extends KernelTestBase {
+class WebformSubmissionStorageTest extends KernelTestBase {
 
   /**
    * Modules to enable.
@@ -27,9 +27,28 @@ class WebfromSubmissionStorageTest extends KernelTestBase {
   public function setUp() {
     parent::setUp();
 
+    $this->installSchema('webform', ['webform']);
     $this->installConfig('webform');
     $this->installEntitySchema('webform_submission');
     $this->installEntitySchema('user');
+  }
+
+  /**
+   * Test webform submission storage.
+   */
+  public function testStorage() {
+    $webform = Webform::create([
+      'id' => $this->randomMachineName(),
+    ]);
+    $webform->save();
+    $webform_submission = WebformSubmission::create([
+      'webform_id' => $webform->id(),
+    ]);
+    $webform_submission->save();
+
+    // Check load by entities.
+    $webform_submissions = \Drupal::entityTypeManager()->getStorage('webform_submission')->loadByEntities($webform);
+    $this->assertEquals($webform_submission->id(), key($webform_submissions));
   }
 
   /**
@@ -71,11 +90,13 @@ class WebfromSubmissionStorageTest extends KernelTestBase {
     // Make sure nothing has been purged in the webform where purging is
     // disabled.
     $query = \Drupal::entityTypeManager()->getStorage('webform_submission')->getQuery();
+    $query->accessCheck(FALSE);
     $query->condition('webform_id', $webform_no_purging->id());
     $result = $query->execute();
     $this->assertEquals(count($webform_submissions_definition), count($result), 'No purging is executed when webform not not set up to purge.');
 
     $query = \Drupal::entityTypeManager()->getStorage('webform_submission')->getQuery();
+    $query->accessCheck(FALSE);
     $query->condition('webform_id', $webform->id());
     $result = [];
     foreach (\Drupal::entityTypeManager()->getStorage('webform_submission')->loadMultiple($query->execute()) as $submission) {

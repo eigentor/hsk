@@ -2,14 +2,12 @@
 
 namespace Drupal\webform\Tests\Element;
 
-use Drupal\webform\Tests\WebformTestBase;
-
 /**
  * Tests for markup element.
  *
  * @group Webform
  */
-class WebformElementMarkupTest extends WebformTestBase {
+class WebformElementMarkupTest extends WebformElementTestBase {
 
   /**
    * Webforms to load.
@@ -21,7 +19,7 @@ class WebformElementMarkupTest extends WebformTestBase {
   /**
    * Test markup element.
    */
-  public function testMarkupElement() {
+  public function testMarkup() {
     $this->drupalGet('webform/test_element_markup');
 
     $this->assertRaw('<p>This is normal markup</p>');

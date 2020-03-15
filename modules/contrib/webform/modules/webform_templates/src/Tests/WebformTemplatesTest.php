@@ -28,28 +28,29 @@ class WebformTemplatesTest extends WebformTestBase {
   protected static $testWebforms = ['test_form_template'];
 
   /**
-   * {@inheritdoc}
+   * Tests webform templates.
    */
-  public function setUp() {
-    parent::setUp();
+  public function testTemplates() {
+    $user_account = $this->drupalCreateUser([
+      'access webform overview',
+      'administer webform',
+    ]);
 
-    // Create users.
-    $this->createUsers();
-  }
+    $admin_account = $this->drupalCreateUser([
+      'access webform overview',
+      'administer webform',
+      'administer webform templates',
+    ]);
 
-  /**
-   * Tests webform template setting.
-   */
-  public function testSettings() {
+    // Login the user.
+    $this->drupalLogin($user_account);
+
     $template_webform = Webform::load('test_form_template');
 
     // Check the templates always will remain closed.
     $this->assertTrue($template_webform->isClosed());
     $template_webform->setStatus(WebformInterface::STATUS_OPEN)->save();
     $this->assertTrue($template_webform->isClosed());
-
-    // Login the own user.
-    $this->drupalLogin($this->ownWebformUser);
 
     // Check template is included in the 'Templates' list display.
     $this->drupalGet('admin/structure/webform/templates');
@@ -61,8 +62,24 @@ class WebformTemplatesTest extends WebformTestBase {
     $this->assertResponse(200);
     $this->assertRaw('You are previewing the below template,');
 
-    // Login the admin user.
-    $this->drupalLogin($this->adminWebformUser);
+    // Check select template clears the description.
+    $this->drupalGet('admin/structure/webform/manage/test_form_template/duplicate');
+    $this->assertFieldByName('description[value]', '');
+
+    // Check that admin can not access manage templates.
+    $this->drupalGet('admin/structure/webform/templates/manage');
+    $this->assertResponse(403);
+
+    // Login the admin.
+    $this->drupalLogin($admin_account);
+
+    // Check that admin can access manage templates.
+    $this->drupalGet('admin/structure/webform/templates/manage');
+    $this->assertResponse(200);
+
+    // Check select template clears the description.
+    $this->drupalGet('admin/structure/webform/manage/test_form_template/duplicate', ['query' => ['template' => 1]]);
+    $this->assertFieldByName('description[value]', 'Test using a webform as a template.');
   }
 
 }

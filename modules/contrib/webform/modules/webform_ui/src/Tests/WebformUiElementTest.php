@@ -24,16 +24,15 @@ class WebformUiElementTest extends WebformTestBase {
    *
    * @var array
    */
-  protected static $testWebforms = ['test_element_dates'];
+  protected static $testWebforms = ['test_element_date'];
 
   /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
-
-    // Create users.
-    $this->createUsers();
+    // Disable description help icon.
+    $this->config('webform.settings')->set('ui.description_help', FALSE)->save();
   }
 
   /**
@@ -42,32 +41,32 @@ class WebformUiElementTest extends WebformTestBase {
   public function testElements() {
     global $base_path;
 
-    $this->drupalLogin($this->adminWebformUser);
+    $this->drupalLogin($this->rootUser);
 
     $webform_contact = Webform::load('contact');
 
     /**************************************************************************/
-    // Multiple
+    // Multiple.
     /**************************************************************************/
 
     // Check multiple enabled before submission.
     $this->drupalGet('admin/structure/webform/manage/contact/element/name/edit');
     $this->assertRaw('<select data-drupal-selector="edit-properties-multiple-container-cardinality" id="edit-properties-multiple-container-cardinality" name="properties[multiple][container][cardinality]" class="form-select">');
-    $this->assertNoRaw('<em>There is data for this element in the database. This settings can no longer be changed.</em>');
+    $this->assertNoRaw('<em>There is data for this element in the database. This setting can no longer be changed.</em>');
 
     // Check multiple disabled after submission.
     $this->postSubmissionTest($webform_contact);
     $this->drupalGet('admin/structure/webform/manage/contact/element/name/edit');
     $this->assertNoRaw('<select data-drupal-selector="edit-properties-multiple-container-cardinality" id="edit-properties-multiple-container-cardinality" name="properties[multiple][container][cardinality]" class="form-select">');
     $this->assertRaw('<select data-drupal-selector="edit-properties-multiple-container-cardinality" disabled="disabled" id="edit-properties-multiple-container-cardinality" name="properties[multiple][container][cardinality]" class="form-select">');
-    $this->assertRaw('<em>There is data for this element in the database. This settings can no longer be changed.</em>');
+    $this->assertRaw('<em>There is data for this element in the database. This setting can no longer be changed.</em>');
 
     /**************************************************************************/
-    // Reordering
+    // Reordering.
     /**************************************************************************/
 
     // Check original contact element order.
-    $this->assertEqual(['name', 'email', 'subject', 'message'], array_keys($webform_contact->getElementsDecodedAndFlattened()));
+    $this->assertEqual(['name', 'email', 'subject', 'message', 'actions'], array_keys($webform_contact->getElementsDecodedAndFlattened()));
 
     // Check updated (reverse) contact element order.
     /** @var \Drupal\webform\WebformInterface $webform_contact */
@@ -82,7 +81,50 @@ class WebformUiElementTest extends WebformTestBase {
     \Drupal::entityTypeManager()->getStorage('webform_submission')->resetCache();
     \Drupal::entityTypeManager()->getStorage('webform')->resetCache();
     $webform_contact = Webform::load('contact');
-    $this->assertEqual(['message', 'subject', 'email', 'name'], array_keys($webform_contact->getElementsDecodedAndFlattened()));
+    $this->assertEqual(['message', 'subject', 'email', 'name', 'actions'], array_keys($webform_contact->getElementsDecodedAndFlattened()));
+
+    /**************************************************************************/
+    // Hierarchy.
+    /**************************************************************************/
+
+    // Create a simple test form.
+    $values = ['id' => 'test'];
+    $elements = [
+      'details_01' => [
+        '#type' => 'details',
+        '#title' => 'details_01',
+        'text_field_01' => [
+          '#type' => 'textfield',
+          '#title' => 'textfield_01',
+        ],
+      ],
+      'details_02' => [
+        '#type' => 'details',
+        '#title' => 'details_02',
+        'text_field_02' => [
+          '#type' => 'textfield',
+          '#title' => 'textfield_02',
+        ],
+      ],
+    ];
+    $this->createWebform($values, $elements);
+    $this->drupalGet('admin/structure/webform/manage/test');
+
+    // Check setting container to itself displays an error.
+    $edit = [
+      'webform_ui_elements[details_01][parent_key]' => 'details_01',
+    ];
+    $this->drupalPostForm('admin/structure/webform/manage/test', $edit, t('Save elements'));
+    $this->assertRaw('Parent <em class="placeholder">details_01</em> key is not valid.');
+
+    // Check setting containers to one another displays an error.
+    $edit = [
+      'webform_ui_elements[details_01][parent_key]' => 'details_02',
+      'webform_ui_elements[details_02][parent_key]' => 'details_01',
+    ];
+    $this->drupalPostForm('admin/structure/webform/manage/test', $edit, t('Save elements'));
+    $this->assertRaw('Parent <em class="placeholder">details_01</em> key is not valid.');
+    $this->assertRaw('Parent <em class="placeholder">details_02</em> key is not valid.');
 
     /**************************************************************************/
     // Required.
@@ -103,23 +145,27 @@ class WebformUiElementTest extends WebformTestBase {
     // CRUD
     /**************************************************************************/
 
+    // Check that 'Save + Add element' is only visible in dialogs.
+    $this->drupalGet('admin/structure/webform/manage/contact/element/add/textfield');
+    $this->assertNoRaw('Save + Add element');
+    $this->drupalGet('admin/structure/webform/manage/contact/element/add/textfield', ['query' => ['_wrapper_format' => 'drupal_dialog']]);
+    $this->assertRaw('Save + Add element');
+
     // Create element.
     $this->drupalPostForm('admin/structure/webform/manage/contact/element/add/textfield', ['key' => 'test', 'properties[title]' => 'Test'], t('Save'));
 
-    // Check elements URL contains ?element-update query string parameter.
-    $this->assertUrl('admin/structure/webform/manage/contact', ['query' => ['element-update' => 'test']]);
+    // Check elements URL contains ?update query string parameter.
+    $this->assertUrl('admin/structure/webform/manage/contact', ['query' => ['update' => 'test']]);
 
-    // Check elements element-update class exists.
-    $this->assertRaw('color-success js-webform-ui-element-update');
-
-    // Check that save elements removes ?element-update query string parameter.
+    // Check that save elements removes ?update query string parameter.
     $this->drupalPostForm(NULL, [], t('Save elements'));
 
-    // Check that save elements removes ?element-update query string parameter.
-    $this->assertUrl('admin/structure/webform/manage/contact');
+    // Check that save elements removes ?update query string parameter.
+    $this->assertUrl('admin/structure/webform/manage/contact', ['query' => ['update' => 'test']]);
 
-    // Check that save elements removes element-update class.
-    $this->assertNoRaw('color-success js-webform-ui-element-update');
+    // Create validate unique element.
+    $this->drupalPostForm('admin/structure/webform/manage/contact/element/add/textfield', ['key' => 'test', 'properties[title]' => 'Test'], t('Save'));
+    $this->assertRaw('The machine-readable name is already in use. It must be unique.');
 
     // Check read element.
     $this->drupalGet('webform/contact');
@@ -129,11 +175,8 @@ class WebformUiElementTest extends WebformTestBase {
     // Update element.
     $this->drupalPostForm('admin/structure/webform/manage/contact/element/test/edit', ['properties[title]' => 'Test 123', 'properties[default_value]' => 'This is a default value'], t('Save'));
 
-    // Check elements URL contains ?element-update query string parameter.
-    $this->assertUrl('admin/structure/webform/manage/contact', ['query' => ['element-update' => 'test']]);
-
-    // Check elements element-update class exists.
-    $this->assertRaw('color-success js-webform-ui-element-update');
+    // Check elements URL contains ?update query string parameter.
+    $this->assertUrl('admin/structure/webform/manage/contact', ['query' => ['update' => 'test']]);
 
     // Check element updated.
     $this->drupalGet('webform/contact');
@@ -142,7 +185,7 @@ class WebformUiElementTest extends WebformTestBase {
 
     // Check that 'test' element is being added to the webform_submission_data table.
     $this->drupalPostForm('webform/contact/test', [], t('Send message'));
-    $this->assertEqual(1, db_query("SELECT COUNT(sid) FROM {webform_submission_data} WHERE webform_id='contact' AND name='test'")->fetchField());
+    $this->assertEqual(1, \Drupal::database()->query("SELECT COUNT(sid) FROM {webform_submission_data} WHERE webform_id='contact' AND name='test'")->fetchField());
 
     // Check delete element.
     $this->drupalPostForm('admin/structure/webform/manage/contact/element/test/delete', [], t('Delete'));
@@ -151,7 +194,7 @@ class WebformUiElementTest extends WebformTestBase {
     $this->assertNoRaw('<input data-drupal-selector="edit-test" type="text" id="edit-test" name="test" value="This is a default value" size="60" maxlength="255" class="form-text" />');
 
     // Check that 'test' element values were deleted from the webform_submission_data table.
-    $this->assertEqual(0, db_query("SELECT COUNT(sid) FROM {webform_submission_data} WHERE webform_id='contact' AND name='test'")->fetchField());
+    $this->assertEqual(0, \Drupal::database()->query("SELECT COUNT(sid) FROM {webform_submission_data} WHERE webform_id='contact' AND name='test'")->fetchField());
 
     /**************************************************************************/
     // Change type
@@ -163,28 +206,28 @@ class WebformUiElementTest extends WebformTestBase {
     // Check element type.
     $this->drupalGet('admin/structure/webform/manage/contact/element/test/edit');
     // Check change element type link.
-    $this->assertRaw('Text field<a href="' . $base_path . 'admin/structure/webform/manage/contact/element/test/change" class="button button--small use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:800}" data-drupal-selector="edit-change-type" id="edit-change-type">Change</a>');
+    $this->assertRaw('Text field<a href="' . $base_path . 'admin/structure/webform/manage/contact/element/test/change" class="button button--small webform-ajax-link" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:800,&quot;dialogClass&quot;:&quot;webform-ui-dialog&quot;}" data-drupal-selector="edit-change-type" id="edit-change-type">Change</a>');
     // Check text field has description.
     $this->assertRaw(t('A short description of the element used as help for the user when he/she uses the webform.'));
 
     // Check change element types.
     $this->drupalGet('admin/structure/webform/manage/contact/element/test/change');
     $this->assertRaw(t('Hidden'));
-    $this->assertRaw('<a href="' . $base_path . 'admin/structure/webform/manage/contact/element/test/edit?type=hidden" class="use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:800}">Change</a>');
+    $this->assertCssSelect('a[href$="admin/structure/webform/manage/contact/element/test/edit?type=hidden"][data-dialog-type][data-dialog-options][data-drupal-selector="edit-elements-hidden-operation"]');
     $this->assertRaw(t('value'));
-    $this->assertRaw('<a href="' . $base_path . 'admin/structure/webform/manage/contact/element/test/edit?type=value" class="use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:800}">Change</a>');
+    $this->assertCssSelect('a[href$="admin/structure/webform/manage/contact/element/test/edit?type=value"][data-dialog-type][data-dialog-options][data-drupal-selector="edit-elements-value-operation"]');
     $this->assertRaw(t('Search'));
-    $this->assertRaw('<a href="' . $base_path . 'admin/structure/webform/manage/contact/element/test/edit?type=search" class="use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:800}">Change</a>');
+    $this->assertCssSelect('a[href$="admin/structure/webform/manage/contact/element/test/edit?type=search"][data-dialog-type][data-dialog-options][data-drupal-selector="edit-elements-search-operation"]');
     $this->assertRaw(t('Telephone'));
-    $this->assertRaw('<a href="' . $base_path . 'admin/structure/webform/manage/contact/element/test/edit?type=tel" class="use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:800}">Change</a>');
+    $this->assertCssSelect('a[href$="admin/structure/webform/manage/contact/element/test/edit?type=tel"][data-dialog-type][data-dialog-options][data-drupal-selector="edit-elements-tel-operation"]');
     $this->assertRaw(t('URL'));
-    $this->assertRaw('<a href="' . $base_path . 'admin/structure/webform/manage/contact/element/test/edit?type=url" class="use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:800}">Change</a>');
+    $this->assertCssSelect('a[href$="admin/structure/webform/manage/contact/element/test/edit?type=url"][data-dialog-type][data-dialog-options][data-drupal-selector="edit-elements-url-operation"]');
 
     // Check change element type.
     $this->drupalGet('admin/structure/webform/manage/contact/element/test/edit', ['query' => ['type' => 'value']]);
     // Check value has no description.
     $this->assertNoRaw(t('A short description of the element used as help for the user when he/she uses the webform.'));
-    $this->assertRaw('Value<a href="' . $base_path . 'admin/structure/webform/manage/contact/element/test/edit" class="button button--small use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:800}" data-drupal-selector="edit-cancel" id="edit-cancel">Cancel</a>');
+    $this->assertRaw('Value<a href="' . $base_path . 'admin/structure/webform/manage/contact/element/test/edit" class="button button--small webform-ajax-link" data-dialog-type="dialog" data-dialog-renderer="off_canvas" data-dialog-options="{&quot;width&quot;:600,&quot;dialogClass&quot;:&quot;ui-dialog-off-canvas webform-off-canvas&quot;}" data-drupal-selector="edit-cancel" id="edit-cancel">Cancel</a>');
     $this->assertRaw('(Changing from <em class="placeholder">Text field</em>)');
 
     // Change the element type.
@@ -194,7 +237,7 @@ class WebformUiElementTest extends WebformTestBase {
     $this->drupalGet('admin/structure/webform/manage/contact/element/test/edit');
 
     // Check change element type link.
-    $this->assertRaw('Value<a href="' . $base_path . 'admin/structure/webform/manage/contact/element/test/change" class="button button--small use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:800}" data-drupal-selector="edit-change-type" id="edit-change-type">Change</a>');
+    $this->assertRaw('Value<a href="' . $base_path . 'admin/structure/webform/manage/contact/element/test/change" class="button button--small webform-ajax-link" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:800,&quot;dialogClass&quot;:&quot;webform-ui-dialog&quot;}" data-drupal-selector="edit-change-type" id="edit-change-type">Change</a>');
 
     // Check color element that does not have related type and return 404.
     $this->drupalPostForm('admin/structure/webform/manage/contact/element/add/color', ['key' => 'test_color', 'properties[title]' => 'Test color'], t('Save'));
@@ -209,7 +252,7 @@ class WebformUiElementTest extends WebformTestBase {
     $edit = [
       'properties[default_value]' => 'not a valid date',
     ];
-    $this->drupalPostForm('admin/structure/webform/manage/test_element_dates/element/date_min_max_dynamic/edit', $edit, t('Save'));
+    $this->drupalPostForm('admin/structure/webform/manage/test_element_date/element/date_min_max_dynamic/edit', $edit, t('Save'));
     $this->assertRaw('The Default value could not be interpreted in <a href="https://www.gnu.org/software/tar/manual/html_chapter/tar_7.html#Date-input-formats">GNU Date Input Format</a>.');
   }
 

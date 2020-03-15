@@ -6,6 +6,8 @@ dependencies:
       - webform
 id: state_province_codes
 label: 'State/Province codes'
+category: Geographic
+likert: false
 options: |
   AL: Alabama
   AK: Alaska
@@ -20,7 +22,7 @@ options: |
   CT: Connecticut
   DE: Delaware
   DC: 'District of Columbia'
-  FM: 'Federate States of Micronesia'
+  FM: 'Federated States of Micronesia'
   FL: Florida
   GA: Georgia
   GU: Guam

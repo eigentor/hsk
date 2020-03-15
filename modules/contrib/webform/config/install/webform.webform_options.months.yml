@@ -6,6 +6,8 @@ dependencies:
       - webform
 id: months
 label: Months
+category: 'Date and time'
+likert: false
 options: |
   January: January
   February: February

@@ -4,12 +4,14 @@ namespace Drupal\webform\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\webform\Entity\Webform;
+use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformTokenManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a 'Webform' block.
@@ -23,21 +25,28 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The module handler.
+   * The request stack.
    *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
-  protected $moduleHandler;
+  protected $requestStack;
 
   /**
-   * The token manager.
+   * Entity type manager.
    *
-   * @var \Drupal\webform\WebformTranslationManagerInterface
+   * @var \Drupal\core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The webform token manager.
+   *
+   * @var \Drupal\webform\WebformTokenManagerInterface
    */
   protected $tokenManager;
 
   /**
-   * Creates a HelpBlock instance.
+   * Creates a WebformBlock instance.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -45,11 +54,17 @@ class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface 
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request stack.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\webform\WebformTokenManagerInterface $token_manager
-   *   The token manager.
+   *   The webform token manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, WebformTokenManagerInterface $token_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RequestStack $request_stack, EntityTypeManagerInterface $entity_type_manager, WebformTokenManagerInterface $token_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->requestStack = $request_stack;
+    $this->entityTypeManager = $entity_type_manager;
     $this->tokenManager = $token_manager;
   }
 
@@ -61,6 +76,8 @@ class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface 
       $configuration,
       $plugin_id,
       $plugin_definition,
+      $container->get('request_stack'),
+      $container->get('entity_type.manager'),
       $container->get('webform.token_manager')
     );
   }
@@ -72,6 +89,7 @@ class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface 
     return [
       'webform_id' => '',
       'default_data' => '',
+      'redirect' => FALSE,
     ];
   }
 
@@ -88,12 +106,40 @@ class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface 
     ];
     $form['default_data'] = [
       '#title' => $this->t('Default webform submission data (YAML)'),
-      '#description' => $this->t('Enter webform submission data as name and value pairs which will be used to prepopulate the selected webform. You may use tokens.'),
       '#type' => 'webform_codemirror',
       '#mode' => 'yaml',
       '#default_value' => $this->configuration['default_data'],
+      '#webform_element' => TRUE,
+      '#description' => [
+        'content' => ['#markup' => $this->t('Enter submission data as name and value pairs as <a href=":href">YAML</a> which will be used to prepopulate the selected webform.', [':href' => 'https://en.wikipedia.org/wiki/YAML']), '#suffix' => ' '],
+        'token' => $this->tokenManager->buildTreeLink(),
+      ],
+      '#more_title' => $this->t('Example'),
+      '#more' => [
+        '#theme' => 'webform_codemirror',
+        '#type' => 'yaml',
+        '#code' => "# This is an example of a comment.
+element_key: 'some value'
+
+# The below example uses a token to get the current node's title.
+# Add ':clear' to the end token to return an empty value when the token is missing.
+title: '[webform_submission:node:title:clear]'
+# The below example uses a token to get a field value from the current node.
+full_name: '[webform_submission:node:field_full_name:clear]",
+      ],
     ];
-    $form['token_tree_link'] = $this->tokenManager->buildTreeLink();
+    $form['redirect'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Redirect to the webform'),
+      '#default_value' => $this->configuration['redirect'],
+      '#return_value' => TRUE,
+      '#description' => $this->t('If your webform has multiple pages, this will change the behavior of the "Next" button. This will also affect where validation messages show up after an error.'),
+    ];
+
+    $form['token_tree_link'] = $this->tokenManager->buildTreeElement();
+
+    $this->tokenManager->elementValidate($form);
+
     return $form;
   }
 
@@ -103,17 +149,27 @@ class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface 
   public function blockSubmit($form, FormStateInterface $form_state) {
     $this->configuration['webform_id'] = $form_state->getValue('webform_id');
     $this->configuration['default_data'] = $form_state->getValue('default_data');
+    $this->configuration['redirect'] = $form_state->getValue('redirect');
   }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
-    return [
+    $build = [
       '#type' => 'webform',
       '#webform' => $this->getWebform(),
       '#default_data' => $this->configuration['default_data'],
     ];
+
+    // If redirect, set the #action property on the form.
+    if ($this->configuration['redirect']) {
+      $build['#action'] = $this->getWebform()->toUrl()
+        ->setOption('query', $this->requestStack->getCurrentRequest()->query->all())
+        ->toString();
+    }
+
+    return $build;
   }
 
   /**
@@ -121,20 +177,30 @@ class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface 
    */
   protected function blockAccess(AccountInterface $account) {
     $webform = $this->getWebform();
-    if (!$webform || !$webform->access('submission_create', $account)) {
+    if (!$webform) {
       return AccessResult::forbidden();
     }
-    else {
-      return parent::blockAccess($account);
+
+    $access_result = $webform->access('submission_create', $account, TRUE);
+    if ($access_result->isAllowed()) {
+      return $access_result;
     }
+
+    $has_access_denied_message = ($webform->getSetting('form_access_denied') !== WebformInterface::ACCESS_DENIED_DEFAULT);
+    return AccessResult::allowedIf($has_access_denied_message)
+      ->addCacheableDependency($access_result);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCacheMaxAge() {
-    // Caching strategy is handled by the webform.
-    return 0;
+  public function calculateDependencies() {
+    $dependencies = parent::calculateDependencies();
+
+    $webform = $this->getWebform();
+    $dependencies[$webform->getConfigDependencyKey()][] = $webform->getConfigDependencyName();
+
+    return $dependencies;
   }
 
   /**
@@ -144,7 +210,7 @@ class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface 
    *   A webform or NULL.
    */
   protected function getWebform() {
-    return Webform::load($this->configuration['webform_id']);
+    return $this->entityTypeManager->getStorage('webform')->load($this->configuration['webform_id']);
   }
 
 }

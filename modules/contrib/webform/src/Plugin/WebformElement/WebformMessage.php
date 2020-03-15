@@ -3,8 +3,9 @@
 namespace Drupal\webform\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Element\WebformHtmlEditor;
 use Drupal\webform\WebformSubmissionInterface;
-use \Drupal\webform\Element\WebformMessage as WebformMessageElement;
+use Drupal\webform\Element\WebformMessage as WebformMessageElement;
 
 /**
  * Provides a 'webform_message' element.
@@ -22,7 +23,7 @@ class WebformMessage extends WebformMarkupBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    return parent::getDefaultProperties() + [
+    return [
       // Attributes.
       'attributes' => [],
       // Message settings.
@@ -32,7 +33,7 @@ class WebformMessage extends WebformMarkupBase {
       'message_close_effect' => 'slide',
       'message_id' => '',
       'message_storage' => '',
-    ];
+    ] + parent::getDefaultProperties();
   }
 
   /**
@@ -45,7 +46,7 @@ class WebformMessage extends WebformMarkupBase {
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$element, WebformSubmissionInterface $webform_submission) {
+  public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
 
     if (!empty($element['#message_storage']) && empty($element['#message_id'])) {
@@ -62,6 +63,20 @@ class WebformMessage extends WebformMarkupBase {
       $id[] = $element['#webform_key'];
       $element['#message_id'] = implode('--', $id);
     }
+
+    if (isset($element['#message_message'])) {
+      $element['#message_message'] = WebformHtmlEditor::checkMarkup($element['#message_message']);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function preview() {
+    return parent::preview() + [
+      '#message_type' => 'warning',
+      '#message_message' => $this->t('This is a <strong>warning</strong> message.'),
+    ];
   }
 
   /**
@@ -79,14 +94,16 @@ class WebformMessage extends WebformMarkupBase {
         'warning' => t('Warning'),
         'info' => t('Info'),
       ],
+      '#required' => TRUE,
     ];
     $form['markup']['message_message'] = [
       '#type' => 'webform_html_editor',
       '#title' => $this->t('Message content'),
+      '#required' => TRUE,
     ];
     $form['markup']['message_close'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Allow users to close the message.'),
+      '#title' => $this->t('Allow users to close the message'),
       '#return_value' => TRUE,
     ];
     $form['markup']['message_close_effect'] = [
@@ -105,12 +122,13 @@ class WebformMessage extends WebformMarkupBase {
       '#type' => 'radios',
       '#title' => $this->t('Message storage'),
       '#options' => [
-        WebformMessageElement::STORAGE_NONE => $this->t('None: Message state is never stored.'),
-        WebformMessageElement::STORAGE_SESSION => $this->t('Session storage: Message state is reset after the browser is closed.'),
-        WebformMessageElement::STORAGE_LOCAL => $this->t('Local storage: Message state persists after the browser is closed.'),
-        WebformMessageElement::STORAGE_USER => $this->t("User data: Message state is saved to the current user's data. (Applies to authenticated users only)"),
-        WebformMessageElement::STORAGE_STATE => $this->t("State API: Message state is saved to the site's system state. (Applies to authenticated users only)"),
+        WebformMessageElement::STORAGE_NONE => $this->t('None -- Message state is never stored.'),
+        WebformMessageElement::STORAGE_SESSION => $this->t('Session storage -- Message state is reset after the browser is closed.'),
+        WebformMessageElement::STORAGE_LOCAL => $this->t('Local storage -- Message state persists after the browser is closed.'),
+        WebformMessageElement::STORAGE_USER => $this->t("User data -- Message state is saved to the current user's data. (Applies to authenticated users only)"),
+        WebformMessageElement::STORAGE_STATE => $this->t("State API -- Message state is saved to the site's system state. (Applies to authenticated users only)"),
       ],
+      '#options_description_display' => 'help',
       '#states' => [
         'visible' => [':input[name="properties[message_close]"]' => ['checked' => TRUE]],
       ],
@@ -118,7 +136,7 @@ class WebformMessage extends WebformMarkupBase {
     $form['markup']['message_id'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Message ID'),
-      '#description' => $this->t("Unique ID used to store the message's closed state. Please enter only lower-case letters, numbers, dashes, and underscores.") . '<br/>' .
+      '#description' => $this->t("Unique ID used to store the message's closed state. Please enter only lower-case letters, numbers, dashes, and underscores.") . '<br /><br />' .
       $this->t('Defaults to: %value', ['%value' => '[webform:id]--[element:key]']),
       '#pattern' => '/^[a-z0-9-_]+$/',
       '#states' => [

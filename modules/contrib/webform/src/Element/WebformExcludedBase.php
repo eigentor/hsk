@@ -4,6 +4,7 @@ namespace Drupal\webform\Element;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
+use Drupal\webform\Plugin\WebformElement\TableSelect;
 
 /**
  * Provides a base webform element for webform excluded elements and columns.
@@ -24,7 +25,7 @@ abstract class WebformExcludedBase extends FormElement {
       '#process' => [
         [$class, 'processWebformExcluded'],
       ],
-      '#webform' => NULL,
+      '#webform_id' => NULL,
       '#theme_wrappers' => ['form_element'],
     ];
   }
@@ -36,8 +37,12 @@ abstract class WebformExcludedBase extends FormElement {
     $options = static::getWebformExcludedOptions($element);
 
     $default_value = array_diff(array_keys($options), array_keys($element['#default_value'] ?: []));
+
     $element['#tree'] = TRUE;
-    $element['#element_validate'] = [[get_called_class(), 'validateWebformExcluded']];
+
+    // Add validate callback.
+    $element += ['#element_validate' => []];
+    array_unshift($element['#element_validate'], [get_called_class(), 'validateWebformExcluded']);
 
     $element['tableselect'] = [
       '#type' => 'tableselect',
@@ -47,6 +52,11 @@ abstract class WebformExcludedBase extends FormElement {
       '#empty' => t('No elements are available.'),
       '#default_value' => array_combine($default_value, $default_value),
     ];
+    TableSelect::setProcessTableSelectCallback($element['tableselect']);
+
+    if (isset($element['#parents'])) {
+      $element['tableselect']['#parents'] = array_merge($element['#parents'], ['tableselect']);
+    }
 
     // Build tableselect element with selected properties.
     $properties = [
@@ -73,7 +83,20 @@ abstract class WebformExcludedBase extends FormElement {
 
     // Unset tableselect and set the element's value to excluded.
     $form_state->setValueForElement($element['tableselect'], NULL);
-    $form_state->setValueForElement($element, array_combine($excluded, $excluded));
+
+    $value = array_combine($excluded, $excluded);
+    $element['#value'] = $value;
+    $form_state->setValueForElement($element, $value);
+  }
+
+  /**
+   * Get header for the excluded tableselect element.
+   *
+   * @return array
+   *   An array container the header for the excluded tableselect element.
+   */
+  public static function getWebformExcludedHeader() {
+    return [];
   }
 
   /**
@@ -88,29 +111,7 @@ abstract class WebformExcludedBase extends FormElement {
    *   tableselect element.
    */
   public static function getWebformExcludedOptions(array $element) {
-    /** @var \Drupal\webform\WebformInterface $webform */
-    $webform = $element['#webform'];
-
-    $options = [];
-    $elements = $webform->getElementsInitializedFlattenedAndHasValue('view');
-    foreach ($elements as $key => $element) {
-      $options[$key] = [
-        ['title' => $element['#admin_title'] ?:$element['#title'] ?: $key],
-        ['name' => $key],
-        ['type' => isset($element['#type']) ? $element['#type'] : ''],
-      ];
-    }
-    return $options;
-  }
-
-  /**
-   * Get header for the excluded tableselect element.
-   *
-   * @return array
-   *   An array container the header for the excluded tableselect element.
-   */
-  public static function getWebformExcludedHeader() {
-    return [t('Title'), t('Name'), t('Type')];
+    return [];
   }
 
 }

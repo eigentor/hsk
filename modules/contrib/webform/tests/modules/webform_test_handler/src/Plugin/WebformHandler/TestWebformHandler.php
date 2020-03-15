@@ -3,7 +3,7 @@
 namespace Drupal\webform_test_handler\Plugin\WebformHandler;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\webform\WebformHandlerBase;
+use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -15,8 +15,9 @@ use Drupal\webform\WebformSubmissionInterface;
  *   label = @Translation("Test"),
  *   category = @Translation("Testing"),
  *   description = @Translation("Tests webform submission handler behaviors."),
- *   cardinality = \Drupal\webform\WebformHandlerInterface::CARDINALITY_SINGLE,
- *   results = \Drupal\webform\WebformHandlerInterface::RESULTS_IGNORED,
+ *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_SINGLE,
+ *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_IGNORED,
+ *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_REQUIRED,
  * )
  */
 class TestWebformHandler extends WebformHandlerBase {
@@ -61,6 +62,13 @@ class TestWebformHandler extends WebformHandlerBase {
   /**
    * {@inheritdoc}
    */
+  public function overrideSettings(array &$settings, WebformSubmissionInterface $webform_submission) {
+    $this->displayMessage(__FUNCTION__);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function alterForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
     $this->displayMessage(__FUNCTION__);
   }
@@ -86,8 +94,8 @@ class TestWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function confirmForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
-    drupal_set_message($this->configuration['message'], 'status', TRUE);
-    \Drupal::logger('webform.test')->notice($this->configuration['message']);
+    $this->messenger()->addStatus($this->configuration['message'], TRUE);
+    \Drupal::logger('webform.test_form')->notice($this->configuration['message']);
     $this->displayMessage(__FUNCTION__);
   }
 
@@ -141,6 +149,56 @@ class TestWebformHandler extends WebformHandlerBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function preprocessConfirmation(array &$variables) {
+    $this->displayMessage(__FUNCTION__);
+    $variables['message'] = '::preprocessConfirmation';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createHandler() {
+    $this->displayMessage(__FUNCTION__);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function updateHandler() {
+    $this->displayMessage(__FUNCTION__);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function deleteHandler() {
+    $this->displayMessage(__FUNCTION__);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createElement($key, array $element) {
+    $this->displayMessage(__FUNCTION__);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function updateElement($key, array $element, array $original_element) {
+    $this->displayMessage(__FUNCTION__);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function deleteElement($key, array $element) {
+    $this->displayMessage(__FUNCTION__);
+  }
+
+  /**
    * Display the invoked plugin method to end user.
    *
    * @param string $method_name
@@ -150,9 +208,14 @@ class TestWebformHandler extends WebformHandlerBase {
    */
   protected function displayMessage($method_name, $context1 = NULL) {
     if (PHP_SAPI != 'cli') {
-      $t_args = ['@class_name' => get_class($this), '@method_name' => $method_name, '@context1' => $context1];
-      drupal_set_message($this->t('Invoked: @class_name:@method_name @context1', $t_args), 'status', TRUE);
-      \Drupal::logger('webform.test')->notice('Invoked: @class_name:@method_name @context1', $t_args);
+      $t_args = [
+        '@id' => $this->getHandlerId(),
+        '@class_name' => get_class($this),
+        '@method_name' => $method_name,
+        '@context1' => $context1,
+      ];
+      $this->messenger()->addStatus($this->t('Invoked @id: @class_name:@method_name @context1', $t_args), TRUE);
+      \Drupal::logger('webform.test_form')->notice('Invoked: @class_name:@method_name @context1', $t_args);
     }
   }
 

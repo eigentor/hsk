@@ -1,6 +1,6 @@
 /**
  * @file
- * Javascript behaviors for Webform UI.
+ * JavaScript behaviors for Webform UI.
  */
 
 (function ($, Drupal, drupalSettings) {
@@ -8,38 +8,21 @@
   'use strict';
 
   /**
-   * Highlights the element that was just updated.
+   * Remove .button-primary class from .action-links .button-secondary.
+   *
+   * The seven.theme adds the .button-primary class to all actions.
    *
    * @type {Drupal~behavior}
    *
-   * @prop {Drupal~behaviorAttach} attach
-   *   Attaches the behavior for the element update.
-   *
-   * @see Drupal.behaviors.blockHighlightPlacement
+   * @see webform_ui_preprocess_menu_local_action()
+   * @see seven_preprocess_menu_local_action()
+   * @see webform_ui.module.css
    */
-  Drupal.behaviors.webformUiElementsUpdate = {
+  Drupal.behaviors.webformUiElementsActionsSecondary = {
     attach: function (context, settings) {
-      if (settings.webformUiElementUpdate) {
-        $(context).find('[data-drupal-selector="edit-webform-ui-elements"]').once('webform-ui-elements-update').each(function () {
-          var $container = $(this);
-
-          // If the element is visible, don't scroll to it.
-          // @see http://stackoverflow.com/questions/487073/check-if-element-is-visible-after-scrolling;
-          var $element = $('.js-webform-ui-element-update');
-          var elementTop = $element.offset().top;
-          var elementBottom = elementTop + $element.height();
-          var isVisible = (elementTop >= 0) && (elementBottom <= window.innerHeight);
-          if (isVisible) {
-            return;
-          }
-
-          // Just scrolling the document.body will not work in Firefox. The html
-          // element is needed as well.
-          $('html, body').animate({
-            scrollTop: $('.js-webform-ui-element-update').offset().top - $container.offset().top + $container.scrollTop()
-          }, 500);
-        });
-      }
+      $(context).find('.action-links .button--secondary').once('webform-ui-elements-webform-actions-secondary').each(function () {
+        $(this).removeClass('button--primary');
+      });
     }
   };
 

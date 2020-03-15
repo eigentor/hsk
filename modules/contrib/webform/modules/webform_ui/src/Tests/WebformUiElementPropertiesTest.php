@@ -17,23 +17,28 @@ class WebformUiElementPropertiesTest extends WebformTestBase {
    *
    * @var array
    */
-  public static $modules = ['filter', 'taxonomy', 'webform', 'webform_ui'];
+  public static $modules = ['filter', 'file', 'taxonomy', 'webform', 'webform_ui'];
 
   /**
    * Webforms to load.
    *
    * @var array
    */
-  protected static $testWebforms = ['example_layout_basic', 'example_elements', 'example_elements_states', 'example_elements_composite', 'test_element', 'test_element_access', 'test_form_states_triggers'];
+  protected static $testWebforms = [
+    'example_style_guide',
+    'example_element_states',
+    'test_element',
+    'test_element_access',
+    'test_states_triggers',
+    'test_example_elements',
+    'test_example_elements_composite',
+  ];
 
   /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
-
-    // Create users.
-    $this->createUsers();
 
     // Create filters.
     $this->createFilters();
@@ -43,7 +48,7 @@ class WebformUiElementPropertiesTest extends WebformTestBase {
    * Tests element properties.
    */
   public function testElementProperties() {
-    $this->drupalLogin($this->adminWebformUser);
+    $this->drupalLogin($this->rootUser);
 
     // Loops through all the elements, edits them via the UI, and checks that
     // the element's render array has not been altered.

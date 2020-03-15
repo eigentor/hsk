@@ -26,13 +26,15 @@ trait WebformEntityTrait {
    *
    * @param array $element
    *   An element.
+   * @param array $settings
+   *   An array of settings used to limit and randomize options.
    *
    * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
    *   Thrown when the current user doesn't have access to the specified entity.
    *
    * @see \Drupal\system\Controller\EntityAutocompleteController
    */
-  public static function setOptions(array &$element) {
+  public static function setOptions(array &$element, $settings = []) {
     if (!empty($element['#options'])) {
       return;
     }
@@ -41,6 +43,9 @@ trait WebformEntityTrait {
       'target_type' => $element['#target_type'],
       'handler' => $element['#selection_handler'],
       'handler_settings' => (isset($element['#selection_settings'])) ? $element['#selection_settings'] : [],
+      // Set '_webform_settings' used to limit and randomize options.
+      // @see webform_query_entity_reference_alter()
+      '_webform_settings' => $settings,
     ];
 
     /** @var \Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface $selection_manager */
@@ -55,6 +60,12 @@ trait WebformEntityTrait {
       $options += $bundle_options;
     }
 
+    // If the selection handler is not using views, then translate
+    // the entity reference's options.
+    if ($element['#selection_handler'] != 'views') {
+      $options = self::translateOptions($options, $element);
+    }
+
     // Only select menu can support optgroups.
     if ($element['#type'] !== 'webform_entity_select') {
       $options = OptGroup::flattenOptions($options);
@@ -64,6 +75,37 @@ trait WebformEntityTrait {
     $options = WebformOptionsHelper::decodeOptions($options);
 
     $element['#options'] = $options;
+  }
+
+  /**
+   * Translate the select options.
+   *
+   * @param array $options
+   *   Untranslated options.
+   * @param array $element
+   *   An element.
+   *
+   * @return array
+   *   Translated options.
+   */
+  protected static function translateOptions(array $options, array $element) {
+    /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
+    $entity_repository = \Drupal::service('entity.repository');
+
+    foreach ($options as $key => $value) {
+      if (is_array($value)) {
+        $options[$key] = self::translateOptions($value, $element);
+      }
+      else {
+        // Set the entity in the correct language for display.
+        $option = \Drupal::entityTypeManager()
+          ->getStorage($element['#target_type'])
+          ->load($key);
+        $option = $entity_repository->getTranslationFromContext($option);
+        $options[$key] = $option->label();
+      }
+    }
+    return $options;
   }
 
 }

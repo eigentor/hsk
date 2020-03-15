@@ -24,6 +24,12 @@ class WebformButtonsOther extends WebformOtherBase {
    * @see \Drupal\Core\Render\Element\Select
    */
   public static function processWebformOther(&$element, FormStateInterface $form_state, &$complete_form) {
+    // Attach element buttons before other handler.
+    $element['#attached']['library'][] = 'webform/webform.element.buttons';
+
+    $element['#wrapper_attributes']['class'][] = "js-webform-buttons";
+    $element['#wrapper_attributes']['class'][] = "webform-buttons";
+
     $element = parent::processWebformOther($element, $form_state, $complete_form);
     return $element;
   }

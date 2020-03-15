@@ -12,7 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * @code
  * $form['time'] = array(
- *   '#type' => 'time',
+ *   '#type' => 'webform_time',
  *   '#title' => $this->t('Time'),
  *   '#default_value' => '12:00 AM'
  * );
@@ -29,11 +29,11 @@ class WebformTime extends FormElement {
     $class = get_class($this);
     return [
       '#input' => TRUE,
-      '#theme' => 'input__time',
+      '#theme' => 'input__webform_time',
       '#process' => [[$class, 'processWebformTime']],
       '#pre_render' => [[$class, 'preRenderWebformTime']],
-      '#element_validate' => [[$class, 'validateWebformTime']],
       '#theme_wrappers' => ['form_element'],
+      '#timepicker' => FALSE,
       '#time_format' => 'H:i',
       '#size' => 10,
       '#maxlength' => 10,
@@ -48,7 +48,7 @@ class WebformTime extends FormElement {
       // Set default value using GNU PHP date format.
       // @see https://www.gnu.org/software/tar/manual/html_chapter/tar_7.html#Date-input-formats.
       if (!empty($element['#default_value'])) {
-        $element['#default_value'] = date('H:i', strtotime($element['#default_value']));
+        $element['#default_value'] = static::formatTime('H:i', strtotime($element['#default_value']));
         return $element['#default_value'];
       }
     }
@@ -71,19 +71,19 @@ class WebformTime extends FormElement {
    *   The processed element.
    */
   public static function processWebformTime(&$element, FormStateInterface $form_state, &$complete_form) {
-    // Attach JS support for the time field, if we can determine which time
-    // format should be used.
-    if (!empty($element['#time_format'])) {
-      $element['#attached']['library'][] = 'webform/webform.element.time';
-      $element['#attributes']['data-webform-time-format'] = [$element['#time_format']];
-    }
+    // Add validate callback.
+    $element += ['#element_validate' => []];
+    array_unshift($element['#element_validate'], [get_called_class(), 'validateWebformTime']);
+
+    $element['#attached']['library'][] = 'webform/webform.element.time';
+    $element['#attributes']['data-webform-time-format'] = !empty($element['#time_format']) ? $element['#time_format'] : DateFormat::load('html_time')->getPattern();
     return $element;
   }
 
   /**
    * Webform element validation handler for #type 'webform_time'.
    *
-   * Note that #required is validated by _form_validate() already.
+   * Note that #required is validated by _form_valistatic::formatTime() already.
    */
   public static function validateWebformTime(&$element, FormStateInterface $form_state, &$complete_form) {
     $has_access = (!isset($element['#access']) || $element['#access'] === TRUE);
@@ -107,7 +107,7 @@ class WebformTime extends FormElement {
     }
 
     $name = empty($element['#title']) ? $element['#parents'][0] : $element['#title'];
-    $time_format = (!empty($element['#time_format'])) ? $element['#time_format'] : DateFormat::load('html_time')->getPattern();
+    $time_format = $element['#time_format'];
 
     // Ensure that the input is greater than the #min property, if set.
     if ($has_access && isset($element['#min'])) {
@@ -115,7 +115,7 @@ class WebformTime extends FormElement {
       if ($time < $min) {
         $form_state->setError($element, t('%name must be on or after %min.', [
           '%name' => $name,
-          '%min' => date($time_format, $min),
+          '%min' => static::formatTime($time_format, $min),
         ]));
       }
     }
@@ -126,12 +126,14 @@ class WebformTime extends FormElement {
       if ($time > $max) {
         $form_state->setError($element, t('%name must be on or before %max.', [
           '%name' => $name,
-          '%max' => date($time_format, $max),
+          '%max' => static::formatTime($time_format, $max),
         ]));
       }
     }
 
-    $form_state->setValueForElement($element, date('H:i:s', $time));
+    $value = static::formatTime('H:i:s', $time);
+    $element['#value'] = $value;
+    $form_state->setValueForElement($element, $value);
   }
 
   /**
@@ -144,10 +146,38 @@ class WebformTime extends FormElement {
    *   The $element with prepared variables ready for #theme 'input__time'.
    */
   public static function preRenderWebformTime(array $element) {
-    $element['#attributes']['type'] = 'time';
-    Element::setAttributes($element, ['id', 'name', 'type', 'value', 'size', 'min', 'max', 'step']);
-    static::setAttributes($element, ['form-time']);
+    if (!empty($element['#timepicker'])) {
+      // Render simple text field that is converted to timepicker.
+      $element['#attributes']['type'] = 'text';
+      // Apply #time_format to #value.
+      if (!empty($element['#value'])) {
+        $element['#value'] = static::formatTime($element['#attributes']['data-webform-time-format'], strtotime($element['#value']));
+      }
+    }
+    else {
+      $element['#attributes']['type'] = 'time';
+    }
+    Element::setAttributes($element, ['id', 'name', 'type', 'value', 'size', 'maxlength', 'min', 'max', 'step']);
+    static::setAttributes($element, ['form-time', 'webform-time']);
     return $element;
+  }
+
+
+  /**
+   * Format custom time.
+   *
+   * @param string $custom_format
+   *   A PHP date format string suitable for input to date().
+   * @param int $timestamp
+   *   (optional) A UNIX timestamp to format.
+   *
+   * @return string
+   *   Formatted time.
+   */
+   protected static function formatTime($custom_format, $timestamp = NULL) {
+    /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+    $date_formatter = \Drupal::service('date.formatter');
+    return $date_formatter->format($timestamp ?: time(), 'custom', $custom_format);
   }
 
 }

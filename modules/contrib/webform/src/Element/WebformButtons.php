@@ -17,10 +17,13 @@ class WebformButtons extends Radios {
    */
   public static function processRadios(&$element, FormStateInterface $form_state, &$complete_form) {
     $element = parent::processRadios($element, $form_state, $complete_form);
-    $element['#attached']['library'][] = 'webform/webform.element.buttons';
+
     $element['#attributes']['class'][] = 'js-webform-buttons';
     $element['#attributes']['class'][] = 'webform-buttons';
     $element['#options_display'] = 'side_by_side';
+
+    $element['#attached']['library'][] = 'webform/webform.element.buttons';
+
     return $element;
   }
 

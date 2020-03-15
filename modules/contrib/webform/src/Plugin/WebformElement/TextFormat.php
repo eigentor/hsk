@@ -2,10 +2,12 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Mail\MailFormatHelper;
 use Drupal\filter\Entity\FilterFormat;
-use Drupal\webform\WebformElementBase;
+use Drupal\user\Entity\User;
+use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
@@ -27,11 +29,22 @@ class TextFormat extends WebformElementBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    return parent::getDefaultProperties() + [
+    $properties = parent::getDefaultProperties() + [
       // Text format settings.
       'allowed_formats' => [],
       'hide_help' => FALSE,
     ];
+    unset(
+      $properties['disabled'],
+      $properties['attributes'],
+      $properties['wrapper_attributes'],
+      $properties['title_display'],
+      $properties['description_display'],
+      $properties['field_prefix'],
+      $properties['field_suffix'],
+      $properties['help']
+    );
+    return $properties;
   }
 
   /**
@@ -44,7 +57,7 @@ class TextFormat extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$element, WebformSubmissionInterface $webform_submission) {
+  public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
     $element['#after_build'] = [[get_class($this), 'afterBuild']];
     $element['#attached']['library'][] = 'webform/webform.element.text_format';
@@ -69,6 +82,17 @@ class TextFormat extends WebformElementBase {
     // Hide tips.
     if (!empty($element['#hide_help']) && isset($element['format']['help'])) {
       $element['format']['help']['#attributes']['style'] = 'display: none';
+    }
+    else {
+      // Display tips in a modal.
+      $element['format']['help']['about']['#attributes']['class'][] = 'use-ajax';
+      $element['format']['help']['about']['#attributes'] += [
+        'data-dialog-type' => 'dialog',
+        'data-dialog-options' => Json::encode([
+          'dialogClass' => 'webform-text-format-help-dialog',
+          'width' => 800,
+        ]),
+      ];
     }
 
     // Hide filter format if the select menu and help is hidden.
@@ -98,14 +122,19 @@ class TextFormat extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
-  public function formatHtmlItem(array &$element, $value, array $options = []) {
-    $value = (isset($value['value'])) ? $value['value'] : $value;
+  protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $value = $this->getValue($element, $webform_submission, $options);
+
     $format = (isset($value['format'])) ? $value['format'] : $this->getItemFormat($element);
+    $value = (isset($value['value'])) ? $value['value'] : $value;
     switch ($format) {
       case 'raw':
         return $value;
 
       case 'value':
+        $default_format = filter_default_format(User::load($webform_submission->getOwnerId()));
+        return check_markup($value, $default_format);
+
       default:
         return check_markup($value, $format);
     }
@@ -114,28 +143,24 @@ class TextFormat extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
-  public function formatTextItem(array &$element, $value, array $options = []) {
+  protected function formatTextItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $value = $this->getValue($element, $webform_submission, $options);
+
     $format = (isset($value['format'])) ? $value['format'] : $this->getItemFormat($element);
+    $value = (isset($value['value'])) ? $value['value'] : $value;
     switch ($format) {
       case 'raw':
         return $value;
 
       case 'value':
       default:
-        $html = $this->formatHtml($element, $value);
+        $html = $this->formatHtml($element, $webform_submission);
         // Convert any HTML to plain-text.
         $html = MailFormatHelper::htmlToText($html);
         // Wrap the mail body for sending.
         $html = MailFormatHelper::wrapMail($html);
         return $html;
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getItemDefaultFormat() {
-    return (function_exists('filter_default_format')) ? filter_default_format() : parent::getItemDefaultFormat();
   }
 
   /**
@@ -153,12 +178,27 @@ class TextFormat extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
+  public function buildExportRecord(array $element, WebformSubmissionInterface $webform_submission, array $export_options) {
+    $element['#format_items'] = $export_options['multiple_delimiter'];
+    return [$this->formatHtml($element, $webform_submission, $export_options)];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function getElementSelectorInputsOptions(array $element) {
     $title = $this->getAdminLabel($element);
     return [
       'value' => $title . ' [' . t('Textarea') . ']',
       'format' => $title . ' [' . t('Select') . ']',
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function preview() {
+    return (\Drupal::moduleHandler()->moduleExists('filter')) ? parent::preview() : [];
   }
 
   /**
@@ -186,6 +226,7 @@ class TextFormat extends WebformElementBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Hide help'),
       '#description' => $this->t("If checked, the 'About text formats' link will be hidden."),
+      '#return_value' => TRUE,
     ];
     return $form;
   }
@@ -198,6 +239,61 @@ class TextFormat extends WebformElementBase {
     $allowed_formats = array_filter($allowed_formats);
     $form_state->setValue('allowed_formats', $allowed_formats);
     parent::validateConfigurationForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postSave(array &$element, WebformSubmissionInterface $webform_submission, $update = TRUE) {
+    $webform = $webform_submission->getWebform();
+    if ($webform->isResultsDisabled()) {
+      return;
+    }
+
+    // Get current value and original value for this element.
+    $key = $element['#webform_key'];
+
+    $data = $webform_submission->getData();
+    $value = (isset($data[$key]) && isset($data[$key]['value'])) ? $data[$key]['value'] : '';
+    $uuids = _webform_parse_file_uuids($value);
+
+    if ($update) {
+      $original_data = $webform_submission->getOriginalData();
+      $original_value = isset($original_data[$key]) ? $original_data[$key]['value'] : '';
+      $original_uuids = _webform_parse_file_uuids($original_value);
+
+      // Detect file usages that should be incremented.
+      $added_files = array_diff($uuids, $original_uuids);
+      _webform_record_file_usage($added_files, $webform_submission->getEntityTypeId(), $webform_submission->id());
+
+      // Detect file usages that should be decremented.
+      $removed_files = array_diff($original_uuids, $uuids);
+      _webform_delete_file_usage($removed_files, $webform_submission->getEntityTypeId(), $webform_submission->id(), 1);
+    }
+    else {
+      _webform_record_file_usage($uuids, $webform_submission->getEntityTypeId(), $webform_submission->id());
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postDelete(array &$element, WebformSubmissionInterface $webform_submission) {
+    $key = $element['#webform_key'];
+    $value = $webform_submission->getElementData($key);
+    $uuids = _webform_parse_file_uuids($value['value']);
+    _webform_delete_file_usage($uuids, $webform_submission->getEntityTypeId(), $webform_submission->id(), 0);
+  }
+
+  /**
+   * Check if composite element exists.
+   *
+   * @return bool
+   *   TRUE if composite element exists.
+   */
+  public function hasCompositeElement(array $element, $key) {
+    $elements = $this->getCompositeElements();
+    return (isset($elements[$key])) ? TRUE : FALSE;
   }
 
 }

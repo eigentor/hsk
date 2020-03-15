@@ -2,24 +2,22 @@
 
 namespace Drupal\webform\Tests\Element;
 
-use Drupal\webform\Tests\WebformTestBase;
-
 /**
  * Tests for the webform element custom properties.
  *
  * @group Webform
  */
-class WebformElementCustomPropertiesTest extends WebformTestBase {
+class WebformElementCustomPropertiesTest extends WebformElementTestBase {
 
   /**
    * Modules to enable.
    *
    * @var array
    */
-  protected static $modules = ['webform', 'webform_ui', 'webform_test_custom_properties'];
+  public static $modules = ['webform', 'webform_ui', 'webform_test_custom_properties'];
 
   /**
-   * Tests webform element custom properties.
+   * Tests element custom properties.
    */
   public function testCustomProperties() {
     // Create and login admin user.
@@ -38,7 +36,7 @@ class WebformElementCustomPropertiesTest extends WebformTestBase {
     $name_element = [
       '#type' => 'textfield',
       '#title' => 'Your Name',
-      '#default_value' => '[webform-authenticated-user:display-name]',
+      '#default_value' => '[current-user:display-name]',
       '#required' => TRUE,
     ];
 
