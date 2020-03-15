@@ -1,14 +1,16 @@
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - webform_test_views
+  config:
+    - field.storage.node.field_image
+    - image.style.thumbnail
+    - node.type.article
   module:
+    - image
     - node
     - user
-id: webform_test_entity_reference
-label: 'Webform test entity reference'
+id: webform_test_entity_reference_vs
+label: 'Webform test entity reference views'
 module: views
 description: ''
 tag: ''
@@ -80,6 +82,70 @@ display:
           hide_empty: false
           default_field_elements: true
       fields:
+        field_image:
+          id: field_image
+          table: node__field_image
+          field: field_image
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: image
+          settings:
+            image_style: thumbnail
+            image_link: ''
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         title:
           id: title
           table: node_field_data
@@ -139,6 +205,46 @@ display:
           expose:
             operator: ''
           group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            article: article
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
       sorts:
         created:
           id: created
@@ -169,10 +275,13 @@ display:
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
-  entity_reference:
+      tags:
+        - 'config:field.storage.node.field_image'
+        - env
+        - extensions
+  entity_reference_1:
     display_plugin: entity_reference
-    id: entity_reference
+    id: entity_reference_1
     display_title: 'Entity Reference'
     position: 1
     display_options:
@@ -182,19 +291,27 @@ display:
         options:
           search_fields:
             title: title
+            field_image: '0'
+      pager:
+        type: some
+        options:
+          items_per_page: 50
+          offset: 0
       row:
         type: entity_reference
         options:
           default_field_elements: true
-          inline:
-            title: title
-          separator: '-'
+          inline: {  }
+          separator: ''
           hide_empty: false
+      rendering_language: '***LANGUAGE_language_interface***'
     cache_metadata:
       max-age: -1
       contexts:
-        - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:field.storage.node.field_image'
+        - env
+        - extensions

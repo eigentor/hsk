@@ -12,6 +12,7 @@ use Drupal\webform\Form\WebformResultsClearForm;
 use Drupal\webform\Form\WebformSubmissionsPurgeForm;
 use Drupal\webform\Utility\WebformObjectHelper;
 use Drupal\webform\Utility\WebformYaml;
+use Drupal\webform_submission_export_import\Form\WebformSubmissionExportImportUploadForm;
 use Drush\Commands\DrushCommands;
 use Psr\Log\LogLevel;
 
@@ -90,6 +91,7 @@ class WebformCliService implements WebformCliServiceInterface {
         'webform' => 'The webform ID you want to export (required unless --entity-type and --entity-id are specified)',
       ],
       'options' => [
+        'exporter' => 'The type of export. (delimited, table, yaml, or json)',
         // Delimited export options.
         'delimiter' => 'Delimiter between columns (defaults to site-wide setting). This option may need to be wrapped in quotes. i.e. --delimiter="\t".',
         'multiple-delimiter' => 'Delimiter between an element with multiple values (defaults to site-wide setting).',
@@ -102,6 +104,8 @@ class WebformCliService implements WebformCliServiceInterface {
         'options-multiple-format' => 'Set to "separate" (default) or "compact" to determine how multiple select list values are exported.',
         'entity-reference-items' => 'Comma-separated list of entity reference items (id, title, and/or url) to be exported.',
         'excluded-columns' => 'Comma-separated list of component IDs or webform keys to exclude.',
+        // CSV options
+        'uuid' => ' Use UUIDs for all entity references. (Only applies to CSV download)',
         // Download options.
         'entity-type' => 'The entity type to which this submission was submitted from.',
         'entity-id' => 'The ID of the entity of which this webform submission was submitted from.',
@@ -114,9 +118,28 @@ class WebformCliService implements WebformCliServiceInterface {
         'sticky' => 'Flagged/starred submission status.',
         'files' => 'Download files: "1" or "0" (default). If set to 1, the exported CSV file and any submission file uploads will be download in a gzipped tar file.',
         // Output options.
-        'destination' => 'The full path and filename in which the CSV or archive should be stored. If omitted the CSV file or archive will be outputted to the commandline.',
+        'destination' => 'The full path and filename in which the CSV or archive should be stored. If omitted the CSV file or archive will be outputted to the command line.',
       ],
       'aliases' => ['wfx'],
+    ];
+
+    $items['webform-import'] = [
+      'description' => 'Imports webform submissions from a CSV file.',
+      'core' => ['8+'],
+      'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_SITE,
+      'arguments' => [
+        'webform' => 'The webform ID you want to import (required unless --entity-type and --entity-id are specified)',
+        'import_uri' => 'The path or URI for the CSV file to be imported.',
+      ],
+      'options' => [
+        // Import options.
+        'skip_validation' => 'Skip form validation.',
+        'treat_warnings_as_errors' => 'Treat all warnings as errors.',
+        // Source entity options.
+        'entity-type' => 'The entity type to which this submission was submitted from.',
+        'entity-id' => 'The ID of the entity of which this webform submission was submitted from.',
+      ],
+      'aliases' => ['wfi'],
     ];
 
     $items['webform-purge'] = [
@@ -344,6 +367,70 @@ class WebformCliService implements WebformCliServiceInterface {
       $this->drush_print(file_get_contents($file_path));
     }
     @unlink($file_path);
+
+    return NULL;
+  }
+
+  /******************************************************************************/
+  // Import.
+  /******************************************************************************/
+
+  /**
+   * {@inheritdoc}
+   */
+  public function drush_webform_import_validate($webform_id = NULL, $import_uri = NULL) {
+    if (!\Drupal::moduleHandler()->moduleExists('webform_submission_export_import')) {
+      return $this->drush_set_error($this->dt('The Webform Submission Export/Import module must be enabled to perform imports.'));
+    }
+
+    if ($errors = $this->_drush_webform_validate($webform_id)) {
+      return $errors;
+    }
+
+    if (empty($import_uri)) {
+      return $this->drush_set_error($this->dt('Please include the CSV path or URI.'));
+    }
+    if (file_exists($import_uri)) {
+      return NULL;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function drush_webform_import($webform_id = NULL, $import_uri = NULL) {
+    /** @var \Drupal\webform_submission_export_import\WebformSubmissionExportImportImporterInterface $submission_importer */
+    $submission_importer = \Drupal::service('webform_submission_export_import.importer');
+
+    // Get webform.
+    $webform = Webform::load($webform_id);
+
+    // Get source entity.
+    $entity_type = $this->drush_get_option('entity-type');
+    $entity_id = $this->drush_get_option('entity-id');
+    if ($entity_type && $entity_id) {
+      $source_entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
+    }
+    else {
+      $source_entity = NULL;
+    }
+
+    // Get import options
+    $import_options = $this->_drush_get_options($submission_importer->getDefaultImportOptions());
+
+    $submission_importer->setWebform($webform);
+    $submission_importer->setSourceEntity($source_entity);
+    $submission_importer->setImportOptions($import_options);
+    $submission_importer->setImportUri($import_uri);;
+    $t_args = ['@total' => $submission_importer->getTotal()];
+    if (!$this->drush_confirm($this->dt('Are you sure you want to import @total submissions?', $t_args) . PHP_EOL . $this->dt('This action cannot be undone.'))) {
+      return $this->drush_user_abort();
+    }
+
+    WebformSubmissionExportImportUploadForm::batchSet($webform, $source_entity, $import_uri, $import_options);
+    $this->drush_backend_batch_process();
 
     return NULL;
   }
@@ -749,23 +836,26 @@ class WebformCliService implements WebformCliServiceInterface {
 
     module_load_include('install', 'webform');
 
-    $this->drush_print('Repairing admin settings…');
+    $this->drush_print($this->dt('Repairing webform submission storage schema…'));
+    _webform_update_webform_submission_storage_schema();
+
+    $this->drush_print($this->dt('Repairing admin settings…'));
     _webform_update_admin_settings(TRUE);
 
-    $this->drush_print('Repairing webform settings…');
+    $this->drush_print($this->dt('Repairing webform settings…'));
     _webform_update_webform_settings();
 
-    $this->drush_print('Repairing webform handlers…');
+    $this->drush_print($this->dt('Repairing webform handlers…'));
     _webform_update_webform_handler_settings();
 
-    $this->drush_print('Repairing webform field storage definitions…');
+    $this->drush_print($this->dt('Repairing webform field storage definitions…'));
     _webform_update_field_storage_definitions();
 
-    $this->drush_print('Repairing webform submission storage schema…');
+    $this->drush_print($this->dt('Repairing webform submission storage schema…'));
     _webform_update_webform_submission_storage_schema();
 
     // Validate all webform elements.
-    $this->drush_print('Validating webform elements…');
+    $this->drush_print($this->dt('Validating webform elements…'));
     /** @var \Drupal\webform\WebformEntityElementsValidatorInterface $elements_validator */
     $elements_validator = \Drupal::service('webform.elements_validator');
 
@@ -773,7 +863,7 @@ class WebformCliService implements WebformCliServiceInterface {
     $webforms = Webform::loadMultiple();
     foreach ($webforms as $webform) {
       if ($messages = $elements_validator->validate($webform)) {
-        $this->drush_print('  ' . t('@title (@id): Found element validation errors.', ['@title' => $webform->label(), '@id' => $webform->id()]));
+        $this->drush_print('  ' . $this->dt('@title (@id): Found element validation errors.', ['@title' => $webform->label(), '@id' => $webform->id()]));
         foreach ($messages as $message) {
           $this->drush_print('  - ' . strip_tags($message));
         }
@@ -1361,6 +1451,29 @@ $methods
       }
     }
     return NULL;
+  }
+
+  /**
+   * Get drush command options with dashed converted to underscores.
+   *
+   * @param array $default_options
+   *   The commands default options
+   *
+   * @return array
+   *   An associative array of options.
+   */
+  protected function _drush_get_options(array $default_options) {
+    $options = $this->drush_redispatch_get_options();
+    // Convert dashes to underscores.
+    foreach ($options as $key => $value) {
+      unset($options[$key]);
+      if (isset($default_options[$key]) && is_array($default_options[$key])) {
+        $value = explode(',', $value);
+      }
+      $options[str_replace('-', '_', $key)] = $value;
+    }
+    $options += $default_options;
+    return $options;
   }
 
 }

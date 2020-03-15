@@ -175,7 +175,7 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
     // Requirements.
     $form['requirements'] = [
       '#type' => 'details',
-      '#title' => $this->t('Requirements'),
+      '#title' => $this->t('Requirement settings'),
       '#description' => $this->t('The below requirements are checked by the <a href=":href">Status report</a>.', [':href' => Url::fromRoute('system.status')->toString()]),
       '#open' => TRUE,
       '#tree' => TRUE,
@@ -239,6 +239,14 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#default_value' => $config->get('batch.default_batch_export_size'),
       '#description' => $this->t('Batch export size is used when submissions are being exported/downloaded.'),
     ];
+    $form['batch']['default_batch_import_size'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Batch import size'),
+      '#min' => 1,
+      '#required' => TRUE,
+      '#default_value' => $config->get('batch.default_batch_import_size'),
+      '#description' => $this->t('Batch import size is used when submissions are being imported/uploaded.'),
+    ];
     $form['batch']['default_batch_update_size'] = [
       '#type' => 'number',
       '#title' => $this->t('Batch update size'),
@@ -272,6 +280,7 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#description' => '<p>' . $this->t('If older Webform configuration files are imported after the Webform module has been updated this may cause the older configuration to be out-of-sync and result in unexpected behaviors and errors.') . '</p>' .
         '<p>' . $this->t("Running the below 'Repair' command will apply all missing settings to older Webform configuration files.") . '</p>',
       '#help' => FALSE,
+      '#weight' => 100,
     ];
     $form['repair']['action'] = ['#type' => 'actions'];
     $form['repair']['action']['repair_configuration'] = [
@@ -294,20 +303,23 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       // Copied from:
       // @see \Drupal\webform\Commands\WebformCliService::drush_webform_repair
       module_load_include('install', 'webform');
-      
-      $this->messenger()->addMessage('Repairing admin settings…');
+
+      $this->messenger()->addMessage($this->t('Repairing webform submission storage schema…'));
+      _webform_update_webform_submission_storage_schema();
+
+      $this->messenger()->addMessage($this->t('Repairing admin settings…'));
       _webform_update_admin_settings(TRUE);
 
-      $this->messenger()->addMessage('Repairing webform settings…');
+      $this->messenger()->addMessage($this->t('Repairing webform settings…'));
       _webform_update_webform_settings();
 
-      $this->messenger()->addMessage('Repairing webform handlers…');
+      $this->messenger()->addMessage($this->t('Repairing webform handlers…'));
       _webform_update_webform_handler_settings();
 
-      $this->messenger()->addMessage('Repairing webform field storage definitions…');
+      $this->messenger()->addMessage($this->t('Repairing webform field storage definitions…'));
       _webform_update_field_storage_definitions();
 
-      $this->messenger()->addMessage('Repairing webform submission storage schema…');
+      $this->messenger()->addMessage($this->t('Repairing webform submission storage schema…'));
       _webform_update_webform_submission_storage_schema();
 
       drupal_flush_all_caches();
