@@ -2044,6 +2044,17 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input {
     width: auto;
     margin-right: 5px; }
 
+.field--name-comment form.comment-form {
+  background: #eee;
+  border: 1px solid #ddd;
+  padding: 0.7em 1.5em; }
+  .field--name-comment form.comment-form .form-item > label {
+    margin-right: 1em;
+    font-size: 13.175px;
+    font-size: 0.85rem; }
+  .field--name-comment form.comment-form input.form-text {
+    width: 100%; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -2085,7 +2096,24 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input {
       width: auto;
       padding-left: 30px; }
     form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city input {
-      width: 75%; } }
+      width: 75%; }
+
+  .field--name-comment form.comment-form .form-item > label {
+    min-width: 90px; }
+  .field--name-comment form.comment-form .form-item.form-type-textarea {
+    margin-bottom: 2em; }
+    .field--name-comment form.comment-form .form-item.form-type-textarea > label {
+      margin-bottom: 0.8em; }
+  .field--name-comment form.comment-form .form-actions {
+    margin-top: 1.5em; }
+  .field--name-comment form.comment-form input.form-text {
+    width: auto;
+    width: 500px; }
+
+  .user-anonymous .field--name-comment form.comment-form .field--widget-text-textarea .filter-wrapper {
+    display: none; }
+  .user-anonymous .field--name-comment form.comment-form .field--widget-text-textarea.form-type-textarea {
+    margin-bottom: 1.56em; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
