@@ -69,12 +69,12 @@
 {% endif %}
 {%
   set classes = [
-    'comment',
-    'js-comment',
-    status != 'published' ? status,
-    comment.owner.anonymous ? 'by-anonymous',
-    author_id and author_id == commented_entity.getOwnerId() ? 'by-' ~ commented_entity.getEntityTypeId() ~ '-author',
-  ]
+  'comment',
+  'js-comment',
+  status != 'published' ? status,
+  comment.owner.anonymous ? 'by-anonymous',
+  author_id and author_id == commented_entity.getOwnerId() ? 'by-' ~ commented_entity.getEntityTypeId() ~ '-author',
+]
 %}
 <article{{ attributes.addClass(classes) }}>
 
@@ -88,8 +88,9 @@
 
   <footer class="comment-wrap">
     <div class="author-details">
-      {{ user_picture }}
-      {{ permalink }}
+      <div class="author-initial">
+        {{ author_initial }}
+      </div>
       {% if parent %}
         <p class="parent visually-hidden">{{ parent }}</p>
       {% endif %}
@@ -105,8 +106,8 @@
         {% endif %}
         {{ content }}
       </div>
-    </div>   
+    </div>
 
   </footer>
-  
+
 </article>

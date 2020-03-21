@@ -2212,6 +2212,23 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input {
       -webkit-box-shadow: 0px 0px 3px #eee;
       box-shadow: 0px 0px 3px #eee;
       border: 1px solid #e5e5e5; }
+  .node .field--name-comment .comment .comment-submitted {
+    color: #888; }
+  .node .field--name-comment .comment .author-initial {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    background: #ccc;
+    color: white;
+    font-size: 38.75px;
+    font-size: 2.5rem; }
+  .node .field--name-comment .comment .comment-wrap .author-details {
+    display: none; }
+  .node .field--name-comment .comment .comment-wrap .author-comments {
+    width: 100%; }
+  .node .field--name-comment .comment .links .comment-reply {
+    display: none; }
 
 .page-node-type-article node__content {
   *zoom: 1; }
@@ -2472,6 +2489,24 @@ div#sliding-popup {
 /*----------- Tablet Portrait ---------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 480px) {
+  .node .field--name-comment .comment .author-initial {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    background: #ccc;
+    color: white;
+    font-size: 38.75px;
+    font-size: 2.5rem; }
+  .node .field--name-comment .comment .comment-wrap .author-details {
+    display: block;
+    float: left;
+    width: 20%; }
+  .node .field--name-comment .comment .comment-wrap .author-comments {
+    padding-left: 5px;
+    float: left;
+    width: 80%; } }
 /* End Media Query Tablet Portrait */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2487,6 +2522,10 @@ div#sliding-popup {
     .node .embedded-entity h2 {
       font-size: 17.05px;
       font-size: 1.1rem; }
+  .node .field--name-comment .comment .comment-wrap .author-details {
+    width: 10%; }
+  .node .field--name-comment .comment .comment-wrap .author-comments {
+    width: 90%; }
 
   .page-node-type-article .field--name-field-image {
     *zoom: 1; }

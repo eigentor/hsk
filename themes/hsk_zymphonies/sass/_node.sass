@@ -71,6 +71,29 @@
           background: white
           +box-shadow(0px 0px 3px #eee)
           border: 1px solid #e5e5e5
+  ////////////////////////
+  /// Comments
+  ////////////////////////
+  .field--name-comment
+    .comment
+      .comment-submitted
+        color: #888
+      .author-initial
+        width: 60px
+        height: 60px
+        text-align: center
+        line-height: 60px
+        background: #ccc
+        color: white
+        +x-rem(font-size, 2.5)
+      .comment-wrap
+        .author-details
+          display: none
+        .author-comments
+          width: 100%
+      .links
+        .comment-reply
+          display: none
 
 
 .page-node-type-article
@@ -255,7 +278,26 @@ div#sliding-popup
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-tablet-portrait)
-
+  .node
+    .field--name-comment
+      .comment
+        .author-initial
+          width: 60px
+          height: 60px
+          text-align: center
+          line-height: 60px
+          background: #ccc
+          color: white
+          +x-rem(font-size, 2.5)
+        .comment-wrap
+          .author-details
+            display: block
+            float: left
+            width: 20%
+          .author-comments
+            padding-left: 5px
+            float: left
+            width: 80%
 
 /* End Media Query Tablet Portrait */
 
@@ -273,6 +315,13 @@ div#sliding-popup
       width: 33.3%
       h2
         +x-rem(font-size, 1.1)
+    .field--name-comment
+      .comment
+        .comment-wrap
+          .author-details
+            width: 10%
+          .author-comments
+            width: 90%
 
   .page-node-type-article
     .field--name-field-image
@@ -312,6 +361,8 @@ div#sliding-popup
             margin-bottom: 0
           .field-content
             display: block
+
+
 
 .node-vereinsmeisterschaft, .node-meisterturnier,
 .node-vormeisterturnier, .node-hauptturnier
