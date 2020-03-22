@@ -14,4 +14,7 @@ function hsk_comments_form_alter(&$form, FormStateInterface $form_state, $form_i
 function hsk_comments_preprocess_comment(&$variables) {
   $author_name = $variables['comment']->getAuthorName();
   $variables['author_initial'] = strtoupper($author_name[0]);
+  $submitted_information = $variables['submitted']->getArguments();
+  $variables['linked_username'] =  $submitted_information['@username'];
+  $variables['date'] = $submitted_information['@datetime'];
 }

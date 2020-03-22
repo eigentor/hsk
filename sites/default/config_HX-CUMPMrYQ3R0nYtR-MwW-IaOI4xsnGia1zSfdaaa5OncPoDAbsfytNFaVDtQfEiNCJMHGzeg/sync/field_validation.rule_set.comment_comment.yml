@@ -1,0 +1,19 @@
+uuid: 622815e2-6216-488d-91a4-a330a0e93258
+langcode: de
+status: true
+dependencies: {  }
+name: comment_comment
+label: 'comment comment validation'
+entity_type: comment
+bundle: comment
+field_validation_rules:
+  78510a5e-f5ef-420d-86cf-1a3101becf10:
+    uuid: 78510a5e-f5ef-420d-86cf-1a3101becf10
+    id: blacklist_field_validation_rule
+    title: 'Keine Links und typische Spamwords'
+    weight: 1
+    field_name: comment_body
+    column: value
+    error_message: 'Sie haben unerlaubte Worte verwendet.'
+    data:
+      setting: 'http, https, www, click, buy, sex, porn, sexy, pics'

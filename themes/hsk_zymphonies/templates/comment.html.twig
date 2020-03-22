@@ -97,7 +97,7 @@
     </div>
 
     <div class="author-comments">
-      <p class="comment-submitted">{{ submitted }}</p>
+      <p class="comment-submitted">{% trans %}{{ linked_username }} - {{ date }}{% endtrans %}</p>
       <div{{ content_attributes.addClass('content') }}>
         {% if title %}
           {{ title_prefix }}

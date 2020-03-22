@@ -2132,6 +2132,19 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input {
 /*------------- All Screen Sizes ------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+.path-node .node .node__links li.comment-add {
+  margin-bottom: 2em; }
+  .path-node .node .node__links li.comment-add a {
+    display: inline-block;
+    border: 1px solid #ccc;
+    background: #f3f3f3;
+    padding: 0.3em 0.8em;
+    color: #333; }
+    .path-node .node .node__links li.comment-add a:hover {
+      text-decoration: none;
+      background: #d5d5d5;
+      color: black; }
+
 .node {
   *zoom: 1; }
   .node:after {
@@ -2215,20 +2228,24 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input {
   .node .field--name-comment .comment .comment-submitted {
     color: #888; }
   .node .field--name-comment .comment .author-initial {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     text-align: center;
-    line-height: 60px;
+    line-height: 50px;
     background: #ccc;
     color: white;
-    font-size: 38.75px;
-    font-size: 2.5rem; }
-  .node .field--name-comment .comment .comment-wrap .author-details {
-    display: none; }
-  .node .field--name-comment .comment .comment-wrap .author-comments {
-    width: 100%; }
+    font-size: 34.1px;
+    font-size: 2.2rem; }
+  .node .field--name-comment .comment .comment-wrap {
+    border-bottom: 1px solid #ccc; }
+    .node .field--name-comment .comment .comment-wrap .author-details {
+      display: none; }
+    .node .field--name-comment .comment .comment-wrap .author-comments {
+      width: 100%; }
   .node .field--name-comment .comment .links .comment-reply {
     display: none; }
+  .node .field--name-comment .comment .links li:first-child {
+    padding-left: 0; }
 
 .page-node-type-article node__content {
   *zoom: 1; }
@@ -2490,15 +2507,6 @@ div#sliding-popup {
 /*------------------------------------------- */
 /*------------------------------------------- */
 @media only screen and (min-width: 480px) {
-  .node .field--name-comment .comment .author-initial {
-    width: 60px;
-    height: 60px;
-    text-align: center;
-    line-height: 60px;
-    background: #ccc;
-    color: white;
-    font-size: 38.75px;
-    font-size: 2.5rem; }
   .node .field--name-comment .comment .comment-wrap .author-details {
     display: block;
     float: left;

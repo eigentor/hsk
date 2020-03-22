@@ -3,6 +3,22 @@
 /*------------- All Screen Sizes -------------*/
 /*------------------------------------------- */
 /*------------------------------------------- */
+.path-node
+  .node
+    .node__links
+      li.comment-add
+        margin-bottom: 2em
+        a
+          display: inline-block
+          border: 1px solid #ccc
+          background: #f3f3f3
+          padding: 0.3em 0.8em
+          color: #333
+          &:hover
+            text-decoration: none
+            background: #d5d5d5
+            color: black
+
 .node
   +legacy-pie-clearfix
   .comment-submitted
@@ -34,6 +50,7 @@
     a
       +x-rem(font-size, 0.8)
       color: $light-grey-text
+
   h2, h3
     clear: both
 
@@ -79,14 +96,15 @@
       .comment-submitted
         color: #888
       .author-initial
-        width: 60px
-        height: 60px
+        width: 50px
+        height: 50px
         text-align: center
-        line-height: 60px
+        line-height: 50px
         background: #ccc
         color: white
-        +x-rem(font-size, 2.5)
+        +x-rem(font-size, 2.2)
       .comment-wrap
+        border-bottom: 1px solid #ccc
         .author-details
           display: none
         .author-comments
@@ -94,6 +112,8 @@
       .links
         .comment-reply
           display: none
+        li:first-child
+          padding-left: 0
 
 
 .page-node-type-article
@@ -281,14 +301,6 @@ div#sliding-popup
   .node
     .field--name-comment
       .comment
-        .author-initial
-          width: 60px
-          height: 60px
-          text-align: center
-          line-height: 60px
-          background: #ccc
-          color: white
-          +x-rem(font-size, 2.5)
         .comment-wrap
           .author-details
             display: block
