@@ -1,0 +1,9 @@
+name: HSK Comments
+description: Design Comments and comment forms as we want them
+type: module
+core: 8.x
+package: HSK
+version: VERSION
+dependencies:
+  - drupal:comment
+

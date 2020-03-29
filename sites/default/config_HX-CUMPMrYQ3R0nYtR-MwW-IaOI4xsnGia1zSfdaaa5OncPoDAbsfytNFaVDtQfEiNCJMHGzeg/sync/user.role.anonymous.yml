@@ -13,5 +13,6 @@ permissions:
   - 'access content'
   - 'access site-wide contact form'
   - 'display eu cookie compliance popup'
+  - 'edit own comments'
+  - 'post comments'
   - 'search content'
-  - 'use text format restricted_html'

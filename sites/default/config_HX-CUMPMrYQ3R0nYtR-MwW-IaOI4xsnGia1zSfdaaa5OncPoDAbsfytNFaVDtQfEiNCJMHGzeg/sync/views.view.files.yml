@@ -42,7 +42,7 @@ display:
         options:
           submit_button: Filter
           reset_button: false
-          reset_button_label: Zurücksetzen
+          reset_button_label: Reset
           exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
           sort_asc_label: Aufsteigend

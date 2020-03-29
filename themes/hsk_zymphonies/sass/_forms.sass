@@ -20,6 +20,20 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form
       width: auto
       margin-right: 5px
 
+.field--name-comment
+  form.comment-form
+    background: #eee
+    border: 1px solid #ddd
+    padding: 0.7em 1.5em
+    .form-item
+      > label
+        margin-right: 1em
+        +x-rem(font-size, 0.85)
+    input
+      &.form-text
+        width: 100%
+
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/
@@ -67,6 +81,31 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form
         padding-left: 30px
       input
         width: 75%
+
+  .field--name-comment
+    form.comment-form
+      .form-item
+        > label
+          min-width: 90px
+        &.form-type-textarea
+          margin-bottom: 2em
+          > label
+            margin-bottom: 0.8em
+      .form-actions
+        margin-top: 1.5em
+      input
+        &.form-text
+          width: auto
+          width: 500px
+
+  .user-anonymous
+    .field--name-comment
+      form.comment-form
+        .field--widget-text-textarea
+          .filter-wrapper
+            display: none
+          &.form-type-textarea
+            margin-bottom: 1.56em
 
 
 /* End Media Query Tablet */

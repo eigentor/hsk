@@ -1,7 +1,9 @@
 uuid: 67a4daaf-7962-418f-97e5-707c038c0b5a
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - inline_responsive_images
 _core:
   default_config_hash: NIKBt6kw_uPhNI0qtR2DnRf7mSOgAQdx7Q94SKMjXbQ
 name: Klartext
@@ -14,16 +16,44 @@ filters:
     status: true
     weight: -10
     settings: {  }
-  filter_url:
-    id: filter_url
-    provider: filter
-    status: true
-    weight: 0
-    settings:
-      filter_url_length: 72
   filter_autop:
     id: filter_autop
     provider: filter
     status: true
     weight: 0
     settings: {  }
+  filter_imagestyle:
+    id: filter_imagestyle
+    provider: inline_responsive_images
+    status: false
+    weight: 0
+    settings:
+      image_style_gallery_full: '0'
+      image_style_header_slideshow: '0'
+      image_style_header_slideshow_smartphone: '0'
+      image_style_header_slideshow_tablet_portrait: '0'
+      image_style_image_gallery_thumb: '0'
+      image_style_inhaltsbild_mobile_volle_breite: '0'
+      image_style_inline_full_width: '0'
+      image_style_large: '0'
+      image_style_linkit_result_thumbnail: '0'
+      image_style_max_1300x1300: '0'
+      image_style_max_2600x2600: '0'
+      image_style_max_325x325: '0'
+      image_style_max_650x650: '0'
+      image_style_medium: '0'
+      image_style_news_thumb_startseite: '0'
+      image_style_portrait: '0'
+      image_style_portrait_medium: '0'
+      image_style_portrait_tiny: '0'
+      image_style_thumbnail: '0'
+  filter_responsive_image_style:
+    id: filter_responsive_image_style
+    provider: inline_responsive_images
+    status: false
+    weight: 0
+    settings:
+      responsive_style_header_slideshow: '0'
+      responsive_style_inhaltsbild_volle_breite: '0'
+      responsive_style_narrow: '0'
+      responsive_style_wide: '0'

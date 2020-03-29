@@ -2044,6 +2044,17 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input {
     width: auto;
     margin-right: 5px; }
 
+.field--name-comment form.comment-form {
+  background: #eee;
+  border: 1px solid #ddd;
+  padding: 0.7em 1.5em; }
+  .field--name-comment form.comment-form .form-item > label {
+    margin-right: 1em;
+    font-size: 13.175px;
+    font-size: 0.85rem; }
+  .field--name-comment form.comment-form input.form-text {
+    width: 100%; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
@@ -2085,7 +2096,24 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input {
       width: auto;
       padding-left: 30px; }
     form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city input {
-      width: 75%; } }
+      width: 75%; }
+
+  .field--name-comment form.comment-form .form-item > label {
+    min-width: 90px; }
+  .field--name-comment form.comment-form .form-item.form-type-textarea {
+    margin-bottom: 2em; }
+    .field--name-comment form.comment-form .form-item.form-type-textarea > label {
+      margin-bottom: 0.8em; }
+  .field--name-comment form.comment-form .form-actions {
+    margin-top: 1.5em; }
+  .field--name-comment form.comment-form input.form-text {
+    width: auto;
+    width: 500px; }
+
+  .user-anonymous .field--name-comment form.comment-form .field--widget-text-textarea .filter-wrapper {
+    display: none; }
+  .user-anonymous .field--name-comment form.comment-form .field--widget-text-textarea.form-type-textarea {
+    margin-bottom: 1.56em; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2104,6 +2132,19 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input {
 /*------------- All Screen Sizes ------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+.path-node .node .node__links li.comment-add {
+  margin-bottom: 2em; }
+  .path-node .node .node__links li.comment-add a {
+    display: inline-block;
+    border: 1px solid #ccc;
+    background: #f3f3f3;
+    padding: 0.3em 0.8em;
+    color: #333; }
+    .path-node .node .node__links li.comment-add a:hover {
+      text-decoration: none;
+      background: #d5d5d5;
+      color: black; }
+
 .node {
   *zoom: 1; }
   .node:after {
@@ -2184,6 +2225,27 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input {
       -webkit-box-shadow: 0px 0px 3px #eee;
       box-shadow: 0px 0px 3px #eee;
       border: 1px solid #e5e5e5; }
+  .node .field--name-comment .comment .comment-submitted {
+    color: #888; }
+  .node .field--name-comment .comment .author-initial {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    background: #ccc;
+    color: white;
+    font-size: 34.1px;
+    font-size: 2.2rem; }
+  .node .field--name-comment .comment .comment-wrap {
+    border-bottom: 1px solid #ccc; }
+    .node .field--name-comment .comment .comment-wrap .author-details {
+      display: none; }
+    .node .field--name-comment .comment .comment-wrap .author-comments {
+      width: 100%; }
+  .node .field--name-comment .comment .links .comment-reply {
+    display: none; }
+  .node .field--name-comment .comment .links li:first-child {
+    padding-left: 0; }
 
 .page-node-type-article node__content {
   *zoom: 1; }
@@ -2444,6 +2506,15 @@ div#sliding-popup {
 /*----------- Tablet Portrait ---------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 480px) {
+  .node .field--name-comment .comment .comment-wrap .author-details {
+    display: block;
+    float: left;
+    width: 20%; }
+  .node .field--name-comment .comment .comment-wrap .author-comments {
+    padding-left: 5px;
+    float: left;
+    width: 80%; } }
 /* End Media Query Tablet Portrait */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2459,6 +2530,10 @@ div#sliding-popup {
     .node .embedded-entity h2 {
       font-size: 17.05px;
       font-size: 1.1rem; }
+  .node .field--name-comment .comment .comment-wrap .author-details {
+    width: 10%; }
+  .node .field--name-comment .comment .comment-wrap .author-comments {
+    width: 90%; }
 
   .page-node-type-article .field--name-field-image {
     *zoom: 1; }
