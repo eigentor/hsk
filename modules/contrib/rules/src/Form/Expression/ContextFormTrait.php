@@ -52,7 +52,7 @@ trait ContextFormTrait {
       $default_value = $context_definition->getDefaultValue();
     }
     $form['context'][$context_name]['setting'] = [
-      '#type' => 'textfield',
+      '#type' => 'textarea',
       '#title' => $title,
       '#required' => $context_definition->isRequired(),
       '#default_value' => $default_value,
@@ -61,6 +61,7 @@ trait ContextFormTrait {
     $element = &$form['context'][$context_name]['setting'];
 
     if ($mode == 'selector') {
+      $element['#type'] = 'textfield';
       $element['#description'] = $this->t("The data selector helps you drill down into the data available to Rules. <em>To make entity fields appear in the data selector, you may have to use the condition 'entity has field' (or 'content is of type').</em> More useful tips about data selection is available in <a href=':url'>the online documentation</a>.", [
         ':url' => 'https://www.drupal.org/node/1300042',
       ]);
@@ -71,7 +72,6 @@ trait ContextFormTrait {
       $element['#attached']['library'][] = 'rules/rules.autocomplete';
     }
     elseif ($context_definition->isMultiple()) {
-      $element['#type'] = 'textarea';
       // @todo Get a description for possible values that can be filled in.
       $element['#description'] = $this->t('Enter one value per line for this multi-valued context.');
 
