@@ -1,0 +1,49 @@
+uuid: b0ea0c8c-c711-476f-b276-4c541b415905
+langcode: de
+status: true
+dependencies: {  }
+id: admin_notify_comment
+label: 'Admin benachrichtigen Kommentar'
+events:
+  -
+    event_name: 'rules_entity_insert:comment'
+description: 'Admin benachrichtigen bei neuem Kommentar'
+tags: {  }
+config_version: '3'
+expression:
+  id: rules_rule
+  uuid: d39ffe4c-a296-484e-9863-a0a67fa6b445
+  conditions:
+    id: rules_and
+    uuid: 1ad2d3fb-364f-407b-a4ea-9fe9931ca47d
+    conditions: {  }
+  actions:
+    id: rules_action_set
+    uuid: b1fff381-2c1d-4cb1-a528-f0903398f6f3
+    actions:
+      -
+        id: rules_action
+        uuid: fc0cd59d-8646-4a4c-94a1-f02847493b4b
+        context_values:
+          to:
+            - felix.hampel@web.de
+            - mawachess@gmail.com
+            - thomas@rufzeichen-online.de
+          subject: 'Es wurde ein neuer Kommentar auf schachklub-hannover.de erstellt'
+          message: "Ein neuer Kommentar wurde erstellt:\r\n\r\n{{ comment.url }}\r\n\r\ncomment.cid.value\r\n\r\nHier der Inhalt: \r\n\r\n\r\nHier könnt ihr unbestätigte Kommentare verwalten:\r\nhttps://schachklub-hannover.de/admin/content/comment/approval"
+          reply: ''
+          language: ''
+        context_mapping: {  }
+        context_processors:
+          to:
+            rules_tokens: {  }
+          subject:
+            rules_tokens: {  }
+          message:
+            rules_tokens: {  }
+          reply:
+            rules_tokens: {  }
+          language:
+            rules_tokens: {  }
+        provides_mapping: {  }
+        action_id: rules_send_email

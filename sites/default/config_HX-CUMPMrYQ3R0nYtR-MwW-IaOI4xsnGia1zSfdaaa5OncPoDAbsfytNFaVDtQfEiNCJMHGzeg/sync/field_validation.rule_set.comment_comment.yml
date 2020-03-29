@@ -7,8 +7,8 @@ label: 'comment comment validation'
 entity_type: comment
 bundle: comment
 field_validation_rules:
-  78510a5e-f5ef-420d-86cf-1a3101becf10:
-    uuid: 78510a5e-f5ef-420d-86cf-1a3101becf10
+  1a9d7d59-487e-4bb5-9197-8f0f9b1e4895:
+    uuid: 1a9d7d59-487e-4bb5-9197-8f0f9b1e4895
     id: blacklist_field_validation_rule
     title: 'Keine Links und typische Spamwords'
     weight: 1
@@ -16,4 +16,4 @@ field_validation_rules:
     column: value
     error_message: 'Sie haben unerlaubte Worte verwendet.'
     data:
-      setting: 'http, https, www, click, buy, sex, porn, sexy, pics'
+      setting: 'http, https, www'

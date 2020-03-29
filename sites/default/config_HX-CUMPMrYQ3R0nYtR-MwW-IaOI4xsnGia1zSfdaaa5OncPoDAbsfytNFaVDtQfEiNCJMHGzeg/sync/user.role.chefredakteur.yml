@@ -14,6 +14,7 @@ permissions:
   - 'access in-place editing'
   - 'access toolbar'
   - 'access user profiles'
+  - 'administer comments'
   - 'administer nodes'
   - 'administer webform submission'
   - 'bypass node access'

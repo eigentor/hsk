@@ -67,6 +67,7 @@ module:
   rdf: 0
   responsive_image: 0
   responsive_tables_filter: 0
+  rules: 0
   search: 0
   shortcut: 0
   spamspan: 0
@@ -77,6 +78,7 @@ module:
   token: 0
   toolbar: 0
   tour: 0
+  typed_data: 0
   update: 0
   user: 0
   view_unpublished: 0
