@@ -1,0 +1,20 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+
+function hsk_comments_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'comment_comment_form') {
+    $form['subject']['widget'][0]['value']['#title'] = 'Überschrift';
+    if (\Drupal::currentUser()->isAnonymous()) {
+      $form['author']['name']['#required'] = TRUE;
+    }
+  }
+}
+
+function hsk_comments_preprocess_comment(&$variables) {
+  $author_name = $variables['comment']->getAuthorName();
+  $variables['author_initial'] = strtoupper($author_name[0]);
+  $submitted_information = $variables['submitted']->getArguments();
+  $variables['linked_username'] =  $submitted_information['@username'];
+  $variables['date'] = $submitted_information['@datetime'];
+}

@@ -43,7 +43,7 @@ display:
         options:
           submit_button: Anwenden
           reset_button: false
-          reset_button_label: Zurücksetzen
+          reset_button_label: Reset
           exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
           sort_asc_label: Aufsteigend
@@ -290,7 +290,7 @@ display:
       display_extenders: {  }
       use_more: false
       use_more_always: false
-      use_more_text: Mehr
+      use_more_text: More
       link_url: ''
       link_display: '0'
     cache_metadata:

@@ -1,4 +1,4 @@
-@media (min-width: 768px) {
+@media (min-width: 991px) {
 
   .region-primary-menu{
     display: inline-block;
@@ -89,10 +89,10 @@
 
   .comment-wrap .author-comments{ width: 90%;}
 
-  .menu-base-theme a, 
-  .menu-base-theme a:hover, 
-  .menu-base-theme a:focus, 
-  .menu-base-theme a:active, 
+  .menu-base-theme a,
+  .menu-base-theme a:hover,
+  .menu-base-theme a:focus,
+  .menu-base-theme a:active,
   .menu-base-theme a.highlighted {
     color: #888888;
     padding: 3px 15px;

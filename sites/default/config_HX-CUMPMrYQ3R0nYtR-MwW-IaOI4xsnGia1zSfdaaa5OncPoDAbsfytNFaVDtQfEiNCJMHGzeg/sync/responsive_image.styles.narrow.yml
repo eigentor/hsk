@@ -9,7 +9,7 @@ dependencies:
 _core:
   default_config_hash: xAduWBNBoi9WKBMCoVIKSueNYqPK84SiiZwQYKPbkaE
 id: narrow
-label: Schmal
+label: Narrow
 image_style_mappings:
   -
     breakpoint_id: responsive_image.viewport_sizing

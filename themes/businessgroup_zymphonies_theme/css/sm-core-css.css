@@ -93,8 +93,8 @@
   border-top: 0;
 }
 
-@media (min-width: 768px) {
-	
+@media (min-width: 991px) {
+
   .menu-base-theme ul {
     position: absolute;
   }
@@ -127,8 +127,8 @@
   .menu-base-theme {
     background: #3092c0;
   }
-  .menu-base-theme a, .menu-base-theme a:hover, 
-  .menu-base-theme a:focus, .menu-base-theme a:active, 
+  .menu-base-theme a, .menu-base-theme a:hover,
+  .menu-base-theme a:focus, .menu-base-theme a:active,
   .menu-base-theme a.highlighted {
     padding: 13px 24px;
     background: #3092c0;

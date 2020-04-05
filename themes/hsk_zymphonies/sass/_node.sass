@@ -3,6 +3,22 @@
 /*------------- All Screen Sizes -------------*/
 /*------------------------------------------- */
 /*------------------------------------------- */
+.path-node
+  .node
+    .node__links
+      li.comment-add
+        margin-bottom: 2em
+        a
+          display: inline-block
+          border: 1px solid #ccc
+          background: #f3f3f3
+          padding: 0.3em 0.8em
+          color: #333
+          &:hover
+            text-decoration: none
+            background: #d5d5d5
+            color: black
+
 .node
   +legacy-pie-clearfix
   .comment-submitted
@@ -34,6 +50,7 @@
     a
       +x-rem(font-size, 0.8)
       color: $light-grey-text
+
   h2, h3
     clear: both
 
@@ -71,6 +88,32 @@
           background: white
           +box-shadow(0px 0px 3px #eee)
           border: 1px solid #e5e5e5
+  ////////////////////////
+  /// Comments
+  ////////////////////////
+  .field--name-comment
+    .comment
+      .comment-submitted
+        color: #888
+      .author-initial
+        width: 50px
+        height: 50px
+        text-align: center
+        line-height: 50px
+        background: #ccc
+        color: white
+        +x-rem(font-size, 2.2)
+      .comment-wrap
+        border-bottom: 1px solid #ccc
+        .author-details
+          display: none
+        .author-comments
+          width: 100%
+      .links
+        .comment-reply
+          display: none
+        li:first-child
+          padding-left: 0
 
 
 .page-node-type-article
@@ -255,7 +298,18 @@ div#sliding-popup
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-tablet-portrait)
-
+  .node
+    .field--name-comment
+      .comment
+        .comment-wrap
+          .author-details
+            display: block
+            float: left
+            width: 20%
+          .author-comments
+            padding-left: 5px
+            float: left
+            width: 80%
 
 /* End Media Query Tablet Portrait */
 
@@ -273,6 +327,13 @@ div#sliding-popup
       width: 33.3%
       h2
         +x-rem(font-size, 1.1)
+    .field--name-comment
+      .comment
+        .comment-wrap
+          .author-details
+            width: 10%
+          .author-comments
+            width: 90%
 
   .page-node-type-article
     .field--name-field-image
@@ -312,6 +373,8 @@ div#sliding-popup
             margin-bottom: 0
           .field-content
             display: block
+
+
 
 .node-vereinsmeisterschaft, .node-meisterturnier,
 .node-vormeisterturnier, .node-hauptturnier

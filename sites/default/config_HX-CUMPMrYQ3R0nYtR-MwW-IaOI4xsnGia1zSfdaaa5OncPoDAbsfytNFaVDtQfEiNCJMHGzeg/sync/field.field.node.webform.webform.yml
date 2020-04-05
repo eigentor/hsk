@@ -20,8 +20,6 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  default_data: ''
-  status: true
   handler: 'default:webform'
   handler_settings: {  }
 field_type: webform

@@ -1352,7 +1352,7 @@ body {
   color: #333;
   font-family: "Open Sans", sans-serif;
   /*- Desktop narrow - */ }
-  @media only screen and (min-width: 992px) {
+  @media only screen and (min-width: 991px) {
     body {
       font-size: 13.95px;
       font-size: 0.9rem; } }
@@ -1396,7 +1396,7 @@ p {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   h2 {
     font-size: 23.25px;
     font-size: 1.5rem; }
@@ -1513,7 +1513,7 @@ button.btn, a.btn {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   table {
     font-size: 13.95px;
     font-size: 0.9rem; }
@@ -1898,7 +1898,7 @@ button.btn, a.btn {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   .path-frontpage #block-views-block-header-slideshow-block-1 {
     width: 100%;
     overflow: hidden; }
@@ -1941,11 +1941,11 @@ button.btn, a.btn {
           padding: 7px 15px 10px;
           background: rgba(70, 70, 70, 0.6);
           color: white; } }
-        @media only screen and (min-width: 992px) and (min-width: 992px) {
+        @media only screen and (min-width: 991px) and (min-width: 992px) {
           .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container {
             float: left;
             width: 41.6666666667%; } }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
           .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container h3.slide-headline {
             padding: 0;
             margin-bottom: 0.25em;
@@ -2038,11 +2038,22 @@ button.btn, a.btn {
 #block-masquerade input.form-text {
   color: #333; }
 
-form#webform-submission-anmeldung-als-vereinsmitglied-form input {
+form.webform-submission-anmeldung-als-vereinsmitglied-form input {
   width: 100%; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form input#edit-sepa-consent {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form input#edit-sepa-consent {
     width: auto;
     margin-right: 5px; }
+
+.field--name-comment form.comment-form {
+  background: #eee;
+  border: 1px solid #ddd;
+  padding: 0.7em 1.5em; }
+  .field--name-comment form.comment-form .form-item > label {
+    margin-right: 1em;
+    font-size: 13.175px;
+    font-size: 0.85rem; }
+  .field--name-comment form.comment-form input.form-text {
+    width: 100%; }
 
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2056,36 +2067,53 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
 /*------------------------------------------- */
 /*------------------------------------------- */
 @media only screen and (min-width: 768px) {
-  form#webform-submission-anmeldung-als-vereinsmitglied-form .description {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .description {
     margin-left: 147px;
     margin-top: 2px;
     font-size: 13.175px;
     font-size: 0.85rem;
     color: #888; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form .form-required:after {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .form-required:after {
     background-image: url(../../../../core/misc/icons/ee0000/required.svg);
     margin-left: 6px; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form fieldset {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form fieldset {
     margin-top: 25px; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form input {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form input {
     width: auto; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form label {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form label {
     width: 140px; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form #edit-area-code-city {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form #edit-area-code-city {
     display: flex; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form .form-item-area-code {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-area-code {
     display: flex;
     align-items: center; }
-    form#webform-submission-anmeldung-als-vereinsmitglied-form .form-item-area-code label {
+    form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-area-code label {
       width: 50px; }
-  form#webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city {
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city {
     flex: none;
     webkit-flex: 0; }
-    form#webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city label {
+    form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city label {
       width: auto;
       padding-left: 30px; }
-    form#webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city input {
-      width: 75%; } }
+    form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city input {
+      width: 75%; }
+
+  .field--name-comment form.comment-form .form-item > label {
+    min-width: 90px; }
+  .field--name-comment form.comment-form .form-item.form-type-textarea {
+    margin-bottom: 2em; }
+    .field--name-comment form.comment-form .form-item.form-type-textarea > label {
+      margin-bottom: 0.8em; }
+  .field--name-comment form.comment-form .form-actions {
+    margin-top: 1.5em; }
+  .field--name-comment form.comment-form input.form-text {
+    width: auto;
+    width: 500px; }
+
+  .user-anonymous .field--name-comment form.comment-form .field--widget-text-textarea .filter-wrapper {
+    display: none; }
+  .user-anonymous .field--name-comment form.comment-form .field--widget-text-textarea.form-type-textarea {
+    margin-bottom: 1.56em; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2104,6 +2132,19 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
 /*------------- All Screen Sizes ------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+.path-node .node .node__links li.comment-add {
+  margin-bottom: 2em; }
+  .path-node .node .node__links li.comment-add a {
+    display: inline-block;
+    border: 1px solid #ccc;
+    background: #f3f3f3;
+    padding: 0.3em 0.8em;
+    color: #333; }
+    .path-node .node .node__links li.comment-add a:hover {
+      text-decoration: none;
+      background: #d5d5d5;
+      color: black; }
+
 .node {
   *zoom: 1; }
   .node:after {
@@ -2184,6 +2225,27 @@ form#webform-submission-anmeldung-als-vereinsmitglied-form input {
       -webkit-box-shadow: 0px 0px 3px #eee;
       box-shadow: 0px 0px 3px #eee;
       border: 1px solid #e5e5e5; }
+  .node .field--name-comment .comment .comment-submitted {
+    color: #888; }
+  .node .field--name-comment .comment .author-initial {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    background: #ccc;
+    color: white;
+    font-size: 34.1px;
+    font-size: 2.2rem; }
+  .node .field--name-comment .comment .comment-wrap {
+    border-bottom: 1px solid #ccc; }
+    .node .field--name-comment .comment .comment-wrap .author-details {
+      display: none; }
+    .node .field--name-comment .comment .comment-wrap .author-comments {
+      width: 100%; }
+  .node .field--name-comment .comment .links .comment-reply {
+    display: none; }
+  .node .field--name-comment .comment .links li:first-child {
+    padding-left: 0; }
 
 .page-node-type-article node__content {
   *zoom: 1; }
@@ -2444,6 +2506,15 @@ div#sliding-popup {
 /*----------- Tablet Portrait ---------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 480px) {
+  .node .field--name-comment .comment .comment-wrap .author-details {
+    display: block;
+    float: left;
+    width: 20%; }
+  .node .field--name-comment .comment .comment-wrap .author-comments {
+    padding-left: 5px;
+    float: left;
+    width: 80%; } }
 /* End Media Query Tablet Portrait */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2459,6 +2530,10 @@ div#sliding-popup {
     .node .embedded-entity h2 {
       font-size: 17.05px;
       font-size: 1.1rem; }
+  .node .field--name-comment .comment .comment-wrap .author-details {
+    width: 10%; }
+  .node .field--name-comment .comment .comment-wrap .author-comments {
+    width: 90%; }
 
   .page-node-type-article .field--name-field-image {
     *zoom: 1; }
@@ -2660,19 +2735,19 @@ figure figcaption {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   .page-node-type-page .node-turniere .content-box {
     position: relative;
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px;
     min-height: 320px; } }
-  @media only screen and (min-width: 992px) and (min-width: 992px) {
+  @media only screen and (min-width: 991px) and (min-width: 992px) {
     .page-node-type-page .node-turniere .content-box {
       float: left;
       width: 33.3333333333%; } }
 
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   .page-node-type-turnier #info-tabs .field--name-field-standings table {
     width: 100%; }
   .page-node-type-turnier #info-tabs .field--name-field-current-results table {
@@ -2799,7 +2874,7 @@ nav#block-useraccountmenu {
         font-size: 13.95px;
         font-size: 0.9rem;
         color: #666; }
-        @media only screen and (min-width: 992px) {
+        @media only screen and (min-width: 991px) {
           nav#block-useraccountmenu ul li a {
             font-size: 13.95px;
             font-size: 0.9rem; } }
@@ -2820,7 +2895,7 @@ nav#block-hsk-footer {
         font-size: 13.95px;
         font-size: 0.9rem;
         color: #666; }
-        @media only screen and (min-width: 992px) {
+        @media only screen and (min-width: 991px) {
           nav#block-hsk-footer ul li a {
             font-size: 13.95px;
             font-size: 0.9rem; } }
@@ -2855,6 +2930,8 @@ nav#block-hsk-footer {
       margin-top: 8px;
       margin-right: 15px;
       margin-bottom: 8px; }
+    header.main-header .navigation {
+      clear: both; }
 
   .search-block-form {
     display: block; } }
@@ -2864,7 +2941,7 @@ nav#block-hsk-footer {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   header .navbar-toggle {
     display: none; }
   header.main-header nav {
@@ -2872,6 +2949,8 @@ nav#block-hsk-footer {
     header.main-header nav .region-primary-menu {
       display: block;
       margin-top: 8px; }
+  header.main-header .navigation {
+    clear: none; }
   header #block-hsk-branding {
     width: auto; }
     header #block-hsk-branding .logo img {
@@ -3210,7 +3289,7 @@ nav#block-hsk-footer {
 /*------------- Desktop narrow  -------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   .path-frontpage .content_layout .region-content {
     margin-top: 30px;
     margin-left: -15px;
@@ -3225,21 +3304,21 @@ nav#block-hsk-footer {
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px; } }
-  @media only screen and (min-width: 992px) and (min-width: 992px) {
+  @media only screen and (min-width: 991px) and (min-width: 992px) {
     .path-frontpage #block-views-block-events-list-block-1 {
       float: left;
       width: 50%; } }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
   .path-frontpage #block-views-block-news-block-1 {
     position: relative;
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px; } }
-  @media only screen and (min-width: 992px) and (min-width: 992px) {
+  @media only screen and (min-width: 991px) and (min-width: 992px) {
     .path-frontpage #block-views-block-news-block-1 {
       float: left;
       width: 50%; } }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 991px) {
     .path-frontpage #block-views-block-news-block-1 .views-row .views-field-field-image {
       margin-top: 3px; } }
 /* End Media Query Tablet */
