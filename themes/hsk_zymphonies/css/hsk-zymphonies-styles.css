@@ -2536,16 +2536,7 @@ div#sliding-popup {
     width: 90%; }
 
   .page-node-type-article .field--name-field-image {
-    *zoom: 1; }
-    .page-node-type-article .field--name-field-image:after {
-      content: "\0020";
-      display: block;
-      height: 0;
-      clear: both;
-      overflow: hidden;
-      visibility: hidden; }
-    .page-node-type-article .field--name-field-image img {
-      float: left; }
+    text-align: center; }
 
   .page-node-type-page .node-turniere {
     margin-left: -15px;

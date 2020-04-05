@@ -3,18 +3,17 @@ langcode: de
 status: true
 dependencies:
   config:
-    - field.storage.node.body
     - field.storage.node.field_image
+    - field.storage.node.field_new_txt_capt_main_img
     - image.style.max_325x325
     - node.type.article
     - taxonomy.vocabulary.tags
   content:
-    - 'taxonomy_term:tags:9acaff5a-7b0a-4ffc-94f1-0681ae66768d'
+    - 'taxonomy_term:tags:a3fbd466-c18b-494b-abcb-2fe39d3f36ae'
   module:
     - image
     - node
     - taxonomy
-    - text
     - user
 id: chess_moments
 label: Schachmomente
@@ -195,10 +194,10 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        body:
-          id: body
-          table: node__body
-          field: body
+        field_new_txt_capt_main_img:
+          id: field_new_txt_capt_main_img
+          table: node__field_new_txt_capt_main_img
+          field: field_new_txt_capt_main_img
           relationship: none
           group_type: group
           admin_label: ''
@@ -244,9 +243,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: text_summary_or_trimmed
+          type: string
           settings:
-            trim_length: 600
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -386,8 +385,8 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_image'
+        - 'config:field.storage.node.field_new_txt_capt_main_img'
   block_1:
     display_plugin: block
     id: block_1
@@ -404,5 +403,5 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_image'
+        - 'config:field.storage.node.field_new_txt_capt_main_img'
