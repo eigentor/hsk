@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\Tests\ctools\Kernel\RelationshipsTestBase
- */
 
 namespace Drupal\Tests\ctools\Kernel;
 
@@ -44,7 +40,7 @@ abstract class RelationshipsTestBase extends KernelTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->installSchema('system', ['sequences', 'router']);
+    $this->installSchema('system', ['sequences']);
     $this->installEntitySchema('user');
     $this->installEntitySchema('node_type');
     $this->installEntitySchema('node');

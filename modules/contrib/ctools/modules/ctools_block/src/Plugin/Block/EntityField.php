@@ -1,16 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\ctools\Plugin\Block\EntityField.
- */
-
 namespace Drupal\ctools_block\Plugin\Block;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -19,6 +13,7 @@ use Drupal\Core\Field\FormatterPluginManager;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -101,6 +96,8 @@ class EntityField extends BlockBase implements ContextAwarePluginInterface, Cont
    *   The entity type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager.
+   * @param \Drupal\Core\Field\FieldTypePluginManagerInterface $field_type_manager
+   *   The field type manager.
    * @param \Drupal\Core\Field\FormatterPluginManager $formatter_manager
    *   The formatter manager.
    */
@@ -159,13 +156,24 @@ class EntityField extends BlockBase implements ContextAwarePluginInterface, Cont
   protected function blockAccess(AccountInterface $account) {
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = $this->getContextValue('entity');
-    $access = $entity->access('view', $account, TRUE);
     // Make sure we have access to the entity.
+    $access = $entity->access('view', $account, TRUE);
     if ($access->isAllowed()) {
-      // Check that the entity in question has this field and a value.
-      if ($entity instanceof FieldableEntityInterface && $entity->hasField($this->fieldName) && $entity->{$this->fieldName}->getValue()) {
-        $access_handler = $this->entityTypeManager->getAccessControlHandler($this->entityTypeId);
-        return $access_handler->fieldAccess('view', $this->getFieldDefinition(), $account, NULL, TRUE);
+      // Check that the entity in question has this field.
+      if ($entity instanceof FieldableEntityInterface && $entity->hasField($this->fieldName)) {
+        // Check field access.
+        $field_access = $this->entityTypeManager
+          ->getAccessControlHandler($this->entityTypeId)
+          ->fieldAccess('view', $this->getFieldDefinition(), $account);
+
+        if ($field_access) {
+          // Build a renderable array for the field.
+          $build = $entity->get($this->fieldName)->view($this->configuration['formatter']);
+          // If there are actual renderable children, grant access.
+          if (Element::children($build)) {
+            return AccessResult::allowed();
+          }
+        }
       }
       // Entity doesn't have this field, so access is denied.
       return AccessResult::forbidden();
@@ -182,7 +190,7 @@ class EntityField extends BlockBase implements ContextAwarePluginInterface, Cont
     return [
       'formatter' => [
         'label' => 'above',
-        'type' => $field_type_definition['default_formatter'] ?: '',
+        'type' => isset($field_type_definition['default_formatter']) ? $field_type_definition['default_formatter'] : '',
         'settings' => [],
         'third_party_settings' => [],
         'weight' => 0,
@@ -205,14 +213,14 @@ class EntityField extends BlockBase implements ContextAwarePluginInterface, Cont
         'hidden' => '- ' . $this->t('Hidden') . ' -',
         'visually_hidden' => '- ' . $this->t('Visually Hidden') . ' -',
       ],
-      '#default_value' => $form_state->getValue('formatter_label') ?: $config['formatter']['label'],
+      '#default_value' => $config['formatter']['label'],
     ];
 
     $form['formatter_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Formatter'),
       '#options' => $this->getFormatterOptions(),
-      '#default_value' => $form_state->getValue('formatter_type') ?: $config['formatter']['type'],
+      '#default_value' => $config['formatter']['type'],
       '#ajax' => [
         'callback' => [static::class, 'formatterSettingsAjaxCallback'],
         'wrapper' => 'formatter-settings-wrapper',
@@ -288,6 +296,7 @@ class EntityField extends BlockBase implements ContextAwarePluginInterface, Cont
    * Gets the field definition.
    *
    * @return \Drupal\Core\Field\FieldDefinitionInterface
+   *   The field defination.
    */
   protected function getFieldDefinition() {
     if (empty($this->fieldDefinition)) {
@@ -303,6 +312,7 @@ class EntityField extends BlockBase implements ContextAwarePluginInterface, Cont
    * Gets the field storage definition.
    *
    * @return \Drupal\Core\Field\FieldStorageDefinitionInterface
+   *   The field storage defination.
    */
   protected function getFieldStorageDefinition() {
     if (empty($this->fieldStorageDefinition)) {
@@ -348,7 +358,7 @@ class EntityField extends BlockBase implements ContextAwarePluginInterface, Cont
    *   The formatter object.
    */
   protected function getFormatter($type, $label, array $settings, array $third_party_settings) {
-     return $this->formatterManager->createInstance($type, [
+    return $this->formatterManager->createInstance($type, [
       'field_definition' => $this->getFieldDefinition(),
       'view_mode' => 'default',
       'prepare' => TRUE,
@@ -358,12 +368,14 @@ class EntityField extends BlockBase implements ContextAwarePluginInterface, Cont
     ]);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function __wakeup() {
     parent::__wakeup();
     // @todo figure out why this happens.
     // prevent $fieldStorageDefinition being erroneously set to $this.
     $this->fieldStorageDefinition = NULL;
   }
-
 
 }

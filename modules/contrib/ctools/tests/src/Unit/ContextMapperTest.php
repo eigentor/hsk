@@ -1,16 +1,12 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\ctools\Unit\ContextMapperTest.
- */
-
 namespace Drupal\Tests\ctools\Unit;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Plugin\Context\Context;
 use Drupal\Core\Plugin\Context\ContextDefinition;
+use Drupal\Core\Plugin\Context\EntityContextDefinition;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\TypedData\Plugin\DataType\IntegerData;
 use Drupal\Core\TypedData\TypedDataManager;
@@ -101,7 +97,7 @@ class ContextMapperTest extends UnitTestCase {
         'value' => 'the_node_uuid',
       ],
     ];
-    $expected = new EntityLazyLoadContext(new ContextDefinition('entity:node', 'Foo'), $this->entityRepository->reveal(), 'the_node_uuid');
+    $expected = new EntityLazyLoadContext(new EntityContextDefinition('entity:node', 'Foo'), $this->entityRepository->reveal(), 'the_node_uuid');
     $actual = $this->staticContext->getContextValues($input)['foo'];
     $this->assertEquals($expected, $actual);
   }

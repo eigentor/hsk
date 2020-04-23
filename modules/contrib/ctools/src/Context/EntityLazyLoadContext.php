@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\ctools\Context\EntityLazyLoadContext.
- */
-
 namespace Drupal\ctools\Context;
 
 use Drupal\Core\Entity\EntityRepositoryInterface;
@@ -12,7 +7,7 @@ use Drupal\Core\Plugin\Context\Context;
 use Drupal\Core\Plugin\Context\ContextDefinitionInterface;
 
 /**
- * @todo.
+ * Defines context that loads entity on demand.
  */
 class EntityLazyLoadContext extends Context {
 
