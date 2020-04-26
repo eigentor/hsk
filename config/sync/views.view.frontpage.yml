@@ -17,7 +17,6 @@ description: 'Inhalt, der auf der Startseite veröffentlicht ist.'
 tag: default
 base_table: node_field_data
 base_field: nid
-core: 8.x
 display:
   default:
     display_options:
@@ -68,7 +67,7 @@ display:
         options:
           submit_button: Anwenden
           reset_button: false
-          reset_button_label: Reset
+          reset_button_label: Zurücksetzen
           exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
           sort_asc_label: Aufsteigend
@@ -88,6 +87,8 @@ display:
               authenticated: authenticated
             required: false
             use_operator: false
+            operator_limit_selection: false
+            operator_list: {  }
           exposed: false
           field: promote
           group: 1
@@ -115,6 +116,8 @@ display:
         status:
           expose:
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
           field: status
           group: 1
           id: status
@@ -148,6 +151,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -177,7 +182,7 @@ display:
             items_per_page_options_all: false
             items_per_page_options_all_label: '- Alle -'
             offset: false
-            offset_label: Versatz
+            offset_label: Offset
           tags:
             previous: '< Zurück'
             next: 'Weiter >'

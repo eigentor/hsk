@@ -15,7 +15,6 @@ description: 'Neuer Inhalt.'
 tag: default
 base_table: node_field_data
 base_field: nid
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -43,7 +42,7 @@ display:
         options:
           submit_button: Anwenden
           reset_button: false
-          reset_button_label: Reset
+          reset_button_label: Zurücksetzen
           exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
           sort_asc_label: Aufsteigend
@@ -189,6 +188,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -228,6 +229,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -290,7 +293,7 @@ display:
       display_extenders: {  }
       use_more: false
       use_more_always: false
-      use_more_text: More
+      use_more_text: Mehr
       link_url: ''
       link_display: '0'
     cache_metadata:

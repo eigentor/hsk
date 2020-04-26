@@ -13,7 +13,6 @@ description: 'Zeigt die Benutzernamen der zuletzt aktiven Benutzer und die Gesam
 tag: default
 base_table: users_field_data
 base_field: uid
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -41,7 +40,7 @@ display:
         options:
           submit_button: Anwenden
           reset_button: false
-          reset_button_label: Reset
+          reset_button_label: Zurücksetzen
           exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
           sort_asc_label: Aufsteigend
@@ -105,6 +104,8 @@ display:
           id: status
           expose:
             operator: '0'
+            operator_limit_selection: false
+            operator_list: {  }
           group: 1
           plugin_id: boolean
           entity_type: user
@@ -141,6 +142,8 @@ display:
             placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
