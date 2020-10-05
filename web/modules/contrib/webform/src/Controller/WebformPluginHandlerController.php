@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 class WebformPluginHandlerController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
-   * A webform handler plugin manager.
+   * The webform handler plugin manager.
    *
    * @var \Drupal\webform\Plugin\WebformHandlerManagerInterface
    */
@@ -61,7 +61,7 @@ class WebformPluginHandlerController extends ControllerBase implements Container
           $definition['description'],
           $definition['category'],
           (isset($excluded_handlers[$plugin_id])) ? $this->t('Yes') : $this->t('No'),
-          ($definition['cardinality'] == -1) ? $this->t('Unlimited') : $definition['cardinality'],
+          ($definition['cardinality'] === -1) ? $this->t('Unlimited') : $definition['cardinality'],
           $definition['conditions'] ? $this->t('Yes') : $this->t('No'),
           $definition['submission'] ? $this->t('Required') : $this->t('Optional'),
           $definition['results'] ? $this->t('Processed') : $this->t('Ignored'),
@@ -175,7 +175,7 @@ class WebformPluginHandlerController extends ControllerBase implements Container
           '#type' => 'link',
           '#title' => $definition['label'],
           '#url' => Url::fromRoute('entity.webform.handler.add_form', ['webform' => $webform->id(), 'webform_handler' => $plugin_id]),
-          '#attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(),
+          '#attributes' => WebformDialogHelper::getOffCanvasDialogAttributes($handler_plugin->getOffCanvasWidth()),
           '#prefix' => '<div class="webform-form-filter-text-source">',
           '#suffix' => '</div>',
         ];
@@ -202,7 +202,7 @@ class WebformPluginHandlerController extends ControllerBase implements Container
         $links['add'] = [
           'title' => $this->t('Add handler'),
           'url' => Url::fromRoute('entity.webform.handler.add_form', ['webform' => $webform->id(), 'webform_handler' => $plugin_id]),
-          'attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(),
+          'attributes' => WebformDialogHelper::getOffCanvasDialogAttributes($handler_plugin->getOffCanvasWidth()),
         ];
         $row['operations']['data'] = [
           '#type' => 'operations',

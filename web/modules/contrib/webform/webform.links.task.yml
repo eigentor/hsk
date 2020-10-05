@@ -109,12 +109,6 @@ webform.help:
   base_route: entity.webform.collection
   weight: 60
 
-webform.help.videos:
-  title: 'Videos'
-  route_name: webform.help
-  parent_id: webform.help
-  weight: 0
-
 # Form
 
 entity.webform.canonical:
@@ -225,11 +219,18 @@ entity.webform.variants:
 
 # Export
 
-entity.webform.export_form:
+entity.webform.export:
   title: 'Export'
   route_name: entity.webform.export_form
   base_route: entity.webform.canonical
   weight: 60
+
+entity.webform.export_form:
+  title: 'Config'
+  route_name: entity.webform.export_form
+  parent_id: entity.webform.export
+  base_route: entity.webform.canonical
+  weight: 0
 
 # Submission
 

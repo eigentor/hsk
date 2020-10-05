@@ -31,37 +31,32 @@ class WebformElementHelper {
     // Properties that will cause unpredictable rendering.
     '#weight' => '#weight',
     // Callbacks are blocked to prevent unwanted code executions.
+    '#access_callback' => '#access_callback',
+    '#ajax' => '#ajax',
     '#after_build' => '#after_build',
     '#element_validate' => '#element_validate',
+    '#lazy_builder' => '#lazy_builder',
     '#post_render' => '#post_render',
     '#pre_render' => '#pre_render',
     '#process' => '#process',
     '#submit' => '#submit',
     '#validate' => '#validate',
     '#value_callback' => '#value_callback',
+    // Element specific callbacks.
+    '#file_value_callbacks' => '#file_value_callbacks',
+    '#date_date_callbacks' => '#date_date_callbacks',
+    '#date_time_callbacks' => '#date_time_callbacks',
+    '#captcha_validate' => '#captcha_validate',
   ];
 
   /**
-   * Ignored element sub properties used by composite elements.
+   * Allowed (whitelist) element properties.
    *
    * @var array
    */
-  public static $ignoredSubProperties = [
-    // Properties that will allow code injection.
-    '#allowed_tags' => '#allowed_tags',
-    // Properties that will break webform data handling.
-    '#tree' => '#tree',
-    '#array_parents' => '#array_parents',
-    '#parents' => '#parents',
-    // Callbacks are blocked to prevent unwanted code executions.
-    '#after_build' => '#after_build',
-    '#element_validate' => '#element_validate',
-    '#post_render' => '#post_render',
-    '#pre_render' => '#pre_render',
-    '#process' => '#process',
-    '#submit' => '#submit',
-    '#validate' => '#validate',
-    '#value_callback' => '#value_callback',
+  public static $allowedProperties = [
+    // webform_validation.module.
+    '#equal_stepwise_validate' => '#equal_stepwise_validate',
   ];
 
   /**
@@ -70,6 +65,13 @@ class WebformElementHelper {
    * @var string
    */
   protected static $ignoredSubPropertiesRegExp;
+
+  /**
+   * Regular expression used to determine if sub-element property should be allowed.
+   *
+   * @var string
+   */
+  protected static $allowedSubPropertiesRegExp;
 
   /**
    * Determine if an element and its key is a renderable array.
@@ -312,14 +314,7 @@ class WebformElementHelper {
    *   A webform element that is missing the 'data-drupal-states' attribute.
    */
   public static function fixStatesWrapper(array &$element) {
-    if (empty($element['#states'])) {
-      return;
-    }
-
     $attributes = [];
-
-    // Set .js-form-wrapper which is targeted by states.js hide/show logic.
-    $attributes['class'][] = 'js-form-wrapper';
 
     // Add .js-webform-states-hidden to hide elements when they are being rendered.
     $attributes_properties = ['#wrapper_attributes', '#attributes'];
@@ -334,27 +329,39 @@ class WebformElementHelper {
       }
     }
 
-    $attributes['data-drupal-states'] = Json::encode($element['#states']);
+    // Do not add wrapper if there is no #states and
+    // is no .js-webform-states-hidden class.
+    if (empty($element['#states']) && empty($attributes)) {
+      return;
+    }
+
+    // Set .js-form-wrapper which is targeted by states.js hide/show logic.
+    $attributes['class'][] = 'js-form-wrapper';
+
+    // Move the element's #states the wrapper's #states.
+    if (isset($element['#states'])) {
+      $attributes['data-drupal-states'] = Json::encode($element['#states']);
+
+      // Copy #states to #_webform_states property which can be used by the
+      // WebformSubmissionConditionsValidator.
+      // @see \Drupal\webform\WebformSubmissionConditionsValidator
+      $element['#_webform_states'] = $element['#states'];
+
+      // Remove #states property to prevent nesting.
+      unset($element['#states']);
+    }
+
+    // If there are attributes for the wrapper do not add it.
+    if (empty($attributes)) {
+      return;
+    }
 
     $element += ['#prefix' => '', '#suffix' => ''];
-
-    // ISSUE: JSON is being corrupted when the prefix is rendered.
-    // $element['#prefix'] = '<div ' . new Attribute($attributes) . '>' . $element['#prefix'];
-    // WORKAROUND: Safely set filtered #prefix to FormattableMarkup.
-    $allowed_tags = isset($element['#allowed_tags']) ? $element['#allowed_tags'] : Xss::getHtmlTagList();
-    $element['#prefix'] = Markup::create('<div' . new Attribute($attributes) . '>' . Xss::filter($element['#prefix'], $allowed_tags));
+    $element['#prefix'] = '<div' . new Attribute($attributes) . '>' . $element['#prefix'];
     $element['#suffix'] = $element['#suffix'] . '</div>';
 
     // Attach library.
     $element['#attached']['library'][] = 'core/drupal.states';
-
-    // Copy #states to #_webform_states property which can be used by the
-    // WebformSubmissionConditionsValidator.
-    // @see \Drupal\webform\WebformSubmissionConditionsValidator
-    $element['#_webform_states'] = $element['#states'];
-
-    // Remove #states property to prevent nesting.
-    unset($element['#states']);
   }
 
   /**
@@ -371,9 +378,14 @@ class WebformElementHelper {
     foreach ($element as $key => $value) {
       if (Element::property($key)) {
         if (self::isIgnoredProperty($key)) {
-          $ignored_properties[$key] = $key;
+          // Computed elements use #ajax as boolean and should not be ignored.
+          // @see \Drupal\webform\Element\WebformComputedBase
+          $is_ajax_computed = ($key === '#ajax' && is_bool($value));
+          if (!$is_ajax_computed) {
+            $ignored_properties[$key] = $key;
+          }
         }
-        elseif ($key == '#element' && is_array($value) && isset($element['#type']) && $element['#type'] === 'webform_composite') {
+        elseif ($key === '#element' && is_array($value) && isset($element['#type']) && $element['#type'] === 'webform_composite') {
           foreach ($value as $composite_value) {
 
             // Multiple sub composite elements are not supported.
@@ -409,8 +421,16 @@ class WebformElementHelper {
    */
   public static function removeIgnoredProperties(array $element) {
     foreach ($element as $key => $value) {
-      if (Element::property($key) && self::isIgnoredProperty($key)) {
-        unset($element[$key]);
+      if ($key && is_string($key) && Element::property($key) && self::isIgnoredProperty($key)) {
+        // Computed elements use #ajax as boolean and should not be ignored.
+        // @see \Drupal\webform\Element\WebformComputedBase
+        $is_ajax_computed = ($key === '#ajax' && is_bool($value));
+        if (!$is_ajax_computed) {
+          unset($element[$key]);
+        }
+      }
+      elseif (is_array($value)) {
+        $element[$key] = static::removeIgnoredProperties($value);
       }
     }
     return $element;
@@ -419,7 +439,8 @@ class WebformElementHelper {
   /**
    * Determine if an element's property should be ignored.
    *
-   * Subelement properties are delimited using __.
+   * - Subelement properties are delimited using __.
+   * - All _validation and _callback properties are ignored.
    *
    * @param string $property
    *   A property name.
@@ -433,13 +454,28 @@ class WebformElementHelper {
   protected static function isIgnoredProperty($property) {
     // Build cached ignored sub properties regular expression.
     if (!isset(self::$ignoredSubPropertiesRegExp)) {
-      self::$ignoredSubPropertiesRegExp = '/__(' . implode('|', array_keys(WebformArrayHelper::removePrefix(self::$ignoredSubProperties))) . ')$/';
+      $allowedSubProperties = self::$allowedProperties;
+      $ignoredSubProperties = self::$ignoredProperties;
+      // Allow #weight as sub property. This makes it easier for developer to
+      // sort composite sub-elements.
+      unset($ignoredSubProperties['#weight']);
+      self::$ignoredSubPropertiesRegExp = '/__(' . implode('|', array_keys(WebformArrayHelper::removePrefix($ignoredSubProperties))) . ')$/';
+      self::$allowedSubPropertiesRegExp = '/__(' . implode('|', array_keys(WebformArrayHelper::removePrefix($allowedSubProperties))) . ')$/';
     }
 
-    if (isset(self::$ignoredProperties[$property])) {
+    if (isset(self::$allowedProperties[$property])) {
+      return FALSE;
+    }
+    elseif (strpos($property, '__') !== FALSE && preg_match(self::$allowedSubPropertiesRegExp, $property)) {
+      return FALSE;
+    }
+    elseif (isset(self::$ignoredProperties[$property])) {
       return TRUE;
     }
     elseif (strpos($property, '__') !== FALSE && preg_match(self::$ignoredSubPropertiesRegExp, $property)) {
+      return TRUE;
+    }
+    elseif (preg_match('/_(validates?|callbacks?)$/', $property)) {
       return TRUE;
     }
     else {
@@ -547,7 +583,7 @@ class WebformElementHelper {
    */
   public static function &getElement(array &$elements, $name) {
     foreach (Element::children($elements) as $element_name) {
-      if ($element_name == $name) {
+      if ($element_name === $name) {
         return $elements[$element_name];
       }
       elseif (is_array($elements[$element_name])) {
