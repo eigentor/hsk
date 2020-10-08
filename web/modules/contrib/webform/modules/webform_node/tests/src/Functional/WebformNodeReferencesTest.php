@@ -75,7 +75,7 @@ class WebformNodeReferencesTest extends WebformNodeBrowserTestBase {
       'webform_default_data[letter]' => 'a',
       'webform_default_data[number]' => '1',
     ];
-    $this->drupalPostForm('/admin/structure/webform/manage/test_variant_multiple/references/add', $edit, t('Create content'));
+    $this->drupalPostForm('/admin/structure/webform/manage/test_variant_multiple/references/add', $edit, 'Create content');
     $this->assertFieldByName('title[0][value]', 'Testing 123');
     $this->assertOptionSelected('edit-webform-0-target-id', 'test_variant_multiple');
     $this->assertRaw('>letter: a

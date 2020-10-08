@@ -39,7 +39,7 @@ class WebformElementSignatureTest extends WebformElementBrowserTestBase {
     $this->assertRaw('<div id="edit-signature--description" class="webform-element-description">Sign above</div>');
 
     // Check signature preview image.
-    $this->postSubmissionTest($webform, [], t('Preview'));
+    $this->postSubmissionTest($webform, [], 'Preview');
     $this->assertRaw("$signature_path/signature-");
     $this->assertRaw(' alt="Signature" class="webform-signature-image" />');
     $this->assertCount(1, \Drupal::service('file_system')->scanDirectory($signature_directory, '/^signature-.*\.png$/'));
@@ -95,7 +95,7 @@ class WebformElementSignatureTest extends WebformElementBrowserTestBase {
     $this->drupalGet('/webform/test_element_signature');
     $field = $this->assertSession()->hiddenFieldExists('signature');
     $field->setValue($value);
-    $this->submitForm([], t('Submit'));
+    $this->submitForm([], 'Submit');
     if ($is_valid) {
       $this->assertNoRaw('signature contains an invalid signature.');
     }

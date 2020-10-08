@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Render\Element;
 use Drupal\webform\Element\WebformAjaxElementTrait;
 use Drupal\webform\Element\WebformEntityTrait;
 use Drupal\webform\Element\WebformMessage;
@@ -43,66 +44,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOptionsLimitHandlerInterface {
 
   use WebformAjaxElementTrait;
-
-  /**
-   * Default option value.
-   */
-  const DEFAULT_LIMIT = '_default_';
-
-  /**
-   * Option limit single remaining.
-   */
-  const LIMIT_STATUS_SINGLE = 'single';
-
-  /**
-   * Option limit multiple remaining.
-   */
-  const LIMIT_STATUS_MULTIPLE = 'multiple';
-
-  /**
-   * Option limit none remaining.
-   */
-  const LIMIT_STATUS_NONE = 'none';
-
-  /**
-   * Option limit unlimited.
-   */
-  const LIMIT_STATUS_UNLIMITED = 'unlimited';
-
-  /**
-   * Option limit eror.
-   */
-  const LIMIT_STATUS_ERROR = 'error';
-
-  /**
-   * Option limit action disable.
-   */
-  const LIMIT_ACTION_DISABLE = 'disable';
-
-  /**
-   * Option limit action remove.
-   */
-  const LIMIT_ACTION_REMOVE = 'remove';
-
-  /**
-   * Option limit action none.
-   */
-  const LIMIT_ACTION_NONE = 'none';
-
-  /**
-   * Option message label.
-   */
-  const MESSAGE_DISPLAY_LABEL = 'label';
-
-  /**
-   * Option message none.
-   */
-  const MESSAGE_DISPLAY_DESCRIPTION = 'description';
-
-  /**
-   * Option message none.
-   */
-  const MESSAGE_DISPLAY_NONE = 'none';
 
   /**
    * The database object.
@@ -312,7 +253,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
 
       if ($this->isOptionsElement()) {
         $element_options = $this->getElementOptions() + [
-          static::DEFAULT_LIMIT => $this->t('Default (Used when option has no limit)'),
+          WebformOptionsLimitHandlerInterface::DEFAULT_LIMIT => $this->t('Default (Used when option has no limit)'),
         ];
         $form['element_settings']['options_container']['limits'] = [
           '#type' => 'webform_mapping',
@@ -400,9 +341,9 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       '#type' => 'select',
       '#title' => $this->t('Limit reached behavior'),
       '#options' => [
-        static::LIMIT_ACTION_DISABLE => $this->t('Disable the option/checkbox'),
-        static::LIMIT_ACTION_REMOVE => $this->t('Remove the option/checkbox'),
-        static::LIMIT_ACTION_NONE => $this->t('Do not alter the option/checkbox'),
+        WebformOptionsLimitHandlerInterface::LIMIT_ACTION_DISABLE => $this->t('Disable the option/checkbox'),
+        WebformOptionsLimitHandlerInterface::LIMIT_ACTION_REMOVE => $this->t('Remove the option/checkbox'),
+        WebformOptionsLimitHandlerInterface::LIMIT_ACTION_NONE => $this->t('Do not alter the option/checkbox'),
       ],
       '#default_value' => $this->configuration['option_none_action'],
     ];
@@ -410,9 +351,9 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       '#type' => 'select',
       '#title' => $this->t('Message display'),
       '#options' => [
-        static::MESSAGE_DISPLAY_LABEL => $this->t("Append message to the option/checkbox's text"),
-        static::MESSAGE_DISPLAY_DESCRIPTION => $this->t("Append message to the option/checkbox's description"),
-        static::MESSAGE_DISPLAY_NONE => $this->t("Do not display a message"),
+        WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_LABEL => $this->t("Append message to the option/checkbox's text"),
+        WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_DESCRIPTION => $this->t("Append message to the option/checkbox's description"),
+        WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_NONE => $this->t("Do not display a message"),
       ],
       '#default_value' => $this->configuration['option_message_display'],
     ];
@@ -478,7 +419,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
         '#default_value' => $this->configuration['tableselect_header'],
         '#states' => [
           'visible' => [
-            ':input[name="settings[option_message_display]"]' => ['value' => static::MESSAGE_DISPLAY_DESCRIPTION],
+            ':input[name="settings[option_message_display]"]' => ['value' => WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_DESCRIPTION],
             $tableselect_states,
           ],
         ],
@@ -555,7 +496,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       // Set table select description in header.
       if ($this->isTableSelectElement()) {
         $message_display = $this->configuration['option_message_display'];
-        if ($message_display === static::MESSAGE_DISPLAY_DESCRIPTION) {
+        if ($message_display === WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_DESCRIPTION) {
           $element['#header']['webform_options_limit'] = $this->configuration['tableselect_header'] ?: '';
         }
       }
@@ -592,7 +533,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
    */
   public static function validateElement(&$element, FormStateInterface $form_state, &$complete_form) {
     // Skip if element is not visible.
-    if (isset($element['#access']) && $element['#access'] === FALSE) {
+    if (!Element::isVisibleElement($element)) {
       return;
     }
 
@@ -696,11 +637,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
     // Disable or remove reached options.
     if ($reached) {
       switch ($this->configuration['option_none_action']) {
-        case static::LIMIT_ACTION_DISABLE:
+        case WebformOptionsLimitHandlerInterface::LIMIT_ACTION_DISABLE:
           $this->disableOptionsElement($element, $reached);
           break;
 
-        case static::LIMIT_ACTION_REMOVE:
+        case WebformOptionsLimitHandlerInterface::LIMIT_ACTION_REMOVE:
           $this->removeOptionsElement($element, $reached);
           break;
       }
@@ -732,13 +673,13 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
           $message_display = $this->configuration['option_message_display'];
           $option =& $options[$option_value][0];
           switch ($message_display) {
-            case static::MESSAGE_DISPLAY_DESCRIPTION:
+            case WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_DESCRIPTION:
               list(
                 $option['value'],
                 $option['webform_options_limit']) = explode(' --', $label);
               break;
 
-            case static::MESSAGE_DISPLAY_LABEL:
+            case WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_LABEL:
               $option['value'] = $label;
               break;
           }
@@ -857,8 +798,8 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       if (in_array($value, $original_values)) {
         continue;
       }
-      if ($limit['status'] === static::LIMIT_STATUS_NONE) {
-        $message = $this->getElementLimitStatusMessage(static::LIMIT_STATUS_ERROR, $limit);
+      if ($limit['status'] === WebformOptionsLimitHandlerInterface::LIMIT_STATUS_NONE) {
+        $message = $this->getElementLimitStatusMessage(WebformOptionsLimitHandlerInterface::LIMIT_STATUS_ERROR, $limit);
         $form_state->setError($element, $message);
       }
     }
@@ -880,7 +821,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
    */
   protected function setBooleanElementDefaultValue(array &$element, array $limit, $operation) {
     if ($operation === 'test') {
-      if ($limit['status'] === static::LIMIT_STATUS_NONE) {
+      if ($limit['status'] === WebformOptionsLimitHandlerInterface::LIMIT_STATUS_NONE) {
         unset($element['#default_value']);
       }
     }
@@ -888,7 +829,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       $element_key = $this->configuration['element_key'];
       $webform_submission = $this->getWebformSubmission();
       $original_value = $webform_submission->getElementOriginalData($element_key);
-      if ($limit['status'] === static::LIMIT_STATUS_NONE && !$original_value) {
+      if ($limit['status'] === WebformOptionsLimitHandlerInterface::LIMIT_STATUS_NONE && !$original_value) {
         unset($element['#default_value']);
       }
     }
@@ -905,11 +846,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
   protected function alterBooleanElement(array &$element, array $limit) {
     // Set message.
     $message_display = $this->configuration['option_message_display'];
-    if ($message_display !== static::MESSAGE_DISPLAY_NONE) {
+    if ($message_display !== WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_NONE) {
       $message = $this->getElementLimitStatusMessage($limit['status'], $limit);
       if ($message) {
         switch ($message_display) {
-          case static::MESSAGE_DISPLAY_LABEL:
+          case WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_LABEL:
             $t_args = [
               '@label' => $element['#title'],
               '@message' => $message,
@@ -917,7 +858,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
             $element['#title'] = $this->t('@label @message', $t_args);
             break;
 
-          case static::MESSAGE_DISPLAY_DESCRIPTION:
+          case WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_DESCRIPTION:
             $element += ['#description' => ''];
             $element['#description'] .= ($element['#description']) ? '<br/>' . $message : $message;
             break;
@@ -929,13 +870,13 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
     $element_key = $this->configuration['element_key'];
     $webform_submission = $this->getWebformSubmission();
     $boolean_value = (boolean) ($webform_submission->getElementOriginalData($element_key) ?: FALSE);
-    if ($limit['status'] === static::LIMIT_STATUS_NONE && !$boolean_value) {
+    if ($limit['status'] === WebformOptionsLimitHandlerInterface::LIMIT_STATUS_NONE && !$boolean_value) {
       switch ($this->configuration['option_none_action']) {
-        case static::LIMIT_ACTION_DISABLE:
+        case WebformOptionsLimitHandlerInterface::LIMIT_ACTION_DISABLE:
           $element['#disabled'] = TRUE;
           break;
 
-        case static::LIMIT_ACTION_REMOVE:
+        case WebformOptionsLimitHandlerInterface::LIMIT_ACTION_REMOVE:
           $element['#access'] = FALSE;
           break;
       }
@@ -980,7 +921,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
     $total = $this->getBooleanTotal();
     if ($total >= $limit) {
       $limits = $this->getBooleanLimits();
-      $message = $this->getElementLimitStatusMessage(static::LIMIT_STATUS_ERROR, reset($limits));
+      $message = $this->getElementLimitStatusMessage(WebformOptionsLimitHandlerInterface::LIMIT_STATUS_ERROR, reset($limits));
       $form_state->setError($element, $message);
     }
   }
@@ -1235,8 +1176,8 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
    *   including the option's limit, total, remaining, and status.
    */
   protected function getOptionsLimits(array $values = []) {
-    $default_limit = isset($this->configuration['limits'][static::DEFAULT_LIMIT])
-      ? $this->configuration['limits'][static::DEFAULT_LIMIT]
+    $default_limit = isset($this->configuration['limits'][WebformOptionsLimitHandlerInterface::DEFAULT_LIMIT])
+      ? $this->configuration['limits'][WebformOptionsLimitHandlerInterface::DEFAULT_LIMIT]
       : NULL;
 
     $totals = $this->getOptionsTotals($values);
@@ -1295,16 +1236,16 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
     $remaining = ($limit) ? $limit - $total : NULL;
 
     if (empty($limit)) {
-      $status = static::LIMIT_STATUS_UNLIMITED;
+      $status = WebformOptionsLimitHandlerInterface::LIMIT_STATUS_UNLIMITED;
     }
     elseif ($remaining <= 0) {
-      $status = static::LIMIT_STATUS_NONE;
+      $status = WebformOptionsLimitHandlerInterface::LIMIT_STATUS_NONE;
     }
     elseif ($remaining === 1) {
-      $status = static::LIMIT_STATUS_SINGLE;
+      $status = WebformOptionsLimitHandlerInterface::LIMIT_STATUS_SINGLE;
     }
     else {
-      $status = static::LIMIT_STATUS_MULTIPLE;
+      $status = WebformOptionsLimitHandlerInterface::LIMIT_STATUS_MULTIPLE;
     }
 
     return [
@@ -1334,7 +1275,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       if ($element_values && in_array($option_value, $element_values)) {
         continue;
       }
-      if ($limit['status'] === static::LIMIT_STATUS_NONE) {
+      if ($limit['status'] === WebformOptionsLimitHandlerInterface::LIMIT_STATUS_NONE) {
         $reached[$option_value] = $option_value;
       }
     }
@@ -1472,7 +1413,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
    */
   protected function getOptionsLimitLabel($label, array $limit) {
     $message_display = $this->configuration['option_message_display'];
-    if ($message_display === static::MESSAGE_DISPLAY_NONE) {
+    if ($message_display === WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_NONE) {
       return $label;
     }
 
@@ -1482,11 +1423,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
     }
 
     switch ($message_display) {
-      case static::MESSAGE_DISPLAY_LABEL:
+      case WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_LABEL:
         $t_args = ['@label' => $label, '@message' => $message];
         return $this->t('@label @message', $t_args);
 
-      case static::MESSAGE_DISPLAY_DESCRIPTION:
+      case WebformOptionsLimitHandlerInterface::MESSAGE_DISPLAY_DESCRIPTION:
         return $label
           . (strpos($label, WebformOptionsHelper::DESCRIPTION_DELIMITER) === FALSE ? WebformOptionsHelper::DESCRIPTION_DELIMITER : '')
           . $message;

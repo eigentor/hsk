@@ -47,7 +47,7 @@ class WebformElementTest extends WebformElementBrowserTestBase {
       'subject' => '{subject}',
       'message' => '{message}',
     ];
-    $this->drupalPostForm('/webform_test_element', $edit, t('Send message'));
+    $this->drupalPostForm('/webform_test_element', $edit, 'Send message');
     $this->assertUrl('/');
     $this->assertRaw('Your message has been sent.');
 

@@ -53,15 +53,15 @@ class WebformHelpTest extends WebformBrowserTestBase {
 
     // Check that help is enabled.
     $this->drupalGet('/admin/structure/webform/config/advanced');
-    $this->assertRaw('block block-help block-help-block');
+    $this->assertPattern('#<div id="block-[^"]+" role="complementary">#');
     $this->assertRaw('The <strong>Advanced configuration</strong> page allows an administrator to enable/disable UI behaviors, manage requirements and define data used for testing webforms.');
 
     // Disable help via the UI which will clear the cached help block.
-    $this->drupalPostForm('/admin/structure/webform/config/advanced', ['ui[help_disabled]' => TRUE], t('Save configuration'));
+    $this->drupalPostForm('/admin/structure/webform/config/advanced', ['ui[help_disabled]' => TRUE], 'Save configuration');
 
     // Check that help is disabled.
     $this->drupalGet('/admin/structure/webform/config/advanced');
-    $this->assertNoRaw('block block-help block-help-block');
+    $this->assertNoPattern('#<div id="block-[^"]+" role="complementary">#');
     $this->assertNoRaw('The <strong>Advanced configuration</strong> page allows an administrator to enable/disable UI behaviors, manage requirements and define data used for testing webforms.');
 
   }

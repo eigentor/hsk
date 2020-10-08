@@ -63,7 +63,7 @@ class WebformCompositePluginTest extends WebformBrowserTestBase {
       'webform_test_composite[nested_select]' => 'Monday',
       'webform_test_composite[nested_radios]' => 'Monday',
     ];
-    $this->drupalPostForm('/webform/test_element_composite_plugin', $edit, t('Submit'));
+    $this->drupalPostForm('/webform/test_element_composite_plugin', $edit, 'Submit');
     $this->assertRaw("webform_test_composite:
   textfield: '{textfield}'
   email: email@email.com

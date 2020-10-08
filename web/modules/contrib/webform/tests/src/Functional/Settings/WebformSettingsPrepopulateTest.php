@@ -71,7 +71,7 @@ class WebformSettingsPrepopulateTest extends WebformBrowserTestBase {
     /**************************************************************************/
 
     // Check prepopulating source entity.
-    $this->drupalPostForm('/webform/test_form_prepopulate', [], t('Submit'), ['query' => ['source_entity_type' => 'webform', 'source_entity_id' => 'contact']]);
+    $this->drupalPostForm('/webform/test_form_prepopulate', [], 'Submit', ['query' => ['source_entity_type' => 'webform', 'source_entity_id' => 'contact']]);
     $sid = $this->getLastSubmissionId($webform_prepopulate);
     $webform_submission = WebformSubmission::load($sid);
     $this->assertNotNull($webform_submission->getSourceEntity());
@@ -83,7 +83,7 @@ class WebformSettingsPrepopulateTest extends WebformBrowserTestBase {
     // Check disabling prepopulation source entity.
     $webform_prepopulate->setSetting('form_prepopulate_source_entity', FALSE);
     $webform_prepopulate->save();
-    $this->drupalPostForm('/webform/test_form_prepopulate', [], t('Submit'), ['query' => ['source_entity_type' => 'webform', 'source_entity_id' => 'contact']]);
+    $this->drupalPostForm('/webform/test_form_prepopulate', [], 'Submit', ['query' => ['source_entity_type' => 'webform', 'source_entity_id' => 'contact']]);
     $sid = $this->getLastSubmissionId($webform_prepopulate);
     $webform_submission = WebformSubmission::load($sid);
     $this->assertNull($webform_submission->getSourceEntity());
@@ -110,7 +110,7 @@ class WebformSettingsPrepopulateTest extends WebformBrowserTestBase {
 
     // Check that required prepopulated source entity can be updated (edit).
     $this->drupalLogin($this->rootUser);
-    $sid = $this->postSubmission($webform_prepopulate, [], t('Submit'), ['query' => ['source_entity_type' => 'webform', 'source_entity_id' => 'contact']]);
+    $sid = $this->postSubmission($webform_prepopulate, [], 'Submit', ['query' => ['source_entity_type' => 'webform', 'source_entity_id' => 'contact']]);
     $this->drupalGet("/admin/structure/webform/manage/test_form_prepopulate/submission/$sid/edit");
     $this->assertNoRaw('This webform is not available. Please contact the site administrator.');
     $this->drupalLogout();

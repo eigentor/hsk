@@ -293,7 +293,7 @@ class WebformNodeTest extends WebformNodeBrowserTestBase {
       'subject' => 'subject',
       'message' => 'message',
     ];
-    $this->drupalPostForm('/webform/contact', $edit, t('Send message'), $source_entity_options);
+    $this->drupalPostForm('/webform/contact', $edit, 'Send message', $source_entity_options);
     $sid = $this->getLastSubmissionId($webform_contact);
     $submission = WebformSubmission::load($sid);
     $this->assertNotNull($submission->getSourceEntity());

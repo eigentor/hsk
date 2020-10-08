@@ -31,7 +31,7 @@ class WebformScheduledEmailTranslationTest extends WebformNodeBrowserTestBase {
     /**************************************************************************/
 
     // Scheduled English email.
-    $this->drupalPostForm('/webform/' . $webform_schedule->id(), [], t('Submit'));
+    $this->drupalPostForm('/webform/' . $webform_schedule->id(), [], 'Submit');
 
     // Send email.
     $scheduled_manager->cron();
@@ -42,7 +42,7 @@ class WebformScheduledEmailTranslationTest extends WebformNodeBrowserTestBase {
     $this->assertEqual($sent_email['body'], 'English Body' . PHP_EOL);
 
     // Scheduled Spanish email.
-    $this->drupalPostForm('/es/webform/' . $webform_schedule->id(), [], t('Submit'));
+    $this->drupalPostForm('/es/webform/' . $webform_schedule->id(), [], 'Submit');
 
     // Send email.
     $scheduled_manager->cron();

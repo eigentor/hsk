@@ -21,7 +21,7 @@ class WebformElementAttributesTest extends WebformElementBrowserTestBase {
    */
   public function testAttributes() {
     // Check default value handling.
-    $this->drupalPostForm('/webform/test_element_attributes', [], t('Submit'));
+    $this->drupalPostForm('/webform/test_element_attributes', [], 'Submit');
     $this->assertRaw("webform_element_attributes:
   class:
     - one

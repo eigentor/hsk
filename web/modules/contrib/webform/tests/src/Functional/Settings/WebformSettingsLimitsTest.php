@@ -72,7 +72,7 @@ class WebformSettingsLimitsTest extends WebformBrowserTestBase {
     $this->drupalLogin($own_submission_user);
 
     // Check that draft does not count toward limit.
-    $this->postSubmission($webform_limit, [], t('Save Draft'));
+    $this->postSubmission($webform_limit, [], 'Save Draft');
     $this->drupalGet('/webform/test_form_limit');
     $this->assertFieldByName('op', 'Submit');
     $this->assertRaw('A partially-completed form was found. Please complete the remaining portions.');

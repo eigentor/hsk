@@ -43,7 +43,7 @@ class WebformElementManagedFilePublicTest extends WebformElementBrowserTestBase 
   public function testPublicUpload() {
     // Check status report private file system warning.
     $requirements = webform_requirements('runtime');
-    $this->assertEqual($requirements['webform_file_private']['value'], (string) t('Private file system is set.'));
+    $this->assertEqual($requirements['webform_file_private']['value'], (string) 'Private file system is set.');
 
     $this->drupalLogin($this->rootUser);
 

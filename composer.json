@@ -19,7 +19,7 @@
         "drupal/better_exposed_filters": "^5.0@beta",
         "drupal/core-composer-scaffold": "^8.9",
         "drupal/core-recommended": "^8.9",
-        "drupal/webform": "5.14",
+        "drupal/webform": "^5.22",
         "drush/drush": "^10.2"
     },
     "conflict": {

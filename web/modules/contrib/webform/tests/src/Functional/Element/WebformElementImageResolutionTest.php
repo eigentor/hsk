@@ -32,11 +32,11 @@ class WebformElementImageResolutionTest extends WebformElementBrowserTestBase {
     $this->assertRaw('{description}');
 
     // Check validation.
-    $this->drupalPostForm('/webform/test_element_image_resolution', ['webform_image_resolution[x]' => '100'], t('Submit'));
+    $this->drupalPostForm('/webform/test_element_image_resolution', ['webform_image_resolution[x]' => '100'], 'Submit');
     $this->assertRaw('Both a height and width value must be specified in the webform_image_resolution field.');
 
     // Check processing.
-    $this->drupalPostForm('/webform/test_element_image_resolution', [], t('Submit'));
+    $this->drupalPostForm('/webform/test_element_image_resolution', [], 'Submit');
     $this->assertRaw("webform_image_resolution: ''
 webform_image_resolution_advanced: 300x400");
   }

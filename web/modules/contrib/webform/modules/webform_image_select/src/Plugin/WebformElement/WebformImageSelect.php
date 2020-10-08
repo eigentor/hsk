@@ -154,7 +154,7 @@ class WebformImageSelect extends Select {
    * {@inheritdoc}
    */
   protected function formatTextItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    if ($this->getItemFormat($element) == 'image') {
+    if ($this->getItemFormat($element) === 'image') {
       $element['#format'] = 'value';
     }
     return parent::formatTextItem($element, $webform_submission, $options);
@@ -252,6 +252,7 @@ class WebformImageSelect extends Select {
     ];
     $form['options']['filter_container'] = [
       '#type' => 'container',
+      '#attributes' => ['data-webform-states-no-clear' => TRUE],
       '#states' => [
         'visible' => [
           ':input[name="properties[filter]"]' => ['checked' => TRUE],

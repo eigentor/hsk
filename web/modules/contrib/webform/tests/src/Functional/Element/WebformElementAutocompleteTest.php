@@ -59,7 +59,7 @@ class WebformElementAutocompleteTest extends WebformElementBrowserTestBase {
     $this->assertRaw('[]');
 
     // Add #autocomplete_existing values to the submission table.
-    $this->drupalPostForm('/webform/test_element_autocomplete', ['autocomplete_existing' => 'abcdefg'], t('Submit'));
+    $this->drupalPostForm('/webform/test_element_autocomplete', ['autocomplete_existing' => 'abcdefg'], 'Submit');
 
     // Check #autocomplete_existing enabled now that there is submission.
     $this->drupalGet('/webform/test_element_autocomplete');
@@ -79,7 +79,7 @@ class WebformElementAutocompleteTest extends WebformElementBrowserTestBase {
     /* Test #autocomplete_existing and #autocomplete_items element property */
 
     // Add #autocomplete_body values to the submission table.
-    $this->drupalPostForm('/webform/test_element_autocomplete', ['autocomplete_both' => 'Existing Item'], t('Submit'));
+    $this->drupalPostForm('/webform/test_element_autocomplete', ['autocomplete_both' => 'Existing Item'], 'Submit');
 
     // Check #autocomplete_both match.
     $this->drupalGet('/webform/test_element_autocomplete/autocomplete/autocomplete_both', ['query' => ['q' => 'Item']]);

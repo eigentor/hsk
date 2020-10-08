@@ -82,9 +82,9 @@ class WebformSubmissionStorageTest extends WebformBrowserTestBase {
 
     // Create drafts for user1 and user2.
     $this->drupalLogin($user1);
-    $this->postSubmission($webform, [], t('Save Draft'));
+    $this->postSubmission($webform, [], 'Save Draft');
     $this->drupalLogin($user2);
-    $this->postSubmission($webform, [], t('Save Draft'));
+    $this->postSubmission($webform, [], 'Save Draft');
 
     // Check totals remains the same with drafts.
     $this->assertEqual($storage->getTotal($webform), 6);

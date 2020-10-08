@@ -50,7 +50,7 @@ class WebformRenderingTest extends WebformBrowserTestBase {
     // Preview.
     /**************************************************************************/
 
-    $this->drupalPostForm('/webform/test_rendering', [], t('Preview'));
+    $this->drupalPostForm('/webform/test_rendering', [], 'Preview');
 
     // Check preview submission_label.
     $this->assertRaw('submission &lt;em&gt;label&lt;/em&gt; (&amp;&gt;&lt;#)');
@@ -108,7 +108,7 @@ class WebformRenderingTest extends WebformBrowserTestBase {
     $this->drupalGet("admin/structure/webform/manage/test_rendering/submission/$sid");
 
     // Check submission label token replacements.
-    $this->assertRaw('<h1 class="page-title">submission &lt;em&gt;label&lt;/em&gt; (&amp;&gt;&lt;#)</h1>');
+    $this->assertRaw('<h1>submission &lt;em&gt;label&lt;/em&gt; (&amp;&gt;&lt;#)</h1>');
   }
 
 }

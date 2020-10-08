@@ -37,12 +37,12 @@ class WebformLibrariesTest extends WebformBrowserTestBase {
 
     $this->drupalLogin($this->rootUser);
 
-    // Enable choices and jquery.chosen
+    // Enable choices and jquery.chosen.
     $edit = [
       'excluded_libraries[choices]' => TRUE,
       'excluded_libraries[jquery.chosen]' => TRUE,
     ];
-    $this->drupalPostForm('/admin/structure/webform/config/libraries', $edit, t('Save configuration'));
+    $this->drupalPostForm('/admin/structure/webform/config/libraries', $edit, 'Save configuration');
 
     // Check optional libraries are included.
     $this->drupalGet('/webform/test_libraries_optional');
@@ -75,7 +75,7 @@ class WebformLibrariesTest extends WebformBrowserTestBase {
       'excluded_libraries[jquery.timepicker]' => FALSE,
       'excluded_libraries[jquery.textcounter]' => FALSE,
     ];
-    $this->drupalPostForm('/admin/structure/webform/config/libraries', $edit, t('Save configuration'));
+    $this->drupalPostForm('/admin/structure/webform/config/libraries', $edit, 'Save configuration');
 
     // Check optional libraries are excluded.
     $this->drupalGet('/webform/test_libraries_optional');
@@ -116,7 +116,7 @@ class WebformLibrariesTest extends WebformBrowserTestBase {
       'excluded_elements[webform_rating]' => FALSE,
       'excluded_elements[webform_signature]' => FALSE,
     ];
-    $this->drupalPostForm('/admin/structure/webform/config/elements', $edit, t('Save configuration'));
+    $this->drupalPostForm('/admin/structure/webform/config/elements', $edit, 'Save configuration');
 
     // Check that status report excludes libraries required by element types.
     $this->drupalGet('/admin/reports/status');
@@ -133,7 +133,7 @@ class WebformLibrariesTest extends WebformBrowserTestBase {
       $edit = [
         'excluded_libraries[jquery.select2]' => TRUE,
       ];
-      $this->drupalPostForm('/admin/structure/webform/config/libraries', $edit, t('Save configuration'));
+      $this->drupalPostForm('/admin/structure/webform/config/libraries', $edit, 'Save configuration');
       $this->drupalGet('/webform/test_libraries_optional');
       $this->assertRaw('https://cdnjs.cloudflare.com/ajax/libs/select2');
 
@@ -151,7 +151,7 @@ class WebformLibrariesTest extends WebformBrowserTestBase {
         'excluded_libraries[jquery.select2]' => TRUE,
         'excluded_libraries[jquery.chosen]' => TRUE,
       ];
-      $this->drupalPostForm('/admin/structure/webform/config/libraries', $edit, t('Save configuration'));
+      $this->drupalPostForm('/admin/structure/webform/config/libraries', $edit, 'Save configuration');
       $this->drupalGet('/webform/test_libraries_optional');
       $this->assertRaw('https://cdnjs.cloudflare.com/ajax/libs/chosen');
       $this->assertRaw('https://cdnjs.cloudflare.com/ajax/libs/select2');

@@ -59,7 +59,7 @@ class WebformUiElementPropertiesTest extends WebformBrowserTestBase {
       $webform_elements = Webform::load($webform_id);
       $original_elements = $webform_elements->getElementsDecodedAndFlattened();
       foreach ($original_elements as $key => $original_element) {
-        $this->drupalPostForm('/admin/structure/webform/manage/' . $webform_elements->id() . '/element/' . $key . '/edit', [], t('Save'));
+        $this->drupalPostForm('/admin/structure/webform/manage/' . $webform_elements->id() . '/element/' . $key . '/edit', [], 'Save');
 
         // Must reset the webform entity cache so that the update elements can
         // be loaded.

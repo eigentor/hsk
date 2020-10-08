@@ -48,7 +48,7 @@ class WebformElementValidateMultipleTest extends WebformElementBrowserTestBase {
       'webform_element_multiple_checkboxes_two[three]' => 'three',
       'webform_element_multiple_select_two[]' => ['one', 'two', 'three'],
     ];
-    $this->drupalPostForm('/webform/test_element_validate_multiple', $edit, t('Submit'));
+    $this->drupalPostForm('/webform/test_element_validate_multiple', $edit, 'Submit');
 
     // Check checkboxes multiple custom error message.
     $this->assertRaw('Please check only two options.');
