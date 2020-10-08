@@ -144,16 +144,13 @@ class WebformPluginVariantController extends ControllerBase implements Container
         continue;
       }
 
-      /** @var \Drupal\webform\Plugin\WebformVariantInterface $variant_plugin */
-      $variant_plugin = $this->pluginManager->createInstance($plugin_id);
-
       $row = [];
 
       $row['title']['data'] = [
         '#type' => 'link',
         '#title' => $definition['label'],
         '#url' => Url::fromRoute('entity.webform.variant.add_form', ['webform' => $webform->id(), 'webform_variant' => $plugin_id]),
-        '#attributes' => WebformDialogHelper::getOffCanvasDialogAttributes($variant_plugin->getOffCanvasWidth()),
+        '#attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(),
         '#prefix' => '<div class="webform-form-filter-text-source">',
         '#suffix' => '</div>',
       ];
@@ -169,7 +166,7 @@ class WebformPluginVariantController extends ControllerBase implements Container
       $links['add'] = [
         'title' => $this->t('Add variant'),
         'url' => Url::fromRoute('entity.webform.variant.add_form', ['webform' => $webform->id(), 'webform_variant' => $plugin_id]),
-        'attributes' => WebformDialogHelper::getOffCanvasDialogAttributes($variant_plugin->getOffCanvasWidth()),
+        'attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(),
       ];
       $row['operations']['data'] = [
         '#type' => 'operations',

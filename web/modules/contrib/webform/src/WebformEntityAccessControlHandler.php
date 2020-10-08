@@ -120,7 +120,7 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
       }
     }
 
-    $is_owner = ((int) $account->id() === (int) $entity->getOwnerId());
+    $is_owner = ($account->id() == $entity->getOwnerId());
 
     // Check 'view' operation use 'submission_create' when viewing rendered
     // HTML webform or use access 'configuration' when requesting a

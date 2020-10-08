@@ -17,6 +17,11 @@ class WebformSubmissionLogManager implements WebformSubmissionLogManagerInterfac
   use DependencySerializationTrait;
 
   /**
+   * Name of the table where log entries are stored.
+   */
+  const TABLE = 'webform_submission_log';
+
+  /**
    * The database service.
    *
    * @var \Drupal\Core\Database\Connection
@@ -48,7 +53,7 @@ class WebformSubmissionLogManager implements WebformSubmissionLogManagerInterfac
       'data' => serialize([]),
       'timestamp' => '',
     ];
-    $this->database->insert(WebformSubmissionLogManagerInterface::TABLE)
+    $this->database->insert(self::TABLE)
       ->fields($fields)
       ->execute();
   }
@@ -63,7 +68,7 @@ class WebformSubmissionLogManager implements WebformSubmissionLogManagerInterfac
       'limit' => NULL,
     ];
 
-    $query = $this->database->select(WebformSubmissionLogManagerInterface::TABLE, 'log');
+    $query = $this->database->select(static::TABLE, 'log');
 
     // Log fields.
     $query->fields('log', [

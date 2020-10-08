@@ -267,7 +267,6 @@ class RemotePostWebformHandler extends WebformHandlerBase {
         '#title' => $this->t('@title URL', $t_args),
         '#description' => $this->t('The full URL to POST to when an existing webform submission is @state. (e.g. @url)', $t_args),
         '#required' => ($state === WebformSubmissionInterface::STATE_COMPLETED),
-        '#maxlength' => NULL,
         '#default_value' => $this->configuration[$state_url],
       ];
       $form[$state][$state_custom_data] = [
@@ -506,7 +505,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       }
       else {
         $method = strtolower($request_method);
-        $request_options[($request_type === 'json' ? 'json' : 'form_params')] = $this->getRequestData($state, $webform_submission);
+        $request_options[($request_type == 'json' ? 'json' : 'form_params')] = $this->getRequestData($state, $webform_submission);
         $response = $this->httpClient->$method($request_url, $request_options);
       }
     }
@@ -832,7 +831,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
    *   TRUE if saving of draft is enabled.
    */
   protected function isDraftEnabled() {
-    return $this->isResultsEnabled() && ($this->getWebform()->getSetting('draft') !== WebformInterface::DRAFT_NONE);
+    return $this->isResultsEnabled() && ($this->getWebform()->getSetting('draft') != WebformInterface::DRAFT_NONE);
   }
 
   /**
@@ -1080,7 +1079,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     if (!empty($this->configuration['messages']) && $response instanceof ResponseInterface) {
       $status_code = $response->getStatusCode();
       foreach ($this->configuration['messages'] as $message_item) {
-        if ((int) $message_item['code'] === (int) $status_code) {
+        if ($message_item['code'] == $status_code) {
           return $message_item['message'];
         }
       }

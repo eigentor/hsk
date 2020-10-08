@@ -48,7 +48,7 @@ class WebformAccessTest extends WebformAccessBrowserTestBase {
       $this->drupalPostForm(
         "/admin/structure/webform/access/group/manage/$name",
         ['users[]' => $this->users[$name]->id()],
-        'Save'
+        t('Save')
       );
     }
 
@@ -75,7 +75,7 @@ class WebformAccessTest extends WebformAccessBrowserTestBase {
     $this->drupalPostForm(
       '/admin/structure/webform/access/group/manage/employee',
       ['users[]' => 1],
-      'Save'
+      t('Save')
     );
 
     // Assign employee user to manager group via the UI.
@@ -83,7 +83,7 @@ class WebformAccessTest extends WebformAccessBrowserTestBase {
     $this->drupalPostForm(
       '/user/' . $this->users['employee']->id() . '/edit',
       ['webform_access_group[]' => 'manager'],
-      'Save'
+      t('Save')
     );
 
     // Check defining webform field's access groups default value.
@@ -97,7 +97,7 @@ class WebformAccessTest extends WebformAccessBrowserTestBase {
         'default_value_input[webform][0][settings][default_data]' => 'test: test',
         'default_value_input[webform][0][settings][webform_access_group][]' => 'manager',
       ],
-      'Save settings'
+      t('Save settings')
     );
     $this->drupalGet('/node/add/webform');
     $this->assertFieldByName('webform[0][settings][webform_access_group][]', 'manager');
@@ -113,7 +113,7 @@ class WebformAccessTest extends WebformAccessBrowserTestBase {
       $this->drupalPostForm(
         "/admin/structure/webform/access/group/manage/$name",
         ['entities[]' => 'node:' . $this->nodes['contact_02']->id() . ':webform:contact'],
-        'Save'
+        t('Save')
       );
     }
 
@@ -127,7 +127,7 @@ class WebformAccessTest extends WebformAccessBrowserTestBase {
     $this->drupalPostForm(
       "/node/$nid/edit",
       ['webform[0][settings][webform_access_group][]' => 'manager'],
-      'Save'
+      t('Save')
     );
 
     // Check that employee can now access results.

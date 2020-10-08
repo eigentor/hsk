@@ -294,11 +294,8 @@ class WebformResultsExportController extends ControllerBase implements Container
     $context['message'] = t('Exported @count of @total submissions…', ['@count' => $context['sandbox']['progress'], '@total' => $context['sandbox']['max']]);
 
     // Track finished.
-    if ($context['sandbox']['max'] > 0 && $context['sandbox']['progress'] !== $context['sandbox']['max']) {
+    if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
       $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
-    }
-    else {
-      $context['finished'] = 1;
     }
   }
 

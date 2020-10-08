@@ -1,4 +1,3 @@
-uuid: null
 langcode: en
 status: open
 dependencies:
@@ -61,7 +60,7 @@ elements: |
     '#type': webform_actions
     '#title': 'Submit button(s)'
     '#submit__label': Register
-
+  
 css: ''
 javascript: ''
 settings:
@@ -73,7 +72,7 @@ settings:
   page: false
   page_submit_path: ''
   page_confirm_path: ''
-  page_theme_name: ''
+  page_admin_theme: false
   form_title: source_entity_webform
   form_submit_once: false
   form_exception_message: ''
@@ -133,19 +132,11 @@ settings:
   wizard_progress_percentage: false
   wizard_progress_link: false
   wizard_progress_states: false
-  wizard_auto_forward: true
-  wizard_auto_forward_hide_next_button: false
-  wizard_keyboard: true
   wizard_start_label: ''
   wizard_preview_link: false
   wizard_confirmation: true
   wizard_confirmation_label: ''
   wizard_track: ''
-  wizard_prev_button_label: ''
-  wizard_next_button_label: ''
-  wizard_toggle: false
-  wizard_toggle_show_label: ''
-  wizard_toggle_hide_label: ''
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -191,7 +182,6 @@ settings:
   results_customize: false
   token_view: false
   token_update: false
-  serial_disabled: false
 access:
   create:
     roles:
@@ -235,7 +225,6 @@ handlers:
   email_notification:
     id: email
     label: 'Email Notification'
-    notes: ''
     handler_id: email_notification
     status: true
     conditions: {  }
@@ -272,7 +261,6 @@ handlers:
   email_reminder:
     id: scheduled_email
     label: 'Email Reminder'
-    notes: ''
     handler_id: email_reminder
     status: true
     conditions: {  }
@@ -314,7 +302,6 @@ handlers:
   submission_limit:
     id: settings
     label: 'Submission limit'
-    notes: ''
     handler_id: submission_limit
     status: true
     conditions: {  }
@@ -330,7 +317,6 @@ handlers:
   teeshirt_options_limits:
     id: options_limit
     label: 'Tee shirt limits'
-    notes: ''
     handler_id: teeshirt_options_limits
     status: true
     conditions: {  }

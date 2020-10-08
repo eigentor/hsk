@@ -12,9 +12,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\webform\Plugin\WebformSourceEntityManager;
 use Drupal\webform\WebformMessageManagerInterface;
-use Drupal\webform\WebformRequestInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -53,13 +51,6 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
   protected $messageManager;
 
   /**
-   * Webform request handler.
-   *
-   * @var \Drupal\webform\WebformRequestInterface
-   */
-  protected $requestHandler;
-
-  /**
    * WebformEntityReferenceEntityFormatter constructor.
    *
    * @param string $plugin_id
@@ -86,16 +77,13 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
    *   The entity type manager.
    * @param \Drupal\webform\WebformMessageManagerInterface $message_manager
    *   The webform message manager.
-   * @param \Drupal\webform\WebformRequestInterface $request_handler
-   *   The webform request handler.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, RendererInterface $renderer, ConfigFactoryInterface $config_factory, RouteMatchInterface $route_match, EntityTypeManagerInterface $entity_type_manager, WebformMessageManagerInterface $message_manager, WebformRequestInterface $request_handler = NULL) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, RendererInterface $renderer, ConfigFactoryInterface $config_factory, RouteMatchInterface $route_match, EntityTypeManagerInterface $entity_type_manager, WebformMessageManagerInterface $message_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $renderer, $config_factory);
 
     $this->routeMatch = $route_match;
     $this->entityTypeManager = $entity_type_manager;
     $this->messageManager = $message_manager;
-    $this->requestHandler = $request_handler ?: \Drupal::service('webform.request');
   }
 
   /**
@@ -114,8 +102,7 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
       $container->get('config.factory'),
       $container->get('current_route_match'),
       $container->get('entity_type.manager'),
-      $container->get('webform.message_manager'),
-      $container->get('webform.request')
+      $container->get('webform.message_manager')
     );
   }
 
@@ -166,35 +153,21 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    // Get items entity, which is the entity that the webform
+    // Get source entity, which is the entity that the webform
     // is directly attached to. For Paragraphs this would be the field's
     // paragraph entity.
-    $items_entity = $items->getEntity();
-
-    // Get the items main entity. For Paragraphs this would be the parent entity
-    // of the the paragraph field.
-    $items_main_entity = WebformSourceEntityManager::getMainSourceEntity($items_entity);
-
-    $request_source_entity = $this->requestHandler->getCurrentSourceEntity();
+    $source_entity = $items->getEntity();
 
     // Determine if webform is previewed within a Paragraph on
-    // entity edit forms (via *.edit_form or .content_translation_add routes).
-    $route_name = $this->routeMatch->getRouteName();
-    $is_entity_edit_form = (preg_match('/\.edit_form$/', $route_name)
-      || preg_match('/\.content_translation_add$/', $route_name)
-      || in_array($route_name, ['entity.block_content.canonical']));
-
-    $is_paragraph = ($items_entity && $items_entity->getEntityTypeId() === 'paragraph');
-
-    $is_paragraph_current_source_entity = ($items_main_entity && $request_source_entity)
-      && ($items_main_entity->getEntityTypeId() === $request_source_entity->getEntityTypeId())
-      && ($items_main_entity->id() === $request_source_entity->id());
-
-    $is_paragraph_entity_edit_form = ($is_entity_edit_form && $is_paragraph && $is_paragraph_current_source_entity);
+    // node edit forms (via *.edit_form or .content_translation_add routes).
+    $route = $this->routeMatch->getRouteName();
+    $is_node_edit = (preg_match('/\.edit_form$/', $route) || preg_match('/\.content_translation_add$/', $route));
+    $is_paragraph = ($source_entity && $source_entity->getEntityTypeId() === 'paragraph');
+    $is_paragraph_node_edit = ($is_paragraph && $is_node_edit);
 
     $elements = [];
     foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
-      if ($is_paragraph_entity_edit_form) {
+      if ($is_paragraph_node_edit) {
         // Webform can not be nested within node edit form because the nested
         // <form> tags will cause unexpected validation issues.
         $elements[$delta] = [
@@ -208,7 +181,7 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
           '#type' => 'webform',
           '#webform' => $entity,
           '#default_data' => (!empty($items[$delta]->default_data)) ? Yaml::decode($items[$delta]->default_data) : [],
-          '#entity' => ($this->getSetting('source_entity')) ? $items_entity : NULL,
+          '#entity' => ($this->getSetting('source_entity')) ? $source_entity : NULL,
         ];
       }
       $this->setCacheContext($elements[$delta], $entity, $items[$delta]);

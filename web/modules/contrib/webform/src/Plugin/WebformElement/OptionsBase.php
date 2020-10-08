@@ -262,7 +262,7 @@ abstract class OptionsBase extends WebformElementBase {
     }
 
     foreach ($element['#options__properties'] as $option_key => $options__properties) {
-      if (!isset($element[$option_key]) || !is_array($options__properties)) {
+      if (!isset($element[$option_key])) {
         continue;
       }
 
@@ -633,17 +633,17 @@ abstract class OptionsBase extends WebformElementBase {
    */
   public function buildExportHeader(array $element, array $options) {
     $options_format = ($element['#webform_multiple'] ? $options['options_multiple_format'] : $options['options_single_format']);
-    if ($options_format === 'separate' && isset($element['#options'])) {
+    if ($options_format == 'separate' && isset($element['#options'])) {
       $header = [];
       foreach ($element['#options'] as $option_value => $option_text) {
         // Note: If $option_text is an array (typically a tableselect row)
         // always use $option_value.
-        $title = ($options['options_item_format'] === 'key' || is_array($option_text)) ? $option_value : $option_text;
+        $title = ($options['options_item_format'] == 'key' || is_array($option_text)) ? $option_value : $option_text;
         $header[] = $title;
       }
       // Add 'Other' option to header.
       if ($this instanceof WebformElementOtherInterface) {
-        $header[] = ($options['options_item_format'] === 'key') ? 'other' : $this->t('Other');
+        $header[] = ($options['options_item_format'] == 'key') ? 'other' : $this->t('Other');
       }
       return $this->prefixExportHeader($header, $element, $options);
     }
@@ -658,7 +658,7 @@ abstract class OptionsBase extends WebformElementBase {
   public function buildExportRecord(array $element, WebformSubmissionInterface $webform_submission, array $export_options) {
     $element_options = (isset($element['#options'])) ? $element['#options'] : [];
     $options_format = ($element['#webform_multiple'] ? $export_options['options_multiple_format'] : $export_options['options_single_format']);
-    if ($options_format === 'separate') {
+    if ($options_format == 'separate') {
       $value = $this->getRawValue($element, $webform_submission);
 
       $record = [];
@@ -675,7 +675,7 @@ abstract class OptionsBase extends WebformElementBase {
           unset($value[$option_value]);
           $record[] = ($deltas) ? ($deltas[$option_value] + 1) : 'X';
         }
-        elseif ($value === $option_value) {
+        elseif ($value == $option_value) {
           $value = '';
           $record[] = ($deltas) ? ($deltas[$option_value] + 1) : 'X';
         }
@@ -690,7 +690,7 @@ abstract class OptionsBase extends WebformElementBase {
       return $record;
     }
     else {
-      if ($export_options['options_item_format'] === 'key') {
+      if ($export_options['options_item_format'] == 'key') {
         $element['#format'] = 'raw';
       }
       return parent::buildExportRecord($element, $webform_submission, $export_options);
@@ -869,9 +869,7 @@ abstract class OptionsBase extends WebformElementBase {
         'two_columns' => $this->t('Two columns'),
         'three_columns' => $this->t('Three columns'),
         'side_by_side' => $this->t('Side by side'),
-        'buttons' => $this->t('Buttons - flexbox'),
-        'buttons_horizontal' => $this->t('Buttons - horizontal'),
-        'buttons_vertical' => $this->t('Buttons - vertical'),
+        'buttons' => $this->t('Buttons'),
       ],
     ];
     $form['options']['options_display_container']['options_description_display'] = [
@@ -1074,8 +1072,7 @@ abstract class OptionsBase extends WebformElementBase {
     $form['options_properties'] = [
       '#type' => 'details',
       '#title' => $this->t('Options (custom) properties'),
-      '#access' => $this->hasProperty('options__properties')
-        && $this->currentUser->hasPermission('edit webform source'),
+      '#access' => $this->currentUser->hasPermission('edit webform source'),
     ];
     $form['options_properties']['options__properties'] = [
       '#type' => 'webform_codemirror',

@@ -5,7 +5,6 @@ namespace Drupal\webform\Plugin\WebformElement;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Mail\MailFormatHelper;
-use Drupal\Core\Render\Element;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\user\Entity\User;
 use Drupal\webform\Plugin\WebformElementBase;
@@ -141,8 +140,8 @@ class TextFormat extends WebformElementBase {
     }
 
     // Hide filter format if the select menu and help is hidden.
-    if (!empty($element['#hide_help'])
-      && !Element::isVisibleElement($element['format']['format'])) {
+    if (!empty($element['#hide_help']) &&
+      isset($element['format']['format']['#access']) && $element['format']['format']['#access'] === FALSE) {
       // Can't hide the format via #access but we can use CSS.
       $element['format']['#attributes']['style'] = 'display: none';
     }

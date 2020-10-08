@@ -162,15 +162,6 @@ abstract class ContainerBase extends WebformElementBase {
           '#children' => $children,
         ];
 
-      case 'container':
-        $attributes['class'][] = 'webform-container';
-        return [
-          '#type' => 'container',
-          '#id' => $element['#webform_id'],
-          '#attributes' => $attributes,
-          '#children' => $children,
-        ];
-
       case 'header':
       default:
         return [
@@ -217,7 +208,7 @@ abstract class ContainerBase extends WebformElementBase {
 
     // Parse children from template and children to context.
     $template = trim($element['#format_' . $name]);
-    if (strpos($template, 'children') !== FALSE) {
+    if (strpos($template, 'children') != FALSE) {
       /** @var \Drupal\webform\WebformSubmissionViewBuilderInterface $view_builder */
       $view_builder = \Drupal::entityTypeManager()->getViewBuilder('webform_submission');
       $context['children'] = $view_builder->buildElements($element, $webform_submission, $options, $name);
@@ -242,7 +233,6 @@ abstract class ContainerBase extends WebformElementBase {
       'fieldset' => $this->t('Fieldset'),
       'details' => $this->t('Details (opened)'),
       'details-closed' => $this->t('Details (closed)'),
-      'container' => $this->t('Container (no title)'),
     ];
   }
 

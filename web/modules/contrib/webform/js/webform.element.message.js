@@ -7,34 +7,6 @@
 
   'use strict';
 
-  // Determine if local storage exists and is enabled.
-  // This approach is copied from Modernizr.
-  // @see https://github.com/Modernizr/Modernizr/blob/c56fb8b09515f629806ca44742932902ac145302/modernizr.js#L696-731
-  var hasLocalStorage = (function () {
-    try {
-      localStorage.setItem('webform', 'webform');
-      localStorage.removeItem('webform');
-      return true;
-    }
-    catch (e) {
-      return false;
-    }
-  }());
-
-  // Determine if session storage exists and is enabled.
-  // This approach is copied from Modernizr.
-  // @see https://github.com/Modernizr/Modernizr/blob/c56fb8b09515f629806ca44742932902ac145302/modernizr.js#L696-731
-  var hasSessionStorage = (function () {
-    try {
-      sessionStorage.setItem('webform', 'webform');
-      sessionStorage.removeItem('webform');
-      return true;
-    }
-    catch (e) {
-      return false;
-    }
-  }());
-
   /**
    * Behavior for handler message close.
    *
@@ -81,13 +53,13 @@
 
     switch (storage) {
       case 'local':
-        if (hasLocalStorage) {
+        if (window.localStorage) {
           return localStorage.getItem('Drupal.webform.message.' + id) || false;
         }
         return false;
 
       case 'session':
-        if (hasSessionStorage) {
+        if (window.sessionStorage) {
           return sessionStorage.getItem('Drupal.webform.message.' + id) || false;
         }
         return false;
@@ -104,13 +76,13 @@
 
     switch (storage) {
       case 'local':
-        if (hasLocalStorage) {
+        if (window.localStorage) {
           localStorage.setItem('Drupal.webform.message.' + id, true);
         }
         break;
 
       case 'session':
-        if (hasSessionStorage) {
+        if (window.sessionStorage) {
           sessionStorage.setItem('Drupal.webform.message.' + id, true);
         }
         break;

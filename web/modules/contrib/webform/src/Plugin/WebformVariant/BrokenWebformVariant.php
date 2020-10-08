@@ -5,13 +5,13 @@ namespace Drupal\webform\Plugin\WebformVariant;
 use Drupal\webform\Plugin\WebformVariantBase;
 
 /**
- * Defines a fallback plugin for missing webform variant plugins.
+ * Defines a fallback plugin for missing webform handler plugins.
  *
  * @WebformVariant(
  *   id = "broken",
  *   label = @Translation("Broken/Missing"),
  *   category = @Translation("Broken"),
- *   description = @Translation("Broken/missing webform variant plugin.")
+ *   description = @Translation("Broken/missing webform handler plugin.")
  * )
  */
 class BrokenWebformVariant extends WebformVariantBase {

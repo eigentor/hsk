@@ -47,7 +47,7 @@
           return true;
         }
 
-        if ($(event.target).parents('a[href]').length || $(event.target).parents('.dropbutton-widget').length) {
+        if ($(event.target).parents('a[href]').length) {
           return true;
         }
 

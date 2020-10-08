@@ -32,8 +32,8 @@ class WebformWizardAccessTest extends WebformWizardTestBase {
     $this->assertNoRaw('<b>Private</b>');
 
     // Generate an anonymous submission.
-    $this->drupalPostForm('/webform/test_form_wizard_access', [], 'Next >');
-    $this->drupalPostForm(NULL, [], 'Submit');
+    $this->drupalPostForm('/webform/test_form_wizard_access', [], t('Next Page >'));
+    $this->drupalPostForm(NULL, [], t('Submit'));
     $sid = $this->getLastSubmissionId($webform);
 
     // Check anonymous user can only view 'All' and 'Anonymous' submission data.
@@ -61,9 +61,9 @@ class WebformWizardAccessTest extends WebformWizardTestBase {
     $this->assertRaw('<b>Private</b>');
 
     // Generate an authenticated submission.
-    $this->drupalPostForm('/webform/test_form_wizard_access', [], 'Next >');
-    $this->drupalPostForm(NULL, [], 'Next >');
-    $this->drupalPostForm(NULL, [], 'Submit');
+    $this->drupalPostForm('/webform/test_form_wizard_access', [], t('Next Page >'));
+    $this->drupalPostForm(NULL, [], t('Next Page >'));
+    $this->drupalPostForm(NULL, [], t('Submit'));
     $sid = $this->getLastSubmissionId($webform);
 
     // Check authenticated user can view 'All', 'Authenticated', and 'Private' form pages.

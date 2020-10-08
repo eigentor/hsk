@@ -279,9 +279,9 @@ display:
         - 'config:field.storage.node.field_image'
         - env
         - extensions
-  entity_reference:
+  entity_reference_1:
     display_plugin: entity_reference
-    id: entity_reference
+    id: entity_reference_1
     display_title: 'Entity Reference'
     position: 1
     display_options:

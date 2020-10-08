@@ -109,6 +109,12 @@ webform.help:
   base_route: entity.webform.collection
   weight: 60
 
+webform.help.videos:
+  title: 'Videos'
+  route_name: webform.help
+  parent_id: webform.help
+  weight: 0
+
 # Form
 
 entity.webform.canonical:

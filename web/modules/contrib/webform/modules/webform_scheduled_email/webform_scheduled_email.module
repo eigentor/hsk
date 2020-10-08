@@ -14,11 +14,10 @@ use Drupal\webform\WebformSubmissionInterface;
  * Implements hook_config_schema_info_alter().
  */
 function webform_scheduled_email_config_schema_info_alter(&$definitions) {
+  $mapping = $definitions['webform.handler.email']['mapping'];
+
   // Append email handler to scheduled email handler settings.
-  if (isset($definitions['webform.handler.email']['mapping'])
-    && isset($definitions['webform.handler.scheduled_email'])) {
-    $definitions['webform.handler.scheduled_email']['mapping'] += $definitions['webform.handler.email']['mapping'];
-  }
+  $definitions['webform.handler.scheduled_email']['mapping'] += $mapping;
 }
 
 /**

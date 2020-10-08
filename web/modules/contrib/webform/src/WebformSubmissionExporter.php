@@ -308,18 +308,14 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
     // Get exporter plugins.
     $exporter_plugins = $this->exporterManager->getInstances($export_options);
 
-    // Determine if the file can be downloaded or displayed in the file browser.
-    $total = $this->entityStorage->getTotal($this->getWebform(), $this->getSourceEntity());
-    $default_batch_limit = $this->configFactory->get('webform.settings')->get('batch.default_batch_export_size') ?: 500;
-    $download_access = ($total > $default_batch_limit) ? FALSE : TRUE;
-
     // Build #states.
     $states_archive = ['invisible' => []];
     $states_options = ['invisible' => []];
-    $states_files = ['invisible' => []];
-    if ($webform && $download_access) {
-      $states_files['invisible'][] = [':input[name="download"]' => ['checked' => FALSE]];
-    }
+    $states_files = [
+      'invisible' => [
+        [':input[name="download"]' => ['checked' => FALSE]],
+      ],
+    ];
     $states_archive_type = ['visible' => []];
     if ($webform && $webform->hasManagedFile()) {
       $states_archive_type['visible'][] = [':input[name="files"]' => ['checked' => TRUE]];
@@ -503,7 +499,7 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
         '#description' => $this->t('If checked, the export file will be automatically download to your local machine. If unchecked, the export file will be displayed as plain text within your browser.'),
         '#return_value' => TRUE,
         '#default_value' => $export_options['download'],
-        '#access' => $download_access,
+        '#access' => !$this->requiresBatch(),
         '#states' => $states_archive,
       ];
       $form['export']['download']['files'] = [
@@ -581,9 +577,7 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
           'latest' => $this->t('Latest'),
           'serial' => $this->t('Submission number'),
           'sid' => $this->t('Submission ID'),
-          'date' => $this->t('Created date'),
-          'date_completed' => $this->t('Completed date'),
-          'date_changed' => $this->t('Changed date'),
+          'date' => $this->t('Date'),
         ],
         '#default_value' => $export_options['range_type'],
       ];
@@ -606,8 +600,6 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
         'serial' => ['#type' => 'number'],
         'sid' => ['#type' => 'number'],
         'date' => ['#type' => 'date'],
-        'date_completed' => ['#type' => 'date'],
-        'date_changed' => ['#type' => 'date'],
       ];
       foreach ($ranges as $key => $range_element) {
         $form['export']['download'][$key] = [
@@ -665,7 +657,7 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
           'completed' => $this->t('Completed submissions only'),
           'draft' => $this->t('Drafts only'),
         ],
-        '#access' => ($webform->getSetting('draft') !== WebformInterface::DRAFT_NONE),
+        '#access' => ($webform->getSetting('draft') != WebformInterface::DRAFT_NONE),
       ];
     }
 
@@ -874,16 +866,11 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
         break;
 
       case 'date':
-      case 'date_completed':
-      case 'date_changed':
-        $date_field = preg_match('/date_(completed|changed)/', $export_options['range_type'], $match)
-          ? $match[1]
-          : 'created';
         if ($export_options['range_start']) {
-          $query->condition($date_field, strtotime($export_options['range_start']), '>=');
+          $query->condition('created', strtotime($export_options['range_start']), '>=');
         }
         if ($export_options['range_end']) {
-          $query->condition($date_field, strtotime('+1 day', strtotime($export_options['range_end'])), '<');
+          $query->condition('created', strtotime('+1 day', strtotime($export_options['range_end'])), '<');
         }
         break;
     }
@@ -906,7 +893,7 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
     }
 
     // Filter by latest.
-    if ($export_options['range_type'] === 'latest' && $export_options['range_latest']) {
+    if ($export_options['range_type'] == 'latest' && $export_options['range_latest']) {
       // Clone the query and use it to get latest sid starting sid.
       $latest_query = clone $query;
       $latest_query->sort('created', 'DESC');

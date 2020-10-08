@@ -4,7 +4,6 @@ namespace Drupal\webform\Breadcrumb;
 
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Breadcrumb\Breadcrumb;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -30,25 +29,18 @@ class WebformBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   protected $type;
 
   /**
-   * The module handler service.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected $moduleHandler;
-
-  /**
-   * The configuration object factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * The webform request handler.
    *
    * @var \Drupal\webform\WebformRequestInterface
    */
   protected $requestHandler;
+
+  /**
+   * The module handler service.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
 
   /**
    * Constructs a WebformBreadcrumbBuilder.
@@ -59,14 +51,11 @@ class WebformBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    *   The webform request handler.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
    *   The string translation service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The configuration object factory.
    */
-  public function __construct(ModuleHandlerInterface $module_handler, WebformRequestInterface $request_handler, TranslationInterface $string_translation, ConfigFactoryInterface $config_factory = NULL) {
+  public function __construct(ModuleHandlerInterface $module_handler, WebformRequestInterface $request_handler, TranslationInterface $string_translation) {
     $this->moduleHandler = $module_handler;
     $this->requestHandler = $request_handler;
     $this->setStringTranslation($string_translation);
-    $this->configFactory = $config_factory ?: \Drupal::configFactory();
   }
 
   /**
@@ -99,7 +88,7 @@ class WebformBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
     $webform_submission = ($route_match->getParameter('webform_submission') instanceof WebformSubmissionInterface) ? $route_match->getParameter('webform_submission') : NULL;
 
-    if ((count($args) > 2) && $args[0] === 'entity' && ($args[2] === 'webform' || $args[2] === 'webform_submission')) {
+    if ((count($args) > 2) && $args[0] == 'entity' && ($args[2] == 'webform' || $args[2] == 'webform_submission')) {
       $this->type = 'webform_source_entity';
     }
     elseif ($route_name === 'webform.reports_plugins.elements.test') {
@@ -153,7 +142,7 @@ class WebformBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   public function build(RouteMatchInterface $route_match) {
     $route_name = $route_match->getRouteName();
 
-    if ($this->type === 'webform_source_entity') {
+    if ($this->type == 'webform_source_entity') {
       $source_entity = $this->requestHandler->getCurrentSourceEntity(['webform', 'webform_submission']);
       $entity_type = $source_entity->getEntityTypeId();
       $entity_id = $source_entity->id();
@@ -173,14 +162,14 @@ class WebformBreadcrumbBuilder implements BreadcrumbBuilderInterface {
         }
       }
     }
-    elseif ($this->type === 'webform_help') {
+    elseif ($this->type == 'webform_help') {
       $breadcrumb = new Breadcrumb();
       $breadcrumb->addLink(Link::createFromRoute($this->t('Home'), '<front>'));
       $breadcrumb->addLink(Link::createFromRoute($this->t('Administration'), 'system.admin'));
       $breadcrumb->addLink(Link::createFromRoute($this->t('Help'), 'help.main'));
       $breadcrumb->addLink(Link::createFromRoute($this->t('Webform'), 'help.page', ['name' => 'webform']));
     }
-    elseif ($this->type === 'webform_plugins_elements') {
+    elseif ($this->type == 'webform_plugins_elements') {
       $breadcrumb = new Breadcrumb();
       $breadcrumb->addLink(Link::createFromRoute($this->t('Home'), '<front>'));
       $breadcrumb->addLink(Link::createFromRoute($this->t('Administration'), 'system.admin'));
@@ -191,14 +180,12 @@ class WebformBreadcrumbBuilder implements BreadcrumbBuilderInterface {
       $breadcrumb = new Breadcrumb();
       $breadcrumb->addLink(Link::createFromRoute($this->t('Home'), '<front>'));
       $breadcrumb->addLink(Link::createFromRoute($this->t('Administration'), 'system.admin'));
-      if (!$this->configFactory->get('webform.settings')->get('ui.toolbar_item')) {
-        $breadcrumb->addLink(Link::createFromRoute($this->t('Structure'), 'system.admin_structure'));
-      }
+      $breadcrumb->addLink(Link::createFromRoute($this->t('Structure'), 'system.admin_structure'));
       $breadcrumb->addLink(Link::createFromRoute($this->t('Webforms'), 'entity.webform.collection'));
       switch ($this->type) {
         case 'webform_config':
           $breadcrumb->addLink(Link::createFromRoute($this->t('Configuration'), 'webform.config'));
-          if (strpos($route_name, 'config_translation.item.') === 0 && $route_name !== 'config_translation.item.overview.webform.config') {
+          if (strpos($route_name, 'config_translation.item.') === 0 && $route_name != 'config_translation.item.overview.webform.config') {
             $breadcrumb->addLink(Link::createFromRoute($this->t('Translate'), 'config_translation.item.overview.webform.config'));
           }
           break;

@@ -28,13 +28,6 @@ class WebformBreadcrumbBuilderTest extends UnitTestCase {
   protected $moduleHandler;
 
   /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactory
-   */
-  protected $configFactory;
-
-  /**
    * The webform request handler.
    *
    * @var \Drupal\webform\WebformRequestInterface
@@ -114,15 +107,12 @@ class WebformBreadcrumbBuilderTest extends UnitTestCase {
 
     // Make some test doubles.
     $this->moduleHandler = $this->createMock('Drupal\Core\Extension\ModuleHandlerInterface');
-    $this->configFactory = $this->getConfigFactoryStub([
-      'webform.settings' => ['ui' => ['toolbar_item' => FALSE]],
-    ]);
     $this->requestHandler = $this->createMock('Drupal\webform\WebformRequestInterface');
     $this->translationManager = $this->createMock('Drupal\Core\StringTranslation\TranslationInterface');
 
     // Make an object to test.
     $this->breadcrumbBuilder = $this->getMockBuilder('Drupal\webform\Breadcrumb\WebformBreadcrumbBuilder')
-      ->setConstructorArgs([$this->moduleHandler, $this->requestHandler, $this->translationManager, $this->configFactory])
+      ->setConstructorArgs([$this->moduleHandler, $this->requestHandler, $this->translationManager])
       ->setMethods(NULL)
       ->getMock();
 
@@ -326,7 +316,7 @@ class WebformBreadcrumbBuilderTest extends UnitTestCase {
     $webform_submission_access->expects($this->any())
       ->method('access')
       ->will($this->returnCallback(function ($operation) {
-        return ($operation === 'view_own');
+        return ($operation == 'view_own');
       }));
     $route_match = $this->getMockRouteMatch('entity.node.webform_submission.canonical', [
       ['webform_submission', $webform_submission_access],

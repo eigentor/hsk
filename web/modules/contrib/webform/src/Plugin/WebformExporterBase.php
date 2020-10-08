@@ -334,17 +334,17 @@ abstract class WebformExporterBase extends PluginBase implements WebformExporter
    * {@inheritdoc}
    */
   public function getArchiveType() {
-    return ($this->configuration['archive_type'] === WebformExporterInterface::ARCHIVE_ZIP
+    return ($this->configuration['archive_type'] === static::ARCHIVE_ZIP
       && class_exists('\ZipArchive'))
-      ? WebformExporterInterface::ARCHIVE_ZIP
-      : WebformExporterInterface::ARCHIVE_TAR;
+      ? static::ARCHIVE_ZIP
+      : static::ARCHIVE_TAR;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getArchiveFileExtension() {
-    return ($this->getArchiveType() === WebformExporterInterface::ARCHIVE_ZIP)
+    return ($this->getArchiveType() === static::ARCHIVE_ZIP)
       ? 'zip'
       : 'tar.gz';
   }
@@ -358,7 +358,7 @@ abstract class WebformExporterBase extends PluginBase implements WebformExporter
       'close' => FALSE,
     ];
 
-    if ($this->getArchiveType() === WebformExporterInterface::ARCHIVE_ZIP) {
+    if ($this->getArchiveType() === static::ARCHIVE_ZIP) {
       $this->addToZipFile($path, $name, $options);
     }
     else {

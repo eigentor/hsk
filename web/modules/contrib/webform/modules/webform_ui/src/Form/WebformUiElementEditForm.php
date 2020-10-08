@@ -6,7 +6,6 @@ use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
-use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\WebformInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -42,9 +41,8 @@ class WebformUiElementEditForm extends WebformUiElementFormBase {
 
     // Issue: #title is display as modal dialog's title and can't be escaped.
     // Workaround: Filter and define @title as safe markup.
-    $title = WebformElementHelper::getAdminTitle($this->element);
     $form['#title'] = $this->t('Edit @title element', [
-      '@title' => Markup::create(Xss::filterAdmin($title)),
+      '@title' => (!empty($this->element['#title'])) ? Markup::create(Xss::filterAdmin($this->element['#title'])) : $key,
     ]);
 
     $this->action = $this->t('updated');

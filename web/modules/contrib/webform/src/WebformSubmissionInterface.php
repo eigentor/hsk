@@ -376,14 +376,6 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
   public function getElementOriginalData($key);
 
   /**
-   * Get a webform submission data as a hash view.
-   *
-   * @return string
-   *   Webform submission data as a hash view.
-   */
-  public function getDataHash();
-
-  /**
    * Gets the webform submission's token.
    *
    * @return array

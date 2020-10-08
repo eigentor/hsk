@@ -11,11 +11,6 @@ use Drupal\Core\Session\AccountInterface;
 interface WebformSubmissionLogManagerInterface {
 
   /**
-   * Name of the table where log entries are stored.
-   */
-  const TABLE = 'webform_submission_log';
-
-  /**
    * Insert submission log.
    *
    * @param array $fields

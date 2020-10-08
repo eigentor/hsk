@@ -93,8 +93,6 @@ class WebformEntityVariantsForm extends EntityForm {
     $variants = $webform->getVariants();
     $rows = [];
     foreach ($variants as $variant_id => $variant) {
-      $offcanvas_dialog_attributes = WebformDialogHelper::getOffCanvasDialogAttributes($variant->getOffCanvasWidth());
-
       $row['#attributes']['class'][] = 'draggable';
       $row['#attributes']['data-webform-key'] = $variant_id;
 
@@ -110,7 +108,7 @@ class WebformEntityVariantsForm extends EntityForm {
               'webform' => $webform->id(),
               'webform_variant' => $variant_id,
             ]),
-            '#attributes' => $offcanvas_dialog_attributes,
+            '#attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(),
           ],
           'notes' => [
             '#prefix' => '<br/>',
@@ -167,7 +165,7 @@ class WebformEntityVariantsForm extends EntityForm {
           'webform' => $webform->id(),
           'webform_variant' => $variant_id,
         ]),
-        'attributes' => $offcanvas_dialog_attributes,
+        'attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(),
       ];
       // Duplicate.
       $operations['duplicate'] = [
@@ -176,7 +174,7 @@ class WebformEntityVariantsForm extends EntityForm {
           'webform' => $webform->id(),
           'webform_variant' => $variant_id,
         ]),
-        'attributes' => $offcanvas_dialog_attributes,
+        'attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(),
       ];
       if ($variant_element && $variant->isEnabled()) {
         // If #prepopulate is disabled use '_webform_variant'
@@ -211,7 +209,7 @@ class WebformEntityVariantsForm extends EntityForm {
           && $webform->access('update')
           && $webform->getSetting('share', TRUE)) {
           $operations['share'] = [
-            'title' => $this->t('Share'),
+            'title' => t('Share'),
             'url' => Url::fromRoute(
               'entity.webform.share_embed',
               ['webform' => $webform->id()],

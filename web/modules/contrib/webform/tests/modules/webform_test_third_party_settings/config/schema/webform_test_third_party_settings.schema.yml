@@ -5,9 +5,6 @@ webform.admin_settings.third_party.webform_test_third_party_settings:
     message:
       type: string
       label: 'Message'
-    error:
-      type: boolean
-      label: 'Error'
 
 webform.settings.third_party.webform_test_third_party_settings:
   type: mapping
@@ -16,6 +13,3 @@ webform.settings.third_party.webform_test_third_party_settings:
     message:
       type: string
       label: 'Message'
-    error:
-      type: boolean
-      label: 'Error'

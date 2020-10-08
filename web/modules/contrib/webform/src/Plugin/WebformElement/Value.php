@@ -2,7 +2,6 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
-use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\webform\WebformInterface;
 
 /**
@@ -16,7 +15,7 @@ use Drupal\webform\WebformInterface;
  *   category = @Translation("Advanced elements"),
  * )
  */
-class Value extends WebformElementBase {
+class Value extends TextBase {
 
   /**
    * {@inheritdoc}

@@ -78,8 +78,6 @@ class WebformEntityHandlersForm extends EntityForm {
     $handlers = $this->entity->getHandlers();
     $rows = [];
     foreach ($handlers as $handler_id => $handler) {
-      $offcanvas_dialog_attributes = WebformDialogHelper::getOffCanvasDialogAttributes($handler->getOffCanvasWidth());
-
       $row['#attributes']['class'][] = 'draggable';
       $row['#attributes']['data-webform-key'] = $handler_id;
 
@@ -95,11 +93,11 @@ class WebformEntityHandlersForm extends EntityForm {
               'webform' => $this->entity->id(),
               'webform_handler' => $handler_id,
             ]),
-            '#attributes' => $offcanvas_dialog_attributes,
+            '#attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(),
           ],
           'description' => [
             '#prefix' => '<br/>',
-            '#markup' => $handler->getNotes() ?: $handler->description(),
+            '#markup' => $handler->description(),
           ],
         ],
       ];
@@ -138,7 +136,7 @@ class WebformEntityHandlersForm extends EntityForm {
           'webform' => $this->entity->id(),
           'webform_handler' => $handler_id,
         ]),
-        'attributes' => $offcanvas_dialog_attributes,
+        'attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(),
       ];
       // Duplicate.
       if ($handler->cardinality() === WebformHandlerInterface::CARDINALITY_UNLIMITED) {
@@ -148,7 +146,7 @@ class WebformEntityHandlersForm extends EntityForm {
             'webform' => $this->entity->id(),
             'webform_handler' => $handler_id,
           ]),
-          'attributes' => $offcanvas_dialog_attributes,
+          'attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(),
         ];
       }
       // Test individual handler.

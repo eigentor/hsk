@@ -1,4 +1,3 @@
-uuid: null
 langcode: en
 status: open
 dependencies:
@@ -31,7 +30,7 @@ elements: |
     '#title': radios_other
     '#options': gender
     '#description': 'Check and enter ''Other'' to trigger an email.'
-
+  
 css: ''
 javascript: ''
 settings:
@@ -43,7 +42,7 @@ settings:
   page: true
   page_submit_path: ''
   page_confirm_path: ''
-  page_theme_name: ''
+  page_admin_theme: false
   form_title: source_entity_webform
   form_submit_once: false
   form_exception_message: ''
@@ -103,19 +102,11 @@ settings:
   wizard_progress_percentage: false
   wizard_progress_link: false
   wizard_progress_states: false
-  wizard_auto_forward: true
-  wizard_auto_forward_hide_next_button: false
-  wizard_keyboard: true
   wizard_start_label: ''
   wizard_preview_link: false
   wizard_confirmation: true
   wizard_confirmation_label: ''
   wizard_track: ''
-  wizard_prev_button_label: ''
-  wizard_next_button_label: ''
-  wizard_toggle: false
-  wizard_toggle_show_label: ''
-  wizard_toggle_hide_label: ''
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -161,7 +152,6 @@ settings:
   results_customize: false
   token_view: false
   token_update: false
-  serial_disabled: false
 access:
   create:
     roles:
@@ -213,7 +203,6 @@ handlers:
   select:
     id: email
     label: 'Select yes option'
-    notes: ''
     handler_id: select
     status: true
     conditions: {  }
@@ -252,7 +241,6 @@ handlers:
   empty:
     id: email
     label: 'Select empty'
-    notes: ''
     handler_id: empty
     status: true
     conditions: {  }
@@ -291,7 +279,6 @@ handlers:
   default:
     id: email
     label: 'Select default'
-    notes: ''
     handler_id: empty
     status: true
     conditions: {  }
@@ -330,7 +317,6 @@ handlers:
   checkboxes:
     id: email
     label: Checkboxes
-    notes: ''
     handler_id: checkboxes
     status: true
     conditions: {  }
@@ -371,7 +357,6 @@ handlers:
   radios_other:
     id: email
     label: 'Radios other'
-    notes: ''
     handler_id: radios_other
     status: true
     conditions: {  }

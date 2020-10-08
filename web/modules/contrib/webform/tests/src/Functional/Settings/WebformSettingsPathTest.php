@@ -116,7 +116,7 @@ class WebformSettingsPathTest extends WebformBrowserTestBase {
     // Check custom base path.
     $webform->setSettings(['page_submit_path' => '', 'page_confirm_path' => ''])->save();
     $this->drupalLogin($this->rootUser);
-    $this->drupalPostForm('/admin/structure/webform/config', ['page_settings[default_page_base_path]' => 'base/path'], 'Save configuration');
+    $this->drupalPostForm('/admin/structure/webform/config', ['page_settings[default_page_base_path]' => 'base/path'], t('Save configuration'));
     $this->drupalGet('/base/path/' . str_replace('_', '-', $webform->id()));
     $this->assertResponse(200, 'Submit URL alias with custom base path exists');
     $this->drupalGet('/base/path/' . str_replace('_', '-', $webform->id()) . '/confirmation');
@@ -160,7 +160,7 @@ class WebformSettingsPathTest extends WebformBrowserTestBase {
     $this->assertResponse(404, 'Submit URL alias does not exist');
 
     /**************************************************************************/
-    // Page theme.
+    // Admin theme.
     /**************************************************************************/
 
     $this->drupalLogin($this->rootUser);
@@ -187,8 +187,8 @@ class WebformSettingsPathTest extends WebformBrowserTestBase {
       'admin_theme' => 'seven',
       'use_admin_theme' => TRUE,
     ];
-    $this->drupalPostForm('/admin/appearance', $edit, 'Save configuration');
-    $webform->setSetting('page_theme_name', 'seven')->save();
+    $this->drupalPostForm('/admin/appearance', $edit, t('Save configuration'));
+    $webform->setSetting('page_admin_theme', TRUE)->save();
 
     // Check that admin theme is applied.
     $this->drupalGet('/webform/test_admin_theme');

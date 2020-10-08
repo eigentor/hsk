@@ -3,7 +3,6 @@
 namespace Drupal\webform\Twig;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\webform\Element\WebformHtmlEditor;
 use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformHtmlHelper;
@@ -26,7 +25,6 @@ class WebformTwigExtension extends \Twig_Extension {
    */
   public function getFunctions() {
     return [
-      new \Twig_SimpleFunction('webform_html_editor_check_markup', [$this, 'webformHtmlEditorCheckMarkup']),
       new \Twig_SimpleFunction('webform_debug', [$this, 'webformDebug']),
       new \Twig_SimpleFunction('webform_token', [$this, 'webformToken']),
     ];
@@ -37,23 +35,6 @@ class WebformTwigExtension extends \Twig_Extension {
    */
   public function getName() {
     return 'webform';
-  }
-
-  /**
-   * Runs HTML markup through (optional) text format.
-   *
-   * @param string $text
-   *   The text to be filtered.
-   * @param array $options
-   *   HTML markup options.
-   *
-   * @return array
-   *   Render array containing 'processed_text' or 'webform_html_editor_markup'.
-   *
-   * @see \Drupal\webform\Element\WebformHtmlEditor::checkMarkup
-   */
-  public function webformHtmlEditorCheckMarkup($text, array $options = []) {
-    return WebformHtmlEditor::checkMarkup($text, $options);
   }
 
   /**
@@ -247,7 +228,7 @@ class WebformTwigExtension extends \Twig_Extension {
    */
   public static function renderTwigTemplate(WebformSubmissionInterface $webform_submission, $template, array $options = [], array $context = []) {
     try {
-      $build = static::buildTwigTemplate($webform_submission, $template, $options, $context);
+      $build = self::buildTwigTemplate($webform_submission, $template, $options, $context);
       return \Drupal::service('renderer')->renderPlain($build);
     }
     catch (\Exception $exception) {

@@ -3,7 +3,6 @@
 namespace Drupal\webform\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 
 /**
  * Provides a webform base element for a location element.
@@ -92,8 +91,8 @@ abstract class WebformLocationBase extends WebformCompositeBase {
     // readonly elements to hidden elements.
     $composite_elements = static::getCompositeElements($element);
     foreach ($composite_elements as $composite_key => $composite_element) {
-      if ($composite_key !== 'value') {
-        if (!Element::isVisibleElement($element[$composite_key])) {
+      if ($composite_key != 'value') {
+        if (isset($element[$composite_key]['#access']) && $element[$composite_key]['#access'] === FALSE) {
           unset($element[$composite_key]['#access']);
           unset($element[$composite_key]['#pre_render']);
           $element[$composite_key]['#type'] = 'hidden';
@@ -138,7 +137,8 @@ abstract class WebformLocationBase extends WebformCompositeBase {
   public static function validateWebformLocation(&$element, FormStateInterface $form_state, &$complete_form) {
     $value = $element['#value'];
 
-    if (Element::isVisibleElement($element) && !empty($element['#required']) && empty($value['lat'])) {
+    $has_access = (!isset($element['#access']) || $element['#access'] === TRUE);
+    if ($has_access && !empty($element['#required']) && empty($value['lat'])) {
       $t_args = ['@title' => !empty($element['#title']) ? $element['#title'] : t('Location')];
       $form_state->setError($element['value'], t('The @title is not valid.', $t_args));
     }

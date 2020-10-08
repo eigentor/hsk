@@ -3,7 +3,6 @@
 namespace Drupal\webform\Element;
 
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
@@ -93,7 +92,7 @@ class WebformElementOptions extends FormElement {
       '#type' => 'select',
       '#description' => t('Please select <a href=":href">predefined @type</a> or enter custom @type.', $t_args),
       '#options' => [
-        static::CUSTOM_OPTION => t('Custom @type…', $t_args),
+        self::CUSTOM_OPTION => t('Custom @type…', $t_args),
       ] + $options,
 
       '#attributes' => [
@@ -131,7 +130,7 @@ class WebformElementOptions extends FormElement {
     if ($has_options) {
       $element['custom']['#states'] = [
         'visible' => [
-          'select.js-' . $element['#id'] . '-options' => ['value' => static::CUSTOM_OPTION],
+          'select.js-' . $element['#id'] . '-options' => ['value' => self::CUSTOM_OPTION],
         ],
       ];
     }
@@ -155,7 +154,7 @@ class WebformElementOptions extends FormElement {
     $custom_value = NestedArray::getValue($form_state->getValues(), $element['custom']['#parents']);
 
     $value = $options_value;
-    if ($options_value === static::CUSTOM_OPTION) {
+    if ($options_value == self::CUSTOM_OPTION) {
       try {
         $value = (is_string($custom_value)) ? Yaml::decode($custom_value) : $custom_value;
       }
@@ -165,7 +164,8 @@ class WebformElementOptions extends FormElement {
       }
     }
 
-    if (Element::isVisibleElement($element) && $element['#required'] && empty($value)) {
+    $has_access = (!isset($element['#access']) || $element['#access'] === TRUE);
+    if ($element['#required'] && empty($value) && $has_access) {
       WebformElementHelper::setRequiredError($element, $form_state);
     }
 

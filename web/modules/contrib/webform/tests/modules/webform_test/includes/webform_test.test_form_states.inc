@@ -8,6 +8,80 @@
 use Drupal\webform\Entity\Webform;
 
 /**
+ * Generate test elements with #states.
+ *
+ * @return array
+ *   An array containing test elements with #states.
+ */
+function webform_test_test_states() {
+  $elements = [];
+
+  // Visible.
+  $elements['visible'] = [
+    '#type' => 'details',
+    '#title' => 'Test State: Visible and Required',
+  ];
+  $elements['visible']['visible_trigger'] = [
+    '#type' => 'checkbox',
+    '#title' => 'Displays and require elements',
+  ];
+  $elements['visible'] += _webform_test_states('visible', [
+    '#states' => [
+      'visible' => [
+        ':input[name="visible_trigger"]' => [
+          'checked' => TRUE,
+        ],
+      ],
+      'required' => [
+        ':input[name="visible_trigger"]' => [
+          'checked' => TRUE,
+        ],
+      ],
+    ],
+  ]);
+
+  // Invisible.
+  $elements['invisible'] = [
+    '#type' => 'details',
+    '#title' => 'Test State: Invisible (Hidden) and Empty',
+  ];
+  $elements['invisible']['invisible_trigger'] = [
+    '#type' => 'checkbox',
+    '#title' => 'Hide and empty elements',
+  ];
+  $elements['invisible'] += _webform_test_states('invisible', [
+    '#states' => [
+      'invisible' => [
+        ':input[name="invisible_trigger"]' => [
+          'checked' => TRUE,
+        ],
+      ],
+    ],
+  ]);
+
+  // Disable.
+  $elements['disabled'] = [
+    '#type' => 'details',
+    '#title' => 'Test State: Disabled',
+  ];
+  $elements['disabled']['disabled_trigger'] = [
+    '#type' => 'checkbox',
+    '#title' => 'Disable elements',
+  ];
+  $elements['disabled'] += _webform_test_states('disabled', [
+    '#states' => [
+      'disabled' => [
+        ':input[name="disabled_trigger"]' => [
+          'checked' => TRUE,
+        ],
+      ],
+    ],
+  ]);
+
+  return $elements;
+}
+
+/**
  * Generates a render array of example elements.
  *
  * @param string $type
@@ -19,16 +93,6 @@ use Drupal\webform\Entity\Webform;
  *   A render array of example elements
  */
 function _webform_test_states($type, array $default_properties = []) {
-  $ignored_element_types = [
-    'captcha',
-    'machine_name',
-    'table',
-    'webform_card',
-    'webform_more',
-    'webform_table',
-    'webform_table_row',
-  ];
-
   $data = [
     'containers' => [],
     'elements' => [],
@@ -44,11 +108,6 @@ function _webform_test_states($type, array $default_properties = []) {
   $element_manager = \Drupal::service('plugin.manager.webform.element');
   $elements = $element_manager->getInstances();
   foreach ($elements as $element_type => $webform_element) {
-    if (preg_match('/(webform_options_custom:|webform_options_custom_entity:)/', $element_type)
-    || in_array($element_type, $ignored_element_types)) {
-      continue;
-    }
-
     $element = _webform_test_get_element_preview($element_type);
     if (!$element) {
       continue;
@@ -57,7 +116,7 @@ function _webform_test_states($type, array $default_properties = []) {
     // Set default container content.
     if ($webform_element->isContainer($element)) {
       // Containers can't be disabled.
-      if ($type === 'disabled') {
+      if ($type == 'disabled') {
         continue;
       }
     }
@@ -75,7 +134,7 @@ function _webform_test_states($type, array $default_properties = []) {
     $element += $default_properties;
 
     $group = ($webform_element->isContainer($element)) ? 'containers' : 'elements';
-    $data[$group][$element_type] = $element;
+    $data[$group][$type . '_' . $element_type] = $element;
   }
 
   return $data['containers'] + $data['elements'];

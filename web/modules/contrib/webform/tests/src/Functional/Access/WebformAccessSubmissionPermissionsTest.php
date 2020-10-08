@@ -233,6 +233,7 @@ class WebformAccessSubmissionPermissionsTest extends WebformBrowserTestBase {
     // Check user can the submissions when they are the webform owner.
     $this->drupalGet("admin/structure/webform/manage/{$webform_id}/submission/{$sid_4}");
     $this->assertResponse(200);
+
   }
 
 }

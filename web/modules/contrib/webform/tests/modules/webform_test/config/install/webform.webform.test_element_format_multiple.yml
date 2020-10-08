@@ -1,4 +1,3 @@
-uuid: null
 langcode: en
 status: open
 dependencies:
@@ -1567,7 +1566,7 @@ elements: |
         '#multiple': true
         '#file_extensions': txt
         '#format_items': ul
-
+  
 css: ''
 javascript: ''
 settings:
@@ -1579,7 +1578,7 @@ settings:
   page: true
   page_submit_path: ''
   page_confirm_path: ''
-  page_theme_name: ''
+  page_admin_theme: false
   form_title: source_entity_webform
   form_submit_once: false
   form_exception_message: ''
@@ -1639,19 +1638,11 @@ settings:
   wizard_progress_percentage: false
   wizard_progress_link: false
   wizard_progress_states: false
-  wizard_auto_forward: true
-  wizard_auto_forward_hide_next_button: false
-  wizard_keyboard: true
   wizard_start_label: ''
   wizard_preview_link: false
   wizard_confirmation: true
   wizard_confirmation_label: ''
   wizard_track: ''
-  wizard_prev_button_label: ''
-  wizard_next_button_label: ''
-  wizard_toggle: false
-  wizard_toggle_show_label: ''
-  wizard_toggle_hide_label: ''
   preview: 1
   preview_label: ''
   preview_title: ''
@@ -1697,7 +1688,6 @@ settings:
   results_customize: false
   token_view: false
   token_update: false
-  serial_disabled: false
 access:
   create:
     roles:
@@ -1749,7 +1739,6 @@ handlers:
   email_text:
     id: email
     label: 'Email (Text)'
-    notes: ''
     handler_id: email_text
     status: true
     conditions: {  }
@@ -1786,7 +1775,6 @@ handlers:
   email_html:
     id: email
     label: 'Email (HTML)'
-    notes: ''
     handler_id: email_html
     status: true
     conditions: {  }
