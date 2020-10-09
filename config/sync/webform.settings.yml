@@ -25,7 +25,7 @@ settings:
   default_form_file_limit: ''
   form_classes: "container-inline clearfix\nform--inline clearfix\nmessages messages--error\nmessages messages--warning\nmessages messages--status\n"
   button_classes: ''
-  default_wizard_prev_button_label: '< Vorherige Seite'
+  default_wizard_prev_button_label: '< Zurück'
   default_wizard_next_button_label: 'Nächste Seite >'
   default_wizard_start_label: Beginn
   default_wizard_confirmation_label: Complete
