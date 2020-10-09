@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.player.body
     - field.field.node.player.field_dwz
     - field.field.node.player.field_function_club
+    - field.field.node.player.field_member_no_dsb
     - field.field.node.player.field_player_image
     - image.style.thumbnail
     - node.type.player
@@ -42,7 +43,15 @@ content:
     type: number
     region: content
   field_function_club:
-    weight: 26
+    weight: 12
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_member_no_dsb:
+    weight: 4
     settings:
       size: 60
       placeholder: ''
@@ -89,7 +98,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 121
+    weight: 13
     third_party_settings: {  }
     region: content
   sticky:

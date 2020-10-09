@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.player.body
     - field.field.node.player.field_dwz
     - field.field.node.player.field_function_club
+    - field.field.node.player.field_member_no_dsb
     - field.field.node.player.field_player_image
     - image.style.portrait
     - node.type.player
@@ -38,5 +39,6 @@ content:
 hidden:
   body: true
   field_dwz: true
+  field_member_no_dsb: true
   langcode: true
   links: true
