@@ -8,15 +8,15 @@ exclude_paths: "/admin\r\n/admin/*\r\n/batch\r\n/node/add*\r\n/node/*/*\r\n/user
 exclude_admin_theme: false
 langcode: de
 popup_agreed:
-  value: '<h2>Vielen Dank für das Akzeptieren der Cookies</h2><p>Sie können diese Meldung jetzt ausblenden oder mehr über Cookies erfahren.</p>'
-  format: restricted_html
+  value: "<h2>Vielen Dank für das Akzeptieren der Cookies</h2>\r\n\r\n<p>Sie können diese Meldung jetzt ausblenden oder mehr über Cookies erfahren.</p>\r\n"
+  format: basic_html
 popup_agree_button_message: 'Ich stimme zu'
 popup_agreed_enabled: false
 popup_bg_hex: 0779bf
 popup_clicking_confirmation: false
 popup_scrolling_confirmation: false
 popup_delay: 1000
-show_disagree_button: false
+show_disagree_button: true
 popup_disagree_button_message: 'Weitere Informationen'
 popup_enabled: true
 popup_find_more_button_message: 'Weitere Informationen'
@@ -46,14 +46,15 @@ better_support_for_screen_readers: false
 use_mobile_message: false
 _core:
   default_config_hash: OlBvbDcm2PUT2i28p3oNpuKaUKbbK4qjfrAyYxvd0B8
-method: default
+method: opt_in
 disagree_button_label: 'Nein, danke'
 disabled_javascripts: ''
 whitelisted_cookies: ''
 consent_storage_method: do_not_store
 withdraw_message:
-  value: '<h2>We use cookies on this site to enhance your user experience</h2><p>You have given your consent for us to set cookies.</p>'
+  value: "<h2>We use cookies on this site to enhance your user experience</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
   format: basic_html
 withdraw_action_button_label: 'Zustimmung zurückziehen'
 withdraw_tab_button_label: Datenschutzeinstellungen
 withdraw_enabled: false
+cookie_session: 0
