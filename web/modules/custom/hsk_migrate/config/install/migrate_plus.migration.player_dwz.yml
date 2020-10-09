@@ -8,3 +8,16 @@ source:
   data_parser_plugin: xml
   urls: https://www.schachbund.de/php/dewis/verein.php?zps=70107&format=xml
   item_selector: "Liste/Spieler"
+  ids:
+    id:
+      type: integer
+  fields:
+    - name: id
+      label: "ID"
+      selector: id
+    - name: member_no
+      Label "Member Number DSB"
+      selector: mglnr
+    - name: dwz
+      Label: "DWZ"
+      selector: dwz
