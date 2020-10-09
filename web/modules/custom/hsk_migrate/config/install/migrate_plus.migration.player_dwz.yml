@@ -21,3 +21,13 @@ source:
     - name: dwz
       Label: "DWZ"
       selector: dwz
+
+process:
+  type:
+    plugin: default_value
+    default_value: player
+  field_member_no_dsb: member_no
+  field_dwz:
+    plugin: default_value
+    default_value: dwz
+
