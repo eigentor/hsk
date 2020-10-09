@@ -45,7 +45,7 @@ display:
         options:
           submit_button: Anwenden
           reset_button: false
-          reset_button_label: Reset
+          reset_button_label: Zurücksetzen
           exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
           sort_asc_label: Aufsteigend
@@ -64,7 +64,7 @@ display:
             items_per_page_options_all: false
             items_per_page_options_all_label: '- Alle -'
             offset: false
-            offset_label: Versatz
+            offset_label: Offset
           tags:
             previous: '‹ vorherige Seite'
             next: 'nächste Seite ›'
