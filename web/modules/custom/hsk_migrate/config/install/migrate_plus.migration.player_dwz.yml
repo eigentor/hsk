@@ -1,0 +1,10 @@
+id: player_dwz
+label: Import Player DWZ from external source
+migration_group: hsk
+source:
+  track_changes: true
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: xml
+  urls: https://www.schachbund.de/php/dewis/verein.php?zps=70107&format=xml
+  item_selector: "Liste/Spieler"

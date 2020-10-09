@@ -1,0 +1,10 @@
+name: HSK Migrate
+description: Migrations for HSK
+type: module
+core: 8.x
+version: VERSION
+package: HSK
+dependencies:
+  - drupal:migrate
+  - migrate_plus:migrate_plus
+  - migrate_tools:migrate_tools
