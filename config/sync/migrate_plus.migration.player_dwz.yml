@@ -1,0 +1,46 @@
+uuid: 891e2af0-f427-48b1-b524-7011bcc86d46
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: _r2GmUdqPlkvYsEbSR8j2biyoiWeMgopXuQEfCZwuro
+id: player_dwz
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: hsk
+label: 'Import Player DWZ from external source'
+source:
+  track_changes: true
+  plugin: hsk_player_dwz
+  data_fetcher_plugin: http
+  data_parser_plugin: xml
+  urls: 'https://www.schachbund.de/php/dewis/verein.php?zps=70107&format=xml'
+  item_selector: Liste/Spieler
+  ids:
+    id:
+      type: integer
+  fields:
+    -
+      name: id
+      label: ID
+      selector: id
+    -
+      name: member_no
+      label: 'Member Number DSB'
+      selector: mglnr
+    -
+      name: dwz
+      Label: DWZ
+      selector: dwz
+process:
+  type:
+    plugin: default_value
+    default_value: player
+  field_member_no_dsb: member_no
+  field_dwz:
+    plugin: default_value
+    default_value: dwz
+destination: null
+migration_dependencies: null

@@ -64,9 +64,21 @@ class PlayerDwz extends Url {
    * {@inheritdoc}
    */
   function prepareRow(Row $row) {
-//    $source = $row->getSource();
-//    $source_id = $source['id'];
+    $source = $row->getSource();
+    $source_id = $source['id'];
 
+    $client = $this->httpClient;
+
+    try {
+
+      $request = $client->request('GET', 'https://www.schachbund.de/php/dewis/verein.php?zps=70107&format=xml');
+      $response = $request->getBody();
+
+    } catch (RequestException $e) {
+      watchdog_exception('wg_migrate', $e->getMessage());
+    }
+
+    return FALSE;
 
     return parent::prepareRow($row);
   }

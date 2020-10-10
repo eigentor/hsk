@@ -16,6 +16,7 @@ module:
   comment: 0
   config: 0
   config_update: 0
+  config_update_ui: 0
   contact: 0
   content_access: 0
   contextual: 0
@@ -42,6 +43,7 @@ module:
   history: 0
   hms_field: 0
   hsk_comments: 0
+  hsk_migrate: 0
   hsk_pgn_formatter: 0
   image: 0
   inline_entity_form: 0

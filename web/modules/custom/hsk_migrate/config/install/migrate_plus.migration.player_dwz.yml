@@ -3,7 +3,7 @@ label: Import Player DWZ from external source
 migration_group: hsk
 source:
   track_changes: true
-  plugin: url
+  plugin: hsk_player_dwz
   data_fetcher_plugin: http
   data_parser_plugin: xml
   urls: https://www.schachbund.de/php/dewis/verein.php?zps=70107&format=xml
@@ -16,7 +16,7 @@ source:
       label: "ID"
       selector: id
     - name: member_no
-      Label "Member Number DSB"
+      label: "Member Number DSB"
       selector: mglnr
     - name: dwz
       Label: "DWZ"
