@@ -21,7 +21,8 @@ source:
     - name: dwz
       Label: "DWZ"
       selector: dwz
-
+destination:
+  plugin: entity:node
 process:
   type:
     plugin: default_value
