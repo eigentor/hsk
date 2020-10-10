@@ -2,7 +2,7 @@
 
 namespace Drupal\hsk_migrate\Plugin\migrate\source;
 
-use Drupal\migrate_plus\Plugin\source\Url;
+use Drupal\migrate_plus\Plugin\migrate\source\Url;
 use Drupal\migrate\Row;
 use Drupal\Core\Database\Database;
 use GuzzleHttp\ClientInterface;
@@ -17,6 +17,7 @@ use Drupal\migrate\Plugin\MigrationInterface;
  * @MigrateSource (
  *   id = "hsk_player_dwz",
  *   title = @Translation ("Rearranage Source data for Player DWZ")
+ * )
  */
 class PlayerDwz extends Url {
 
@@ -56,7 +57,7 @@ class PlayerDwz extends Url {
       $plugin_id,
       $plugin_definition,
       $migration,
-      $container->get('http_client'),
+      $container->get('http_client')
     );
   }
 
