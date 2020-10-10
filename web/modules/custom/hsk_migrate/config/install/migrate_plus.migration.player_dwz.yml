@@ -1,6 +1,6 @@
 id: player_dwz
 label: Import Player DWZ from external source
-migration_group: hsk
+migration_group: hsk_migrations
 source:
   track_changes: true
   plugin: hsk_player_dwz
