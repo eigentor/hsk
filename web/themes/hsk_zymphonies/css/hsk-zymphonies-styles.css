@@ -2778,6 +2778,9 @@ figure figcaption {
 /*------------- All Screen Sizes ------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+#toolbar-item-administration-tray {
+  font-weight: normal; }
+
 header {
   padding-top: 20px;
   *zoom: 1; }
