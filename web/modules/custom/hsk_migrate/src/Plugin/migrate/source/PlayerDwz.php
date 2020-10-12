@@ -2,6 +2,7 @@
 
 namespace Drupal\hsk_migrate\Plugin\migrate\source;
 
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate_plus\Plugin\migrate\source\Url;
 use Drupal\migrate\Row;
 use Drupal\Core\Database\Database;
@@ -19,14 +20,14 @@ use Drupal\migrate\Plugin\MigrationInterface;
  *   title = @Translation ("Rearranage Source data for Player DWZ")
  * )
  */
-class PlayerDwz extends Url {
+class PlayerDwz extends Url implements ContainerFactoryPluginInterface {
 
   /**
    * An http client.
    *
    * @var \GuzzleHttp\ClientInterface
    */
-  protected $httpClient;
+//  protected $httpClient;
 
   /**
    * PlayerDwz constructor.
@@ -51,7 +52,7 @@ class PlayerDwz extends Url {
    *
    * @return static
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
     return new static(
       $configuration,
       $plugin_id,
