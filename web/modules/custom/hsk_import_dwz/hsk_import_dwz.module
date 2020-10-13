@@ -5,10 +5,17 @@
  */
 function hsk_import_dwz_cron() {
   // create an httpClient
-  $client = \Drupal::httpClient();
+//  $client = \Drupal::httpClient();
+//
+//  // Get the player data from schachbund.de
+//  $request = $client->request('GET', 'https://www.schachbund.de/php/dewis/verein.php?zps=70107&format=xml');
+//  $response = $request->getBody();
+//  $parsed_response = (simplexml_load_string($response->__toString()));
+//
+//
+//  $entity_type_manager = \Drupal::entityTypeManager();
+//
+//  $peter = 7;
 
-  // Get the player data from schachbund.de
-  $request = $client->request('GET', 'https://www.schachbund.de/php/dewis/verein.php?zps=70107&format=xml');
-  $response = $request->getBody();
-  $parsed_response = (simplexml_load_string($response->__toString()));
+  // Query all player nodes to compare their DWZ to the current value from schachbund.de
 }
