@@ -1,0 +1,14 @@
+<?php
+
+/*
+ * Implements hook_cron()
+ */
+function hsk_import_dwz_cron() {
+  // create an httpClient
+  $client = \Drupal::httpClient();
+
+  // Get the player data from schachbund.de
+  $request = $client->request('GET', 'https://www.schachbund.de/php/dewis/verein.php?zps=70107&format=xml');
+  $response = $request->getBody();
+  $parsed_response = (simplexml_load_string($response->__toString()));
+}

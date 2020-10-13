@@ -1,0 +1,5 @@
+name: HSK DWZ Import
+description: Import DWZ data from the Schachbund API
+type: module
+core: 8.x
+package: HSK
