@@ -1,4 +1,0 @@
-id: hsk_migrations
-label: HSK Imports
-description: Import various external data for HSK.
-source_type: External Data
