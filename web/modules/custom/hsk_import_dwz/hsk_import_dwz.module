@@ -43,10 +43,24 @@ function hsk_import_dwz_cron() {
         if (!empty($player_to_update)) {
           foreach ($player_to_update as $nid) {
             $node = $node_storage->load($nid);
+            // Get the old DWZ before we overwrite it
+            if (!empty($node->field_dwz->value)) {
+              $old_dwz = $node->field_dwz->value;
+            } else {
+              $old_dwz = 0;
+            }
             $node->set('field_dwz', $player->dwz->__toString());
             $node->save();
+            // Add watchdog message about updated player
+
+            $message = 'The DWZ of player ' . $node->getTitle();
+            $message .= 'has been updated. Old DWZ: ' . $old_dwz;
+            $message .= ' new DWZ: ' . $player->dwz->__toString();
+
+            \Drupal::logger('my_module')->info($message);
+
           }
-          var_dump($player_to_update);
+
         }
       }
     }
