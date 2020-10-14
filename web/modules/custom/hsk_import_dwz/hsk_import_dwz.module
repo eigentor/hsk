@@ -4,18 +4,32 @@
  * Implements hook_cron()
  */
 function hsk_import_dwz_cron() {
-  // create an httpClient
-//  $client = \Drupal::httpClient();
-//
-//  // Get the player data from schachbund.de
-//  $request = $client->request('GET', 'https://www.schachbund.de/php/dewis/verein.php?zps=70107&format=xml');
-//  $response = $request->getBody();
-//  $parsed_response = (simplexml_load_string($response->__toString()));
-//
-//
-//  $entity_type_manager = \Drupal::entityTypeManager();
-//
-//  $peter = 7;
+  $client = \Drupal::httpClient();
 
-  // Query all player nodes to compare their DWZ to the current value from schachbund.de
+  // Get the player data from schachbund.de
+  $request = $client->request('GET', 'https://www.schachbund.de/php/dewis/verein.php?zps=70107&format=xml');
+  $response = $request->getBody();
+  $parsed_response = (simplexml_load_string($response));
+
+
+  foreach($parsed_response->Spieler as $player) {
+    $node_storage = Drupal::entityTypeManager()->getStorage('node');
+    // First make double sure we only use players from HSK Lister Turm (Club ID = 70107)
+    // Also only check players that have a DWZ
+    if($player->verein->__toString() == 70107 && !empty($player->dwz->__toString())) {
+      $player_to_update = $node_storage->getQuery()
+        ->condition('type', 'player')
+        ->condition('field_member_no_dsb', $player->mglnr->__toString())
+        ->condition('field_dwz',  $player->dwz->__toString(), '<>')
+        ->execute();
+      if(!empty($player_to_update)) {
+        foreach($player_to_update as $nid) {
+          $node = $node_storage->load($nid);
+          $node->set('field_dwz',  $player->dwz->__toString());
+          $node->save();
+        }
+        var_dump($player_to_update);
+      }
+    }
+  }
 }
