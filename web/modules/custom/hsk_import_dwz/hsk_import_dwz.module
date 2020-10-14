@@ -11,24 +11,37 @@ function hsk_import_dwz_cron() {
   $response = $request->getBody();
   $parsed_response = (simplexml_load_string($response));
 
+  // Only execute the import once a week
+  // First we set execution to FALSE
+  $import_dwz = FALSE;
 
-  foreach($parsed_response->Spieler as $player) {
-    $node_storage = Drupal::entityTypeManager()->getStorage('node');
-    // First make double sure we only use players from HSK Lister Turm (Club ID = 70107)
-    // Also only check players that have a DWZ
-    if($player->verein->__toString() == 70107 && !empty($player->dwz->__toString())) {
-      $player_to_update = $node_storage->getQuery()
-        ->condition('type', 'player')
-        ->condition('field_member_no_dsb', $player->mglnr->__toString())
-        ->condition('field_dwz',  $player->dwz->__toString(), '<>')
-        ->execute();
-      if(!empty($player_to_update)) {
-        foreach($player_to_update as $nid) {
-          $node = $node_storage->load($nid);
-          $node->set('field_dwz',  $player->dwz->__toString());
-          $node->save();
+  $current_time = new DateTime();
+  // Check the weekday. Must be 6 for Saturday and 0 for Sunday.
+  if ($current_time->format('w') == 4) {
+    $import_dwz = TRUE;
+  };
+
+  // Only execute if the timing is correct and thus $import_dwz == TRUE
+  if ($import_dwz == TRUE) {
+    foreach ($parsed_response->Spieler as $player) {
+      $node_storage = Drupal::entityTypeManager()->getStorage('node');
+      // First make double sure we only use players from HSK Lister Turm (Club ID = 70107)
+      // Also only check players that have a DWZ
+
+      if ($player->verein->__toString() == 70107 && !empty($player->dwz->__toString())) {
+        $player_to_update = $node_storage->getQuery()
+          ->condition('type', 'player')
+          ->condition('field_member_no_dsb', $player->mglnr->__toString())
+          ->condition('field_dwz', $player->dwz->__toString(), '<>')
+          ->execute();
+        if (!empty($player_to_update)) {
+          foreach ($player_to_update as $nid) {
+            $node = $node_storage->load($nid);
+            $node->set('field_dwz', $player->dwz->__toString());
+            $node->save();
+          }
+          var_dump($player_to_update);
         }
-        var_dump($player_to_update);
       }
     }
   }
