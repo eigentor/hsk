@@ -43,6 +43,7 @@ module:
   history: 0
   hms_field: 0
   hsk_comments: 0
+  hsk_import_dwz: 0
   hsk_pgn_formatter: 0
   image: 0
   inline_entity_form: 0
