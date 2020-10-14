@@ -13,7 +13,7 @@ function hsk_import_dwz_cron() {
 
   // Only execute the import once a week
   // First we set execution to FALSE
-  $import_dwz = FALSE;
+  $import_dwz = TRUE;
 
   $current_time = new DateTime();
   $current_weekday = $current_time->format('D');
@@ -54,10 +54,10 @@ function hsk_import_dwz_cron() {
             // Add watchdog message about updated player
 
             $message = 'The DWZ of player ' . $node->getTitle();
-            $message .= 'has been updated. Old DWZ: ' . $old_dwz;
-            $message .= ' new DWZ: ' . $player->dwz->__toString();
+            $message .= ' has been updated. Old DWZ: ' . $old_dwz . '; ';
+            $message .= 'New DWZ: ' . $player->dwz->__toString();
 
-            \Drupal::logger('my_module')->info($message);
+            \Drupal::logger('dwz_update')->info($message);
 
           }
 
