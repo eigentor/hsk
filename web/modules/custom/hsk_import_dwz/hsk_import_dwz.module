@@ -28,12 +28,12 @@ function hsk_import_dwz_cron() {
   if ($import_dwz == TRUE) {
     foreach ($parsed_response->Spieler as $player) {
       $node_storage = Drupal::entityTypeManager()->getStorage('node');
-      // First make double sure we only use players from HSK Lister Turm (Club ID = 70107)
-      // Also only check players that have a DWZ
 
       // Remove possible leading zeroes from Schachbund Member numbers
       $member_no = ltrim($player->mglnr->__toString(), 0);
 
+      // Make sure we only use players from HSK Lister Turm (Club ID = 70107)
+      // Also only check players that have a DWZ
       if ($player->verein->__toString() == 70107 && !empty($player->dwz->__toString())) {
         $player_to_update = $node_storage->getQuery()
           ->condition('type', 'player')
