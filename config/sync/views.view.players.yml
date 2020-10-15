@@ -74,7 +74,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Ergebniszähler einer Ansicht'
+          label: ''
           exclude: false
           alter:
             alter_text: false
@@ -107,7 +107,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -235,7 +235,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: DWZ
+          label: 'DWZ Spieler'
           exclude: false
           alter:
             alter_text: false
@@ -362,7 +362,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Link zum Bearbeiten von Inhalt anzeigen.'
+          label: ''
           exclude: false
           alter:
             alter_text: false
