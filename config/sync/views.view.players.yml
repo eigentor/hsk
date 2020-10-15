@@ -10,6 +10,7 @@ dependencies:
     - node.type.player
     - system.menu.admin
     - user.role.administrator
+    - user.role.chefredakteur
     - user.role.redakteur
   module:
     - image
@@ -35,6 +36,7 @@ display:
           role:
             administrator: administrator
             redakteur: redakteur
+            chefredakteur: chefredakteur
       cache:
         type: tag
         options: {  }
