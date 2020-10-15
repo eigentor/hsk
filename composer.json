@@ -17,11 +17,8 @@
     "require": {
         "composer/installers": "^1.2",
         "drupal/better_exposed_filters": "^5.0@beta",
-        "drupal/config_update": "^1.7",
         "drupal/core-composer-scaffold": "^8.9",
         "drupal/core-recommended": "^8.9",
-        "drupal/migrate_plus": "^5.1",
-        "drupal/migrate_tools": "^5.0",
         "drupal/webform": "^5.22",
         "drush/drush": "^10.2"
     },
