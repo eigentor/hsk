@@ -16,11 +16,11 @@ function hsk_import_dwz_cron() {
   $import_dwz = TRUE;
 
   $current_time = new DateTime();
-  $current_weekday = $current_time->format('D');
+//  $current_weekday = $current_time->format('D');
   $current_hour = $current_time->format('G');
 
   // Check the weekday. Must be 6 for Saturday and 0 for Sunday.
-  if (in_array($current_weekday, ['Sat', 'Sun']) && $current_hour < 8) {
+  if ($current_hour > 23 && $current_hour < 8) {
     $import_dwz = TRUE;
   };
 

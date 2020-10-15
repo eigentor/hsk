@@ -1,0 +1,14 @@
+uuid: eaba6deb-b63e-4928-a1ed-8dfc9f670b76
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.log_inspektor
+  module:
+    - user
+id: user_add_role_action.log_inspektor
+label: 'Den ausgewählten Benutzern die Rolle Log-Inspektor zuweisen'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: log_inspektor
