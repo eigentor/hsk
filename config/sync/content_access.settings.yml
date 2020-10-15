@@ -5,6 +5,7 @@ content_access_roles_gids:
   redakteur: 4
   chefredakteur: 5
   structure_admin: 6
+  log_inspektor: 7
 _core:
   default_config_hash: 7LkiviGITIpniIOOIzpuxR7r4XzqqYN_cwu0fb0kx1M
 langcode: de

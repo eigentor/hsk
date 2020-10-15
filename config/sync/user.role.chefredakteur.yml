@@ -12,6 +12,7 @@ permissions:
   - 'access content overview'
   - 'access contextual links'
   - 'access in-place editing'
+  - 'access site reports'
   - 'access toolbar'
   - 'access user profiles'
   - 'administer comments'

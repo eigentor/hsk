@@ -1,0 +1,14 @@
+uuid: 60425ea2-ea5d-4aa9-a4a3-3cb233952f69
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.log_inspektor
+  module:
+    - user
+id: user_remove_role_action.log_inspektor
+label: 'Den ausgewählten Benutzern die Rolle Log-Inspektor entziehen'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: log_inspektor

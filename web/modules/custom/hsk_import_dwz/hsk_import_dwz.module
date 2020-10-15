@@ -1,0 +1,68 @@
+<?php
+
+/*
+ * Implements hook_cron()
+ */
+function hsk_import_dwz_cron() {
+  $client = \Drupal::httpClient();
+
+  // Get the player data from schachbund.de
+  $request = $client->request('GET', 'https://www.schachbund.de/php/dewis/verein.php?zps=70107&format=xml');
+  $response = $request->getBody();
+  $parsed_response = (simplexml_load_string($response));
+
+  // Only execute the import once a week
+  // First we set execution to FALSE
+  $import_dwz = TRUE;
+
+  $current_time = new DateTime();
+//  $current_weekday = $current_time->format('D');
+  $current_hour = $current_time->format('G');
+
+  // Check the weekday. Must be 6 for Saturday and 0 for Sunday.
+  if ($current_hour > 23 && $current_hour < 8) {
+    $import_dwz = TRUE;
+  };
+
+  // Only execute if the timing is correct and thus $import_dwz == TRUE
+  if ($import_dwz == TRUE) {
+    foreach ($parsed_response->Spieler as $player) {
+      $node_storage = Drupal::entityTypeManager()->getStorage('node');
+      // First make double sure we only use players from HSK Lister Turm (Club ID = 70107)
+      // Also only check players that have a DWZ
+
+      // Remove possible leading zeroes from Schachbund Member numbers
+      $member_no = ltrim($player->mglnr->__toString(), 0);
+
+      if ($player->verein->__toString() == 70107 && !empty($player->dwz->__toString())) {
+        $player_to_update = $node_storage->getQuery()
+          ->condition('type', 'player')
+          ->condition('field_member_no_dsb', $member_no)
+          ->condition('field_dwz', $player->dwz->__toString(), '<>')
+          ->execute();
+        if (!empty($player_to_update)) {
+          foreach ($player_to_update as $nid) {
+            $node = $node_storage->load($nid);
+            // Get the old DWZ before we overwrite it
+            if (!empty($node->field_dwz->value)) {
+              $old_dwz = $node->field_dwz->value;
+            } else {
+              $old_dwz = 0;
+            }
+            $node->set('field_dwz', $player->dwz->__toString());
+            $node->save();
+            // Add watchdog message about updated player
+
+            $message = 'The DWZ of player ' . $node->getTitle();
+            $message .= ' has been updated. Old DWZ: ' . $old_dwz . '; ';
+            $message .= 'New DWZ: ' . $player->dwz->__toString();
+
+            \Drupal::logger('dwz_update')->info($message);
+
+          }
+
+        }
+      }
+    }
+  }
+}
