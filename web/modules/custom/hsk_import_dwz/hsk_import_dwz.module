@@ -59,6 +59,8 @@ function hsk_import_dwz_cron() {
 
             \Drupal::logger('dwz_update')->info($message);
 
+            \Drupal::messenger()->addStatus($message);
+
           }
 
         }
