@@ -36,7 +36,6 @@ module:
   field_validation: 0
   file: 0
   filter: 0
-  glue: 0
   help: 0
   history: 0
   hms_field: 0
