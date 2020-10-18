@@ -20,7 +20,7 @@ function hsk_import_dwz_cron() {
   $current_hour = $current_time->format('G');
 
   // Check the weekday. Must be 6 for Saturday and 0 for Sunday.
-  if ($current_hour > 23 && $current_hour < 8) {
+  if ($current_hour > 23 || $current_hour < 8) {
     $import_dwz = TRUE;
   };
 
