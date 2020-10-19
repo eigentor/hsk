@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.player.body
     - field.field.node.player.field_dwz
+    - field.field.node.player.field_fide_id
     - field.field.node.player.field_function_club
     - field.field.node.player.field_member_no_dsb
     - field.field.node.player.field_player_image
@@ -31,7 +32,7 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 7
+    weight: 8
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -42,8 +43,16 @@ content:
     third_party_settings: {  }
     type: number
     region: content
+  field_fide_id:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_function_club:
-    weight: 12
+    weight: 13
     settings:
       size: 60
       placeholder: ''
@@ -68,14 +77,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 5
+    weight: 6
     settings:
       include_locked: true
     third_party_settings: {  }
     region: content
   node_class:
     type: string_textfield
-    weight: 11
+    weight: 12
     settings:
       size: 60
       placeholder: ''
@@ -83,7 +92,7 @@ content:
     region: content
   path:
     type: path
-    weight: 10
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -91,21 +100,21 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 8
+    weight: 9
     third_party_settings: {  }
     region: content
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 13
+    weight: 14
     third_party_settings: {  }
     region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 9
+    weight: 10
     third_party_settings: {  }
     region: content
   title:
@@ -118,7 +127,7 @@ content:
     region: content
   uid:
     type: entity_reference_autocomplete
-    weight: 6
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60

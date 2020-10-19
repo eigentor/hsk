@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.player.body
     - field.field.node.player.field_dwz
+    - field.field.node.player.field_fide_id
     - field.field.node.player.field_function_club
     - field.field.node.player.field_member_no_dsb
     - field.field.node.player.field_player_image
@@ -53,6 +54,7 @@ content:
     type: image
     region: content
 hidden:
+  field_fide_id: true
   field_member_no_dsb: true
   langcode: true
   links: true

@@ -1,0 +1,19 @@
+uuid: bc49a9e6-5e2a-469a-96d8-c260eab3aae4
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_fide_id
+    - node.type.player
+id: node.player.field_fide_id
+field_name: field_fide_id
+entity_type: node
+bundle: player
+label: Fide-ID
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
