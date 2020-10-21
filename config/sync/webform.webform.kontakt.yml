@@ -12,7 +12,7 @@ id: kontakt
 title: Kontakt
 description: Standard-Kontaktformular
 category: ''
-elements: "name:\n  '#type': textfield\n  '#title': Name\n  '#title_display': before\n  '#required': true\ne_mail:\n  '#type': email\n  '#title': E-Mail\n  '#description': 'Geben Sie bitte Ihre Mailadresse an.'\n  '#title_display': before\n  '#required': true\n  '#required_error': 'Geben Sie bitte Ihre Mailadresse an.'\nbetreff:\n  '#type': textfield\n  '#title': Betreff\n  '#title_display': before\nihr_anliegen:\n  '#type': textarea\n  '#title': 'Ihr Anliegen'\n  '#pattern': '</?a(?:(?= )[^>]*)?>'\n  '#pattern_error': 'Sie dürfen in der Nachricht keine Links verwenden.'\n  '#required': true"
+elements: "name:\n  '#type': textfield\n  '#title': Name\n  '#title_display': before\n  '#required': true\ne_mail:\n  '#type': email\n  '#title': E-Mail\n  '#description': 'Geben Sie bitte Ihre Mailadresse an.'\n  '#title_display': before\n  '#required': true\n  '#required_error': 'Geben Sie bitte Ihre Mailadresse an.'\nbetreff:\n  '#type': textfield\n  '#title': Betreff\n  '#title_display': before\nihr_anliegen:\n  '#type': textarea\n  '#title': 'Ihr Anliegen'\n  '#required': true\nmarkup:\n  '#type': webform_markup\n  '#markup': 'Wir fragen Ihren Namen und Mailadresse ab, damit wir Ihre Anfrage bearbeiten und ggf. mit Ihnen in Kontakt treten k&ouml;nnen. Weitere Hinweise in unserer <a data-entity-type=\"node\" data-entity-uuid=\"17550b5d-3da7-4a52-96e8-beb8878510cc\" href=\"/datenschutzerklaerung\" title=\"Datenschutzerklärung\">Datenschutzerkl&auml;rung</a>'\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__label': Abschicken"
 css: ''
 javascript: ''
 settings:

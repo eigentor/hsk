@@ -2055,11 +2055,17 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input {
   .field--name-comment form.comment-form input.form-text {
     width: 100%; }
 
+form.webform-submission-kontakt-add-form input.form-text, form.webform-submission-kontakt-add-form input.form-email {
+  width: 100%; }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ---------------- */
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 480px) {
+  form.webform-submission-kontakt-add-form .form-item > label {
+    display: block; } }
 /* End Media Query Tablet Portrait */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -2113,7 +2119,10 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input {
   .user-anonymous .field--name-comment form.comment-form .field--widget-text-textarea .filter-wrapper {
     display: none; }
   .user-anonymous .field--name-comment form.comment-form .field--widget-text-textarea.form-type-textarea {
-    margin-bottom: 1.56em; } }
+    margin-bottom: 1.56em; }
+
+  form.webform-submission-kontakt-add-form input.form-text, form.webform-submission-kontakt-add-form input.form-email {
+    width: auto; } }
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
