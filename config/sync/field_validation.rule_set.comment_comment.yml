@@ -7,13 +7,13 @@ label: 'comment comment validation'
 entity_type: comment
 bundle: comment
 field_validation_rules:
-  1a9d7d59-487e-4bb5-9197-8f0f9b1e4895:
-    uuid: 1a9d7d59-487e-4bb5-9197-8f0f9b1e4895
+  8c4742cb-9dfb-4072-8ee1-98278fc90b76:
+    uuid: 8c4742cb-9dfb-4072-8ee1-98278fc90b76
     id: blacklist_field_validation_rule
     title: 'Keine Links und typische Spamwords'
     weight: 1
     field_name: comment_body
     column: value
-    error_message: 'Sie haben unerlaubte Worte verwendet.'
+    error_message: 'Sie dürfen im Kommentar nicht auf andere Websites verlinken.'
     data:
       setting: 'http, https, www'
