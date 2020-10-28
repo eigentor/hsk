@@ -7,7 +7,7 @@ close: null
 weight: 0
 uid: 1
 template: false
-archive: false
+archive: true
 id: kontakt
 title: Kontakt
 description: Standard-Kontaktformular
@@ -21,8 +21,8 @@ settings:
   ajax_progress_type: ''
   ajax_effect: ''
   ajax_speed: null
-  page: true
-  page_submit_path: /kontakt
+  page: false
+  page_submit_path: ''
   page_confirm_path: ''
   page_theme_name: ''
   form_title: both
