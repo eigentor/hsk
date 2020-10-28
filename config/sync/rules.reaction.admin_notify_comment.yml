@@ -30,7 +30,7 @@ expression:
             - mawachess@gmail.com
             - thomas@rufzeichen-online.de
           subject: 'Es wurde ein neuer Kommentar auf schachklub-hannover.de erstellt von {{ comment.name }}: "{{ comment.subject }}"'
-          message: "Ein neuer Kommentar wurde erstellt.\r\n\r\nAbsender: {{ comment.name }}\r\nInhalt:\r\n{{ comment.subject }}\r\n{{ comment.comment_body.value }}\r\n\r\nHier könnt ihr den Kommentar ansehen und ggf. freigeben:\r\nhttps://schachklub-hannover.de/comment/{{ comment.cid }}#comment-{{ comment.cid }}\r\n\r\nHier könnt ihr alle unbestätigten Kommentare verwalten:\r\nhttps://schachklub-hannover.de/admin/content/comment/approval"
+          message: "Ein neuer Kommentar wurde erstellt im Newsartikel \"{{ comment.entity_id.entity.title }}\"\r\n\r\nAbsender: {{ comment.name }}\r\nInhalt:\r\n{{ comment.subject }}\r\n{{ comment.comment_body.value }}\r\n\r\nHier könnt ihr den Kommentar ansehen und ggf. freigeben:\r\nhttps://schachklub-hannover.de/comment/{{ comment.cid }}#comment-{{ comment.cid }}\r\n\r\nHier könnt ihr alle unbestätigten Kommentare verwalten:\r\nhttps://schachklub-hannover.de/admin/content/comment/approval"
           reply: ''
           language: ''
         context_mapping: {  }
