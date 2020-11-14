@@ -1,0 +1,7 @@
+name: HSK Images
+description: Image-related functinality custom for HSK
+type: module
+core: 8.x
+version: VERSION
+dependencies:
+  - drupal:image
