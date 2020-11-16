@@ -11,10 +11,10 @@ dependencies:
     - field.field.node.article.field_new_par_various
     - field.field.node.article.field_new_txt_capt_main_img
     - field.field.node.article.field_tags
-    - image.style.thumbnail
+    - image.style.max_325x325
     - node.type.article
   module:
-    - image
+    - focal_point
     - paragraphs
     - paragraphs_features
     - path
@@ -67,11 +67,13 @@ content:
     third_party_settings: {  }
     region: content
   field_image:
-    type: image_image
+    type: image_focal_point
     weight: 1
     settings:
+      preview_image_style: max_325x325
+      preview_link: true
+      offsets: '50,50'
       progress_indicator: throbber
-      preview_image_style: thumbnail
     third_party_settings: {  }
     region: content
   field_new_par_various:

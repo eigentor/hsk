@@ -18,6 +18,7 @@ module:
   contact: 0
   content_access: 0
   contextual: 0
+  crop: 0
   ctools: 0
   datetime: 0
   dblog: 0
@@ -36,6 +37,7 @@ module:
   field_validation: 0
   file: 0
   filter: 0
+  focal_point: 0
   help: 0
   history: 0
   hms_field: 0
