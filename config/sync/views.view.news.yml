@@ -6,12 +6,12 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.storage.node.body
     - field.storage.node.field_image
-    - image.style.news_thumb_startseite
     - node.type.article
+    - responsive_image.styles.news_thumb_startseite
     - system.menu.main
   module:
-    - image
     - node
+    - responsive_image
     - text
     - user
 id: news
@@ -509,9 +509,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: image
+          type: responsive_image
           settings:
-            image_style: news_thumb_startseite
+            responsive_image_style: news_thumb_startseite
             image_link: content
           group_column: ''
           group_columns: {  }
