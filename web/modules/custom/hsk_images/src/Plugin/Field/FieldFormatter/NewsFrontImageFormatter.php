@@ -2,6 +2,7 @@
 
 namespace Drupal\hsk_images\Field\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\image\Plugin\Field\FieldFormatter\ImageFormatterBase;
@@ -11,19 +12,13 @@ use Drupal\image\Plugin\Field\FieldFormatter\ImageFormatterBase;
  *
  * @FieldFormatter (
  *   id = "news_front_image",
- *   label = @Translation("Custom default images"),
+ *   label = @Translation("Front HSK Custom default images"),
  *   field_types = {
  *     "image"
  *   }
  * )
  */
 
-class NewsFrontImageFormatter extends ImageFormatterBase {
-
-  public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = parent::viewElements($items, $langcode);
-
-    return $elements;
-  }
+class NewsFrontImageFormatter extends ImageFormatter {
 
 }
