@@ -1,0 +1,24 @@
+uuid: 3e0dbc92-0adc-4048-a5af-c98a32c95ddb
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.news_thumb_mobile
+    - image.style.news_thumb_startseite
+  theme:
+    - hsk_zymphonies
+id: news_thumb_startseite
+label: 'News Thumb Startseite'
+image_style_mappings:
+  -
+    breakpoint_id: hsk_zymphonies.tablet
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: news_thumb_startseite
+  -
+    breakpoint_id: hsk_zymphonies.mobile
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: news_thumb_mobile
+breakpoint_group: hsk_zymphonies
+fallback_image_style: news_thumb_startseite
