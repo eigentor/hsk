@@ -1,0 +1,14 @@
+uuid: fa16e008-7612-485e-bf05-8a466301e0a9
+langcode: de
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: flCi9IdafdLXlJqvoHguutUOiC05-aynK4niYN4YZ3o
+id: focal_point
+label: Fokuspunkt
+description: 'Der vom Focal-Point-Modul verwendete Zuschnittstyp'
+aspect_ratio: ''
+soft_limit_width: null
+soft_limit_height: null
+hard_limit_width: null
+hard_limit_height: null
