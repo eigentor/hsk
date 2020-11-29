@@ -5,14 +5,10 @@ dependencies:
   config:
     - views.view.events_list
   module:
-    - block_class
     - system
     - views
   theme:
     - hsk_zymphonies
-third_party_settings:
-  block_class:
-    classes: col-md-12
 id: views_block__events_list_block_1
 theme: hsk_zymphonies
 region: content

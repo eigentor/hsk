@@ -598,7 +598,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"title-body\">\r\n<h3 class=\"title\">{{ title }} <span class=\"date\">{{ created }}</span></div>\r\n<div class=\"image-mobile\">{{ field_image }}</div>\r\n<div class=\"text\">{{ body }}</div>\r\n</div>"
+            text: "<div class=\"title-body\">\r\n<h3 class=\"title\">{{ title }} <span class=\"date\">{{ created }}</span></h3>\r\n<div class=\"image-mobile\">{{ field_image }}</div>\r\n<div class=\"text\">{{ body }}</div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
