@@ -10,7 +10,7 @@ function hsk_zymphonies_preprocess_page(&$variables) {
   if (\Drupal::service('path.matcher')->isFrontPage()) {
     $variables['#attached']['library'][] = 'hsk_zymphonies/header-slideshow';
   }
-  if(array_key_exists('node', $variables)) {
+  if (array_key_exists('node', $variables)) {
     if (!is_string($variables['node'])) {
 
       // Load the JS Tabs Script only if we are on the content Type 'turnier'
@@ -43,16 +43,19 @@ function hsk_zymphonies_preprocess_page(&$variables) {
 function hsk_zymphonies_preprocess_html(&$variables) {
   // Add the node classes from the node_class Module as body class
   if ($node = \Drupal::request()->attributes->get('node')) {
-    if(!is_string($node)) {
+    if (!is_string($node)) {
       // Get classes set with the node_class Module
       $classes = $node->get('node_class')->getValue();
-      if(!empty($classes)) {
+      if (!empty($classes)) {
         $node_class = ($classes['0']['value']);
         // Add the class to the body classes as "node-"[class]
         $variables['attributes']['class'][] = 'node-' . $node_class;
       }
     }
   }
+}
 
-
+function hsk_zymphonies_views_view_field__news__block_1__title(&$variables) {
+//  ksm($variables);
+//  ksm($variables['row']->_entity->field_image->value);
 }
