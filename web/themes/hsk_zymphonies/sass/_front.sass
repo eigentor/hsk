@@ -102,21 +102,23 @@
       +legacy-pie-clearfix
       margin-bottom: 15px
 
-      h3
-        margin-bottom: 2px
+      h3.field-content
+        +x-rem(font-size, 1.3)
+        margin-bottom: 0.5em
+        a
+          display: block
 
         span.date
           +small-grey-links
           color: #999
-
-          &:before
-            content: "- "
+          display: block
+          margin-top: 0.4em
 
       .views-field-title
         margin-bottom: 3px
 
       .views-field-field-image
-        margin: 5px 15px 0 0
+        margin: 5px 15px 0.7em 0
     //a.views-more-link
     //  color: #999
     //  padding-left: 5px
@@ -233,6 +235,13 @@
       .views-row
         .views-field-field-image
           float: left
+        h3.field-content
+          a
+            display: inline
+          span.date
+            display: inline
+            &:before
+              content: "- "
 
 
 /* End Media Query Tablet */
@@ -255,6 +264,7 @@
       .views-row
         .views-field-field-image
           margin-top: 3px
+
 
 
 /* End Media Query Tablet */
