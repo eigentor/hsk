@@ -233,14 +233,17 @@
 +breakpoint($breakpoint-tablet)
   .path-frontpage
     #block-views-block-news-block-1
-      +make-md-column(6)
       .views-row
+        display: flex
         .image-mobile
           display: none
         .views-field-field-image-1
           display: block
-          float: left
-        h3.field-content
+          min-width: 115px
+          margin-right: 1em
+          img
+            margin-top: 7px
+        h3.title
           a
             display: inline
           span.date
@@ -262,13 +265,14 @@
       .region-content
         margin-top: 30px
         +make-row()
-    #block-views-block-events-list-block-1
-      +make-md-column(6)
     #block-views-block-news-block-1
-      +make-md-column(6)
+      +make-md-column(7)
       .views-row
         .views-field-field-image
           margin-top: 3px
+    #block-views-block-events-list-block-1
+      +make-md-column(5)
+
 
 
 
