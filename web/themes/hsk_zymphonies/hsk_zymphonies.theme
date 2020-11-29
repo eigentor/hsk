@@ -54,8 +54,3 @@ function hsk_zymphonies_preprocess_html(&$variables) {
     }
   }
 }
-
-function hsk_zymphonies_views_view_field__news__block_1__title(&$variables) {
-//  ksm($variables);
-//  ksm($variables['row']->_entity->field_image->value);
-}
