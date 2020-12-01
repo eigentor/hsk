@@ -2936,6 +2936,9 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   padding-left: 0;
 }
 
+.page-node-type-article article.node--type-article.default-image .field--name-field-image {
+  display: none;
+}
 .page-node-type-article node__content {
   *zoom: 1;
 }
