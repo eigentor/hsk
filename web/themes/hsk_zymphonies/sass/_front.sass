@@ -266,12 +266,21 @@
         margin-top: 30px
         +make-row()
     #block-views-block-news-block-1
+      .view-news
+        padding-right: 2em
       +make-md-column(7)
       .views-row
+        margin-bottom: 22px
         .views-field-field-image
           margin-top: 3px
     #block-views-block-events-list-block-1
       +make-md-column(5)
+      .views-row
+        margin-bottom: 13px
+        .views-field-field-ev-start-time
+          .date
+            background: #999
+            +x-rem(font-size, 0.7)
 
 
 
