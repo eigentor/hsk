@@ -2318,6 +2318,9 @@ button.btn:hover, a.btn:hover {
 .path-news .view-news .views-row {
   margin-bottom: 15px;
 }
+.path-news .view-news .views-row.default-image .field--name-field-image {
+  display: none;
+}
 
 .path-mannschaften .view-mannschaften .views-row {
   display: flex;

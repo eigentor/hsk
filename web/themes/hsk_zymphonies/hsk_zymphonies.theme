@@ -62,17 +62,29 @@ function hsk_zymphonies_preprocess_html(&$variables) {
 function hsk_zymphonies_preprocess_views_view_unformatted__news(&$variables) {
   // If the there is no value for the image field, the default image is used.
   // Add the class 'default-image' if this is the case.
-  foreach($variables['rows'] as $id => $row) {
-    if($row['content']['#row']->_entity->field_image->isEmpty()) {
-      $variables['rows'][$id]['attributes']->addClass('default-image');
+  if($variables['view']->current_display == 'block_1') {
+    foreach($variables['rows'] as $id => $row) {
+      if ($row['content']['#row']->_entity->field_image->isEmpty()) {
+        $variables['rows'][$id]['attributes']->addClass('default-image');
+      }
+    }
+  } elseif ($variables['view']->current_display == 'page_1'){
+    foreach($variables['rows'] as $id => $row) {
+      if ($row['content']['#node']->field_image->isEmpty()) {
+        $variables['rows'][$id]['attributes']->addClass('default-image');
+      }
     }
   }
 }
 
 
-
+/**
+ * implements template_preprocess_node();
+ * @param $variables
+ */
 function hsk_zymphonies_preprocess_node__article(&$variables) {
-
+  // If the there is no value for the image field, the default image is used.
+  // Add the class 'default-image' if this is the case.
   if($variables['node']->field_image->isEmpty()) {
     $variables['attributes']['class'][] = 'default-image';
   }
