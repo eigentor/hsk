@@ -4085,6 +4085,9 @@ nav#block-hsk-footer ul li a {
   *zoom: 1;
   margin-bottom: 15px;
 }
+.path-frontpage #block-views-block-news-block-1 .views-row.default-image .image-mobile {
+  display: none;
+}
 .path-frontpage #block-views-block-news-block-1 .views-row:after {
   content: " ";
   display: block;

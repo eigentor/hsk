@@ -54,3 +54,17 @@ function hsk_zymphonies_preprocess_html(&$variables) {
     }
   }
 }
+
+/**
+ * Implement template_preprocess_views_view();
+ * @param $variables
+ */
+function hsk_zymphonies_preprocess_views_view_unformatted__news__block_1(&$variables) {
+  // If the there is no value for the image field, the default image is used.
+  // Add the class 'default-image' if this is the case.
+  foreach($variables['rows'] as $id => $row) {
+    if($row['content']['#row']->_entity->field_image->isEmpty()) {
+      $variables['rows'][$id]['attributes']->addClass('default-image');
+    }
+  }
+}
