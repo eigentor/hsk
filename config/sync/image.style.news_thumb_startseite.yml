@@ -5,13 +5,13 @@ dependencies:
   module:
     - focal_point
 name: news_thumb_startseite
-label: 'News Thumb Startseite'
+label: 'News Thumb Startseite Desktop'
 effects:
   c2f3b828-7595-47fe-9d74-41f0c0b94439:
     uuid: c2f3b828-7595-47fe-9d74-41f0c0b94439
     id: focal_point_scale_and_crop
     weight: 2
     data:
-      width: 78
-      height: 78
+      width: 115
+      height: 115
       crop_type: focal_point

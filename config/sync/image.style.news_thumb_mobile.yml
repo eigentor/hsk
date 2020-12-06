@@ -1,0 +1,17 @@
+uuid: 435a4c2e-df92-48e4-a6f6-b1c571da0d5e
+langcode: de
+status: true
+dependencies:
+  module:
+    - focal_point
+name: news_thumb_mobile
+label: 'News Thumb mobile'
+effects:
+  9126a1b1-46af-4a4e-acc8-e4db1680c92a:
+    uuid: 9126a1b1-46af-4a4e-acc8-e4db1680c92a
+    id: focal_point_scale_and_crop
+    weight: -9
+    data:
+      width: 440
+      height: 270
+      crop_type: focal_point

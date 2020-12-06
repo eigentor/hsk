@@ -11,7 +11,7 @@ _core:
 id: hsk_zymphonies_content
 theme: hsk_zymphonies
 region: content
-weight: -7
+weight: -8
 provider: null
 plugin: system_main_block
 settings:

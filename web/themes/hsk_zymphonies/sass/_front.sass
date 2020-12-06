@@ -6,38 +6,48 @@
 .path-frontpage
   .content_layout
     margin-top: 0
+
     .region-content
       margin-top: 20px
       margin-bottom: 15px
+
   #block-hsk-zymphonies-content
     margin: 0
+
   #block-views-block-events-list-block-1
     h3
       color: $grey-text
       border-bottom: 1px solid $divider-line-color
+
     .more-link
       margin-top: -20px
+
       a
         +small-grey-links
         padding-right: 30px
+
     .view-header
       margin-bottom: 20px
       +x-rem(font-size, 0.85)
       border: 1px solid #e5e5e5
       background: #f5f5f5
       padding: 8px 13px
+
       h3
         border: none
         line-height: 1.3
         margin-bottom: 3px
         color: #555
+
     .views-row
       display: flex
       margin-bottom: 9px
       margin-bottom: 9px
       +legacy-pie-clearfix
+
       .views-field-field-ev-date
         +x-rem(font-size, 0.8)
+
       .views-field-field-ev-start-time
         margin-top: 3px
         +x-rem(font-size, 0.75)
@@ -45,17 +55,21 @@
         margin-right: 11px
         text-align: center
         min-width: 80px
+
         .date
           background: #888
           color: white
           padding: 1px 6px
+
         .time
           padding: 2px 0
           border: 1px solid #ccc
           border-top: 0
           line-height: 1.2
+
       .views-field-title
         display: flex
+
         h3
           //font-family: $open-sans
           +x-rem(font-size, 0.95)
@@ -63,49 +77,68 @@
           margin-top: 3px
           margin-bottom: 0
           border: none
+
       .views-field-field-event-room
         display: flex
         margin-top: 0.3em
         +small-grey-links
         margin-left: 10px
+
         .views-label-field-event-room
           margin-right: 0.3em
 
   #block-views-block-news-block-1
     h2.title
       margin-bottom: 15px
+
     .more-link
       margin-top: -20px
+
       a
         +small-grey-links
         padding-right: 30px
+
     .views-row
+      &.default-image
+        .image-mobile
+          display: none
+
       +legacy-pie-clearfix
       margin-bottom: 15px
-      h3
-        margin-bottom: 2px
+
+      h3.title
+        +x-rem(font-size, 1.3)
+        margin-bottom: 0.5em
+        a
+          display: block
+
         span.date
           +small-grey-links
           color: #999
-          &:before
-            content: "- "
+          display: block
+          margin-top: 0.4em
+
       .views-field-title
         margin-bottom: 3px
-      .views-field-field-image
-        float: left
-        margin: 5px 15px 0 0
-      //a.views-more-link
-      //  color: #999
-      //  padding-left: 5px
-      //  +x-rem(font-size, 0.85)
-      //  &:hover
-      //    color: $link-color
+
+      .image-mobile
+        margin: 5px 15px 0.7em 0
+      .views-field-field-image-1
+        display: none
+    //a.views-more-link
+    //  color: #999
+    //  padding-left: 5px
+    //  +x-rem(font-size, 0.85)
+    //  &:hover
+    //    color: $link-color
 
     .views-field-created
       +small-grey-links
+
     .views-field-body
       p
         margin-bottom: 0
+
     .views-field-view-node
       a
         +small-grey-links
@@ -113,6 +146,7 @@
   .bottom-widgets
     background: #eee
     padding-top: 40px
+
     h3
       +x-rem(font-size, 1.2)
 
@@ -122,6 +156,7 @@
       font-weight: bold
       color: white
       letter-spacing: +0.02em
+
       &:before
         font-family: Fontawesome
         content: "\f061"
@@ -134,15 +169,17 @@
         margin-right: 5px
         margin-left: -3px
         letter-spacing: 0
-      //+x-rem(font-size, 1.1)
-      //height: auto
+  //+x-rem(font-size, 1.1)
+  //height: auto
 
   #block-infoblockstartseite1
     position: relative
     padding-left: 40px
     padding-top: 3px
+
     h3
       margin-bottom: 5px
+
     &:before
       position: absolute
       font-family: Fontawesome
@@ -155,10 +192,13 @@
     position: relative
     padding-left: 40px
     padding-top: 3px
+
     h3
       margin-bottom: 5px
+
     h3.freizeitheim
       position: relative
+
       &:before
         position: absolute
         font-family: Fontawesome
@@ -166,8 +206,10 @@
         left: -35px
         top: -5px
         +x-rem(font-size, 2.3)
+
     p.vorsitzender
       position: relative
+
       &:before
         position: absolute
         font-family: Fontawesome
@@ -175,14 +217,6 @@
         left: -40px
         top: -6px
         +x-rem(font-size, 1.8)
-
-
-
-
-
-
-
-
 
 
 /*------------------------------------------- */
@@ -201,6 +235,25 @@
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-tablet)
+  .path-frontpage
+    #block-views-block-news-block-1
+      .views-row
+        display: flex
+        .image-mobile
+          display: none
+        .views-field-field-image-1
+          display: block
+          min-width: 115px
+          margin-right: 1em
+          img
+            margin-top: 7px
+        h3.title
+          a
+            display: inline
+          span.date
+            display: inline
+            &:before
+              content: "- "
 
 
 /* End Media Query Tablet */
@@ -216,14 +269,22 @@
       .region-content
         margin-top: 30px
         +make-row()
-    #block-views-block-events-list-block-1
-      +make-md-column(6)
-
     #block-views-block-news-block-1
-      +make-md-column(6)
+      .view-news
+        padding-right: 2em
+      +make-md-column(7)
       .views-row
+        margin-bottom: 22px
         .views-field-field-image
           margin-top: 3px
+    #block-views-block-events-list-block-1
+      +make-md-column(5)
+      .views-row
+        margin-bottom: 13px
+        .views-field-field-ev-start-time
+          .date
+            background: #999
+            +x-rem(font-size, 0.7)
 
 
 
