@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.article.field_gallery_above_body
     - field.field.node.article.field_gallery_below_body
     - field.field.node.article.field_image
+    - field.field.node.article.field_main_image_teaser_only
     - field.field.node.article.field_new_par_various
     - field.field.node.article.field_new_txt_capt_main_img
     - field.field.node.article.field_tags
@@ -179,3 +180,4 @@ content:
     region: content
 hidden:
   comment: true
+  field_main_image_teaser_only: true

@@ -9,6 +9,9 @@ dependencies:
     - field.field.node.article.field_gallery_above_body
     - field.field.node.article.field_gallery_below_body
     - field.field.node.article.field_image
+    - field.field.node.article.field_main_image_teaser_only
+    - field.field.node.article.field_new_par_various
+    - field.field.node.article.field_new_txt_capt_main_img
     - field.field.node.article.field_tags
     - image.style.medium
     - node.type.article
@@ -58,5 +61,8 @@ hidden:
   field_gallery_above_body: true
   field_gallery_below_body: true
   field_image: true
+  field_main_image_teaser_only: true
+  field_new_par_various: true
+  field_new_txt_capt_main_img: true
   field_tags: true
   langcode: true

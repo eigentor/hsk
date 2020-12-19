@@ -1,0 +1,23 @@
+uuid: f821b02a-4b7f-44b5-8b7b-9460cdeba625
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_main_image_teaser_only
+    - node.type.article
+id: node.article.field_main_image_teaser_only
+field_name: field_main_image_teaser_only
+entity_type: node
+bundle: article
+label: 'Hauptbild nur für Teaser verwenden'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
