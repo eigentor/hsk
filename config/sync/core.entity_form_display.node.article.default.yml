@@ -15,11 +15,28 @@ dependencies:
     - image.style.max_325x325
     - node.type.article
   module:
+    - field_group
     - focal_point
     - paragraphs
     - paragraphs_features
     - path
     - text
+third_party_settings:
+  field_group:
+    group_hauptbild:
+      children:
+        - field_image
+        - field_main_image_teaser_only
+      parent_name: ''
+      weight: 1
+      format_type: fieldset
+      region: content
+      format_settings:
+        id: ''
+        classes: main-image
+        description: ''
+        required_fields: true
+      label: Hauptbild
 _core:
   default_config_hash: 7CvVDwPYotAZFBa36mcpMKZOfVRRp_iGuPHpHaavI6E
 id: node.article.default
@@ -29,7 +46,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 4
+    weight: 6
     settings:
       rows: 9
       summary_rows: 3
@@ -39,13 +56,13 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 12
     settings: {  }
     third_party_settings: {  }
     region: content
   field_gallery_above_body:
     type: entity_reference_paragraphs
-    weight: 3
+    weight: 5
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -57,7 +74,7 @@ content:
     region: content
   field_gallery_below_body:
     type: entity_reference_paragraphs
-    weight: 6
+    weight: 8
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -69,7 +86,7 @@ content:
     region: content
   field_image:
     type: image_focal_point
-    weight: 1
+    weight: 2
     settings:
       preview_image_style: max_325x325
       preview_link: true
@@ -77,9 +94,16 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     region: content
+  field_main_image_teaser_only:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_new_par_various:
     type: paragraphs
-    weight: 5
+    weight: 7
     settings:
       title: Absatz
       title_plural: Paragraphs
@@ -101,7 +125,7 @@ content:
         split_text: false
     region: content
   field_new_txt_capt_main_img:
-    weight: 2
+    weight: 4
     settings:
       size: 60
       placeholder: ''
@@ -110,7 +134,7 @@ content:
     region: content
   field_tags:
     type: entity_reference_autocomplete_tags
-    weight: 8
+    weight: 10
     settings:
       match_operator: CONTAINS
       size: 60
@@ -120,14 +144,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 7
+    weight: 9
     settings:
       include_locked: true
     third_party_settings: {  }
     region: content
   node_class:
     type: string_textfield
-    weight: 14
+    weight: 16
     region: content
     settings:
       size: 60
@@ -135,7 +159,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 13
+    weight: 15
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -143,21 +167,21 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 11
+    weight: 13
     third_party_settings: {  }
     region: content
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 15
+    weight: 17
     third_party_settings: {  }
     region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 12
+    weight: 14
     third_party_settings: {  }
     region: content
   title:
@@ -170,7 +194,7 @@ content:
     region: content
   uid:
     type: entity_reference_autocomplete
-    weight: 9
+    weight: 11
     settings:
       match_operator: CONTAINS
       size: 60
@@ -180,4 +204,3 @@ content:
     region: content
 hidden:
   comment: true
-  field_main_image_teaser_only: true
