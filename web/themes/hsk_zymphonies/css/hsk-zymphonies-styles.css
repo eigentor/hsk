@@ -2942,6 +2942,9 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .page-node-type-article article.node--type-article.default-image .field--name-field-image {
   display: none;
 }
+.page-node-type-article article.node--type-article.main-image-teaser-only .field--name-field-image {
+  display: none;
+}
 .page-node-type-article node__content {
   *zoom: 1;
 }
@@ -3766,6 +3769,7 @@ nav#block-hsk-footer ul li a {
 #block-views-block-header-slideshow-block-1 {
   clear: both;
 }
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/
