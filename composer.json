@@ -21,6 +21,8 @@
         "drupal/core-composer-scaffold": "^8.9",
         "drupal/core-recommended": "^8.9",
         "drupal/focal_point": "^1.5",
+        "drupal/paragraphs": "^1.12",
+        "drupal/video_embed_field": "^2.4",
         "drupal/webform": "^5.22",
         "drush/drush": "^10.2"
     },
