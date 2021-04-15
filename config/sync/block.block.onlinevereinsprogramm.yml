@@ -1,0 +1,31 @@
+uuid: 033bd295-4e6b-41ab-a11e-3d00c87b8d7b
+langcode: de
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:5538f16e-2233-499a-ae19-fb4fe8f2e3a2'
+  module:
+    - block_content
+    - system
+  theme:
+    - hsk_zymphonies
+id: onlinevereinsprogramm
+theme: hsk_zymphonies
+region: bottom_second
+weight: 0
+provider: null
+plugin: 'block_content:5538f16e-2233-499a-ae19-fb4fe8f2e3a2'
+settings:
+  id: 'block_content:5538f16e-2233-499a-ae19-fb4fe8f2e3a2'
+  label: Online-Vereinsprogramm
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
