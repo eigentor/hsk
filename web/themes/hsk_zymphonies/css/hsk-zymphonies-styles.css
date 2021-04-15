@@ -3250,6 +3250,10 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button {
   box-shadow: none;
   color: white;
   margin-top: 0.7em;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-weight: normal;
+  margin-right: 0.5em;
 }
 div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   background: #ba6900;
