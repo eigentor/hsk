@@ -43,43 +43,36 @@ class AdministrationForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
     $this->config('entityconnect.administration_config')
-      ->set('icons.icon_add', $form_state->getValue(array(
+      ->set('icons.icon_add', $form_state->getValue([
         'entityconnect',
         'icons',
         'icon_add',
+      ]
       )
       )
-      )
-      ->set('icons.icon_edit', $form_state->getValue(array(
+      ->set('icons.icon_edit', $form_state->getValue([
         'entityconnect',
         'icons',
         'icon_edit',
+      ]
       )
       )
-      )
-      ->set('buttons.button_add', $form_state->getValue(array(
+      ->set('buttons.button_add', $form_state->getValue([
         'entityconnect',
         'buttons',
         'button_add',
+      ]
       )
       )
-      )
-      ->set('buttons.button_edit', $form_state->getValue(array(
+      ->set('buttons.button_edit', $form_state->getValue([
         'entityconnect',
         'buttons',
         'button_edit',
-      )
+      ]
       )
       )
       ->save();
@@ -95,19 +88,19 @@ class AdministrationForm extends ConfigFormBase {
    */
   public static function attach(array &$form, array $defaults) {
 
-    $form['entityconnect'] = array(
+    $form['entityconnect'] = [
       '#type' => 'details',
       '#title' => t('EntityConnect default Parameters'),
       '#open' => TRUE,
       '#tree' => TRUE,
-    );
+    ];
 
-    $form['entityconnect']['buttons'] = array(
+    $form['entityconnect']['buttons'] = [
       '#type' => 'fieldset',
       '#title' => t('Buttons display Parameters'),
-    );
+    ];
 
-    $form['entityconnect']['buttons']['button_add'] = array(
+    $form['entityconnect']['buttons']['button_add'] = [
       '#required' => '1',
       '#default_value' => $defaults['buttons']['button_add'],
       '#description' => t('Default: "off"<br />
@@ -115,14 +108,14 @@ class AdministrationForm extends ConfigFormBase {
                             Each field can override this value.'),
       '#weight' => '0',
       '#type' => 'radios',
-      '#options' => array(
+      '#options' => [
         '0' => t('on'),
         '1' => t('off'),
-      ),
+      ],
       '#title' => t('Default Entity Connect "add" button display'),
-    );
+    ];
 
-    $form['entityconnect']['buttons']['button_edit'] = array(
+    $form['entityconnect']['buttons']['button_edit'] = [
       '#required' => '1',
       '#default_value' => $defaults['buttons']['button_edit'],
       '#description' => t('Default: "off"<br />
@@ -130,19 +123,19 @@ class AdministrationForm extends ConfigFormBase {
                             Each field can override this value.'),
       '#weight' => '1',
       '#type' => 'radios',
-      '#options' => array(
+      '#options' => [
         '0' => t('on'),
         '1' => t('off'),
-      ),
+      ],
       '#title' => t('Default Entity Connect "edit" button display'),
-    );
+    ];
 
-    $form['entityconnect']['icons'] = array(
+    $form['entityconnect']['icons'] = [
       '#type' => 'fieldset',
       '#title' => t('Icons display Parameters'),
-    );
+    ];
 
-    $form['entityconnect']['icons']['icon_add'] = array(
+    $form['entityconnect']['icons']['icon_add'] = [
       '#required' => '1',
       '#key_type_toggled' => '1',
       '#default_value' => $defaults['icons']['icon_add'],
@@ -152,15 +145,15 @@ class AdministrationForm extends ConfigFormBase {
                            Each field can override this value.'),
       '#weight' => '2',
       '#type' => 'radios',
-      '#options' => array(
+      '#options' => [
         '0' => t('Icon only'),
         '1' => t('Icon + Text'),
         '2' => t('Text only'),
-      ),
+      ],
       '#title' => t('Default Entity Connect "add (+) icon" display'),
-    );
+    ];
 
-    $form['entityconnect']['icons']['icon_edit'] = array(
+    $form['entityconnect']['icons']['icon_edit'] = [
       '#required' => '1',
       '#default_value' => $defaults['icons']['icon_edit'],
       '#description' => t('Default: "Icon only"<br />
@@ -169,13 +162,13 @@ class AdministrationForm extends ConfigFormBase {
                            Each field can override this value.'),
       '#weight' => '3',
       '#type' => 'radios',
-      '#options' => array(
+      '#options' => [
         '0' => t('Icon only'),
         '1' => t('Icon + Text'),
         '2' => t('Text only'),
-      ),
+      ],
       '#title' => t('Default Entity Connect "edit (pencil) icon" display'),
-    );
+    ];
   }
 
 }

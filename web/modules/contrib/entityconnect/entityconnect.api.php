@@ -16,10 +16,10 @@
  * @see entityconnect_child_form_alter()
  */
 function hook_entityconnect_exclude_forms_alter(array &$exclude_forms) {
-  $exclude_forms = array(
+  $exclude_forms = [
     'search_block_form',
     'page_node_form',
-  );
+  ];
 }
 
 /**
@@ -52,7 +52,7 @@ function hook_entityconnect_ref_fields_alter(array &$ref_fields) {
  *   );.
  *
  * @return mixed
- *    $data['element_value'] need to be set.
+ *   $data['element_value'] need to be set.
  */
 function hook_entityconnect_return_form_alter(array &$data) {
   /*

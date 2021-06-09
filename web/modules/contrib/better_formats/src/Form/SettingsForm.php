@@ -34,13 +34,13 @@ class SettingsForm extends ConfigFormBase {
 
     $form['control'] = [
       '#type' => 'fieldset',
-      '#title' => t('Control'),
+      '#title' => $this->t('Control'),
     ];
 
     $form['control']['per_field_core'] = [
       '#type'  => 'checkbox',
-      '#title' => t('Use field default'),
-      '#description' => t('Use the core field module default value to set the default format. This will force the default format even when the default field value is empty. To set a default format you must re-edit a text field after saving it with the "Filtered text" option turned on.'),
+      '#title' => $this->t('Use field default'),
+      '#description' => $this->t('Use the core field module default value to set the default format. This will force the default format even when the default field value is empty. To set a default format you must re-edit a text field after saving it with the "Filtered text" option turned on.'),
       '#default_value' => $config->get('per_field_core'),
     ];
 

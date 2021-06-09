@@ -1,4 +1,5 @@
-
+administer entityconnect:
+  title: 'Administer entityconnect'
 entityconnect add button:
   title: 'Allows users to see add button'
   description: 'Display the add button for user'

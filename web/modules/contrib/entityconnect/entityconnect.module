@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\entityconnect\Controller\EntityconnectController;
 use Drupal\entityconnect\EntityconnectFormUtils;
@@ -15,12 +14,34 @@ use Drupal\entityconnect\EntityconnectFormUtils;
  * Implements hook_help().
  */
 function entityconnect_help($route_name, RouteMatchInterface $route_match) {
+  $module_path = drupal_get_path('module', 'entityconnect');
   switch ($route_name) {
     // Main module help for the entityconnect module.
     case 'help.page.entityconnect':
       $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Entity Connect') . '</p>';
+
+      $filepath = $module_path . '/README.md';
+      if (file_exists($filepath)) {
+        $readme = file_get_contents($filepath);
+      }
+      if (!isset($readme)) {
+        return NULL;
+      }
+      if (\Drupal::moduleHandler()->moduleExists('markdown')) {
+        $filters = \Drupal::moduleHandler()->invoke('markdown', 'filter_info');
+        $info = $filters['filter_markdown'];
+
+        if (function_exists($info['process callback'])) {
+          $output = $info['process callback']($readme, NULL);
+        }
+        else {
+          $output = '<pre>' . $readme . '</pre>';
+        }
+      }
+      else {
+        $output = '<pre>' . $readme . '</pre>';
+      }
+
       return $output;
 
     default:
@@ -34,11 +55,11 @@ function entityconnect_theme() {
   $theme = [
     // Entityconnect Entity add list page.
     'entityconnect_entity_add_list' => [
-      'variables' => array(
+      'variables' => [
         'items' => NULL,
         'cache_id' => NULL,
         'cancel_link' => NULL,
-      ),
+      ],
       'file' => 'templates/entityconnect.theme.inc',
     ],
   ];
@@ -59,14 +80,15 @@ function entityconnect_form_field_config_edit_form_alter(array &$form, FormState
 function entityconnect_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
   // Get the cache from the id and set the form state if this is a child form.
-  if (!empty($_REQUEST['build_cache_id'])) {
-    $cid = $_REQUEST['build_cache_id'];
+  $request = \Drupal::request();
+  if (!empty($request->query->get('build_cache_id'))) {
+    $cid = $request->query->get('build_cache_id');
     $cache_data = \Drupal::getContainer()->get('entityconnect.cache')->get($cid);
-    if (!empty($_REQUEST['child'])) {
+    if (!empty($request->query->get('child'))) {
       $form_state->set('#entityconnect_child_form', [$cid => $cache_data]);
     }
-    if (isset($_REQUEST['return']) && !empty($cache_data) && $cache_data['form']['#form_id'] == $form_id) {
-      unset($_REQUEST['build_cache_id']);
+    if (!empty($request->query->get('return')) && !empty($cache_data) && $cache_data['form']['#form_id'] == $form_id) {
+      $request->query->remove('build_cache_id');
       EntityconnectFormUtils::returnFormAlter($form, $form_state, $cache_data);
       \Drupal::getContainer()->get('entityconnect.cache')->delete($cid);
     }

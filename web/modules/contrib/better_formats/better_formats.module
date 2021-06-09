@@ -10,6 +10,46 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 
 /**
+ * Implements hook_field_widget_form_alter().
+ *
+ */
+function better_formats_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+
+  $field_definition = $context['items']->getFieldDefinition();
+
+  if (!$field_definition instanceof ThirdPartySettingsInterface) {
+    return;
+  }
+
+  $betterFormatsSettings = $field_definition->getThirdPartySettings('better_formats');
+
+  if (empty($betterFormatsSettings)) {
+    return;
+  }
+
+  $element['#better_formats']['settings'] = $betterFormatsSettings;
+
+  $element['#better_formats']['existing_entity'] = FALSE;
+
+  $entity = $context['items']->getEntity();
+
+  if (!empty($entity)) {
+
+    // Determine if this is an existing entity.
+    if ($entity->id()) {
+      $element['#better_formats']['existing_entity'] = TRUE;
+    }
+
+    $element['#better_formats']['entity_type'] = $entity->getEntityTypeId();
+
+    $default_value = $field_definition->getDefaultValue($entity);
+    $default_value = array_shift($default_value);
+    $element['#better_formats']['default_value'] = isset($default_value['format']) ? $default_value['format'] : NULL;
+  }
+
+}
+
+/**
  * Implements hook_element_info_alter().
  */
 function better_formats_element_info_alter(array &$types) {
@@ -45,31 +85,21 @@ function better_formats_filter_process_format(array &$element, FormStateInterfac
   // format.
   $access_denied_for_security = isset($element['format']['format']['#access']) && !$element['format']['format']['#access'];
 
-  $form_object = $form_state->getFormObject();
-
-  if ($form_object instanceof Drupal\Core\Entity\ContentEntityForm) {
-    $entity = $form_state->getFormObject()->getEntity();
-    $entity_type = $entity->getEntityTypeId();
-    $field_name = reset($element['#parents']);
-    $field_definition = $entity->getFieldDefinition($field_name);
-
-    if ($field_definition instanceof ThirdPartySettingsInterface) {
-      $bf = $field_definition->getThirdPartySettings('better_formats');
-
-      if (Drupal::config('better_formats.settings')->get('per_field_core')) {
-        $field_defaults = $field_definition->getDefaultValue($entity);
-        $default_value = array_shift($field_defaults);
-        better_formats_set_default_format($element, $default_value['format']);
-      }
-    }
-  }
-  elseif ($form_object instanceof Drupal\field_ui\Form\FieldConfigEditForm) {
-    $entity = $form_state->getFormObject()->getEntity();
-    $entity_type = $entity->getTargetEntityTypeId();
-    $bf = $entity->getThirdPartySettings('better_formats');
+  if (!empty($element['#better_formats']['settings'])) {
+    $betterFormatsSettings = $element['#better_formats']['settings'];
   }
   else {
     return $element;
+  }
+
+  if (!empty($element['#better_formats']['entity_type'])) {
+    $entity_type = $element['#better_formats']['entity_type'];
+  }
+
+  // Whether use the core field module default value to set the default format.
+  // See /admin/config/content/formats/settings.
+  if (Drupal::config('better_formats.settings')->get('per_field_core')) {
+    better_formats_set_default_format($element, $element['#better_formats']['default_value']);
   }
 
   // Now hide several parts of the element for cosmetic reasons (depending on
@@ -112,11 +142,10 @@ function better_formats_filter_process_format(array &$element, FormStateInterfac
   // core will hide the format selector and force the field to be saved with its
   // current values, and we should not do anything to alter that process.
   if ($entity_type != NULL && !$access_denied_for_security) {
-    $eid = $entity->id();
 
     // Need to only do this on create forms.
-    if (empty($eid) && isset($bf) && !empty($bf['default_order_toggle']) && !empty($bf['default_order_wrapper']['formats'])) {
-      $order = $bf['default_order_wrapper']['formats'];
+    if (!$element['#better_formats']['existing_entity'] && isset($betterFormatsSettings) && !empty($betterFormatsSettings['default_order_toggle']) && !empty($betterFormatsSettings['default_order_wrapper']['formats'])) {
+      $order = $betterFormatsSettings['default_order_wrapper']['formats'];
       uasort($order, 'better_formats_text_format_sort');
 
       $options = [];
@@ -134,9 +163,9 @@ function better_formats_filter_process_format(array &$element, FormStateInterfac
         better_formats_set_default_format($element, array_shift($options_keys));
       }
     }
-    if (isset($bf) && !empty($bf['allowed_formats_toggle']) && !empty($bf['allowed_formats'])) {
+    if (isset($betterFormatsSettings) && !empty($betterFormatsSettings['allowed_formats_toggle']) && !empty($betterFormatsSettings['allowed_formats'])) {
       // Filter the list of available formats to those allowed on this field.
-      $allowed_fields = array_filter($bf['allowed_formats']);
+      $allowed_fields = array_filter($betterFormatsSettings['allowed_formats']);
       $options = &$element['format']['format']['#options'];
       $options = array_intersect_key($options, $allowed_fields);
 
@@ -274,10 +303,10 @@ function better_formats_form_field_config_edit_form_alter(&$form, FormStateInter
   if ($text_processing) {
     // We have to set an explicit weight here so that we can put the allowed
     // formats list after it.
-    $bf_settings = $entity->getThirdPartySettings('better_formats') != NULL ? $entity->getThirdPartySettings('better_formats') : [];
+    $betterFormatsSettings = $entity->getThirdPartySettings('better_formats') != NULL ? $entity->getThirdPartySettings('better_formats') : [];
 
     // Add in the better formats table.
-    $form['third_party_settings'] += better_formats_field_settings_form($bf_settings);
+    $form['third_party_settings'] += better_formats_field_settings_form($betterFormatsSettings);
     $form['third_party_settings']['#weight'] = -4;
   }
 }
@@ -343,7 +372,7 @@ function better_formats_field_settings_form($bf_form = []) {
   $form['better_formats']['default_order_toggle'] = [
     '#type' => 'checkbox',
     '#title' => t('Override default order'),
-    '#description' => t('Override the gloabl order that will determine the default text format a user will get <strong>only on entity creation</strong>.'),
+    '#description' => t('Override the global order that will determine the default text format a user will get <strong>only on entity creation</strong>.'),
     '#weight' => 3,
     '#default_value' => $order_toggle_default,
   ];

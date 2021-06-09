@@ -2,7 +2,7 @@
 
 namespace Drupal\better_formats\Tests;
 
-use Drupal\filter\Tests\FilterFormatAccessTest;
+use Drupal\Tests\filter\Functional\FilterFormatAccessTest;
 
 /**
  * Copy of FilterFormatAccessTest.

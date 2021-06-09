@@ -1,20 +1,18 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\embed\EmbedCKEditorPluginBase.
- */
-
 namespace Drupal\embed;
 
+use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\editor\Entity\Editor;
 use Drupal\embed\Entity\EmbedButton;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Provides a base class for embed CKEditor plugins.
+ */
 abstract class EmbedCKEditorPluginBase extends CKEditorPluginBase implements ContainerFactoryPluginInterface {
 
   /**
@@ -52,7 +50,7 @@ abstract class EmbedCKEditorPluginBase extends CKEditorPluginBase implements Con
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity.query')->get('embed_button')
+      $container->get('entity_type.manager')->getStorage('embed_button')->getQuery()
     );
   }
 
@@ -60,7 +58,7 @@ abstract class EmbedCKEditorPluginBase extends CKEditorPluginBase implements Con
    * {@inheritdoc}
    */
   public function getButtons() {
-    $buttons = array();
+    $buttons = [];
 
     if ($ids = $this->embedButtonQuery->execute()) {
       $embed_buttons = EmbedButton::loadMultiple($ids);
@@ -72,22 +70,36 @@ abstract class EmbedCKEditorPluginBase extends CKEditorPluginBase implements Con
     return $buttons;
   }
 
+  /**
+   * Build the information about the specific button.
+   *
+   * @param \Drupal\embed\EmbedButtonInterface $embed_button
+   *   The embed button.
+   *
+   * @return array
+   *   The array for use with getButtons().
+   */
   protected function getButton(EmbedButtonInterface $embed_button) {
-    return [
+    $info = [
       'id' => $embed_button->id(),
       'name' => Html::escape($embed_button->label()),
       'label' => Html::escape($embed_button->label()),
       'image' => $embed_button->getIconUrl(),
     ];
+    $definition = $this->getPluginDefinition();
+    if (!empty($definition['required_filter_plugin_id'])) {
+      $info['required_filter_plugin_id'] = $definition['required_filter_plugin_id'];
+    }
+    return $info;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getLibraries(Editor $editor) {
-    return array(
+    return [
       'embed/embed',
-    );
+    ];
   }
 
 }

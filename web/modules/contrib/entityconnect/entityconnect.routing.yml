@@ -4,7 +4,7 @@ entityconnect.administration_form:
     _form: '\Drupal\entityconnect\Form\AdministrationForm'
     _title: 'Entity Connect Administration'
   requirements:
-    _permission: 'access administration pages'
+    _permission: 'administer entityconnect'
 
 entityconnect.return:
   path: '/admin/entityconnect/return/{cache_id}/{cancel}'
