@@ -5,7 +5,7 @@ namespace Drupal\backup_migrate\Form;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class DestinationForm.
+ *
  *
  * @package Drupal\backup_migrate\Form
  */

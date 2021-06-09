@@ -2,7 +2,6 @@
 
 namespace Drupal\backup_migrate\Entity;
 
-use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Entity\EntityWithPluginCollectionInterface;
 use Drupal\Core\Plugin\DefaultSingleLazyPluginCollection;
@@ -11,10 +10,8 @@ use Drupal\Core\Session\AccountInterface;
 /**
  * A configuration entity that wraps a Backup and Migrate plugin.
  *
- * This base allows a configuration entity to use any B&M source
- * or destination by using Drupal's plugin system.
- *
- * Class WrapperEntityBase
+ * This base allows a configuration entity to use any B&M source or destination
+ * by using Drupal's plugin system.
  *
  * @package Drupal\backup_migrate\Entity
  */
@@ -44,7 +41,7 @@ abstract class WrapperEntityBase extends ConfigEntityBase implements EntityWithP
   /**
    * @return SourcePluginInterface
    *
-   * @throws \BackupMigrate\Core\Exception\BackupMigrateException
+   * @throws \Drupal\backup_migrate\Core\Exception\BackupMigrateException
    */
   public function getObject() {
     if ($plugin = $this->getPlugin()) {
@@ -57,7 +54,7 @@ abstract class WrapperEntityBase extends ConfigEntityBase implements EntityWithP
    *
    * @return mixed
    *
-   * @throws \BackupMigrate\Core\Exception\BackupMigrateException
+   * @throws \Drupal\backup_migrate\Core\Exception\BackupMigrateException
    */
   public function getPlugin() {
     if ($this->get('type')) {
@@ -71,7 +68,7 @@ abstract class WrapperEntityBase extends ConfigEntityBase implements EntityWithP
    *
    * @return mixed
    *
-   * @throws \BackupMigrate\Core\Exception\BackupMigrateException
+   * @throws \Drupal\backup_migrate\Core\Exception\BackupMigrateException
    */
   public function getPluginDefinition() {
     if ($plugin = $this->getPlugin()) {
@@ -126,7 +123,7 @@ abstract class WrapperEntityBase extends ConfigEntityBase implements EntityWithP
   /**
    * Return the plugin manager.
    *
-   * @return PluginManagerInterface
+   * @return \Drupal\Component\Plugin\PluginManagerInterface
    */
   abstract public function getPluginManager();
 

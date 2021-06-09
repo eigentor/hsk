@@ -24,9 +24,7 @@ class BackupMigrateEnablingTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
-    parent::setUp();
-  }
+  protected $defaultTheme = 'stark';
 
   /**
    * Tests if site opens with no errors.

@@ -9,7 +9,7 @@ backup_migrate.profile.*:
     label:
       type: label
       label: 'Label'
-    label:
+    filename:
       type: string
       label: 'Filename'
     append_timestamp:

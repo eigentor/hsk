@@ -2,7 +2,7 @@
 
 namespace Drupal\backup_migrate\Plugin\BackupMigrateSource;
 
-use BackupMigrate\Drupal\EntityPlugins\SourcePluginBase;
+use Drupal\backup_migrate\Drupal\EntityPlugins\SourcePluginBase;
 
 /**
  * Defines an mysql source plugin.
@@ -11,7 +11,7 @@ use BackupMigrate\Drupal\EntityPlugins\SourcePluginBase;
  *   id = "FileDirectory",
  *   title = @Translation("File Directory"),
  *   description = @Translation("Back up a server file directory."),
- *   wrapped_class = "\BackupMigrate\Core\Source\FileDirectorySource"
+ *   wrapped_class = "\Drupal\backup_migrate\Core\Source\FileDirectorySource"
  * )
  */
 class FileDirectorySourcePlugin extends SourcePluginBase {}

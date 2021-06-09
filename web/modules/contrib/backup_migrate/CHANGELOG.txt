@@ -1,3 +1,46 @@
+Backup and Migrate 5.0.0-rc2, 2020-09-28
+----------------------------------------
+#3158790 by devad, raman.b, karolus, robcarr, DamienMcKenna, endless_wander,
+  Bagz, jhnnsbstnbch, abdul_azeez_drusys, celia_ccs: Unable to add schedules and
+  profiles.
+#3169301 by devad, snehalgaikwad, DamienMcKenna: Unable to add backup source.
+#3173623 by DamienMcKenna: Add test coverage for running a backup through cron
+  in the UI.
+#3164263 by devad, DamienMcKenna, bigmonmulgrew: Incompatible PluginManager
+  ::call() declaration.
+#3173582 by DamienMcKenna: Replace BACKUP_MIGRATE_MODULE_VERSION constant with
+  the module's actual version.
+#3154715 by DamienMcKenna, xmacinfo: Add an update script to clear the caches
+  for upgrading to 5.0.x.
+
+
+Backup and Migrate 5.0.0-rc1, 2020-06-12
+----------------------------------------
+#3051092 by DamienMcKenna, vuil, rpayanm, waverate: Drupal 9 compatibility.
+#3065017 by DamienMcKenna, dercheffe, Promo-IL: Restore emoji unicode characters
+  not possible.
+#3143651 by DamienMcKenna: Ignore cache_page by default.
+#3143652 by DamienMcKenna: Coding standards improvements.
+#3143652 by DamienMcKenna: Rename class methods that start with an underscore.
+#3124193 by vsujeetkumar, DamienMcKenna, Neslee Canil Pinto: t() calls should be
+  avoided in classes.
+#3159638 by DamienMcKenna, endless_wander, snehalgaikwad, kvantstudio,
+  naresh_bavaskar: Error when saving destination.
+
+
+Backup and Migrate 8.x-4.x-dev, xxxx-xx-xx
+------------------------------------------
+#3121797 by paulocs, thalles, RenatoG, Neslee Canil Pinto: Update support.source
+  link in composer.json.
+#3104422 by peterkokot, DamienMcKenna: PHP 7.4 deprecated reverse order of glue
+  and pieces in implode.
+#3121309 by DamienMcKenna, Neslee Canil Pinto: Compatibility with Drupal 9.
+#3128371 by solideogloria: info.yml "dependencies" spelled wrong.
+#3130772 by DamienMcKenna: Remove dependencies from info.yml file.
+#3131711 by douggreen: 'label' key defined twice for backup_migrate.profile.*
+  config_entity schema in backup_migrate.schema.yml.
+
+
 Backup and Migrate 8.x-4.1, 2019-12-20
 --------------------------------------
 #2975065 by Dinu Rodnitchi, Alex Andrascu: Add encryption support.
@@ -92,7 +135,7 @@ By Ronan: Fix issue with file timestamps not saving.
 #2851741 by vibrasphere: 'UTF8 is not supported by the MySQL server' - When
   database port was not set.
 #2732195 by szeidler: Fatal error: Call to a member function create() on a non-
-  object in backup_migrate\vendor\backupmigrate\core\src\Source\MySQLiSource.php
+  object in backup_migrate\vendor\Drupal\backup_migrate\Core\src\Source\MySQLiSource.php
   on line 48.
 By Ronan: Put in a check for mysqli extension.
 #2865949 by Dinu Rodnitchi, pmunch: Add Backup Destination: "Directory Path"
@@ -105,7 +148,7 @@ Backup and Migrate 8.x-4.0-alpha2, 2017-04-04
 #2809965 by szeidler: Restore - nothing happens
 #2833245: Error: Call to undefined method confSet() - prevents backup
 #2741245 by tobiberlin: On restore page: Notice: Undefined index: groups in
-  BackupMigrate\Drupal\Config\DrupalConfigHelper::addFieldsFromSchema().
+  Drupal\backup_migrate\Drupal\Config\DrupalConfigHelper::addFieldsFromSchema().
 #2741301 noise on destination page.
 #2820911 Web server detection failing for IIS.
 #2826107 by szeidler: Error msgs on settings page.

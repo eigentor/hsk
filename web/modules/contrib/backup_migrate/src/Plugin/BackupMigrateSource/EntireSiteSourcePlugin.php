@@ -2,11 +2,12 @@
 
 namespace Drupal\backup_migrate\Plugin\BackupMigrateSource;
 
-use BackupMigrate\Core\Config\Config;
-use BackupMigrate\Drupal\Source\DrupalMySQLiSource;
-use BackupMigrate\Core\Main\BackupMigrateInterface;
-use BackupMigrate\Drupal\EntityPlugins\SourcePluginBase;
-use BackupMigrate\Drupal\Source\DrupalSiteArchiveSource;
+use Drupal\Core\Database\Database;
+use Drupal\backup_migrate\Core\Config\Config;
+use Drupal\backup_migrate\Drupal\Source\DrupalMySQLiSource;
+use Drupal\backup_migrate\Core\Main\BackupMigrateInterface;
+use Drupal\backup_migrate\Drupal\EntityPlugins\SourcePluginBase;
+use Drupal\backup_migrate\Drupal\Source\DrupalSiteArchiveSource;
 
 /**
  * Defines an default database source plugin.
@@ -20,22 +21,22 @@ use BackupMigrate\Drupal\Source\DrupalSiteArchiveSource;
  */
 class EntireSiteSourcePlugin extends SourcePluginBase {
 
-  protected $db_source;
+  protected $dbSource;
 
   /**
    * Get the Backup and Migrate plugin object.
    *
-   * @return BackupMigrate\Core\Plugin\PluginInterface;
+   * @return Drupal\backup_migrate\Core\Plugin\PluginInterface
    */
   public function getObject() {
     // Add the default database.
-    $info = \Drupal\Core\Database\Database::getConnectionInfo('default', 'default');
+    $info = Database::getConnectionInfo('default', 'default');
     $info = $info['default'];
     if ($info['driver'] == 'mysql') {
       $conf = $this->getConfig();
       $conf->set('directory', DRUPAL_ROOT);
-      $this->db_source = new DrupalMySQLiSource(new Config($info));
-      return new DrupalSiteArchiveSource($conf, $this->db_source);
+      $this->dbSource = new DrupalMySQLiSource(new Config($info));
+      return new DrupalSiteArchiveSource($conf, $this->dbSource);
     }
 
     return NULL;
@@ -47,7 +48,8 @@ class EntireSiteSourcePlugin extends SourcePluginBase {
   public function alterBackupMigrate(BackupMigrateInterface $bam, $key, $options = []) {
     if ($source = $this->getObject()) {
       $bam->sources()->add($key, $source);
-      $bam->sources()->add('default_db', $this->db_source);
+      // @todo Enable this, fix it.
+      // $bam->sources()->add('default_db', $this->dbSource);
     }
   }
 

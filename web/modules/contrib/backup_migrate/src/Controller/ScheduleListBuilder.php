@@ -77,7 +77,7 @@ class ScheduleListBuilder extends ConfigEntityListBuilder {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    drupal_set_message(t('The schedule settings have been updated.'));
+    \Drupal::messenger()->addMessage($this->t('The schedule settings have been updated.'));
   }
 
 }

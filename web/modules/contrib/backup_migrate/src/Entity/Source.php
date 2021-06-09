@@ -29,6 +29,13 @@ namespace Drupal\backup_migrate\Entity;
  *     "edit-form" = "/admin/config/development/backup_migrate/settings/source/{backup_migrate_source}/edit",
  *     "delete-form" = "/admin/config/development/backup_migrate/settings/source/{backup_migrate_source}/delete",
  *     "collection" = "/admin/config/development/backup_migrate/settings/source"
+ *   },
+ *   config_export = {
+ *     "id",
+ *     "label",
+ *     "uuid",
+ *     "type",
+ *     "config"
  *   }
  * )
  */

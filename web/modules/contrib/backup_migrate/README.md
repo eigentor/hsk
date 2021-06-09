@@ -1,31 +1,24 @@
-# Backup and Migrate for Drupal 8
+# Backup and Migrate for Drupal 8 and 9
 
-The Drupal 8 rebuild of Backup and Migrate (WIP)
+This is a rewrite of Backup and Migrate for Drupal 8 and 9.
 
 ## Installation
 
-This module uses composer to manage dependencies. To install from this repository:
+### Install without composer
 
-Clone the repository into your Drupal site modules directory:
+* Download the zip or tgz archive of the latest release from the project page: https://www.drupal.org/project/backup_migrate
+* Extra the archive and rename it so that there is just a directory called `backup_migrate`.
+* Move the directory to the site's `modules/contrib` directory.
 
-`git clone git@github.com:backupmigrate/backup_migrate_drupal.git /path/to/site/modules/backup_migrate`
+### Install using composer
 
-Change to the module directory:
+`composer require drupal/backup_migrate`
 
-`cd /path/to/site/modules/backup_migrate`
+### Optional: php-encryption
 
-Install using composer
+The backups may be encrypted using the defuse/php-encryption library. This must be installed using Composer, it cannot be downloaded without using Composer.
 
-`composer install`
-
-Local file encryption via php-encrpytion lib:
-
-If you require local file encryption support you will also need to install the php-encryption library( https://github.com/defuse/php-encryption ):
 `composer require defuse/php-encryption`
-
-Install the module as usual using Drush or the Drupal UI.
-
-For more information on using composer see: https://getcomposer.org/
 
 ## Related modules
 

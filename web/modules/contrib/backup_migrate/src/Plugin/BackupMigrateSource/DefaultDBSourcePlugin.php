@@ -2,11 +2,12 @@
 
 namespace Drupal\backup_migrate\Plugin\BackupMigrateSource;
 
-use BackupMigrate\Core\Config\Config;
-use BackupMigrate\Core\Filter\DBExcludeFilter;
-use BackupMigrate\Core\Main\BackupMigrateInterface;
-use BackupMigrate\Drupal\Source\DrupalMySQLiSource;
-use BackupMigrate\Drupal\EntityPlugins\SourcePluginBase;
+use Drupal\Core\Database\Database;
+use Drupal\backup_migrate\Core\Config\Config;
+use Drupal\backup_migrate\Core\Filter\DBExcludeFilter;
+use Drupal\backup_migrate\Core\Main\BackupMigrateInterface;
+use Drupal\backup_migrate\Drupal\Source\DrupalMySQLiSource;
+use Drupal\backup_migrate\Drupal\EntityPlugins\SourcePluginBase;
 
 /**
  * Defines an default database source plugin.
@@ -14,7 +15,7 @@ use BackupMigrate\Drupal\EntityPlugins\SourcePluginBase;
  * @BackupMigrateSourcePlugin(
  *   id = "DefaultDB",
  *   title = @Translation("Default Database"),
- *   description = @Translation("Back up the Drupal db."),
+ *   description = @Translation("Back up the Drupal database."),
  *   locked = true
  * )
  */
@@ -23,11 +24,11 @@ class DefaultDBSourcePlugin extends SourcePluginBase {
   /**
    * Get the Backup and Migrate plugin object.
    *
-   * @return BackupMigrate\Core\Plugin\PluginInterface;
+   * @return Drupal\backup_migrate\Core\Plugin\PluginInterface
    */
   public function getObject() {
     // Add the default database.
-    $info = \Drupal\Core\Database\Database::getConnectionInfo('default', 'default');
+    $info = Database::getConnectionInfo('default', 'default');
     $info = $info['default'];
 
     // Set a default port if none is set. Because that's what core does.
@@ -49,7 +50,7 @@ class DefaultDBSourcePlugin extends SourcePluginBase {
   public function alterBackupMigrate(BackupMigrateInterface $bam, $key, $options = []) {
     if ($source = $this->getObject()) {
       $bam->sources()->add($key, $source);
-      // @TODO: This needs a better solution.
+      // @todo This needs a better solution.
       $config = [
         'exclude_tables' => [],
         'nodata_tables' => [
@@ -65,6 +66,7 @@ class DefaultDBSourcePlugin extends SourcePluginBase {
           'cache_entity',
           'cache_menu',
           'cache_migrate',
+          'cache_page',
           'cache_render',
           'cache_rest',
           'cache_toolbar',
@@ -74,7 +76,7 @@ class DefaultDBSourcePlugin extends SourcePluginBase {
         ],
       ];
 
-      // @TODO: Allow modules to add their own excluded tables.
+      // @todo Allow modules to add their own excluded tables.
       $bam->plugins()->add('db_exclude', new DBExcludeFilter(new Config($config)));
     }
   }

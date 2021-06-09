@@ -2,10 +2,10 @@
 
 namespace Drupal\backup_migrate\Entity;
 
-use BackupMigrate\Core\Config\Config;
-use BackupMigrate\Core\Destination\ListableDestinationInterface;
-use BackupMigrate\Core\Exception\BackupMigrateException;
-use BackupMigrate\Core\Main\BackupMigrateInterface;
+use Drupal\backup_migrate\Core\Config\Config;
+use Drupal\backup_migrate\Core\Destination\ListableDestinationInterface;
+use Drupal\backup_migrate\Core\Exception\BackupMigrateException;
+use Drupal\backup_migrate\Core\Main\BackupMigrateInterface;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 
 /**
@@ -33,6 +33,18 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "delete-form" = "/admin/config/development/backup_migrate/schedule/delete/{backup_migrate_schedule}",
  *     "collection" = "/admin/config/development/backup_migrate/schedule",
  *   },
+ *   config_export = {
+ *     "id",
+ *     "label",
+ *     "uuid",
+ *     "enabled",
+ *     "keep",
+ *     "period",
+ *     "cron",
+ *     "source_id",
+ *     "destination_id",
+ *     "settings_profile_id"
+ *   }
  * )
  */
 class Schedule extends ConfigEntityBase {
@@ -52,11 +64,11 @@ class Schedule extends ConfigEntityBase {
   protected $label;
 
   /**
-   * @param BackupMigrateInterface $bam
-   *  The Backup and Migrate service object used to execute the backups
+   * @param \Drupal\backup_migrate\Core\Main\BackupMigrateInterface $bam
+   *   The Backup and Migrate service object used to execute the backups.
    *
    * @param bool $force
-   *  Run the schedule even if it is not due to be run.
+   *   Run the schedule even if it is not due to be run.
    */
   public function run(BackupMigrateInterface $bam, $force = FALSE) {
     $next_run_at = $this->getNextRun();
@@ -83,11 +95,12 @@ class Schedule extends ConfigEntityBase {
 
         \Drupal::logger('backup_migrate')->info(
              "Running schedule %name", ['%name' => $this->get('label')]);
-        // TODO: Set the config (don't just use the defaults).
+        // @todo Set the config (don't just use the defaults).
         // Run the backup.
-        // Set the schedule id in file metadata so that we can delete our own backups later.
-        // This requires the metadata writer to have knowledge of 'bam_scheduleid' which is
-        // a somewhat tight coupling that I'd like to unwind.
+        // Set the schedule id in file metadata so that we can delete our own
+        // backups later. This requires the metadata writer to have knowledge
+        // of 'bam_scheduleid' which is a somewhat tight coupling that I'd like
+        // to unwind.
         $config['metadata']['bam_scheduleid'] = $this->id;
         $bam->setConfig(new Config($config));
 
@@ -126,15 +139,15 @@ class Schedule extends ConfigEntityBase {
 
   /**
    * @param $timestamp
-   *  The unix time this schedule was last run.
+   *   The unix time this schedule was last run.
    */
   public function setLastRun($timestamp) {
     \Drupal::keyValue('backup_migrate_schedule:last_run')->set($this->id(), $timestamp);
   }
 
   /**
-   * @return int $timestamp
-   *  The unix time this schedule was last run.
+   * @return int
+   *   The unix time this schedule was last run.
    */
   public function getLastRun() {
     return \Drupal::keyValue('backup_migrate_schedule:last_run')->get($this->id());
@@ -158,7 +171,7 @@ class Schedule extends ConfigEntityBase {
    *
    * @return \Drupal\Core\StringTranslation\PluralTranslatableMarkup
    *
-   * @throws \BackupMigrate\Core\Exception\BackupMigrateException
+   * @throws \Drupal\backup_migrate\Core\Exception\BackupMigrateException
    */
   public function getPeriodFormatted() {
     return Schedule::formatPeriod(Schedule::secondsToPeriod($this->get('period')));
@@ -169,10 +182,11 @@ class Schedule extends ConfigEntityBase {
    *
    * @param int $seconds
    *
-   * @return array An array containing the period definition and the number of them.
-   *  ['number' => 123, 'type' => [...]]
+   * @return array
+   *   An array containing the period definition and the number of them.
+   *   ['number' => 123, 'type' => [...]]
    *
-   * @throws \BackupMigrate\Core\Exception\BackupMigrateException
+   * @throws \Drupal\backup_migrate\Core\Exception\BackupMigrateException
    */
   public static function secondsToPeriod($seconds) {
     foreach (array_reverse(Schedule::getPeriodTypes()) as $type) {
@@ -187,13 +201,14 @@ class Schedule extends ConfigEntityBase {
   /**
    * Convert a period array into seconds.
    *
-   * @param array $period A period array
+   * @param array $period
+   *   A period array.
    *
    * @return mixed
    *
-   * @throws \BackupMigrate\Core\Exception\BackupMigrateException
+   * @throws \Drupal\backup_migrate\Core\Exception\BackupMigrateException
    */
-  public static function periodToSeconds($period) {
+  public static function periodToSeconds(array $period) {
     return $period['number'] * $period['type']['seconds'];
   }
 
@@ -209,18 +224,50 @@ class Schedule extends ConfigEntityBase {
   }
 
   /**
-   * Get a list of available backup periods. Only returns time periods which have a
-   *  (reasonably) consistent number of seconds (ie: no months).
+   * Get a list of available backup periods.
+   *
+   * Only returns time periods which have a (reasonably) consistent number of
+   * seconds (ie: no months).
    *
    * @return array
    */
   public static function getPeriodTypes() {
     return [
-      'seconds' => ['type' => 'seconds', 'seconds' => 1, 'title' => 'Seconds', 'singular' => 'Once a second', 'plural' => 'Every @count seconds'],
-      'minutes' => ['type' => 'minutes', 'seconds' => 60, 'title' => 'Minutes', 'singular' => 'Once a minute', 'plural' => 'Every @count minutes'],
-      'hours' => ['type' => 'hours', 'seconds' => 3600, 'title' => 'Hours', 'singular' => 'Hourly', 'plural' => 'Every @count hours'],
-      'days' => ['type' => 'days', 'seconds' => 86400, 'title' => 'Days', 'singular' => 'Daily', 'plural' => 'Every @count days'],
-      'weeks' => ['type' => 'weeks', 'seconds' => 604800, 'title' => 'Weeks', 'singular' => 'Weekly', 'plural' => 'Every @count weeks'],
+      'seconds' => [
+        'type' => 'seconds',
+        'seconds' => 1,
+        'title' => 'Seconds',
+        'singular' => 'Once a second',
+        'plural' => 'Every @count seconds',
+      ],
+      'minutes' => [
+        'type' => 'minutes',
+        'seconds' => 60,
+        'title' => 'Minutes',
+        'singular' => 'Once a minute',
+        'plural' => 'Every @count minutes',
+      ],
+      'hours' => [
+        'type' => 'hours',
+        'seconds' => 3600,
+        'title' => 'Hours',
+        'singular' => 'Hourly',
+        'plural' => 'Every @count hours',
+      ],
+      'days' => [
+        'type' => 'days',
+        'seconds' => 86400,
+        'title' => 'Days',
+        'singular' => 'Daily',
+        'plural' => 'Every @count days',
+      ],
+      'weeks' => [
+        'type' => 'weeks',
+        'seconds' => 604800,
+        'title' => 'Weeks',
+        'singular' => 'Weekly',
+        'plural' => 'Every @count weeks',
+      ],
     ];
   }
 

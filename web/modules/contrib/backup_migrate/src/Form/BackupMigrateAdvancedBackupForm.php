@@ -2,7 +2,7 @@
 
 namespace Drupal\backup_migrate\Form;
 
-use BackupMigrate\Drupal\Config\DrupalConfigHelper;
+use Drupal\backup_migrate\Drupal\Config\DrupalConfigHelper;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -36,7 +36,7 @@ class BackupMigrateAdvancedBackupForm extends FormBase {
       "#collapsed" => FALSE,
       "#tree" => FALSE,
     ];
-    $form['source']['source_id'] = DrupalConfigHelper::getSourceSelector($bam, t('Backup Source'));
+    $form['source']['source_id'] = DrupalConfigHelper::getSourceSelector($bam, $this->t('Backup Source'));
     $form['source']['source_id']['#default_value'] = \Drupal::config('backup_migrate.settings')->get('backup_migrate_source_id');
 
     $form += DrupalConfigHelper::buildAllPluginsForm($bam->plugins(), 'backup');
@@ -53,8 +53,8 @@ class BackupMigrateAdvancedBackupForm extends FormBase {
     else {
       $filename_token = [
         '#type' => 'markup',
-        '#markup' => 'In order to use tokens for File Name, please install & enable <a href="https://www.drupal.org/project/token" arget="_blank">Token module</a>. <p></p>'
-        ];
+        '#markup' => 'In order to use tokens for File Name, please install & enable <a href="https://www.drupal.org/project/token" arget="_blank">Token module</a>. <p></p>',
+      ];
     }
     array_splice($form['file'], 4, 0, ['filename_token' => $filename_token]);
 
@@ -66,7 +66,7 @@ class BackupMigrateAdvancedBackupForm extends FormBase {
       "#tree" => FALSE,
     ];
 
-    $form['destination']['destination_id'] = DrupalConfigHelper::getDestinationSelector($bam, t('Backup Destination'));
+    $form['destination']['destination_id'] = DrupalConfigHelper::getDestinationSelector($bam, $this->t('Backup Destination'));
     $form['destination']['destination_id']['#default_value'] = \Drupal::config('backup_migrate.settings')->get('backup_migrate_destination_id');
 
     $form['quickbackup']['submit'] = [
