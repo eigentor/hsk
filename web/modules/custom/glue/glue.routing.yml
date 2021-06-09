@@ -1,7 +1,0 @@
-glue.content:
-  path: '/hello'
-  defaults:
-    _controller: '\Drupal\glue\Controller\HelloController::content'
-    _title: 'Good old fashioned lover man'
-  requirements:
-    _permission: 'access content'
