@@ -12,7 +12,6 @@
 namespace Symfony\Component\Filesystem;
 
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-use Symfony\Component\Filesystem\Exception\InvalidArgumentException;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
@@ -180,7 +179,7 @@ class Filesystem
                 if (!self::box('rmdir', $file) && file_exists($file)) {
                     throw new IOException(sprintf('Failed to remove directory "%s": ', $file).self::$lastError);
                 }
-            } elseif (!self::box('unlink', $file) && file_exists($file)) {
+            } elseif (!self::box('unlink', $file) && (false !== strpos(self::$lastError, 'Permission denied') || file_exists($file))) {
                 throw new IOException(sprintf('Failed to remove file "%s": ', $file).self::$lastError);
             }
         }
@@ -251,7 +250,7 @@ class Filesystem
                 $this->chgrp(new \FilesystemIterator($file), $group, true);
             }
             if (is_link($file) && \function_exists('lchgrp')) {
-                if (true !== @lchgrp($file, $group)) {
+                if (true !== @lchgrp($file, $group) || (\defined('HHVM_VERSION') && !posix_getgrnam($group))) {
                     throw new IOException(sprintf('Failed to chgrp file "%s".', $file), 0, null, $file);
                 }
             } else {
@@ -294,9 +293,13 @@ class Filesystem
     /**
      * Tells whether a file exists and is readable.
      *
+     * @param string $filename Path to the file
+     *
+     * @return bool
+     *
      * @throws IOException When windows path is longer than 258 characters
      */
-    private function isReadable(string $filename): bool
+    private function isReadable($filename)
     {
         $maxPathLength = \PHP_MAXPATHLEN - 2;
 
@@ -377,9 +380,11 @@ class Filesystem
     }
 
     /**
+     * @param string $origin
+     * @param string $target
      * @param string $linkType Name of the link type, typically 'symbolic' or 'hard'
      */
-    private function linkException(string $origin, string $target, string $linkType)
+    private function linkException($origin, $target, $linkType)
     {
         if (self::$lastError) {
             if ('\\' === \DIRECTORY_SEPARATOR && false !== strpos(self::$lastError, 'error code(1314)')) {
@@ -440,12 +445,8 @@ class Filesystem
      */
     public function makePathRelative($endPath, $startPath)
     {
-        if (!$this->isAbsolutePath($startPath)) {
-            throw new InvalidArgumentException(sprintf('The start path "%s" is not absolute.', $startPath));
-        }
-
-        if (!$this->isAbsolutePath($endPath)) {
-            throw new InvalidArgumentException(sprintf('The end path "%s" is not absolute.', $endPath));
+        if (!$this->isAbsolutePath($endPath) || !$this->isAbsolutePath($startPath)) {
+            @trigger_error(sprintf('Support for passing relative paths to %s() is deprecated since Symfony 3.4 and will be removed in 4.0.', __METHOD__), \E_USER_DEPRECATED);
         }
 
         // Normalize separators on Windows
@@ -460,11 +461,11 @@ class Filesystem
                 : [$path, null];
         };
 
-        $splitPath = function ($path) {
+        $splitPath = function ($path, $absolute) {
             $result = [];
 
             foreach (explode('/', trim($path, '/')) as $segment) {
-                if ('..' === $segment) {
+                if ('..' === $segment && ($absolute || \count($result))) {
                     array_pop($result);
                 } elseif ('.' !== $segment && '' !== $segment) {
                     $result[] = $segment;
@@ -477,8 +478,8 @@ class Filesystem
         list($endPath, $endDriveLetter) = $splitDriveLetter($endPath);
         list($startPath, $startDriveLetter) = $splitDriveLetter($startPath);
 
-        $startPathArr = $splitPath($startPath);
-        $endPathArr = $splitPath($endPath);
+        $startPathArr = $splitPath($startPath, static::isAbsolutePath($startPath));
+        $endPathArr = $splitPath($endPath, static::isAbsolutePath($endPath));
 
         if ($endDriveLetter && $startDriveLetter && $endDriveLetter != $startDriveLetter) {
             // End path is on another drive, so no relative path exists
@@ -534,10 +535,6 @@ class Filesystem
         $originDir = rtrim($originDir, '/\\');
         $originDirLen = \strlen($originDir);
 
-        if (!$this->exists($originDir)) {
-            throw new IOException(sprintf('The origin directory specified "%s" was not found.', $originDir), 0, null, $originDir);
-        }
-
         // Iterate in destination folder to remove obsolete entries
         if ($this->exists($targetDir) && isset($options['delete']) && $options['delete']) {
             $deleteIterator = $iterator;
@@ -554,32 +551,41 @@ class Filesystem
             }
         }
 
-        $copyOnWindows = $options['copy_on_windows'] ?? false;
+        $copyOnWindows = false;
+        if (isset($options['copy_on_windows'])) {
+            $copyOnWindows = $options['copy_on_windows'];
+        }
 
         if (null === $iterator) {
             $flags = $copyOnWindows ? \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS : \FilesystemIterator::SKIP_DOTS;
             $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($originDir, $flags), \RecursiveIteratorIterator::SELF_FIRST);
         }
 
-        $this->mkdir($targetDir);
-        $filesCreatedWhileMirroring = [];
+        if ($this->exists($originDir)) {
+            $this->mkdir($targetDir);
+        }
 
         foreach ($iterator as $file) {
-            if ($file->getPathname() === $targetDir || $file->getRealPath() === $targetDir || isset($filesCreatedWhileMirroring[$file->getRealPath()])) {
-                continue;
-            }
-
             $target = $targetDir.substr($file->getPathname(), $originDirLen);
-            $filesCreatedWhileMirroring[$target] = true;
 
-            if (!$copyOnWindows && is_link($file)) {
-                $this->symlink($file->getLinkTarget(), $target);
-            } elseif (is_dir($file)) {
-                $this->mkdir($target);
-            } elseif (is_file($file)) {
-                $this->copy($file, $target, isset($options['override']) ? $options['override'] : false);
+            if ($copyOnWindows) {
+                if (is_file($file)) {
+                    $this->copy($file, $target, isset($options['override']) ? $options['override'] : false);
+                } elseif (is_dir($file)) {
+                    $this->mkdir($target);
+                } else {
+                    throw new IOException(sprintf('Unable to guess "%s" file type.', $file), 0, null, $file);
+                }
             } else {
-                throw new IOException(sprintf('Unable to guess "%s" file type.', $file), 0, null, $file);
+                if (is_link($file)) {
+                    $this->symlink($file->getLinkTarget(), $target);
+                } elseif (is_dir($file)) {
+                    $this->mkdir($target);
+                } elseif (is_file($file)) {
+                    $this->copy($file, $target, isset($options['override']) ? $options['override'] : false);
+                } else {
+                    throw new IOException(sprintf('Unable to guess "%s" file type.', $file), 0, null, $file);
+                }
             }
         }
     }
@@ -593,10 +599,6 @@ class Filesystem
      */
     public function isAbsolutePath($file)
     {
-        if (null === $file) {
-            @trigger_error(sprintf('Calling "%s()" with a null in the $file argument is deprecated since Symfony 4.4.', __METHOD__), \E_USER_DEPRECATED);
-        }
-
         return '' !== (string) $file && (strspn($file, '/\\', 0, 1)
             || (\strlen($file) > 3 && ctype_alpha($file[0])
                 && ':' === $file[1]
@@ -661,17 +663,13 @@ class Filesystem
     /**
      * Atomically dumps content into a file.
      *
-     * @param string          $filename The file to be written to
-     * @param string|resource $content  The data to write into the file
+     * @param string $filename The file to be written to
+     * @param string $content  The data to write into the file
      *
      * @throws IOException if the file cannot be written to
      */
     public function dumpFile($filename, $content)
     {
-        if (\is_array($content)) {
-            @trigger_error(sprintf('Calling "%s()" with an array in the $content argument is deprecated since Symfony 4.3.', __METHOD__), \E_USER_DEPRECATED);
-        }
-
         $dir = \dirname($filename);
 
         if (!is_dir($dir)) {
@@ -698,17 +696,13 @@ class Filesystem
     /**
      * Appends content to an existing file.
      *
-     * @param string          $filename The file to which to append content
-     * @param string|resource $content  The content to append
+     * @param string $filename The file to which to append content
+     * @param string $content  The content to append
      *
      * @throws IOException If the file is not writable
      */
     public function appendToFile($filename, $content)
     {
-        if (\is_array($content)) {
-            @trigger_error(sprintf('Calling "%s()" with an array in the $content argument is deprecated since Symfony 4.3.', __METHOD__), \E_USER_DEPRECATED);
-        }
-
         $dir = \dirname($filename);
 
         if (!is_dir($dir)) {
@@ -724,15 +718,24 @@ class Filesystem
         }
     }
 
-    private function toIterable($files): iterable
+    /**
+     * @param mixed $files
+     *
+     * @return array|\Traversable
+     */
+    private function toIterable($files)
     {
         return \is_array($files) || $files instanceof \Traversable ? $files : [$files];
     }
 
     /**
      * Gets a 2-tuple of scheme (may be null) and hierarchical part of a filename (e.g. file:///tmp -> [file, tmp]).
+     *
+     * @param string $filename The filename to be parsed
+     *
+     * @return array The filename scheme and hierarchical part
      */
-    private function getSchemeAndHierarchy(string $filename): array
+    private function getSchemeAndHierarchy($filename)
     {
         $components = explode('://', $filename, 2);
 
@@ -740,18 +743,21 @@ class Filesystem
     }
 
     /**
+     * @param callable $func
+     *
      * @return mixed
      */
-    private static function box(callable $func)
+    private static function box($func)
     {
         self::$lastError = null;
         set_error_handler(__CLASS__.'::handleError');
         try {
-            $result = $func(...\array_slice(\func_get_args(), 1));
+            $result = \call_user_func_array($func, \array_slice(\func_get_args(), 1));
             restore_error_handler();
 
             return $result;
         } catch (\Throwable $e) {
+        } catch (\Exception $e) {
         }
         restore_error_handler();
 

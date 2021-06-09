@@ -25,7 +25,7 @@
         "drupal/paragraphs": "^1.12",
         "drupal/video_embed_field": "^2.4",
         "drupal/webform": "^5.22",
-        "drush/drush": "^10.2"
+        "drush/drush": "^10.5"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -88,5 +88,8 @@
                 "      composer remove drupal/core-project-message"
             ]
         }
+    },
+    "require-dev": {
+        "drupal/core-dev": "^8.9"
     }
 }
