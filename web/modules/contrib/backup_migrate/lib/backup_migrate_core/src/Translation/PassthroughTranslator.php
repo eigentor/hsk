@@ -1,12 +1,6 @@
 <?php
-/**
- * @file
- * Contains BackupMigrate\Core\Service\PassthroughTranslator
- */
-
 
 namespace BackupMigrate\Core\Translation;
-
 
 use BackupMigrate\Core\Translation\TranslatorInterface;
 
@@ -14,7 +8,8 @@ use BackupMigrate\Core\Translation\TranslatorInterface;
  * This translator service simply passes through the us-english strings with the
  * replacement tokens substituted in.
  *
- * Class PassthroughTranslator
+ * Class PassthroughTranslator.
+ *
  * @package BackupMigrate\Core\Service
  */
 class PassthroughTranslator implements TranslatorInterface {
@@ -26,10 +21,11 @@ class PassthroughTranslator implements TranslatorInterface {
    *  Any untranslatable variables to be replaced into the string.
    * @param $context
    *  Extra context to help translators distinguish ambiguous strings.
+   *
    * @return mixed
    */
-  public function translate($string, $replacements = array(), $context = array()) {
-    // Provide Drupal-like escaping of replacement values
+  public function translate($string, $replacements = [], $context = []) {
+    // Provide Drupal-like escaping of replacement values.
     foreach ($replacements as $key => $value) {
       switch (substr($key, 0, 1)) {
         case '@':
@@ -41,4 +37,5 @@ class PassthroughTranslator implements TranslatorInterface {
 
     return strtr($string, $replacements);
   }
+
 }

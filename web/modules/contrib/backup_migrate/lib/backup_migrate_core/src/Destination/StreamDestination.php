@@ -1,12 +1,6 @@
 <?php
-/**
- * @file
- * Contains BackupMigrate\Core\Destination\StreamDestination
- */
-
 
 namespace BackupMigrate\Core\Destination;
-
 
 use BackupMigrate\Core\Config\ConfigurableInterface;
 use BackupMigrate\Core\Exception\DestinationNotWritableException;
@@ -15,7 +9,8 @@ use BackupMigrate\Core\File\BackupFileReadableInterface;
 use BackupMigrate\Core\Plugin\PluginBase;
 
 /**
- * Class StreamDestination
+ * Class StreamDestination.
+ *
  * @package BackupMigrate\Core\Destination
  */
 class StreamDestination extends PluginBase implements WritableDestinationInterface, ConfigurableInterface {
@@ -74,4 +69,5 @@ class StreamDestination extends PluginBase implements WritableDestinationInterfa
   public function loadFileForReading(BackupFileInterface $file) {
     return $file;
   }
+
 }

@@ -1,15 +1,11 @@
 <?php
-/**
- * @file
- */
 
 namespace BackupMigrate\Core\Service;
-
 
 use BackupMigrate\Core\File\BackupFileReadableInterface;
 
 /**
- * Interface ArchiveWriterInterface
+ * Interface ArchiveWriterInterface.
  *
  * @package BackupMigrate\Core\Environment
  */
@@ -32,6 +28,7 @@ interface ArchiveReaderInterface {
    * Extract all files to the given directory.
    *
    * @param $directory
+   *
    * @return mixed
    */
   public function extractTo($directory);
@@ -45,4 +42,5 @@ interface ArchiveReaderInterface {
    * @return mixed
    */
   public function closeArchive();
+
 }

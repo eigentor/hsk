@@ -1,15 +1,12 @@
 <?php
-/**
- * @file
- */
 
 namespace BackupMigrate\Core\Plugin;
-
 
 use BackupMigrate\Core\Plugin\PluginManagerInterface;
 
 /**
- * Interface PluginCallerPluginInterface
+ * Interface PluginCallerPluginInterface.
+ *
  * @package BackupMigrate\Core\Plugin
  *
  * An interface for plugins which need to access other plugins and therefore
@@ -26,8 +23,8 @@ interface PluginCallerInterface {
 
   /**
    * Get the plugin manager.
-
-   * @return \BackupMigrate\Core\Plugin\PluginManagerInterface
+   *    * @return \BackupMigrate\Core\Plugin\PluginManagerInterface.
    */
   public function plugins();
+
 }

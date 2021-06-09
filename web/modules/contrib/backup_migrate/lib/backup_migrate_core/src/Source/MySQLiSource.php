@@ -1,21 +1,17 @@
 <?php
-/**
- * @file
- * Contains BackupMigrate\Core\Source\MySQLiSource
- */
-
 
 namespace BackupMigrate\Core\Source;
-
 
 use BackupMigrate\Core\Exception\BackupMigrateException;
 use BackupMigrate\Core\File\BackupFileReadableInterface;
 use BackupMigrate\Core\File\BackupFileWritableInterface;
 use BackupMigrate\Core\Plugin\PluginCallerTrait;
 use BackupMigrate\Core\Plugin\PluginCallerInterface;
+use PDO;
 
 /**
- * Class MySQLiSource
+ * Class MySQLiSource.
+ *
  * @package BackupMigrate\Core\Source
  */
 class MySQLiSource extends DatabaseSource implements PluginCallerInterface {
@@ -44,22 +40,21 @@ class MySQLiSource extends DatabaseSource implements PluginCallerInterface {
    *    A backup file with the contents of the source dumped to it..
    */
   public function exportToFile() {
-    $out = NULL;
     if ($connection = $this->_getConnection()) {
       $file = $this->getTempFileManager()->create('mysql');
 
-      $exclude = (array)$this->confGet('exclude_tables');
-      $nodata = (array)$this->confGet('nodata_tables');
+      $exclude = (array) $this->confGet('exclude_tables');
+      $nodata = (array) $this->confGet('nodata_tables');
 
       $file->write($this->_getSQLHeader());
       $tables = $this->_getTables();
 
       $lines = 0;
       foreach ($tables as $table) {
-      // @TODO reenable this.
-//        if (_backup_migrate_check_timeout()) {
-//          return FALSE;
-//        }
+        // @TODO reenable this.
+        //        if (_backup_migrate_check_timeout()) {
+        //          return FALSE;
+        //        }
         $table = $this->plugins()->call('beforeDBTableBackup', $table, ['source' => $this]);
         if ($table['name'] && !isset($exclude[$table['name']]) && empty($table['exclude'])) {
           $file->write($this->_getTableCreateSQL($table));
@@ -87,6 +82,7 @@ class MySQLiSource extends DatabaseSource implements PluginCallerInterface {
    *
    * @param \BackupMigrate\Core\File\BackupFileReadableInterface $file
    *    The file to read the backup from. It will not be opened for reading
+   *
    * @return bool|int
    */
   public function importFromFile(BackupFileReadableInterface $file) {
@@ -98,9 +94,9 @@ class MySQLiSource extends DatabaseSource implements PluginCallerInterface {
 
       // Read one line at a time and run the query.
       while ($line = $this->_readSQLCommand($file)) {
-//        if (_backup_migrate_check_timeout()) {
-//          return FALSE;
-//        }
+        //        if (_backup_migrate_check_timeout()) {
+        //          return FALSE;
+        //        }
         if ($line) {
           // Execute the sql query from the file.
           $conn->query($line);
@@ -118,22 +114,71 @@ class MySQLiSource extends DatabaseSource implements PluginCallerInterface {
    * Get the db connection for the specified db.
    *
    * @return \mysqli Connection object.
+   *
    * @throws \Exception
    */
   protected function _getConnection() {
     if (!$this->connection) {
       if (!function_exists('mysqli_init') && !extension_loaded('mysqli')) {
-        throw new BackupMigrateException('Cannot connect to the database becuase the MySQLi extension is missing.');
+        throw new BackupMigrateException('Cannot connect to the database because the MySQLi extension is missing.');
       }
-      $this->connection = new \mysqli(
+
+      $pdo_config = $this->confGet('pdo');
+
+      $ssl_config = [
+        'key' => (!empty($pdo_config[PDO::MYSQL_ATTR_SSL_KEY])) ? $pdo_config[PDO::MYSQL_ATTR_SSL_KEY] : NULL,
+        'cert' => (!empty($pdo_config[PDO::MYSQL_ATTR_SSL_CERT])) ? $pdo_config[PDO::MYSQL_ATTR_SSL_CERT] : NULL,
+        'ca' => (!empty($pdo_config[PDO::MYSQL_ATTR_SSL_CA])) ? $pdo_config[PDO::MYSQL_ATTR_SSL_CA] : NULL,
+        'capath' => (!empty($pdo_config[PDO::MYSQL_ATTR_SSL_CAPATH])) ? $pdo_config[PDO::MYSQL_ATTR_SSL_CAPATH] : NULL,
+        'cypher' => (!empty($pdo_config[PDO::MYSQL_ATTR_SSL_CIPHER])) ? $pdo_config[PDO::MYSQL_ATTR_SSL_CIPHER] : NULL,
+      ];
+
+      if (defined('PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT')) {
+        $ssl_config['verify_server_cert'] = (isset($pdo_config[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT])) ? $pdo_config[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] : TRUE;
+      }
+      else {
+        $ssl_config['verify_server_cert'] = TRUE;
+      }
+
+      if ($ssl_config['key'] || $ssl_config['cert'] || $ssl_config['ca'] || $ssl_config['capath'] || $ssl_config['cypher']) {
+
+        // Provide a workaround for PHP7 peer certificate verification issues:
+        // - https://bugs.php.net/bug.php?id=68344
+        // - https://bugs.php.net/bug.php?id=71003
+        if ($ssl_config['verify_server_cert']) {
+          $flags = MYSQLI_CLIENT_SSL;
+        }
+        else {
+          $flags = MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT;
+        }
+
+        // Connect using PDO SSL config.
+        $this->connection = new \mysqli();
+
+        $this->connection->ssl_set($ssl_config['key'], $ssl_config['cert'], $ssl_config['ca'], $ssl_config['capath'], $ssl_config['cypher']);
+
+        $this->connection->real_connect(
+          $this->confGet('host'),
+          $this->confGet('username'),
+          $this->confGet('password'),
+          $this->confGet('database'),
+          $this->confGet('port'),
+          $this->confGet('socket'),
+          $flags
+        );
+      }
+      else {
+        $this->connection = new \mysqli(
           $this->confGet('host'),
           $this->confGet('username'),
           $this->confGet('password'),
           $this->confGet('database'),
           $this->confGet('port'),
           $this->confGet('socket')
-      );
-      // Throw an error on fail
+        );
+      }
+
+      // Throw an error on fail.
       if ($this->connection->connect_errno || !$this->connection->ping()) {
         throw new BackupMigrateException("Failed to connect to MySQL server.");
       }
@@ -156,7 +201,7 @@ class MySQLiSource extends DatabaseSource implements PluginCallerInterface {
   protected function _getSQLHeader() {
     $info = $this->_dbInfo();
     $version = $info['version'];
-    $host =  $this->confGet('host');
+    $host = $this->confGet('host');
     $db = $this->confGet('database');
     $timestamp = gmdate('r');
     $generator = $this->confGet('generator');
@@ -214,7 +259,9 @@ FOOTER;
    * Read a multiline sql command from a file.
    *
    * Supports the formatting created by mysqldump, but won't handle multiline comments.
+   *
    * @param \BackupMigrate\Core\File\BackupFileReadableInterface $file
+   *
    * @return string
    */
   protected function _readSQLCommand(BackupFileReadableInterface $file) {
@@ -240,11 +287,11 @@ FOOTER;
    */
   protected function _lockTables($tables) {
     if ($tables) {
-      $tables_escaped = array();
+      $tables_escaped = [];
       foreach ($tables as $table) {
-        $tables_escaped[] = '`'. $table .'`  WRITE';
+        $tables_escaped[] = '`' . $table . '`  WRITE';
       }
-      $this->query('LOCK TABLES '. implode(', ', $tables_escaped));
+      $this->query('LOCK TABLES ' . implode(', ', $tables_escaped));
     }
   }
 
@@ -259,8 +306,8 @@ FOOTER;
    * Get a list of tables in the db.
    */
   protected function _getTables() {
-    $out = array();
-    // get auto_increment values and names of all tables
+    $out = [];
+    // get auto_increment values and names of all tables.
     $tables = $this->query("SHOW TABLE STATUS");
     while ($tables && $table = $tables->fetch_assoc()) {
       // Lowercase the keys for consistency.
@@ -274,6 +321,7 @@ FOOTER;
    * Get the sql for the structure of the given table.
    *
    * @param array $table
+   *
    * @return string
    */
   protected function _getTableCreateSQL($table) {
@@ -281,15 +329,15 @@ FOOTER;
 
     // If this is a view.
     if (empty($table['engine'])) {
-      // Switch SQL mode to for a simpler version of the create view syntax
+      // Switch SQL mode to for a simpler version of the create view syntax.
       $sql_mode = $this->_fetchValue("SELECT @@SESSION.sql_mode");
       // @TODO: Setting the sql_mode does not seem to work.
       $this->query("SET sql_mode = 'ANSI'");
       $create = $this->_fetchAssoc("SHOW CREATE VIEW `" . $table['name'] . "`");
       if ($create) {
-        // Lowercase the keys for consistency
+        // Lowercase the keys for consistency.
         $create = array_change_key_case($create);
-        $out .= "DROP VIEW IF EXISTS `". $table['name'] ."`;\n";
+        $out .= "DROP VIEW IF EXISTS `" . $table['name'] . "`;\n";
         $out .= "SET sql_mode = 'ANSI';\n";
         $out .= strtr($create['create view'], "\n", " ") . ";\n";
         $out .= "SET sql_mode = '$sql_mode';\n";
@@ -301,15 +349,15 @@ FOOTER;
 
     // This is a regular table.
     else {
-      $create = $this->_fetchAssoc("SHOW CREATE TABLE `". $table['name'] ."`");
+      $create = $this->_fetchAssoc("SHOW CREATE TABLE `" . $table['name'] . "`");
       if ($create) {
         // Lowercase the keys for consistency.
         $create = array_change_key_case($create);
-        $out .= "DROP TABLE IF EXISTS `". $table['name'] ."`;\n";
-        // Remove newlines
-        $out .= strtr($create['create table'], array("\n" => ' '));
+        $out .= "DROP TABLE IF EXISTS `" . $table['name'] . "`;\n";
+        // Remove newlines.
+        $out .= strtr($create['create table'], ["\n" => ' ']);
         if ($table['auto_increment']) {
-          $out .= " AUTO_INCREMENT=". $table['auto_increment'];
+          $out .= " AUTO_INCREMENT=" . $table['auto_increment'];
         }
         $out .= ";\n";
       }
@@ -319,31 +367,33 @@ FOOTER;
   }
 
   /**
-   *  Get the sql to insert the data for a given table
+   * Get the sql to insert the data for a given table.
    */
   protected function _dumpTableSQLToFile(BackupFileWritableInterface $file, $table) {
 
-    // If this is a view, do not export any data
+    // If this is a view, do not export any data.
     if (empty($table['engine'])) {
       return 0;
     }
 
     // Otherwise export the table data.
-    $rows_per_line  = 30; //$this->confGet('rows_per_line');//variable_get('backup_migrate_data_rows_per_line', 30);
-    $bytes_per_line = 2000; //$this->confGet('bytes_per_line'); variable_get('backup_migrate_data_bytes_per_line', 2000);
+    $rows_per_line  = 30;
+    // $this->confGet('rows_per_line');//variable_get('backup_migrate_data_rows_per_line', 30);
+    $bytes_per_line = 2000;
+    // $this->confGet('bytes_per_line'); variable_get('backup_migrate_data_bytes_per_line', 2000);
     $lines = 0;
-    $result = $this->query("SELECT * FROM `". $table['name'] ."`");
+    $result = $this->query("SELECT * FROM `" . $table['name'] . "`");
     $rows = $bytes = 0;
 
-    // Escape backslashes, PHP code, special chars
-    $search = array('\\', "'", "\x00", "\x0a", "\x0d", "\x1a");
-    $replace = array('\\\\', "''", '\0', '\n', '\r', '\Z');
+    // Escape backslashes, PHP code, special chars.
+    $search = ['\\', "'", "\x00", "\x0a", "\x0d", "\x1a"];
+    $replace = ['\\\\', "''", '\0', '\n', '\r', '\Z'];
 
     while ($result && $row = $result->fetch_assoc()) {
       // DB Escape the values.
-      $items = array();
+      $items = [];
       foreach ($row as $key => $value) {
-        $items[] = is_null($value) ? "null" : "'". str_replace($search, $replace, $value) ."'";
+        $items[] = is_null($value) ? "null" : "'" . str_replace($search, $replace, $value) . "'";
         // @TODO: escape binary data
       }
 
@@ -351,7 +401,7 @@ FOOTER;
       if ($items) {
         // Start a new line if we need to.
         if ($rows == 0) {
-          $file->write("INSERT INTO `". $table['name'] ."` VALUES ");
+          $file->write("INSERT INTO `" . $table['name'] . "` VALUES ");
           $bytes = $rows = 0;
         }
         // Otherwise add a comma to end the previous entry.
@@ -361,11 +411,11 @@ FOOTER;
 
         // Write the data itself.
         $sql = implode(',', $items);
-        $file->write('('. $sql .')');
+        $file->write('(' . $sql . ')');
         $bytes += strlen($sql);
         $rows++;
 
-        // Finish the last line if we've added enough items
+        // Finish the last line if we've added enough items.
         if ($rows >= $rows_per_line || $bytes >= $bytes_per_line) {
           $file->write(";\n");
           $lines++;
@@ -385,8 +435,11 @@ FOOTER;
 
   /**
    * Run a db query on this destination's db.
+   *
    * @param $query
+   *
    * @return bool|\mysqli_result
+   *
    * @throws \Exception
    */
   protected function query($query) {
@@ -402,7 +455,9 @@ FOOTER;
    * Return the first result of the query as an associated array.
    *
    * @param string $query A SQL query.
+   *
    * @return array
+   *
    * @throws \Exception
    */
   protected function _fetchAssoc($query) {
@@ -418,7 +473,9 @@ FOOTER;
    * Return the first field of the first result of a query.
    *
    * @param string $query A SQL query.
+   *
    * @return null|object
+   *
    * @throws \Exception
    */
   protected function _fetchValue($query) {
@@ -432,11 +489,10 @@ FOOTER;
    */
   protected function _dbInfo() {
     $conn = $this->_getConnection();
-    return array(
+    return [
       'type' => 'mysql',
       'version' => $conn->server_version,
-    );
+    ];
   }
-
 
 }

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \BackupMigrate\Core\Destination\DestinationBase.
- */
-
 namespace BackupMigrate\Core\Destination;
 
 use BackupMigrate\Core\Exception\DestinationNotWritableException;
@@ -13,12 +8,11 @@ use BackupMigrate\Core\File\BackupFileInterface;
 use BackupMigrate\Core\File\BackupFileReadableInterface;
 
 /**
- * Class DestinationBase
+ * Class DestinationBase.
+ *
  * @package BackupMigrate\Core\Destination
  */
-
-abstract class DestinationBase extends PluginBase implements ReadableDestinationInterface, WritableDestinationInterface
-{
+abstract class DestinationBase extends PluginBase implements ReadableDestinationInterface, WritableDestinationInterface {
 
   /**
    * Get a list of supported operations and their weight.
@@ -42,7 +36,7 @@ abstract class DestinationBase extends PluginBase implements ReadableDestination
    */
   public function loadFileMetadata(BackupFileInterface $file) {
     // If this file is already loaded, simply return it.
-    // @TODO: fix this inappropriate use of file metadata
+    // @TODO: fix this inappropriate use of file metadata.
     if (!$file->getMeta('metadata_loaded')) {
       $metadata = $this->_loadFileMetadataArray($file);
       $file->setMetaMultiple($metadata);
@@ -62,7 +56,7 @@ abstract class DestinationBase extends PluginBase implements ReadableDestination
    * {@inheritdoc}
    */
   public function isRemote() {
-    return false;
+    return FALSE;
   }
 
   /**
@@ -82,6 +76,7 @@ abstract class DestinationBase extends PluginBase implements ReadableDestination
   /**
    * Do the actual file save. Should take care of the actual creation of a file
    * in the destination without regard for metadata.
+   *
    * @param \BackupMigrate\Core\File\BackupFileReadableInterface $file
    */
   abstract protected function _saveFile(BackupFileReadableInterface $file);
@@ -89,12 +84,13 @@ abstract class DestinationBase extends PluginBase implements ReadableDestination
   /**
    * Do the metadata save. This function is called to save the data file AND
    * the metadata sidecar file.
+   *
    * @param \BackupMigrate\Core\File\BackupFileInterface $file
    */
   abstract protected function _saveFileMetadata(BackupFileInterface $file);
 
   /**
-   * Load the actual metadata for the file
+   * Load the actual metadata for the file.
    *
    * @param \BackupMigrate\Core\File\BackupFileInterface $file
    */

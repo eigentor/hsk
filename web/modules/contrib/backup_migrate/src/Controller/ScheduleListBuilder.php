@@ -42,25 +42,26 @@ class ScheduleListBuilder extends ConfigEntityListBuilder {
     $row['period'] = $entity->getPeriodFormatted();
 
     $row['last_run'] = $this->t('Never');
+    $time = \Drupal::time();
     if ($last_run = $entity->getLastRun()) {
       $row['last_run'] = \Drupal::service('date.formatter')->format($last_run, 'small');
-      $row['last_run'] .= ' (' . $this->t('@time ago', array('@time' => \Drupal::service('date.formatter')->formatInterval(REQUEST_TIME - $last_run))) . ')';
+      $row['last_run'] .= ' (' . $this->t('@time ago', ['@time' => \Drupal::service('date.formatter')->formatInterval($time->getRequestTime() - $last_run)]) . ')';
     }
 
     $row['next_run'] = $this->t('Not Scheduled');
     if (!$entity->get('enabled')) {
       $row['next_run'] = $this->t('Disabled');
     }
-    else if ($next_run = $entity->getNextRun()) {
-      $interval = \Drupal::service('date.formatter')->formatInterval(abs($next_run - REQUEST_TIME));
-      if ($next_run > REQUEST_TIME) {
+    elseif ($next_run = $entity->getNextRun()) {
+      $interval = \Drupal::service('date.formatter')->formatInterval(abs($next_run - $time->getRequestTime()));
+      if ($next_run > $time->getRequestTime()) {
         $row['next_run'] = \Drupal::service('date.formatter')->format($next_run, 'small');
-        $row['next_run'] .= ' (' . $this->t('in @time', array('@time' => $interval)) . ')';
+        $row['next_run'] .= ' (' . $this->t('in @time', ['@time' => $interval]) . ')';
       }
       else {
         $row['next_run'] = $this->t('Next cron run');
         if ($last_run) {
-          $row['next_run'] .= ' (' . $this->t('was due @time ago', array('@time' => $interval)) . ')';
+          $row['next_run'] .= ' (' . $this->t('was due @time ago', ['@time' => $interval]) . ')';
         }
       }
     }

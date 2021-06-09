@@ -1,15 +1,12 @@
 <?php
-/**
- * @file
- */
 
 namespace BackupMigrate\Core\Service;
-
 
 use BackupMigrate\Core\File\BackupFileWritableInterface;
 
 /**
- * Interface ArchiveReaderInterface
+ * Interface ArchiveReaderInterface.
+ *
  * @package BackupMigrate\Core\Service
  */
 interface ArchiveWriterInterface {
@@ -43,4 +40,5 @@ interface ArchiveWriterInterface {
    * @return mixed
    */
   public function closeArchive();
+
 }

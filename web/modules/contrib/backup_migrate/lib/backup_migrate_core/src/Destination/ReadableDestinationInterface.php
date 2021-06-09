@@ -1,14 +1,12 @@
 <?php
-/**
- * @file
- */
 
 namespace BackupMigrate\Core\Destination;
 
 use BackupMigrate\Core\File\BackupFileInterface;
 
 /**
- * Interface ReadableDestinationInterface
+ * Interface ReadableDestinationInterface.
+ *
  * @package BackupMigrate\Core\Destination
  */
 interface ReadableDestinationInterface extends DestinationInterface {
@@ -31,6 +29,7 @@ interface ReadableDestinationInterface extends DestinationInterface {
    * Load the metadata for the given file however it may be stored.
    *
    * @param \BackupMigrate\Core\File\BackupFileInterface $file
+   *
    * @return \BackupMigrate\Core\File\BackupFileInterface
    */
   public function loadFileMetadata(BackupFileInterface $file);
@@ -39,6 +38,7 @@ interface ReadableDestinationInterface extends DestinationInterface {
    * Load the file with the given ID from the destination.
    *
    * @param \BackupMigrate\Core\File\BackupFileInterface $file
+   *
    * @return \BackupMigrate\Core\File\BackupFileReadableInterface The file if it exists or NULL if it doesn't
    */
   public function loadFileForReading(BackupFileInterface $file);
@@ -52,4 +52,5 @@ interface ReadableDestinationInterface extends DestinationInterface {
    * @return bool True if the file exists, false if it does not.
    */
   public function fileExists($id);
+
 }

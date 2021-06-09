@@ -1,12 +1,6 @@
 <?php
-/**
- * @file
- * Contains BackupMigrate\Core\Service\StashLogger
- */
-
 
 namespace BackupMigrate\Core\Service;
-
 
 use Psr\Log\AbstractLogger;
 
@@ -15,7 +9,8 @@ use Psr\Log\AbstractLogger;
  * This simple service does no clearing or memory management so should not be
  * used for a long-running process.
  *
- * Class StashLogger
+ * Class StashLogger.
+ *
  * @package BackupMigrate\Core\Service
  */
 class StashLogger extends AbstractLogger {
@@ -33,7 +28,7 @@ class StashLogger extends AbstractLogger {
    *
    * @return null
    */
-  public function log($level, $message, array $context = array()) {
+  public function log($level, $message, array $context = []) {
     $this->logs[] = ['level' => $level, 'message' => $message, 'context' => $context];
   }
 
@@ -45,4 +40,5 @@ class StashLogger extends AbstractLogger {
   public function getAll() {
     return $this->logs;
   }
+
 }

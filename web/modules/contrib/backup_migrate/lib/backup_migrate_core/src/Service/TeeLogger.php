@@ -1,18 +1,13 @@
 <?php
-/**
- * @file
- * Contains BackupMigrate\Core\Tests\Service\TeeLogger
- */
-
 
 namespace BackupMigrate\Core\Service;
-
 
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class TeeLogger
+ * Class TeeLogger.
+ *
  * @package BackupMigrate\Core\Tests\Service
  */
 class TeeLogger extends AbstractLogger {
@@ -38,7 +33,7 @@ class TeeLogger extends AbstractLogger {
    *
    * @return null
    */
-  public function log($level, $message, array $context = array()) {
+  public function log($level, $message, array $context = []) {
     foreach ($this->getLoggers() as $logger) {
       $logger->log($level, $message, $context);
     }
@@ -64,4 +59,5 @@ class TeeLogger extends AbstractLogger {
   public function addLogger(LoggerInterface $logger) {
     $this->loggers[] = $logger;
   }
+
 }

@@ -1,16 +1,12 @@
 <?php
-/**
- * @file
- */
 
 namespace BackupMigrate\Core\Translation;
 
-
 /**
- * Interface TranslatableInteface
+ * Interface TranslatableInteface.
+ *
  * @package BackupMigrate\Core\Translation
  */
-
 interface TranslatableInteface {
 
   /**
@@ -22,7 +18,9 @@ interface TranslatableInteface {
    *  Any untranslatable variables to be replaced into the string.
    * @param $context
    *  Extra context to help translators distinguish ambiguous strings.
+   *
    * @return mixed
    */
-  public function t($string, $replacements = array(), $context = array());
+  public function t($string, $replacements = [], $context = []);
+
 }

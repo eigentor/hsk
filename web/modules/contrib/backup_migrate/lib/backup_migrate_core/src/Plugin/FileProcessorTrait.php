@@ -1,21 +1,17 @@
 <?php
-/**
- * @file
- */
 
 namespace BackupMigrate\Core\Plugin;
-
 
 use BackupMigrate\Core\File\TempFileManagerInterface;
 
 /**
- * Class FileProcessorPluginTrait
+ * Class FileProcessorPluginTrait.
+ *
  * @package BackupMigrate\Core\Plugin
  *
  * Implement the injection functionality of a file processor.
  */
-trait FileProcessorTrait
-{
+trait FileProcessorTrait {
   /**
    * @var TempFileManagerInterface
    */
@@ -25,6 +21,7 @@ trait FileProcessorTrait
    * Inject the temp file manager.
    *
    * @param \BackupMigrate\Core\File\TempFileManagerInterface $tempfilemanager
+   *
    * @return mixed
    */
   public function setTempFileManager(TempFileManagerInterface $tempfilemanager) {
@@ -33,6 +30,7 @@ trait FileProcessorTrait
 
   /**
    * Get the temp file manager.
+   *
    * @return \BackupMigrate\Core\File\TempFileManagerInterface
    */
   public function getTempFileManager() {
@@ -47,6 +45,7 @@ trait FileProcessorTrait
    * @param array $params
    *  A list of parameters where
    *    'ext' is the file extension we are testing.
+   *
    * @return string
    *    The mime type of the file (or the passed in mime type if unknown)
    */
@@ -62,6 +61,5 @@ trait FileProcessorTrait
     }
     return $filemime;
   }
-
 
 }
