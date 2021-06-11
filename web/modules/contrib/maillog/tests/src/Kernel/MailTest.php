@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\maillog\Kernel;
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\KernelTests\KernelTestBase;
 
 /**
@@ -17,7 +16,13 @@ class MailTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = array('maillog', 'maillog_test', 'user', 'system', 'views');
+  public static $modules = [
+    'maillog',
+    'maillog_test',
+    'user',
+    'system',
+    'views',
+  ];
 
   /**
    * {@inheritdoc}
@@ -47,7 +52,7 @@ class MailTest extends KernelTestBase {
     // Send an email.
     $from_email = 'simpletest@example.com';
     $reply_email = 'someone_else@example.com';
-    \Drupal::service('plugin.manager.mail')->mail('simpletest', 'from_test', 'from_test@example.com', $language, array(), $reply_email);
+    \Drupal::service('plugin.manager.mail')->mail('simpletest', 'from_test', 'from_test@example.com', $language, [], $reply_email);
 
     // Compare the maillog db entry with the sent mail.
     $logged_email = $this->getLatestMaillogEntry();
@@ -60,11 +65,12 @@ class MailTest extends KernelTestBase {
    * Gets the latest Maillog entry.
    *
    * @return array
-   *   Maillog entry
+   *   Maillog entry.
    */
   protected function getLatestMaillogEntry() {
-    $query = 'SELECT idmaillog, header_from, header_to, header_reply_to, header_all, subject, body FROM {maillog} ORDER BY idmaillog DESC';
-    $result = \Drupal::database()->queryRange($query, 0, 1);
+    $result = \Drupal::database()->queryRange('SELECT id, header_from, header_to, header_reply_to, header_all, subject, body
+      FROM {maillog}
+      ORDER BY id DESC', 0, 1);
 
     if ($maillog = $result->fetchAssoc()) {
       // Unserialize values.
@@ -87,10 +93,10 @@ class MailTest extends KernelTestBase {
     $this->assertTrue(!empty($logged_email), 'The test email was captured.');
 
     // The original subject line, as copied from maillog_test_mail().
-    $subject = str_repeat(t('Test email subject@space', ['@space' => ' ']), 20);
+    $subject = str_repeat('Test email subject ', 20);
 
     // Duplicate the string trimming.
-    $subject_trimmed = Unicode::substr($subject, 0, 255);
+    $subject_trimmed = mb_substr($subject, 0, 255);
     self::assertEquals($subject_trimmed, $logged_email['subject'], 'Email subject was trimmed correctly.');
     self::assertNotEquals($subject, $logged_email['subject'], 'Email subject is not untrimmed.');
   }

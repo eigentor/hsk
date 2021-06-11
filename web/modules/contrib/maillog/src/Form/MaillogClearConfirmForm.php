@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\maillog\Form\MaillogClearConfirmForm.
- */
-
 namespace Drupal\maillog\Form;
 
 use Drupal\Core\Database\Database;
@@ -57,7 +52,7 @@ class MaillogClearConfirmForm extends ConfirmFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     Database::getConnection('default')->truncate('maillog')->execute();
-    drupal_set_message($this->t("All maillog entries have been deleted."));
+    $this->messenger()->addStatus($this->t("All maillog entries have been deleted."));
     $form_state->setRedirect('maillog.settings');
   }
 

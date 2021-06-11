@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Utility to log all Mails for debugging purposes.
+ * Primary hook implementations for the Maillog module.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;

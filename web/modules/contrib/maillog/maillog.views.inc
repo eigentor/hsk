@@ -11,182 +11,183 @@
 function maillog_views_data() {
   $data['maillog']['table']['group'] = t('Maillog');
 
-  $data['maillog']['table']['base'] = array(
-    'field' => 'idmaillog',
+  $data['maillog']['table']['base'] = [
+    'field' => 'id',
     'title' => t('Maillog'),
     'help' => t("This table contains the logged e-mails."),
     'weight' => -10,
-  );
+  ];
 
-  $data['maillog']['idmaillog'] = array(
+  $data['maillog']['id'] = [
     'title' => t('Maillog_ID'),
     'help' => t('The primary key of the maillog table.'),
-    'field' => array(
+    'field' => [
       'id' => 'standard',
       'click sortable' => TRUE,
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'standard',
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'string',
-    ),
-    'argument' => array(
+    ],
+    'argument' => [
       'id' => 'string',
-    ),
-  );
+    ],
+  ];
 
-  $data['maillog']['header_message_id'] = array(
+  $data['maillog']['header_message_id'] = [
     'title' => t('Message_ID'),
     'help' => t("The 'Message_ID' e-mail address."),
-    'field' => array(
+    'field' => [
       'id' => 'standard',
       'click sortable' => TRUE,
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'standard',
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'string',
-    ),
-    'argument' => array(
+    ],
+    'argument' => [
       'id' => 'string',
-    ),
-  );
+    ],
+  ];
 
-  $data['maillog']['header_from'] = array(
+  $data['maillog']['header_from'] = [
     'title' => t('From'),
     'help' => t("The 'From' field of the e-mail address."),
-    'field' => array(
+    'field' => [
       'id' => 'standard',
       'click sortable' => TRUE,
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'standard',
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'string',
-    ),
-    'argument' => array(
+    ],
+    'argument' => [
       'id' => 'string',
-    ),
-  );
+    ],
+  ];
 
-  $data['maillog']['header_to'] = array(
+  $data['maillog']['header_to'] = [
     'title' => t('To'),
     'help' => t("The 'To' field of the e-mail address."),
-    'field' => array(
+    'field' => [
       'id' => 'standard',
       'click sortable' => TRUE,
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'standard',
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'string',
-    ),
-    'argument' => array(
+    ],
+    'argument' => [
       'id' => 'string',
-    ),
-  );
+    ],
+  ];
 
-  $data['maillog']['header_reply_to'] = array(
+  $data['maillog']['header_reply_to'] = [
     'title' => t('Reply To'),
     'help' => t("The 'Reply-To' field of the e-mail address."),
-    'field' => array(
+    'field' => [
       'id' => 'standard',
       'click sortable' => TRUE,
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'standard',
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'string',
-    ),
-    'argument' => array(
+    ],
+    'argument' => [
       'id' => 'string',
-    ),
-  );
+    ],
+  ];
 
-  $data['maillog']['header_all'] = array(
+  $data['maillog']['header_all'] = [
     'title' => t('Header'),
     'help' => t("The 'Header' field of the e-mail."),
-    'field' => array(
+    'field' => [
       'id' => 'standard',
       'click sortable' => TRUE,
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'standard',
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'string',
-    ),
-    'argument' => array(
+    ],
+    'argument' => [
       'id' => 'string',
-    ),
-  );
+    ],
+  ];
 
-  $data['maillog']['body'] = array(
+  $data['maillog']['body'] = [
     'title' => t('Body'),
     'help' => t("The 'Body' field of the e-mail."),
-    'field' => array(
+    'field' => [
       'id' => 'standard',
       'click sortable' => TRUE,
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'standard',
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'string',
-    ),
-    'argument' => array(
+    ],
+    'argument' => [
       'id' => 'string',
-    ),
-  );
+    ],
+  ];
 
-  $data['maillog']['subject'] = array(
+  $data['maillog']['subject'] = [
     'title' => t('Subject'),
     'help' => t("The 'Subject' field of the e-mail."),
-    'field' => array(
+    'field' => [
       'id' => 'standard',
       'click sortable' => TRUE,
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'standard',
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'string',
-    ),
-    'argument' => array(
+    ],
+    'argument' => [
       'id' => 'string',
-    ),
-  );
+    ],
+  ];
 
-  $data['maillog']['sent_date'] = array(
+  $data['maillog']['sent_date'] = [
     'title' => t('Date'),
     'help' => t("The 'Date' field of the e-mail."),
-    'field' => array(
+    'field' => [
       'id' => 'date',
       'click sortable' => TRUE,
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'date',
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'date',
-    ),
-    'argument' => array(
+    ],
+    'argument' => [
       'id' => 'string',
-    ),
-  );
+    ],
+  ];
 
-  $data['maillog']['delete_maillog'] = array(
-    'field' => array(
+  $data['maillog']['delete_maillog'] = [
+    'field' => [
       'title' => t('Delete link'),
       'help' => t('Provide a simple link to delete an eMail entry from the maillog table.'),
       'id' => 'maillog_field_delete',
-      'real field' => 'idmaillog',
-    ),
-  );
+      'real field' => 'id',
+    ],
+  ];
+
   return $data;
 }
