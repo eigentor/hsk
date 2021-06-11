@@ -31,7 +31,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see \Drupal\rules\Ui\RulesUiDefinition::settings()
  */
 class RulesUiConfigHandler extends PluginBase implements RulesUiHandlerInterface, ContainerFactoryPluginInterface {
-
   use TempStoreTrait;
 
   /**

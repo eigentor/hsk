@@ -19,10 +19,10 @@
 namespace Drupal\spamspan\Plugin\Filter;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 use Drupal\Component\Utility\Xss;
+use Drupal\spamspan\Plugin\SpamspanSettingsFormTrait;
 
 /**
  * Provides a filter to obfuscate email addresses.
@@ -44,48 +44,9 @@ use Drupal\Component\Utility\Xss;
  *   }
  * )
  */
-
-define('SPAMSPAN_PATTERN_MAIN',
-  "([-\.\~\'\!\#\$\%\&\+\/\*\=\?\^\_\`\{\|\}\w\+^@]+)"
-  .'@'                # @
-  .'((?:'             # Group 2
-  .'[-\w]+\.'         # one or more letters or dashes followed by a dot.
-  .')+'               # The whole thing one or more times
-  .'[A-Z]{2,63}'      # with between 2 and 63 letters at the end (NB new TLDs)
-  .')');
-
-define('SPAMSPAN_PATTERN_EMAIL_BARE',
-  '!'. SPAMSPAN_PATTERN_MAIN .'!ix'
-);
-define('SPAMSPAN_PATTERN_EMAIL_WITH_OPTIONS',
-  '!'. SPAMSPAN_PATTERN_MAIN .'\[(.*?)\]!ix'
-);
-define('SPAMSPAN_PATTERN_MAILTO',
-  '!<a\s+'                                            # opening <a and spaces
-  ."((?:\w+\s*=\s*)(?:\w+|\"[^\"]*\"|'[^']*'))*?"     # any attributes
-  .'\s*'                                              # whitespace
-  ."href\s*=\s*(['\"])(mailto:"                       # the href attribute
-  . SPAMSPAN_PATTERN_MAIN                                # the email address
-  ."(?:\?[A-Za-z0-9_= %\.\-\~\_\&;\!\*\(\)\\'#&]*)?)" # an optional ? followed
-  # by a query string. NB
-  # we allow spaces here,
-  # even though strictly
-  # they should be URL
-  # encoded
-  .'\\2'                                              # the relevant quote
-  # character
-  ."((?:\s+\w+\s*=\s*)(?:\w+|\"[^\"]*\"|'[^']*'))*?"  # any more attributes
-  .'>'                                                # end of the first tag
-  .'(.*?)'                                            # tag contents.  NB this
-  # will not work properly
-  # if there is a nested
-  # <a>, but this is not
-  # valid xhtml anyway.
-  .'</a>'                                             # closing tag
-  .'!ix'
-);
-
 class FilterSpamspan extends FilterBase {
+
+  use SpamspanSettingsFormTrait;
 
   /**
    * Set up a regex constant to split an email address into name and domain
@@ -98,15 +59,21 @@ class FilterSpamspan extends FilterBase {
    */
   const PATTERN_MAIN =
     # Group 1 - Match the name part - dash, dot or special characters.
-    SPAMSPAN_PATTERN_MAIN;
+    "([-\.\~\'\!\#\$\%\&\+\/\*\=\?\^\_\`\{\|\}\w\+^@]+)"
+    .'@'                # @
+    .'((?:'             # Group 2
+    .'[-\w]+\.'         # one or more letters or dashes followed by a dot.
+    .')+'               # The whole thing one or more times
+    .'[A-Z]{2,63}'      # with between 2 and 63 letters at the end (NB new TLDs)
+    .')';
 
   // Top and tail the email regexp it so that it is case insensitive and
   // ignores whitespace.
-  const PATTERN_EMAIL_BARE = SPAMSPAN_PATTERN_EMAIL_BARE;
+  const PATTERN_EMAIL_BARE = '!'. self::PATTERN_MAIN .'!ix';
 
   // options such as subject or body
   // e.g. <a href="mailto:email@example.com?subject=Hi there!&body=Dear Sir">
-  const PATTERN_EMAIL_WITH_OPTIONS = SPAMSPAN_PATTERN_EMAIL_WITH_OPTIONS;
+  const PATTERN_EMAIL_WITH_OPTIONS = '!'. self::PATTERN_MAIN .'\[(.*?)\]!ix';
 
   // Next set up a regex for mailto: URLs.
   // - see http://www.faqs.org/rfcs/rfc2368.html
@@ -114,7 +81,31 @@ class FilterSpamspan extends FilterBase {
   // the name into the third group and the domain into
   // the fourth. The tag contents go into the fifth.
 
-  const PATTERN_MAILTO = SPAMSPAN_PATTERN_MAILTO;
+  const PATTERN_MAILTO =
+    # opening <a and spaces
+    '!<a\s+'
+    # any attributes
+    ."((?:(?:[\w|-]+\s*=\s*)(?:\w+|\"[^\"]*\"|'[^']*')\s*)*?)"
+    # the href attribute
+    ."href\s*=\s*(['\"])\s*(mailto:"
+    # the email address
+    . self::PATTERN_MAIN
+    # an optional ? followed by a query string
+    # NB. We allow spaces here, even though strictly they should be URL encoded.
+    ."(?:\?[A-Za-z0-9_= %\.\-\~\_\&;\!\*\(\)\\'#&]*)?\s*)"
+    # the relevant quote character
+    .'\\2'
+    # any more attributes
+    ."((?:(?:\s+[\w|-]+\s*=\s*)(?:\w+|\"[^\"]*\"|'[^']*'))*?)"
+    # end of the first tag
+    .'>'
+    # tag contents
+    # NB. This will not work properly if there is a nested <a>,
+    # but this is not valid xhtml anyway.
+    .'(.*?)'
+    # closing tag
+    .'</a>'
+    .'!ixs';
 
   // these will help us deal with inline images, which if very large
   // break the preg_match and preg_replace
@@ -134,125 +125,22 @@ class FilterSpamspan extends FilterBase {
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    // spamspan '@' replacement
-    $form['spamspan_at'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Replacement for "@"'),
-      '#default_value' => $this->settings['spamspan_at'],
-      '#required' => TRUE,
-      '#description' => $this->t('Replace "@" with this text when javascript is disabled.'),
-    );
-    $form['spamspan_use_graphic'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Use a graphical replacement for "@"'),
-      '#default_value' => $this->settings['spamspan_use_graphic'],
-      '#description' => $this->t('Replace "@" with a graphical representation when javascript is disabled (and ignore the setting "Replacement for @" above).'),
-    );
-    $form['spamspan_dot_enable'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Replace dots in email with text'),
-      '#default_value' => $this->settings['spamspan_dot_enable'],
-      '#description' => $this->t('Switch on dot replacement.'),
-    );
-    $form['spamspan_dot'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Replacement for "."'),
-      '#default_value' => $this->settings['spamspan_dot'],
-      '#required' => TRUE,
-      '#description' => $this->t('Replace "." with this text.'),
-    );
-
-    //no trees, see https://www.drupal.org/node/2378437
-    //we fix this in our custom validate handler
-    $form['use_form'] = array(
-      '#type' => 'details',
-      '#title' => $this->t('Use a form instead of a link'),
-      '#open' => TRUE,
-    );
-    $form['use_form']['spamspan_use_form'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Use a form instead of a link'),
-      '#default_value' => $this->settings['spamspan_use_form'],
-      '#description' => $this->t('Link to a contact form instead of an email address. The following settings are used only if you select this option.'),
-    );
-    $form['use_form']['spamspan_form_pattern'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Replacement string for the email address'),
-      '#default_value' => $this->settings['spamspan_form_pattern'],
-      '#required' => TRUE,
-      '#description' => $this->t('Replace the email link with this string and substitute the following <br />%url = the url where the form resides,<br />%email = the email address (base64 and urlencoded),<br />%displaytext = text to display instead of the email address.'),
-    );
-    //required checkbox? what is the point?
-    //if needed, then make an annotation entry as well *     "spamspan_email_encode" = TRUE,
-    /*$form['use_form']['spamspan_email_encode'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Encode the email address'),
-      '#default_value' => $this->settings['spamspan_email_encode'],
-      '#required' => TRUE,
-      '#description' => $this->t('Encode the email address using base64 to protect from spammers. Must be enabled for forms because the email address ends up in a URL.'),
-    );*/
-    $form['use_form']['spamspan_form_default_url'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Default url'),
-      '#default_value' => $this->settings['spamspan_form_default_url'],
-      '#required' => TRUE,
-      '#description' => $this->t('Default url to form to use if none specified (e.g. me@example.com[custom_url_to_form])'),
-    );
-    $form['use_form']['spamspan_form_default_displaytext'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Default displaytext'),
-      '#default_value' => $this->settings['spamspan_form_default_displaytext'],
-      '#required' => TRUE,
-      '#description' => $this->t('Default displaytext to use if none specified (e.g. me@example.com[custom_url_to_form|custom_displaytext])'),
-    );
-
-    // we need this to insert our own validate/submit handlers
-    // we use our own validate handler to extract use_form settings
-    $form['#process'] = array(
-      array($this, 'processSettingsForm'),
-    );
-    return $form;
-  }
-
-  //attach our validation
-  public function processSettingsForm(&$element, FormStateInterface $form_state, &$complete_form) {
-    $complete_form['#validate'][] = array($this, 'validateSettingsForm');
-    return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateSettingsForm(array &$form, FormStateInterface $form_state) {
-    $settings = $form_state->getValue(['filters', 'filter_spamspan', 'settings']);
-    $use_form = $settings['use_form'];
-
-    //no trees, see https://www.drupal.org/node/2378437
-    unset($settings['use_form']);
-    $settings += $use_form;
-    $form_state->setValue(['filters', 'filter_spamspan', 'settings'], $settings);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function process($text, $langcode) {
 
     // HTML image tags need to be handled separately, as they may contain base64
     // encoded images slowing down the email regex function.
     // Therefore, remove all image contents and add them back later.
     // See https://drupal.org/node/1243042 for details.
-    $images = array(array());
+    $images = [[]];
     preg_match_all(self::PATTERN_IMG_INLINE, $text, $images);
     $text = preg_replace(self::PATTERN_IMG_INLINE, self::PATTERN_IMG_PLACEHOLDER, $text);
 
     // Now we can convert all mailto URLs
-    $text = preg_replace_callback(self::PATTERN_MAILTO, array($this, 'callbackMailto'), $text);
+    $text = preg_replace_callback(self::PATTERN_MAILTO, [$this, 'callbackMailto'], $text);
     // all bare email addresses with optional formatting information
-    $text = preg_replace_callback(self::PATTERN_EMAIL_WITH_OPTIONS, array($this, 'callbackEmailAddressesWithOptions'), $text);
+    $text = preg_replace_callback(self::PATTERN_EMAIL_WITH_OPTIONS, [$this, 'callbackEmailAddressesWithOptions'], $text);
     // and finally, all bare email addresses
-    $text = preg_replace_callback(self::PATTERN_EMAIL_BARE, array($this, 'callbackBareEmailAddresses'), $text);
+    $text = preg_replace_callback(self::PATTERN_EMAIL_BARE, [$this, 'callbackBareEmailAddresses'], $text);
 
     // Revert back to the original image contents.
     foreach ($images[0] as $image) {
@@ -262,18 +150,18 @@ class FilterSpamspan extends FilterBase {
     $result = new FilterProcessResult($text);
 
     if ($this->textAltered) {
-      $result->addAttachments(array(
-        'library' => array(
+      $result->addAttachments([
+        'library' => [
           'spamspan/obfuscate',
-        ),
-      ));
+        ],
+      ]);
 
       if ($this->settings['spamspan_use_graphic']) {
-        $result->addAttachments(array(
-          'library' => array(
+        $result->addAttachments([
+          'library' => [
             'spamspan/atsign',
-          ),
-        ));
+          ],
+        ]);
       }
     }
 
@@ -305,11 +193,11 @@ class FilterSpamspan extends FilterBase {
     $headers = preg_split('/[&;]/', $query);
     // if no matches, $headers[0] will be set to '' so $headers must be reset
     if ($headers[0] == '') {
-      $headers = array();
+      $headers = [];
     }
 
     // take all <a> attributes except the href and put them into custom $vars
-    $vars = $attributes = array();
+    $vars = $attributes = [];
     // before href
     if (!empty($matches[1])) {
       $matches[1] = trim($matches[1]);
@@ -329,7 +217,7 @@ class FilterSpamspan extends FilterBase {
   }
 
   public function callbackEmailAddressesWithOptions($matches) {
-    $vars = array();
+    $vars = [];
     if (!empty($matches[3])) {
       $options = explode('|', $matches[3]);
       if (!empty($options[0])) {
@@ -352,7 +240,6 @@ class FilterSpamspan extends FilterBase {
     return $this->output($matches[1], $matches[2]);
   }
 
-
   /**
    * A helper function for the callbacks
    *
@@ -372,7 +259,7 @@ class FilterSpamspan extends FilterBase {
    * @return
    *  The span with which to replace the email address
    */
-  private function output($name, $domain, $contents = '', $headers = array(), $vars = array()) {
+  private function output($name, $domain, $contents = '', $headers = [], $vars = []) {
     // processing for forms
     if (!empty($this->settings['spamspan_use_form'])) {
       $email = urlencode(base64_encode($name . '@' . $domain));
@@ -403,14 +290,16 @@ class FilterSpamspan extends FilterBase {
 
     $at = $this->settings['spamspan_at'];
     if ($this->settings['spamspan_use_graphic']) {
-      $render_at = array('#theme' => 'spamspan_at_sign', '#settings' => $this->settings);
-      $at = \Drupal::service('renderer')->renderRoot($render_at);
+      $render_at = ['#theme' => 'spamspan_at_sign', '#settings' => $this->settings];
+      /** @var \Drupal\Core\Render\RendererInterface $renderer */
+      $renderer = \Drupal::service('renderer');
+      $at = $renderer->renderPlain($render_at);
     }
 
     if ($this->settings['spamspan_dot_enable']) {
       // Replace .'s in the address with [dot]
-      $name = str_replace('.', '<span class="t">' . $this->settings['spamspan_dot'] . '</span>', $name);
-      $domain = str_replace('.', '<span class="t">' . $this->settings['spamspan_dot'] . '</span>', $domain);
+      $name = str_replace('.', '<span class="o">' . $this->settings['spamspan_dot'] . '</span>', $name);
+      $domain = str_replace('.', '<span class="o">' . $this->settings['spamspan_dot'] . '</span>', $domain);
     }
     $output = '<span class="u">' . $name . '</span>' . $at . '<span class="d">' . $domain . '</span>';
 
@@ -441,10 +330,10 @@ class FilterSpamspan extends FilterBase {
       // remove anything except certain inline elements, just in case.  NB nested
       // <a> elements are illegal. <img> needs to be here to allow for graphic @
       // !-- is allowed because of _filter_spamspan_escape_images
-      $contents = Xss::filter($contents, ['em', 'strong', 'cite', 'b', 'i', 'code', 'span', 'img', '!--']);
+      $contents = Xss::filter($contents, ['em', 'strong', 'cite', 'b', 'i', 'code', 'span', 'img', '!--', 'br']);
 
       if (!empty($contents)) {
-        $output .= '<span class="a"> (' . $contents . ')</span>';
+        $output .= '<span class="t"> (' . $contents . ')</span>';
       }
     }
 

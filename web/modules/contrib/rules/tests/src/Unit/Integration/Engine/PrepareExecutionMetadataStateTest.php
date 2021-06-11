@@ -4,7 +4,7 @@ namespace Drupal\Tests\rules\Unit\Integration\Engine;
 
 use Drupal\rules\Context\ContextConfig;
 use Drupal\rules\Context\ContextDefinition;
-use Drupal\rules\Engine\ExecutionMetadataState;
+use Drupal\rules\Context\ExecutionMetadataState;
 use Drupal\rules\Engine\RulesComponent;
 use Drupal\Tests\rules\Unit\Integration\RulesEntityIntegrationTestBase;
 

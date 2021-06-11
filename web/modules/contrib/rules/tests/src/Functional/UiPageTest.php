@@ -14,7 +14,7 @@ class UiPageTest extends RulesBrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['rules', 'rules_test'];
+  protected static $modules = ['rules', 'rules_test'];
 
   /**
    * We use the minimal profile because we want to test local action links.
@@ -37,7 +37,7 @@ class UiPageTest extends RulesBrowserTestBase {
     $assert->statusCodeEquals(200);
 
     // Test that there is an empty reaction rule listing.
-    $assert->pageTextContains('There are no reaction rules yet.');
+    $assert->pageTextContains('There are no enabled reaction rules.');
   }
 
   /**
@@ -66,7 +66,7 @@ class UiPageTest extends RulesBrowserTestBase {
     $this->fillField('Condition', 'rules_node_is_promoted');
     $this->pressButton('Continue');
 
-    $this->fillField('context[node][setting]', '1');
+    $this->fillField('context_definitions[node][setting]', 'node');
     $this->pressButton('Save');
 
     $assert->statusCodeEquals(200);
@@ -74,6 +74,26 @@ class UiPageTest extends RulesBrowserTestBase {
 
     $this->pressButton('Save');
     $assert->pageTextContains('Reaction rule Test rule has been updated. ');
+  }
+
+  /**
+   * Tests that enabling and disabling a rule works.
+   */
+  public function testRuleStatusOperations() {
+    // Setup an active rule.
+    $this->testCreateReactionRule();
+    $this->drupalGet('admin/config/workflow/rules');
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
+    // Test disabling.
+    $this->clickLink('Disable');
+    $assert->pageTextContains('The reaction rule Test rule has been disabled.');
+
+    // Test enabling.
+    $this->clickLink('Enable');
+    $assert->pageTextContains('The reaction rule Test rule has been enabled.');
   }
 
   /**
@@ -87,7 +107,7 @@ class UiPageTest extends RulesBrowserTestBase {
     $this->fillField('Condition', 'rules_node_is_promoted');
     $this->pressButton('Continue');
 
-    $this->fillField('context[node][setting]', '1');
+    $this->fillField('context_definitions[node][setting]', 'node');
     $this->pressButton('Save');
 
     /** @var \Drupal\Tests\WebAssert $assert */
@@ -109,11 +129,11 @@ class UiPageTest extends RulesBrowserTestBase {
     // Setup a rule with one condition.
     $this->testCreateReactionRule();
 
-    $this->clickLink('Delete');
-
     /** @var \Drupal\Tests\WebAssert $assert */
     $assert = $this->assertSession();
-    $assert->pageTextContains('Are you sure you want to delete Condition: Node is promoted from Test rule?');
+
+    $this->clickLink('Delete');
+    $assert->pageTextContains('Are you sure you want to delete Node is promoted from Test rule?');
 
     $this->pressButton('Delete');
     $assert->pageTextContains('You have unsaved changes.');
@@ -149,13 +169,13 @@ class UiPageTest extends RulesBrowserTestBase {
     /** @var \Drupal\Tests\WebAssert $assert */
     $assert = $this->assertSession();
     // Check that the label shows up on the Rule edit page.
-    $assert->pageTextContains('Condition: Node is promoted');
+    $assert->pageTextContains('Node is promoted');
 
     // Edit the condition, negate it, then check the label again.
     $this->clickLink('Edit');
     $this->fillField('Negate', 1);
     $this->pressButton('Save');
-    $assert->pageTextContains('Condition: NOT Node is promoted');
+    $assert->pageTextContains('NOT Node is promoted');
   }
 
   /**
@@ -183,9 +203,9 @@ class UiPageTest extends RulesBrowserTestBase {
     $this->pressButton('Switch to data selection');
     $this->pressButton('Switch to the direct input mode');
 
-    $this->fillField('context[to][setting]', 'klausi@example.com');
-    $this->fillField('context[subject][setting]', 'subject');
-    $this->fillField('context[message][setting]', 'message');
+    $this->fillField('context_definitions[to][setting]', 'klausi@example.com');
+    $this->fillField('context_definitions[subject][setting]', 'subject');
+    $this->fillField('context_definitions[message][setting]', 'message');
     $this->pressButton('Save');
 
     /** @var \Drupal\Tests\WebAssert $assert */

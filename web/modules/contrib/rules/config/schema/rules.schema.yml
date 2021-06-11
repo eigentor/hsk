@@ -70,15 +70,23 @@ rules.settings:
   type: config_object
   label: 'Rules settings'
   mapping:
-    log:
-      type: boolean
-      label: 'Log debug information'
-    log_level_system:
-      type: string
-      label: 'Log level'
-    debug_screen:
-      type: boolean
-      label: 'Show debug information on screen (in the HTML response)'
-    log_level_screen:
-      type: string
-      label: 'Log level'
+    system_log:
+      type: mapping
+      label: 'System logging'
+      mapping:
+        log_level:
+          type: string
+          label: 'Evaluation errors log level'
+    debug_log:
+      type: mapping
+      label: 'Debug logging'
+      mapping:
+        enabled:
+          type: boolean
+          label: 'Enable debug logging to screen'
+        system_debug:
+          type: boolean
+          label: 'Also log debug information to system log'
+        log_level:
+          type: string
+          label: 'Debug log level'

@@ -18,7 +18,7 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['rules', 'system', 'node', 'field', 'user'];
+  protected static $modules = ['rules', 'system', 'node', 'field', 'user'];
 
   /**
    * The entity storage for Rules config entities.
@@ -37,7 +37,7 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installSchema('system', ['sequences']);
@@ -52,6 +52,7 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
       ->create(['type' => 'page'])
       ->save();
 
+    // Create a field "field_integer".
     FieldStorageConfig::create([
       'field_name' => 'field_integer',
       'type' => 'integer',
@@ -64,6 +65,7 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
       'bundle' => 'page',
     ])->save();
 
+    // Create a "page" node bundle (aka content type) with field_integer.
     $this->node = $entity_type_manager->getStorage('node')
       ->create([
         'title' => 'test',
@@ -82,7 +84,7 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
   public function testConfigurableEventHandler() {
     // Create rule1 with the 'rules_entity_presave:node--page' event.
     $rule1 = $this->expressionManager->createRule();
-    $rule1->addAction('rules_test_log',
+    $rule1->addAction('rules_test_debug_log',
       ContextConfig::create()
         ->map('message', 'node.field_integer.0.value')
     );
@@ -97,7 +99,7 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
 
     // Create rule2 with the 'rules_entity_presave:node' event.
     $rule2 = $this->expressionManager->createRule();
-    $rule2->addAction('rules_test_log',
+    $rule2->addAction('rules_test_debug_log',
       ContextConfig::create()
         ->map('message', 'node.field_integer.1.value')
     );
@@ -111,7 +113,8 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
     $config_entity2->save();
 
     // The logger instance has changed, refresh it.
-    $this->logger = $this->container->get('logger.channel.rules');
+    $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
 
     // Add node.field_integer.0.value to rules log message, read result.
     $this->node->field_integer->setValue(['0' => 11, '1' => 22]);
@@ -122,13 +125,13 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
       $entity_type_id => $this->node,
       $entity_type_id . '_unchanged' => $this->node,
     ]);
-    $event_dispatcher = \Drupal::service('event_dispatcher');
+    $event_dispatcher = $this->container->get('event_dispatcher');
     $event_dispatcher->dispatch("rules_entity_presave:$entity_type_id", $event);
 
     // Test that the action in the rule1 logged node value.
-    $this->assertRulesLogEntryExists(11, 1);
+    $this->assertRulesDebugLogEntryExists(11, 1);
     // Test that the action in the rule2 logged node value.
-    $this->assertRulesLogEntryExists(22, 0);
+    $this->assertRulesDebugLogEntryExists(22, 0);
   }
 
 }

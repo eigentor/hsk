@@ -11,7 +11,6 @@ use Drupal\rules\Engine\RuleExpressionInterface;
  * @see \Drupal\rules\Plugin\RulesExpression\RuleExpression
  */
 class RuleExpressionForm implements ExpressionFormInterface {
-
   use ExpressionFormTrait;
 
   /**
@@ -39,6 +38,14 @@ class RuleExpressionForm implements ExpressionFormInterface {
     $form = $actions_form_handler->form($form, $form_state);
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $this->rule->getConditions()->getFormHandler()->submitForm($form, $form_state);
+    $this->rule->getActions()->getFormHandler()->submitForm($form, $form_state);
   }
 
 }

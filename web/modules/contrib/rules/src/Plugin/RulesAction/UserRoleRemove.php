@@ -13,12 +13,14 @@ use Drupal\rules\Exception\InvalidArgumentException;
  *   id = "rules_user_role_remove",
  *   label = @Translation("Remove user role"),
  *   category = @Translation("User"),
- *   context = {
+ *   context_definitions = {
  *     "user" = @ContextDefinition("entity:user",
- *       label = @Translation("User")
+ *       label = @Translation("User"),
+ *       description = @Translation("The user whose roles should be changed.")
  *     ),
  *     "roles" = @ContextDefinition("entity:user_role",
  *       label = @Translation("Roles"),
+ *       description = @Translation("One or more role ids to remove."),
  *       multiple = TRUE
  *     ),
  *   }
@@ -36,22 +38,22 @@ class UserRoleRemove extends RulesActionBase {
   /**
    * Remove role from a user.
    *
-   * @param \Drupal\user\UserInterface $account
+   * @param \Drupal\user\UserInterface $user
    *   User object the roles should be removed from.
    * @param \Drupal\user\RoleInterface[] $roles
    *   Array of user roles.
    *
    * @throws \Drupal\rules\Exception\InvalidArgumentException
    */
-  protected function doExecute(UserInterface $account, array $roles) {
+  protected function doExecute(UserInterface $user, array $roles) {
     foreach ($roles as $role) {
       // Check if user has role.
-      if ($account->hasRole($role->id())) {
+      if ($user->hasRole($role->id())) {
         // If you try to add anonymous or authenticated role to user, Drupal
         // will throw an \InvalidArgumentException. Anonymous or authenticated
         // role ID must not be assigned manually.
         try {
-          $account->removeRole($role->id());
+          $user->removeRole($role->id());
         }
         catch (\InvalidArgumentException $e) {
           throw new InvalidArgumentException($e->getMessage());

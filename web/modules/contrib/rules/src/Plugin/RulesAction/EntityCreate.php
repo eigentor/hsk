@@ -82,7 +82,7 @@ class EntityCreate extends RulesActionBase implements ContainerFactoryPluginInte
         $data_type .= ":$bundle";
       }
 
-      $this->pluginDefinition['provides']['entity']->setDataType($data_type);
+      $this->pluginDefinition['provides'][$type . '_created']->setDataType($data_type);
     }
   }
 
@@ -92,7 +92,7 @@ class EntityCreate extends RulesActionBase implements ContainerFactoryPluginInte
   public function execute() {
     $values = $this->getContextValues();
     $entity = $this->storage->create($values);
-    $this->setProvidedValue('entity', $entity);
+    $this->setProvidedValue($this->entityTypeId . '_created', $entity);
   }
 
 }

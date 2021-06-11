@@ -11,19 +11,22 @@ use Drupal\rules\Core\RulesConditionBase;
  *   id = "rules_data_comparison",
  *   label = @Translation("Data comparison"),
  *   category = @Translation("Data"),
- *   context = {
+ *   context_definitions = {
  *     "data" = @ContextDefinition("any",
  *       label = @Translation("Data to compare"),
- *       description = @Translation("The data to be compared, specified by using a data selector, e.g. 'node.uid.entity.name.value'.")
+ *       description = @Translation("The data to be compared, specified by using a data selector, e.g. 'node.uid.entity.name.value'."),
+ *       assignment_restriction = "selector"
  *     ),
  *     "operation" = @ContextDefinition("string",
  *       label = @Translation("Operator"),
  *       description = @Translation("The comparison operator. Valid values are == (default), <, >, CONTAINS (for strings or arrays) and IN (for arrays or lists)."),
- *       default_value = "=="
+ *       assignment_restriction = "input",
+ *       default_value = "==",
+ *       required = FALSE
  *     ),
  *     "value" = @ContextDefinition("any",
- *        label = @Translation("Data value"),
- *        description = @Translation("The value to compare the data with.")
+ *       label = @Translation("Data value"),
+ *       description = @Translation("The value to compare the data with.")
  *     ),
  *   }
  * )
@@ -82,9 +85,9 @@ class DataComparison extends RulesConditionBase {
    */
   public function refineContextDefinitions(array $selected_data) {
     if (isset($selected_data['data'])) {
-      $this->pluginDefinition['context']['value']->setDataType($selected_data['data']->getDataType());
+      $this->pluginDefinition['context_definitions']['value']->setDataType($selected_data['data']->getDataType());
       if ($this->getContextValue('operation') == 'IN') {
-        $this->pluginDefinition['context']['value']->setMultiple();
+        $this->pluginDefinition['context_definitions']['value']->setMultiple();
       }
     }
   }

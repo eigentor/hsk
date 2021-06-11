@@ -4,8 +4,6 @@ namespace Drupal\rules\Context;
 
 use Drupal\Component\Plugin\Exception\ContextException;
 use Drupal\Core\Plugin\ContextAwarePluginInterface as CoreContextAwarePluginInterface;
-use Drupal\rules\Engine\ExecutionMetadataStateInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 use Drupal\rules\Exception\EvaluationException;
 use Drupal\rules\Exception\IntegrityException;
 
@@ -38,7 +36,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The plugin that is populated with context values.
-   * @param \Drupal\rules\Engine\ExecutionStateInterface $state
+   * @param \Drupal\rules\Context\ExecutionStateInterface $state
    *   The execution state containing available variables.
    *
    * @throws \Drupal\rules\Exception\EvaluationException
@@ -70,7 +68,7 @@ trait ContextHandlerTrait {
     if ($plugin instanceof ContextAwarePluginInterface) {
       // Getting context values may lead to undocumented exceptions if context
       // is not set right now. So catch those exceptions.
-      // @todo Remove ones https://www.drupal.org/node/2677162 got fixed.
+      // @todo Remove once https://www.drupal.org/node/2677162 is fixed in core.
       try {
         $plugin->refineContextDefinitions($selected_data);
       }
@@ -91,12 +89,12 @@ trait ContextHandlerTrait {
         // but valid (e.g. a reference on an empty property). In that case
         // isAllowedNull determines whether the context is conform.
         if (!isset($this->configuration['context_mapping'][$name])) {
-          throw new EvaluationException("Required context $name is missing for plugin "
-            . $plugin->getPluginId() . '.');
+          throw new EvaluationException("Required context '$name' is missing for plugin '"
+            . $plugin->getPluginId() . "'.");
         }
         elseif (!$definition->isAllowedNull()) {
-          throw new EvaluationException("The context for $name is NULL, but the context $name in "
-            . $plugin->getPluginId() . ' requires a value.');
+          throw new EvaluationException("The context for '$name' is NULL, but the context '$name' in '"
+            . $plugin->getPluginId() . "' requires a value.");
         }
       }
     }
@@ -111,7 +109,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The plugin that is prepared.
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The metadata state, prepared for the current expression.
    *
    * @throws \Drupal\Component\Plugin\Exception\ContextException
@@ -131,7 +129,7 @@ trait ContextHandlerTrait {
       $selected_data = $this->getSelectedData($metadata_state);
       // Getting context values may lead to undocumented exceptions if context
       // is not set right now. So catch those exceptions.
-      // @todo Remove ones https://www.drupal.org/node/2677162 got fixed.
+      // @todo Remove once https://www.drupal.org/node/2677162 is fixed in core.
       try {
         $plugin->refineContextDefinitions($selected_data);
       }
@@ -146,7 +144,7 @@ trait ContextHandlerTrait {
   /**
    * Gets definitions of all selected data at configuration time.
    *
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The metadata state.
    *
    * @return \Drupal\Core\TypedData\DataDefinitionInterface[]
@@ -179,7 +177,7 @@ trait ContextHandlerTrait {
    *
    * @param string $context_name
    *   The name of the context.
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The metadata state containing metadata about available variables.
    *
    * @return \Drupal\Core\TypedData\DataDefinitionInterface|null
@@ -201,7 +199,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The context aware plugin of which to add provided context.
-   * @param \Drupal\rules\Engine\ExecutionStateInterface $state
+   * @param \Drupal\rules\Context\ExecutionStateInterface $state
    *   The Rules state where the context variables are added.
    */
   protected function addProvidedContext(CoreContextAwarePluginInterface $plugin, ExecutionStateInterface $state) {
@@ -227,7 +225,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The context aware plugin of which to add provided context.
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The execution metadata state to add variables to.
    */
   protected function addProvidedContextDefinitions(CoreContextAwarePluginInterface $plugin, ExecutionMetadataStateInterface $metadata_state) {
@@ -257,7 +255,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The context aware plugin.
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The execution metadata state.
    */
   protected function assertMetadata(CoreContextAwarePluginInterface $plugin, ExecutionMetadataStateInterface $metadata_state) {
@@ -282,7 +280,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The plugin to process the context data on.
-   * @param \Drupal\rules\Engine\ExecutionStateInterface $rules_state
+   * @param \Drupal\rules\Context\ExecutionStateInterface $rules_state
    *   The current Rules execution state with context variables.
    */
   protected function processData(CoreContextAwarePluginInterface $plugin, ExecutionStateInterface $rules_state) {
@@ -310,7 +308,7 @@ trait ContextHandlerTrait {
    *   The current value.
    * @param array $processors
    *   An array mapping processor plugin IDs to their configuration.
-   * @param \Drupal\rules\Engine\ExecutionStateInterface $rules_state
+   * @param \Drupal\rules\Context\ExecutionStateInterface $rules_state
    *   The current Rules execution state with context variables.
    *
    * @return mixed

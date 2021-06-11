@@ -14,7 +14,7 @@ class TempStorageTest extends RulesBrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['rules'];
+  protected static $modules = ['rules'];
 
   /**
    * We use the minimal profile because we want to test local action links.
@@ -43,7 +43,7 @@ class TempStorageTest extends RulesBrowserTestBase {
     $this->fillField('Condition', 'rules_node_is_promoted');
     $this->pressButton('Continue');
 
-    $this->fillField('context[node][setting]', '1');
+    $this->fillField('context_definitions[node][setting]', 'node');
     $this->pressButton('Save');
 
     /** @var \Drupal\Tests\WebAssert $assert */

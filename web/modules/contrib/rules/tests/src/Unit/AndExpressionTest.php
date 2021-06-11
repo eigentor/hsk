@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\rules\Unit;
 
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Engine\ConditionExpressionInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 use Drupal\rules\Plugin\RulesExpression\AndExpression;
 use Prophecy\Argument;
 
@@ -23,10 +23,10 @@ class AndExpressionTest extends RulesUnitTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
-    $this->and = new AndExpression([], '', [], $this->expressionManager->reveal());
+    $this->and = new AndExpression([], '', ['label' => 'Condition set (AND)'], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
   }
 
   /**
@@ -62,6 +62,7 @@ class AndExpressionTest extends RulesUnitTestBase {
 
     $second_condition = $this->prophesize(ConditionExpressionInterface::class);
     $second_condition->getUuid()->willReturn('true_uuid2');
+    $second_condition->getWeight()->willReturn(0);
 
     $second_condition->executeWithState(Argument::type(ExecutionStateInterface::class))
       ->willReturn(TRUE)
@@ -84,7 +85,10 @@ class AndExpressionTest extends RulesUnitTestBase {
 
     $second_condition = $this->prophesize(ConditionExpressionInterface::class);
     $second_condition->getUuid()->willReturn('false_uuid2');
+    $second_condition->getWeight()->willReturn(0);
 
+    // Evaluation of an AND condition group should stop with first FALSE.
+    // The second condition should not be evaluated.
     $second_condition->executeWithState(Argument::type(ExecutionStateInterface::class))
       ->willReturn(FALSE)
       ->shouldNotBeCalled();
@@ -94,6 +98,35 @@ class AndExpressionTest extends RulesUnitTestBase {
       ->addExpressionObject($second_condition->reveal());
 
     $this->assertFalse($this->and->execute(), 'Two false conditions return FALSE.');
+  }
+
+  /**
+   * Tests evaluation order with two conditions.
+   */
+  public function testEvaluationOrder() {
+    // The method on the false test condition must be called once.
+    $this->falseConditionExpression->executeWithState(
+      Argument::type(ExecutionStateInterface::class))->shouldBeCalledTimes(1);
+    // Set weight to 1 so it will be evaluated second.
+    $this->falseConditionExpression->getWeight()->willReturn(1);
+
+    $second_condition = $this->prophesize(ConditionExpressionInterface::class);
+    $second_condition->getUuid()->willReturn('true_uuid2');
+    $second_condition->getWeight()->willReturn(0);
+
+    // If the above false condition is evaluated first, the second condition
+    // will not be called. If the evaluation order is correct, then it should
+    // be called exactly once.
+    $second_condition->executeWithState(Argument::type(ExecutionStateInterface::class))
+      ->willReturn(TRUE)
+      ->shouldBeCalledTimes(1);
+
+    // Second condition should be called first, because of weight.
+    $this->and
+      ->addExpressionObject($this->falseConditionExpression->reveal())
+      ->addExpressionObject($second_condition->reveal());
+
+    $this->assertFalse($this->and->execute(), 'Correct execution order of conditions.');
   }
 
 }

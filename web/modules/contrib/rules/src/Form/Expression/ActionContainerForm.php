@@ -3,18 +3,12 @@
 namespace Drupal\rules\Form\Expression;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\rules\Ui\RulesUiHandlerTrait;
 use Drupal\rules\Engine\ActionExpressionContainerInterface;
 
 /**
  * Form handler for action containers.
  */
-class ActionContainerForm implements ExpressionFormInterface {
-
-  use StringTranslationTrait;
-  use RulesUiHandlerTrait;
-  use ExpressionFormTrait;
+class ActionContainerForm extends ExpressionContainerFormBase {
 
   /**
    * The rule expression object this form is for.
@@ -34,46 +28,78 @@ class ActionContainerForm implements ExpressionFormInterface {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    $form['action_table'] = [
+    $form['actions-table'] = [
       '#type' => 'container',
+      '#attributes' => ['class' => ['edit-actions-table']],
     ];
 
-    $form['action_table']['table'] = [
-      '#theme' => 'table',
-      '#caption' => $this->t('Actions'),
-      '#header' => [$this->t('Elements'), $this->t('Operations')],
+    $form['actions-table']['actions'] = [
+      '#type' => 'table',
+      '#header' => [
+        'element' => $this->t('Actions'),
+        'operations' => $this->t('Operations'),
+        'weight' => [
+          'data' => $this->t('List position'),
+          'class' => ['tabledrag-hide'],
+        ],
+      ],
+      '#tabledrag' => [
+        [
+          'action' => 'order',
+          'relationship' => 'sibling',
+          'group' => 'table-sort-weight',
+        ],
+      ],
       '#empty' => $this->t('None'),
     ];
 
+    /** @var \Drupal\rules\Engine\ExpressionInterface $action */
     foreach ($this->actionSet as $action) {
-      $form['action_table']['table']['#rows'][] = [
-        'element' => $action->getLabel(),
+      $uuid = $action->getUuid();
+      $configuration = $action->getConfiguration();
+      $description = $this->getParameterDescription($configuration);
+      $form['actions-table']['actions'][$uuid] = [
+        'element' => [
+          'data' => [
+            '#type' => 'item',
+            '#plain_text' => $action->getLabel(),
+            '#suffix' => '<div class="description">' . $description . '</div>',
+          ],
+          // So that the full parameter description will show on hover.
+          '#wrapper_attributes' => ['title' => [$description]],
+        ],
         'operations' => [
           'data' => [
-            '#type' => 'dropbutton',
+            '#type' => 'operations',
             '#links' => [
               'edit' => [
                 'title' => $this->t('Edit'),
                 'url' => $this->getRulesUiHandler()->getUrlFromRoute('expression.edit', [
-                  'uuid' => $action->getUuid(),
+                  'uuid' => $uuid,
                 ]),
               ],
               'delete' => [
                 'title' => $this->t('Delete'),
                 'url' => $this->getRulesUiHandler()->getUrlFromRoute('expression.delete', [
-                  'uuid' => $action->getUuid(),
+                  'uuid' => $uuid,
                 ]),
               ],
             ],
           ],
         ],
+        'weight' => [
+          '#type' => 'weight',
+          '#delta' => 50,
+          '#attributes' => ['class' => ['table-sort-weight']],
+          '#default_value' => $action->getWeight(),
+        ],
+        '#attributes' => ['class' => ['draggable']],
+        '#weight' => $action->getWeight(),
       ];
     }
 
-    // @todo Put this into the table as last row and style it like it was in
-    // Drupal 7 Rules.
-    $form['add_action'] = [
-      '#attributes' => ['class' => ['action-links']],
+    // Put action buttons in the table footer.
+    $links['add-action'] = [
       '#theme' => 'menu_local_action',
       '#link' => [
         'title' => $this->t('Add action'),
@@ -83,7 +109,41 @@ class ActionContainerForm implements ExpressionFormInterface {
       ],
     ];
 
+    $form['actions-table']['actions']['#footer'][] = [
+      [
+        'data' => [
+          '#prefix' => '<ul class="action-links">',
+          'local-action-links' => $links,
+          '#suffix' => '</ul>',
+        ],
+        'colspan' => 3,
+      ],
+    ];
+
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $values = $form_state->getValue('actions', []);
+    if (empty($values)) {
+      // Core FormState::getValue() doesn't return the default parameter []
+      // when there are no values?
+      return;
+    }
+    $component = $this->getRulesUiHandler()->getComponent();
+    /** @var \Drupal\rules\Plugin\RulesExpression\RuleExpression $rule_expression */
+    $rule_expression = $component->getExpression();
+
+    foreach ($values as $uuid => $expression) {
+      $action = $rule_expression->getExpression($uuid);
+      $action->setWeight($expression['weight']);
+      $action->setConfiguration($action->getConfiguration());
+    }
+
+    $this->getRulesUiHandler()->updateComponent($component);
   }
 
 }

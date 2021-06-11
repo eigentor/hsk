@@ -40,7 +40,10 @@ class EntityViewDeriver extends DeriverBase implements ContainerDeriverInterface
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, $base_plugin_id) {
-    return new static($container->get('entity_type.manager'), $container->get('string_translation'));
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('string_translation')
+    );
   }
 
   /**
@@ -57,7 +60,7 @@ class EntityViewDeriver extends DeriverBase implements ContainerDeriverInterface
         'label' => $this->t('@entity_type is viewed', ['@entity_type' => $entity_type->getLabel()]),
         'category' => $entity_type->getLabel(),
         'entity_type_id' => $entity_type_id,
-        'context' => [
+        'context_definitions' => [
           $entity_type_id => [
             'type' => "entity:$entity_type_id",
             'label' => $entity_type->getLabel(),

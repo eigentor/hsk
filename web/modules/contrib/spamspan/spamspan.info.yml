@@ -1,13 +1,14 @@
 name: 'SpamSpan'
 type: module
-description: 'The SpamSpan module obfuscates email addresses to help prevent spambots from collecting them. It implements the technique at http://www.spamspan.com.'
+description: 'The SpamSpan module obfuscates email addresses to help prevent spambots from collecting them. It implements the technique at https://www.spamspan.com.'
 package: 'Input filters'
-# core: 8.x
+core: 8.x
+core_version_requirement: ^8 || ^9
 configure: filter.admin_overview
 dependencies:
-  - filter
-# Information added by Drupal.org packaging script on 2016-08-22
-version: '8.x-1.x-dev'
-core: '8.x'
+  - drupal:filter
+
+# Information added by Drupal.org packaging script on 2020-04-28
+version: '8.x-1.2'
 project: 'spamspan'
-datestamp: 1471868280
+datestamp: 1588076391

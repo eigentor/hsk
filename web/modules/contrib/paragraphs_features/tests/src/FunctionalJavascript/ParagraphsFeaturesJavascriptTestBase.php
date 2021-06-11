@@ -3,11 +3,12 @@
 namespace Drupal\Tests\paragraphs_features\FunctionalJavascript;
 
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\editor\Entity\Editor;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
-use Drupal\paragraphs\Tests\Classic\ParagraphsCoreVersionUiTestTrait;
+use Drupal\Tests\paragraphs\Traits\ParagraphsCoreVersionUiTestTrait;
 use Drupal\Tests\paragraphs\FunctionalJavascript\LoginAdminTrait;
 use Drupal\Tests\paragraphs\FunctionalJavascript\ParagraphsTestBaseTrait;
 
@@ -21,11 +22,15 @@ abstract class ParagraphsFeaturesJavascriptTestBase extends WebDriverTestBase {
   use LoginAdminTrait;
   use ParagraphsTestBaseTrait;
   use ParagraphsCoreVersionUiTestTrait;
+  use StringTranslationTrait;
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
    */
   protected static $modules = [
     'block',
@@ -38,6 +43,7 @@ abstract class ParagraphsFeaturesJavascriptTestBase extends WebDriverTestBase {
     'paragraphs_test',
     'paragraphs_features',
     'paragraphs_features_test',
+    'shortcut',
   ];
 
   /**
@@ -45,6 +51,15 @@ abstract class ParagraphsFeaturesJavascriptTestBase extends WebDriverTestBase {
    */
   protected function setUp() {
     parent::setUp();
+
+    if ($theme = getenv('THEME')) {
+      $this->assertTrue(\Drupal::service('theme_installer')->install([$theme]));
+      $this->container->get('config.factory')
+        ->getEditable('system.theme')
+        ->set('default', $theme)
+        ->set('admin', $theme)
+        ->save();
+    }
 
     // Place the breadcrumb, tested in fieldUIAddNewField().
     $this->drupalPlaceBlock('system_breadcrumb_block');

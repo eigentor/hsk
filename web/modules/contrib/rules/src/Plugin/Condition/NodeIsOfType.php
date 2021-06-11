@@ -11,15 +11,16 @@ use Drupal\rules\Core\RulesConditionBase;
  * @Condition(
  *   id = "rules_node_is_of_type",
  *   label = @Translation("Node is of type"),
- *   category = @Translation("Node"),
- *   context = {
+ *   category = @Translation("Content"),
+ *   context_definitions = {
  *     "node" = @ContextDefinition("entity:node",
  *       label = @Translation("Node"),
+ *       description = @Translation("Specifies the node for which to evaluate the condition."),
  *       assignment_restriction = "selector"
  *     ),
  *     "types" = @ContextDefinition("string",
  *       label = @Translation("Content types"),
- *       description = @Translation("Check for the allowed node types."),
+ *       description = @Translation("The content type(s) to check for."),
  *       multiple = TRUE
  *     ),
  *   }

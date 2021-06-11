@@ -1,16 +1,6 @@
 rules_expression:
   type: mapping
   label: 'Rules expression'
-  id:
-    type: string
-    label: 'Plugin ID'
-  uuid:
-    type: string
-    label: 'UUID'
-
-rules_expression.rules_condition:
-  type: rules_expression
-  label: "Rules condition configuration"
   mapping:
     id:
       type: string
@@ -18,6 +8,18 @@ rules_expression.rules_condition:
     uuid:
       type: string
       label: 'UUID'
+    weight:
+      type: integer
+      label: 'Weight'
+
+rules_expression.*:
+  type: rules_expression
+  label: 'Rules expression default configuration'
+
+rules_expression.rules_condition:
+  type: rules_expression
+  label: 'Rules condition configuration'
+  mapping:
     condition_id:
       type: string
       label: 'Condition plugin ID'
@@ -39,14 +41,8 @@ rules_expression.rules_condition:
 
 rules_expression.rules_action:
   type: rules_expression
-  label: "Rules action configuration"
+  label: 'Rules action configuration'
   mapping:
-    id:
-      type: string
-      label: 'Plugin ID'
-    uuid:
-      type: string
-      label: 'UUID'
     action_id:
       type: string
       label: 'Action plugin ID'
@@ -67,12 +63,19 @@ rules_expression.rules_and:
   type: rules_expression
   label: 'Rules And'
   mapping:
-    id:
-      type: string
-      label: 'Plugin ID'
-    uuid:
-      type: string
-      label: 'UUID'
+    negate:
+      type: boolean
+      label: 'Negate'
+    conditions:
+      type: sequence
+      label: 'Conditions'
+      sequence:
+        - type: rules_expression.[id]
+
+rules_expression.rules_or:
+  type: rules_expression
+  label: 'Rules Or'
+  mapping:
     negate:
       type: boolean
       label: 'Negate'
@@ -86,12 +89,6 @@ rules_expression.rules_action_set:
   type: rules_expression
   label: 'Action set'
   mapping:
-    id:
-      type: string
-      label: 'Plugin ID'
-    uuid:
-      type: string
-      label: 'UUID'
     actions:
       type: sequence
       label: 'Actions'
@@ -100,14 +97,8 @@ rules_expression.rules_action_set:
 
 rules_expression.rules_rule:
   type: rules_expression
-  label: "Rule"
+  label: 'Rule'
   mapping:
-    id:
-      type: string
-      label: 'Plugin ID'
-    uuid:
-      type: string
-      label: 'UUID'
     conditions:
       type: rules_expression.[id]
       label: 'Conditions'

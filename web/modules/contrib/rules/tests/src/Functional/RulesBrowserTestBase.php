@@ -10,6 +10,11 @@ use Drupal\Tests\BrowserTestBase;
 abstract class RulesBrowserTestBase extends BrowserTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
    * Finds link with specified locator.
    *
    * @param string $locator
@@ -20,6 +25,22 @@ abstract class RulesBrowserTestBase extends BrowserTestBase {
    */
   public function findLink($locator) {
     return $this->getSession()->getPage()->findLink($locator);
+  }
+
+  /**
+   * Clicks a link identified via partial href using xpath.
+   *
+   * As the Rules UI pages become more complex, with multiple links and buttons
+   * containing the same text, it may get difficult to use clickLink('text', N)
+   * where N is the index position on the page, as the index of a given link
+   * varies depending on other rules. It is clearer to read and more
+   * future-proof to find the link via a known url fragment.
+   *
+   * @param string $href
+   *   The href, or a unique part of it.
+   */
+  public function clickLinkByHref($href) {
+    $this->getSession()->getPage()->find('xpath', './/a[contains(@href, "' . $href . '")]')->click();
   }
 
   /**

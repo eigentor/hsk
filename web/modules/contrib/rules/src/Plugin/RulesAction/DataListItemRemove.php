@@ -11,15 +11,16 @@ use Drupal\rules\Core\RulesActionBase;
  *   id = "rules_list_item_remove",
  *   label = @Translation("Remove item from list"),
  *   category = @Translation("Data"),
- *   context = {
- *    "list" = @ContextDefinition("list",
- *      label = @Translation("List"),
- *      description = @Translation("The data list for which an item is to be removed.")
- *    ),
- *    "item" = @ContextDefinition("any",
- *      label = @Translation("Item"),
- *      description = @Translation("Item to remove.")
- *    ),
+ *   context_definitions = {
+ *     "list" = @ContextDefinition("list",
+ *       label = @Translation("List"),
+ *       description = @Translation("The data list from which an item is to be removed."),
+ *       assignment_restriction = "selector"
+ *     ),
+ *     "item" = @ContextDefinition("any",
+ *       label = @Translation("Item"),
+ *       description = @Translation("Item to remove.")
+ *     ),
  *   }
  * )
  *

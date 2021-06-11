@@ -17,12 +17,12 @@ class EntityPresaveTest extends EventTestBase {
   public function testEventMetadata() {
     $plugin_definition = $this->eventManager->getDefinition('rules_entity_presave:test');
     $this->assertSame('Before saving a test', (string) $plugin_definition['label']);
-    $context_definition = $plugin_definition['context']['test'];
+    $context_definition = $plugin_definition['context_definitions']['test'];
     $this->assertSame('entity:test', $context_definition->getDataType());
     $this->assertSame('Test', $context_definition->getLabel());
 
     // Also check that there is a context for the original entity.
-    $context_definition = $plugin_definition['context']['test_unchanged'];
+    $context_definition = $plugin_definition['context_definitions']['test_unchanged'];
     $this->assertSame('entity:test', $context_definition->getDataType());
     $this->assertSame('Unchanged Test', (string) $context_definition->getLabel());
   }

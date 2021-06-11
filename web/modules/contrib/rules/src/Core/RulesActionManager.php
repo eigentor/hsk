@@ -12,11 +12,11 @@ use Drupal\rules\Context\AnnotatedClassDiscovery;
 use Drupal\rules\Core\Annotation\RulesAction;
 
 /**
- * Provides an Action plugin manager for the Rules actions API.
+ * Provides a RulesAction plugin manager for the Rules actions API.
  *
- * @see \Drupal\Core\Annotation\Action
- * @see \Drupal\Core\Action\ActionInterface
- * @see \Drupal\Core\Action\ActionBase
+ * @see \Drupal\rules\Core\Annotation\RulesAction
+ * @see \Drupal\rules\Core\RulesActionInterface
+ * @see \Drupal\rules\Core\RulesActionBase
  * @see plugin_api
  */
 class RulesActionManager extends DefaultPluginManager implements RulesActionManagerInterface {

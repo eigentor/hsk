@@ -21,7 +21,7 @@ class ViewUnpublishedPermissions {
    * @see \Drupal\user\PermissionHandlerInterface::getPermissions()
    */
   public function permissions() {
-    $perms = array();
+    $perms = [];
     // Generate view unpublished permissions for all node types.
     foreach (NodeType::loadMultiple() as $type) {
       $perms += $this->buildPermissions($type);
@@ -41,13 +41,13 @@ class ViewUnpublishedPermissions {
    */
   protected function buildPermissions(NodeType $type) {
     $type_id = $type->id();
-    $type_params = array('%type_name' => $type->label());
+    $type_params = ['%type_name' => $type->label()];
 
-    return array(
-      "view any unpublished $type_id content" => array(
+    return [
+      "view any unpublished $type_id content" => [
         'title' => $this->t('%type_name: View any unpublished content', $type_params),
-      ),
-    );
+      ],
+    ];
   }
 
 }

@@ -2,7 +2,7 @@
 
 namespace Drupal\rules\Core;
 
-use Drupal\Component\Plugin\ConfigurablePluginInterface;
+use Drupal\Component\Plugin\ConfigurableInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -24,7 +24,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @see \Drupal\rules\Core\RulesDefaultEventHandler
  */
-interface RulesConfigurableEventHandlerInterface extends RulesEventHandlerInterface, ConfigurablePluginInterface {
+interface RulesConfigurableEventHandlerInterface extends RulesEventHandlerInterface, ConfigurableInterface {
 
   /**
    * Determines the qualified event names for the dispatched event.

@@ -4,6 +4,7 @@ namespace Drupal\rules\Form\Expression;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\rules\Context\Form\ContextFormTrait;
 use Drupal\rules\Core\ConditionManager;
 use Drupal\rules\Engine\ConditionExpressionInterface;
 use Drupal\rules\Ui\RulesUiHandlerTrait;
@@ -12,7 +13,6 @@ use Drupal\rules\Ui\RulesUiHandlerTrait;
  * UI form for adding/editing a Rules condition.
  */
 class ConditionForm implements ExpressionFormInterface {
-
   use ContextFormTrait;
   use StringTranslationTrait;
   use RulesUiHandlerTrait;
@@ -57,7 +57,16 @@ class ConditionForm implements ExpressionFormInterface {
       $options = [];
       foreach ($condition_definitions as $group => $definitions) {
         foreach ($definitions as $id => $definition) {
-          $options[$group][$id] = $definition['label'];
+          if ($group != $this->t('Other')) {
+            // Because core Conditions do not currently define some context
+            // values required by Rules, we need to make sure they can't be
+            // selected through the Rules UI. The Rules ConditionManager puts
+            // these core Conditions into the 'Other' group so that we can
+            // identify them and leave them off of the Condition selection
+            // form element below.
+            // @see https://www.drupal.org/project/rules/issues/2927132
+            $options[$group][$id] = $definition['label'];
+          }
         }
       }
 
@@ -84,14 +93,39 @@ class ConditionForm implements ExpressionFormInterface {
     $condition = $this->conditionManager->createInstance($condition_id);
 
     $form['summary'] = [
-      '#markup' => $condition->summary(),
+      '#type' => 'details',
+      '#title' => $this->t('Summary'),
+    ];
+    $form['summary']['description'] = [
+      '#type' => 'container',
+      '#plain_text' => $this->t('Condition: @summary', ['@summary' => $condition->summary()]),
+      '#attributes' => ['class' => ['form-item']],
     ];
 
     $context_definitions = $condition->getContextDefinitions();
+    if (!empty($context_definitions)) {
+      $form['context_definitions'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Context variables'),
+        '#open' => TRUE,
+        '#tree' => TRUE,
+      ];
+      foreach ($context_definitions as $context_name => $context_definition) {
+        $form = $this->buildContextForm($form, $form_state, $context_name, $context_definition, $configuration);
+      }
+    }
 
-    $form['context']['#tree'] = TRUE;
-    foreach ($context_definitions as $context_name => $context_definition) {
-      $form = $this->buildContextForm($form, $form_state, $context_name, $context_definition, $configuration);
+    $provides_definitions = $condition->getProvidedContextDefinitions();
+    if (!empty($provides_definitions)) {
+      $form['provides'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Provided variables'),
+        '#description' => $this->t('You may change the name of any provided variables, but note that renaming already-utilized variables invalidates the existing uses.'),
+        '#open' => TRUE,
+      ];
+      foreach ($provides_definitions as $provides_name => $provides_definition) {
+        $form = $this->buildProvidedContextForm($form, $form_state, $provides_name, $provides_definition, $configuration);
+      }
     }
 
     $form['negate_wrapper'] = [
@@ -147,7 +181,18 @@ class ConditionForm implements ExpressionFormInterface {
     }
 
     $condition_definition = $this->conditionManager->getDefinition($condition_id);
-    $context_config = $this->getContextConfigFromFormValues($form_state, $condition_definition['context']);
+    $context_config = $this->getContextConfigFromFormValues($form_state, $condition_definition['context_definitions']);
+
+    // Rename provided variables, if any.
+    if ($provided_variables = $form_state->getValue('provides')) {
+      foreach ($provided_variables as $provides_name => $provides_context) {
+        // Do this only on rename.
+        if ($provides_name !== $provides_context['name']) {
+          \Drupal::messenger()->addWarning("providing '" . $provides_name . "' as '" . $provides_context['name'] . "'");
+          $context_config->provideAs($provides_name, $provides_context['name']);
+        }
+      }
+    }
 
     $configuration = $context_config->toArray();
     $configuration['condition_id'] = $form_state->get('condition_id');

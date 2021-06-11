@@ -40,7 +40,10 @@ class EntityDeleteDeriver extends DeriverBase implements ContainerDeriverInterfa
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, $base_plugin_id) {
-    return new static($container->get('entity_type.manager'), $container->get('string_translation'));
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('string_translation')
+    );
   }
 
   /**
@@ -57,7 +60,7 @@ class EntityDeleteDeriver extends DeriverBase implements ContainerDeriverInterfa
         'label' => $this->t('After deleting a @entity_type', ['@entity_type' => $entity_type->getSingularLabel()]),
         'category' => $entity_type->getLabel(),
         'entity_type_id' => $entity_type_id,
-        'context' => [
+        'context_definitions' => [
           $entity_type_id => [
             'type' => "entity:$entity_type_id",
             'label' => $entity_type->getLabel(),

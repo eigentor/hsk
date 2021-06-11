@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\rules\Unit;
 
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Engine\ConditionExpressionInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 use Drupal\rules\Engine\ExpressionManagerInterface;
 use Drupal\rules\Plugin\RulesExpression\ActionSetExpression;
 use Drupal\rules\Plugin\RulesExpression\RuleExpression;
@@ -49,18 +49,18 @@ class RuleExpressionTest extends RulesUnitTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->expressionManager = $this->prophesize(ExpressionManagerInterface::class);
 
-    $this->conditions = new AndExpression([], 'rules_and', [], $this->expressionManager->reveal());
+    $this->conditions = new AndExpression([], 'rules_and', ['label' => 'Condition set (AND)'], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
     $this->expressionManager->createInstance('rules_and', [])->willReturn($this->conditions);
 
-    $this->actions = new ActionSetExpression([], 'rules_action_set', [], $this->expressionManager->reveal());
+    $this->actions = new ActionSetExpression([], 'rules_action_set', [], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
     $this->expressionManager->createInstance('rules_action_set', [])->willReturn($this->actions);
 
-    $this->rule = new RuleExpression([], 'rules_rule', [], $this->expressionManager->reveal());
+    $this->rule = new RuleExpression([], 'rules_rule', ['label' => 'Rule'], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
   }
 
   /**
@@ -80,11 +80,11 @@ class RuleExpressionTest extends RulesUnitTestBase {
    * @covers ::getConditions
    */
   public function testSetConditionsGetConditions() {
-    $or = new OrExpression([], 'rules_or', [], $this->expressionManager->reveal());
+    $or = new OrExpression([], 'rules_or', ['label' => 'Condition set (OR)'], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
     $this->rule->setConditions($or);
     $this->assertSame($or, $this->rule->getConditions());
 
-    $and = new AndExpression([], 'rules_and', [], $this->expressionManager->reveal());
+    $and = new AndExpression([], 'rules_and', ['label' => 'Condition set (AND)'], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
     $this->rule->setConditions($and);
     $this->assertSame($and, $this->rule->getConditions());
   }
@@ -96,7 +96,7 @@ class RuleExpressionTest extends RulesUnitTestBase {
    * @covers ::getActions
    */
   public function testSetActionsGetActions() {
-    $action_set = new ActionSetExpression([], '', [], $this->expressionManager->reveal());
+    $action_set = new ActionSetExpression([], '', [], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
     $this->rule->setActions($action_set);
     $this->assertSame($action_set, $this->rule->getActions());
   }
@@ -143,8 +143,11 @@ class RuleExpressionTest extends RulesUnitTestBase {
     $this->testActionExpression->executeWithState(
       Argument::type(ExecutionStateInterface::class))->shouldBeCalledTimes(1);
 
+    $this->trueConditionExpression->getWeight()->willReturn(0);
+
     $second_condition = $this->prophesize(ConditionExpressionInterface::class);
     $second_condition->getUuid()->willReturn('true_uuid2');
+    $second_condition->getWeight()->willReturn(0);
 
     $second_condition->executeWithState(Argument::type(ExecutionStateInterface::class))
       ->willReturn(TRUE);
@@ -165,6 +168,10 @@ class RuleExpressionTest extends RulesUnitTestBase {
     // The execute method on the action must never be called.
     $this->testActionExpression->executeWithState(
       Argument::type(ExecutionStateInterface::class))->shouldNotBeCalled();
+    $this->testActionExpression->getWeight()->willReturn(0);
+
+    $this->trueConditionExpression->getWeight()->willReturn(0);
+    $this->falseConditionExpression->getWeight()->willReturn(0);
 
     $this->rule
       ->addExpressionObject($this->trueConditionExpression->reveal())
@@ -182,11 +189,11 @@ class RuleExpressionTest extends RulesUnitTestBase {
     $this->testActionExpression->executeWithState(
       Argument::type(ExecutionStateInterface::class))->shouldBeCalledTimes(1);
 
-    $nested = new RuleExpression([], 'rules_rule', [], $this->expressionManager->reveal());
-    // We need to replace the action and conditon container to not have the same
-    // instances as in the outer rule.
-    $nested->setConditions(new AndExpression([], 'rules_and', [], $this->expressionManager->reveal()));
-    $nested->setActions(new ActionSetExpression([], 'rules_action_set', [], $this->expressionManager->reveal()));
+    $nested = new RuleExpression([], 'rules_rule', ['label' => 'Rule'], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
+    // We need to replace the action and condition container to not have the
+    // same instances as in the outer rule.
+    $nested->setConditions(new AndExpression([], 'rules_and', ['label' => 'Condition set (AND)'], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal()));
+    $nested->setActions(new ActionSetExpression([], 'rules_action_set', [], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal()));
 
     $nested->addExpressionObject($this->trueConditionExpression->reveal())
       ->addExpressionObject($this->testActionExpression->reveal());
@@ -225,6 +232,11 @@ class RuleExpressionTest extends RulesUnitTestBase {
     $second_action = $this->prophesize(ActionExpression::class);
     $second_action->getUuid()->willReturn('action_uuid2');
     $this->rule->addExpressionObject($second_action->reveal());
+
+    $this->trueConditionExpression->getWeight()->willReturn(0);
+    $this->falseConditionExpression->getWeight()->willReturn(0);
+    $this->testActionExpression->getWeight()->willReturn(0);
+    $second_action->getWeight()->willReturn(0);
 
     // Delete the first action.
     $uuid = $this->testActionExpression->reveal()->getUuid();

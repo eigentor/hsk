@@ -81,6 +81,7 @@ class RulesUiRouteSubscriber extends RouteSubscriberBase {
       ->addRequirements($requirements);
     $collection->add($ui_definition->base_route . '.expression.add', $route);
 
+    // Route for editing expressions in a Rule.
     $route = (new Route($base_route->getPath() . '/edit/{uuid}'))
       ->addDefaults([
         '_form' => '\Drupal\rules\Form\EditExpressionForm',
@@ -90,6 +91,7 @@ class RulesUiRouteSubscriber extends RouteSubscriberBase {
       ->addRequirements($requirements);
     $collection->add($ui_definition->base_route . '.expression.edit', $route);
 
+    // Route for deleting expressions from a Rule.
     $route = (new Route($base_route->getPath() . '/delete/{uuid}'))
       ->addDefaults([
         '_form' => '\Drupal\rules\Form\DeleteExpressionForm',
@@ -99,6 +101,7 @@ class RulesUiRouteSubscriber extends RouteSubscriberBase {
       ->addRequirements($requirements);
     $collection->add($ui_definition->base_route . '.expression.delete', $route);
 
+    // Route to break the lock of an edited rule.
     $route = (new Route($base_route->getPath() . '/break-lock'))
       ->addDefaults([
         '_form' => '\Drupal\rules\Form\BreakLockForm',
@@ -108,6 +111,7 @@ class RulesUiRouteSubscriber extends RouteSubscriberBase {
       ->addRequirements($requirements);
     $collection->add($ui_definition->base_route . '.break_lock', $route);
 
+    // Route for data selector autocomplete.
     $route = (new Route($base_route->getPath() . '/autocomplete/{uuid}'))
       ->addDefaults([
         '_controller' => '\Drupal\rules\Controller\AutocompleteController::autocomplete',

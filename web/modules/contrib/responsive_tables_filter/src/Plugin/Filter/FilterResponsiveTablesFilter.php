@@ -4,6 +4,7 @@ namespace Drupal\responsive_tables_filter\Plugin\Filter;
 
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Responsive Tables Filter class. Implements process() method only.
@@ -12,15 +13,30 @@ use Drupal\filter\Plugin\FilterBase;
  *   id = "filter_responsive_tables_filter",
  *   title = @Translation("Apply responsive behavior to HTML tables."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_MARKUP_LANGUAGE,
+ *   settings = {
+ *     "tablesaw_type" = "stack",
+ *     "tablesaw_persist" = TRUE
+ *   }
  * )
  */
 class FilterResponsiveTablesFilter extends FilterBase {
 
   /**
+   * Available Tablesaw modes.
+   *
+   * @var modes
+   */
+  public static $modes = [
+    'stack' => "Stack Mode",
+    'columntoggle' => "Column Toggle Mode",
+    'swipe' => "Swipe Mode",
+  ];
+
+  /**
    * {@inheritdoc}
    */
   public function process($text, $langcode) {
-    if ($filtered = $this->responsive_tables_filter($text)) {
+    if ($filtered = $this->runFilter($text)) {
       $result = new FilterProcessResult($filtered);
       // Attach Tablesaw library assets to this page.
       $result->setAttachments([
@@ -35,9 +51,30 @@ class FilterResponsiveTablesFilter extends FilterBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $form['tablesaw_type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Default mode'),
+      '#default_value' => $this->settings['tablesaw_type'] ?? 'stack',
+      '#description' => $this->t('This will apply by default to tables in WYSIWYGs, but can be overridden on an individual basis by adding the <code>class</code> "tablesaw-stack", "tablesaw-columntoggle", or "tablesaw-swipe" to the <code>table</code> tag. See documentation: https://github.com/filamentgroup/tablesaw'),
+      '#options' => self::$modes,
+    ];
+
+    $form['tablesaw_persist'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Persistent first column?'),
+      '#default_value' => $this->settings['tablesaw_persist'] ?? TRUE,
+      '#description' => $this->t('This will apply to all tables in WYSIWYGs.'),
+    ];
+    return $form;
+  }
+
+  /**
    * Business logic for adding classes & attributes to <table> tags.
    */
-  public function responsive_tables_filter($text) {
+  public function runFilter($text) {
     // Older versions of libxml always add DOCTYPE, <html>, and <body> tags.
     // See http://www.php.net/manual/en/libxml.constants.php.
     // Sometimes, PHP is >= 5.4, but libxml is old enough that the constants are
@@ -66,11 +103,36 @@ class FilterResponsiveTablesFilter extends FilterBase {
           // Find existing class attributes, if any, and append tablesaw class.
           $existing_classes = $table->getAttribute('class');
           if (strpos($existing_classes, 'no-tablesaw') === FALSE) {
-            $new_classes = !empty($existing_classes) ? $existing_classes . ' tablesaw tablesaw-stack' : 'tablesaw tablesaw-stack';
+            $mode = $this->settings['tablesaw_type'] ?? 'stack';
+            // Allow for class-based override of default.
+            foreach (array_keys(self::$modes) as $mode_option) {
+              if (strpos($existing_classes, "tablesaw-" . $mode_option) !== FALSE) {
+                $mode = $mode_option;
+                break;
+              }
+            }
+            $new_classes = !empty($existing_classes) ? $existing_classes . ' tablesaw tablesaw-' . $mode : 'tablesaw tablesaw-' . $mode;
             $table->setAttribute('class', $new_classes);
-
-            // Force data-tablesaw-mode attribute to be "stack".
-            $table->setAttribute('data-tablesaw-mode', 'stack');
+            // Set data-tablesaw-mode & minimap.
+            $table->setAttribute('data-tablesaw-mode', $mode);
+            $table->setAttribute('data-tablesaw-minimap', NULL);
+            $persist = $this->settings['tablesaw_persist'] ?? TRUE;
+            $ths = $table->getElementsByTagName('th');
+            $inc = 1;
+            foreach ($ths as $delta => $th) {
+              // Add required columntoggle- & swipe- specific attributes.
+              if (in_array($mode, ['columntoggle', 'swipe'])) {
+                $th->setAttribute('data-tablesaw-sortable-col', '');
+                if (!$th->getAttribute('data-tablesaw-priority')) {
+                  $th->setAttribute('data-tablesaw-priority', $inc);
+                  $inc++;
+                }
+              }
+              // Add persistent first column if no priority has been specified.
+              if ($persist && $delta === 0 && !$th->getAttribute('data-tablesaw-priority')) {
+                $th->setAttribute('data-tablesaw-priority', 'persist');
+              }
+            }
           }
         }
         // Get innerHTML of root node.

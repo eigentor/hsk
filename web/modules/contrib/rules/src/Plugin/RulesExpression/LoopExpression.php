@@ -3,9 +3,9 @@
 namespace Drupal\rules\Plugin\RulesExpression;
 
 use Drupal\Core\TypedData\ListDataDefinitionInterface;
+use Drupal\rules\Context\ExecutionMetadataStateInterface;
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Engine\ActionExpressionContainer;
-use Drupal\rules\Engine\ExecutionMetadataStateInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 use Drupal\rules\Engine\IntegrityViolationList;
 use Drupal\rules\Exception\IntegrityException;
 
@@ -36,9 +36,15 @@ class LoopExpression extends ActionExpressionContainer {
     $list_data = $state->fetchDataByPropertyPath($this->configuration['list']);
     $list_item_name = $this->configuration['list_item'];
 
+    $this->rulesDebugLogger->info('Looping over the list items of %selector.', [
+      '%selector' => $this->configuration['list_item'],
+      'element' => $this,
+    ]);
     foreach ($list_data as $item) {
       $state->setVariableData($list_item_name, $item);
-      foreach ($this->actions as $action) {
+      // Use the iterator to ensure the conditions are sorted.
+      foreach ($this as $action) {
+        /** @var \Drupal\rules\Engine\ExpressionInterface $action */
         $action->executeWithState($state);
       }
     }

@@ -23,7 +23,7 @@ class ConfigEntityTest extends RulesKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->storage = $this->container->get('entity_type.manager')->getStorage('rules_component');
@@ -31,10 +31,13 @@ class ConfigEntityTest extends RulesKernelTestBase {
 
   /**
    * Tests that an empty rule configuration can be saved.
-   *
-   * @doesNotPerformAssertions
    */
   public function testSavingEmptyRule() {
+    // This test does not perform assertions, and the @doesNotPerformAssertions
+    // annotation does not work properly in DrupalCI for PHP 7.4.
+    // @see https://www.drupal.org/project/rules/issues/3179763
+    $this->addToAssertionCount(1);
+
     $rule = $this->expressionManager->createRule();
     $config_entity = $this->storage->create([
       'id' => 'test_rule',
@@ -46,11 +49,15 @@ class ConfigEntityTest extends RulesKernelTestBase {
    * Tests saving the configuration of an action and then loading it again.
    */
   public function testConfigAction() {
-    $action = $this->expressionManager->createAction('rules_test_log');
+    $action = $this->expressionManager->createAction('rules_test_debug_log');
     $config_entity = $this->storage->create([
       'id' => 'test_rule',
     ])->setExpression($action);
     $config_entity->save();
+
+    // The logger instance has changed, refresh it.
+    $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
 
     $loaded_entity = $this->storage->load('test_rule');
     $this->assertEquals($action->getConfiguration(), $loaded_entity->get('component')['expression'], 'Action configuration is the same after loading the config.');
@@ -60,7 +67,7 @@ class ConfigEntityTest extends RulesKernelTestBase {
     $expression->execute();
 
     // Test that the action logged something.
-    $this->assertRulesLogEntryExists('action called');
+    $this->assertRulesDebugLogEntryExists('action called');
   }
 
   /**
@@ -68,10 +75,9 @@ class ConfigEntityTest extends RulesKernelTestBase {
    */
   public function testConfigRule() {
     // Create a simple rule with one action and one condition.
-    $rule = $this->expressionManager
-      ->createRule();
+    $rule = $this->expressionManager->createRule();
     $rule->addCondition('rules_test_true');
-    $rule->addAction('rules_test_log');
+    $rule->addAction('rules_test_debug_log');
 
     $config_entity = $this->storage->create([
       'id' => 'test_rule',
@@ -84,7 +90,7 @@ class ConfigEntityTest extends RulesKernelTestBase {
     $expression->execute();
 
     // Test that the action logged something.
-    $this->assertRulesLogEntryExists('action called');
+    $this->assertRulesDebugLogEntryExists('action called');
   }
 
   /**
@@ -112,10 +118,13 @@ class ConfigEntityTest extends RulesKernelTestBase {
 
   /**
    * Tests that a reaction rule config entity can be saved.
-   *
-   * @doesNotPerformAssertions
    */
   public function testReactionRuleSaving() {
+    // This test does not perform assertions, and the @doesNotPerformAssertions
+    // annotation does not work properly in DrupalCI for PHP 7.4.
+    // @see https://www.drupal.org/project/rules/issues/3179763
+    $this->addToAssertionCount(1);
+
     $rule = $this->expressionManager->createRule();
     $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
     $config_entity = $storage->create([

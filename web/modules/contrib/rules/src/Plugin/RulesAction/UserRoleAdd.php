@@ -13,12 +13,14 @@ use Drupal\user\UserInterface;
  *   id = "rules_user_role_add",
  *   label = @Translation("Add user role"),
  *   category = @Translation("User"),
- *   context = {
+ *   context_definitions = {
  *     "user" = @ContextDefinition("entity:user",
- *       label = @Translation("User")
+ *       label = @Translation("User"),
+ *       description = @Translation("The user whose roles should be changed.")
  *     ),
  *     "roles" = @ContextDefinition("entity:user_role",
  *       label = @Translation("Roles"),
+ *       description = @Translation("One or more role ids to add."),
  *       multiple = TRUE
  *     ),
  *   }
@@ -39,22 +41,22 @@ class UserRoleAdd extends RulesActionBase {
   /**
    * Assign role to a user.
    *
-   * @param \Drupal\user\UserInterface $account
+   * @param \Drupal\user\UserInterface $user
    *   User object.
    * @param \Drupal\user\RoleInterface[] $roles
    *   Array of UserRoles to assign.
    *
    * @throws \Drupal\rules\Exception\InvalidArgumentException
    */
-  protected function doExecute(UserInterface $account, array $roles) {
+  protected function doExecute(UserInterface $user, array $roles) {
     foreach ($roles as $role) {
       // Skip adding the role to the user if they already have it.
-      if (!$account->hasRole($role->id())) {
+      if (!$user->hasRole($role->id())) {
         // If you try to add anonymous or authenticated role to user, Drupal
         // will throw an \InvalidArgumentException. Anonymous or authenticated
         // role ID must not be assigned manually.
         try {
-          $account->addRole($role->id());
+          $user->addRole($role->id());
         }
         catch (\InvalidArgumentException $e) {
           throw new InvalidArgumentException($e->getMessage());

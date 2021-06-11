@@ -3,6 +3,7 @@
 namespace Drupal\rules\Core;
 
 use Drupal\Component\Plugin\CategorizingPluginManagerInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\CategorizingPluginManagerTrait;
 use Drupal\Core\Plugin\DefaultPluginManager;
@@ -19,7 +20,6 @@ use Drupal\rules\Context\ContextDefinition;
  * @see \Drupal\rules\Core\RulesEventInterface
  */
 class RulesEventManager extends DefaultPluginManager implements CategorizingPluginManagerInterface {
-
   use CategorizingPluginManagerTrait;
 
   /**
@@ -32,13 +32,26 @@ class RulesEventManager extends DefaultPluginManager implements CategorizingPlug
   ];
 
   /**
-   * {@inheritdoc}
+   * The entity type bundle information manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
    */
-  public function __construct(ModuleHandlerInterface $module_handler) {
+  protected $entityBundleInfo;
+
+  /**
+   * Constructor.
+   *
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_bundle_info
+   *   The entity type bundle information manager.
+   */
+  public function __construct(ModuleHandlerInterface $module_handler, EntityTypeBundleInfoInterface $entity_bundle_info) {
     $this->alterInfo('rules_event');
     $this->discovery = new ContainerDerivativeDiscoveryDecorator(new YamlDiscovery('rules.events', $module_handler->getModuleDirectories()));
     $this->factory = new ContainerFactory($this, RulesEventHandlerInterface::class);
     $this->moduleHandler = $module_handler;
+    $this->entityBundleInfo = $entity_bundle_info;
   }
 
   /**
@@ -57,8 +70,18 @@ class RulesEventManager extends DefaultPluginManager implements CategorizingPlug
   public function getDefinition($plugin_id, $exception_on_invalid = TRUE) {
     // If a fully qualified event name is passed, be sure to get the base name
     // first.
-    $plugin_id = $this->getEventBaseName($plugin_id);
-    return parent::getDefinition($plugin_id, $exception_on_invalid);
+    $base_plugin_id = $this->getEventBaseName($plugin_id);
+    $definition = parent::getDefinition($base_plugin_id, $exception_on_invalid);
+    if ($base_plugin_id != $plugin_id) {
+      $parts = explode('--', $plugin_id, 2);
+      $entity_type_id = explode(':', $parts[0], 2);
+      $bundles = $this->entityBundleInfo->getBundleInfo($entity_type_id[1]);
+      // Replace the event label with the fully-qualified label.
+      // @todo This is a pretty terrible way of deriving the qualified label
+      // for a context definition. And it breaks translation.
+      $definition['label'] = $definition['label'] . " of type " . $bundles[$parts[1]]['label'];
+    }
+    return $definition;
   }
 
   /**
@@ -66,12 +89,12 @@ class RulesEventManager extends DefaultPluginManager implements CategorizingPlug
    */
   public function processDefinition(&$definition, $plugin_id) {
     parent::processDefinition($definition, $plugin_id);
-    if (!isset($definition['context'])) {
-      $definition['context'] = [];
+    if (!isset($definition['context_definitions'])) {
+      $definition['context_definitions'] = [];
     }
-    // Convert the flat context arrays into ContextDefinition objects.
-    foreach ($definition['context'] as $context_name => $values) {
-      $definition['context'][$context_name] = ContextDefinition::createFromArray($values);
+    // Convert the flat context_definitions arrays to ContextDefinition objects.
+    foreach ($definition['context_definitions'] as $context_name => $values) {
+      $definition['context_definitions'][$context_name] = ContextDefinition::createFromArray($values);
     }
   }
 

@@ -54,7 +54,11 @@ class EntityCreateDeriver extends DeriverBase implements ContainerDeriverInterfa
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, $base_plugin_id) {
-    return new static($container->get('entity_type.manager'), $container->get('entity_field.manager'), $container->get('string_translation'));
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('entity_field.manager'),
+      $container->get('string_translation')
+    );
   }
 
   /**
@@ -71,10 +75,10 @@ class EntityCreateDeriver extends DeriverBase implements ContainerDeriverInterfa
         'label' => $this->t('Create a new @entity_type', ['@entity_type' => $entity_type->getSingularLabel()]),
         'category' => $entity_type->getLabel(),
         'entity_type_id' => $entity_type_id,
-        'context' => [],
+        'context_defintions' => [],
         'provides' => [
-          'entity' => ContextDefinition::create("entity:$entity_type_id")
-            ->setLabel($entity_type->getLabel())
+          $entity_type->id() . '_created' => ContextDefinition::create("entity:$entity_type_id")
+            ->setLabel($this->t('Created @entity_type', ['@entity_type' => $entity_type->getSingularLabel()]))
             ->setRequired(TRUE),
         ],
       ] + $base_plugin_definition;
@@ -128,7 +132,7 @@ class EntityCreateDeriver extends DeriverBase implements ContainerDeriverInterfa
           $context_definition->setAssignmentRestriction(ContextDefinition::ASSIGNMENT_RESTRICTION_INPUT);
         }
 
-        $this->derivatives[$entity_type_id]['context'][$field_name] = $context_definition;
+        $this->derivatives[$entity_type_id]['context_definitions'][$field_name] = $context_definition;
       }
     }
 

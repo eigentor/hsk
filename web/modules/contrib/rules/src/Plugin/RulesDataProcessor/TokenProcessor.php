@@ -5,7 +5,7 @@ namespace Drupal\rules\Plugin\RulesDataProcessor;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\rules\Context\DataProcessorInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\typed_data\PlaceholderResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -64,7 +64,9 @@ class TokenProcessor extends PluginBase implements DataProcessorInterface, Conta
     foreach ($placeholders_by_data as $variable_name => $placeholders) {
       // Note that accessing an unavailable variable will throw an evaluation
       // exception. That's exactly what needs to happen. Invalid tokens must
-      // be checked when checking integrity.
+      // be detected when checking integrity. The Rule must not be executed
+      // if the integrity check fails. Runtime is too late to handle
+      // invalid tokens gracefully.
       $data[$variable_name] = $rules_state->getVariable($variable_name);
     }
     return $this->placeholderResolver->replacePlaceHolders($value, $data);

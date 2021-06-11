@@ -13,17 +13,20 @@ use Drupal\user\UserInterface;
  *   id = "rules_user_has_role",
  *   label = @Translation("User has role(s)"),
  *   category = @Translation("User"),
- *   context = {
+ *   context_definitions = {
  *     "user" = @ContextDefinition("entity:user",
- *       label = @Translation("User")
+ *       label = @Translation("User"),
+ *       description = @Translation("Specifies the user account to check."),
  *     ),
  *     "roles" = @ContextDefinition("entity:user_role",
  *       label = @Translation("Roles"),
+ *       description = @Translation("Specifies the roles to check for."),
  *       multiple = TRUE
  *     ),
  *     "operation" = @ContextDefinition("string",
  *       label = @Translation("Match roles"),
  *       description = @Translation("If matching against all selected roles, the user must have <em>all</em> the roles selected."),
+ *       assignment_restriction = "input",
  *       default_value = "AND",
  *       required = FALSE
  *     ),
@@ -37,7 +40,7 @@ class UserHasRole extends RulesConditionBase {
   /**
    * Evaluate if user has role(s).
    *
-   * @param \Drupal\user\UserInterface $account
+   * @param \Drupal\user\UserInterface $user
    *   The account to check.
    * @param \Drupal\user\RoleInterface[] $roles
    *   Array of user roles.
@@ -49,7 +52,7 @@ class UserHasRole extends RulesConditionBase {
    * @return bool
    *   TRUE if the user has the role(s).
    */
-  protected function doEvaluate(UserInterface $account, array $roles, $operation = 'AND') {
+  protected function doEvaluate(UserInterface $user, array $roles, $operation = 'AND') {
 
     $rids = array_map(function ($role) {
       return $role->id();
@@ -57,10 +60,10 @@ class UserHasRole extends RulesConditionBase {
 
     switch ($operation) {
       case 'OR':
-        return (bool) array_intersect($rids, $account->getRoles());
+        return (bool) array_intersect($rids, $user->getRoles());
 
       case 'AND':
-        return (bool) !array_diff($rids, $account->getRoles());
+        return (bool) !array_diff($rids, $user->getRoles());
 
       default:
         throw new InvalidArgumentException('Either use "AND" or "OR". Leave empty for default "AND" behavior.');

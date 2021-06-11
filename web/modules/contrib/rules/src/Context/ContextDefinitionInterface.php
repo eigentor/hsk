@@ -57,6 +57,8 @@ interface ContextDefinitionInterface extends ContextDefinitionInterfaceCore {
    *   be provided as input values, ASSIGNMENT_RESTRICTION_SELECTOR for contexts
    *   that must be provided as data selectors or NULL if there is no
    *   restriction for this context.
+   *
+   * @return $this
    */
   public function setAssignmentRestriction($restriction);
 

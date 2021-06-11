@@ -19,12 +19,12 @@ class AutocompleteTest extends RulesKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['field', 'rules', 'node', 'user'];
+  protected static $modules = ['field', 'rules', 'node', 'user'];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installEntitySchema('user');

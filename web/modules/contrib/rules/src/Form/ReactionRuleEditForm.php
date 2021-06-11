@@ -44,14 +44,17 @@ class ReactionRuleEditForm extends RulesComponentFormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('plugin.manager.rules_expression'), $container->get('plugin.manager.rules_event'));
+    return new static(
+      $container->get('plugin.manager.rules_expression'),
+      $container->get('plugin.manager.rules_event')
+    );
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, RulesUiConfigHandler $rules_ui_handler = NULL) {
-    // Overridden such we can receive further route parameters.
+    // Overridden so that we can receive further route parameters.
     $this->rulesUiHandler = $rules_ui_handler;
     return parent::buildForm($form, $form_state);
   }
@@ -70,17 +73,46 @@ class ReactionRuleEditForm extends RulesComponentFormBase {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
+    $form['events'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['edit-events']],
+    ];
+
+    $form['events']['table'] = [
+      '#theme' => 'table',
+      '#header' => [$this->t('Events'), $this->t('Operations')],
+      '#empty' => $this->t('None'),
+    ];
+
     foreach ($this->entity->getEventNames() as $key => $event_name) {
       $event_definition = $this->eventManager->getDefinition($event_name);
-      $form['event'][$key] = [
-        '#type' => 'item',
-        '#title' => $this->t('Events:'),
-        '#markup' => $this->t('@label (@name)', [
-          '@label' => $event_definition['label'],
-          '@name' => $event_name,
-        ]),
+      $form['events']['table']['#rows'][$key]['element'] = [
+        'data' => [
+          '#type' => 'item',
+          '#plain_text' => $event_definition['label'],
+          '#suffix' => '<div class="description">' . $this->t('Machine name: @name', ['@name' => $event_name]) . '</div>',
+        ],
       ];
+      $form['events']['table']['#rows'][$key]['element']['colspan'] = 2;
     }
+
+    // Put action buttons in the table footer.
+    $links['add-event'] = [];
+    $form['events']['table']['#footer'][] = [
+      [
+        'data' => [
+          '#prefix' => '<ul class="action-links">',
+          'local-action-links' => $links,
+          '#suffix' => '</ul>',
+        ],
+        'colspan' => 2,
+      ],
+    ];
+
+    // CSS to make form easier to use. Load this at end so we can override
+    // styles added by #theme table.
+    $form['#attached']['library'][] = 'rules/rules_ui.styles';
+
     $form = $this->rulesUiHandler->getForm()->buildForm($form, $form_state);
     return parent::form($form, $form_state);
   }
@@ -113,11 +145,13 @@ class ReactionRuleEditForm extends RulesComponentFormBase {
    */
   public function save(array $form, FormStateInterface $form_state) {
     $this->rulesUiHandler->getForm()->submitForm($form, $form_state);
+    $component = $this->rulesUiHandler->getComponent();
+    $this->entity->updateFromComponent($component);
 
     // Persist changes by saving the entity.
     parent::save($form, $form_state);
 
-    // Also remove the temporarily stored component, it has been persisted now.
+    // Remove the temporarily stored component; it has been persisted now.
     $this->rulesUiHandler->clearTemporaryStorage();
 
     $this->messenger()->addMessage($this->t('Reaction rule %label has been updated.', ['%label' => $this->entity->label()]));

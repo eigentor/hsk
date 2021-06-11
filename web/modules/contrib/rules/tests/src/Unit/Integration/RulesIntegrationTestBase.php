@@ -8,12 +8,11 @@ use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\Discovery\RecursiveExtensionFilterIterator;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Path\AliasManagerInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\Context\LazyContextRepository;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\rules\Core\ConditionManager;
@@ -38,11 +37,6 @@ use Prophecy\Argument;
 abstract class RulesIntegrationTestBase extends UnitTestCase {
 
   /**
-   * @var \Drupal\Core\Entity\EntityManagerInterface|\Prophecy\Prophecy\ProphecyInterface
-   */
-  protected $entityManager;
-
-  /**
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface|\Prophecy\Prophecy\ProphecyInterface
    */
   protected $entityTypeManager;
@@ -55,7 +49,7 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
   /**
    * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface|\Prophecy\Prophecy\ProphecyInterface
    */
-  protected $entityTypeBundledInfo;
+  protected $entityTypeBundleInfo;
 
   /**
    * @var \Drupal\Core\TypedData\TypedDataManagerInterface
@@ -66,11 +60,6 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
    * @var \Drupal\rules\Core\RulesActionManagerInterface
    */
   protected $actionManager;
-
-  /**
-   * @var \Drupal\Core\Path\AliasManager|\Prophecy\Prophecy\ProphecyInterface
-   */
-  protected $aliasManager;
 
   /**
    * @var \Drupal\rules\Core\ConditionManager
@@ -86,6 +75,13 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
    * @var \Drupal\rules\Context\DataProcessorManager
    */
   protected $rulesDataProcessorManager;
+
+  /**
+   * A mocked Rules logger.channel.rules_debug service.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface|\Prophecy\Prophecy\ProphecyInterface
+   */
+  protected $logger;
 
   /**
    * All setup'ed namespaces.
@@ -156,7 +152,7 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $container = new ContainerBuilder();
     // Register plugin managers used by Rules, but mock some unwanted
@@ -170,7 +166,11 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
     $enabled_modules = $this->enabledModules;
     $this->moduleHandler->moduleExists(Argument::type('string'))
       ->will(function ($arguments) use ($enabled_modules) {
-        return [$arguments[0], $enabled_modules[$arguments[0]]];
+        if (isset($enabled_modules[$arguments[0]])) {
+          return [$arguments[0], $enabled_modules[$arguments[0]]];
+        }
+        // Handle case where a plugin provider module is not enabled.
+        return [$arguments[0], FALSE];
       });
 
     // We don't care about alter() calls on the module handler.
@@ -202,12 +202,6 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
     );
     $this->rulesDataProcessorManager = new DataProcessorManager($this->namespaces, $this->moduleHandler->reveal());
 
-    $this->aliasManager = $this->prophesize(AliasManagerInterface::class);
-
-    // Keep the deprecated entity manager around because it is still used in a
-    // few places.
-    $this->entityManager = $this->prophesize(EntityManagerInterface::class);
-
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $this->entityTypeManager->getDefinitions()->willReturn([]);
 
@@ -228,12 +222,14 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
     $this->dataFilterManager = new DataFilterManager($this->namespaces, $this->cacheBackend, $this->moduleHandler->reveal());
     $this->placeholderResolver = new PlaceholderResolver($this->dataFetcher, $this->dataFilterManager);
 
-    $container->set('entity.manager', $this->entityManager->reveal());
+    // Mock the Rules debug logger service and make it return our mocked logger.
+    $this->logger = $this->prophesize(LoggerChannelInterface::class);
+
     $container->set('entity_type.manager', $this->entityTypeManager->reveal());
     $container->set('entity_field.manager', $this->entityFieldManager->reveal());
     $container->set('entity_type.bundle.info', $this->entityTypeBundleInfo->reveal());
     $container->set('context.repository', new LazyContextRepository($container, []));
-    $container->set('path.alias_manager', $this->aliasManager->reveal());
+    $container->set('logger.channel.rules_debug', $this->logger->reveal());
     $container->set('plugin.manager.rules_action', $this->actionManager);
     $container->set('plugin.manager.condition', $this->conditionManager);
     $container->set('plugin.manager.rules_expression', $this->rulesExpressionManager);

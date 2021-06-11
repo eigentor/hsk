@@ -19,7 +19,7 @@ class MetadataAssertionTest extends RulesKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'rules',
     'typed_data',
     'system',
@@ -31,7 +31,7 @@ class MetadataAssertionTest extends RulesKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installSchema('system', ['sequences']);
