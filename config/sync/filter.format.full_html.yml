@@ -53,7 +53,7 @@ filters:
     status: true
     weight: -15
     settings:
-      title: true
+      title: '1'
   filter_spamspan:
     id: filter_spamspan
     provider: spamspan

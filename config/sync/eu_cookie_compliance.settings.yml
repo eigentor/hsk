@@ -16,8 +16,6 @@ popup_bg_hex: 0779bf
 popup_clicking_confirmation: false
 popup_scrolling_confirmation: false
 popup_delay: 1000
-show_disagree_button: true
-popup_disagree_button_message: 'Weitere Informationen'
 popup_enabled: true
 popup_find_more_button_message: 'Weitere Informationen'
 popup_height: null
@@ -49,7 +47,6 @@ _core:
 method: opt_in
 disagree_button_label: 'Nein, danke'
 disabled_javascripts: ''
-whitelisted_cookies: ''
 consent_storage_method: do_not_store
 withdraw_message:
   value: "<h2>We use cookies on this site to enhance your user experience</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
@@ -58,3 +55,19 @@ withdraw_action_button_label: 'Zustimmung zurückziehen'
 withdraw_tab_button_label: Datenschutzeinstellungen
 withdraw_enabled: false
 cookie_session: 0
+enable_save_preferences_button: true
+save_preferences_button_label: 'Save preferences'
+accept_all_categories_button_label: 'Accept all cookies'
+withdraw_button_on_info_popup: false
+domain_all_sites: false
+uuid: 63f58f81-2632-4e5d-8f5f-2da2dbc0901d
+show_more_info: true
+popup_more_info_button_message: 'Weitere Informationen'
+reload_options: 0
+reload_routes_list: ''
+containing_element: body
+settings_tab_enabled: false
+automatic_cookies_removal: true
+set_cookie_session_zero_on_disagree: 0
+cookie_policy_version: 1.0.0
+allowed_cookies: ''
