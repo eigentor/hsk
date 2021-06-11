@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\linkit\Form\Profile\AddForm.
+ */
+
 namespace Drupal\linkit\Form\Profile;
 
 use Drupal\Core\Form\FormStateInterface;

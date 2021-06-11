@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\linkit\Form\Matcher\DeleteForm.
+ */
+
 namespace Drupal\linkit\Form\Matcher;
 
 use Drupal\Core\Form\ConfirmFormBase;

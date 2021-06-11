@@ -1,16 +1,19 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\linkit\Plugin\Linkit\Matcher\NodeMatcher.
+ */
+
 namespace Drupal\linkit\Plugin\Linkit\Matcher;
 
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Provides specific linkit matchers for the node entity type.
- *
  * @Matcher(
  *   id = "entity:node",
- *   label = @Translation("Content"),
  *   target_entity = "node",
+ *   label = @Translation("Content"),
  *   provider = "node"
  * )
  */
@@ -33,9 +36,9 @@ class NodeMatcher extends EntityMatcher {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return [
+    return parent::defaultConfiguration() + [
       'include_unpublished' => FALSE,
-    ] + parent::defaultConfiguration();
+    ];
   }
 
   /**
@@ -53,17 +56,11 @@ class NodeMatcher extends EntityMatcher {
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
 
-    $form['unpublished_nodes'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Unpublished nodes'),
-      '#open' => TRUE,
-    ];
-
-    $form['unpublished_nodes']['include_unpublished'] = [
-      '#title' => $this->t('Include unpublished nodes'),
+    $form['include_unpublished'] = [
+      '#title' => t('Include unpublished nodes'),
       '#type' => 'checkbox',
       '#default_value' => $this->configuration['include_unpublished'],
-      '#description' => $this->t('In order to see unpublished nodes, users must also have permissions to do so.'),
+      '#description' => t('In order to see unpublished nodes, the requesting user must also have permissions to do so.'),
     ];
 
     return $form;
@@ -81,8 +78,8 @@ class NodeMatcher extends EntityMatcher {
   /**
    * {@inheritdoc}
    */
-  protected function buildEntityQuery($search_string) {
-    $query = parent::buildEntityQuery($search_string);
+  protected function buildEntityQuery($match) {
+    $query = parent::buildEntityQuery($match);
 
     $no_access = !$this->currentUser->hasPermission('bypass node access') && !count($this->moduleHandler->getImplementations('node_grants'));
     if ($this->configuration['include_unpublished'] !== TRUE || $no_access) {

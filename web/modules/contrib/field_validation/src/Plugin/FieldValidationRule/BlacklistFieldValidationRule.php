@@ -30,11 +30,7 @@ class BlacklistFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function getSummary() {
-    $summary = array(
-      '#theme' => 'field_validation_rule_summary',
-      '#data' => $this->configuration,
-    );
-    $summary += parent::getSummary();
+    $summary = parent::getSummary();
 
     return $summary;
   }
@@ -43,22 +39,22 @@ class BlacklistFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array(
+    return [
       'setting' => NULL,
-    );
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['setting'] = array(
+    $form['setting'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Blacklisted words'),
       '#description' => $this->t('Specify illegal words, seperated by commas. Make sure to escape reserved regex characters with an escape (\) character.'),
       '#default_value' => $this->configuration['setting'],
       '#required' => TRUE,
-    );
+    ];
 
     return $form;
   }

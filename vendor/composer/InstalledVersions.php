@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'b6c2b10facada3f4484a87fa741c96b971f1e7ad',
+    'reference' => 'cc60e5d56a11056ce6bf8b0b207c206aa40203d3',
     'dev-requirement' => true,
     'name' => 'drupal/recommended-project',
   ),
@@ -1035,6 +1035,16 @@ private static $installed = array (
         0 => '8.9.16',
       ),
     ),
+    'drupal/field_group' => 
+    array (
+      'pretty_version' => '3.1.0',
+      'version' => '3.1.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-3.1',
+      'dev-requirement' => false,
+    ),
     'drupal/field_layout' => 
     array (
       'dev-requirement' => false,
@@ -1050,6 +1060,16 @@ private static $installed = array (
       array (
         0 => '8.9.16',
       ),
+    ),
+    'drupal/field_validation' => 
+    array (
+      'pretty_version' => '1.0.0-beta3',
+      'version' => '1.0.0.0-beta3',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-1.0-beta3',
+      'dev-requirement' => false,
     ),
     'drupal/file' => 
     array (
@@ -1117,6 +1137,16 @@ private static $installed = array (
         0 => '8.9.16',
       ),
     ),
+    'drupal/hms_field' => 
+    array (
+      'pretty_version' => '1.0.0-beta1',
+      'version' => '1.0.0.0-beta1',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-1.0-beta1',
+      'dev-requirement' => false,
+    ),
     'drupal/image' => 
     array (
       'dev-requirement' => false,
@@ -1125,6 +1155,16 @@ private static $installed = array (
         0 => '8.9.16',
       ),
     ),
+    'drupal/inline_entity_form' => 
+    array (
+      'pretty_version' => '1.0.0-rc9',
+      'version' => '1.0.0.0-RC9',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-1.0-rc9',
+      'dev-requirement' => false,
+    ),
     'drupal/inline_form_errors' => 
     array (
       'dev-requirement' => false,
@@ -1132,6 +1172,16 @@ private static $installed = array (
       array (
         0 => '8.9.16',
       ),
+    ),
+    'drupal/inline_responsive_images' => 
+    array (
+      'pretty_version' => '2.2.0',
+      'version' => '2.2.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-2.2',
+      'dev-requirement' => false,
     ),
     'drupal/jquery_ui' => 
     array (
@@ -1222,6 +1272,16 @@ private static $installed = array (
       array (
         0 => '8.9.16',
       ),
+    ),
+    'drupal/linkit' => 
+    array (
+      'pretty_version' => '4.3.0',
+      'version' => '4.3.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-4.3',
+      'dev-requirement' => false,
     ),
     'drupal/locale' => 
     array (
@@ -1376,7 +1436,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'b6c2b10facada3f4484a87fa741c96b971f1e7ad',
+      'reference' => 'cc60e5d56a11056ce6bf8b0b207c206aa40203d3',
       'dev-requirement' => false,
     ),
     'drupal/responsive_image' => 

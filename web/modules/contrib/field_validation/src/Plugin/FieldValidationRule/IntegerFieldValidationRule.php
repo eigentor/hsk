@@ -30,11 +30,7 @@ class IntegerFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function getSummary() {
-    $summary = array(
-      '#theme' => 'field_validation_rule_summary',
-      '#data' => $this->configuration,
-    );
-    $summary += parent::getSummary();
+    $summary = parent::getSummary();
 
     return $summary;
   }
@@ -43,28 +39,28 @@ class IntegerFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array(
+    return [
       'min' => NULL,
 	  'max' => NULL,
-    );
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['min'] = array(
+    $form['min'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Minimum value'),
       '#default_value' => $this->configuration['min'],
       '#required' => TRUE,
-    );
-    $form['max'] = array(
+    ];
+    $form['max'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Maximum value'),
       '#default_value' => $this->configuration['max'],
       '#required' => TRUE,
-    );	
+    ];	
     return $form;
   }
 
@@ -86,7 +82,6 @@ class IntegerFieldValidationRule extends ConfigurableFieldValidationRuleBase {
 	if(!empty($rule) && !empty($rule->configuration)){
 	  $settings = $rule->configuration;
 	}
-	//drupal_set_message('134:' . $value);
 	//$settings = $this->rule->settings;
     if ($value !== '' && !is_null($value)) {
       $options = array();
@@ -98,7 +93,7 @@ class IntegerFieldValidationRule extends ConfigurableFieldValidationRuleBase {
 	    $max = $settings['max'];
         $options['options']['max_range'] = $max;
       }  
-      //drupal_set_message('134:' . var_export($options, true));	  
+  
       if (FALSE === filter_var($value, FILTER_VALIDATE_INT, $options)) {
         $context->addViolation($rule->getErrorMessage());
       }      

@@ -104,14 +104,14 @@ abstract class FieldValidationRuleBase extends PluginBase implements FieldValida
    * {@inheritdoc}
    */
   public function getSummary() {
-    return array(
+    return [
       '#markup' => '',
-      '#tab' => array(
+      '#tab' => [
         'id' => $this->pluginDefinition['id'],
         'label' => $this->label(),
         'description' => $this->pluginDefinition['description'],
-      ),
-    );
+      ],
+    ];
   }
 
   /**
@@ -162,7 +162,7 @@ abstract class FieldValidationRuleBase extends PluginBase implements FieldValida
    * {@inheritdoc}
    */
   public function getConfiguration() {
-    return array(
+    return [
       'uuid' => $this->getUuid(),
       'id' => $this->getPluginId(),
       'title' => $this->getTitle(),
@@ -171,22 +171,22 @@ abstract class FieldValidationRuleBase extends PluginBase implements FieldValida
       'column' => $this->getColumn(),
       'error_message' => $this->getErrorMessage(),
       'data' => $this->configuration,
-    );
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function setConfiguration(array $configuration) {
-    $configuration += array(
-      'data' => array(),
+    $configuration += [
+      'data' => [],
       'uuid' => '',
       'title' => '',
       'weight' => '',
       'field_name' => '',
       'column' => '',
       'error_message' => '',
-    );
+    ];
     $this->configuration = $configuration['data'] + $this->defaultConfiguration();
     $this->uuid = $configuration['uuid'];
     $this->title = $configuration['title'];
@@ -201,14 +201,14 @@ abstract class FieldValidationRuleBase extends PluginBase implements FieldValida
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array();
+    return [];
   }
 
   /**
    * {@inheritdoc}
    */
   public function calculateDependencies() {
-    return array();
+    return [];
   }
   /**
    * Returns the field name of the field_validation_rule.

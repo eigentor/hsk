@@ -14,7 +14,7 @@ class FieldValidationRuleSetDeleteForm extends EntityDeleteForm {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Optionally select a field validation rule set before deleting %ruleset', array('%ruleset' => $this->entity->label()));
+    return $this->t('Optionally select a field validation rule set before deleting %ruleset', ['%ruleset' => $this->entity->label()]);
   }
   /**
    * {@inheritdoc}

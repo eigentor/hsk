@@ -30,11 +30,7 @@ class LengthFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function getSummary() {
-    $summary = array(
-      '#theme' => 'field_validation_rule_summary',
-      '#data' => $this->configuration,
-    );
-    $summary += parent::getSummary();
+    $summary = parent::getSummary();
 
     return $summary;
   }
@@ -43,28 +39,28 @@ class LengthFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array(
+    return [
       'min' => NULL,
 	  'max' => NULL,
-    );
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['min'] = array(
+    $form['min'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Min'),
       '#default_value' => $this->configuration['min'],
       '#required' => TRUE,
-    );
-    $form['max'] = array(
+    ];
+    $form['max'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Max'),
       '#default_value' => $this->configuration['max'],
       '#required' => TRUE,
-    );	
+    ];	
     return $form;
   }
 
@@ -89,7 +85,7 @@ class LengthFieldValidationRule extends ConfigurableFieldValidationRuleBase {
 	//$settings = $this->rule->settings;
     if ($value != '') {
       $flag = TRUE;
-      $length = strlen($value);
+      $length = mb_strlen($value, 'UTF-8');
       if (isset($settings['min']) && $settings['min'] != '') {
         //$min = token_replace($settings['min'], array($this->get_token_type() => $this->entity));
 		$min = $settings['min'];

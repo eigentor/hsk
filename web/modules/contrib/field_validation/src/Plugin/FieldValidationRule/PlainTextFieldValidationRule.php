@@ -30,11 +30,7 @@ class PlainTextFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function getSummary() {
-    $summary = array(
-      '#theme' => 'field_validation_rule_summary',
-      '#data' => $this->configuration,
-    );
-    $summary += parent::getSummary();
+    $summary = parent::getSummary();
 
     return $summary;
   }
@@ -43,8 +39,7 @@ class PlainTextFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array(
-    );
+    return [];
   }
 
   /**

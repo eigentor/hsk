@@ -2,7 +2,8 @@
 
 namespace Drupal\field_validation;
 
-use Drupal\Component\Plugin\ConfigurablePluginInterface;
+use Drupal\Component\Plugin\ConfigurableInterface;
+use Drupal\Component\Plugin\DependentPluginInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\field_validation\FieldValidationRuleSetInterface;
 
@@ -16,7 +17,7 @@ use Drupal\field_validation\FieldValidationRuleSetInterface;
  * @see \Drupal\field_validation\FieldValidationRuleManager
  * @see plugin_api
  */
-interface FieldValidationRuleInterface extends PluginInspectionInterface, ConfigurablePluginInterface {
+interface FieldValidationRuleInterface extends PluginInspectionInterface, ConfigurableInterface, DependentPluginInterface {
 
   /**
    * Applies a field_validation_rule to the field_validation_rule_set.
@@ -100,7 +101,7 @@ interface FieldValidationRuleInterface extends PluginInspectionInterface, Config
    *
    * @return $this
    */
-  public function setTitle($title);  
+  public function setTitle($title);
 
   /**
    * Returns the field name of the field_validation_rule.
@@ -118,8 +119,8 @@ interface FieldValidationRuleInterface extends PluginInspectionInterface, Config
    *
    * @return $this
    */
-  public function setFieldName($field_name);  
-  
+  public function setFieldName($field_name);
+
   /**
    * Returns the column of the field_validation_rule.
    *
@@ -136,7 +137,7 @@ interface FieldValidationRuleInterface extends PluginInspectionInterface, Config
    *
    * @return $this
    */
-  public function setColumn($column);  
+  public function setColumn($column);
 
   /**
    * Returns the error message of the field_validation_rule.
@@ -154,7 +155,7 @@ interface FieldValidationRuleInterface extends PluginInspectionInterface, Config
    *
    * @return $this
    */
-  public function setErrorMessage($error_message);  
-  
-  public function validate($params);  
+  public function setErrorMessage($error_message);
+
+  public function validate($params);
 }

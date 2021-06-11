@@ -18,7 +18,8 @@ use Drupal\inline_entity_form\TranslationHelper;
  *   id = "inline_entity_form_simple",
  *   label = @Translation("Inline entity form - Simple"),
  *   field_types = {
- *     "entity_reference"
+ *     "entity_reference",
+ *     "entity_reference_revisions",
  *   },
  *   multiple_values = false
  * )
@@ -32,16 +33,21 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
     // Trick inline_entity_form_form_alter() into attaching the handlers,
     // WidgetSubmit will be needed once extractFormValues fills the $form_state.
     $parents = array_merge($element['#field_parents'], [$items->getName()]);
-    $ief_id = sha1(implode('-', $parents));
+    $ief_id = $this->makeIefId($parents);
     $form_state->set(['inline_entity_form', $ief_id], []);
 
     $element = [
-      '#type' => 'fieldset',
+      '#type' => $this->getSetting('collapsible') ? 'details' : 'fieldset',
       '#field_title' => $this->fieldDefinition->getLabel(),
       '#after_build' => [
         [get_class($this), 'removeTranslatabilityClue'],
       ],
     ] + $element;
+    if ($element['#type'] == 'details') {
+      // If there's user input, keep the details open. Otherwise, use settings.
+      $element['#open'] = $form_state->getUserInput() ?: !$this->getSetting('collapsed');
+    }
+
     $item = $items->get($delta);
     if ($item->target_id && !$item->entity) {
       $element['warning']['#markup'] = $this->t('Unable to load the referenced entity.');
@@ -55,7 +61,7 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
       $delta,
       'inline_entity_form'
     ]);
-    $bundle = !empty($this->getFieldSetting('handler_settings')['target_bundles']) ? reset($this->getFieldSetting('handler_settings')['target_bundles']) : NULL;
+    $bundle = $this->getBundle();
     $element['inline_entity_form'] = $this->getInlineEntityForm($op, $bundle, $langcode, $delta, $parents, $entity);
 
     if ($op == 'edit') {
@@ -81,9 +87,9 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
   protected function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
     $element = parent::formMultipleElements($items, $form, $form_state);
 
-    // If we're using ulimited cardinality we don't display one empty item. Form
-    // validation will kick in if left empty which esentially means people won't
-    // be able to submit w/o creating another entity.
+    // If we're using unlimited cardinality we don't display one empty item.
+    // Form validation will kick in if left empty which essentially means
+    // people won't be able to submit without creating another entity.
     if (!$form_state->isSubmitted() && $element['#cardinality'] == FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED && $element['#max_delta'] > 0) {
       $max = $element['#max_delta'];
       unset($element[$max]);
@@ -148,7 +154,7 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
 
     // Populate the IEF form state with $items so that WidgetSubmit can
     // perform the necessary saves.
-    $ief_id = sha1(implode('-', $parents));
+    $ief_id = $this->makeIefId($parents);
     $widget_state = [
       'instance' => $this->fieldDefinition,
       'delete' => [],
@@ -194,6 +200,18 @@ class InlineEntityFormSimple extends InlineEntityFormBase {
     }
 
     return TRUE;
+  }
+
+  /**
+   * Gets the bundle for the inline entity.
+   *
+   * @return string|null
+   *   The bundle, or NULL if not known.
+   */
+  protected function getBundle() {
+    if (!empty($this->getFieldSetting('handler_settings')['target_bundles'])) {
+      return reset($this->getFieldSetting('handler_settings')['target_bundles']);
+    }
   }
 
 }

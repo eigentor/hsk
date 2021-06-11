@@ -9,8 +9,8 @@ dependencies:
   - field
   - text
 
-# Information added by Drupal.org packaging script on 2017-03-22
-version: '8.x-5.0-beta5'
+# Information added by Drupal.org packaging script on 2017-03-21
+version: '8.x-4.3'
 core: '8.x'
 project: 'linkit'
-datestamp: 1490224387
+datestamp: 1490127367

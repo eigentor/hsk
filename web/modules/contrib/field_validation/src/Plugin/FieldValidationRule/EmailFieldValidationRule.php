@@ -20,7 +20,7 @@ class EmailFieldValidationRule extends ConfigurableFieldValidationRuleBase {
   /**
    * {@inheritdoc}
    */
-   
+
   public function addFieldValidationRule(FieldValidationRuleSetInterface $field_validation_rule_set) {
 
     return TRUE;
@@ -30,11 +30,7 @@ class EmailFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function getSummary() {
-    $summary = array(
-      '#theme' => 'field_validation_rule_summary',
-      '#data' => $this->configuration,
-    );
-    $summary += parent::getSummary();
+    $summary = parent::getSummary();
 
     return $summary;
   }
@@ -43,8 +39,7 @@ class EmailFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array(
-    );
+    return [];
   }
 
   /**
@@ -62,7 +57,7 @@ class EmailFieldValidationRule extends ConfigurableFieldValidationRuleBase {
     parent::submitConfigurationForm($form, $form_state);
 
   }
-  
+
   public function validate($params) {
     $value = isset($params['value']) ? $params['value'] : '';
 	$rule = isset($params['rule']) ? $params['rule'] : null;
@@ -73,9 +68,9 @@ class EmailFieldValidationRule extends ConfigurableFieldValidationRuleBase {
 	}
     $pattern = isset($settings['setting']) ? $settings['setting'] : '';
 	//$settings = $this->rule->settings;
-    if ($value != '' && (!valid_email_address($value))) {
+    if ($value != '' && (!\Drupal::service('email.validator')->isValid($value))) {
 		$context->addViolation($rule->getErrorMessage());
-    }	
+    }
 
   }
 }

@@ -41,7 +41,7 @@ abstract class FieldValidationRuleSetFormBase extends EntityForm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.manager')->getStorage('field_validation_rule_set')
+      $container->get('entity_type.manager')->getStorage('field_validation_rule_set')
     );
   }
 
@@ -49,35 +49,7 @@ abstract class FieldValidationRuleSetFormBase extends EntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    /*
-    $form['label'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Field validation rule set name'),
-      '#default_value' => $this->entity->label(),
-      '#required' => TRUE,
-    );
-    $form['name'] = array(
-      '#type' => 'machine_name',
-      '#machine_name' => array(
-        'exists' => array($this->entityStorage, 'load'),
-      ),
-      '#default_value' => $this->entity->id(),
-      '#required' => TRUE,
-    );
-    $form['entity_type'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Entity Type'),
-      '#default_value' => $this->entity->getAttachedEntityType(),
-      '#required' => TRUE,
-    );
-	
-    $form['bundle'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Bundle'),
-      '#default_value' => $this->entity->getAttachedBundle(),
-      '#required' => TRUE,
-    );
-	*/
+
     return parent::form($form, $form_state);
   }
 
@@ -86,7 +58,7 @@ abstract class FieldValidationRuleSetFormBase extends EntityForm {
    */
   public function save(array $form, FormStateInterface $form_state) {
     parent::save($form, $form_state);
-    $form_state->setRedirectUrl($this->entity->urlInfo('edit-form'));
+    $form_state->setRedirectUrl($this->entity->toUrl('edit-form'));
   }
 
 }

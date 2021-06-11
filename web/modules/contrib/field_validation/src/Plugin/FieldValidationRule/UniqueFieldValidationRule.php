@@ -30,11 +30,7 @@ class UniqueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function getSummary() {
-    $summary = array(
-      '#theme' => 'field_validation_rule_summary',
-      '#data' => $this->configuration,
-    );
-    $summary += parent::getSummary();
+    $summary = parent::getSummary();
 
     return $summary;
   }
@@ -43,25 +39,32 @@ class UniqueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array(
+    return [
       'scope' => NULL,
-    );
+      'per_user' => FALSE,
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['scope'] = array(
+    $form['scope'] = [
       '#title' => $this->t('Scope of unique'),
       '#description' => $this->t('Specify the scope of unique values, support: entity, bundle.'),
       '#type' => 'select',
-      '#options' => array(
+      '#options' => [
         'entity' => $this->t('Entity'),
         'bundle' => $this->t('Bundle'),
-      ),
+      ],
       '#default_value' => $this->configuration['scope'],
-    );
+    ];
+
+    $form['per_user'] = [
+      '#title' => $this->t('Per user'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->configuration['per_user'] ?: FALSE,
+    ];
 
     return $form;
   }
@@ -73,6 +76,7 @@ class UniqueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
     parent::submitConfigurationForm($form, $form_state);
 
     $this->configuration['scope'] = $form_state->getValue('scope');
+    $this->configuration['per_user'] = $form_state->getValue('per_user');
   }
   
   public function validate($params) {
@@ -90,6 +94,7 @@ class UniqueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
 	}
     $flag = TRUE;
     $scope = isset($settings['scope']) ? $settings['scope'] : '';
+    $per_user = $settings['per_user'] ?? FALSE;
     $count = 0;
     foreach ($items as $delta1 => $item1) {
       if ($delta != $delta1) {
@@ -104,25 +109,31 @@ class UniqueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
       $entity_type_id = $entity->getEntityTypeId();	
 	  
 	  $query = \Drupal::entityQuery($entity_type_id);
+	  $query->addTag('field_validation');
+	  $query->accessCheck(FALSE);
 
       if ($scope == 'bundle') {
 
 	    $bundle = $entity->bundle();
         $bundle_key = $entity->getEntityType()->getKey('bundle');
         /*		
-	    $bundle_keys = array(
+	    $bundle_keys = [
 		  "node" => "type",
 		  "taxonomy_term" => "vid",
 		  "comment" => "comment_type",
 		  "block_content" => "type",  
-		);
+		];
 		*/
 		if(!empty($bundle_key)){
           $query->condition($bundle_key, $bundle);
 		}
 
       }
-	  
+
+      if ($per_user) {
+        $query->condition('uid', \Drupal::currentUser()->id());
+      }
+
 	  $id_key = $entity->getEntityType()->getKey('id');
 	  $query->condition($id_key, (int) $items->getEntity()->id(), '<>');
 	  

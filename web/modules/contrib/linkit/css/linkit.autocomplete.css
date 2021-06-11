@@ -7,18 +7,15 @@
   background-position: 100% center; /* LTR */
   background-repeat: no-repeat;
 }
-
 .js[dir="rtl"] input.form-linkit-autocomplete {
-  background-position: 0 center;
+  background-position: 0% center;
 }
-
 .js input.form-linkit-autocomplete.ui-autocomplete-loading {
   background-image: url(/core/misc/throbber-active.gif);
   background-position: 100% center; /* LTR */
 }
-
 .js[dir="rtl"] input.form-linkit-autocomplete.ui-autocomplete-loading {
-  background-position: 0 center;
+  background-position: 0% center;
 }
 
 /* Override the default jQuery UI theme */
@@ -26,8 +23,7 @@
   max-height: 330px;
   overflow: auto;
 }
-
-.linkit-ui-autocomplete.ui-widget {
+.linkit-ui-autocomplete.ui-widget  {
   font-size: .9em;
 }
 
