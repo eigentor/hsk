@@ -60,7 +60,7 @@ save_preferences_button_label: 'Save preferences'
 accept_all_categories_button_label: 'Accept all cookies'
 withdraw_button_on_info_popup: false
 domain_all_sites: false
-uuid: 63f58f81-2632-4e5d-8f5f-2da2dbc0901d
+uuid: 46ec6de5-7ef1-4803-b852-c5ad30e0211c
 show_more_info: true
 popup_more_info_button_message: 'Weitere Informationen'
 reload_options: 0
