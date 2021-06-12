@@ -2176,6 +2176,19 @@ button.btn:hover, a.btn:hover {
   padding-bottom: 7px;
 }
 
+.bottom-widgets .bottom-region {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .bottom-widgets .bottom-region {
+    float: left;
+    width: 33.3333333333%;
+  }
+}
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/
