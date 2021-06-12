@@ -2099,6 +2099,9 @@ button.btn:hover, a.btn:hover {
   margin-bottom: 40px;
 }
 
+.sidebar ul#main-menu {
+  margin-bottom: 3em;
+}
 .sidebar ul#main-menu li {
   display: block;
   float: none;
@@ -2463,6 +2466,12 @@ button.btn:hover, a.btn:hover {
 
 .user-logged-in.path-dwz-rangliste table th.views-field-nothing, .user-logged-in.path-dwz-rangliste table td.views-field-nothing {
   display: table-cell;
+}
+
+.more-link {
+  display: block;
+  text-align: right;
+  padding-top: 0.5em;
 }
 
 /*------------------------------------------- */

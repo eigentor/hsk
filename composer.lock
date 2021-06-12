@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "028d8b818a6a43db3e133a4d5a266670",
+    "content-hash": "ff203bef0018a5e1ea4010e219f4ecb6",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4402,29 +4402,26 @@
         },
         {
             "name": "drupal/node_class",
-            "version": "1.0.0-beta1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/node_class.git",
-                "reference": "8.x-1.0-beta1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/node_class-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "9242c529240052aef9d1c4f50505bb346beb698a"
+                "reference": "73d65eec03ca4b623f2517d6f45be1e592ade66a"
             },
             "require": {
                 "drupal/core": "~8.0"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1466182462",
+                    "version": "8.x-1.0-beta1+7-dev",
+                    "datestamp": "1501661044",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -4454,7 +4451,7 @@
                     "homepage": "https://www.drupal.org/user/393247"
                 }
             ],
-            "description": "Adds classes specific to node",
+            "description": "Adds classes specific to node.",
             "homepage": "https://www.drupal.org/project/node_class",
             "support": {
                 "source": "https://git.drupalcode.org/project/node_class"
@@ -13427,7 +13424,7 @@
         "drupal/maillog": 10,
         "drupal/markup": 10,
         "drupal/masquerade": 10,
-        "drupal/node_class": 10,
+        "drupal/node_class": 20,
         "drupal/rules": 20,
         "drupal/typed_data": 15
     },

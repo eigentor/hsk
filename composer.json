@@ -48,7 +48,7 @@
         "drupal/markup": "^1.0@beta",
         "drupal/masquerade": "^2.0@beta",
         "drupal/metatag": "^1.16",
-        "drupal/node_class": "^1.0@beta",
+        "drupal/node_class": "1.x-dev",
         "drupal/override_node_options": "^2.6",
         "drupal/paragraphs": "^1.12",
         "drupal/paragraphs_features": "^1.11",

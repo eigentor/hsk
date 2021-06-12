@@ -9,22 +9,22 @@
  */
 
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\FieldDefinition;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function node_class_form_node_form_alter(&$form, \Drupal\Core\Form\FormStateInterface &$form_state, $form_id) {
-  $form['node_class_group'] = array(
+function node_class_form_node_form_alter(&$form, FormStateInterface &$form_state, $form_id) {
+  $form['node_class_group'] = [
     '#type' => 'details',
     '#title' => t('Node Class settings'),
     '#description' => t('Assign CSS classes to the node.'),
     '#group' => 'advanced',
     '#open' => FALSE,
     '#access' => TRUE,
-    '#attributes' => array('class' => array('node-class-form')),
-  );
+    '#attributes' => ['class' => ['node-class-form']],
+  ];
   $form['node_class']['#group'] = 'node_class_group';
 }
 
@@ -35,15 +35,11 @@ function node_class_entity_base_field_info(EntityTypeInterface $entity_type) {
   if ($entity_type->id() === 'node') {
     $fields['node_class'] = BaseFieldDefinition::create('string')
       ->setLabel(t('CSS class(es)'))
-      ->setDisplayOptions('form', array(
+      ->setDisplayOptions('form', [
         'type' => 'string_textfield',
         'weight' => 35,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE);
-    $fields['mymodule_text'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('The text'))
-      ->setDescription(t('A text property added by mymodule.'))
-      ->setComputed(TRUE);
     return $fields;
   }
 }
@@ -55,6 +51,8 @@ function node_class_preprocess_node(&$variables) {
   if (!empty($variables['node'])) {
     $entity = $variables['node'];
     $classes = $entity->get('node_class')->getValue();
-    $variables['attributes']['class'][] = $classes['0']['value'];
+    if (!empty($classes)) {
+      $variables['attributes']['class'][] = $classes['0']['value'];
+    }
   }
 }

@@ -5341,34 +5341,31 @@
         },
         {
             "name": "drupal/node_class",
-            "version": "1.0.0-beta1",
-            "version_normalized": "1.0.0.0-beta1",
+            "version": "dev-1.x",
+            "version_normalized": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/node_class.git",
-                "reference": "8.x-1.0-beta1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/node_class-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "9242c529240052aef9d1c4f50505bb346beb698a"
+                "reference": "73d65eec03ca4b623f2517d6f45be1e592ade66a"
             },
             "require": {
                 "drupal/core": "~8.0"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1466182462",
+                    "version": "8.x-1.0-beta1+7-dev",
+                    "datestamp": "1501661044",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
-            "installation-source": "dist",
+            "installation-source": "source",
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0-or-later"
@@ -5395,7 +5392,7 @@
                     "homepage": "https://www.drupal.org/user/393247"
                 }
             ],
-            "description": "Adds classes specific to node",
+            "description": "Adds classes specific to node.",
             "homepage": "https://www.drupal.org/project/node_class",
             "support": {
                 "source": "https://git.drupalcode.org/project/node_class"
