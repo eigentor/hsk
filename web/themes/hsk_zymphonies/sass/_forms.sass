@@ -38,6 +38,11 @@ form.webform-submission-kontakt-add-form
     &.form-text, &.form-email
       width: 100%
 
+.view-events-list
+  .views-exposed-form
+    input.form-submit
+      width: 100%
+
 
 
 
@@ -121,6 +126,16 @@ form.webform-submission-kontakt-add-form
     input
       &.form-text, &.form-email
         width: auto
+
+  .view-events-list
+    .views-exposed-form
+      display: flex
+      input.form-submit
+        width: auto
+        margin-left: 1.5em
+        &[data-drupal-selector="edit-reset"]
+          margin-left: 0.8em
+
 
 
 

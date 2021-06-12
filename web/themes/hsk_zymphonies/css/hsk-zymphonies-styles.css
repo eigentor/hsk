@@ -2688,6 +2688,10 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   width: 100%;
 }
 
+.view-events-list .views-exposed-form input.form-submit {
+  width: 100%;
+}
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/
@@ -2773,6 +2777,17 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 
   form.webform-submission-kontakt-add-form input.form-text, form.webform-submission-kontakt-add-form input.form-email {
     width: auto;
+  }
+
+  .view-events-list .views-exposed-form {
+    display: flex;
+  }
+  .view-events-list .views-exposed-form input.form-submit {
+    width: auto;
+    margin-left: 1.5em;
+  }
+  .view-events-list .views-exposed-form input.form-submit[data-drupal-selector=edit-reset] {
+    margin-left: 0.8em;
   }
 }
 /* End Media Query Tablet */

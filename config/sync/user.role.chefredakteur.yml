@@ -16,6 +16,7 @@ permissions:
   - 'access toolbar'
   - 'access user profiles'
   - 'administer comments'
+  - 'administer entityconnect'
   - 'administer nodes'
   - 'administer webform submission'
   - 'bypass node access'
