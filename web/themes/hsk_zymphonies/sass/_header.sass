@@ -68,18 +68,24 @@ nav#block-hsk-zymphonies-main-menu
               a
                 background: #d5d5d5
 
-.menu-base-theme
+nav#block-hsk-zymphonies-main-menu
   ul
     background: white
     li
+      position: relative
       border-top: 1px solid rgba(0, 0, 0, 0.05)
+      list-style: none
       &:first-child
         border-top: 0
       a, a:hover, a:focus, a:active
+        display: block
         background: transparent
         color: #2b82ac
         border-left: 8px solid transparent
+        background: none
+        background: #FBFBFB
       a
+        border-bottom: 1px solid #EEF0F7
         &.current
           background: #006892
           color: white
@@ -97,9 +103,15 @@ nav#block-hsk-zymphonies-main-menu
             overflow: hidden
             text-align: center
             background: rgba(0, 0, 0, 0.1)
-            &:before
-              display: block
-              content: '-'
+            color: #999
+            font-size: 22px
+            padding: 5px
+            border-radius: 2px
+            border: 1px solid #DCDCDC
+            background: #EFEFEF
+            //&:before
+            //  display: block
+            //  content: '-'
     ul
       background: rgba(102, 102, 102, 0.1)
       a, a:hover, a:focus, a:active

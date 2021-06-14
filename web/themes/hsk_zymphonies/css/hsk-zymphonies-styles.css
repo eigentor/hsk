@@ -2924,28 +2924,36 @@ nav#block-hsk-zymphonies-main-menu ul.menu li ul li ul li a {
   background: #d5d5d5;
 }
 
-.menu-base-theme ul {
+nav#block-hsk-zymphonies-main-menu ul {
   background: white;
 }
-.menu-base-theme ul li {
+nav#block-hsk-zymphonies-main-menu ul li {
+  position: relative;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
+  list-style: none;
 }
-.menu-base-theme ul li:first-child {
+nav#block-hsk-zymphonies-main-menu ul li:first-child {
   border-top: 0;
 }
-.menu-base-theme ul li a, .menu-base-theme ul li a:hover, .menu-base-theme ul li a:focus, .menu-base-theme ul li a:active {
+nav#block-hsk-zymphonies-main-menu ul li a, nav#block-hsk-zymphonies-main-menu ul li a:hover, nav#block-hsk-zymphonies-main-menu ul li a:focus, nav#block-hsk-zymphonies-main-menu ul li a:active {
+  display: block;
   background: transparent;
   color: #2b82ac;
   border-left: 8px solid transparent;
+  background: none;
+  background: #FBFBFB;
 }
-.menu-base-theme ul li a.current {
+nav#block-hsk-zymphonies-main-menu ul li a {
+  border-bottom: 1px solid #EEF0F7;
+}
+nav#block-hsk-zymphonies-main-menu ul li a.current {
   background: #006892;
   color: white;
 }
-.menu-base-theme ul li a.disabled {
+nav#block-hsk-zymphonies-main-menu ul li a.disabled {
   color: #b3b3b3;
 }
-.menu-base-theme ul li a span.sub-arrow {
+nav#block-hsk-zymphonies-main-menu ul li a span.sub-arrow {
   position: absolute;
   top: 50%;
   margin-top: -17px;
@@ -2956,21 +2964,23 @@ nav#block-hsk-zymphonies-main-menu ul.menu li ul li ul li a {
   overflow: hidden;
   text-align: center;
   background: rgba(0, 0, 0, 0.1);
+  color: #999;
+  font-size: 22px;
+  padding: 5px;
+  border-radius: 2px;
+  border: 1px solid #DCDCDC;
+  background: #EFEFEF;
 }
-.menu-base-theme ul li a span.sub-arrow:before {
-  display: block;
-  content: "-";
-}
-.menu-base-theme ul ul {
+nav#block-hsk-zymphonies-main-menu ul ul {
   background: rgba(102, 102, 102, 0.1);
 }
-.menu-base-theme ul ul a, .menu-base-theme ul ul a:hover, .menu-base-theme ul ul a:focus, .menu-base-theme ul ul a:active {
+nav#block-hsk-zymphonies-main-menu ul ul a, nav#block-hsk-zymphonies-main-menu ul ul a:hover, nav#block-hsk-zymphonies-main-menu ul ul a:focus, nav#block-hsk-zymphonies-main-menu ul ul a:active {
   border-left: 16px solid transparent;
 }
-.menu-base-theme ul ul ul a, .menu-base-theme ul ul ul a:hover, .menu-base-theme ul ul ul a:focus, .menu-base-theme ul ul ul a:active {
+nav#block-hsk-zymphonies-main-menu ul ul ul a, nav#block-hsk-zymphonies-main-menu ul ul ul a:hover, nav#block-hsk-zymphonies-main-menu ul ul ul a:focus, nav#block-hsk-zymphonies-main-menu ul ul ul a:active {
   border-left-width: 24px;
 }
-.menu-base-theme ul ul ul ul a, .menu-base-theme ul ul ul ul a:hover, .menu-base-theme ul ul ul ul a:focus, .menu-base-theme ul ul ul ul a:active {
+nav#block-hsk-zymphonies-main-menu ul ul ul ul a, nav#block-hsk-zymphonies-main-menu ul ul ul ul a:hover, nav#block-hsk-zymphonies-main-menu ul ul ul ul a:focus, nav#block-hsk-zymphonies-main-menu ul ul ul ul a:active {
   border-left-width: 32px;
 }
 
