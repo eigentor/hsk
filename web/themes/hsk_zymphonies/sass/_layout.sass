@@ -91,6 +91,9 @@
   background: #818181
   padding-top: 4px
   padding-bottom: 7px
+  +x-rem(font-size, 0.65)
+  color: white
+  padding: 1.5em 0
 
 .bottom-widgets
   .bottom-region
@@ -132,6 +135,16 @@
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop-narrow)
+  .footer-menu
+    nav
+      ul
+        margin-left: 0
+        li
+          display: inline-block
+          a
+            display: block
+            padding: 4px 20px 4px 0
+
 
 
 

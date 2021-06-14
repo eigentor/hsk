@@ -2008,6 +2008,11 @@ button.btn:hover, a.btn:hover {
   height: 39px;
 }
 
+input, button, select, textarea {
+  padding: 8px;
+  border: 1px solid #C7C7C7;
+}
+
 .align-right {
   margin: 5px 0 5px 15px;
 }
@@ -2231,6 +2236,10 @@ button.btn:hover, a.btn:hover {
   background: #818181;
   padding-top: 4px;
   padding-bottom: 7px;
+  font-size: 10.075px;
+  font-size: 0.65rem;
+  color: white;
+  padding: 1.5em 0;
 }
 
 .bottom-widgets .bottom-region {
@@ -2272,6 +2281,18 @@ button.btn:hover, a.btn:hover {
 /*------------- Desktop narrow  --------------*/
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 991px) {
+  .footer-menu nav ul {
+    margin-left: 0;
+  }
+  .footer-menu nav ul li {
+    display: inline-block;
+  }
+  .footer-menu nav ul li a {
+    display: block;
+    padding: 4px 20px 4px 0;
+  }
+}
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -4249,6 +4270,7 @@ nav#block-hsk-footer ul li a {
 .path-frontpage .bottom-widgets h3 {
   font-size: 18.6px;
   font-size: 1.2rem;
+  margin-bottom: 5px;
 }
 .path-frontpage #block-begrussungstext a.btn {
   background: #ED8600;
