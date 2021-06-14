@@ -68,6 +68,50 @@ nav#block-hsk-zymphonies-main-menu
               a
                 background: #d5d5d5
 
+.menu-base-theme
+  ul
+    background: white
+    li
+      border-top: 1px solid rgba(0, 0, 0, 0.05)
+      &:first-child
+        border-top: 0
+      a, a:hover, a:focus, a:active
+        background: transparent
+        color: #2b82ac
+        border-left: 8px solid transparent
+      a
+        &.current
+          background: #006892
+          color: white
+        &.disabled
+          color: #b3b3b3
+        span
+          &.sub-arrow
+            position: absolute
+            top: 50%
+            margin-top: -17px
+            left: auto
+            right: 4px
+            width: 34px
+            height: 34px
+            overflow: hidden
+            text-align: center
+            background: rgba(0, 0, 0, 0.1)
+            &:before
+              display: block
+              content: '-'
+    ul
+      background: rgba(102, 102, 102, 0.1)
+      a, a:hover, a:focus, a:active
+        border-left: 16px solid transparent
+      ul
+        a, a:hover, a:focus, a:active
+          border-left-width: 24px
+        ul
+          a, a:hover, a:focus, a:active
+            border-left-width: 32px
+
+
 
 #block-mobilemenubutton
   width: 29px
