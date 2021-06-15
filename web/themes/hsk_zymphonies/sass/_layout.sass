@@ -24,6 +24,8 @@
   max-width: 1000px
 
 .content_layout
+  +clearfix
+  +make-md-column(9)
   margin-top: 30px
   .content-layout-inner
     +make-md-column(12)
@@ -31,7 +33,9 @@
     margin-bottom: 40px
 
 .sidebar
-  ul#main-menu
+  +clearfix
+  +make-md-column(3)
+  ul.menu
     margin-bottom: 3em
     li
       display: block
