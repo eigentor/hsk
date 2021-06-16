@@ -3290,7 +3290,7 @@ nav#block-hsk-footer ul li a {
     background: #ED8600;
     color: white;
   }
-  header nav#block-hsk-zymphonies-main-menu ul.menu li a:hover {
+  header nav#block-hsk-zymphonies-main-menu ul.menu li a:hover, header nav#block-hsk-zymphonies-main-menu ul.menu li a:active, header nav#block-hsk-zymphonies-main-menu ul.menu li a:focus {
     background: #ED8600;
     color: white;
     text-decoration: none;
