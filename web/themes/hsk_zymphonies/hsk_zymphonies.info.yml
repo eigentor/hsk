@@ -1,5 +1,5 @@
 name: HSK Theme
-description: HSK Theme basierend auf Businessgroup Zymphonies Theme
+description: HSK Theme, benutzt Bootstrap Grid
 type: theme
 core: 8.x
 #base theme: businessgroup_zymphonies_theme
