@@ -1255,10 +1255,6 @@ input, button, select, textarea {
 }
 
 .content_layout {
-  position: relative;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
   margin-top: 30px;
 }
 .content_layout:before, .content_layout:after {
@@ -1267,12 +1263,6 @@ input, button, select, textarea {
 }
 .content_layout:after {
   clear: both;
-}
-@media (min-width: 992px) {
-  .content_layout {
-    float: left;
-    width: 75%;
-  }
 }
 .content_layout .content-layout-inner {
   position: relative;
@@ -1288,6 +1278,32 @@ input, button, select, textarea {
 }
 .content_layout .region-content {
   margin-bottom: 40px;
+}
+
+.no-sidebars .content_layout {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+@media (min-width: 992px) {
+  .no-sidebars .content_layout {
+    float: left;
+    width: 100%;
+  }
+}
+
+.sidebar-first .content_layout, .sidebar-second .content_layout {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+@media (min-width: 992px) {
+  .sidebar-first .content_layout, .sidebar-second .content_layout {
+    float: left;
+    width: 75%;
+  }
 }
 
 .sidebar {
@@ -1321,6 +1337,7 @@ input, button, select, textarea {
 }
 .sidebar ul.menu li ul {
   border: none;
+  margin-bottom: 0;
 }
 .sidebar ul.menu li ul li {
   list-style-type: none;
@@ -1439,6 +1456,10 @@ input, button, select, textarea {
   .footer-menu nav ul li a {
     display: block;
     padding: 4px 20px 4px 0;
+  }
+
+  .sidebar {
+    margin-top: 30px;
   }
 }
 /* End Media Query Tablet */
@@ -1937,6 +1958,17 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 }
 
 .view-events-list .views-exposed-form input.form-submit {
+  width: 100%;
+}
+
+.user-login-form, .user-form, .user-pass {
+  max-width: 500px;
+  margin: 40px auto;
+  border: 1px solid #ddd;
+  padding: 10px 30px;
+  background: #fff;
+}
+.user-login-form .form-text, .user-form .form-text, .user-pass .form-text {
   width: 100%;
 }
 
