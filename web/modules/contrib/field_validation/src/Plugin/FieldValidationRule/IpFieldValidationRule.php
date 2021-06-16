@@ -30,11 +30,7 @@ class IpFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function getSummary() {
-    $summary = array(
-      '#theme' => 'field_validation_rule_summary',
-      '#data' => $this->configuration,
-    );
-    $summary += parent::getSummary();
+    $summary = parent::getSummary();
 
     return $summary;
   }
@@ -43,19 +39,19 @@ class IpFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array(
+    return [
       'version' => NULL,
-    );
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['version'] = array(
+    $form['version'] = [
       '#title' => $this->t('IP Version'),
       '#type' => 'select',
-      '#options' => array(
+      '#options' => [
         '4' => $this->t('V4'),
         '6' => $this->t('V6'),
         'all' => $this->t('ALL'),
@@ -68,9 +64,9 @@ class IpFieldValidationRule extends ConfigurableFieldValidationRuleBase {
         '4_public' => $this->t('V4_ONLY_PUBLIC'),
         '6_public' => $this->t('V6_ONLY_PUBLIC'),
         'all_public' => $this->t('ALL_ONLY_PUBLIC'),
-      ),  
+      ],  
       '#default_value' => $this->configuration['version'],
-    );
+    ];
 	
     return $form;
   }

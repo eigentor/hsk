@@ -164,7 +164,7 @@ class ContextConfig {
    * @return array
    *   The config array, with the following keys set:
    *   - context_map: An array of data selectors, keyed by context name.
-   *   - context An array of context values, keyed by context.
+   *   - context_values: An array of context values, keyed by context name.
    *   - context_processors: An array of data processor config, keyed by context
    *     name and process plugin id.
    *   - provides_mapping: An array of context names to use for provided

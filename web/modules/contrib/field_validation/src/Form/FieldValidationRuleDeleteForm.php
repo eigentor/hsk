@@ -29,7 +29,7 @@ class FieldValidationRuleDeleteForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Are you sure you want to delete the @rule rule from the %ruleset fieldValidationRuleSet?', array('%ruleset' => $this->fieldValidationRuleSet->label(), '@rule' => $this->fieldValidationRule->label()));
+    return $this->t('Are you sure you want to delete the @rule rule from the %ruleset fieldValidationRuleSet?', ['%ruleset' => $this->fieldValidationRuleSet->label(), '@rule' => $this->fieldValidationRule->label()]);
   }
 
   /**
@@ -43,7 +43,7 @@ class FieldValidationRuleDeleteForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return $this->fieldValidationRuleSet->urlInfo('edit-form');
+    return $this->fieldValidationRuleSet->toUrl('edit-form');
   }
 
   /**
@@ -68,8 +68,8 @@ class FieldValidationRuleDeleteForm extends ConfirmFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->fieldValidationRuleSet->deleteFieldValidationRule($this->fieldValidationRule);
-    drupal_set_message($this->t('The rule %name has been deleted.', array('%name' => $this->fieldValidationRule->label())));
-    $form_state->setRedirectUrl($this->fieldValidationRuleSet->urlInfo('edit-form'));
+	  $this->messenger()->addMessage($this->t('The rule %name has been deleted.', ['%name' => $this->fieldValidationRule->label()]));
+	  $form_state->setRedirectUrl($this->fieldValidationRuleSet->toUrl('edit-form'));
   }
 
 }

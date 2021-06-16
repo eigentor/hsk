@@ -2,14 +2,15 @@
 
 namespace Drupal\rules\Plugin\RulesExpression;
 
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rules\Context\ContextConfig;
+use Drupal\rules\Context\ExecutionMetadataStateInterface;
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Engine\ActionExpressionContainerInterface;
 use Drupal\rules\Engine\ActionExpressionInterface;
 use Drupal\rules\Engine\ConditionExpressionContainerInterface;
 use Drupal\rules\Engine\ConditionExpressionInterface;
-use Drupal\rules\Engine\ExecutionMetadataStateInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 use Drupal\rules\Engine\ExpressionBase;
 use Drupal\rules\Engine\ExpressionInterface;
 use Drupal\rules\Engine\ExpressionManagerInterface;
@@ -33,6 +34,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class RuleExpression extends ExpressionBase implements RuleExpressionInterface, ContainerFactoryPluginInterface {
 
   /**
+   * The rules expression plugin manager.
+   *
+   * @var \Drupal\rules\Engine\ExpressionManagerInterface
+   */
+  protected $expressionManager;
+
+  /**
    * List of conditions that must be met before actions are executed.
    *
    * @var \Drupal\rules\Engine\ConditionExpressionContainerInterface
@@ -47,6 +55,13 @@ class RuleExpression extends ExpressionBase implements RuleExpressionInterface, 
   protected $actions;
 
   /**
+   * The rules debug logger channel.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $rulesDebugLogger;
+
+  /**
    * Constructs a new class instance.
    *
    * @param array $configuration
@@ -57,8 +72,10 @@ class RuleExpression extends ExpressionBase implements RuleExpressionInterface, 
    *   The plugin implementation definition.
    * @param \Drupal\rules\Engine\ExpressionManagerInterface $expression_manager
    *   The rules expression plugin manager.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The Rules debug logger channel.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ExpressionManagerInterface $expression_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ExpressionManagerInterface $expression_manager, LoggerChannelInterface $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
     $configuration += ['conditions' => [], 'actions' => []];
@@ -69,17 +86,17 @@ class RuleExpression extends ExpressionBase implements RuleExpressionInterface, 
     $this->conditions->setRoot($this->getRoot());
     $this->actions = $expression_manager->createInstance('rules_action_set', $configuration['actions']);
     $this->actions->setRoot($this->getRoot());
+    $this->expressionManager = $expression_manager;
+    $this->rulesDebugLogger = $logger;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('plugin.manager.rules_expression')
+    return new static($configuration, $plugin_id, $plugin_definition,
+      $container->get('plugin.manager.rules_expression'),
+      $container->get('logger.channel.rules_debug')
     );
   }
 
@@ -88,11 +105,25 @@ class RuleExpression extends ExpressionBase implements RuleExpressionInterface, 
    */
   public function executeWithState(ExecutionStateInterface $state) {
     // Evaluate the rule's conditions.
+    $this->rulesDebugLogger->info('Evaluating conditions of rule %label.', [
+      '%label' => $this->getLabel(),
+      'element' => $this,
+    ]);
     if (!$this->conditions->isEmpty() && !$this->conditions->executeWithState($state)) {
       // Do not run the actions if the conditions are not met.
       return;
     }
+    $this->rulesDebugLogger->info('Rule %label fires.', [
+      '%label' => $this->getLabel(),
+      'element' => $this,
+      'scope' => TRUE,
+    ]);
     $this->actions->executeWithState($state);
+    $this->rulesDebugLogger->info('Rule %label has fired.', [
+      '%label' => $this->getLabel(),
+      'element' => $this,
+      'scope' => FALSE,
+    ]);
   }
 
   /**

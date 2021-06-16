@@ -14,14 +14,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "rules_entity_fetch_by_field",
  *   label = @Translation("Fetch entities by field"),
  *   category = @Translation("Entity"),
- *   context = {
+ *   context_definitions = {
  *     "type" = @ContextDefinition("string",
  *       label = @Translation("Entity type"),
  *       description = @Translation("Specifies the type of the entity that should be fetched.")
  *     ),
  *     "field_name" = @ContextDefinition("string",
  *       label = @Translation("Field name"),
- *       description = @Translation("Name of the field by which the entity is to be selected..")
+ *       description = @Translation("Name of the field by which the entity is to be selected.")
  *     ),
  *     "field_value" = @ContextDefinition("any",
  *       label = @Translation("Field value"),
@@ -35,10 +35,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *   },
  *   provides = {
- *      "entity_fetched" = @ContextDefinition("entity",
- *        label = @Translation("Fetched entity"),
- *        multiple = TRUE
- *      ),
+ *     "entity_fetched" = @ContextDefinition("entity",
+ *       label = @Translation("Fetched entity"),
+ *       multiple = TRUE
+ *     ),
  *   }
  * )
  *
@@ -92,10 +92,19 @@ class EntityFetchByField extends RulesActionBase implements ContainerFactoryPlug
   }
 
   /**
-   * Execute the action within the given context.
+   * Executes the action with the given context.
+   *
+   * @param string $type
+   *   The entity type id.
+   * @param string $field_name
+   *   Name of the field by which the entity is to be selected.
+   * @param mixed $field_value
+   *   The field value of the entity to be fetched.
+   * @param int $limit
+   *   Limit on the maximum number of fetched entities.
    */
-  protected function doExecute($entity_type, $field_name, $field_value, $limit = NULL) {
-    $storage = $this->entityTypeManager->getStorage($entity_type);
+  protected function doExecute($type, $field_name, $field_value, $limit = NULL) {
+    $storage = $this->entityTypeManager->getStorage($type);
 
     // When retrieving entities, if $limit is not set there is no need to use
     // the query object directly.

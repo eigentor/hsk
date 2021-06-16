@@ -31,11 +31,18 @@ abstract class RulesKernelTestBase extends KernelTestBase {
   protected $typedDataManager;
 
   /**
-   * Rules logger.
+   * Rules debug logger channel.
    *
-   * @var \Drupal\rules\Logger\RulesLoggerChannel
+   * @var \Drupal\rules\Logger\RulesDebugLoggerChannel
    */
   protected $logger;
+
+  /**
+   * Rules debug log.
+   *
+   * @var \Drupal\rules\Logger\RulesDebugLog
+   */
+  protected $debugLog;
 
   /**
    * The messenger service.
@@ -56,7 +63,7 @@ abstract class RulesKernelTestBase extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'rules',
     'rules_test',
     'system',
@@ -67,13 +74,20 @@ abstract class RulesKernelTestBase extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
-    $this->logger = $this->container->get('logger.channel.rules');
-    // Clear the log from any stale entries that are bleeding over from previous
-    // tests.
-    $this->logger->clearLogs();
+    $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->debugLog = $this->container->get('logger.rules_debug_log');
+
+    // Turn on debug logging, set error level to collect only errors. This way
+    // we can ignore the normal Rules debug messages that would otherwise get
+    // in the way of our tests.
+    $config = $this->container->get('config.factory')->getEditable('rules.settings');
+    $config
+      ->set('debug_log.enabled', TRUE)
+      ->set('debug_log.log_level', 'error')
+      ->save();
 
     $this->expressionManager = $this->container->get('plugin.manager.rules_expression');
     $this->conditionManager = $this->container->get('plugin.manager.condition');
@@ -106,10 +120,24 @@ abstract class RulesKernelTestBase extends KernelTestBase {
    * @param int $log_item_index
    *   Log item's index in log entries stack.
    */
-  protected function assertRulesLogEntryExists($message, $log_item_index = 0) {
+  protected function assertRulesDebugLogEntryExists($message, $log_item_index = 0) {
     // Test that the action has logged something.
-    $logs = $this->logger->getLogs();
+    $logs = $this->debugLog->getLogs();
     $this->assertEquals($logs[$log_item_index]['message'], $message);
+  }
+
+  /**
+   * Checks if particular message is NOT in the log.
+   *
+   * @param string $message
+   *   Log message.
+   */
+  protected function assertRulesDebugLogEntryNotExists($message) {
+    // Check each log entry.
+    $logs = $this->debugLog->getLogs();
+    foreach ($logs as $log) {
+      $this->assertNotEquals($log['message'], $message);
+    }
   }
 
 }

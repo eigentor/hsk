@@ -2,8 +2,6 @@
 
 namespace Drupal\rules\Context;
 
-use Drupal\rules\Engine\ExecutionStateInterface;
-
 /**
  * Interface for Rules data processor plugins.
  */
@@ -14,7 +12,7 @@ interface DataProcessorInterface {
    *
    * @param mixed $value
    *   The value to process.
-   * @param \Drupal\rules\Engine\ExecutionStateInterface $rules_state
+   * @param \Drupal\rules\Context\ExecutionStateInterface $rules_state
    *   The current Rules execution state containing all context variables.
    *
    * @return mixed

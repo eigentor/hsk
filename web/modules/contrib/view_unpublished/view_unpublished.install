@@ -11,14 +11,16 @@ use Drupal\Core\Url;
  * Implements hook_install().
  */
 function view_unpublished_install() {
-  node_access_needs_rebuild(TRUE);
+  Drupal::service('view_unpublished.install_helper')->flagRebuild();
 }
 
 /**
  * Implements hook_uninstall().
  */
 function view_unpublished_uninstall() {
-  node_access_needs_rebuild(TRUE);
+  Drupal::service('view_unpublished.install_helper')->flagRebuild();
+  // Remove any errant view_unpublished dependency.
+  Drupal::service('view_unpublished.install_helper')->removeDependency();
 }
 
 /**
@@ -33,4 +35,11 @@ function view_unpublished_update_8001() {
     'A rebuild of node access permissions is necessary. Rebuilding may take some time if there is a lot of content or complex permission settings. After rebuilding has completed, content will automatically use the new permissions. <a href=":rebuild">Rebuild permissions</a>',
     [':rebuild' => Url::fromRoute('node.configure_rebuild_confirm')->toString()]
   );
+}
+
+/**
+ * Remove any view_unpublished dependency that may have been added to views.
+ */
+function view_unpublished_update_8002() {
+  Drupal::service('view_unpublished.install_helper')->removeDependency();
 }

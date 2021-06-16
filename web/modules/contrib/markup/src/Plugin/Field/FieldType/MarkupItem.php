@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\markup\Plugin\Field\FieldType\MarkupItem.
- */
-
 namespace Drupal\markup\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
@@ -72,7 +67,7 @@ class MarkupItem extends FieldItemBase {
       '#type'          => 'text_format',
       '#title'         => $this->t('Markup'),
       '#default_value' => isset($settings['markup']['value']) ? $settings['markup']['value'] : '',
-      '#format'        => isset($settings['markup']['format']) ? $settings['markup']['format'] : filter_default_format(),
+      '#format'        => !empty($settings['markup']['format']) ? $settings['markup']['format'] : filter_default_format(),
       '#required'      => TRUE,
       '#rows'          => 15,
       '#description'   => $this->t('The markup to be displayed. Any HTML is legal here, so be careful not to break your page layout.'),

@@ -2,7 +2,6 @@
 
 namespace Drupal\entityconnect\Element;
 
-use Drupal\Core\Entity\Entity;
 use Drupal\Core\Url;
 use Drupal\entityconnect\EntityconnectNestedArray;
 use Drupal\Core\Form\FormStateInterface;
@@ -45,21 +44,21 @@ class EntityconnectSubmit extends Submit {
    */
   public function getInfo() {
     $class = get_class($this);
-    return array(
+    return [
       '#key' => '',
       '#field' => '',
       '#entity_type_target' => 'node',
-      '#acceptable_types' => array(),
+      '#acceptable_types' => [],
       '#add_child' => FALSE,
-      '#validate' => array(
-        array($class, 'validateSubmit'),
-      ),
-      '#submit' => array(
-          array($class, 'addEditButtonSubmit'),
-      ),
+      '#validate' => [
+        [$class, 'validateSubmit'],
+      ],
+      '#submit' => [
+          [$class, 'addEditButtonSubmit'],
+      ],
       '#weight' => 1,
-      '#limit_validation_errors' => array(),
-    ) + parent::getInfo();
+      '#limit_validation_errors' => [],
+    ] + parent::getInfo();
   }
 
   /**
@@ -115,7 +114,7 @@ class EntityconnectSubmit extends Submit {
     $entityType = $triggeringElement['#entity_type_target'];
     $acceptableTypes = isset($triggeringElement['#acceptable_types']) ? $triggeringElement['#acceptable_types'] : NULL;
 
-    /** @var Entity $source_entity */
+    /** @var \Drupal\Core\Entity\EntityInterface $source_entity */
     $source_entity = $form_state->getFormObject()->getEntity();
     $fieldInfo = FieldStorageConfig::loadByName($source_entity->getEntityTypeId(), $field);
 
@@ -128,7 +127,7 @@ class EntityconnectSubmit extends Submit {
     $fieldContainer = EntityconnectNestedArray::getValue($form_state->getUserInput(), $parents, $keyExists);
 
     // Initialize target_id.
-    $target_id = '';
+    $target_id = [];
 
     // Get the target id from the reference field container.
     if ($keyExists) {
@@ -169,19 +168,18 @@ class EntityconnectSubmit extends Submit {
 
     // If no entity has been chosen to edit, redirect to the original node.
     if (!$triggeringElement['#add_child'] && (!$target_id || $target_id == '_none')) {
-      drupal_set_message(
-        t('You must select at least one entity to update.'),
-        'error'
-      );
+      \Drupal::messenger()->addError(t('You must select at least one entity to update.'));
       $form_state->setRedirectUrl(Url::fromRoute('<current>'));
       return;
     }
 
     // Setup the data of the current form for caching.
-    $data = array(
+    $current_route = \Drupal::routeMatch();
+    $data = [
       'form'       => $form,
       'form_state' => $form_state,
-      'dest'       => \Drupal::routeMatch(),
+      'dest_route_name' => $current_route->getRouteName(),
+      'dest_route_params' => $current_route->getRawParameters()->all(),
       'params'     => \Drupal::request()->query->all(),
       'field'      => $field,
       'field_info' => $fieldInfo,
@@ -192,7 +190,7 @@ class EntityconnectSubmit extends Submit {
       'acceptable_types' => $acceptableTypes,
       'field_container' => $fieldContainer,
       'field_container_key_exists' => $keyExists,
-    );
+    ];
 
     // Give other modules the chance to change it.
     \Drupal::moduleHandler()->alter('entityconnect_add_edit_button_submit', $data);
@@ -205,11 +203,11 @@ class EntityconnectSubmit extends Submit {
     \Drupal::request()->query->remove('destination');
 
     if ($data['add_child']) {
-      $form_state->setRedirect('entityconnect.add', array('cache_id' => $cacheId));
+      $form_state->setRedirect('entityconnect.add', ['cache_id' => $cacheId]);
     }
     else {
       if ($data['target_id']) {
-        $form_state->setRedirect('entityconnect.edit', array('cache_id' => $cacheId));
+        $form_state->setRedirect('entityconnect.edit', ['cache_id' => $cacheId]);
       }
     }
 

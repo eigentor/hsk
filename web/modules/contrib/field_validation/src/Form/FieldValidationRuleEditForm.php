@@ -16,7 +16,7 @@ class FieldValidationRuleEditForm extends FieldValidationRuleFormBase {
   public function buildForm(array $form, FormStateInterface $form_state, FieldValidationRuleSetInterface $field_validation_rule_set = NULL, $field_validation_rule = NULL, $field_name='') {
     $form = parent::buildForm($form, $form_state, $field_validation_rule_set, $field_validation_rule);
 
-    $form['#title'] = $this->t('Edit %label rule', array('%label' => $this->fieldValidationRule->label()));
+    $form['#title'] = $this->t('Edit %label rule', ['%label' => $this->fieldValidationRule->label()]);
     $form['actions']['submit']['#value'] = $this->t('Update rule');
 
     return $form;

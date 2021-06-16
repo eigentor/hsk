@@ -103,7 +103,12 @@ class ContextIntegrationTest extends RulesKernelTestBase {
     // Test the assignment restriction on the entity fetch action as an example.
     $entity_fetch_action = $action_manager->createInstance('rules_entity_fetch_by_id');
     $context_definition = $entity_fetch_action->getContextDefinition('type');
-    $this->assertEquals($context_definition->getAssignmentRestriction(), 'input');
+    $this->assertEquals(ContextDefinition::ASSIGNMENT_RESTRICTION_INPUT, $context_definition->getAssignmentRestriction());
+
+    // Test the assignment restriction on the entity delete action.
+    $entity_delete_action = $action_manager->createInstance('rules_entity_delete');
+    $context_definition = $entity_delete_action->getContextDefinition('entity');
+    $this->assertEquals(ContextDefinition::ASSIGNMENT_RESTRICTION_SELECTOR, $context_definition->getAssignmentRestriction());
   }
 
 }

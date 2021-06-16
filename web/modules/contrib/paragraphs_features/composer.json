@@ -7,10 +7,28 @@
         {
             "name": "Mladen Todorovic",
             "email": "mladen.todorovic@burda.com"
+        },
+        {
+            "name": "Daniel Bosen",
+            "email": "daniel.bosen@burda.com"
+        },
+        {
+            "name": "Christian Fritsch",
+            "email": "christian.fritsch@burda.com"
+        },
+        {
+            "name": "Volker Killesreiter",
+            "email": "volker.killesreiter@burda.com"
+        },
+        {
+            "name": "Alex Pott",
+            "email": "alex.a.pott@gmail.com"
         }
     ],
     "require": {
-        "drupal/core": "^8.5",
-        "drupal/paragraphs": "^1.3"
+        "drupal/paragraphs": "^1.12"
+    },
+    "require-dev": {
+        "drupal/gin": "^3.0"
     }
 }

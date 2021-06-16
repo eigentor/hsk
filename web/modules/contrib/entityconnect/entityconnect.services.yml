@@ -7,4 +7,4 @@ services:
 
   entityconnect.cache:
       class: Drupal\entityconnect\EntityconnectCache
-      arguments: ['@user.private_tempstore', '@session_manager', '@current_user']
+      arguments: ['@tempstore.private', '@session_manager', '@current_user']

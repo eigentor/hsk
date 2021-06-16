@@ -86,21 +86,32 @@ class FilterResponsiveImageStyle extends FilterBase {
         $node->removeAttribute('src');
 
         // Make sure all non-regenerated attributes are retained.
-        $attributes = array();
+        $attributes = [];
         for ($i = 0; $i < $node->attributes->length; $i++) {
           $attr = $node->attributes->item($i);
-          $attributes[$attr->name] = $attr->value;
+          $attribute_name = $attr->name;
+          if($attribute_name === 'class') {
+            $attributes[$attribute_name][] = $attr->value;
+          } else {
+            $attributes[$attribute_name] = $attr->value;
+          }
         }
 
+        // Create $attributes['class'] if it doesn't exist.
+        // Append responsive_image_style_id to classes attribute.
+        $image_style_id_class = Html::cleanCssIdentifier($image_style_id);
+        $attributes['class'][] = $image_style_id_class;
+        $attributes['class'][] = 'image-style-' . $image_style_id_class;
+
         // Set up image render array.
-        $image = array(
+        $image = [
           '#theme' => 'responsive_image',
           '#uri' => $file->getFileUri(),
           '#width' => $width,
           '#height' => $height,
           '#attributes' => $attributes,
           '#responsive_image_style_id' => $image_style_id,
-        );
+        ];
 
         $altered_html = \Drupal::service('renderer')->render($image);
 
@@ -134,11 +145,12 @@ class FilterResponsiveImageStyle extends FilterBase {
     if ($long) {
       $image_styles = \Drupal::entityTypeManager()->getStorage('responsive_image_style')->loadMultiple();
       $list = '<code>' . implode('</code>, <code>', array_keys($image_styles)) . '</code>';
-      return t('
-        <p>You can make images responsive by adding a <code>data-responsive-image-style</code> attribute, whose value is one of the responsive image style machine names: !responsive-image-style-machine-name-list.</p>', array('!responsive-image-style-machine-name-list' => $list));
+      return $this->t('<p>You can make images responsive by adding a <code>data-responsive-image-style</code> attribute, whose value is one of the responsive image style machine names: @responsive-image-style-machine-name-list.</p>',
+        ['@responsive-image-style-machine-name-list' => $list]
+      );
     }
     else {
-      return t('You can make images responsive by adding a data-responsive-image-style attribute.');
+      return $this->t('You can make images responsive by adding a data-responsive-image-style attribute.');
     }
   }
 }

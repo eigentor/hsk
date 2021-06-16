@@ -37,12 +37,12 @@ class SpamspanTestForm extends FormBase {
       $test_text = $storage['test_text'];
     }
 
-    $default_list = array();
+    $default_list = [];
     foreach ($defaults as $name => $value) {
       $default_list[] = $name . ': <strong>' . htmlentities($value) . '</strong>';
     }
 
-    $form['configure'] = array('#markup' => $this->t(
+    $form['configure'] = ['#markup' => $this->t(
       '<p>The @dn module obfuscates email addresses to help prevent spambots from collecting them.'
       . ' It will produce clickable links if JavaScript is enabled,'
       . ' and will show the email address as <code>example [at] example [dot] com</code> if the browser does not support JavaScript.</p>'
@@ -61,16 +61,16 @@ class SpamspanTestForm extends FormBase {
       . '<h2>Test spamspan()</h2>'
       . '<p>Test the @dn <code>spamspan()</code> function using the following <strong>Test text</strong> field.'
       . ' Enter text containing an email address then hit the Test button. We set up a default example to get you started.</p>',
-      array('@dn' => 'Spamspan')
-    ));
+      ['@dn' => 'Spamspan']
+    )];
 
-    $form['test_text'] = array(
+    $form['test_text'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Test text'),
       '#size' => 80,
       '#maxlength' => 200,
       '#default_value' => $test_text,
-    );
+    ];
 
     $settings_form = $filter->settingsForm([], $form_state);
     foreach ($defaults as $field => $value) {
@@ -86,11 +86,11 @@ class SpamspanTestForm extends FormBase {
     }
 
     $test_result = spamspan($test_text, $defaults);
-    $form['test_js'] = array('#markup' => '<p>The result passed through spamspan() and processed by Javasript:</p><div style="background-color: #ccffcc;">' . $test_result . '</div>');
-    $form['test_result'] = array('#markup' => '<p>The result passed through spamspan() but not processed by Javascript:</p><div style="background-color: #ccccff;">' . str_replace('class="spamspan"', '', $test_result) . '</div>');
-    $form['test_as_html'] = array('#markup' => '<p>The HTML in the result:</p><div style="background-color: #ffcccc;">' . nl2br(htmlentities($test_result)) . '</div>');
-    $form['actions'] = array('#type' => 'actions');
-    $form['actions']['submit'] = array('#type' => 'submit', '#value' => t('Test'));
+    $form['test_js'] = ['#markup' => '<p>The result passed through spamspan() and processed by Javasript:</p><div style="background-color: #ccffcc;">' . $test_result . '</div>'];
+    $form['test_result'] = ['#markup' => '<p>The result passed through spamspan() but not processed by Javascript:</p><div style="background-color: #ccccff;">' . str_replace('class="spamspan"', '', $test_result) . '</div>'];
+    $form['test_as_html'] = ['#markup' => '<p>The HTML in the result:</p><div style="background-color: #ffcccc;">' . nl2br(htmlentities($test_result)) . '</div>'];
+    $form['actions'] = ['#type' => 'actions'];
+    $form['actions']['submit'] = ['#type' => 'submit', '#value' => t('Test')];
 
     $form['#attached']['library'][] = 'spamspan/obfuscate';
 

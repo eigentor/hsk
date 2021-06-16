@@ -65,31 +65,38 @@ abstract class FieldValidationRuleFormBase extends FormBase {
     }
 
     //$form['#attached']['library'][] = 'field_validation/admin';
-    $form['uuid'] = array(
+    $form['uuid'] = [
       '#type' => 'hidden',
       '#value' => $this->fieldValidationRule->getUuid(),
-    );
-    $form['id'] = array(
+    ];
+    $form['id'] = [
       '#type' => 'hidden',
       '#value' => $this->fieldValidationRule->getPluginId(),
-    );
-	
-    $form['title'] = array(
+    ];
+
+    $form['title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Field Validation Rule title'),
       '#default_value' => $this->fieldValidationRule->getTitle(),
       '#required' => TRUE,
-    );
+    ];
 	$entity_type_id = $this->fieldValidationRuleSet->getAttachedEntityType();
 	$bundle = $this->fieldValidationRuleSet->getAttachedBundle();
 	//$field_options = array();
     $field_options = array(
       '' => $this->t('- Select -'),
-    );	
-	foreach (\Drupal::entityManager()->getFieldDefinitions($entity_type_id, $bundle) as $fieldname => $field_definition) {
+    );
+
+	$baseFieldDefinitions = \Drupal::service('entity_field.manager')->getBaseFieldDefinitions($entity_type_id);
+    foreach ($baseFieldDefinitions as $base_field_name => $base_field_definition) {
+      $field_options[$base_field_name] = $base_field_definition->getLabel();
+    }
+
+	$fieldDefinitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type_id, $bundle);
+	foreach ($fieldDefinitions as $fieldname => $field_definition) {
       if (!empty($field_definition->getTargetBundle())) {
 		$field_options[$fieldname] = $field_definition->getLabel();
-		
+
 		//if($field_name == 'field_test'){
 		 // $field_all = \Drupal\field\Entity\FieldStorageConfig::loadByName('node', $field_name);
 		 //$field_all = $field_definition->getPropertyDefinitions();
@@ -106,70 +113,80 @@ abstract class FieldValidationRuleFormBase extends FormBase {
 	if(!empty($field_name)){
 	  $default_field_name = $field_name;
 	}
+    $user_input = $form_state->getUserInput();
+    $default_field_name =  isset($user_input['field_name']) ? $user_input['field_name'] : $default_field_name;
 	
-    $form['field_name'] = array(
+    $form['field_name'] = [
       '#type' => 'select',
       '#title' => $this->t('Field name'),
 	  '#options' => $field_options,
       '#default_value' => $default_field_name,
       '#required' => TRUE,
-      '#ajax' => array(
-        'callback' => '::updateColumn',
+      '#ajax' => [
+        'callback' => [$this, 'updateColumn'],
         'wrapper' => 'edit-field-name-wrapper',
-      ),	  
-    );
+		'event' => 'change',
+      ],
+    ];
 	//$default_field_name = $form_state->getValue('field_name', $field_name);
 	$default_column = $this->fieldValidationRule->getColumn();
-	$default_column = $form_state->getValue('column', $default_column);
+    //$user_input = $form_state->getUserInput();
+    $default_column =  isset($user_input['column']) ? $user_input['column'] : $default_column;
+    $column_options = $this->findColumn($default_field_name);
+	if(!in_array($default_column, $column_options)){
+	  $default_column = "";	
+	}
+	//$default_column = $form_state->getValue('column', $default_column);
 	//if()
-    $form['column'] = array(
+    $form['column'] = [
       '#type' => 'select',
       '#title' => $this->t('Column of field'),
-	  '#options' => $this->findColumn($default_field_name),
+	  '#options' => $column_options,
       '#default_value' => $default_column,
       '#required' => TRUE,
       '#prefix' => '<div id="edit-field-name-wrapper">',
       '#suffix' => '</div>',
-      '#validated' => TRUE,	  
-    );	
-    $form['data'] = $this->fieldValidationRule->buildConfigurationForm(array(), $form_state);
-    $form['error_message'] = array(
+      '#validated' => TRUE,
+    ];
+    $form['data'] = $this->fieldValidationRule->buildConfigurationForm([], $form_state);
+    $form['error_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Error message'),
       '#default_value' => $this->fieldValidationRule->getErrorMessage(),
       '#required' => TRUE,
-    );	
+      '#maxlength' => 255,	  
+    ];
     $form['data']['#tree'] = TRUE;
-	
+
 	//drupal_set_message('term_id:' . var_export($form['data']));
 
     // Check the URL for a weight, then the fieldValidationRule, otherwise use default.
-    $form['weight'] = array(
+    $form['weight'] = [
       '#type' => 'hidden',
       '#value' => $request->query->has('weight') ? (int) $request->query->get('weight') : $this->fieldValidationRule->getWeight(),
-    );
+    ];
 
-    $form['actions'] = array('#type' => 'actions');
-    $form['actions']['submit'] = array(
+    $form['actions'] = ['#type' => 'actions'];
+    $form['actions']['submit'] = [
       '#type' => 'submit',
       '#button_type' => 'primary',
-    );
-    $form['actions']['cancel'] = array(
+    ];
+    $form['actions']['cancel'] = [
       '#type' => 'link',
       '#title' => $this->t('Cancel'),
-      '#url' => $this->fieldValidationRuleSet->urlInfo('edit-form'),
+      '#url' => $this->fieldValidationRuleSet->toUrl('edit-form'),
       '#attributes' => ['class' => ['button']],
-    );
+    ];
     return $form;
   }
-  
+
   /**
    * Handles switching the configuration type selector.
    */
   public function updateColumn($form, FormStateInterface $form_state) {
-    $form['column']['#default_value'] = '';
-    $form['column']['#options'] = $this->findColumn($form_state->getValue('field_name'));
-	
+    //$form['column']['#default_value'] = '';
+    //$form['column']['#options'] = $this->findColumn($form_state->getValue('field_name'));
+
 	//\Drupal::logger('field_validation')->notice('123:' . $form_state->getValue('field_name'));
 	// \Drupal::logger('field_validation')->notice('123:' . var_export($form['column']['#options'], true));
 	/*$form['column']['#options'] = array(
@@ -185,15 +202,22 @@ abstract class FieldValidationRuleFormBase extends FormBase {
    */
   protected function findColumn($field_name) {
     //\Drupal::logger('field_validation')->notice('1234:' . $field_name);
-    $column_options = array(
+    $column_options = [
       '' => $this->t('- Select -'),
-    );
+    ];
 	if(empty($field_name)){
 	  return $column_options;
 	}
 	$entity_type_id = $this->fieldValidationRuleSet->getAttachedEntityType();
-	$field_info = \Drupal\field\Entity\FieldStorageConfig::loadByName($entity_type_id, $field_name);
-	$schema = $field_info->getSchema();
+	$baseFieldDefinitions = \Drupal::service('entity_field.manager')->getBaseFieldDefinitions($entity_type_id);
+    $schema = [];
+	if(isset($baseFieldDefinitions[$field_name])){
+		$field_info = $baseFieldDefinitions[$field_name];
+		$schema = $field_info->getSchema();		
+	}else{
+		$field_info = \Drupal\field\Entity\FieldStorageConfig::loadByName($entity_type_id, $field_name);
+		$schema = $field_info->getSchema();
+	}
 	// \Drupal::logger('field_validation')->notice('1234:' . var_export($schema, true));
 	if(!empty($schema['columns'])){
 	  $columns = $schema['columns'];
@@ -203,7 +227,7 @@ abstract class FieldValidationRuleFormBase extends FormBase {
 	}
     return $column_options;
   }
-  
+
   /**
    * {@inheritdoc}
    */
@@ -212,7 +236,7 @@ abstract class FieldValidationRuleFormBase extends FormBase {
     // pass that through for validation.
 	$data = $form_state->getValue('data');
 	if(empty($data)){
-	  $data = array();
+	  $data = [];
 	}
       $field_validation_rule_data = (new FormState())->setValues($data);
       $this->fieldValidationRule->validateConfigurationForm($form, $field_validation_rule_data);
@@ -226,14 +250,14 @@ abstract class FieldValidationRuleFormBase extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->cleanValues();
+    //drupal_flush_all_caches();
 
     // The fieldValidationRule configuration is stored in the 'data' key in the form,
     // pass that through for submission.
     $field_validation_rule_data = (new FormState())->setValues($form_state->getValue('data'));
     $this->fieldValidationRule->submitConfigurationForm($form, $field_validation_rule_data);
+
     // Update the original form values.
-	//drupal_set_message('1234:' . $form_state->getValue('field_name'));
-	//drupal_set_message('1234:' . $form_state->getValue('column'));
     $form_state->setValue('data', $field_validation_rule_data->getValues());
     $this->fieldValidationRule->setTitle($form_state->getValue('title'));
     $this->fieldValidationRule->setWeight($form_state->getValue('weight'));
@@ -241,20 +265,14 @@ abstract class FieldValidationRuleFormBase extends FormBase {
 	$this->fieldValidationRule->setColumn($form_state->getValue('column'));
 	$this->fieldValidationRule->setErrorMessage($form_state->getValue('error_message'));
     if (!$this->fieldValidationRule->getUuid()) {
-	  //drupal_set_message('1234');
       $this->fieldValidationRuleSet->addFieldValidationRule($this->fieldValidationRule->getConfiguration());
-      //drupal_set_message(var_export($this->fieldValidationRule->getConfiguration(), true));
-	  //$test_rule = $this->fieldValidationRule;
-	  //drupal_set_message(var_export($test_rule, true));
 	}else{
-	  //drupal_set_message(var_export($this->fieldValidationRule, true));
 	  $this->fieldValidationRuleSet->deleteFieldValidationRule($this->fieldValidationRule);
 	  $this->fieldValidationRuleSet->addFieldValidationRule($this->fieldValidationRule->getConfiguration());
     }
 	$this->fieldValidationRuleSet->save();
-    //drupal_set_message(var_export($this->fieldValidationRuleSet, true));
-    drupal_set_message($this->t('The rule was successfully applied.'));
-    $form_state->setRedirectUrl($this->fieldValidationRuleSet->urlInfo('edit-form'));
+	  $this->messenger()->addMessage($this->t('The rule was successfully applied.'));
+	  $form_state->setRedirectUrl($this->fieldValidationRuleSet->toUrl('edit-form'));
   }
 
   /**

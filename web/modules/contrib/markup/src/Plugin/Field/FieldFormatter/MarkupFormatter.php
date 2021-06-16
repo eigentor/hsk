@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\markup\Plugin\Field\FieldFormatter\MarkupDefaultFormatter.
- */
-
 namespace Drupal\markup\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;

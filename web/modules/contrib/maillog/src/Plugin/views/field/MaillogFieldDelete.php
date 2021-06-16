@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\maillog\Plugin\views\field\MaillogFieldDelete.
- */
-
 namespace Drupal\maillog\Plugin\views\field;
 
 use Drupal\views\Plugin\views\field\FieldPluginBase;
@@ -30,9 +25,10 @@ class MaillogFieldDelete extends FieldPluginBase {
 
     $id = $this->getValue($values);
 
-    $text = !empty($this->options['text']) ? $this->options['text'] : t('delete');
+    $text = !empty($this->options['text']) ? $this->options['text'] : $this->t('delete');
 
-    return \Drupal::l($text, 'maillog.delete', array('maillog_id' => $id), array('query' => drupal_get_destination()));
+    return \Drupal::service('link_generator')->generate($text, 'maillog.delete', ['maillog_id' => $id], ['query' => \Drupal::destination()->getAsArray()]);
   }
+
 }
 

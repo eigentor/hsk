@@ -49,12 +49,19 @@ class EventComponentResolver implements RulesComponentResolverInterface {
     $results = [];
     foreach ($event_ids as $event_id) {
       $action_set = $this->expressionManager->createActionSet();
-      // @todo Only load active reaction rules here.
-      $configs = $this->entityStorage->loadByProperties(['events.*.event_name' => $event_id]);
-      foreach ($configs as $config) {
-        $action_set->addExpressionObject($config->getExpression());
+      // Only load active reaction rules - inactive (disabled) Rules should
+      // not be executed, so we shouldn't even load them.
+      $configs = $this->entityStorage->loadByProperties([
+        'events.*.event_name' => $event_id,
+        'status' => TRUE,
+      ]);
+      if ($configs) {
+        // We should only produce $results if there are loaded reaction rules.
+        foreach ($configs as $config) {
+          $action_set->addExpressionObject($config->getExpression());
+        }
+        $results[$event_id] = RulesComponent::create($action_set);
       }
-      $results[$event_id] = RulesComponent::create($action_set);
     }
     return $results;
   }

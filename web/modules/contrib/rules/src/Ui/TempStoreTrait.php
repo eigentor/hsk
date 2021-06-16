@@ -4,8 +4,8 @@ namespace Drupal\rules\Ui;
 
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\TempStore\SharedTempStoreFactory;
 use Drupal\Core\Url;
-use Drupal\user\SharedTempStoreFactory;
 
 /**
  * Provides methods for modified rules components in temporary storage.
@@ -21,14 +21,14 @@ trait TempStoreTrait {
   /**
    * The tempstore factory.
    *
-   * @var \Drupal\user\SharedTempStoreFactory
+   * @var \Drupal\Core\TempStore\SharedTempStoreFactory
    */
   protected $tempStoreFactory;
 
   /**
    * The temporary store for the rules component.
    *
-   * @var \Drupal\user\SharedTempStore
+   * @var \Drupal\Core\TempStore\SharedTempStore
    */
   protected $tempStore;
 
@@ -54,6 +54,13 @@ trait TempStoreTrait {
   protected $renderer;
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Retrieves the renderer service if not already present.
    *
    * @return \Drupal\Core\Render\RendererInterface
@@ -69,12 +76,12 @@ trait TempStoreTrait {
   /**
    * Retrieves the temporary storage service if not already present.
    *
-   * @return \Drupal\user\SharedTempStoreFactory
+   * @return \Drupal\Core\TempStore\SharedTempStoreFactory
    *   The factory.
    */
   protected function getTempStoreFactory() {
     if (!isset($this->tempStoreFactory)) {
-      $this->tempStoreFactory = \Drupal::service('user.shared_tempstore');
+      $this->tempStoreFactory = \Drupal::service('tempstore.shared');
     }
     return $this->tempStoreFactory;
   }
@@ -82,11 +89,14 @@ trait TempStoreTrait {
   /**
    * Setter injection for the temporary storage factory.
    *
-   * @param \Drupal\user\SharedTempStoreFactory $temp_store_factory
+   * @param \Drupal\Core\TempStore\SharedTempStoreFactory $temp_store_factory
    *   The factory.
+   *
+   * @return $this
    */
   public function setTempStoreFactory(SharedTempStoreFactory $temp_store_factory) {
     $this->tempStoreFactory = $temp_store_factory;
+    return $this;
   }
 
   /**
@@ -107,9 +117,12 @@ trait TempStoreTrait {
    *
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The service.
+   *
+   * @return $this
    */
   public function setDateFormatter(DateFormatterInterface $date_formatter) {
     $this->dateFormatter = $date_formatter;
+    return $this;
   }
 
   /**
@@ -190,7 +203,7 @@ trait TempStoreTrait {
   /**
    * Gets the temporary storage repository from the factory.
    *
-   * @return \Drupal\user\SharedTempStore
+   * @return \Drupal\Core\TempStore\SharedTempStore
    *   The shareds storage.
    */
   private function getTempStore() {
@@ -267,11 +280,11 @@ trait TempStoreTrait {
     $lock = $this->getLockMetaData();
     $username = [
       '#theme' => 'username',
-      '#account' => $this->getEntityTypeManager()->getStorage('user')->load($lock->owner),
+      '#account' => $this->getEntityTypeManager()->getStorage('user')->load($lock->getOwnerId()),
     ];
     $lock_message_substitutions = [
       '@user' => $this->getRenderer()->render($username),
-      '@age' => $this->getDateFormatter()->formatTimeDiffSince($lock->updated),
+      '@age' => $this->getDateFormatter()->formatTimeDiffSince($lock->getUpdated()),
       '@component_type' => $this->getRulesUiHandler()->getPluginDefinition()->component_type_label,
       ':url' => Url::fromRoute($this->getRulesUiHandler()->getPluginDefinition()->base_route . '.break_lock', \Drupal::routeMatch()->getRawParameters()->all())->toString(),
     ];

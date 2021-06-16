@@ -12,14 +12,16 @@ use Drupal\rules\Core\RulesConditionBase;
  *   id = "rules_entity_has_field",
  *   label = @Translation("Entity has field"),
  *   category = @Translation("Entity"),
- *   context = {
+ *   context_definitions = {
  *     "entity" = @ContextDefinition("entity",
  *       label = @Translation("Entity"),
- *       description = @Translation("Specifies the entity for which to evaluate the condition.")
+ *       description = @Translation("Specifies the entity for which to evaluate the condition."),
+ *       assignment_restriction = "selector"
  *     ),
  *     "field" = @ContextDefinition("string",
  *       label = @Translation("Field"),
- *       description = @Translation("The name of the field to check for.")
+ *       description = @Translation("The name of the field to check for."),
+ *       assignment_restriction = "input"
  *     ),
  *   }
  * )

@@ -20,13 +20,29 @@
     +x-rem(font-size, 2)
     border-bottom: 5px solid $primary-color
 
+.container
+  max-width: 1000px
+
 .content_layout
+  +clearfix
   margin-top: 30px
+  .content-layout-inner
+    +make-md-column(12)
   .region-content
     margin-bottom: 40px
 
+.no-sidebars
+  .content_layout
+    +make-md-column(12)
+.sidebar-first, .sidebar-second
+  .content_layout
+    +make-md-column(9)
+
 .sidebar
-  ul#main-menu
+  +clearfix
+  +make-md-column(3)
+  ul.menu
+    margin-bottom: 3em
     li
       display: block
       float: none
@@ -35,6 +51,7 @@
       font-family: $roboto-slab
       ul
         border: none
+        margin-bottom: 0
         li
           list-style-type: none
           list-style-image: none
@@ -85,6 +102,13 @@
   background: #818181
   padding-top: 4px
   padding-bottom: 7px
+  +x-rem(font-size, 0.65)
+  color: white
+  padding: 1.5em 0
+
+.bottom-widgets
+  .bottom-region
+    +make-sm-column(4)
 
 
 
@@ -122,6 +146,19 @@
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop-narrow)
+  .footer-menu
+    nav
+      ul
+        margin-left: 0
+        li
+          display: inline-block
+          a
+            display: block
+            padding: 4px 20px 4px 0
+
+  .sidebar
+    margin-top: 30px
+
 
 
 

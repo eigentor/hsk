@@ -2,8 +2,8 @@
 
 namespace Drupal\rules\Plugin\RulesExpression;
 
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Engine\ConditionExpressionContainer;
-use Drupal\rules\Engine\ExecutionStateInterface;
 
 /**
  * Evaluates a group of conditions with a logical OR.
@@ -19,11 +19,21 @@ class OrExpression extends ConditionExpressionContainer {
    * {@inheritdoc}
    */
   public function evaluate(ExecutionStateInterface $state) {
-    foreach ($this->conditions as $condition) {
+    // Use the iterator to ensure the conditions are sorted.
+    foreach ($this as $condition) {
+      /** @var \Drupal\rules\Engine\ExpressionInterface $condition */
       if ($condition->executeWithState($state)) {
+        $this->rulesDebugLogger->info('%label evaluated to %result.', [
+          '%label' => $this->getLabel(),
+          '%result' => 'TRUE',
+        ]);
         return TRUE;
       }
     }
+    $this->rulesDebugLogger->info('%label evaluated to %result.', [
+      '%label' => $this->getLabel(),
+      '%result' => 'FALSE',
+    ]);
     // An empty OR should return TRUE. Otherwise, if all conditions evaluate
     // to FALSE we return FALSE.
     return empty($this->conditions);

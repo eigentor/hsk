@@ -39,7 +39,7 @@ class FieldValidationRuleSetEditForm extends FieldValidationRuleSetFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.manager')->getStorage('field_validation_rule_set'),
+      $container->get('entity_type.manager')->getStorage('field_validation_rule_set'),
       $container->get('plugin.manager.field_validation.field_validation_rule')
     );
   }
@@ -55,27 +55,27 @@ class FieldValidationRuleSetEditForm extends FieldValidationRuleSetFormBase {
 
 
     // Build the list of existing field validation rule for this rule set.
-    $form['rules'] = array(
+    $form['rules'] = [
       '#type' => 'table',
-      '#header' => array(
+      '#header' => [
         $this->t('Rule'),
         $this->t('Weight'),
         $this->t('Operations'),
-      ),
-      '#tabledrag' => array(
-        array(
+      ],
+      '#tabledrag' => [
+       [
           'action' => 'order',
           'relationship' => 'sibling',
           'group' => 'rule-order-weight',
-        ),
-      ),
-      '#attributes' => array(
+        ],
+      ],
+      '#attributes' => [
         'id' => 'field-validation-rule-set-rules',
-      ),
+      ],
       '#empty' => $this->t('There are currently no rules in this rule set. Add one by selecting an option below.'),
       // Render tabs below parent elements.
       '#weight' => 5,
-    );
+    ];
 	$field_validation_rules =  $this->entity->getFieldValidationRules();
 	//drupal_set_message(var_export($field_validation_rules, true));
     foreach ($field_validation_rules as $field_validation_rule) {
@@ -83,14 +83,14 @@ class FieldValidationRuleSetEditForm extends FieldValidationRuleSetFormBase {
       $key = $field_validation_rule->getUuid();
       $form['rules'][$key]['#attributes']['class'][] = 'draggable';
       $form['rules'][$key]['#weight'] = isset($user_input['rules']) ? $user_input['rules'][$key]['weight'] : NULL;
-      $form['rules'][$key]['rule'] = array(
+      $form['rules'][$key]['rule'] = [
         '#tree' => FALSE,
-        'data' => array(
-          'label' => array(
+        'data' => [
+          'label' => [
             '#plain_text' => $field_validation_rule->label(),
-          ),
-        ),
-      );
+          ],
+        ],
+      ];
 
       $summary = $field_validation_rule->getSummary();
 
@@ -99,42 +99,42 @@ class FieldValidationRuleSetEditForm extends FieldValidationRuleSetFormBase {
         $form['rules'][$key]['rule']['data']['summary'] = $summary;
       }
 
-      $form['rules'][$key]['weight'] = array(
+      $form['rules'][$key]['weight'] = [
         '#type' => 'weight',
-        '#title' => $this->t('Weight for @title', array('@title' => $field_validation_rule->label())),
+        '#title' => $this->t('Weight for @title', ['@title' => $field_validation_rule->label()]),
         '#title_display' => 'invisible',
         '#default_value' => $field_validation_rule->getWeight(),
-        '#attributes' => array(
-          'class' => array('rule-order-weight'),
-        ),
-      );
+        '#attributes' => [
+          'class' =>['rule-order-weight'],
+        ],
+      ];
 
-      $links = array();
+      $links = [];
       $is_configurable = $field_validation_rule instanceof ConfigurableFieldValidationRuleInterface;
       if ($is_configurable) {
-        $links['edit'] = array(
+        $links['edit'] = [
           'title' => $this->t('Edit'),
           'url' => Url::fromRoute('field_validation.field_validation_rule_edit_form', [
             'field_validation_rule_set' => $this->entity->id(),
             'field_validation_rule' => $key,
           ]),
-        );
+        ];
       }
-      $links['delete'] = array(
+      $links['delete'] = [
         'title' => $this->t('Delete'),
         'url' => Url::fromRoute('field_validation.field_validation_rule_delete', [
           'field_validation_rule_set' => $this->entity->id(),
           'field_validation_rule' => $key,
         ]),
-      );
-      $form['rules'][$key]['operations'] = array(
+      ];
+      $form['rules'][$key]['operations'] = [
         '#type' => 'operations',
         '#links' => $links,
-      );
+      ];
     }
 
     // Build the new field_validation_rule addition form and add it to the field_validation_rule list.
-    $new_field_validation_rule_options = array();
+    $new_field_validation_rule_options = [];
     $field_validation_rules = $this->fieldValidationRuleManager->getDefinitions();
 	//drupal_set_message(var_export($field_validation_rules, true));
     uasort($field_validation_rules, function ($a, $b) {
@@ -143,43 +143,43 @@ class FieldValidationRuleSetEditForm extends FieldValidationRuleSetFormBase {
     foreach ($field_validation_rules as $field_validation_rule => $definition) {
       $new_field_validation_rule_options[$field_validation_rule] = $definition['label'];
     }
-    $form['rules']['new'] = array(
+    $form['rules']['new'] = [
       '#tree' => FALSE,
       '#weight' => isset($user_input['weight']) ? $user_input['weight'] : NULL,
-      '#attributes' => array('class' => array('draggable')),
-    );
-    $form['rules']['new']['rule'] = array(
-      'data' => array(
-        'new' => array(
+      '#attributes' => ['class' => ['draggable']],
+    ];
+    $form['rules']['new']['rule'] = [
+      'data' => [
+        'new' => [
           '#type' => 'select',
           '#title' => $this->t('Rule'),
           '#title_display' => 'invisible',
           '#options' => $new_field_validation_rule_options,
           '#empty_option' => $this->t('Select a new rule'),
-        ),
-        array(
-          'add' => array(
+        ],
+        [
+          'add' => [
             '#type' => 'submit',
             '#value' => $this->t('Add'),
-            '#validate' => array('::fieldValidationRuleValidate'),
-            '#submit' => array('::submitForm', '::fieldValidationRuleSave'),
-          ),
-        ),
-      ),
+            '#validate' => ['::fieldValidationRuleValidate'],
+            '#submit' => ['::submitForm', '::fieldValidationRuleSave'],
+          ],
+        ],
+      ],
       '#prefix' => '<div class="field-validation-rule-new">',
       '#suffix' => '</div>',
-    );
+    ];
 
-    $form['rules']['new']['weight'] = array(
+    $form['rules']['new']['weight'] = [
       '#type' => 'weight',
       '#title' => $this->t('Weight for new rule'),
       '#title_display' => 'invisible',
       '#default_value' => count($this->entity->getFieldValidationRules()) + 1,
-      '#attributes' => array('class' => array('rule-order-weight')),
-    );
-    $form['rules']['new']['operations'] = array(
-      'data' => array(),
-    );
+      '#attributes' => ['class' => ['rule-order-weight']],
+    ];
+    $form['rules']['new']['operations'] = [
+      'data' => [],
+    ];
 
     return parent::form($form, $form_state);
   }
@@ -210,24 +210,24 @@ class FieldValidationRuleSetEditForm extends FieldValidationRuleSetFormBase {
 
       $form_state->setRedirect(
         'field_validation.field_validation_rule_add_form',
-        array(
+        [
           'field_validation_rule_set' => $this->entity->id(),
           'field_validation_rule' => $form_state->getValue('new'),
-        ),
-        array('query' => array('weight' => $form_state->getValue('weight')))
+        ],
+        ['query' => ['weight' => $form_state->getValue('weight')]]
       );
     }
     // If there's no form, immediately add the rule.
     else {
-      $field_validation_rule = array(
+      $field_validation_rule = [
         'id' => $field_validation_rule['id'],
-        'data' => array(),
+        'data' => [],
         'weight' => $form_state->getValue('weight'),
-      );
+      ];
       $field_validation_rule_id = $this->entity->addFieldValidationRule($field_validation_rule);
       $this->entity->save();
       if (!empty($tab_id)) {
-        drupal_set_message($this->t('The rule was successfully added.'));
+	      $this->messenger()->addMessage($this->t('The rule was successfully added.'));
       }
     }
   }
@@ -250,7 +250,7 @@ class FieldValidationRuleSetEditForm extends FieldValidationRuleSetFormBase {
    */
   public function save(array $form, FormStateInterface $form_state) {
     parent::save($form, $form_state);
-    drupal_set_message($this->t('Changes to the field validation rule set have been saved.'));
+	  $this->messenger()->addMessage($this->t('Changes to the field validation rule set have been saved.'));
   }
 
   /**

@@ -10,10 +10,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Dispatches new logger-items as SystemLoggerEvent.
+ * Logger that dispatches a SystemLoggerEvent when a logger entry is made.
  */
 class RulesLog implements LoggerInterface {
-
   use RfcLoggerTrait;
   use DependencySerializationTrait;
 
@@ -47,14 +46,15 @@ class RulesLog implements LoggerInterface {
   /**
    * {@inheritdoc}
    *
-   * @todo Create a TypedData logger-entry object: https://www.drupal.org/node/2625238
+   * @todo Create a TypedData logger-entry object.
+   * @see https://www.drupal.org/node/2625238
    */
   public function log($level, $message, array $context = []) {
     // Remove any backtraces since they may contain an unserializable variable.
     unset($context['backtrace']);
 
-    // Convert PSR3-style messages to SafeMarkup::format() style so they can be
-    // translated at runtime.
+    // Convert PSR3-style messages to \Drupal\Component\Render\FormattableMarkup
+    // style, so they can be translated at runtime.
     $message_placeholders = $this->parser->parseMessagePlaceholders($message, $context);
 
     $logger_entry = [

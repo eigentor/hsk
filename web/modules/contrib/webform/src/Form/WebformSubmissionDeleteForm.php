@@ -3,9 +3,8 @@
 namespace Drupal\webform\Form;
 
 use Drupal\Core\Entity\ContentEntityDeleteForm;
-use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\webform\WebformRequestInterface;
+use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -44,26 +43,12 @@ class WebformSubmissionDeleteForm extends ContentEntityDeleteForm implements Web
   protected $requestHandler;
 
   /**
-   * Constructs a WebformSubmissionDeleteForm object.
-   *
-   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
-   *   The entity repository.
-   * @param \Drupal\webform\WebformRequestInterface $request_handler
-   *   The webform request handler.
-   */
-  public function __construct(EntityRepositoryInterface $entity_repository, WebformRequestInterface $request_handler) {
-    parent::__construct($entity_repository);
-    $this->requestHandler = $request_handler;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity.repository'),
-      $container->get('webform.request')
-    );
+    $instance = parent::create($container);
+    $instance->requestHandler = $container->get('webform.request');
+    return $instance;
   }
 
   /**
@@ -174,8 +159,19 @@ class WebformSubmissionDeleteForm extends ContentEntityDeleteForm implements Web
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    $base_route_name = (strpos(\Drupal::routeMatch()->getRouteName(), 'webform.user.submission.delete') !== FALSE) ? 'webform.user.submissions' : 'webform.results_submissions';
-    return $this->requestHandler->getUrl($this->webform, $this->sourceEntity, $base_route_name);
+    if ($this->webform->access('submission_view_own') || $this->webform->access('submission_view_any')) {
+      $base_route_name = (strpos(\Drupal::routeMatch()->getRouteName(), 'webform.user.submission.delete') !== FALSE) ? 'webform.user.submissions' : 'webform.results_submissions';
+      return $this->requestHandler->getUrl($this->webform, $this->sourceEntity, $base_route_name);
+    }
+    elseif ($this->sourceEntity && $this->sourceEntity->hasLinkTemplate('canonical') && $this->sourceEntity->access('view')) {
+      return $this->sourceEntity->toUrl();
+    }
+    elseif ($this->webform->access('view')) {
+      return $this->webform->toUrl();
+    }
+    else {
+      return Url::fromRoute('<front>');
+    }
   }
 
   /**

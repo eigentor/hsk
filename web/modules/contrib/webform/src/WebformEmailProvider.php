@@ -33,7 +33,7 @@ class WebformEmailProvider implements WebformEmailProviderInterface {
   protected $mailManager;
 
   /**
-   * Constructs a WebformEmailProvider.
+   * Constructs a WebformEmailProvider object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration object factory.
@@ -175,7 +175,7 @@ class WebformEmailProvider implements WebformEmailProviderInterface {
    */
   public function getMailPluginDefinition() {
     $plugin_id = $this->getMailPluginId();
-    return ($plugin_id) ? $this->mailManager->getDefinition($plugin_id) : NULL;
+    return ($plugin_id && $this->mailManager->hasDefinition($plugin_id)) ? $this->mailManager->getDefinition($plugin_id) : NULL;
   }
 
 }

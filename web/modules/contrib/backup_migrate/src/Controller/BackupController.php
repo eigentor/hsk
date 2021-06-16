@@ -2,25 +2,28 @@
 
 namespace Drupal\backup_migrate\Controller;
 
-use BackupMigrate\Core\Destination\DestinationInterface;
-use BackupMigrate\Core\Destination\ListableDestinationInterface;
-use BackupMigrate\Drupal\Destination\DrupalBrowserDownloadDestination;
+use Drupal\backup_migrate\Core\Destination\ListableDestinationInterface;
+use Drupal\backup_migrate\Drupal\Destination\DrupalBrowserDownloadDestination;
 use Drupal\backup_migrate\Entity\Destination;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\TableSort;
 
 /**
- * Class BackupController
+ *
+ *
  * @package Drupal\backup_migrate\Controller
  */
 class BackupController extends ControllerBase {
 
   /**
-   * @var DestinationInterface
+   * @var \Drupal\backup_migrate\Core\Destination\DestinationInterface
    */
-  var $destination;
+  public $destination;
 
-
+  /**
+   *
+   */
   public function listAll() {
     $storage = \Drupal::entityTypeManager()
       ->getStorage('backup_migrate_destination');
@@ -33,7 +36,7 @@ class BackupController extends ControllerBase {
 
       $out[$key] = [
         'title' => [
-          '#markup' => '<h2>' . $this->t('Most recent backups in %dest', ['%dest' => $label]) . '</h2>'
+          '#markup' => '<h2>' . $this->t('Most recent backups in %dest', ['%dest' => $label]) . '</h2>',
         ],
         'list' => $this::listDestinationBackups($destination, $key, 5),
       ];
@@ -55,9 +58,7 @@ class BackupController extends ControllerBase {
    *
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
    */
-  public function listDestinationEntityBackupsTitle(
-    Destination $backup_migrate_destination
-  ) {
+  public function listDestinationEntityBackupsTitle(Destination $backup_migrate_destination) {
     return $this->t('Backups in @destination_name',
       ['@destination_name' => $backup_migrate_destination->label()]);
   }
@@ -69,10 +70,7 @@ class BackupController extends ControllerBase {
    *
    * @return mixed
    */
-  public
-  function listDestinationEntityBackups(
-    Destination $backup_migrate_destination
-  ) {
+  public function listDestinationEntityBackups(Destination $backup_migrate_destination) {
     $destination = $backup_migrate_destination->getObject();
     return $this->listDestinationBackups($destination,
       $backup_migrate_destination->id());
@@ -81,43 +79,41 @@ class BackupController extends ControllerBase {
   /**
    * List the backups in the given destination.
    *
-   * @param \BackupMigrate\Core\Destination\ListableDestinationInterface $destination
+   * @param \Drupal\backup_migrate\Core\Destination\ListableDestinationInterface $destination
+   * @param $backup_migrate_destination_id
+   * @param int $count
    *
    * @return mixed
    */
-  public
-  function listDestinationBackups(
-    ListableDestinationInterface $destination,
-    $backup_migrate_destination_id,
-    $count = NULL
-  ) {
-
-    // Get a sorted list of files
+  public function listDestinationBackups(ListableDestinationInterface $destination, $backup_migrate_destination_id, $count = NULL) {
+    // Get a sorted list of files.
     $rows = [];
-    $header = array(
-      array(
+    $header = [
+      [
         'data' => $this->t('Name'),
-        'class' => array(RESPONSIVE_PRIORITY_MEDIUM),
-        'field' => 'name'
-      ),
-      array(
+        'class' => [RESPONSIVE_PRIORITY_MEDIUM],
+        'field' => 'name',
+      ],
+      [
         'data' => $this->t('Date'),
-        'class' => array(RESPONSIVE_PRIORITY_MEDIUM),
-        'field' => 'datestamp', 'sort' => 'desc'
-      ),
-      array(
+        'class' => [RESPONSIVE_PRIORITY_MEDIUM],
+        'field' => 'datestamp',
+        'sort' => 'desc',
+      ],
+      [
         'data' => $this->t('Size'),
-        'class' => array(RESPONSIVE_PRIORITY_MEDIUM),
-        'field' => 'filesize', 'sort' => 'desc'
-      ),
-      array(
+        'class' => [RESPONSIVE_PRIORITY_MEDIUM],
+        'field' => 'filesize',
+        'sort' => 'desc',
+      ],
+      [
         'data' => $this->t('Operations'),
-        'class' => array(RESPONSIVE_PRIORITY_LOW)
-      ),
-    );
+        'class' => [RESPONSIVE_PRIORITY_LOW],
+      ],
+    ];
 
-    $order = tablesort_get_order($header);
-    $sort = tablesort_get_sort($header);
+    $order = TableSort::getOrder($header, \Drupal::request());
+    $sort = TableSort::getSort($header, \Drupal::request());
     $php_sort = $sort == 'desc' ? SORT_DESC : SORT_ASC;
 
     $backups = $destination->queryFiles([], $order['sql'], $php_sort, $count);
@@ -185,14 +181,9 @@ class BackupController extends ControllerBase {
    * Download a backup via the browser.
    *
    * @param \Drupal\backup_migrate\Entity\Destination $backup_migrate_destination
-   *
    * @param $backup_id
    */
-  public
-  function download(
-    Destination $backup_migrate_destination,
-    $backup_id
-  ) {
+  public function download(Destination $backup_migrate_destination, $backup_id) {
     $destination = $backup_migrate_destination->getObject();
     $file = $destination->getFile($backup_id);
     $file = $destination->loadFileForReading($file);

@@ -34,7 +34,7 @@ class CustomAccessCheck implements AccessCheckInterface {
     // needed. Pass forward parameters from the route and/or request as needed.
     return AccessResultAllowed::allowedIfHasPermissions(
       $account,
-      array('entityconnect add button', 'entityconnect edit button'),
+      ['entityconnect add button', 'entityconnect edit button'],
       'OR');
   }
 

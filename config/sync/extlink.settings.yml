@@ -9,3 +9,7 @@ extlink_img_class: false
 extlink_class: ext
 extlink_css_exclude: ''
 extlink_css_explicit: ''
+langcode: de
+extlink_label: '(link is external)'
+extlink_mailto_label: '(link sends email)'
+extlink_exclude_admin_routes: false

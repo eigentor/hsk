@@ -2,6 +2,7 @@
 
 namespace Drupal\rules\Form;
 
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\rules\Engine\ExpressionManagerInterface;
@@ -40,6 +41,7 @@ abstract class RulesComponentFormBase extends EntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
+    $form['#entity_builders'][] = '::entityTagsBuilder';
     $form['settings'] = [
       '#type' => 'details',
       '#title' => $this->t('Settings'),
@@ -68,18 +70,18 @@ abstract class RulesComponentFormBase extends EntityForm {
     ];
 
     // @todo Enter a real tag field here.
-    $form['settings']['tags'] = [
+    $form['settings']['keywords'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Tags'),
       '#default_value' => implode(', ', $this->entity->getTags()),
-      '#description' => $this->t('Enter a list of comma-separated tags here; e.g., "notification, publishing". Tags are used for filtering available components in the administration interface.'),
+      '#description' => $this->t('Enter a list of comma-separated keywords here; e.g., "notification, publishing". Tags are keywords used for filtering available components in the administration interface.'),
       '#required' => FALSE,
     ];
 
     $form['settings']['description'] = [
       '#type' => 'textarea',
       '#default_value' => $this->entity->getDescription(),
-      '#description' => $this->t('Enter a description for this component, to help document what this component is indended to do.'),
+      '#description' => $this->t('Enter a description for this component, to help document what this component is intended to do.'),
       '#title' => $this->t('Description'),
     ];
 
@@ -87,16 +89,27 @@ abstract class RulesComponentFormBase extends EntityForm {
   }
 
   /**
-   * {@inheritdoc}
+   * Callback method for the #entity_builder form property.
+   *
+   * Used to change format of tags from comma-separated values (as input)
+   * into an array (as stored in the the configuration entity).
+   *
+   * @param string $entity_type
+   *   The type of the entity.
+   * @param \Drupal\Core\Config\Entity\ConfigEntityInterface $entity
+   *   The entity whose form is being built.
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
    */
-  public function buildEntity(array $form, FormStateInterface $form_state) {
-    $entity = parent::buildEntity($form, $form_state);
+  public function entityTagsBuilder($entity_type, ConfigEntityInterface $entity, array $form, FormStateInterface $form_state) {
     $tags = [];
-    if (trim($entity->get('tags')) != '') {
-      $tags = array_map('trim', explode(',', $entity->get('tags')));
+    $input_tags = $form_state->getValue('keywords');
+    if (trim($input_tags) != '') {
+      $tags = array_map('trim', explode(',', $input_tags));
     }
     $entity->set('tags', $tags);
-    return $entity;
   }
 
   /**

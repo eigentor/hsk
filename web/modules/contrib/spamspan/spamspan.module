@@ -15,7 +15,7 @@
 
 
 use Drupal\Core\Routing\RouteMatchInterface;
-
+use Drupal\Core\Url;
 
 
 /**
@@ -24,7 +24,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 function spamspan_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.spamspan':
-      return t('<p>The SpamSpan module obfuscates email addresses to help prevent spambots from collecting them. See the <a href="@url">Spamspan test page</a>.</p>', array('@url' => Drupal::url('spamspan.test')));
+      return t('<p>The SpamSpan module obfuscates email addresses to help prevent spambots from collecting them. See the <a href="@url">Spamspan test page</a>.</p>', ['@url' => Url::fromRoute('spamspan.test')->toString()]);
   }
 }
 
@@ -56,14 +56,14 @@ function spamspan($text = '', $settings = []) {
  * Implements hook_theme().
  */
 function spamspan_theme($existing, $type, $theme, $path) {
-  return array(
-    'spamspan_at_sign' => array(
-      'variables' => array(
+  return [
+    'spamspan_at_sign' => [
+      'variables' => [
         // path to '@' image file
         'path' => base_path() . drupal_get_path('module', 'spamspan') . '/image.gif',
         // the spamspan filter settings if anyone needs them
-        'settings' => array(),
-      ),
-    ),
-  );
+        'settings' => [],
+      ],
+    ],
+  ];
 }

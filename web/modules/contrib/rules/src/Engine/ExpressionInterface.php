@@ -2,23 +2,26 @@
 
 namespace Drupal\rules\Engine;
 
-use Drupal\Component\Plugin\ConfigurablePluginInterface;
+use Drupal\Component\Plugin\ConfigurableInterface;
+use Drupal\Component\Plugin\DependentPluginInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Executable\ExecutableInterface;
+use Drupal\rules\Context\ExecutionMetadataStateInterface;
+use Drupal\rules\Context\ExecutionStateInterface;
 
 /**
  * Defines the interface for Rules expressions.
  *
  * @see \Drupal\rules\Engine\ExpressionManager
  */
-interface ExpressionInterface extends ExecutableInterface, ConfigurablePluginInterface, PluginInspectionInterface {
+interface ExpressionInterface extends ExecutableInterface, ConfigurableInterface, DependentPluginInterface, PluginInspectionInterface {
 
   /**
    * Execute the expression with a given Rules state.
    *
    * Note that this does not auto-save any changes.
    *
-   * @param \Drupal\rules\Engine\ExecutionStateInterface $state
+   * @param \Drupal\rules\Context\ExecutionStateInterface $state
    *   The state with all the execution variables in it.
    *
    * @return null|bool
@@ -52,6 +55,8 @@ interface ExpressionInterface extends ExecutableInterface, ConfigurablePluginInt
    *
    * @param \Drupal\rules\Engine\ExpressionInterface $root
    *   The root expression object.
+   *
+   * @return $this
    */
   public function setRoot(ExpressionInterface $root);
 
@@ -76,8 +81,28 @@ interface ExpressionInterface extends ExecutableInterface, ConfigurablePluginInt
    *
    * @param string $uuid
    *   The UUID to set.
+   *
+   * @return $this
    */
   public function setUuid($uuid);
+
+  /**
+   * Returns the list order of this expression.
+   *
+   * @return int
+   *   The list order of this expression.
+   */
+  public function getWeight();
+
+  /**
+   * Sets the list order of this expression in an expression tree.
+   *
+   * @param int $weight
+   *   The weight to set.
+   *
+   * @return $this
+   */
+  public function setWeight($weight);
 
   /**
    * Verifies that this expression is configured correctly.
@@ -91,7 +116,7 @@ interface ExpressionInterface extends ExecutableInterface, ConfigurablePluginInt
    * This allows for efficient integrity checks of expression trees; e.g. see
    * \Drupal\rules\Engine\ActionExpressionContainer::checkIntegrity().
    *
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The execution metadata state, prepared until right before this
    *   expression.
    * @param bool $apply_assertions
@@ -122,7 +147,7 @@ interface ExpressionInterface extends ExecutableInterface, ConfigurablePluginInt
    * $until = NULL reflects the execution metadata state at the end of the
    * expression execution.
    *
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The execution metadata state, prepared until right before this
    *   expression.
    * @param \Drupal\rules\Engine\ExpressionInterface $until

@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\rules\Unit;
 
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Engine\ConditionExpressionInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 use Drupal\rules\Plugin\RulesExpression\OrExpression;
 use Prophecy\Argument;
 
@@ -23,10 +23,10 @@ class OrExpressionTest extends RulesUnitTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
-    $this->or = new OrExpression([], '', [], $this->expressionManager->reveal());
+    $this->or = new OrExpression([], '', ['label' => 'Condition set (OR)'], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
   }
 
   /**
@@ -62,6 +62,7 @@ class OrExpressionTest extends RulesUnitTestBase {
 
     $second_condition = $this->prophesize(ConditionExpressionInterface::class);
     $second_condition->getUuid()->willReturn('true_uuid2');
+    $second_condition->getWeight()->willReturn(0);
 
     $second_condition->executeWithState(Argument::type(ExecutionStateInterface::class))
       ->willReturn(TRUE)
@@ -84,6 +85,7 @@ class OrExpressionTest extends RulesUnitTestBase {
 
     $second_condition = $this->prophesize(ConditionExpressionInterface::class);
     $second_condition->getUuid()->willReturn('false_uuid2');
+    $second_condition->getWeight()->willReturn(0);
 
     $second_condition->executeWithState(Argument::type(ExecutionStateInterface::class))
       ->willReturn(FALSE)

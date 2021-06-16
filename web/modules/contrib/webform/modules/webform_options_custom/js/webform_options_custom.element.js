@@ -10,30 +10,11 @@
   Drupal.webformOptionsCustom = Drupal.webformOptionsCustom || {};
 
   // @see http://api.jqueryui.com/tooltip/
-  Drupal.webformOptionsCustom.jQueryUiTooltip = Drupal.webformOptionsCustom.jQueryUiTooltip || {};
-  Drupal.webformOptionsCustom.jQueryUiTooltip.options = Drupal.webformOptionsCustom.jQueryUiTooltip.options || {
-    tooltipClass: 'webform-options-custom-tooltip',
-    track: true,
-    // @see
-    // https://stackoverflow.com/questions/18231315/jquery-ui-tooltip-html-with-links
-    show: {delay: 300},
-    close: function (event, ui) {
-      ui.tooltip.hover(
-        function () {
-          $(this).stop(true).fadeTo(400, 1);
-        },
-        function () {
-          $(this).fadeOut('400', function () {
-            $(this).remove();
-          });
-        });
-    }
-  };
-
-  // @see http://bootstrapdocs.com/v3.0.3/docs/javascript/#tooltips-usage
-  Drupal.webformOptionsCustom.bootstrapTooltip = Drupal.webformOptionsCustom.bootstrapTooltip || {};
-  Drupal.webformOptionsCustom.bootstrapTooltip.options = Drupal.webformOptionsCustom.bootstrapTooltip.options || {
-    delay: 200
+  Drupal.webformOptionsCustom.tippy = Drupal.webformOptionsCustom.tippy || {};
+  Drupal.webformOptionsCustom.tippy.options = Drupal.webformOptionsCustom.tippy.options || {
+    delay: 300,
+    allowHTML: true,
+    followCursor: true
   };
 
   // @see https://github.com/ariutta/svg-pan-zoom
@@ -112,6 +93,7 @@
         // Template event handling.
         $template
           .on('click', setTemplateValue)
+          .on('click', setTemplateValue)
           .on('keydown', function (event) {
             var $templateOption = $(event.target);
             if (!$templateOption.is('[data-option-value]')) {
@@ -136,12 +118,12 @@
               });
               if (event.which === 37 || event.which === 38) {
                 if ($prev) {
-                  $prev.focus();
+                  $prev.trigger('focus');
                 }
               }
               else if (event.which === 39 || event.which === 40) {
                 if ($next) {
-                  $next.focus();
+                  $next.trigger('focus');
                 }
               }
               event.preventDefault();
@@ -253,10 +235,10 @@
               .find('[data-option-value="' + value + '"]')
               .not('text')
               .first()
-              .focus();
+              .trigger('focus');
           }
 
-          $select.change();
+          $select.trigger('change');
         }
 
         /* ****************************************************************** */
@@ -327,7 +309,7 @@
          *   The select option.
          */
         function initializeTemplateTooltip($templateOption, option) {
-          if (!hasTooltip) {
+          if (!hasTooltip || !window.tippy) {
             return;
           }
 
@@ -336,36 +318,10 @@
             content += '<div class="webform-options-custom-tooltip--description">' + option.description + '</div>';
           }
 
-          if (typeof $.ui.tooltip !== 'undefined') {
-            // jQuery UI tooltip support.
-            var tooltipOptions = $.extend({
-              content: content,
-              items: '[data-option-value]',
-              open: function (event, ui) {
-                $(ui.tooltip).on('click', function () {
-                  var value = $(this)
-                    .find('[data-tooltip-value]')
-                    .attr('data-tooltip-value');
-                  setValue(value);
-                });
-              }
-            }, Drupal.webformOptionsCustom.jQueryUiTooltip.options);
-
-            $templateOption.tooltip(tooltipOptions);
-          }
-          else if ((typeof $.fn.tooltip) !== 'undefined') {
-            // Bootstrap tooltip support.
-            var options = $.extend({
-              html: true,
-              title: content
-            }, Drupal.webformOptionsCustom.bootstrapTooltip.options);
-
-            $templateOption
-              .tooltip(options)
-              .on('show.bs.tooltip', function (event) {
-                $templateOptions.not($templateOption).tooltip('hide');
-              });
-          }
+          var tooltipOptions = $.extend({
+            content: content,
+          }, Drupal.webformOptionsCustom.tippy.options);
+          tippy($templateOption[0], tooltipOptions);
         }
 
         /**
@@ -378,8 +334,8 @@
           var options = $.extend({
           }, Drupal.webformOptionsCustom.panAndZoom.options);
           var panZoom = window.svgPanZoom($svg[0], options);
-          $(window).resize(function () {
-            panZoom.resize();
+          $(window).on('resize', function () {
+            panZoom.trigger('resize');
             panZoom.fit();
             panZoom.center();
           });

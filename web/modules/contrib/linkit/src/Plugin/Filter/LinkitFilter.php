@@ -14,19 +14,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a Linkit filter.
  *
- * Note this must run before any Xss::filter() calls, because that strips
- * disallowed protocols. That effectively means this must run before the
- * \Drupal\filter\Plugin\Filter\FilterHtml filter. Hence the very low weight.
- *
  * @Filter(
  *   id = "linkit",
- *   title = @Translation("Linkit filter"),
- *   description = @Translation("Updates content links inserted by Linkit to point to the current URL alias, and have the current title."),
+ *   title = @Translation("Linkit URL converter"),
+ *   description = @Translation("Updates links inserted by Linkit to point to entity URL aliases."),
  *   settings = {
  *     "title" = TRUE,
  *   },
- *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
- *   weight = -15,
+ *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE
  * )
  */
 class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface {
@@ -56,6 +51,8 @@ class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
    *   The entity repository service.
+   * @param \Drupal\linkit\SubstitutionManagerInterface $substitution_manager
+   *   The substitution manager.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityRepositoryInterface $entity_repository, SubstitutionManagerInterface $substitution_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -94,6 +91,12 @@ class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface
           $entity_type = $element->getAttribute('data-entity-type');
           $uuid = $element->getAttribute('data-entity-uuid');
 
+          // Skip empty attributes to prevent loading of non-existing
+          // content type.
+          if ($entity_type === '' || $uuid === '') {
+            continue;
+          }
+
           // Make the substitution optional, for backwards compatibility,
           // maintaining the previous hard-coded direct file link assumptions,
           // for content created before the substitution feature.
@@ -111,20 +114,26 @@ class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface
               ->createInstance($substitution_type)
               ->getUrl($entity);
 
-            $element->setAttribute('href', $url->getGeneratedUrl());
-            $access = $entity->access('view', NULL, TRUE);
+            // Parse link href as url, extract query and fragment from it.
+            $href_url = parse_url($element->getAttribute('href'));
+            $anchor = empty($href_url["fragment"]) ? '' : '#' . $href_url["fragment"];
+            $query = empty($href_url["query"]) ? '' : '?' . $href_url["query"];
+
+            $element->setAttribute('href', $url->getGeneratedUrl() . $query . $anchor);
 
             // Set the appropriate title attribute.
-            if ($this->settings['title'] && !$access->isForbidden() && !$element->getAttribute('title')) {
-              $element->setAttribute('title', $entity->label());
+            if ($this->settings['title'] && !$element->getAttribute('title')) {
+              $access = $entity->access('view', NULL, TRUE);
+              if (!$access->isForbidden()) {
+                $element->setAttribute('title', $entity->label());
+              }
+              // Cache the linked entity access for the current user.
+              $result->addCacheableDependency($access);
             }
 
             // The processed text now depends on:
             $result
-              // - the linked entity access for the current user.
-              ->addCacheableDependency($access)
-              // - the generated URL (which has undergone path & route
-              // processing)
+              // - the generated URL (which has undergone path & route processing)
               ->addCacheableDependency($url)
               // - the linked entity (whose URL and title may change)
               ->addCacheableDependency($entity);

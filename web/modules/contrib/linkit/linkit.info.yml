@@ -1,14 +1,13 @@
 name: Linkit
 type: module
 description: 'Provides an easy interface for internal and external linking with wysiwyg editors.'
-package: Custom
-# core: 8.x
+package: User interface
+core_version_requirement: ^8.8 || ^9
 configure: entity.linkit_profile.collection
 test_dependencies:
-  - imce
+  - imce:imce
 
-# Information added by Drupal.org packaging script on 2017-03-22
-version: '8.x-5.0-beta5'
-core: '8.x'
+# Information added by Drupal.org packaging script on 2020-12-26
+version: '8.x-5.0-beta12'
 project: 'linkit'
-datestamp: 1490224387
+datestamp: 1608957627

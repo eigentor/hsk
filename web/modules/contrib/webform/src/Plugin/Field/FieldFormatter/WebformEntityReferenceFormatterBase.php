@@ -2,12 +2,9 @@
 
 namespace Drupal\webform\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceFormatterBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Render\RendererInterface;
 use Drupal\webform\Plugin\Field\FieldType\WebformEntityReferenceItem;
 use Drupal\webform\WebformInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -32,49 +29,29 @@ abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormat
   protected $configFactory;
 
   /**
-   * WebformEntityReferenceLinkFormatter constructor.
+   * The time service.
    *
-   * @param string $plugin_id
-   *   The plugin_id for the formatter.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
-   *   The definition of the field to which the formatter is associated.
-   * @param array $settings
-   *   The formatter settings.
-   * @param string $label
-   *   The formatter label display setting.
-   * @param string $view_mode
-   *   The view mode.
-   * @param array $third_party_settings
-   *   Third party settings.
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The factory for configuration objects.
+   * @var \Drupal\Component\Datetime\TimeInterface
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, RendererInterface $renderer, ConfigFactoryInterface $config_factory) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
-
-    $this->configFactory = $config_factory;
-    $this->renderer = $renderer;
-  }
+  protected $time;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
+    $instance = new static(
       $plugin_id,
       $plugin_definition,
       $configuration['field_definition'],
       $configuration['settings'],
       $configuration['label'],
       $configuration['view_mode'],
-      $configuration['third_party_settings'],
-      $container->get('renderer'),
-      $container->get('config.factory')
+      $configuration['third_party_settings']
     );
+    $instance->configFactory = $container->get('config.factory');
+    $instance->renderer = $container->get('renderer');
+    $instance->time = $container->get('datetime.time');
+    return $instance;
   }
 
   /**
@@ -89,12 +66,20 @@ abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormat
 
       // Only override an open webform.
       if ($entity->isOpen()) {
+        if (isset($item->open)) {
+          $entity->set('open', $item->open);
+        }
+        if (isset($item->close)) {
+          $entity->set('close', $item->close);
+        }
+        if (isset($item->status)) {
+          $entity->setStatus($item->status);
+        }
         // Directly call set override to prevent the altered webform from being
         // saved.
-        $entity->setOverride();
-        $entity->set('open', $item->open);
-        $entity->set('close', $item->close);
-        $entity->setStatus($item->status);
+        if (isset($item->open) || isset($item->close) || isset($item->status)) {
+          $entity->setOverride();
+        }
       }
     }
     return $entities;
@@ -125,8 +110,8 @@ abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormat
     foreach ($states as $state) {
       if ($item->status === WebformInterface::STATUS_SCHEDULED) {
         $item_state = $item->$state;
-        if ($item_state && strtotime($item_state) > time()) {
-          $item_seconds = strtotime($item_state) - time();
+        if ($item_state && strtotime($item_state) > $this->time->getRequestTime()) {
+          $item_seconds = strtotime($item_state) - $this->time->getRequestTime();
           if (!$max_age && $item_seconds > $max_age) {
             $max_age = $item_seconds;
           }
@@ -134,8 +119,8 @@ abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormat
       }
       if ($webform->status() === WebformInterface::STATUS_SCHEDULED) {
         $webform_state = $webform->get($state);
-        if ($webform_state && strtotime($webform_state) > time()) {
-          $webform_seconds = strtotime($webform_state) - time();
+        if ($webform_state && strtotime($webform_state) > $this->time->getRequestTime()) {
+          $webform_seconds = strtotime($webform_state) - $this->time->getRequestTime();
           if (!$max_age && $webform_seconds > $max_age) {
             $max_age = $webform_seconds;
           }

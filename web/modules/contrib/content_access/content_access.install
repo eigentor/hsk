@@ -12,7 +12,7 @@ use Drupal\user\Entity\Role;
  */
 function content_access_install() {
   $config = \Drupal::configFactory()->getEditable('content_access.settings');
-  $roles_gids = array();
+  $roles_gids = [];
 
   $roles = Role::loadMultiple();
   $i = 1;
@@ -21,8 +21,9 @@ function content_access_install() {
     $i++;
   }
 
-  $config->set('content_access_roles_gids', array_flip($roles_gids));
-  $config->save();
+  $config
+    ->set('content_access_roles_gids', array_flip($roles_gids))
+    ->save();
 }
 
 /**
@@ -36,22 +37,22 @@ function content_access_uninstall() {
  * Implements hook_schema().
  */
 function content_access_schema() {
-  $schema['content_access'] = array(
-    'fields' => array(
-      'nid' => array(
+  $schema['content_access'] = [
+    'fields' => [
+      'nid' => [
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
-        'default' => 0
-      ),
-      'settings' => array(
+        'default' => 0,
+      ],
+      'settings' => [
         'type' => 'text',
         'not null' => FALSE,
-        'size' => 'medium'
-      ),
-    ),
-    'primary key' => array('nid')
-  );
+        'size' => 'medium',
+      ],
+    ],
+    'primary key' => ['nid'],
+  ];
 
   return $schema;
 }

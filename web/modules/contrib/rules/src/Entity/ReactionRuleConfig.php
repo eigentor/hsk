@@ -50,6 +50,8 @@ use Drupal\rules\Engine\RulesComponent;
  *     "collection" = "/admin/config/workflow/rules",
  *     "edit-form" = "/admin/config/workflow/rules/reactions/edit/{rules_reaction_rule}",
  *     "delete-form" = "/admin/config/workflow/rules/reactions/delete/{rules_reaction_rule}",
+ *     "enable" = "/admin/config/workflow/rules/reactions/enable/{rules_reaction_rule}",
+ *     "disable" = "/admin/config/workflow/rules/reactions/disable/{rules_reaction_rule}",
  *     "break-lock-form" = "/admin/config/workflow/rules/reactions/edit/break-lock/{rules_reaction_rule}",
  *   }
  * )

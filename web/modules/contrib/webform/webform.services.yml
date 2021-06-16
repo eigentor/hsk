@@ -34,7 +34,6 @@ services:
     factory: logger.factory:get
     arguments: ['webform_submission']
 
-
   # Services.
 
   webform.addons_manager:
@@ -49,7 +48,7 @@ services:
 
   webform.elements_validator:
     class: Drupal\webform\WebformEntityElementsValidator
-    arguments: ['@renderer', '@plugin.manager.webform.element', '@entity_type.manager', '@form_builder', '@config.factory']
+    arguments: ['@config.factory', '@renderer', '@plugin.manager.webform.element', '@entity_type.manager', '@form_builder']
 
   webform.email_provider:
     class: Drupal\webform\WebformEmailProvider
@@ -57,7 +56,7 @@ services:
 
   webform.entity_reference_manager:
     class: Drupal\webform\WebformEntityReferenceManager
-    arguments: ['@current_route_match', '@current_user', '@user.data']
+    arguments: ['@current_route_match', '@current_user', '@user.data', '@module_handler', '@entity_type.manager']
 
   webform.help_manager:
     class: Drupal\webform\WebformHelpManager
@@ -74,6 +73,14 @@ services:
   webform.translation_manager:
     class: Drupal\webform\WebformTranslationManager
     arguments: ['@current_route_match', '@language_manager', '@config.factory', '@messenger', '@plugin.manager.webform.element']
+
+  webform.translation_config_manager:
+    class: Drupal\webform\WebformTranslationConfigManager
+    arguments: ['@module_handler', '@form_builder', '@plugin.manager.webform.element', '@webform.translation_manager', '@config.typed']
+
+  webform.translation_lingotek_manager:
+    class: Drupal\webform\WebformTranslationLingotekManager
+    arguments: ['@webform.translation_manager']
 
   webform.request:
     class: Drupal\webform\WebformRequest
@@ -97,7 +104,7 @@ services:
 
   webform.theme_manager:
     class: Drupal\webform\WebformThemeManager
-    arguments: ['@config.factory', '@renderer', '@theme.manager', '@theme_handler', '@theme.initialization', '@current_route_match']
+    arguments: ['@current_route_match', '@config.factory', '@renderer', '@theme.manager', '@theme_handler', '@theme.initialization']
 
   webform.access_rules_manager:
     class: Drupal\webform\WebformAccessRulesManager

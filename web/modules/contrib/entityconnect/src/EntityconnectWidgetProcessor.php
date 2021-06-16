@@ -4,6 +4,7 @@ namespace Drupal\entityconnect;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\views\Views;
 
@@ -11,6 +12,7 @@ use Drupal\views\Views;
  * A reference field widget processing class for entityconnect module.
  */
 class EntityconnectWidgetProcessor {
+  use StringTranslationTrait;
 
   /**
    * The entity reference field definition.
@@ -89,6 +91,9 @@ class EntityconnectWidgetProcessor {
    *   The altered element.
    */
   public static function process(array $element, FormStateInterface $form_state, array $form) {
+    if (!method_exists($form_state->getFormObject(), 'getEntity')) {
+      return $element;
+    }
 
     $entity = $form_state->getFormObject()->getEntity();
     $fieldDefinition = $entity->getFieldDefinition($element['widget']['#field_name']);
@@ -99,11 +104,11 @@ class EntityconnectWidgetProcessor {
     // Give other contrib modules the chance to change the target.
     $entityType = $widgetProcessor->getEntityType();
     $acceptableTypes = $widgetProcessor->getAcceptableTypes();
-    $data = array(
+    $data = [
       'entity_type' => &$entityType,
       'acceptable_types' => &$acceptableTypes,
       'field' => $fieldDefinition,
-    );
+    ];
     \Drupal::moduleHandler()->alter('entityconnect_field_attach_form', $data);
     $widgetProcessor->setEntityType($data['entity_type']);
     $widgetProcessor->setAcceptableTypes($data['acceptable_types']);
@@ -156,10 +161,10 @@ class EntityconnectWidgetProcessor {
     }
 
     // Set the class strings for the button.
-    $buttonClasses = array(
+    $buttonClasses = [
       'extra_class' => $extraClass,
       'parents_class' => $parents,
-    );
+    ];
 
     // Set the correct element to attach to.
     if ($key === 'all') {
@@ -187,21 +192,21 @@ class EntityconnectWidgetProcessor {
    *
    * @param array $element
    *   The widget container element.
-   * @param string $entityconnect_classes
+   * @param string[] $entityconnect_classes
    *   Button CSS definition array:
    *   - 'extra_class': extra css class string
    *   - 'parents_class': parents class string.
    * @param string $key
    *   Default is 'all' (optional).
    */
-  protected function attachAddButton(array &$element, $entityconnect_classes, $key = 'all') {
+  protected function attachAddButton(array &$element, array $entityconnect_classes, $key = 'all') {
 
     // Button values are opposite; 0=On, 1=Off.
-    $addbuttonallowed = !$this->entityconnectSettings['buttons']['button_add'];
+    $addbuttonallowed = empty($this->entityconnectSettings['buttons']['button_add']);
     $addIcon = $this->entityconnectSettings['icons']['icon_add'];
 
     // Get the subset of target bundles the user has permission to create.
-    $acceptableTypes = array();
+    $acceptableTypes = [];
 
     if (!$this->acceptableTypes) {
       // @FIXME: The acceptable types is ALL so check the access for all.
@@ -224,6 +229,7 @@ class EntityconnectWidgetProcessor {
     }
     // Now we need to make sure the user should see this button.
     if (\Drupal::currentUser()->hasPermission('entityconnect add button') && $addbuttonallowed && $acceptableTypes) {
+      $classes = [];
       // Determine how the button should be displayed.
       if (isset($addIcon)) {
         if ($addIcon == '0') {
@@ -241,9 +247,9 @@ class EntityconnectWidgetProcessor {
       $button_name = "add_entityconnect__{$this->fieldDefinition->getName()}_{$key}_{$entityconnect_classes['parents_class']}";
 
       // Build the button element.
-      $element[$button_name] = array(
+      $element[$button_name] = [
         '#type' => 'entityconnect_submit',
-        '#value' => t('New content'),
+        '#value' => $this->t('New content'),
         '#name' => $button_name,
         '#prefix' => "<div class = 'entityconnect-add $classes'>",
         '#suffix' => '</div>',
@@ -253,7 +259,7 @@ class EntityconnectWidgetProcessor {
         '#acceptable_types' => $acceptableTypes,
         '#add_child' => TRUE,
         '#weight' => 1,
-      );
+      ];
 
       // Button should be at same form level as widget,
       // or text box if multivalue autocomplete field.
@@ -261,7 +267,7 @@ class EntityconnectWidgetProcessor {
       if (is_numeric($key)) {
         $parents[] = $key;
       }
-      $element[$button_name]['#parents'] = array_merge($parents, array($button_name));
+      $element[$button_name]['#parents'] = array_merge($parents, [$button_name]);
 
     }
   }
@@ -271,21 +277,22 @@ class EntityconnectWidgetProcessor {
    *
    * @param array $element
    *   The widget container element.
-   * @param string $entityconnect_classes
+   * @param string[] $entityconnect_classes
    *   Button CSS definition array:
    *   - 'extra_class': extra css class string
    *   - 'parents_class': parents class string.
    * @param int|string $key
    *   Target entity id (optional).
    */
-  protected function attachEditButton(array &$element, $entityconnect_classes, $key = 'all') {
+  protected function attachEditButton(array &$element, array $entityconnect_classes, $key = 'all') {
 
     // Button values are opposite; 0=On, 1=Off.
-    $editbuttonallowed = !$this->entityconnectSettings['buttons']['button_edit'];
+    $editbuttonallowed = empty($this->entityconnectSettings['buttons']['button_edit']);
     $editIcon = $this->entityconnectSettings['icons']['icon_edit'];
 
     // Now we need to make sure the user should see this button.
     if (\Drupal::currentUser()->hasPermission('entityconnect edit button') && $editbuttonallowed) {
+      $classes = [];
       // Determine how the button should be displayed.
       if (isset($editIcon)) {
         if ($editIcon == '0') {
@@ -303,9 +310,9 @@ class EntityconnectWidgetProcessor {
       $button_name = "edit_entityconnect__{$this->fieldDefinition->getName()}_{$key}_{$entityconnect_classes['parents_class']}";
 
       // Build the button element.
-      $element[$button_name] = array(
+      $element[$button_name] = [
         '#type' => 'entityconnect_submit',
-        '#value' => t('Edit content'),
+        '#value' => $this->t('Edit content'),
         '#name' => $button_name,
         '#prefix' => "<div class = 'entityconnect-edit $classes'>",
         '#suffix' => '</div>',
@@ -315,7 +322,7 @@ class EntityconnectWidgetProcessor {
         '#acceptable_types' => $this->acceptableTypes,
         '#add_child' => FALSE,
         '#weight' => 1,
-      );
+      ];
 
       // Button should be at same form level as widget,
       // or text box if multivalue autocomplete field.
@@ -323,7 +330,7 @@ class EntityconnectWidgetProcessor {
       if (is_numeric($key)) {
         $parents[] = $key;
       }
-      $element[$button_name]['#parents'] = array_merge($parents, array($button_name));
+      $element[$button_name]['#parents'] = array_merge($parents, [$button_name]);
 
     }
   }
@@ -374,7 +381,7 @@ class EntityconnectWidgetProcessor {
   protected function initTargetInfo() {
     $targetSettings = $this->fieldDefinition->getSettings();
     $this->entityType = $targetSettings['target_type'];
-    $this->acceptableTypes = array();
+    $this->acceptableTypes = [];
 
     // If this is the default setting then just get the target bundles.
     if (isset($targetSettings['handler_settings']['target_bundles'])) {

@@ -3,9 +3,10 @@
 namespace Drupal\rules\EventSubscriber;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
+use Drupal\rules\Context\ExecutionState;
 use Drupal\rules\Core\RulesConfigurableEventHandlerInterface;
 use Drupal\rules\Core\RulesEventManager;
-use Drupal\rules\Engine\ExecutionState;
 use Drupal\rules\Engine\RulesComponentRepositoryInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -17,7 +18,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class GenericEventSubscriber implements EventSubscriberInterface {
 
   /**
-   * The entity manager used for loading reaction rule config entities.
+   * The entity type manager used for loading reaction rule config entities.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
@@ -38,6 +39,13 @@ class GenericEventSubscriber implements EventSubscriberInterface {
   protected $componentRepository;
 
   /**
+   * The rules debug logger channel.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $rulesDebugLogger;
+
+  /**
    * Constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -46,11 +54,14 @@ class GenericEventSubscriber implements EventSubscriberInterface {
    *   The Rules event manager.
    * @param \Drupal\rules\Engine\RulesComponentRepositoryInterface $component_repository
    *   The component repository.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The Rules debug logger channel.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, RulesEventManager $event_manager, RulesComponentRepositoryInterface $component_repository) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, RulesEventManager $event_manager, RulesComponentRepositoryInterface $component_repository, LoggerChannelInterface $logger) {
     $this->entityTypeManager = $entity_type_manager;
     $this->eventManager = $event_manager;
     $this->componentRepository = $component_repository;
+    $this->rulesDebugLogger = $logger;
   }
 
   /**
@@ -99,20 +110,23 @@ class GenericEventSubscriber implements EventSubscriberInterface {
     if (is_subclass_of($handler_class, RulesConfigurableEventHandlerInterface::class)) {
       $qualified_event_suffixes = $handler_class::determineQualifiedEvents($event, $event_name, $event_definition);
       foreach ($qualified_event_suffixes as $qualified_event_suffix) {
+        // This is where we add the bundle-specific event suffix, e.g.
+        // rules_entity_insert:node--page if the content entity was type 'page'.
         $triggered_events[] = "$event_name--$qualified_event_suffix";
       }
     }
 
     // Setup the execution state.
     $state = ExecutionState::create();
-    foreach ($event_definition['context'] as $context_name => $context_definition) {
-      // If this is a GenericEvent get the context for the rule from the event
+    foreach ($event_definition['context_definitions'] as $context_name => $context_definition) {
+      // If this is a GenericEvent, get the context for the rule from the event
       // arguments.
       if ($event instanceof GenericEvent) {
         $value = $event->getArgument($context_name);
       }
       // Else there must be a getter method or public property.
       // @todo Add support for the getter method.
+      // @see https://www.drupal.org/project/rules/issues/2762517
       else {
         $value = $event->$context_name;
       }
@@ -123,12 +137,19 @@ class GenericEventSubscriber implements EventSubscriberInterface {
       );
     }
 
-    $components = $this->componentRepository
-      ->getMultiple($triggered_events, 'rules_event');
-
+    $components = $this->componentRepository->getMultiple($triggered_events, 'rules_event');
     foreach ($components as $component) {
-      $component->getExpression()
-        ->executeWithState($state);
+      $this->rulesDebugLogger->info('Reacting on event %label.', [
+        '%label' => $event_definition['label'],
+        'element' => NULL,
+        'scope' => TRUE,
+      ]);
+      $component->getExpression()->executeWithState($state);
+      $this->rulesDebugLogger->info('Finished reacting on event %label.', [
+        '%label' => $event_definition['label'],
+        'element' => NULL,
+        'scope' => FALSE,
+      ]);
     }
     $state->autoSave();
   }

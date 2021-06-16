@@ -89,7 +89,7 @@ class ParagraphsFeaturesSplitTextTest extends ParagraphsFeaturesJavascriptTestBa
 
     $this->drupalPostForm(NULL, [], 'Update');
     $this->assertSession()->assertWaitOnAjaxRequest();
-    $this->drupalPostForm(NULL, [], t('Save'));
+    $this->drupalPostForm(NULL, [], $this->t('Save'));
 
     // Case 1 - simple text split.
     $paragraph_content_0 = '<p>Content that will be in the first paragraph after the split.</p>';
@@ -98,7 +98,6 @@ class ParagraphsFeaturesSplitTextTest extends ParagraphsFeaturesJavascriptTestBa
     // Check that split text functionality is used.
     $this->drupalGet("node/add/$content_type");
     $ck_editor_id = $this->createNewTextParagraph(0, $paragraph_content_0 . $paragraph_content_1);
-
     // Make split of created text paragraph.
     $driver->executeScript("var selection = CKEDITOR.instances['$ck_editor_id'].getSelection(); selection.selectElement(selection.root.getChild(1)); var ranges = selection.getRanges(); ranges[0].setEndBefore(ranges[0].getBoundaryNodes().endNode); selection.selectRanges(ranges);");
     $this->clickParagraphSplitButton(0);
@@ -107,7 +106,7 @@ class ParagraphsFeaturesSplitTextTest extends ParagraphsFeaturesJavascriptTestBa
     $ck_editor_id_0 = $this->getCkEditorId(0);
     $ck_editor_id_1 = $this->getCkEditorId(1);
     static::assertEquals(
-      $paragraph_content_0 . PHP_EOL . PHP_EOL . '<p><br />' . PHP_EOL . '</p>' . PHP_EOL,
+      $paragraph_content_0 . PHP_EOL,
       $driver->evaluateScript("CKEDITOR.instances['$ck_editor_id_0'].getData();")
     );
     static::assertEquals(
@@ -115,7 +114,30 @@ class ParagraphsFeaturesSplitTextTest extends ParagraphsFeaturesJavascriptTestBa
       $driver->evaluateScript("CKEDITOR.instances['$ck_editor_id_1'].getData();")
     );
 
-    // Case 2 - split text works after removal of paragraph.
+    // Case 2 - simple split inside word.
+    $paragraph_content = '<p>Content will be split inside the word spl-it.</p>';
+
+    // Check that split text functionality is used.
+    $this->drupalGet("node/add/$content_type");
+    $ck_editor_id = $this->createNewTextParagraph(0, $paragraph_content);
+
+    // Make split of created text paragraph.
+    $driver->executeScript("var selection = CKEDITOR.instances['$ck_editor_id'].getSelection(); var element = selection.getStartElement(); selection.selectElement(element); var ranges = selection.getRanges(); ranges[0].setStart(element.getFirst(), element.getHtml().indexOf('split') + 3); ranges[0].setEnd(element.getFirst(), element.getHtml().indexOf('split') + 3); selection.selectRanges(ranges);");
+    $this->clickParagraphSplitButton(0);
+
+    // Validate split results.
+    $ck_editor_id_0 = $this->getCkEditorId(0);
+    $ck_editor_id_1 = $this->getCkEditorId(1);
+    static::assertEquals(
+      '<p>Content will be spl</p>' . PHP_EOL,
+      $driver->evaluateScript("CKEDITOR.instances['$ck_editor_id_0'].getData();")
+    );
+    static::assertEquals(
+      '<p>it inside the word spl-it.</p>' . PHP_EOL,
+      $driver->evaluateScript("CKEDITOR.instances['$ck_editor_id_1'].getData();")
+    );
+
+    // Case 3 - split text works after removal of paragraph.
     $this->drupalGet("node/add/$content_type");
     $this->createNewTextParagraph(0, '');
 
@@ -134,7 +156,7 @@ class ParagraphsFeaturesSplitTextTest extends ParagraphsFeaturesJavascriptTestBa
     $ck_editor_id_0 = $this->getCkEditorId(1);
     $ck_editor_id_1 = $this->getCkEditorId(2);
     static::assertEquals(
-      $paragraph_content_0 . PHP_EOL . PHP_EOL . '<p><br />' . PHP_EOL . '</p>' . PHP_EOL,
+      $paragraph_content_0 . PHP_EOL,
       $driver->evaluateScript("CKEDITOR.instances['$ck_editor_id_0'].getData();")
     );
     static::assertEquals(
@@ -142,7 +164,7 @@ class ParagraphsFeaturesSplitTextTest extends ParagraphsFeaturesJavascriptTestBa
       $driver->evaluateScript("CKEDITOR.instances['$ck_editor_id_1'].getData();")
     );
 
-    // Case 3 - add of new paragraph after text split.
+    // Case 4 - add of new paragraph after text split.
     $this->drupalGet("node/add/$content_type");
     $ck_editor_id = $this->createNewTextParagraph(0, $paragraph_content_0 . $paragraph_content_1);
 
@@ -173,7 +195,7 @@ class ParagraphsFeaturesSplitTextTest extends ParagraphsFeaturesJavascriptTestBa
     static::assertEquals($paragraph_content_1_new . PHP_EOL, $ck_editor_content_1);
     static::assertEquals('', $ck_editor_content_2);
 
-    // Case 4 - test split in middle of formatted text.
+    // Case 5 - test split in middle of formatted text.
     $text = '<p>Text start</p><ol><li>line 1</li><li>line 2 with some <strong>bold text</strong> and back to normal</li><li>line 3</li></ol><p>Text end after indexed list</p>';
     $this->drupalGet("node/add/$content_type");
     $ck_editor_id = $this->createNewTextParagraph(0, $text);
@@ -205,7 +227,7 @@ class ParagraphsFeaturesSplitTextTest extends ParagraphsFeaturesJavascriptTestBa
     static::assertEquals($expected_content_0, $ck_editor_content_0);
     static::assertEquals($expected_content_1, $ck_editor_content_1);
 
-    // Case 5 - split paragraph with multiple text fields.
+    // Case 6 - split paragraph with multiple text fields.
     $this->addParagraphsType("test_3_text_fields");
     $this->addFieldtoParagraphType('test_3_text_fields', 'text_3_1', 'text_long');
     $this->addFieldtoParagraphType('test_3_text_fields', 'text_3_2', 'text_long');
@@ -246,7 +268,7 @@ class ParagraphsFeaturesSplitTextTest extends ParagraphsFeaturesJavascriptTestBa
       $driver->evaluateScript("CKEDITOR.instances['$ck_editor_id_para_0_text_0'].getData();")
     );
     static::assertEquals(
-      $paragraph_content_0 . PHP_EOL . PHP_EOL . '<p><br />' . PHP_EOL . '</p>' . PHP_EOL,
+      $paragraph_content_0 . PHP_EOL,
       $driver->evaluateScript("CKEDITOR.instances['$ck_editor_id_para_0_text_1'].getData();")
     );
     static::assertEquals(
@@ -264,6 +286,57 @@ class ParagraphsFeaturesSplitTextTest extends ParagraphsFeaturesJavascriptTestBa
     static::assertEquals(
       '',
       $driver->evaluateScript("CKEDITOR.instances['$ck_editor_id_para_1_text_2'].getData();")
+    );
+
+    // Case 7 - simple text split with auto-collapse.
+    // 7.1 - Enable auto-collapse.
+    $this->drupalGet("admin/structure/types/manage/$content_type/form-display");
+
+    // Edit form display settings.
+    $page->pressButton('field_paragraphs_settings_edit');
+    $this->assertSession()->assertWaitOnAjaxRequest();
+
+    // Set edit mode to closed.
+    $page->selectFieldOption('fields[field_paragraphs][settings_edit_form][settings][edit_mode]', 'closed');
+    $session->executeScript("jQuery('[name=\"fields[field_paragraphs][settings_edit_form][settings][edit_mode]\"]').trigger('change');");
+    $this->assertSession()->assertWaitOnAjaxRequest();
+
+    // Set auto-collapse mode.
+    $page->selectFieldOption('fields[field_paragraphs][settings_edit_form][settings][autocollapse]', 'all');
+    $session->executeScript("jQuery('[name=\"fields[field_paragraphs][settings_edit_form][settings][autocollapse]\"]').trigger('change');");
+    $this->assertSession()->assertWaitOnAjaxRequest();
+
+    $this->drupalPostForm(NULL, [], 'Update');
+    $this->assertSession()->assertWaitOnAjaxRequest();
+    $this->drupalPostForm(NULL, [], $this->t('Save'));
+
+    // 7.2 - Test that simple text split works with auto-collapse.
+    $paragraph_content_0 = '<p>Content that will be in the first paragraph after the split.</p>';
+    $paragraph_content_1 = '<p>Content that will be in the second paragraph after the split.</p>';
+
+    // Check that split text functionality is used.
+    $this->drupalGet("node/add/$content_type");
+    $ck_editor_id = $this->createNewTextParagraph(0, $paragraph_content_0 . $paragraph_content_1);
+
+    // Make split of created text paragraph.
+    $driver->executeScript("var selection = CKEDITOR.instances['$ck_editor_id'].getSelection(); selection.selectElement(selection.root.getChild(1)); var ranges = selection.getRanges(); ranges[0].setEndBefore(ranges[0].getBoundaryNodes().endNode); selection.selectRanges(ranges);");
+    $this->clickParagraphSplitButton(0);
+
+    // Validate split results. First newly created paragraph.
+    $ck_editor_id_1 = $this->getCkEditorId(1);
+    static::assertEquals(
+      $paragraph_content_1 . PHP_EOL,
+      $driver->evaluateScript("CKEDITOR.instances['$ck_editor_id_1'].getData();")
+    );
+
+    // And then original collapsed paragraph.
+    $page->pressButton('field_paragraphs_0_edit');
+    $this->assertSession()->assertWaitOnAjaxRequest();
+
+    $ck_editor_id_0 = $this->getCkEditorId(0);
+    static::assertEquals(
+      $paragraph_content_0 . PHP_EOL,
+      $driver->evaluateScript("CKEDITOR.instances['$ck_editor_id_0'].getData();")
     );
   }
 

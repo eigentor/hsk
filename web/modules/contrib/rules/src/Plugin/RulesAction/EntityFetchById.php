@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "rules_entity_fetch_by_id",
  *   label = @Translation("Fetch entity by id"),
  *   category = @Translation("Entity"),
- *   context = {
+ *   context_definitions = {
  *     "type" = @ContextDefinition("string",
  *       label = @Translation("Entity type"),
  *       description = @Translation("Specifies the type of the entity that should be fetched."),
@@ -85,13 +85,13 @@ class EntityFetchById extends RulesActionBase implements ContainerFactoryPluginI
   /**
    * Executes the action with the given context.
    *
-   * @param string $entity_type
+   * @param string $type
    *   The entity type id.
    * @param int $entity_id
    *   The entity id.
    */
-  protected function doExecute($entity_type, $entity_id) {
-    $storage = $this->entityTypeManager->getStorage($entity_type);
+  protected function doExecute($type, $entity_id) {
+    $storage = $this->entityTypeManager->getStorage($type);
     $entity = $storage->load($entity_id);
 
     $this->setProvidedValue('entity_fetched', $entity);

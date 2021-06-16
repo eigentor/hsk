@@ -13,7 +13,7 @@ use Drupal\views\ViewExecutable;
  */
 function view_unpublished_views_query_substitutions(ViewExecutable $view) {
   $account = \Drupal::currentUser();
-  $substitutions = array();
+  $substitutions = [];
   foreach (NodeType::loadMultiple() as $type) {
     $type_id = $type->id();
     $substitutions["***VIEWUNPUBLISHED_TYPE_$type_id***"] = (int) $account->hasPermission('view any unpublished ' . $type_id . ' content');

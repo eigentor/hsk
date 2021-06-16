@@ -186,11 +186,15 @@ class TextFormat extends WebformElementBase {
         $element['#suffix'] = $element['#suffix'] . '</div>';
       }
     }
+    // Do not allow format value to be cleared when the text form is hidden
+    // via #states.
+    // @see \Drupal\webform\Element\WebformHtmlEditor::processWebformHtmlEditor
+    $element['format']['#attributes']['data-webform-states-no-clear'] = TRUE;
     return $element;
   }
 
   /**
-   * @inheritDoc
+   * {@inheritDoc}
    */
   public static function trustedCallbacks() {
     return array_merge(parent::trustedCallbacks(), ['preRenderFixTextFormatStates']);
@@ -289,7 +293,7 @@ class TextFormat extends WebformElementBase {
    * {@inheritdoc}
    */
   public function preview() {
-    return (\Drupal::moduleHandler()->moduleExists('filter')) ? parent::preview() : [];
+    return ($this->moduleHandler->moduleExists('filter')) ? parent::preview() : [];
   }
 
   /**

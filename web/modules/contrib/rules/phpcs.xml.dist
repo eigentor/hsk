@@ -6,9 +6,17 @@
   <exclude-pattern>./d7-tests/</exclude-pattern>
   <exclude-pattern>./vendor/</exclude-pattern>
   <exclude-pattern>./config/</exclude-pattern>
+  <exclude-pattern>./*interdif*</exclude-pattern>
 
   <arg name="extensions" value="inc,install,module,php,profile,test,theme,yml"/>
+
+  <!-- Use 's' to print the full sniff name in the report and use colors. -->
   <arg value="s"/>
+  <arg value="-colors"/>
+
+  <!-- Include all Drupal and DrupalPractice sniffs by default, then adjust. -->
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
 
   <rule ref="Drupal.NamingConventions.ValidVariableName.LowerCamelName">
     <!-- Annotations must use the same property names as in the configuration. -->
@@ -33,9 +41,12 @@
     <exclude name="Drupal.Commenting.DocComment.MissingShort"/>
   </rule>
 
+  <!-- Allow empty lines after comments, we don't care. -->
+  <rule ref="Drupal">
+    <exclude name="Drupal.Commenting.InlineComment.SpacingAfter"/>
+  </rule>
   <rule ref="DrupalPractice">
-    <!-- Allow empty lines after comments, we don't care. -->
-    <exclude name="DrupalPractice.Commenting.CommentEmptyLine"/>
+    <exclude name="DrupalPractice.Commenting.CommentEmptyLine.SpacingAfter"/>
   </rule>
 
   <!-- We always want short array syntax only. -->

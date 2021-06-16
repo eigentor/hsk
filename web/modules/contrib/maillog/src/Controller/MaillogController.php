@@ -1,24 +1,22 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\maillog\Controller\MaillogController
- */
-
 namespace Drupal\maillog\Controller;
 
-use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Database\Connection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * Primary controler behind the Maillog module.
+ */
 class MaillogController extends ControllerBase {
 
   /**
    * The database connection.
    *
-   * @var \Drupal\Core\Database\Connection;
+   * @var \Drupal\Core\Database\Connection
    */
   protected $database;
 
@@ -40,10 +38,10 @@ class MaillogController extends ControllerBase {
   }
 
   /**
-   * Page callback - Get the Maillog Entry.
+   * Get the Maillog entry.
    *
    * @param int $maillog_id
-   *   The Maillog ID
+   *   The Maillog ID.
    *
    * @return array
    *   The output fields
@@ -55,78 +53,80 @@ class MaillogController extends ControllerBase {
       throw new NotFoundHttpException();
     }
 
-    $output = array();
+    $output = [];
 
     $output['#title'] = $maillog_entry['subject'];
 
-    $output['header_from'] = array(
+    $output['header_from'] = [
       '#title' => t('From'),
       '#type' => 'item',
-      '#markup' => SafeMarkup::checkPlain($maillog_entry['header_from']),
-    );
-    $output['header_to'] = array(
+      '#markup' => Html::escape($maillog_entry['header_from']),
+    ];
+    $output['header_to'] = [
       '#title' => t('To'),
       '#type' => 'item',
-      '#markup' => SafeMarkup::checkPlain($maillog_entry['header_to']),
-    );
-    $output['header_reply_to'] = array(
+      '#markup' => Html::escape($maillog_entry['header_to']),
+    ];
+    $output['header_reply_to'] = [
       '#title' => t('Reply to'),
       '#type' => 'item',
-      '#markup' => SafeMarkup::checkPlain($maillog_entry['header_reply_to']),
-    );
-    $output['header_all'] = array(
+      '#markup' => Html::escape($maillog_entry['header_reply_to']),
+    ];
+    $output['header_all'] = [
       '#title' => t('All'),
       '#type' => 'item',
       '#markup' => '<pre>',
-    );
+    ];
 
     foreach ($maillog_entry['header_all'] as $header_all_name => $header_all_value) {
-      $output['header_all']['#markup'] .= SafeMarkup::checkPlain($header_all_name) . ': ' . SafeMarkup::checkPlain($header_all_value) . '<br/>';
+      $output['header_all']['#markup'] .= Html::escape($header_all_name) . ': ' . Html::escape($header_all_value) . '<br/>';
     }
 
     $output['header_all']['#markup'] .= '</pre>';
 
-    $output['body'] = array(
+    $output['body'] = [
       '#title' => t('Body'),
       '#type' => 'item',
-      '#markup' => '<pre>' . SafeMarkup::checkPlain($maillog_entry['body']) . '</pre>',
-    );
+      '#markup' => '<pre>' . Html::escape($maillog_entry['body']) . '</pre>',
+    ];
 
     return $output;
   }
 
   /**
-   * Page Callback - Delete a specific maillog entry.
+   * Delete a specific maillog entry.
    *
    * @param int $maillog_id
    *   The maillog ID.
    */
   public function delete($maillog_id) {
-    $idmaillog = intval($maillog_id);
-    $this->database->query("DELETE FROM {maillog} WHERE idmaillog = :id", array(':id' => $idmaillog));
-    drupal_set_message(t('Mail with ID @idmaillog has been deleted!', array('@idmaillog' => $idmaillog)));
+    $id = intval($maillog_id);
+    $this->database->query("DELETE FROM {maillog} WHERE id = :id", [':id' => $id]);
+    $this->messenger()->addStatus($this->t('Mail with ID @id has been deleted!', ['@id' => $id]));
 
     return $this->redirect('view.maillog_overview.page_1');
   }
 
   /**
-   * Loads the Maillog Entry.
+   * Loads the Maillog entry.
    *
-   * @param int $maillog_id
+   * @param int $id
    *   The maillog ID.
    *
    * @return array
-   *   Maillog entry as Array
+   *   A Maillog record.
    */
-  protected function getMaillogEntry($maillog_id) {
-    $result = $this->database->query("SELECT idmaillog, header_from, header_to, header_reply_to, header_all, subject, body FROM {maillog} WHERE idmaillog=:id", array(
-      ':id' => $maillog_id,
-    ));
+  protected function getMaillogEntry($id) {
+    $result = $this->database->query("SELECT id, header_from, header_to, header_reply_to, header_all, subject, body FROM {maillog} WHERE id=:id", [
+      ':id' => $id,
+    ]);
 
     if ($maillog = $result->fetchAssoc()) {
       // Unserialize values.
       $maillog['header_all'] = unserialize($maillog['header_all']);
     }
+
     return $maillog;
   }
+
 }

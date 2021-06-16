@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\maillog\Form\MaillogSettingsForm.
- */
-
 namespace Drupal\maillog\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
@@ -35,49 +30,37 @@ class MaillogSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('maillog.settings');
 
-    $form = array();
+    $form = [];
 
-    $form['clear_maillog'] = array(
+    $form['clear_maillog'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Clear Maillog'),
-    );
+    ];
 
-    $form['clear_maillog']['clear'] = array(
+    $form['clear_maillog']['clear'] = [
       '#type' => 'submit',
       '#value' => $this->t('Clear all maillog entries'),
       '#submit' => ['::clearLog'],
-    );
+    ];
 
-    $form['maillog_send'] = array(
+    $form['maillog_send'] = [
       '#type' => 'checkbox',
-      '#title' => t("Allow the e-mails to be sent."),
+      '#title' => t('Allow the e-mails to be sent.'),
       '#default_value' => $config->get('send'),
-    );
+    ];
 
-    $form['maillog_log'] = array(
+    $form['maillog_log'] = [
       '#type' => 'checkbox',
-      '#title' => t("Create table entries in maillog table for each e-mail."),
+      '#title' => t('Create table entries in maillog table for each e-mail.'),
       '#default_value' => $config->get('log'),
-    );
+    ];
 
-    $form['maillog_verbose'] = array(
+    $form['maillog_verbose'] = [
       '#type' => 'checkbox',
-      '#title' => t("Display the e-mails on page."),
+      '#title' => t('Display the e-mails on page.'),
       '#default_value' => $config->get('verbose'),
       '#description' => $this->t('If enabled, anonymous users with permissions will see any verbose output mail.'),
-    );
-
-    /*if (\Drupal::moduleHandler()->moduleExists('mimemail')) {
-      $engines = mimemail_get_engines();
-      // maillog will be unset, because ist would cause an recursion
-      unset($engines['maillog']);
-      $form['maillog_engine'] = array(
-        '#type' => 'select',
-        '#title' => t("Select the mailengine which should be used."),
-        '#default_value' => $config->get('maillog_engine'),
-        '#options' => $engines,
-      );
-    }*/
+    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -94,7 +77,7 @@ class MaillogSettingsForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
 
     if ($this->config('maillog.settings')->get('verbose') == TRUE) {
-      drupal_set_message(t('Any user having the permission "view maillog" will see output of any mail that is sent.'), 'warning');
+      $this->messenger()->addWarning($this->t('Any user having the permission "view maillog" will see output of any mail that is sent.'));
     }
   }
 

@@ -2,12 +2,13 @@
 
 namespace Drupal\rules\Plugin\RulesExpression;
 
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rules\Context\DataProcessorManager;
+use Drupal\rules\Context\ExecutionMetadataStateInterface;
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Core\ConditionManager;
 use Drupal\rules\Engine\ConditionExpressionInterface;
-use Drupal\rules\Engine\ExecutionMetadataStateInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 use Drupal\rules\Engine\ExpressionBase;
 use Drupal\rules\Engine\ExpressionInterface;
 use Drupal\rules\Context\ContextHandlerIntegrityTrait;
@@ -27,7 +28,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class ConditionExpression extends ExpressionBase implements ConditionExpressionInterface, ContainerFactoryPluginInterface {
-
   use ContextHandlerIntegrityTrait;
 
   /**
@@ -36,6 +36,13 @@ class ConditionExpression extends ExpressionBase implements ConditionExpressionI
    * @var \Drupal\rules\Core\ConditionManager
    */
   protected $conditionManager;
+
+  /**
+   * The rules debug logger channel.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $rulesDebugLogger;
 
   /**
    * Constructs a new class instance.
@@ -52,13 +59,16 @@ class ConditionExpression extends ExpressionBase implements ConditionExpressionI
    *   The condition manager.
    * @param \Drupal\rules\Context\DataProcessorManager $processor_manager
    *   The data processor plugin manager.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The Rules debug logger channel.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConditionManager $condition_manager, DataProcessorManager $processor_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConditionManager $condition_manager, DataProcessorManager $processor_manager, LoggerChannelInterface $logger) {
     // Make sure defaults are applied.
     $configuration += $this->defaultConfiguration();
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->conditionManager = $condition_manager;
     $this->processorManager = $processor_manager;
+    $this->rulesDebugLogger = $logger;
   }
 
   /**
@@ -70,7 +80,8 @@ class ConditionExpression extends ExpressionBase implements ConditionExpressionI
       $plugin_id,
       $plugin_definition,
       $container->get('plugin.manager.condition'),
-      $container->get('plugin.manager.rules_data_processor')
+      $container->get('plugin.manager.rules_data_processor'),
+      $container->get('logger.channel.rules_debug')
     );
   }
 
@@ -108,13 +119,19 @@ class ConditionExpression extends ExpressionBase implements ConditionExpressionI
     $this->prepareContext($condition, $state);
     $result = $condition->evaluate();
 
-    // Now that the condition has been executed it can provide additional
-    // context which we will have to pass back in the evaluation state.
-    $this->addProvidedContext($condition, $state);
-
     if ($this->isNegated()) {
       $result = !$result;
     }
+
+    $this->rulesDebugLogger->info('The condition %name evaluated to %bool.', [
+      '%name' => $this->getLabel(),
+      '%bool' => $result ? 'TRUE' : 'FALSE',
+      'element' => $this,
+    ]);
+
+    // Now that the condition has been executed it can provide additional
+    // context which we will have to pass back in the evaluation state.
+    $this->addProvidedContext($condition, $state);
 
     return $result;
   }
@@ -141,10 +158,10 @@ class ConditionExpression extends ExpressionBase implements ConditionExpressionI
     if (!empty($this->configuration['condition_id'])) {
       $definition = $this->conditionManager->getDefinition($this->configuration['condition_id']);
       if ($this->isNegated()) {
-        return $this->t('Condition: @not @label', ['@not' => $this->t('NOT'), '@label' => $definition['label']]);
+        return $this->t('@not @label', ['@not' => $this->t('NOT'), '@label' => $definition['label']]);
       }
       else {
-        return $this->t('Condition: @label', ['@label' => $definition['label']]);
+        return $definition['label'];
       }
     }
     return parent::getLabel();

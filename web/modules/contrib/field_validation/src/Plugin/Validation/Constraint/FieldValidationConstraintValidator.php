@@ -18,46 +18,64 @@ class FieldValidationConstraintValidator extends ConstraintValidator {
   public function validate($items, Constraint $constraint) {
     $ruleset_name = $constraint->ruleset_name;
 	$rule_uuid = $constraint->rule_uuid;
-	$ruleset = \Drupal::entityManager()->getStorage('field_validation_rule_set')->load($ruleset_name);
+	$ruleset = \Drupal::entityTypeManager()->getStorage('field_validation_rule_set')->load($ruleset_name);
 	if(empty($ruleset)){
 	  return;
 	}
+	//for base field validation, we limit it to attached bundle.
+    $entity = $items->getEntity();
+    $bundle = $entity->bundle();
+    if($bundle != $ruleset->getAttachedBundle()){
+      return;	
+    }
+    	
 	//$rule = $ruleset->getFieldValidationRule($rule_uuid);
 	$rules = $ruleset->getFieldValidationRules();
-	$rules_available = array();
+	$rules_available = [];
 	$field_name = $items->getFieldDefinition()->getName();
+	
 	//drupal_set_message($field_name);
 	foreach($rules as $rule){
 	  if($rule->getFieldName() == $field_name){
 	    $rules_available[] = $rule;
 	  }
-	
+
 	}
 	if(empty($rules_available)){
 	  return;
-	}	
-	//drupal_set_message($ruleset_name);
-	//drupal_set_message($rule_uuid);
-	//drupal_set_message('count:' . count($rules_available));
-	$params = array();
+	}
+
+	$params = [];
 	$params['items'] = $items;
 	//$params['rule'] = $rule;
 	$params['context'] = $this->context;
-	foreach($items as $delta => $item){
-	  $validator_manager = \Drupal::service('plugin.manager.field_validation.field_validation_rule');
-    // You can hard code configuration or you load from settings.
-	  foreach($rules_available as $rule) {
-      $column = $rule->getColumn();
-      $value = $item->{$column};
-      $params['value'] = $value;
-      $params['delta'] = $delta;
-      $config = [];
-      $params['rule'] = $rule;
-      $plugin_validator = $validator_manager->createInstance($rule->getPluginId(), $config);
-      $plugin_validator->validate($params);
+    if ($items->count() !== 0) {	
+	  foreach($items as $delta => $item){
+	    $validator_manager = \Drupal::service('plugin.manager.field_validation.field_validation_rule');
+        // You can hard code configuration or you load from settings.
+	    foreach($rules_available as $rule) {
+          $column = $rule->getColumn();
+          $value = $item->{$column};
+          $params['value'] = $value;
+          $params['delta'] = $delta;
+          $config = [];
+          $params['rule'] = $rule;
+          $plugin_validator = $validator_manager->createInstance($rule->getPluginId(), $config);
+          $plugin_validator->validate($params);
+	    }
 	  }
-	   
-	}
-
+    }else {
+      $validator_manager = \Drupal::service('plugin.manager.field_validation.field_validation_rule');
+      // You can hard code configuration or you load from settings.
+      foreach ($rules_available as $rule) {
+        $params['value'] = NULL;
+        $params['delta'] = NULL;
+        $config = [];
+        $params['rule'] = $rule;
+        $params['ruleset'] = $ruleset;
+        $plugin_validator = $validator_manager->createInstance($rule->getPluginId(), $config);
+        $plugin_validator->validate($params);
+      }
+    }
   }
 }

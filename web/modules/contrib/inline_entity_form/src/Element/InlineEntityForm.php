@@ -3,8 +3,8 @@
 namespace Drupal\inline_entity_form\Element;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\RevisionLogInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\RenderElement;
 use Drupal\inline_entity_form\ElementSubmit;
 use Drupal\inline_entity_form\TranslationHelper;
@@ -45,11 +45,18 @@ class InlineEntityForm extends RenderElement {
       '#default_value' => NULL,
       // The form mode used to display the entity form.
       '#form_mode' => 'default',
+      // Will create a new revision if set to TRUE.
+      '#revision' => FALSE,
       // Will save entity on submit if set to TRUE.
       '#save_entity' => TRUE,
-      // 'add' or 'edit'. If NULL, determined by whether the entity is new.
+      // 'add', 'edit' or 'duplicate'.
       '#op' => NULL,
       '#process' => [
+        // Core's #process for groups, don't remove it.
+        [$class, 'processGroup'],
+
+        // InlineEntityForm's #process must run after the above ::processGroup
+        // in case any new elements (like groups) were added in alter hooks.
         [$class, 'processEntityForm'],
       ],
       '#element_validate' => [
@@ -59,9 +66,10 @@ class InlineEntityForm extends RenderElement {
         [$class, 'submitEntityForm'],
       ],
       '#theme_wrappers' => ['container'],
-      // Allow inline forms to use the #fieldset key.
+
       '#pre_render' => [
-        [$class, 'addFieldsetMarkup'],
+        // Core's #pre_render for groups, don't remove it.
+        [$class, 'preRenderGroup'],
       ],
     ];
   }
@@ -91,6 +99,7 @@ class InlineEntityForm extends RenderElement {
       throw new \InvalidArgumentException('The inline_entity_form #default_value property must be an entity object.');
     }
 
+    $entity_type = \Drupal::entityTypeManager()->getDefinition($entity_form['#entity_type']);
     if (empty($entity_form['#ief_id'])) {
       $entity_form['#ief_id'] = \Drupal::service('uuid')->generate();
     }
@@ -100,7 +109,6 @@ class InlineEntityForm extends RenderElement {
     }
     else {
       // This is an add operation, create a new entity.
-      $entity_type = \Drupal::entityTypeManager()->getDefinition($entity_form['#entity_type']);
       $storage = \Drupal::entityTypeManager()->getStorage($entity_form['#entity_type']);
       $values = [];
       if ($langcode_key = $entity_type->getKey('langcode')) {
@@ -114,11 +122,28 @@ class InlineEntityForm extends RenderElement {
       $entity_form['#entity'] = $storage->create($values);
     }
     if (!isset($entity_form['#op'])) {
-      $entity_form['#op'] = $entity_form['#entity']->isNew() ? 'add' : 'edit';
+      // When duplicating entities, the entity is new, but already has a UUID.
+      if ($entity_form['#entity']->isNew() && $entity_form['#entity']->uuid()) {
+        $entity_form['#op'] = 'duplicate';
+      }
+      else {
+        $entity_form['#op'] = $entity_form['#entity']->isNew() ? 'add' : 'edit';
+      }
     }
     // Prepare the entity form and the entity itself for translating.
     $entity_form['#entity'] = TranslationHelper::prepareEntity($entity_form['#entity'], $form_state);
     $entity_form['#translating'] = TranslationHelper::isTranslating($form_state) && $entity_form['#entity']->isTranslatable();
+
+    // Handle revisioning if the entity supports it.
+    if ($entity_type->isRevisionable() && $entity_form['#revision']) {
+      $entity_form['#entity']->setNewRevision($entity_form['#revision']);
+
+      // @see \Drupal\Core\Entity\ContentEntityForm::buildEntity
+      if ($entity_form['#entity'] instanceof RevisionLogInterface) {
+        $entity_form['#entity']->setRevisionUserId(\Drupal::currentUser()->id());
+        $entity_form['#entity']->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+      }
+    }
 
     $inline_form_handler = static::getInlineFormHandler($entity_form['#entity_type']);
     $entity_form = $inline_form_handler->entityForm($entity_form, $form_state);
@@ -177,44 +202,6 @@ class InlineEntityForm extends RenderElement {
     }
 
     return $inline_form_handler;
-  }
-
-  /**
-   * Pre-render callback for the #fieldset form property.
-   *
-   * Inline forms use #tree = TRUE to keep their values in a hierarchy for
-   * easier storage. Moving the form elements into fieldsets during form
-   * building would break up that hierarchy, so it's not an option for entity
-   * fields. Therefore, we wait until the pre_render stage, where any changes
-   * we make affect presentation only and aren't reflected in $form_state.
-   *
-   * @param array $entity_form
-   *   The entity form.
-   *
-   * @return array
-   *   The modified entity form.
-   */
-  public static function addFieldsetMarkup($entity_form) {
-    $sort = [];
-    foreach (Element::children($entity_form) as $key) {
-      $element = $entity_form[$key];
-      if (isset($element['#fieldset']) && isset($entity_form[$element['#fieldset']])) {
-        $entity_form[$element['#fieldset']][$key] = $element;
-        // Remove the original element this duplicates.
-        unset($entity_form[$key]);
-        // Mark the fieldset for sorting.
-        if (!in_array($key, $sort)) {
-          $sort[] = $element['#fieldset'];
-        }
-      }
-    }
-
-    // Sort all fieldsets, so that element #weight stays respected.
-    foreach ($sort as $key) {
-      uasort($entity_form[$key], '\Drupal\Component\Utility\SortArray::sortByWeightProperty');
-    }
-
-    return $entity_form;
   }
 
 }

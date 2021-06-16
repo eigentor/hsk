@@ -2,7 +2,6 @@
 
 namespace Drupal\backup_migrate\Entity;
 
-use BackupMigrate\Core\Config\Config;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\backup_migrate\SettingsProfileInterface;
 
@@ -20,8 +19,7 @@ use Drupal\backup_migrate\SettingsProfileInterface;
  *   },
  *   admin_permission = "administer backup and migrate",
  *   handlers = {
- *     "list_builder" =
- *            "Drupal\backup_migrate\Controller\SettingsProfileListBuilder",
+ *     "list_builder" = "Drupal\backup_migrate\Controller\SettingsProfileListBuilder",
  *     "form" = {
  *       "default" = "Drupal\backup_migrate\Form\SettingsProfileForm",
  *       "delete" = "Drupal\backup_migrate\Form\EntityDeleteForm"
@@ -34,6 +32,12 @@ use Drupal\backup_migrate\SettingsProfileInterface;
  *     "edit-form" = "/admin/config/development/backup_migrate/settings/{backup_migrate_settings}/edit",
  *     "delete-form" = "/admin/config/development/backup_migrate/settings/{backup_migrate_settings}/delete",
  *     "collection" = "/admin/config/development/backup_migrate/settings"
+ *   },
+ *   config_export = {
+ *     "id",
+ *     "label",
+ *     "uuid",
+ *     "config"
  *   }
  * )
  */

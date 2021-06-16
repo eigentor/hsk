@@ -4,7 +4,7 @@ namespace Drupal\content_access\Plugin\RulesAction;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rules\Core\RulesActionBase;
-use Psr\Log\LoggerInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -32,6 +32,8 @@ class ActionGrantNodePermissions extends RulesActionBase implements ContainerFac
   use ActionCommonTrait;
 
   /**
+   * Defined $logger.
+   *
    * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
@@ -39,7 +41,7 @@ class ActionGrantNodePermissions extends RulesActionBase implements ContainerFac
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerInterface $logger) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerChannelFactoryInterface $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->logger = $logger;
   }
@@ -66,10 +68,10 @@ class ActionGrantNodePermissions extends RulesActionBase implements ContainerFac
     if (!empty($node->id()) && $this->checkSetting($node)) {
       // Transform the value to the content-access format.
       $settings = $this->transformRulesValue($permissions);
-      $ca_settings = array();
+      $ca_settings = [];
       foreach (_content_access_get_operations() as $op => $label) {
         // Merge in the array of role-ids for each operation.
-        $settings += array($op => array());
+        $settings += [$op => []];
         $ca_settings[$op] = array_keys(array_flip(content_access_per_node_setting($op, $node)) + array_flip($settings[$op]));
       }
       content_access_save_per_node_settings($node, $ca_settings);

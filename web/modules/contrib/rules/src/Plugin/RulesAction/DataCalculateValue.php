@@ -9,16 +9,17 @@ use Drupal\rules\Core\RulesActionBase;
  *
  * @RulesAction(
  *   id = "rules_data_calculate_value",
- *   label = @Translation("Calculates a numeric value"),
+ *   label = @Translation("Calculate a numeric value"),
  *   category = @Translation("Data"),
- *   context = {
+ *   context_definitions = {
  *     "input_1" = @ContextDefinition("float",
  *       label = @Translation("Input value 1"),
  *       description = @Translation("The first input value for the calculation.")
  *     ),
  *     "operator" = @ContextDefinition("string",
  *       label = @Translation("Operator"),
- *       description = @Translation("The calculation operator.")
+ *       description = @Translation("The calculation operator."),
+ *       assignment_restriction = "input"
  *     ),
  *     "input_2" = @ContextDefinition("float",
  *       label = @Translation("Input value 2"),

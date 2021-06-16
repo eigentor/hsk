@@ -1,14 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\embed\EmbedTypeInterface.
- */
-
 namespace Drupal\embed\EmbedType;
 
+use Drupal\Component\Plugin\ConfigurableInterface;
+use Drupal\Component\Plugin\DependentPluginInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
-use Drupal\Component\Plugin\ConfigurablePluginInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
 
 /**
@@ -16,7 +12,7 @@ use Drupal\Core\Plugin\PluginFormInterface;
  *
  * @ingroup embed_api
  */
-interface EmbedTypeInterface extends ConfigurablePluginInterface, PluginFormInterface, PluginInspectionInterface {
+interface EmbedTypeInterface extends ConfigurableInterface, DependentPluginInterface, PluginFormInterface, PluginInspectionInterface {
 
   /**
    * Gets a configuration value.

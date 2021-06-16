@@ -52,7 +52,7 @@ trait ContextProviderTrait {
   public function getProvidedContextDefinition($name) {
     $definition = $this->getPluginDefinition();
     if (empty($definition['provides'][$name])) {
-      throw new ContextException(sprintf("The %s provided context is not valid.", $name));
+      throw new ContextException(sprintf("The provided context '%s' is not valid.", $name));
     }
     return $definition['provides'][$name];
   }

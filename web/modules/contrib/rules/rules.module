@@ -14,19 +14,62 @@ use Drupal\rules\Event\EntityEvent;
 use Drupal\rules\Event\UserLoginEvent;
 use Drupal\rules\Event\UserLogoutEvent;
 use Drupal\rules\Event\SystemCronEvent;
+use Psr\Log\LogLevel;
+
+/**
+ * Implements hook_theme().
+ */
+function rules_theme() {
+  return [
+    'rules_debug_log_element' => [
+      'render element' => 'element',
+      'file' => 'rules.theme.inc',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_page_top().
+ */
+function rules_page_top(array &$page_top) {
+  $debug_log = \Drupal::service('logger.rules_debug_log');
+  $markup = $debug_log->render();
+  // If debugging is turned off $markup will be empty.
+  if (!empty($markup)) {
+    if (\Drupal::currentUser()->hasPermission('access rules debug')) {
+      // Send debug output to the screen.
+      \Drupal::service('messenger')->addError($markup);
+    }
+    // Log debugging information to logger.channel.rules only if the rules
+    // system logging setting 'debug_log.system_debug' is enabled.
+    // These logs get sent to the system dblog, end up in the Drupal database,
+    // and are viewable at /admin/reports/dblog.
+    if (\Drupal::config('rules.settings')->get('debug_log.system_debug')) {
+      \Drupal::service('logger.channel.rules')->log(LogLevel::DEBUG, $markup, []);
+    }
+  }
+  // Remove logs already rendered.
+  $debug_log->clearLogs();
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function rules_page_attachments(array &$attachments) {
+  // We need JavaScript and CSS to render the debug log properly
+  // and to provide the expand/collapse functionality.
+  if (\Drupal::currentUser()->hasPermission('access rules debug')) {
+    if (\Drupal::config('rules.settings')->get('debug_log.enabled')) {
+      $attachments['#attached']['library'][] = 'rules/rules.debug';
+    }
+  }
+}
 
 /**
  * Implements hook_help().
  */
 function rules_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    case 'entity.rules_reaction_rule.collection':
-      $output = t('Reaction rules, listed below, react on selected events on the site. Each reaction rule may fire any number of <em>actions</em>, and may have any number of <em>conditions</em> that must be met for the actions to be executed. You can also set up <a href=":url1">components</a> – stand-alone sets of Rules configuration that can be used in Rules and other parts of your site. See <a href=":url2">the online documentation</a> for an introduction on how to use Rules.', [
-        ':url1' => Url::fromRoute('entity.rules_component.collection')->toString(),
-        ':url2' => 'https://www.drupal.org/node/298480',
-      ]);
-      return $output;
-
     case 'help.page.rules':
       $output = '<h3>' . t('About') . '</h3>';
       $output .= '<p>';
@@ -40,7 +83,7 @@ function rules_help($route_name, RouteMatchInterface $route_match) {
       $output .= '<dt>' . t('Reaction rules') . '</dt>';
       $output .= '<dd>' . t('Reaction rules associate one or more reactions to one or more specific site events. Execution of a reaction rule actions can optionally be tied to one or more conditions. To list and update existing reaction rules and to create a new one, visit the <a href=":url">reaction rules overview page</a>.', [':url' => Url::fromRoute('entity.rules_reaction_rule.collection')->toString()]) . '</dd>';
       $output .= '<dt>' . t('Components') . '</dt>';
-      $output .= '<dd>' . t('Rule components allows to define reusable combined actions which can optionally be tied to one or more conditions. Components are useable as actions in reaction rules or in other components. To list and update existing rule components and to create a new one, visit the <a href=":url">components overview pages</a>.', [':url' => Url::fromRoute('entity.rules_component.collection')->toString()]) . '</dd>';
+      $output .= '<dd>' . t('Rule components allows to define reusable combined actions which can optionally be tied to one or more conditions. Components are usable as actions in reaction rules or in other components. To list and update existing rule components and to create a new one, visit the <a href=":url">components overview pages</a>.', [':url' => Url::fromRoute('entity.rules_component.collection')->toString()]) . '</dd>';
       $output .= '<dt>' . t('General settings') . '</dt>';
       $output .= '<dd>' . t('The Rules modules allows to set global settings settings, such as logging. Visit the <a href=":url">rules settings page</a> to view and update current settings.', [':url' => Url::fromRoute('rules.settings')->toString()]) . '</dd>';
       $output .= '</dl>';

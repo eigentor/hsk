@@ -41,8 +41,8 @@
     rule.required.tags = ['a'];
     rule.allowed.tags = ['a'];
     // Attributes.
-    rule.required.attributes = ['data-entity-type', 'data-entity-uuid', 'title'];
-    rule.allowed.attributes = ['data-entity-type', 'data-entity-uuid', 'title'];
+    rule.required.attributes = ['data-entity-substitution', 'data-entity-type', 'data-entity-uuid', 'title'];
+    rule.allowed.attributes = ['data-entity-substitution', 'data-entity-type', 'data-entity-uuid', 'title'];
 
     linkitFeature.addHTMLRule(rule);
     return linkitFeature;

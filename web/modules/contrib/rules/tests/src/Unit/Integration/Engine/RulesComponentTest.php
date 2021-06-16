@@ -5,7 +5,7 @@ namespace Drupal\Tests\rules\Unit\Integration\Engine;
 use Drupal\rules\Context\ContextConfig;
 use Drupal\rules\Context\ContextDefinition;
 use Drupal\rules\Engine\RulesComponent;
-use Drupal\rules\Engine\ExecutionStateInterface;
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\Tests\rules\Unit\Integration\RulesIntegrationTestBase;
 
 /**

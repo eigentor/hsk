@@ -3,6 +3,7 @@
 namespace Drupal\field_validation\Plugin\Validation\Constraint;
 
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Exception\MissingOptionsException;
 
 /**
  * Checks that the node.
@@ -15,18 +16,25 @@ use Symfony\Component\Validator\Constraint;
 class FieldValidationConstraint extends Constraint {
     public $ruleset_name;
     public $rule_uuid;
+
     public function __construct($options = null){
+      if(is_array($options)){
+        if(key_exists('ruleset_name',$options)){
+          $this->ruleset_name = $options['ruleset_name'];
+        }
+
+        if(key_exists('rule_uuid',$options)) {
+          $this->rule_uuid = $options['rule_uuid'];
+        }
+      }
+
         if (null !== $options && !is_array($options)) {
-            $options = array(
+            $options = [
                 'ruleset_name' => $options,
                 'rule_uuid' => $options,
-            );
+            ];
         }
 
         parent::__construct($options);
-
-        if (null === $this->ruleset_name || null === $this->rule_uuid) {
-            throw new MissingOptionsException(sprintf('Either option "ruleset_name" or "rule_uuid" must be given for constraint %s', __CLASS__), array('ruleset_name', 'rule_uuid'));
-        }
     }
 }

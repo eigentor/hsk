@@ -15,10 +15,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "rules_user_block",
  *   label = @Translation("Block a user"),
  *   category = @Translation("User"),
- *   context = {
+ *   context_definitions = {
  *     "user" = @ContextDefinition("entity:user",
  *       label = @Translation("User"),
- *       description = @Translation("Specifies the user, that should be blocked.")
+ *       description = @Translation("Specifies the user that should be blocked.")
  *     ),
  *   }
  * )

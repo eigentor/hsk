@@ -2,7 +2,7 @@
 
 namespace Drupal\rules\Context;
 
-use Doctrine\Common\Annotations\SimpleAnnotationReader;
+use Drupal\Component\Annotation\Doctrine\SimpleAnnotationReader;
 use Drupal\Core\Plugin\Discovery\AnnotatedClassDiscovery as CoreAnnotatedClassDiscovery;
 
 /**

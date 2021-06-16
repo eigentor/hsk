@@ -5,7 +5,7 @@ namespace Drupal\rules_test\Plugin\Condition;
 use Drupal\rules\Core\RulesConditionBase;
 
 /**
- * Provides an always TRUE test condition.
+ * Provides an always-TRUE test condition.
  *
  * @Condition(
  *   id = "rules_test_true",

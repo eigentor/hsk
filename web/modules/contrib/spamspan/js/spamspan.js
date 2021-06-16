@@ -15,9 +15,9 @@ Licence version 2, available at http://www.gnu.org/licenses/gpl.txt
     attach: function (context) {
       // get each span with class spamspan
       $("span.spamspan", context).each(function (index) {
-        // Replace each <span class="t"></span> with .
-        if ($('span.t', this).length) {
-          $('span.t', this).replaceWith('.');
+        // Replace each <span class="o"></span> with .
+        if ($('span.o', this).length) {
+          $('span.o', this).replaceWith('.');
         }
 
         // For each selected span, set mail to the relevant value, removing spaces
@@ -41,9 +41,9 @@ Licence version 2, available at http://www.gnu.org/licenses/gpl.txt
         }
 
         // Find the anchor content, and remove the round brackets from the start and end
-        var _anchorContent = $("span.a", this).html();
+        var _anchorContent = $("span.t", this).html();
         if (_anchorContent) {
-          _anchorContent = _anchorContent.replace(/^ ?\((.*)\) ?$/, "$1");
+          _anchorContent = _anchorContent.replace(/^ ?\(([^]*)\) ?$/, "$1");
         }
 
         // create the <a> element, and replace the original span contents

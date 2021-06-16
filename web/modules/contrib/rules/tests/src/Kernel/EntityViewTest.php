@@ -14,12 +14,12 @@ class EntityViewTest extends RulesKernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['field', 'node', 'text', 'user'];
+  protected static $modules = ['field', 'node', 'text', 'user'];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installEntitySchema('user');

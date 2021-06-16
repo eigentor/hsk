@@ -231,11 +231,30 @@ class WebformSettingsLimitUniqueTest extends WebformNodeBrowserTestBase {
     $this->assertFieldByName('name', 'Jane Doe');
     $this->assertRaw("<div><b>Submission ID:</b> $sid</div>");
 
+    // Check that the delete submission link includes ?destination.
+    $this->assertLinkByHref(base_path() . 'webform/test_form_limit_user_unique/submissions/' . $sid . '/delete?destination=' . base_path() . 'form/test-form-limit-user-unique');
+
     // Check that 'Test' form also has name set to 'Jane Doe'
     // and does not display a message.
     $this->drupalGet('/webform/test_form_limit_user_unique/test');
     $this->assertFieldByName('name', 'Jane Doe');
     $this->assertRaw("<div><b>Submission ID:</b> $sid</div>");
+
+    // Check that the delete submission link does not include the ?destination.
+    $this->assertLinkByHref(base_path() . 'admin/structure/webform/manage/test_form_limit_user_unique/submission/' . $sid . '/delete');
+
+    /**************************************************************************/
+
+    // Check that access is allowed for manage own submission user.
+    $this->drupalLogin($manage_own_user);
+    $this->postSubmission($webform_user_unique, ['name' => 'John Adams']);
+    $this->assertFieldByName('name', 'John Adams');
+
+    // Check that manage own submission user can't update a closed webform.
+    $webform_user_unique->setStatus(FALSE)->save();
+    $this->drupalGet('/webform/test_form_limit_user_unique');
+    $this->assertNoFieldByName('name', 'John Adams');
+    $this->assertRaw('Sorry… This form is closed to new submissions.');
   }
 
 }

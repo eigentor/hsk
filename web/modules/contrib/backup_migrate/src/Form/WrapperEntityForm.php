@@ -2,13 +2,13 @@
 
 namespace Drupal\backup_migrate\Form;
 
-use BackupMigrate\Drupal\Config\DrupalConfigHelper;
+use Drupal\backup_migrate\Drupal\Config\DrupalConfigHelper;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class WrapperEntityForm.
+ *
  *
  * @package Drupal\backup_migrate\Form
  */
@@ -85,14 +85,14 @@ class WrapperEntityForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created %label.', [
+        \Drupal::messenger()->addMessage($this->t('Created %label.', [
           '%label' => $entity->label(),
         ]));
         $form_state->setRedirectUrl($entity->toUrl('edit-form'));
         break;
 
       default:
-        drupal_set_message($this->t('Saved %label.', [
+        \Drupal::messenger()->addMessage($this->t('Saved %label.', [
           '%label' => $entity->label(),
         ]));
         $form_state->setRedirectUrl($entity->toUrl('collection'));

@@ -134,11 +134,11 @@ class FilterImageStyle extends FilterBase {
     if ($long) {
       $image_styles = \Drupal::entityTypeManager()->getStorage('image_style')->loadMultiple();
       $list = '<code>' . implode('</code>, <code>', array_keys($image_styles)) . '</code>';
-      return t('
+      return $this->t('
         <p>You can display images using a site-wide style by adding a <code>data-image-style</code> attribute, whose value is one of the image style machine names: !image-style-machine-name-list.</p>', array('!image-style-machine-name-list' => $list));
     }
     else {
-      return t('You can display images using site-wide styles by adding a data-image-style attribute.');
+      return $this->t('You can display images using site-wide styles by adding a data-image-style attribute.');
     }
   }
 }

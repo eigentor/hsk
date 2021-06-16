@@ -4,7 +4,7 @@ namespace Drupal\entityconnect;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManager;
-use Drupal\user\PrivateTempStoreFactory;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class EntityconnectCache {
 
   /**
-   * The user's private temp storage.
+   * The private temporary storage.
    *
-   * @var \Drupal\user\PrivateTempStoreFactory
+   * @var \Drupal\Core\TempStore\PrivateTempStore
    */
   private $store;
 
@@ -39,11 +39,11 @@ class EntityconnectCache {
   /**
    * Saves our dependencies.
    *
-   * @param PrivateTempStoreFactory $store
-   *   The user's private storage object.
-   * @param SessionManager $sessionManager
+   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $store
+   *   The private storage object.
+   * @param \Drupal\Core\Session\SessionManager $sessionManager
    *   The session manager.
-   * @param AccountInterface $account
+   * @param \Drupal\Core\Session\AccountInterface $account
    *   The current user account object.
    */
   public function __construct(PrivateTempStoreFactory $store, SessionManager $sessionManager, AccountInterface $account) {
@@ -64,7 +64,7 @@ class EntityconnectCache {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('user.private_tempstore'),
+      $container->get('tempstore.private'),
       $container->get('session_manager'),
       $container->get('current_user')
     );
@@ -91,7 +91,7 @@ class EntityconnectCache {
    * @param mixed $data
    *   The cache data.
    *
-   * @throws \Drupal\user\TempStoreException
+   * @throws \Drupal\Core\TempStore\TempStoreException
    */
   public function set($key, $data) {
     $this->store->set($key, $data);
@@ -103,7 +103,7 @@ class EntityconnectCache {
    * @param string $key
    *   The cache key.
    *
-   * @throws \Drupal\user\TempStoreException
+   * @throws \Drupal\Core\TempStore\TempStoreException
    */
   public function delete($key) {
     $this->store->delete($key);

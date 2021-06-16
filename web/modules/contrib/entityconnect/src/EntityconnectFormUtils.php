@@ -3,13 +3,10 @@
 namespace Drupal\entityconnect;
 
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Entity\Entity;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Url;
 use Drupal\entityconnect\Form\AdministrationForm;
 use Drupal\field\Entity\FieldConfig;
-use Drupal\field\FieldStorageConfigInterface;
 
 /**
  * Contains form alter, callbacks and utility methods for entityconnect.
@@ -57,20 +54,23 @@ class EntityconnectFormUtils {
     // Attach our custom process callback to each entity reference element.
     if ($ref_fields) {
       foreach ($ref_fields as $field) {
-        // Add our #process callback.
-        $form[$field]['#process'][] = array(
-          '\Drupal\entityconnect\EntityconnectWidgetProcessor',
-          'process',
-        );
+        // Merge our #process callback with the defaults.
+        $elementInfo = \Drupal::service('element_info');
+        $form[$field]['#process'] = array_merge($elementInfo->getInfoProperty($form[$field]['#type'], '#process', []), [
+          [
+            '\Drupal\entityconnect\EntityconnectWidgetProcessor',
+            'process',
+          ],
+        ]);
 
         // Add our #validate callback to the entity form.
         // This prevents the exception on entityconnect elements caused by
         // submitting the form without using the entityconnect buttons.
-        $form['#validate'] = !isset($form['#validate']) ? array() : $form['#validate'];
-        array_unshift($form['#validate'], array(
+        $form['#validate'] = !isset($form['#validate']) ? [] : $form['#validate'];
+        array_unshift($form['#validate'], [
           '\Drupal\entityconnect\EntityconnectFormUtils',
           'validateForm',
-        ));
+        ]);
       }
     }
 
@@ -92,7 +92,7 @@ class EntityconnectFormUtils {
 
     foreach ($ref_fields as $field) {
       // Extract the values for this field from $form_state->getValues().
-      $path = array_merge($form['#parents'], array($field));
+      $path = array_merge($form['#parents'], [$field]);
       $key_exists = NULL;
       $ref_values = NestedArray::getValue($form_state->getValues(), $path, $key_exists);
 
@@ -119,7 +119,8 @@ class EntityconnectFormUtils {
    */
   public static function getReferenceFields(array &$form, FormStateInterface $form_state) {
 
-    $ref_fields = array();
+    $ref_fields = [];
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = NULL;
 
     // Get the entity if this is an entity form.
@@ -128,7 +129,7 @@ class EntityconnectFormUtils {
     }
 
     // Bail out if not a fieldable entity form.
-    if (empty($entity) || !$entity->getEntityType()->isSubclassOf('\Drupal\Core\Entity\FieldableEntityInterface')) {
+    if (empty($entity) || !$entity->getEntityType()->entityClassImplements('\Drupal\Core\Entity\FieldableEntityInterface')) {
       return $ref_fields;
     }
 
@@ -171,9 +172,9 @@ class EntityconnectFormUtils {
    */
   public static function childFormAlter(array &$form, FormStateInterface $form_state, $form_id, $cache_id) {
     // Exclude some forms to be processed.
-    $exclude_forms = array(
+    $exclude_forms = [
       'search_block_form',
-    );
+    ];
     // Allow other modules to alter exclude forms list.
     \Drupal::moduleHandler()->alter('entityconnect_exclude_forms', $exclude_forms);
 
@@ -181,37 +182,37 @@ class EntityconnectFormUtils {
       return;
     }
 
-    $form['parent_build_cache_id'] = array(
+    $form['parent_build_cache_id'] = [
       '#type' => 'value',
       '#value' => $cache_id,
-    );
-    $form['actions']['cancel'] = array(
+    ];
+    $form['actions']['cancel'] = [
       '#type' => 'submit',
       '#value' => t('Cancel'),
-      '#submit' => array(
-        array(
+      '#submit' => [
+        [
           '\Drupal\entityconnect\EntityconnectFormUtils',
           'childFormCancel',
-        ),
-      ),
+        ],
+      ],
       '#parent_build_cache_id' => $cache_id,
-      '#limit_validation_errors' => array(),
+      '#limit_validation_errors' => [],
       '#weight' => 1000,
-    );
+    ];
 
     if (isset($form['submit']['#submit'])) {
-      $form['submit']['#submit'][] = array(
+      $form['submit']['#submit'][] = [
         '\Drupal\entityconnect\EntityconnectFormUtils',
         'childFormSubmit',
-      );
+      ];
     }
     else {
       foreach (array_keys($form['actions']) as $action) {
-        if (!in_array($action, array('preview', 'delete')) && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
-          $form['actions'][$action]['#submit'][] = array(
+        if (!in_array($action, ['preview', 'delete']) && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+          $form['actions'][$action]['#submit'][] = [
             '\Drupal\entityconnect\EntityconnectFormUtils',
             'childFormSubmit',
-          );
+          ];
         }
       }
     }
@@ -220,26 +221,26 @@ class EntityconnectFormUtils {
      && strpos($form_id, '_confirm_delete') === FALSE && strpos($form_id, 'delete_form') === FALSE) {
       $delete_button = &$form['actions']['delete'];
       if ($delete_button['#type'] == 'link') {
-        /** @var Url $url */
+        /** @var \Drupal\Core\Url $url */
         $url = &$delete_button['#url'];
-        $url->setOption('query', array(
+        $url->setOption('query', [
           'build_cache_id' => $cache_id,
           'child' => 1,
-        ));
+        ]);
       }
       elseif ($delete_button['#type'] == 'submit') {
-        $form['actions']['delete']['#submit'][] = array(
+        $form['actions']['delete']['#submit'][] = [
           '\Drupal\entityconnect\EntityconnectFormUtils',
           'childFormDeleteSubmit',
-        );
+        ];
       }
     }
 
-    $data = array(
+    $data = [
       'form' => &$form,
       'form_state' => &$form_state,
       'form_id' => $form_id,
-    );
+    ];
     \Drupal::moduleHandler()->alter('entityconnect_child_form', $data);
   }
 
@@ -262,7 +263,7 @@ class EntityconnectFormUtils {
   public static function returnFormAlter(array &$form, FormStateInterface $form_state, array $cache_data) {
     if (empty($form_state->get('#entityconnect_processed'))) {
       $old_form = $cache_data['form'];
-      /** @var FormStateInterface $old_form_state */
+      /** @var \Drupal\Core\Form\FormStateInterface $old_form_state */
       $old_form_state = $cache_data['form_state'];
 
       // Save the storage and input from the original form state.
@@ -294,7 +295,7 @@ class EntityconnectFormUtils {
 
       $widget_container_type = isset($widget_container['#type']) ? $widget_container['#type'] : 'autocomplete';
 
-      /** @var FieldStorageConfigInterface $field_info */
+      /** @var \Drupal\field\FieldStorageConfigInterface $field_info */
       $field_info = $cache_data['field_info'];
 
       if (isset($cache_data['target_id']) && empty($cache_data['cancel'])) {
@@ -327,7 +328,7 @@ class EntityconnectFormUtils {
                 $element['target_id'] = $target_id;
               }
               else {
-                $element['target_id'] = $widget_container['#value'] + array($target_id => $target_id);
+                $element['target_id'] = $widget_container['#value'] + [$target_id => $target_id];
               }
               break;
 
@@ -340,18 +341,18 @@ class EntityconnectFormUtils {
             case 'checkboxes':
               $element['target_id'] = $widget_container['#value'];
               if ($target_id) {
-                $element['target_id'] += array($target_id => $target_id);
+                $element['target_id'] += [$target_id => $target_id];
               }
               break;
 
             default:
-              $data = array(
+              $data = [
                 'data' => &$cache_data,
                 'widget_container' => $widget_container,
                 'widget_container_type' => $widget_container_type,
                 'field_info' => $field_info,
                 'element_value' => NULL,
-              );
+              ];
               \Drupal::moduleHandler()->alter('entityconnect_return_form', $data);
               break;
           }
@@ -391,14 +392,14 @@ class EntityconnectFormUtils {
    *
    * @param array $form
    *   Child form.
-   * @param FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   Child form state.
    */
   public static function childFormCancel(array $form, FormStateInterface $form_state) {
     $triggeringElement = $form_state->getTriggeringElement();
     $cache_id = $triggeringElement['#parent_build_cache_id'];
     if ($cache_id && \Drupal::getContainer()->get('entityconnect.cache')->get($cache_id)) {
-      $form_state->setRedirect('entityconnect.return', array('cache_id' => $cache_id, 'cancel' => 1));
+      $form_state->setRedirect('entityconnect.return', ['cache_id' => $cache_id, 'cancel' => 1]);
     }
   }
 
@@ -413,7 +414,7 @@ class EntityconnectFormUtils {
    *
    * @param array $form
    *   Child form.
-   * @param FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   Child form state.
    */
   public static function childFormSubmit(array $form, FormStateInterface $form_state) {
@@ -426,16 +427,16 @@ class EntityconnectFormUtils {
       }
       else {
         $entity_type = $cache_data['target_entity_type'];
-        $data = array(
+        $data = [
           'form' => &$form,
           'form_state' => &$form_state,
           'entity_type' => $entity_type,
           'data' => &$cache_data,
-        );
+        ];
         \Drupal::moduleHandler()->alter('entityconnect_child_form_submit', $data);
       }
       \Drupal::getContainer()->get('entityconnect.cache')->set($cache_id, $cache_data);
-      $form_state->setRedirect('entityconnect.return', array('cache_id' => $cache_id));
+      $form_state->setRedirect('entityconnect.return', ['cache_id' => $cache_id]);
     }
 
   }
@@ -448,7 +449,7 @@ class EntityconnectFormUtils {
    *
    * @param array $form
    *   Child form.
-   * @param FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   Child form state.
    */
   public static function childFormDeleteSubmit(array $form, FormStateInterface $form_state) {
@@ -457,12 +458,12 @@ class EntityconnectFormUtils {
       $redirect = $form_state->getRedirect();
       $query = $redirect->getOption('query');
       if (!is_array($query)) {
-        $query = array();
+        $query = [];
       }
-      $redirect->setOption('query', $query + array(
+      $redirect->setOption('query', $query + [
         'build_cache_id' => $form_state->getValue('parent_build_cache_id'),
         'child' => 1,
-      )
+      ]
       );
     }
   }

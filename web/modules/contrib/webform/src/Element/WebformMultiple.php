@@ -32,6 +32,7 @@ class WebformMultiple extends FormElement {
       '#access' => TRUE,
       '#key' => NULL,
       '#header' => NULL,
+      '#header_label' => '',
       '#element' => [
         '#type' => 'textfield',
         '#title' => t('Item value'),
@@ -422,9 +423,18 @@ class WebformMultiple extends FormElement {
     }
 
     if (empty($element['#header'])) {
+      if (!empty($element['#header_label'])) {
+        $header_label = $element['#header_label'];
+      }
+      elseif (!empty($element['#title'])) {
+        $header_label = WebformAccessibilityHelper::buildVisuallyHidden($element['#title']);
+      }
+      else {
+        $header_label = [];
+      }
       return [
         [
-          'data' => (!empty($element['#title'])) ? WebformAccessibilityHelper::buildVisuallyHidden($element['#title']) : [],
+          'data' => $header_label,
           'colspan' => ($colspan + 1),
         ],
       ];
@@ -460,6 +470,11 @@ class WebformMultiple extends FormElement {
     elseif (is_string($element['#header'])) {
       return [
         ['data' => $element['#header'], 'colspan' => ($element['#child_keys']) ? count($element['#child_keys']) + $colspan : $colspan + 1],
+      ];
+    }
+    elseif (!empty($element['#header_label'])) {
+      return [
+        ['data' => $element['#header_label'], 'colspan' => ($element['#child_keys']) ? count($element['#child_keys']) + $colspan : $colspan + 1],
       ];
     }
     else {
@@ -898,9 +913,15 @@ class WebformMultiple extends FormElement {
     $button = $form_state->getTriggeringElement();
     $parent_length = (isset($button['#row_index'])) ? -4 : -2;
     $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, $parent_length));
+
     // Make sure only the ajax prefix and suffix is used.
     $element['#prefix'] = $element['#ajax_prefix'];
     $element['#suffix'] = $element['#ajax_suffix'];
+
+    // Disable states and flexbox wrapper.
+    // @see \Drupal\webform\Plugin\WebformElementBase::preRenderFixFlexboxWrapper
+    $element['#webform_wrapper'] = FALSE;
+
     return $element;
   }
 

@@ -10,19 +10,19 @@ use Drupal\Core\Form\FormStateInterface;
 trait ExpressionFormTrait {
 
   /**
-   * Implements ExpressionFormInterface::submitForm().
-   *
-   * Empty default implementation.
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-  }
-
-  /**
    * Implements ExpressionFormInterface::validateForm().
    *
    * Empty default implementation.
    */
   public function validateForm(array $form, FormStateInterface $form_state) {
+  }
+
+  /**
+   * Implements ExpressionFormInterface::submitForm().
+   *
+   * Empty default implementation.
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
   }
 
 }

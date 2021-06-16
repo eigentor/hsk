@@ -12,10 +12,10 @@ use Drupal\user\UserInterface;
  *   id = "rules_user_unblock",
  *   label = @Translation("Unblock a user"),
  *   category = @Translation("User"),
- *   context = {
+ *   context_definitions = {
  *     "user" = @ContextDefinition("entity:user",
  *       label = @Translation("User"),
- *       description = @Translation("Specifies the user, that should be unblocked.")
+ *       description = @Translation("Specifies the user that should be unblocked.")
  *     ),
  *   }
  * )

@@ -2,6 +2,7 @@
 
 namespace Drupal\rules\Core;
 
+use Drupal\Component\Plugin\Exception\ContextException;
 use Drupal\Core\Condition\ConditionPluginBase;
 use Drupal\rules\Context\ContextProviderTrait;
 

@@ -83,7 +83,7 @@ elements: |
       '#type': number
       '#title': number_basic
       '#multiple': true
-
+  
 css: ''
 javascript: ''
 settings:
@@ -104,7 +104,7 @@ settings:
   form_previous_submissions: true
   form_confidential: false
   form_confidential_message: ''
-  form_remote_addr: true
+  form_disable_remote_addr: false
   form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false
@@ -213,6 +213,7 @@ settings:
   results_customize: false
   token_view: false
   token_update: false
+  token_delete: false
   serial_disabled: false
 access:
   create:

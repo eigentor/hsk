@@ -149,7 +149,7 @@ class RulesUiDefinition implements PluginDefinitionInterface {
     }
     foreach (['label', 'class', 'provider', 'base_route'] as $required) {
       if (!isset($this->$required)) {
-        throw new LogicException("Plugin {$this->id} misses the required property $required.");
+        throw new LogicException("Plugin {$this->id} misses the required property '$required'.");
       }
     }
     if (!is_subclass_of($this->class, RulesUiHandlerInterface::class)) {

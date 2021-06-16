@@ -2,10 +2,11 @@
 
 namespace Drupal\quick_node_clone\Controller;
 
+use Drupal\node\Entity\Node;
 use Drupal\quick_node_clone\Entity\QuickNodeCloneEntityFormBuilder;
 use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\node\Entity\Node;
 use Drupal\node\Controller\NodeController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -29,9 +30,13 @@ class QuickNodeCloneNodeController extends NodeController {
    *   The date formatter service.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer service.
+   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
+   *   The entity repository.
+   * @param \Drupal\quick_node_clone\Entity\QuickNodeCloneEntityFormBuilder $entity_form_builder
+   *   The entity form builder.
    */
-  public function __construct(DateFormatterInterface $date_formatter, RendererInterface $renderer, QuickNodeCloneEntityFormBuilder $entity_form_builder) {
-    parent::__construct($date_formatter, $renderer);
+  public function __construct(DateFormatterInterface $date_formatter, RendererInterface $renderer, EntityRepositoryInterface $entity_repository, QuickNodeCloneEntityFormBuilder $entity_form_builder) {
+    parent::__construct($date_formatter, $renderer, $entity_repository);
     $this->qncEntityFormBuilder = $entity_form_builder;
   }
 
@@ -42,6 +47,7 @@ class QuickNodeCloneNodeController extends NodeController {
     return new static(
       $container->get('date.formatter'),
       $container->get('renderer'),
+      $container->get('entity.repository'),
       $container->get('quick_node_clone.entity.form_builder')
     );
   }
@@ -59,16 +65,15 @@ class QuickNodeCloneNodeController extends NodeController {
   /**
    * Provides the node submission form.
    *
-   * @param \Drupal\node\NodeTypeInterface $node_type
-   *   The node type entity for the node.
+   * @param \Drupal\node\Entity\Node $node
+   *   The node entity to clone.
    *
    * @return array
    *   A node submission form.
    */
-  public function cloneNode($node) {
-    $parent_node = $this->entityTypeManager()->getStorage('node')->load($node);
-    if(!empty($parent_node)){
-      $form = $this->entityFormBuilder()->getForm($parent_node, 'quick_node_clone');
+  public function cloneNode(Node $node) {
+    if (!empty($node)) {
+      $form = $this->entityFormBuilder()->getForm($node, 'quick_node_clone');
       return $form;
     }
     else {
@@ -79,18 +84,19 @@ class QuickNodeCloneNodeController extends NodeController {
   /**
    * The _title_callback for the node.add route.
    *
-   * @param int $node_id
-   *   The current node id.
+   * @param \Drupal\node\Entity\Node $node
+   *   The current node.
    *
    * @return string
    *   The page title.
    */
-  public function clonePageTitle($node) {
-    $parent = Node::load($node);
-    return $this->t('Clone of "@node"', array(
-      '@node' => $parent->getTitle()
-      )
-    );
+  public function clonePageTitle(Node $node) {
+    $prepend_text = "";
+    $config = \Drupal::config('quick_node_clone.settings');
+    if (!empty($config->get('text_to_prepend_to_title'))) {
+      $prepend_text = $config->get('text_to_prepend_to_title') . " ";
+    }
+    return $prepend_text . $node->getTitle();
   }
 
 }

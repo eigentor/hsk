@@ -1,17 +1,11 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\embed\Entity\EmbedButton.
- */
-
 namespace Drupal\embed\Entity;
 
-use Drupal\Core\Access\AccessResult;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\editor\EditorInterface;
 use Drupal\embed\EmbedButtonInterface;
 
 /**
@@ -24,7 +18,7 @@ use Drupal\embed\EmbedButtonInterface;
  *     "form" = {
  *       "add" = "Drupal\embed\Form\EmbedButtonForm",
  *       "edit" = "Drupal\embed\Form\EmbedButtonForm",
- *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
+ *       "delete" = "Drupal\Core\Entity\EntityDeleteForm",
  *     },
  *     "list_builder" = "Drupal\embed\EmbedButtonListBuilder",
  *   },
@@ -44,6 +38,7 @@ use Drupal\embed\EmbedButtonInterface;
  *     "id",
  *     "type_id",
  *     "type_settings",
+ *     "icon",
  *     "icon_uuid",
  *   }
  * )
@@ -83,11 +78,11 @@ class EmbedButton extends ConfigEntityBase implements EmbedButtonInterface {
   public $type_settings = [];
 
   /**
-   * UUID of the button's icon file.
+   * An array of data about the encoded button image.
    *
-   * @var string
+   * @var array
    */
-  public $icon_uuid;
+  public $icon = [];
 
   /**
    * {@inheritdoc}
@@ -103,9 +98,7 @@ class EmbedButton extends ConfigEntityBase implements EmbedButtonInterface {
     if ($definition = $this->embedTypeManager()->getDefinition($this->getTypeId(), FALSE)) {
       return $definition['label'];
     }
-    else {
-      return $this->t('Unknown');
-    }
+    return $this->t('Unknown');
   }
 
   /**
@@ -121,8 +114,10 @@ class EmbedButton extends ConfigEntityBase implements EmbedButtonInterface {
    * {@inheritdoc}
    */
   public function getIconFile() {
-    if ($this->icon_uuid) {
-      return $this->entityManager()->loadEntityByUuid('file', $this->icon_uuid);
+    @trigger_error(__METHOD__ . ' is deprecated in Embed 1.2 and will be removed before 1.3.', E_USER_DEPRECATED);
+    if (!empty($this->icon_uuid)) {
+      $files = $this->entityTypeManager()->getStorage('file')->loadByProperties(['uuid' => $this->icon_uuid]);
+      return reset($files);
     }
   }
 
@@ -130,12 +125,18 @@ class EmbedButton extends ConfigEntityBase implements EmbedButtonInterface {
    * {@inheritdoc}
    */
   public function getIconUrl() {
-    if ($image = $this->getIconFile()) {
-      return file_create_url($image->getFileUri());
+    if (!empty($this->icon)) {
+      $uri = $this->icon['uri'];
+      if (!is_file($uri) && !UrlHelper::isExternal($uri)) {
+        static::convertEncodedDataToImage($this->icon);
+      }
+      $uri = file_create_url($uri);
     }
     else {
-      return $this->getTypePlugin()->getDefaultIconUrl();
+      $uri = $this->getTypePlugin()->getDefaultIconUrl();
     }
+
+    return file_url_transform_relative($uri);
   }
 
   /**
@@ -144,71 +145,22 @@ class EmbedButton extends ConfigEntityBase implements EmbedButtonInterface {
   public function calculateDependencies() {
     parent::calculateDependencies();
 
-    // Add the file icon entity as dependency if an UUID was specified.
-    if ($this->icon_uuid && $file_icon = $this->entityManager()->loadEntityByUuid('file', $this->icon_uuid)) {
-      $this->addDependency($file_icon->getConfigDependencyKey(), $file_icon->getConfigDependencyName());
-    }
-
     // Gather the dependencies of the embed type plugin.
-    $plugin = $this->getTypePlugin();
-    $this->calculatePluginDependencies($plugin);
-
-    return $this->dependencies;
+    if ($plugin = $this->getTypePlugin()) {
+      $this->calculatePluginDependencies($plugin);
+      return $this->dependencies;
+    }
+    return NULL;
   }
 
   /**
    * Gets the embed type plugin manager.
    *
    * @return \Drupal\embed\EmbedType\EmbedTypeManager
+   *   The embed type plugin manager.
    */
   protected function embedTypeManager() {
     return \Drupal::service('plugin.manager.embed.type');
-  }
-
-  /**
-   * Gets the file usage service.
-   *
-   * @return \Drupal\file\FileUsage\FileUsageInterface
-   */
-  protected function fileUsage() {
-    return \Drupal::service('file.usage');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function postSave(EntityStorageInterface $storage, $update = TRUE) {
-    parent::postSave($storage, $update);
-
-    $icon_file = $this->getIconFile();
-    if (isset($this->original) && $old_icon_file = $this->original->getIconFile()) {
-      /** @var \Drupal\file\FileInterface $old_icon_file */
-      if (!$icon_file || $icon_file->uuid() != $old_icon_file->uuid()) {
-        $this->fileUsage()->delete($old_icon_file, 'embed', $this->getEntityTypeId(), $this->id());
-      }
-    }
-
-    if ($icon_file) {
-      $usage = $this->fileUsage()->listUsage($icon_file);
-      if (empty($usage['embed'][$this->getEntityTypeId()][$this->id()])) {
-        $this->fileUsage()->add($icon_file, 'embed', $this->getEntityTypeId(), $this->id());
-      }
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function postDelete(EntityStorageInterface $storage, array $entities) {
-    parent::postDelete($storage, $entities);
-
-    // Remove file usage for any button icons.
-    foreach ($entities as $entity) {
-      /** @var \Drupal\embed\EmbedButtonInterface $entity */
-      if ($icon_file = $entity->getIconFile()) {
-        \Drupal::service('file.usage')->delete($icon_file, 'embed', $entity->getEntityTypeId(), $entity->id());
-      }
-    }
   }
 
   /**
@@ -218,9 +170,7 @@ class EmbedButton extends ConfigEntityBase implements EmbedButtonInterface {
     if (isset($this->type_settings[$key])) {
       return $this->type_settings[$key];
     }
-    else {
-      return $default;
-    }
+    return $default;
   }
 
   /**
@@ -228,6 +178,30 @@ class EmbedButton extends ConfigEntityBase implements EmbedButtonInterface {
    */
   public function getTypeSettings() {
     return $this->type_settings;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function convertImageToEncodedData($uri) {
+    return [
+      'data' => base64_encode(file_get_contents($uri)),
+      'uri' => $uri,
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function convertEncodedDataToImage(array $data) {
+    if (!is_file($data['uri'])) {
+      $directory = dirname($data['uri']);
+      /** @var \Drupal\Core\File\FileSystemInterface $filesystem */
+      $fileSystem = \Drupal::service('file_system');
+      $fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+      $fileSystem->saveData(base64_decode($data['data']), $data['uri'], FileSystemInterface::EXISTS_REPLACE);
+    }
+    return $data['uri'];
   }
 
 }

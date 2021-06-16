@@ -44,7 +44,7 @@ class FieldValidationRuleSetListBuilder extends ConfigEntityListBuilder {
   public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
     return new static(
       $entity_type,
-      $container->get('entity.manager')->getStorage($entity_type->id()),
+      $container->get('entity_type.manager')->getStorage($entity_type->id()),
       $container->get('url_generator'),
       $container->get('string_translation')
     );
@@ -78,9 +78,9 @@ class FieldValidationRuleSetListBuilder extends ConfigEntityListBuilder {
    */
   public function render() {
     $build = parent::render();
-    $build['#empty'] = $this->t('There are currently no rule set. <a href=":url">Add a new one</a>.', array(
+    $build['#empty'] = $this->t('There are currently no rule set. <a href=":url">Add a new one</a>.', [
       ':url' => $this->urlGenerator->generateFromRoute('field_validation.field_validation_rule_set_add'),
-    ));
+    ]);
     return $build;
   }
 

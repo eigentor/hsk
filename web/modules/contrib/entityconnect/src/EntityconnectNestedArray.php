@@ -50,7 +50,7 @@ class EntityconnectNestedArray extends NestedArray {
         // PHP auto-creates container arrays and NULL entries without error if
         // $ref is NULL, but throws an error if $ref is set, but not an array.
         if ($force && isset($ref) && !is_array($ref)) {
-          $ref = array();
+          $ref = [];
         }
         $ref = &$ref[$parent];
       }

@@ -123,7 +123,7 @@ interface RulesUiHandlerInterface extends PluginInspectionInterface {
    * Provides information which user at which time locked the rule for editing.
    *
    * @return object
-   *   StdClass object as provided by \Drupal\user\SharedTempStore.
+   *   StdClass object as provided by \Drupal\Core\TempStore\SharedTempStore.
    */
   public function getLockMetaData();
 

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\markup\Plugin\Field\FieldWidget\ImageWidget.
- */
-
 namespace Drupal\markup\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\WidgetBase;
