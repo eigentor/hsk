@@ -87,6 +87,7 @@ nav#block-hsk-zymphonies-main-menu
       &:first-child
         border-top: 0
       a
+        position: relative
         display: block
         color: #2b82ac
         border-left: 8px solid transparent
@@ -100,10 +101,12 @@ nav#block-hsk-zymphonies-main-menu
         line-height: 23px
         text-decoration: none
         margin: 0
-        &:hover, &.highlighted
-          background: #e5e5e5
+        &.highlighted
+          > span.sub-arrow
+            &:before
+              display: block
+              content: '-'
       a
-
         &.current
           background: #006892
           color: white
@@ -113,6 +116,7 @@ nav#block-hsk-zymphonies-main-menu
           &.sub-arrow
             position: absolute
             top: 50%
+            z-index: 3
             margin-top: -17px
             left: auto
             right: 4px
@@ -130,9 +134,7 @@ nav#block-hsk-zymphonies-main-menu
               border: 1px solid #aaa
               color: white
               background: $primary-color
-            //&:before
-            //  display: block
-            //  content: '-'
+
     ul
       background: rgba(102, 102, 102, 0.1)
       display: none

@@ -3024,6 +3024,7 @@ nav#block-hsk-zymphonies-main-menu ul li:first-child {
   border-top: 0;
 }
 nav#block-hsk-zymphonies-main-menu ul li a {
+  position: relative;
   display: block;
   color: #2b82ac;
   border-left: 8px solid transparent;
@@ -3038,8 +3039,9 @@ nav#block-hsk-zymphonies-main-menu ul li a {
   text-decoration: none;
   margin: 0;
 }
-nav#block-hsk-zymphonies-main-menu ul li a:hover, nav#block-hsk-zymphonies-main-menu ul li a.highlighted {
-  background: #e5e5e5;
+nav#block-hsk-zymphonies-main-menu ul li a.highlighted > span.sub-arrow:before {
+  display: block;
+  content: "-";
 }
 nav#block-hsk-zymphonies-main-menu ul li a.current {
   background: #006892;
@@ -3051,6 +3053,7 @@ nav#block-hsk-zymphonies-main-menu ul li a.disabled {
 nav#block-hsk-zymphonies-main-menu ul li a span.sub-arrow {
   position: absolute;
   top: 50%;
+  z-index: 3;
   margin-top: -17px;
   left: auto;
   right: 4px;
