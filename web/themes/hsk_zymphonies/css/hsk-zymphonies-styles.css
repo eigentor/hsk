@@ -3239,6 +3239,9 @@ nav#block-hsk-footer ul li a {
   header nav#block-hsk-main-menu {
     clear: both;
   }
+  header .region-primary-menu {
+    display: block !important;
+  }
   header nav#block-hsk-zymphonies-main-menu {
     *zoom: 1;
   }
@@ -3250,12 +3253,16 @@ nav#block-hsk-footer ul li a {
     overflow: hidden;
     visibility: hidden;
   }
+  header nav#block-hsk-zymphonies-main-menu ul.menu {
+    display: flex;
+  }
   header nav#block-hsk-zymphonies-main-menu ul.menu li {
     display: inline;
-    float: left;
+    position: relative;
     margin-right: 5px;
     text-transform: uppercase;
     font-family: "Roboto Slab", serif;
+    border: none;
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li:hover {
     background: none;
@@ -3307,6 +3314,7 @@ nav#block-hsk-footer ul li a {
     display: none;
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li ul {
+    position: absolute;
     background: #ED8600;
     min-width: 210px !important;
     border: none;

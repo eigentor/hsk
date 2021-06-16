@@ -302,16 +302,20 @@ nav#block-hsk-footer
 
 
 
+    .region-primary-menu
+      display: block!important
 
     nav#block-hsk-zymphonies-main-menu
       +legacy-pie-clearfix
       ul.menu
+        display: flex
         li
           display: inline
-          float: left
+          position: relative
           margin-right: 5px
           text-transform: uppercase
           font-family: $roboto-slab
+          border: none
           &:hover
             background: none
           &.active
@@ -349,6 +353,7 @@ nav#block-hsk-footer
               display: none
 
           ul
+            position: absolute
             background: $primary-color
             min-width: 210px!important
             border: none
