@@ -1,0 +1,10 @@
+diff --git a/node_class.info.yml b/node_class.info.yml
+index 38b1c75..1e4e3b9 100644
+--- a/node_class.info.yml
++++ b/node_class.info.yml
+@@ -1,4 +1,4 @@
+ type: module
+ name : Node class
+ description : 'Adds classes specific to node.'
+-core : 8.x
++core_version_requirement: ^8.8 || ^9
