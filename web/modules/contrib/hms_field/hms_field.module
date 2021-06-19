@@ -65,16 +65,16 @@ function template_preprocess_hms(&$variables) {
     // The next second h needs to update.
     // Be sure to pass running_since as time() (== GMT time)
     if ($variables['running_since'] < 0) {
-      $variables['running_since'] = REQUEST_TIME;
+      $variables['running_since'] = \Drupal::time()->getRequestTime();
     }
     $classes[] = 'hms-since-' . $variables['running_since'];
     $classes[] = 'hms-offset-' . $offset;
     $classes[] = 'hms-leading_zero-' . $variables['leading_zero'];
     if ($offset) {
-      $value = (REQUEST_TIME - $variables['running_since']) + $offset;
+      $value = (\Drupal::time()->getRequestTime() - $variables['running_since']) + $offset;
     }
     $variables['#attached']['library'][] = 'hms_field/hms_field';
-    $variables['#attached']['drupalSettings']['hms_field']['servertime'] = REQUEST_TIME;
+    $variables['#attached']['drupalSettings']['hms_field']['servertime'] = \Drupal::time()->getRequestTime();
     $variables['#attached']['drupalSettings']['hms_field']['factor_map'] = \Drupal::service('hms_field.hms')->factor_map();
   }
   $variables['classes'] = implode(' ' , $classes);
