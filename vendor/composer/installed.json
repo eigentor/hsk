@@ -4481,61 +4481,6 @@
             "install-path": "../../web/modules/contrib/focal_point"
         },
         {
-            "name": "drupal/hms_field",
-            "version": "1.0.0-beta1",
-            "version_normalized": "1.0.0.0-beta1",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/hms_field.git",
-                "reference": "8.x-1.0-beta1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/hms_field-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "5197931b75dced4eea3c355995ef8ad4fc2b890c"
-            },
-            "require": {
-                "drupal/core": "^8"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1474456739",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "installation-source": "dist",
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Frans",
-                    "homepage": "https://www.drupal.org/user/514222"
-                },
-                {
-                    "name": "jeroen.b",
-                    "homepage": "https://www.drupal.org/user/1853532"
-                },
-                {
-                    "name": "ws.agency",
-                    "homepage": "https://www.drupal.org/user/2851415"
-                }
-            ],
-            "description": "Provides a field for Hours, Minutes and Seconds stored as seconds.",
-            "homepage": "https://www.drupal.org/project/hms_field",
-            "support": {
-                "source": "https://git.drupalcode.org/project/hms_field"
-            },
-            "install-path": "../../web/modules/contrib/hms_field"
-        },
-        {
             "name": "drupal/inline_entity_form",
             "version": "1.0.0-rc9",
             "version_normalized": "1.0.0.0-RC9",
@@ -5338,66 +5283,6 @@
                 "docs": "https://www.drupal.org/docs/8/modules/metatag"
             },
             "install-path": "../../web/modules/contrib/metatag"
-        },
-        {
-            "name": "drupal/node_class",
-            "version": "dev-1.x",
-            "version_normalized": "dev-1.x",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/node_class.git",
-                "reference": "73d65eec03ca4b623f2517d6f45be1e592ade66a"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-beta1+7-dev",
-                    "datestamp": "1501661044",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "installation-source": "source",
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Anybody",
-                    "homepage": "https://www.drupal.org/user/291091"
-                },
-                {
-                    "name": "Pravin Ajaaz",
-                    "homepage": "https://www.drupal.org/user/2910049"
-                },
-                {
-                    "name": "dineshw",
-                    "homepage": "https://www.drupal.org/user/2279292"
-                },
-                {
-                    "name": "drnikki",
-                    "homepage": "https://www.drupal.org/user/385042"
-                },
-                {
-                    "name": "sacred8",
-                    "homepage": "https://www.drupal.org/user/393247"
-                }
-            ],
-            "description": "Adds classes specific to node.",
-            "homepage": "https://www.drupal.org/project/node_class",
-            "support": {
-                "source": "https://git.drupalcode.org/project/node_class"
-            },
-            "install-path": "../../web/modules/contrib/node_class"
         },
         {
             "name": "drupal/override_node_options",
