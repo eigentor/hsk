@@ -1,5 +1,5 @@
 type: module
 name : Node class
-description : 'Adds classes specific to node.'
+description : 'Adds classes specific to node. Patched dev version because no Drupal 9 ready version available on June 19th 2021 by Thomas Moseler'
 version: '8.x-1.dev-patched'
 core_version_requirement: ^8.8 || ^9
