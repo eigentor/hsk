@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'ead78c0c471666fe249df90e6db2f242b488200f',
+    'reference' => '5342e50a75b0dda38781afebabed37a8c446946f',
     'name' => 'drupal/recommended-project',
   ),
   'versions' => 
@@ -815,12 +815,12 @@ private static $installed = array (
     ),
     'drupal/ctools' => 
     array (
-      'pretty_version' => '3.6.0',
-      'version' => '3.6.0.0',
+      'pretty_version' => '3.7.0',
+      'version' => '3.7.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8.x-3.6',
+      'reference' => '8.x-3.7',
     ),
     'drupal/datetime' => 
     array (
@@ -1361,7 +1361,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'ead78c0c471666fe249df90e6db2f242b488200f',
+      'reference' => '5342e50a75b0dda38781afebabed37a8c446946f',
     ),
     'drupal/responsive_image' => 
     array (

@@ -29,6 +29,7 @@
         "drupal/content_access": "^1.0@alpha",
         "drupal/core-composer-scaffold": "^8.9",
         "drupal/core-recommended": "^8.9",
+        "drupal/ctools": "^3.7",
         "drupal/devel": "^4.1",
         "drupal/editor_file": "^1.5",
         "drupal/embed": "^1.4",
