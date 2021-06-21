@@ -32,11 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-<<<<<<< HEAD
-    'reference' => 'ead78c0c471666fe249df90e6db2f242b488200f',
-=======
-    'reference' => '5342e50a75b0dda38781afebabed37a8c446946f',
->>>>>>> origin/drupal-9-no-zymphonies
+    'reference' => '3bff3844ead96673bddb4e0c68bd25d534a1986f',
     'name' => 'drupal/recommended-project',
   ),
   'versions' => 
@@ -375,12 +371,12 @@ private static $installed = array (
     ),
     'drupal/backup_migrate' => 
     array (
-      'pretty_version' => '5.0.0-rc2',
-      'version' => '5.0.0.0-RC2',
+      'pretty_version' => '5.0.0',
+      'version' => '5.0.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '5.0.0-rc2',
+      'reference' => '5.0.0',
     ),
     'drupal/ban' => 
     array (
@@ -824,11 +820,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-<<<<<<< HEAD
-      'reference' => '8.x-3.6',
-=======
       'reference' => '8.x-3.7',
->>>>>>> origin/drupal-9-no-zymphonies
     ),
     'drupal/datetime' => 
     array (
@@ -1369,11 +1361,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-<<<<<<< HEAD
-      'reference' => 'ead78c0c471666fe249df90e6db2f242b488200f',
-=======
-      'reference' => '5342e50a75b0dda38781afebabed37a8c446946f',
->>>>>>> origin/drupal-9-no-zymphonies
+      'reference' => '3bff3844ead96673bddb4e0c68bd25d534a1986f',
     ),
     'drupal/responsive_image' => 
     array (
@@ -1406,7 +1394,7 @@ private static $installed = array (
       array (
         0 => '3.x-dev',
       ),
-      'reference' => 'cc5ba05040c548da590cab535e3abc963a98aa85',
+      'reference' => '615221dd5ec2d4d5bd17328e70e8c1a11f9e2c93',
     ),
     'drupal/search' => 
     array (
@@ -1572,12 +1560,12 @@ private static $installed = array (
     ),
     'drupal/upgrade_status' => 
     array (
-      'pretty_version' => '3.5.0',
-      'version' => '3.5.0.0',
+      'pretty_version' => '3.6.0',
+      'version' => '3.6.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8.x-3.5',
+      'reference' => '8.x-3.6',
     ),
     'drupal/user' => 
     array (
@@ -2032,12 +2020,12 @@ private static $installed = array (
     ),
     'phpstan/phpstan' => 
     array (
-      'pretty_version' => '0.12.88',
-      'version' => '0.12.88.0',
+      'pretty_version' => '0.12.90',
+      'version' => '0.12.90.0',
       'aliases' => 
       array (
       ),
-      'reference' => '464d1a81af49409c41074aa6640ed0c4cbd9bb68',
+      'reference' => 'f0e4b56630fc3d4eb5be86606d07212ac212ede4',
     ),
     'phpstan/phpstan-deprecation-rules' => 
     array (
@@ -2309,12 +2297,12 @@ private static $installed = array (
     ),
     'sirbrillig/phpcs-variable-analysis' => 
     array (
-      'pretty_version' => 'v2.11.0',
-      'version' => '2.11.0.0',
+      'pretty_version' => 'v2.11.1',
+      'version' => '2.11.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e76e816236f401458dd8e16beecab905861b5867',
+      'reference' => '9df9ade5961a3505d0d24b0e6be2ab82e335f753',
     ),
     'squizlabs/php_codesniffer' => 
     array (

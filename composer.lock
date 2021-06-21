@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "f86e8723900e08c22062ab16b259489f",
-=======
     "content-hash": "7c6304e8d3cfebea2cb2bffb7669fe70",
->>>>>>> origin/drupal-9-no-zymphonies
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1817,17 +1813,17 @@
         },
         {
             "name": "drupal/backup_migrate",
-            "version": "5.0.0-rc2",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/backup_migrate.git",
-                "reference": "5.0.0-rc2"
+                "reference": "5.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/backup_migrate-5.0.0-rc2.zip",
-                "reference": "5.0.0-rc2",
-                "shasum": "b8c4f5117d9455f4ca652e70135ddc2964fdceef"
+                "url": "https://ftp.drupal.org/files/projects/backup_migrate-5.0.0.zip",
+                "reference": "5.0.0",
+                "shasum": "33b52c7c27fd5d0daf8c5f7c630513e5d71bb744"
             },
             "require": {
                 "drupal/core": "^8.7.7 || ^9"
@@ -1838,11 +1834,11 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "5.0.0-rc2",
-                    "datestamp": "1601316516",
+                    "version": "5.0.0",
+                    "datestamp": "1623683015",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -4743,7 +4739,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rules.git",
-                "reference": "cc5ba05040c548da590cab535e3abc963a98aa85"
+                "reference": "615221dd5ec2d4d5bd17328e70e8c1a11f9e2c93"
             },
             "require": {
                 "drupal/core": "^8.8.2 || ^9",
@@ -4759,7 +4755,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.x-dev",
-                    "datestamp": "1608686349",
+                    "datestamp": "1619156352",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5038,17 +5034,17 @@
         },
         {
             "name": "drupal/upgrade_status",
-            "version": "3.5.0",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/upgrade_status.git",
-                "reference": "8.x-3.5"
+                "reference": "8.x-3.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/upgrade_status-8.x-3.5.zip",
-                "reference": "8.x-3.5",
-                "shasum": "b58985c464da6ac0b875af60523ab36c24e604f9"
+                "url": "https://ftp.drupal.org/files/projects/upgrade_status-8.x-3.6.zip",
+                "reference": "8.x-3.6",
+                "shasum": "269830c5095b7fd5dafad295c551cee4d6324b4b"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -5061,8 +5057,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-3.5",
-                    "datestamp": "1619515832",
+                    "version": "8.x-3.6",
+                    "datestamp": "1623856046",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7311,16 +7307,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.88",
+            "version": "0.12.90",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "464d1a81af49409c41074aa6640ed0c4cbd9bb68"
+                "reference": "f0e4b56630fc3d4eb5be86606d07212ac212ede4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/464d1a81af49409c41074aa6640ed0c4cbd9bb68",
-                "reference": "464d1a81af49409c41074aa6640ed0c4cbd9bb68",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f0e4b56630fc3d4eb5be86606d07212ac212ede4",
+                "reference": "f0e4b56630fc3d4eb5be86606d07212ac212ede4",
                 "shasum": ""
             },
             "require": {
@@ -7351,11 +7347,15 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.88"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.90"
             },
             "funding": [
                 {
                     "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
                     "type": "github"
                 },
                 {
@@ -7367,7 +7367,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-17T12:24:49+00:00"
+            "time": "2021-06-18T07:15:38+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -12629,6 +12629,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-11-30T07:30:19+00:00"
         },
         {
@@ -12791,16 +12792,16 @@
         },
         {
             "name": "sirbrillig/phpcs-variable-analysis",
-            "version": "v2.11.0",
+            "version": "v2.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sirbrillig/phpcs-variable-analysis.git",
-                "reference": "e76e816236f401458dd8e16beecab905861b5867"
+                "reference": "9df9ade5961a3505d0d24b0e6be2ab82e335f753"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sirbrillig/phpcs-variable-analysis/zipball/e76e816236f401458dd8e16beecab905861b5867",
-                "reference": "e76e816236f401458dd8e16beecab905861b5867",
+                "url": "https://api.github.com/repos/sirbrillig/phpcs-variable-analysis/zipball/9df9ade5961a3505d0d24b0e6be2ab82e335f753",
+                "reference": "9df9ade5961a3505d0d24b0e6be2ab82e335f753",
                 "shasum": ""
             },
             "require": {
@@ -12840,7 +12841,7 @@
                 "source": "https://github.com/sirbrillig/phpcs-variable-analysis",
                 "wiki": "https://github.com/sirbrillig/phpcs-variable-analysis/wiki"
             },
-            "time": "2021-03-09T22:32:14+00:00"
+            "time": "2021-06-18T20:54:59+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
