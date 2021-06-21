@@ -14,7 +14,7 @@ abstract class DestinationPluginBase extends WrapperPluginBase implements Destin
   /**
    * {@inheritdoc}
    */
-  public function alterBackupMigrate(BackupMigrateInterface $bam, $key, $options = []) {
+  public function alterBackupMigrate(BackupMigrateInterface $bam, $key, array $options = []) {
     $bam->destinations()->add($key, $this->getObject());
   }
 

@@ -6,6 +6,7 @@ use Composer\Semver\Semver;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ModuleHandler;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -17,6 +18,7 @@ use Drupal\Core\Url;
 use Drupal\upgrade_status\DeprecationAnalyzer;
 use Drupal\upgrade_status\ProjectCollector;
 use Drupal\upgrade_status\ScanResultFormatter;
+use Drupal\upgrade_status\Util\CorrectDbServerVersion;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -103,6 +105,13 @@ class UpgradeStatusForm extends FormBase {
   protected $nextMajor;
 
   /**
+   * Database connection
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -116,7 +125,8 @@ class UpgradeStatusForm extends FormBase {
       $container->get('upgrade_status.deprecation_analyzer'),
       $container->get('state'),
       $container->get('date.formatter'),
-      $container->get('redirect.destination')
+      $container->get('redirect.destination'),
+      $container->get('database')
     );
   }
 
@@ -143,6 +153,8 @@ class UpgradeStatusForm extends FormBase {
    *   The date formatter.
    * @param \Drupal\Core\Routing\RedirectDestination $destination
    *   The destination service.
+   * @param \Drupal\Core\Database\Connection $connection
+   *   The database connection
    */
   public function __construct(
     ProjectCollector $project_collector,
@@ -154,7 +166,8 @@ class UpgradeStatusForm extends FormBase {
     DeprecationAnalyzer $deprecation_analyzer,
     StateInterface $state,
     DateFormatter $date_formatter,
-    RedirectDestination $destination
+    RedirectDestination $destination,
+    Connection $database
   ) {
     $this->projectCollector = $project_collector;
     $this->releaseStore = $key_value_expirable->get('update_available_releases');
@@ -167,6 +180,7 @@ class UpgradeStatusForm extends FormBase {
     $this->dateFormatter = $date_formatter;
     $this->destination = $destination;
     $this->nextMajor = ProjectCollector::getDrupalCoreMajorVersion() + 1;
+    $this->database = $database;
   }
 
   /**
@@ -682,7 +696,7 @@ MARKUP
       $class = 'no-known-error';
       $requirement = $this->t('Supported.');
       try {
-        \Drupal::database()->query('SELECT JSON_TYPE(\'1\')');
+        $this->database->query('SELECT JSON_TYPE(\'1\')');
       }
       catch (\Exception $e) {
         $class = 'known-error';
@@ -785,9 +799,15 @@ MARKUP
     ];
 
     // Check database version.
-    $database = \Drupal::database();
-    $type = $database->databaseType();
-    $version = $database->version();
+    $type = $this->database->databaseType();
+    $version = $this->database->version();
+
+    // If running on Drupal 8, the mysql driver might
+    // mis-report the database version.
+    if ($this->nextMajor == 9) {
+      $versionFixer = new CorrectDbServerVersion($this->database);
+      $version = $versionFixer->getCorrectedDbServerVersion($version);
+    }
 
     // MariaDB databases report as MySQL. Detect MariaDB separately based on code from
     // https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Database%21Driver%21mysql%21Connection.php/function/Connection%3A%3AgetMariaDbVersionMatch/9.0.x

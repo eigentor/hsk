@@ -13,3 +13,5 @@ parameters:
 		- */tests/Drupal/Tests/Listeners/Legacy/*
 		- */tests/fixtures/*.php
 		- */settings*.php
+		- */bower_components/*
+		- */node_modules/*

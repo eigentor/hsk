@@ -48,7 +48,7 @@ class TempFileAdapter implements TempFileAdapterInterface {
     $this->dir = $dir;
     $this->prefix = $prefix;
     $this->tempfiles = [];
-    // @todo check that temp direcory is writeable or throw an exception.
+    // @todo check that temp directory is writeable or throw an exception.
   }
 
   /**

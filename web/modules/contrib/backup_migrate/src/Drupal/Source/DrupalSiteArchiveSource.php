@@ -88,7 +88,7 @@ class DrupalSiteArchiveSource extends FileDirectorySource {
 
     $info = [
       'Global' => [
-        'datestamp' => time(),
+        'datestamp' => \Drupal::time()->getRequestTime(),
         "formatversion" => "2011-07-02",
         "generator" => "Backup and Migrate (http://drupal.org/project/backup_migrate)",
         "generatorversion" => backup_migrate_module_version(),

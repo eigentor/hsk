@@ -7,6 +7,7 @@ use Drupal\backup_migrate\Core\Destination\ListableDestinationInterface;
 use Drupal\backup_migrate\Core\Exception\BackupMigrateException;
 use Drupal\backup_migrate\Core\Main\BackupMigrateInterface;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\State\StateInterface;
 
 /**
  * Defines the Schedule entity.
@@ -50,6 +51,18 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
 class Schedule extends ConfigEntityBase {
 
   /**
+   * The name for last run information keys in State.
+   */
+  const STATE_NAME = 'backup_migrate.schedule.last_run';
+
+  /**
+   * The state service.
+   *
+   * @var \Drupal\Core\State\StateInterface
+   */
+  protected static $state;
+
+  /**
    * The Schedule ID.
    *
    * @var string
@@ -64,9 +77,10 @@ class Schedule extends ConfigEntityBase {
   protected $label;
 
   /**
+   * Run the schedule.
+   *
    * @param \Drupal\backup_migrate\Core\Main\BackupMigrateInterface $bam
    *   The Backup and Migrate service object used to execute the backups.
-   *
    * @param bool $force
    *   Run the schedule even if it is not due to be run.
    */
@@ -88,13 +102,16 @@ class Schedule extends ConfigEntityBase {
           if (!$profile) {
             throw new BackupMigrateException(
               "The settings profile '%profile' does not exist",
-              ['%profile' => $settings_profile_id]);
+              ['%profile' => $settings_profile_id]
+            );
           }
           $config = $profile->get('config');
         }
 
         \Drupal::logger('backup_migrate')->info(
-             "Running schedule %name", ['%name' => $this->get('label')]);
+          "Running schedule %name",
+          ['%name' => $this->get('label')]
+        );
         // @todo Set the config (don't just use the defaults).
         // Run the backup.
         // Set the schedule id in file metadata so that we can delete our own
@@ -138,25 +155,59 @@ class Schedule extends ConfigEntityBase {
   }
 
   /**
-   * @param $timestamp
-   *   The unix time this schedule was last run.
+   * Return the unix time this schedule was last run.
+   *
+   * @return int
+   *   The timestamp.
    */
-  public function setLastRun($timestamp) {
-    \Drupal::keyValue('backup_migrate_schedule:last_run')->set($this->id(), $timestamp);
+  public function getLastRun(): int {
+    $allLast = static::state()->get(static::STATE_NAME);
+    return (int) ($allLast[$this->id()] ?? 0);
   }
 
   /**
-   * @return int
-   *   The unix time this schedule was last run.
+   * Store the timestamp for the last time this schedule was run.
+   *
+   * @param int $timestamp
+   *   The unix time this schedule was last run. 0 means never.
    */
-  public function getLastRun() {
-    return \Drupal::keyValue('backup_migrate_schedule:last_run')->get($this->id());
+  public function setLastRun(int $timestamp): void {
+    $name = static::STATE_NAME;
+    $allLast = $this->state()->get($name);
+    if (empty($timestamp)) {
+      unset($allLast[$this->id()]);
+    }
+    else {
+      $allLast[$this->id()] = $timestamp;
+    }
+    if (empty($allLast)) {
+      $this->state()->delete($name);
+    }
+    else {
+      $this->state()->set($name, $allLast);
+    }
+  }
+
+  /**
+   * Return the state service.
+   *
+   * Easier to replace in unit tests than mocking the actual state service.
+   *
+   * @return \Drupal\Core\State\StateInterface
+   *   The state service.
+   */
+  protected static function state(): StateInterface {
+    if (empty(static::$state)) {
+      static::$state = \Drupal::state();
+    }
+    return static::$state;
   }
 
   /**
    * Get the next time this schedule should run.
    *
    * @return int
+   *   The timestamp for the next run.
    */
   public function getNextRun() {
     $last_run_at = $this->getLastRun();
@@ -170,6 +221,7 @@ class Schedule extends ConfigEntityBase {
    * Return the schedule frequency formatted for display in human language.
    *
    * @return \Drupal\Core\StringTranslation\PluralTranslatableMarkup
+   *   The schedule frequency.
    *
    * @throws \Drupal\backup_migrate\Core\Exception\BackupMigrateException
    */
@@ -178,9 +230,10 @@ class Schedule extends ConfigEntityBase {
   }
 
   /**
-   * Convert a number of of seconds into a period array.
+   * Convert a number of seconds into a period array.
    *
    * @param int $seconds
+   *   The number of seconds to convert.
    *
    * @return array
    *   An array containing the period definition and the number of them.
@@ -205,6 +258,7 @@ class Schedule extends ConfigEntityBase {
    *   A period array.
    *
    * @return mixed
+   *   The number of seconds. Should be an integer value.
    *
    * @throws \Drupal\backup_migrate\Core\Exception\BackupMigrateException
    */
@@ -215,12 +269,18 @@ class Schedule extends ConfigEntityBase {
   /**
    * Convert a period array into seconds.
    *
-   * @param $period
+   * @param int $period
+   *   The array to convert.
    *
    * @return \Drupal\Core\StringTranslation\PluralTranslatableMarkup
+   *   The converted period.
    */
   public static function formatPeriod($period) {
-    return \Drupal::translation()->formatPlural($period['number'], $period['type']['singular'], $period['type']['plural']);
+    return \Drupal::translation()->formatPlural(
+      $period['number'],
+      $period['type']['singular'],
+      $period['type']['plural']
+    );
   }
 
   /**
@@ -230,6 +290,7 @@ class Schedule extends ConfigEntityBase {
    * seconds (ie: no months).
    *
    * @return array
+   *   The list of available periods, keyed by unit.
    */
   public static function getPeriodTypes() {
     return [
@@ -272,11 +333,13 @@ class Schedule extends ConfigEntityBase {
   }
 
   /**
-   * Get a backup period type given it's key.
+   * Get a backup period type given its key.
    *
    * @param string $type
+   *   The period type. MUST be one of the keys in Schedule::getPeriodTypes().
    *
    * @return array
+   *   The period description.
    */
   public static function getPeriodType($type) {
     return Schedule::getPeriodTypes()[$type];

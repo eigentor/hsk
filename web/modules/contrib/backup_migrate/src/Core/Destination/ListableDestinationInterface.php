@@ -29,7 +29,7 @@ interface ListableDestinationInterface extends DestinationInterface {
    * Run a basic query with sort on the list of files.
    *
    * @param array $filters
-   *   An array of of metadata fields to filter by.
+   *   An array of metadata fields to filter by.
    * @param string $sort
    *   A metadata field to sort by, defaults to 'datestamp'.
    * @param int $sort_direction

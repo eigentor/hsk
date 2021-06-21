@@ -37,7 +37,7 @@ abstract class WrapperPluginBase extends PluginBase implements WrapperPluginInte
   /**
    * {@inheritdoc}
    */
-  abstract public function alterBackupMigrate(BackupMigrateInterface $bam, $key, $options = []);
+  abstract public function alterBackupMigrate(BackupMigrateInterface $bam, $key, array $options = []);
 
   /**
    * {@inheritdoc}

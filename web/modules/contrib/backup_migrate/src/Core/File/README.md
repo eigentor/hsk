@@ -21,7 +21,7 @@ This subclass of the `BackupFileInterface` can also be read from. This allows th
 	$destination = new DirectoryDestination(['directory' => '~/mybackups']);
 	$file = $destination->getFile('databse.mysql');
 
-	// This object has metadata but the contents cannot neccessarily be read.
+	// This object has metadata but the contents cannot necessarily be read.
 	if ($file && $file->getMeta('filesize') > 1000) {
 
 		// To read the file we must allow the destination to load it for us if needed.

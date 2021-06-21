@@ -1,0 +1,73 @@
+diff --git a/LICENSE.txt b/LICENSE.txt
+index 042f794..c8ba13a
+--- a/hms_field.info.yml
++++ b/hms_field.info.yml
+@@ -1,13 +1,13 @@
+ name: HMS Field
+ type: module
+-description: Provides a field for Hours, Minutes and Seconds stored as seconds.
++description: Provides a field for Hours, Minutes and Seconds stored as seconds. Patched dev version because no Drupal 9 ready version available on June 19th 2021 by Thomas Moseler
+ # core: 8.x
+ package: Field types
+ dependencies:
+   - field
+ 
+ # Information added by Drupal.org packaging script on 2016-09-21
+-version: '8.x-1.0-beta1'
+-core: '8.x'
++version: '8.x-1.0-beta1-patched'
++core_version_requirement: ^8.8 || ^9
+ project: 'hms_field'
+ datestamp: 1474456740
+index 6747752..513ea59
+--- a/hms_field.module
++++ b/hms_field.module
+@@ -59,22 +59,24 @@ function template_preprocess_hms(&$variables) {
+     }
+     $value = $default_value;
+     // It is not possible to run longer then from 1970-01-01 00:00:01
++    // Request time.
++    $request_time = \Drupal::time()->getRequestTime();
+     $classes[] = 'hms-running';
+     // We also need to pass the running since value to JS.
+     // When format h is presented, the underlaying value can be at 3599
+     // The next second h needs to update.
+     // Be sure to pass running_since as time() (== GMT time)
+     if ($variables['running_since'] < 0) {
+-      $variables['running_since'] = REQUEST_TIME;
++      $variables['running_since'] = $request_time;
+     }
+     $classes[] = 'hms-since-' . $variables['running_since'];
+     $classes[] = 'hms-offset-' . $offset;
+     $classes[] = 'hms-leading_zero-' . $variables['leading_zero'];
+     if ($offset) {
+-      $value = (REQUEST_TIME - $variables['running_since']) + $offset;
++      $value = ($request_time - $variables['running_since']) + $offset;
+     }
+     $variables['#attached']['library'][] = 'hms_field/hms_field';
+-    $variables['#attached']['drupalSettings']['hms_field']['servertime'] = REQUEST_TIME;
++    $variables['#attached']['drupalSettings']['hms_field']['servertime'] = $request_time;
+     $variables['#attached']['drupalSettings']['hms_field']['factor_map'] = \Drupal::service('hms_field.hms')->factor_map();
+   }
+   $variables['classes'] = implode(' ' , $classes);
+index 67a7ea1..ce59ea9
+--- a/src/Plugin/Field/FieldType/HMSFieldItem.php
++++ b/src/Plugin/Field/FieldType/HMSFieldItem.php
+@@ -12,7 +12,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
+ use Drupal\Core\Field\FieldItemBase;
+ use Drupal\Core\Field\FieldStorageDefinitionInterface;
+ use Drupal\Core\Form\FormStateInterface;
+-use Drupal\Core\StringTranslation\TranslationWrapper;
++use Drupal\Core\StringTranslation\TranslatableMarkup;
+ use Drupal\Core\TypedData\DataDefinition;
+ 
+ /**
+@@ -34,7 +34,7 @@ class HMSFieldItem extends FieldItemBase {
+   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
+     // Prevent early t() calls by using the TranslationWrapper.
+     $properties['value'] = DataDefinition::create('integer')
+-      ->setLabel(new TranslationWrapper('HMS integer value'));
++      ->setLabel(new TranslatableMarkup('HMS integer value'));
+ 
+     return $properties;
+   }

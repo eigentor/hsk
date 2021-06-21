@@ -273,7 +273,7 @@ function backup_migrate_help($route_name, RouteMatchInterface $route_match) {
         ]),
       ];
       $help['schedules'] = [
-        '#markup' => t("<h3>@title</h3><p>Automatically backup up your database on a regular schedule using @cron.</p><p>Each schedule will run a maximum of once per cron run, so they will not run more frequently than your cron is configured to run. If you specify a number of backups to keep for a schedule, old backups will be deleted as new ones created. <strong>If specifiy a number of files to keep other backup files in that schedule's @destination will get deleted</strong>.<p>", [
+        '#markup' => t("<h3>@title</h3><p>Automatically backup up your database on a regular schedule using @cron.</p><p>Each schedule will run a maximum of once per cron run, so they will not run more frequently than your cron is configured to run. If you specify a number of backups to keep for a schedule, old backups will be deleted as new ones created. <strong>If specify a number of files to keep other backup files in that schedule's @destination will get deleted</strong>.<p>", [
           '@title' => Link::fromTextAndUrl(t('Shedules Tab'), $urls['schedules'])->toString(),
           '@cron' => Link::fromTextAndUrl(t('cron'), $urls['cron'])->toString(),
           '@destination' => Link::fromTextAndUrl(t('destination'), $urls['destination'])->toString(),
@@ -287,7 +287,7 @@ function backup_migrate_help($route_name, RouteMatchInterface $route_match) {
         ]),
       ];
       $help['destination'] = [
-        '#markup' => t("<h3>@title</h3><p>Destinations store your custom created destionation settings as backup server folders or external clouds (Clouds destinations are in work, check the module issues lists).</p>", [
+        '#markup' => t("<h3>@title</h3><p>Destinations store your custom created destination settings as backup server folders or external clouds (Clouds destinations are in work, check the module issues lists).</p>", [
           '@title' => Link::fromTextAndUrl(t('Settings Tab - Destinations'), $urls['destination'])->toString(),
         ]),
       ];

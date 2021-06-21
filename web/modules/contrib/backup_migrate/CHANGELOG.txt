@@ -1,3 +1,39 @@
+Backup and Migrate 5.0.0, 2021-06-14
+------------------------------------
+#3177961 by DamienMcKenna, nikhitarathore: Full site backup doesn't work.
+#3200694 by David Radcliffe, DamienMcKenna: Returning bool from comparison
+  function is deprecated in PHP 8.0.
+#3200714 by DiegoPino, pdcarto, azovsky, felixoe, DamienMcKenna:
+  Incompatibility with s3fs.
+#3186638 by bgilhome, DamienMcKenna: Schema for plugin 'config' keys.
+#3186656 by fgm, DamienMcKenna: Use state API instead of custom KV collection
+  for last run.
+#3210689 by DamienMcKenna, MichaelvonB: Can't restore backups.
+#3154716 by DamienMcKenna, xmacinfo: Unable to delete backups.
+#3174581 by paulocs, kleiton_rodrigues, DamienMcKenna: drupalPostForm in
+  functional tests is deprecated.
+#3187818 by AndrewsizZ, DamienMcKenna: Replace uses of REQUEST_TIME and time()
+  with time service.
+#3136294 by Pooja Ganjage, ergophobe, DamienMcKenna, gagarine: Change Defuse
+  message to a notice, not warning.
+#3186486 by SivaprasadC, DamienMcKenna: Duplicated words and minor typos in a
+  couple of files.
+#3186527 by DamienMcKenna: Fix tests on 5.0.x branch.
+#3214038 by DamienMcKenna: Discourage "full site" backup option.
+#3197359 by larisse, bart lambert, DamienMcKenna, hmendes: Encryption fails to
+  produce backup.
+#3156794 by larisse, hmendes, pglatz, DamienMcKenna: Add token support to
+  filename output.
+#3217908 by DamienMcKenna: Inconsistent arguments on alterBackupMigrate().
+#3216400 by jacob.embree, larisse, DamienMcKenna: Rename HTTPClientInterface.php
+  to HttpClientInterface.php.
+#3216285 by paulocs, larisse, DamienMcKenna: PHPUnit 8 introduced void return
+  types on setUp() methods.
+#3180214 by larisse, djg_tram, DamienMcKenna: Site does not switch out of
+  maintenance mode after backup finished.
+#3218417 by DamienMcKenna, larisse: Update output header (incorrect URL, etc).
+
+
 Backup and Migrate 5.0.0-rc2, 2020-09-28
 ----------------------------------------
 #3158790 by devad, raman.b, karolus, robcarr, DamienMcKenna, endless_wander,

@@ -53,7 +53,7 @@ The built in `\Drupal\backup_migrate\Core\Config\Config` is a simple implementat
     $bam->backup('database1', 'somedestination');
 
     // Initial Config vs. Run-time Config ##.
-    A plugin may have two types of configuration: initial configuration, added when the plugin is created, and run - time configuration, added later by the plugin manager . Initial configuration can be overriden by run - time configuration but it cannot be overwritten by run - time config . That means that you can reconfigure plugins after the plugin manager has been created but the initial configuration will not be permanently overwriten .
+    A plugin may have two types of configuration: initial configuration, added when the plugin is created, and run - time configuration, added later by the plugin manager . Initial configuration can be overridden by run - time configuration but it cannot be overwritten by run - time config . That means that you can reconfigure plugins after the plugin manager has been created but the initial configuration will not be permanently overwritten.
 
     An example that illustrates the difference is a database source plugin . The database connection information should not change per operation and should be considered initial configuration . The list of tables to exclude during a backup, or whether the tables should be locked during a restore may change from run to run and should be run - time configuration .
 

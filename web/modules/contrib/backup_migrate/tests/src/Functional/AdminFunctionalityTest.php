@@ -30,7 +30,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->container->get('router.builder')->rebuild();
 
@@ -123,7 +123,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
       'id' => 'test_destination',
       'type' => 'Directory',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save and edit');
+    $this->submitForm($edit, 'Save and edit');
 
     // This should load a new version of the form with the directory filled in.
     $session = $this->assertSession();
@@ -139,7 +139,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
     $edit = [
       'config[directory]' => 'test_path',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
+    $this->submitForm($edit, 'Save');
     $session = $this->assertSession();
     $session->statusCodeEquals(200);
     $session->addressEquals('admin/config/development/backup_migrate/settings/destination');
@@ -163,7 +163,6 @@ class AdminFunctionalityTest extends BrowserTestBase {
     $session->pageTextContains('default_db');
     $session->pageTextContains('Default Database');
 
-    $session->pageTextContains('Entire Site');
     $session->pageTextContains('entire_site');
     $session->pageTextContains('Entire Site');
 
@@ -188,7 +187,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
         'id' => 'test_filedirectory_source',
         'type' => 'FileDirectory',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save and edit');
+    $this->submitForm($edit, 'Save and edit');
 
     // This should load a new version of the form with the directory filled in.
     $session = $this->assertSession();
@@ -204,7 +203,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
     $edit = [
         'config[directory]' => 'test_path',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
+    $this->submitForm($edit, 'Save');
     $session = $this->assertSession();
     $session->statusCodeEquals(200);
     $session->addressEquals('admin/config/development/backup_migrate/settings/source');
@@ -234,7 +233,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
         'id' => 'test_mysql_source',
         'type' => 'MySQL',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save and edit');
+    $this->submitForm($edit, 'Save and edit');
 
     // This should load a new version of the form with the directory filled in.
     $session = $this->assertSession();
@@ -258,7 +257,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
       'config[password]' => 'test_pw',
       'config[port]' => '12345',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
+    $this->submitForm($edit, 'Save');
     $session = $this->assertSession();
     $session->statusCodeEquals(200);
     $session->addressEquals('admin/config/development/backup_migrate/settings/source');
@@ -306,7 +305,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
       'period_number' => 1,
       'period_type' => 'days',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
+    $this->submitForm($edit, 'Save');
     $session = $this->assertSession();
     $session->statusCodeEquals(200);
     $session->pageTextContains('Saved the Daily Schedule Schedule.');
@@ -342,7 +341,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
       'period_type' => 'minutes',
       'keep' => 1000,
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
+    $this->submitForm($edit, 'Save');
 
     // Make sure the form saved correctly.
     $session = $this->assertSession();
@@ -399,7 +398,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
       'config[private_files_exclude][exclude_filepaths]' => 'test_private_exclude',
       'config[public_files_exclude][exclude_filepaths]' => 'test_public_exclude',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
+    $this->submitForm($edit, 'Save');
 
     $session = $this->assertSession();
     $session->statusCodeEquals(200);
@@ -431,7 +430,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
       'period_number' => 1,
       'period_type' => 'days',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
+    $this->submitForm($edit, 'Save');
     $session = $this->assertSession();
     $session->statusCodeEquals(200);
     $session->pageTextContains('Saved the Daily Schedule Schedule.');

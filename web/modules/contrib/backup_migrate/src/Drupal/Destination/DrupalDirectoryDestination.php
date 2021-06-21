@@ -116,17 +116,17 @@ class DrupalDirectoryDestination extends DirectoryDestination {
       uasort($out, function ($a, $b) use ($sort, $sort_direction) {
         if ($sort_direction == SORT_DESC) {
           if ($sort == 'name') {
-            return $a->getFullName() < $b->getFullName();
+            return $a->getFullName() <=> $b->getFullName();
           }
           // @todo fix this in core
-          return $a->getMeta($sort) < $b->getMeta($sort);
+          return $a->getMeta($sort) <=> $b->getMeta($sort);
         }
         else {
           if ($sort == 'name') {
-            return $a->getFullName() > $b->getFullName();
+            return $b->getFullName() <=> $a->getFullName();
           }
           // @todo fix this in core
-          return $a->getMeta($sort) > $b->getMeta($sort);
+          return $b->getMeta($sort) <=> $a->getMeta($sort);
         }
       });
     }

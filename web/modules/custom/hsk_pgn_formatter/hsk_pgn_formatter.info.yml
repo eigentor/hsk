@@ -1,6 +1,6 @@
 name: HSK PGN Field Formatter
 description: Display PGN Code inside text areas with a PGN Viewer
 type: module
-core: 8.x
+core_version_requirement: ^8.8 || ^9
 version: VERSION
 package: HSK

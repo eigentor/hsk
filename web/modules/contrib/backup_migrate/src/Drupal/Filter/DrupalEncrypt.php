@@ -45,7 +45,11 @@ class DrupalEncrypt extends PluginBase implements FileProcessorInterface {
         ];
       }
       else {
-        \Drupal::messenger()->addMessage($this->t('Please install the Defuse PHP-encryption library via Composer to be able to encrypt backup files.'), 'warning');
+        \Drupal::messenger()->addMessage(t('In order to encrypt backup files, please install the Defuse PHP-encryption library via Composer with the following command: <code>composer require defuse/php-encryption</code>. See the <a href="@docs">Defuse PHP Encryption Documentation Page</a> for more information.',
+          array(
+            '@docs' => 'https://www.drupal.org/node/3185484'
+          )
+        ), 'status');
       }
     }
 
@@ -66,7 +70,7 @@ class DrupalEncrypt extends PluginBase implements FileProcessorInterface {
   /**
    *
    */
-  protected function encryptFile(BackupFileReadableInterface $from, BackupFileWritableInterface $to) {
+  protected function _encryptFile(BackupFileReadableInterface $from, BackupFileWritableInterface $to) {
     $path = \Drupal::service('file_system')->realpath($from->realpath());
     $out_path = \Drupal::service('file_system')->realpath($to->realpath());
 

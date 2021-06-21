@@ -22,9 +22,6 @@ class DrupalBrowserDownloadDestination extends BrowserDownloadDestination {
     // $headers); all the way out to the output of the caller.
     // Probably need to provide the response as a service in the environment.
     parent::saveFile($file);
-
-    // @todo Get rid of this ugliness.
-    exit();
   }
 
 }

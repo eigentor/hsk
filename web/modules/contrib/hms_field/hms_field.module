@@ -59,22 +59,24 @@ function template_preprocess_hms(&$variables) {
     }
     $value = $default_value;
     // It is not possible to run longer then from 1970-01-01 00:00:01
+    // Request time.
+    $request_time = \Drupal::time()->getRequestTime();
     $classes[] = 'hms-running';
     // We also need to pass the running since value to JS.
     // When format h is presented, the underlaying value can be at 3599
     // The next second h needs to update.
     // Be sure to pass running_since as time() (== GMT time)
     if ($variables['running_since'] < 0) {
-      $variables['running_since'] = REQUEST_TIME;
+      $variables['running_since'] = $request_time;
     }
     $classes[] = 'hms-since-' . $variables['running_since'];
     $classes[] = 'hms-offset-' . $offset;
     $classes[] = 'hms-leading_zero-' . $variables['leading_zero'];
     if ($offset) {
-      $value = (REQUEST_TIME - $variables['running_since']) + $offset;
+      $value = ($request_time - $variables['running_since']) + $offset;
     }
     $variables['#attached']['library'][] = 'hms_field/hms_field';
-    $variables['#attached']['drupalSettings']['hms_field']['servertime'] = REQUEST_TIME;
+    $variables['#attached']['drupalSettings']['hms_field']['servertime'] = $request_time;
     $variables['#attached']['drupalSettings']['hms_field']['factor_map'] = \Drupal::service('hms_field.hms')->factor_map();
   }
   $variables['classes'] = implode(' ' , $classes);

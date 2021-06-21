@@ -23,6 +23,10 @@ class BackupMigrateQuickBackupForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    // Leave a message about the Entire Site backup.
+    // @see https://www.drupal.org/project/backup_migrate/issues/3151290
+    $this->messenger()->addMessage($this->t('It is recommended to not use the "Entire site" backup as it has a tendency of failing on anything but the tiniest of sites. Hopefully this will be fixed in a future release.'));
+
     $form = [];
 
     // Theme the form if we want it inline.

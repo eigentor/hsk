@@ -38,7 +38,7 @@ class BrowserDownloadDestination extends StreamDestination implements WritableDe
     }
 
     // In some circumstances, web-servers will double compress gzipped files.
-    // This may help aleviate that issue by disabling mod-deflate.
+    // This may help alleviate that issue by disabling mod-deflate.
     if ($file->getMeta('mimetype') == 'application/x-gzip') {
       if (function_exists('apache_setenv')) {
         apache_setenv('no-gzip', '1');

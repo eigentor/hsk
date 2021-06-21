@@ -16,9 +16,19 @@ This is a rewrite of Backup and Migrate for Drupal 8 and 9.
 
 ### Optional: php-encryption
 
-The backups may be encrypted using the defuse/php-encryption library. This must be installed using Composer, it cannot be downloaded without using Composer.
+In order to encrypt backup files, please install the Defuse PHP-encryption
+library via Composer with the command:
 
 `composer require defuse/php-encryption`
+
+See the Defuse PHP Encryption Documentation Page for more information:
+
+* https://www.drupal.org/docs/contributed-modules/backup-and-migrate/encrypting-backups
+
+Note: if that page is inaccessible it may have been renamed, try this URL
+instead:
+
+* https://www.drupal.org/node/3185484
 
 ## Related modules
 

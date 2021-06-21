@@ -66,9 +66,9 @@ class BackupRestoreForm extends ConfirmFormBase {
    *
    * @return array
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $backup_migrate_destination = NULL, $backupId = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $backup_migrate_destination = NULL, $backup_id = NULL) {
     $this->destination = $backup_migrate_destination;
-    $this->backupId = $backupId;
+    $this->backupId = $backup_id;
 
     $bam = backup_migrate_get_service_object();
     $form['source_id'] = DrupalConfigHelper::getPluginSelector($bam->sources(), $this->t('Restore To'));
@@ -90,6 +90,7 @@ class BackupRestoreForm extends ConfirmFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $form_state->getValues();
+
     backup_migrate_perform_restore($config['source_id'], $this->destination->id(), $this->backupId, $config);
 
     $form_state->setRedirectUrl($this->getCancelUrl());

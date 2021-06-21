@@ -51,7 +51,7 @@ class BackupMigratePermissionsTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // Ensure the backup_migrate folder exists.

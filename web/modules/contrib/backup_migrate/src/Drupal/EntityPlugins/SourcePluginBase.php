@@ -14,7 +14,7 @@ abstract class SourcePluginBase extends WrapperPluginBase implements SourcePlugi
   /**
    * {@inheritdoc}
    */
-  public function alterBackupMigrate(BackupMigrateInterface $bam, $key, $options = []) {
+  public function alterBackupMigrate(BackupMigrateInterface $bam, $key, array $options = []) {
     $bam->sources()->add($key, $this->getObject());
   }
 

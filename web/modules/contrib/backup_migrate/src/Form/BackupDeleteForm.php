@@ -72,9 +72,9 @@ class BackupDeleteForm extends ConfirmFormBase {
   /**
    *
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $backup_migrate_destination = NULL, $backupId = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $backup_migrate_destination = NULL, $backup_id = NULL) {
     $this->destination = $backup_migrate_destination;
-    $this->backupId = $backupId;
+    $this->backupId = $backup_id;
 
     return parent::buildForm($form, $form_state);
   }

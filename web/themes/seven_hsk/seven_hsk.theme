@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_preprocess_HOOK() for HTML document templates.
@@ -61,7 +62,7 @@ function seven_presseclub_preprocess_node_add_list(&$variables) {
     /** @var \Drupal\node\NodeTypeInterface $type */
     foreach ($variables['content'] as $type) {
       $variables['types'][$type->id()]['label'] = $type->label();
-      $variables['types'][$type->id()]['url'] = \Drupal::url('node.add', array('node_type' => $type->id()));
+      $variables['types'][$type->id()]['url'] = Url::fromRoute('node.add', array('node_type' => $type->id()))->toString();
     }
   }
 }
@@ -72,12 +73,12 @@ function seven_presseclub_preprocess_node_add_list(&$variables) {
  * Displays the list of available custom block types for creation, adding
  * separate variables for the label and url.
  */
-function seven_presseclub_preprocess_block_content_add_list(&$variables) {
+function seven_hsk_preprocess_block_content_add_list(&$variables) {
   if (!empty($variables['content'])) {
     foreach ($variables['content'] as $type) {
       $variables['types'][$type->id()]['label'] = $type->label();
       $options = array('query' => \Drupal::request()->query->all());
-      $variables['types'][$type->id()]['url'] = \Drupal::url('block_content.add_form', array('block_content_type' => $type->id()), $options);
+      $variables['types'][$type->id()]['url'] = Url::fromRoute('block_content.add_form', array('block_content_type' => $type->id()), $options)->toString();
     }
   }
 }
@@ -87,7 +88,7 @@ function seven_presseclub_preprocess_block_content_add_list(&$variables) {
  *
  * Disables contextual links for all blocks.
  */
-function seven_presseclub_preprocess_block(&$variables) {
+function seven_hsk_preprocess_block(&$variables) {
   if (isset($variables['title_suffix']['contextual_links'])) {
     unset($variables['title_suffix']['contextual_links']);
     unset($variables['elements']['#contextual_links']);
@@ -99,7 +100,7 @@ function seven_presseclub_preprocess_block(&$variables) {
 /**
  * Implements hook_preprocess_HOOK() for block admin page templates.
  */
-//function seven_presseclub_preprocess_admin_block_content(&$variables) {
+//function seven_hsk_preprocess_admin_block_content(&$variables) {
 //  if (!empty($variables['content'])) {
 //    foreach ($variables['content'] as $key => $item) {
 //      $variables['content'][$key]['url'] = $item['url']->toString();
@@ -110,7 +111,7 @@ function seven_presseclub_preprocess_block(&$variables) {
 /**
  * Implements hook_preprocess_HOOK() for menu-local-action templates.
  */
-function seven_presseclub_preprocess_menu_local_action(array &$variables) {
+function seven_hsk_preprocess_menu_local_action(array &$variables) {
   $variables['link']['#options']['attributes']['class'][] = 'button--primary';
   $variables['link']['#options']['attributes']['class'][] = 'button--small';
 
@@ -121,7 +122,7 @@ function seven_presseclub_preprocess_menu_local_action(array &$variables) {
 /**
  * Implements hook_element_info_alter().
  */
-function seven_presseclub_element_info_alter(&$type) {
+function seven_hsk_element_info_alter(&$type) {
   // We require Modernizr for button styling.
   if (isset($type['button'])) {
     $type['button']['#attached']['library'][] = 'core/modernizr';
@@ -131,7 +132,7 @@ function seven_presseclub_element_info_alter(&$type) {
 /**
  * Implements hook_preprocess_install_page().
  */
-function seven_presseclub_preprocess_install_page(&$variables) {
+function seven_hsk_preprocess_install_page(&$variables) {
   // Seven has custom styling for the install page.
   $variables['#attached']['library'][] = 'seven/install-page';
 }
@@ -139,7 +140,7 @@ function seven_presseclub_preprocess_install_page(&$variables) {
 /**
  * Implements hook_preprocess_maintenance_page().
  */
-function seven_presseclub_preprocess_maintenance_page(&$variables) {
+function seven_hsk_preprocess_maintenance_page(&$variables) {
   // Seven has custom styling for the maintenance page.
   $variables['#attached']['library'][] = 'seven/maintenance-page';
 }
@@ -149,7 +150,7 @@ function seven_presseclub_preprocess_maintenance_page(&$variables) {
  *
  * Changes vertical tabs to container and adds meta information.
  */
-function seven_presseclub_form_node_form_alter(&$form, FormStateInterface $form_state) {
+function seven_hsk_form_node_form_alter(&$form, FormStateInterface $form_state) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $form_state->getFormObject()->getEntity();
 
@@ -157,7 +158,7 @@ function seven_presseclub_form_node_form_alter(&$form, FormStateInterface $form_
   $form['#attached']['library'][] = 'seven/node-form';
 
   $form['advanced']['#type'] = 'container';
-  $is_new = !$node->isNew() ? format_date($node->getChangedTime(), 'short') : t('Not saved yet');
+  $is_new = !$node->isNew() ? \Drupal::service('date.formatter')->format($node->getChangedTime(), 'short') : t('Not saved yet');
   $form['meta'] = array(
     '#attributes' => array('class' => array('entity-meta__header')),
     '#type' => 'container',
@@ -180,7 +181,7 @@ function seven_presseclub_form_node_form_alter(&$form, FormStateInterface $form_
     'author' => array(
       '#type' => 'item',
       '#wrapper_attributes' => array('class' => array('author', 'container-inline')),
-      '#markup' => '<h4 class="label inline">' . t('Author') . '</h4> ' . $node->getOwner()->getUsername(),
+      '#markup' => '<h4 class="label inline">' . t('Author') . '</h4> ' . $node->getOwner()->getDisplayName(),
     ),
   );
   $form['revision_information']['#type'] = 'container';

@@ -4,7 +4,7 @@ namespace Drupal\backup_migrate\Drupal\File;
 
 use Drupal\backup_migrate\Core\File\TempFileAdapter;
 use Drupal\backup_migrate\Core\File\TempFileAdapterInterface;
-use Drupal\Core\File\FileSystem;
+use Drupal\Core\File\FileSystemInterface;
 
 /**
  *
@@ -16,7 +16,7 @@ class DrupalTempFileAdapter extends TempFileAdapter implements TempFileAdapterIn
   /**
    * The Drupal file system for provisioning temp files.
    *
-   * @var \Drupal\Core\File\FileSystem
+   * @var \Drupal\Core\File\FileSystemInterface
    */
   protected $filesystem;
 
@@ -30,7 +30,7 @@ class DrupalTempFileAdapter extends TempFileAdapter implements TempFileAdapterIn
    * @param string $prefix
    *   A string prefix to add to each created file.
    */
-  public function __construct(FileSystem $filesystem, $dir = 'temporary://', $prefix = 'bam') {
+  public function __construct(FileSystemInterface $filesystem, $dir = 'temporary://', $prefix = 'bam') {
     // Set the prefix and initialize the temp file tracking.
     parent::__construct($dir, $prefix);
 

@@ -133,8 +133,8 @@ class UpgradeStatusAnalyzeTest extends UpgradeStatusTestBase {
 
     $report = $key_value->get('upgrade_status_test_theme');
     $this->assertNotEmpty($report);
-    $this->assertEquals(5 + $base_info_error, $report['data']['totals']['file_errors']);
-    $this->assertCount(3 + $base_info_error, $report['data']['files']);
+    $this->assertEquals(6 + $base_info_error, $report['data']['totals']['file_errors']);
+    $this->assertCount(4 + $base_info_error, $report['data']['files']);
     $file = reset($report['data']['files']);
     foreach ([0 => 2, 1 => 4] as $index => $line) {
       $message = $file['messages'][$index];
@@ -149,6 +149,11 @@ class UpgradeStatusAnalyzeTest extends UpgradeStatusTestBase {
     $file = next($report['data']['files']);
     $this->assertEquals('The theme is overriding the "upgrade_status_test_theme_function_theme_function_override" theme function. Theme functions are deprecated. For more info, see https://www.drupal.org/node/2575445.', $file['messages'][0]['message']);
     $this->assertEquals(6, $file['messages'][0]['line']);
+    $file = next($report['data']['files']);
+    $this->assertEquals('upgrade_status_test_theme.info.yml', basename(key($report['data']['files'])));
+    $message = $file['messages'][0];
+    $this->assertEquals("The now required 'base theme' key is missing. See https://www.drupal.org/node/3066038.", $message['message']);
+    $this->assertEquals(0, $message['line']);
 
     $report = $key_value->get('upgrade_status_test_theme_functions');
     $this->assertNotEmpty($report);

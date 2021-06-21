@@ -2,5 +2,5 @@ langcode: en
 status: true
 dependencies: {  }
 id: entire_site
-label: 'Entire Site'
+label: 'Entire Site (do not use)'
 type: EntireSite

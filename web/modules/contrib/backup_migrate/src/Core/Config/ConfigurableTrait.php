@@ -23,7 +23,7 @@ trait ConfigurableTrait {
   /**
    * The initial configuration.
    *
-   * These configuration options can be overriden by the config options but will
+   * These configuration options can be overridden by the config options but will
    * not be overwritten. If the object is re-configured after construction any
    * missing configuration options will revert to these values.
    *

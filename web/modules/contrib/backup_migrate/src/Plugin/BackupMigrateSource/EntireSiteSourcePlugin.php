@@ -14,8 +14,8 @@ use Drupal\backup_migrate\Drupal\Source\DrupalSiteArchiveSource;
  *
  * @BackupMigrateSourcePlugin(
  *   id = "EntireSite",
- *   title = @Translation("Entire Site"),
- *   description = @Translation("Back up the entire Drupal site."),
+ *   title = @Translation("Entire Site (do not use)"),
+ *   description = @Translation("Back up the entire Drupal site. This is not recommended for use on most sites, hopefully it will be fixed in a future release."),
  *   locked = true
  * )
  */
@@ -45,7 +45,7 @@ class EntireSiteSourcePlugin extends SourcePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function alterBackupMigrate(BackupMigrateInterface $bam, $key, $options = []) {
+  public function alterBackupMigrate(BackupMigrateInterface $bam, $key, array $options = []) {
     if ($source = $this->getObject()) {
       $bam->sources()->add($key, $source);
       // @todo Enable this, fix it.

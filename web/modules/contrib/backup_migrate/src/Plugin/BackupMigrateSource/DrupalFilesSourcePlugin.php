@@ -23,7 +23,7 @@ class DrupalFilesSourcePlugin extends SourcePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function alterBackupMigrate(BackupMigrateInterface $bam, $key, $options = []) {
+  public function alterBackupMigrate(BackupMigrateInterface $bam, $key, array $options = []) {
     $source = $this->getObject();
     $bam->sources()->add($key, $source);
 

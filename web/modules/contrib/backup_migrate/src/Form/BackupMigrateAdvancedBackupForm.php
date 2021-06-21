@@ -22,6 +22,10 @@ class BackupMigrateAdvancedBackupForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    // Leave a message about the Entire Site backup.
+    // @see https://www.drupal.org/project/backup_migrate/issues/3151290
+    $this->messenger()->addMessage($this->t('It is recommended to not use the "Entire site" backup as it has a tendency of failing on anything but the tiniest of sites. Hopefully this will be fixed in a future release.'));
+
     $form = [];
 
     // Theme the form if we want it inline.
@@ -88,7 +92,14 @@ class BackupMigrateAdvancedBackupForm extends FormBase {
 
     // Let the plugins validate their own config data.
     if ($plugin_errors = $bam->plugins()->map('configErrors', ['operation' => 'backup'])) {
+      $has_token_module = \Drupal::moduleHandler()->moduleExists('token');
+
       foreach ($plugin_errors as $plugin_key => $errors) {
+        if ($plugin_key == "namer" && isset($errors[0])) {
+          if ($errors[0]->getFieldKey() == "filename" && $has_token_module) {
+            continue;
+          }
+        }
         foreach ($errors as $error) {
           $form_state->setErrorByName($plugin_key . '][' . $error->getFieldKey(), $this->t($error->getMessage(), $error->getReplacement()));
         }

@@ -68,6 +68,56 @@ backup_migrate.backup_migrate_settings.*:
     config:
       type: mapping
       label: 'Configuration'
+      mapping:
+        namer:
+          type: mapping
+          mapping:
+            filename:
+              type: string
+            timestamp:
+              type: boolean
+            timestamp_format:
+              type: string
+        compressor:
+          type: mapping
+          mapping:
+            compression:
+              type: string
+        utils:
+          type: mapping
+          mapping:
+            site_offline:
+              type: boolean
+        metadata:
+          type: mapping
+          mapping:
+            description:
+              type: text
+        db_exclude:
+          type: mapping
+          mapping:
+            exclude_tables:
+              type: sequence
+              sequence:
+                type: string
+            nodata_tables:
+              type: sequence
+              sequence:
+                type: string
+        private_files_exclude:
+          type: mapping
+          mapping:
+            exclude_filepaths:
+              type: sequence
+              sequence:
+                type: string
+        public_files_exclude:
+          type: mapping
+          mapping:
+            exclude_filepaths:
+              type: sequence
+              sequence:
+                type: string
 
 backup_migrate.backup_migrate_destination.*:
   type: config_entity
@@ -85,7 +135,7 @@ backup_migrate.backup_migrate_destination.*:
       type: string
       label: 'Destination Type'
     config:
-      type: mapping
+      type: backup_migrate.backup_migrate_destination.[%parent.type]
       label: 'Configuration'
 
 backup_migrate.backup_migrate_source.*:
@@ -104,5 +154,5 @@ backup_migrate.backup_migrate_source.*:
       type: string
       label: 'Source Type'
     config:
-      type: mapping
+      type: backup_migrate.backup_migrate_source.[%parent.type]
       label: 'Configuration'

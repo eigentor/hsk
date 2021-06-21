@@ -37,7 +37,6 @@ hsk-js-tabs:
     - core/drupal
     - core/jquery
     - core/jquery.once
-    - core/jquery.ui.tabs
 
 fancybox:
   version: VERSION
