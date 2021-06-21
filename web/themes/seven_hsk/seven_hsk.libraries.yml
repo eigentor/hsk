@@ -38,7 +38,6 @@ drupal.nav-tabs:
   js:
     js/nav-tabs.js: {}
   dependencies:
-    - core/matchmedia
     - core/jquery
     - core/drupal
     - core/jquery.once
