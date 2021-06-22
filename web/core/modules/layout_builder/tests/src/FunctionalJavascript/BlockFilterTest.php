@@ -31,7 +31,7 @@ class BlockFilterTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $user = $this->drupalCreateUser([
       'configure any layout',
@@ -52,7 +52,8 @@ class BlockFilterTest extends WebDriverTestBase {
 
     // From the manage display page, go to manage the layout.
     $field_ui_prefix = 'admin/structure/types/manage/bundle_with_section_field';
-    $this->drupalPostForm("$field_ui_prefix/display/default", ['layout[enabled]' => TRUE], 'Save');
+    $this->drupalGet("{$field_ui_prefix}/display/default");
+    $this->submitForm(['layout[enabled]' => TRUE], 'Save');
     $assert_session->linkExists('Manage layout');
     $this->clickLink('Manage layout');
     $assert_session->addressEquals("$field_ui_prefix/display/default/layout");
@@ -64,6 +65,7 @@ class BlockFilterTest extends WebDriverTestBase {
 
     // Get all blocks, for assertions later.
     $blocks = $page->findAll('css', '.js-layout-builder-block-link');
+    $blocks_count = count($blocks);
     $categories = $page->findAll('css', '.js-layout-builder-category');
 
     $filter = $assert_session->elementExists('css', '.js-layout-builder-filter');
@@ -75,7 +77,7 @@ class BlockFilterTest extends WebDriverTestBase {
     $filter->setValue('a');
     $this->assertAnnounceContains($init_message);
     $visible_rows = $this->filterVisibleElements($blocks);
-    $this->assertEquals(count($blocks), count($visible_rows));
+    $this->assertCount($blocks_count, $visible_rows);
 
     // Get the Content Fields category, which will be closed before filtering.
     $contentFieldsCategory = $page->find('named', ['content', 'Content fields']);

@@ -19,7 +19,7 @@ class MigrateNodeCompleteTest extends MigrateNodeTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'language',
     'content_translation',
     'menu_ui',
@@ -37,7 +37,7 @@ class MigrateNodeCompleteTest extends MigrateNodeTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->setUpMigratedFiles();
 
@@ -91,7 +91,7 @@ class MigrateNodeCompleteTest extends MigrateNodeTestBase {
    *   An array of revision data.
    */
   protected function assertRevision(array $revision, array $data) {
-    /* @var  \Drupal\node\NodeInterface $actual */
+    /** @var  \Drupal\node\NodeInterface $actual */
     $actual = $this->nodeStorage->loadRevision($revision['vid'])
       ->getTranslation($revision['langcode']);
     $this->assertInstanceOf(NodeInterface::class, $actual);

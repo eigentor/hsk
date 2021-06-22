@@ -132,6 +132,13 @@ class EntityFieldManager implements EntityFieldManagerInterface {
   protected $entityDisplayRepository;
 
   /**
+   * The entity last installed schema repository.
+   *
+   * @var \Drupal\Core\Entity\EntityLastInstalledSchemaRepositoryInterface
+   */
+  protected $entityLastInstalledSchemaRepository;
+
+  /**
    * Constructs a new EntityFieldManager.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -150,8 +157,10 @@ class EntityFieldManager implements EntityFieldManagerInterface {
    *   The module handler.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache_backend
    *   The cache backend.
+   * @param \Drupal\Core\Entity\EntityLastInstalledSchemaRepositoryInterface $entity_last_installed_schema_repository
+   *   The entity last installed schema repository.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, EntityDisplayRepositoryInterface $entity_display_repository, TypedDataManagerInterface $typed_data_manager, LanguageManagerInterface $language_manager, KeyValueFactoryInterface $key_value_factory, ModuleHandlerInterface $module_handler, CacheBackendInterface $cache_backend) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, EntityDisplayRepositoryInterface $entity_display_repository, TypedDataManagerInterface $typed_data_manager, LanguageManagerInterface $language_manager, KeyValueFactoryInterface $key_value_factory, ModuleHandlerInterface $module_handler, CacheBackendInterface $cache_backend, EntityLastInstalledSchemaRepositoryInterface $entity_last_installed_schema_repository = NULL) {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
     $this->entityDisplayRepository = $entity_display_repository;
@@ -161,6 +170,11 @@ class EntityFieldManager implements EntityFieldManagerInterface {
     $this->keyValueFactory = $key_value_factory;
     $this->moduleHandler = $module_handler;
     $this->cacheBackend = $cache_backend;
+    if (!$entity_last_installed_schema_repository) {
+      @trigger_error('The entity.last_installed_schema.repository service must be passed to EntityFieldManager::__construct(), it is required before drupal:10.0.0.', E_USER_DEPRECATED);
+      $entity_last_installed_schema_repository = \Drupal::service('entity.last_installed_schema.repository');
+    }
+    $this->entityLastInstalledSchemaRepository = $entity_last_installed_schema_repository;
   }
 
   /**
@@ -232,9 +246,7 @@ class EntityFieldManager implements EntityFieldManagerInterface {
 
     // Make sure that revisionable entity types are correctly defined.
     if ($entity_type->isRevisionable()) {
-      // Disable the BC layer to prevent a recursion, this only needs the
-      // revision_default key that is always set.
-      $field_name = $entity_type->getRevisionMetadataKeys(FALSE)['revision_default'];
+      $field_name = $entity_type->getRevisionMetadataKey('revision_default');
       $base_field_definitions[$field_name] = BaseFieldDefinition::create('boolean')
         ->setLabel($this->t('Default revision'))
         ->setDescription($this->t('A flag indicating whether this was a default revision when it was saved.'))
@@ -467,7 +479,7 @@ class EntityFieldManager implements EntityFieldManagerInterface {
    */
   public function getActiveFieldStorageDefinitions($entity_type_id) {
     if (!isset($this->activeFieldStorageDefinitions[$entity_type_id])) {
-      $this->activeFieldStorageDefinitions[$entity_type_id] = $this->keyValueFactory->get('entity.definitions.installed')->get($entity_type_id . '.field_storage_definitions', []);
+      $this->activeFieldStorageDefinitions[$entity_type_id] = $this->entityLastInstalledSchemaRepository->getLastInstalledFieldStorageDefinitions($entity_type_id);
     }
     return $this->activeFieldStorageDefinitions[$entity_type_id] ?: $this->getFieldStorageDefinitions($entity_type_id);
   }
@@ -578,6 +590,8 @@ class EntityFieldManager implements EntityFieldManagerInterface {
           //  proper provider setter. See https://www.drupal.org/node/2225961.
           if ($definition instanceof BaseFieldDefinition) {
             $definition->setProvider($module);
+            $definition->setName($field_name);
+            $definition->setTargetEntityTypeId($entity_type_id);
           }
           $field_definitions[$field_name] = $definition;
         }

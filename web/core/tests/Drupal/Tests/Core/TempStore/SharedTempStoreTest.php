@@ -2,13 +2,18 @@
 
 namespace Drupal\Tests\Core\TempStore;
 
+use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Core\KeyValueStore\KeyValueExpirableFactoryInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\TempStore\Lock;
+use Drupal\Core\TempStore\SharedTempStoreFactory;
 use Drupal\Tests\UnitTestCase;
 use Drupal\Core\TempStore\SharedTempStore;
 use Drupal\Core\TempStore\TempStoreException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @coversDefaultClass \Drupal\Core\TempStore\SharedTempStore
@@ -68,16 +73,19 @@ class SharedTempStoreTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->keyValue = $this->createMock('Drupal\Core\KeyValueStore\KeyValueStoreExpirableInterface');
     $this->lock = $this->createMock('Drupal\Core\Lock\LockBackendInterface');
     $this->requestStack = new RequestStack();
     $request = Request::createFromGlobals();
+    $session = $this->createMock(SessionInterface::class);
+    $request->setSession($session);
     $this->requestStack->push($request);
+    $current_user = $this->createMock(AccountProxyInterface::class);
 
-    $this->tempStore = new SharedTempStore($this->keyValue, $this->lock, $this->owner, $this->requestStack, 604800);
+    $this->tempStore = new SharedTempStore($this->keyValue, $this->lock, $this->owner, $this->requestStack, $current_user, 604800);
 
     $this->ownObject = (object) [
       'data' => 'test_data',
@@ -274,36 +282,6 @@ class SharedTempStoreTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::getMetadata
-   * @expectedDeprecation Using the "owner" public property of a TempStore lock is deprecated in Drupal 8.7.0 and will not be allowed in Drupal 9.0.0. Use \Drupal\Core\TempStore\Lock::getOwnerId() instead. See https://www.drupal.org/node/3025869.
-   * @group legacy
-   */
-  public function testGetMetadataOwner() {
-    $this->keyValue->expects($this->once())
-      ->method('get')
-      ->with('test')
-      ->will($this->returnValue($this->ownObject));
-
-    $metadata = $this->tempStore->getMetadata('test');
-    $this->assertSame(1, $metadata->owner);
-  }
-
-  /**
-   * @covers ::getMetadata
-   * @expectedDeprecation Using the "updated" public property of a TempStore lock is deprecated in Drupal 8.7.0 and will not be allowed in Drupal 9.0.0. Use \Drupal\Core\TempStore\Lock::getUpdated() instead. See https://www.drupal.org/node/3025869.
-   * @group legacy
-   */
-  public function testGetMetadataUpdated() {
-    $this->keyValue->expects($this->once())
-      ->method('get')
-      ->with('test')
-      ->will($this->returnValue($this->ownObject));
-
-    $metadata = $this->tempStore->getMetadata('test');
-    $this->assertSame($metadata->getUpdated(), $metadata->updated);
-  }
-
-  /**
    * Tests the delete() method.
    *
    * @covers ::delete
@@ -406,9 +384,57 @@ class SharedTempStoreTest extends UnitTestCase {
     $store = unserialize(serialize($this->tempStore));
     $this->assertInstanceOf(SharedTempStore::class, $store);
 
-    $request_stack = $this->getObjectAttribute($store, 'requestStack');
+    $reflected_request_stack = (new \ReflectionObject($store))->getProperty('requestStack');
+    $reflected_request_stack->setAccessible(TRUE);
+    $request_stack = $reflected_request_stack->getValue($store);
     $this->assertEquals($this->requestStack, $request_stack);
     $this->assertSame($unserializable_request, $request_stack->pop());
+  }
+
+  /**
+   * @group legacy
+   */
+  public function testLegacyConstructor() {
+    $this->expectDeprecation('Calling Drupal\Core\TempStore\SharedTempStore::__construct() without the $current_user argument is deprecated in drupal:9.2.0 and will be required in drupal:10.0.0. See https://www.drupal.org/node/3006268');
+
+    $container = new ContainerBuilder();
+    $current_user = $this->createMock(AccountProxyInterface::class);
+    $container->set('current_user', $current_user);
+    \Drupal::setContainer($container);
+    $store = new SharedTempStore($this->keyValue, $this->lock, 2, $this->requestStack, 1000);
+    $reflection_class = new \ReflectionClass(SharedTempStore::class);
+
+    $current_user_property = $reflection_class->getProperty('currentUser');
+    $current_user_property->setAccessible(TRUE);
+    $this->assertSame($current_user, $current_user_property->getValue($store));
+
+    $expire_property = $reflection_class->getProperty('expire');
+    $expire_property->setAccessible(TRUE);
+    $this->assertSame(1000, $expire_property->getValue($store));
+  }
+
+  /**
+   * @group legacy
+   * @covers \Drupal\Core\TempStore\SharedTempStoreFactory::__construct
+   */
+  public function testLegacyFactoryConstructor() {
+    $this->expectDeprecation('Calling Drupal\Core\TempStore\SharedTempStoreFactory::__construct() without the $current_user argument is deprecated in drupal:9.2.0 and will be required in drupal:10.0.0. See https://www.drupal.org/node/3006268');
+
+    $container = new ContainerBuilder();
+    $current_user = $this->createMock(AccountProxyInterface::class);
+    $container->set('current_user', $current_user);
+    \Drupal::setContainer($container);
+    $key_value_factory = $this->prophesize(KeyValueExpirableFactoryInterface::class);
+    $store = new SharedTempStoreFactory($key_value_factory->reveal(), $this->lock, $this->requestStack, 1000);
+    $reflection_class = new \ReflectionClass(SharedTempStoreFactory::class);
+
+    $current_user_property = $reflection_class->getProperty('currentUser');
+    $current_user_property->setAccessible(TRUE);
+    $this->assertSame($current_user, $current_user_property->getValue($store));
+
+    $expire_property = $reflection_class->getProperty('expire');
+    $expire_property->setAccessible(TRUE);
+    $this->assertSame(1000, $expire_property->getValue($store));
   }
 
 }
