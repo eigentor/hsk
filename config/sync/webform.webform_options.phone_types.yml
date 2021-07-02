@@ -9,4 +9,7 @@ _core:
   default_config_hash: HTQyVQb-cumvmKyHdJ8uUqH8fKnU1YehyNSQ4le0AyA
 id: phone_types
 label: Telefontyp
-options: "Zuhause: Zuhause\nArbeit: Arbeit\nMobil: Mobil\n"
+options: |
+  Zuhause: Zuhause
+  Arbeit: Arbeit
+  Mobil: Mobil

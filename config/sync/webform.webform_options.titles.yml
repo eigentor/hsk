@@ -9,4 +9,9 @@ _core:
   default_config_hash: Onwyr2kH5zCeHvMfSSPDJIKUKrvX7x7tAr-7Uv_-k-c
 id: titles
 label: Titel
-options: "Fräulein: Fräulein\nFrau: Frau\nHerr: Herr\nMrs: Mrs\nDr: Dr\n"
+options: |
+  Fräulein: Fräulein
+  Frau: Frau
+  Herr: Herr
+  Mrs: Mrs
+  Dr: Dr

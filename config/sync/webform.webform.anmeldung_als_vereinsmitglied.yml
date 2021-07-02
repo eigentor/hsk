@@ -12,7 +12,103 @@ id: anmeldung_als_vereinsmitglied
 title: 'Anmeldung als Vereinsmitglied'
 description: ''
 category: ''
-elements: "vorname:\n  '#type': textfield\n  '#title': Vorname\n  '#required': true\nnachname:\n  '#type': textfield\n  '#title': Nachname\n  '#required': true\nbirth_date:\n  '#type': textfield\n  '#title': Geburtsdatum\n  '#size': 8\n  '#required': true\ncountry_origin:\n  '#type': textfield\n  '#title': Nationalität\n  '#required': true\nbirth_location:\n  '#type': textfield\n  '#title': Geburtsort\n  '#required': true\nfide_id:\n  '#type': textfield\n  '#title': Fide-ID\n  '#description': 'Falls vorhanden'\nchildren_parent:\n  '#type': fieldset\n  '#title': 'Bei Kindern: Name des Erziehungsberechtigten'\n  parent_first_name:\n    '#type': textfield\n    '#title': Vorname\n  parent_last_name:\n    '#type': textfield\n    '#title': Nachname\nadress:\n  '#type': fieldset\n  '#title': Adresse\n  street_nr:\n    '#type': textfield\n    '#title': 'Straße / Hausnr.'\n    '#required': true\n  area_code_city:\n    '#type': container\n    '#align_items': center\n    area_code:\n      '#type': textfield\n      '#title': PLZ\n      '#size': 8\n      '#required': true\n    city:\n      '#type': textfield\n      '#title': Ort\n      '#required': true\n  telephone:\n    '#type': textfield\n    '#title': Telefonnummer\n  email:\n    '#type': email\n    '#title': E-Mail-Adresse\n    '#required': true\n    '#required_error': 'Bitte geben Sie Ihre E-Mailadresse ein.'\npayment_data:\n  '#type': fieldset\n  '#title': Kontodaten\n  info_fees:\n    '#type': processed_text\n    '#text': \"<p>Der Jahresbeitrag kostet 120 Euro.<br />\\r\\nErmäßigung ist auf Antrag möglich.<br />\\r\\nDer SEPA-Einzug ist verpflichtend.<br />\\r\\n&nbsp;</p>\\r\\n\"\n    '#format': basic_html\n  iban:\n    '#type': textfield\n    '#title': IBAN\n    '#required': true\n  bic:\n    '#type': textfield\n    '#title': BIC\n    '#description': 'Falls Konto im Ausland'\n  bank_name:\n    '#type': textfield\n    '#title': 'Name des Kreditinstitutes'\n    '#required': true\n  name_account_owner:\n    '#type': textfield\n    '#title': 'Name des Kontoinhabers'\n    '#description': 'Falls abweichend vom Mitglied / Erziehungsberechtigten'\n  sepa_consent:\n    '#type': checkbox\n    '#title': 'Ich stimme hiermit dem SEPA-Einzug des Mitgliedsbeitrages zu'\n    '#required': true\nprivacy_notice:\n  '#type': processed_text\n  '#text': \"<p>Wir fragen Ihre persönliche Daten samt Geburtsdatum, Nationalität, Gebortsort und Fide-ID ab, um Sie beim Niedersächsischen Schachverband anmelden zu können. Ihre sonstigen Kontaktdaten benötigen wir, um Sie eindeutig identifizieren und gegebenenfalls kontaktieren zu können.</p>\\r\\n\\r\\n<p>Ihre Bankdaten fragen wir ab, da wir die Mitgliedsbeiträge grundsätzlich per SEPA-Bankinzug erheben.<br />\\r\\nWeitere Hinweise in unserer <a data-entity-type=\\\"node\\\" data-entity-uuid=\\\"17550b5d-3da7-4a52-96e8-beb8878510cc\\\" href=\\\"/node/368\\\">Datenschutzerklärung</a>.<br />\\r\\n&nbsp;</p>\\r\\n\"\n  '#format': basic_html\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__label': 'Anmeldung absenden'\n"
+elements: |
+  vorname:
+    '#type': textfield
+    '#title': Vorname
+    '#required': true
+  nachname:
+    '#type': textfield
+    '#title': Nachname
+    '#required': true
+  birth_date:
+    '#type': textfield
+    '#title': Geburtsdatum
+    '#size': 8
+    '#required': true
+  country_origin:
+    '#type': textfield
+    '#title': Nationalität
+    '#required': true
+  birth_location:
+    '#type': textfield
+    '#title': Geburtsort
+    '#required': true
+  fide_id:
+    '#type': textfield
+    '#title': Fide-ID
+    '#description': 'Falls vorhanden'
+  children_parent:
+    '#type': fieldset
+    '#title': 'Bei Kindern: Name des Erziehungsberechtigten'
+    parent_first_name:
+      '#type': textfield
+      '#title': Vorname
+    parent_last_name:
+      '#type': textfield
+      '#title': Nachname
+  adress:
+    '#type': fieldset
+    '#title': Adresse
+    street_nr:
+      '#type': textfield
+      '#title': 'Straße / Hausnr.'
+      '#required': true
+    area_code_city:
+      '#type': container
+      '#align_items': center
+      area_code:
+        '#type': textfield
+        '#title': PLZ
+        '#size': 8
+        '#required': true
+      city:
+        '#type': textfield
+        '#title': Ort
+        '#required': true
+    telephone:
+      '#type': textfield
+      '#title': Telefonnummer
+    email:
+      '#type': email
+      '#title': E-Mail-Adresse
+      '#required': true
+      '#required_error': 'Bitte geben Sie Ihre E-Mailadresse ein.'
+  payment_data:
+    '#type': fieldset
+    '#title': Kontodaten
+    info_fees:
+      '#type': processed_text
+      '#text': "<p>Der Jahresbeitrag kostet 120 Euro.<br />\r\nErmäßigung ist auf Antrag möglich.<br />\r\nDer SEPA-Einzug ist verpflichtend.<br />\r\n&nbsp;</p>\r\n"
+      '#format': basic_html
+    iban:
+      '#type': textfield
+      '#title': IBAN
+      '#required': true
+    bic:
+      '#type': textfield
+      '#title': BIC
+      '#description': 'Falls Konto im Ausland'
+    bank_name:
+      '#type': textfield
+      '#title': 'Name des Kreditinstitutes'
+      '#required': true
+    name_account_owner:
+      '#type': textfield
+      '#title': 'Name des Kontoinhabers'
+      '#description': 'Falls abweichend vom Mitglied / Erziehungsberechtigten'
+    sepa_consent:
+      '#type': checkbox
+      '#title': 'Ich stimme hiermit dem SEPA-Einzug des Mitgliedsbeitrages zu'
+      '#required': true
+  privacy_notice:
+    '#type': processed_text
+    '#text': "<p>Wir fragen Ihre persönliche Daten samt Geburtsdatum, Nationalität, Gebortsort und Fide-ID ab, um Sie beim Niedersächsischen Schachverband anmelden zu können. Ihre sonstigen Kontaktdaten benötigen wir, um Sie eindeutig identifizieren und gegebenenfalls kontaktieren zu können.</p>\r\n\r\n<p>Ihre Bankdaten fragen wir ab, da wir die Mitgliedsbeiträge grundsätzlich per SEPA-Bankinzug erheben.<br />\r\nWeitere Hinweise in unserer <a data-entity-type=\"node\" data-entity-uuid=\"17550b5d-3da7-4a52-96e8-beb8878510cc\" href=\"/node/368\">Datenschutzerklärung</a>.<br />\r\n&nbsp;</p>\r\n"
+    '#format': basic_html
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
+    '#submit__label': 'Anmeldung absenden'
 css: ''
 javascript: ''
 settings:
@@ -213,7 +309,14 @@ handlers:
       from_options: {  }
       from_name: _default
       subject: 'Anmeldung als Vereinsmitglied über die HSK Website [site:url]'
-      body: "Es wurde eine Anmeldung als Vereinsmitglied über die HSK Website eingegeben.\n\nDatum der Eingabe: [webform_submission:created]\nHier geht es zu den eingegebenen Daten auf der Website: [webform_submission:original]\n\nEingegebene Daten: \n[webform_submission:values]\n"
+      body: |
+        Es wurde eine Anmeldung als Vereinsmitglied über die HSK Website eingegeben.
+
+        Datum der Eingabe: [webform_submission:created]
+        Hier geht es zu den eingegebenen Daten auf der Website: [webform_submission:original]
+
+        Eingegebene Daten: 
+        [webform_submission:values]
       excluded_elements:
         iban: iban
         bic: bic

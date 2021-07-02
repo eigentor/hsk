@@ -22,11 +22,10 @@ tips:
   language-add-choose:
     id: language-add-choose
     plugin: text
-    label: 'Select language'
+    label: 'Sprache auswählen'
     body: '<p>Eine Sprache aus der Liste oder „Benutzerdefinierte Sprache...“ am Ende der selben auswählen.</p><p>Wenn die Sprache ausgewählt wurde, den „Sprache hinzufügen“-Button klicken.</p><p>Beim Hinzufügen einer benutzerdefinierten Sprache, wird ein zusätzliches Formular angezeigt. In diesem kann der Name, das Sprachkürzel sowie die Leserichtung der Sprache angeben werden.</p>'
     weight: 2
-    attributes:
-      data-id: edit-predefined-langcode
+    selector: '#edit-predefined-langcode'
   language-add-continue:
     id: language-add-continue
     plugin: text

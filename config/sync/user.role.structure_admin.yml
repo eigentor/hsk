@@ -8,4 +8,5 @@ weight: 5
 is_admin: null
 permissions:
   - 'administer menu'
+  - 'clone event content'
   - 'use text format full_html'

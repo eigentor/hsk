@@ -9,4 +9,6 @@ _core:
   default_config_hash: KAEJv6Gks8rU-P0XcmUfjRuk-92T32qbkBCn1LQgKr8
 id: yes_no
 label: Ja/Nein
-options: "Ja: Ja\nNein: Nein\n"
+options: |
+  Ja: Ja
+  Nein: Nein

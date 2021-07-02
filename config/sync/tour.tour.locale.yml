@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: 2RuPjrDfA8rPp1mcEzIYMz7RRJQLfovwJuJnuosFu2Y
 id: locale
-label: Translation
+label: Übersetzung
 module: locale
 routes:
   -
@@ -22,51 +22,45 @@ tips:
   locale-language:
     id: locale-language
     plugin: text
-    label: 'Translation language'
+    label: Übersetzungssprache
     body: 'Die Sprache, die übersetzt werden soll, auswählen.'
     weight: 2
-    attributes:
-      data-id: edit-langcode
+    selector: '#edit-langcode'
   locale-search:
     id: locale-search
     plugin: text
-    label: Search
+    label: Suche
     body: 'Eingabe eines bestimmten Wortes oder Satzes, das übersetzt werden soll. Es kann auch nur ein Teil eines Wortes angegeben werden.'
     weight: 3
-    attributes:
-      data-id: edit-string
+    selector: '#edit-string'
   locale-filter:
     id: locale-filter
     plugin: text
     label: 'Die Suche eingrenzen'
     body: 'Es kann nach nicht übersetzten Zeichenketten gesucht werden, um etwas zu übersetzen, was bisher noch nicht übersetzt worden ist. Falls eine bereits bestehende Übersetzung abgeändert werden soll, dann sollte besser nur nach bereits übersetzten Zeichenketten gesucht werden.'
     weight: 4
-    attributes:
-      data-id: edit-translation
+    selector: '#edit-translation'
   locale-submit:
     id: locale-submit
     plugin: text
     label: 'Suchkriterien anwenden'
     body: 'Um die Suchkriterien anzuwenden, auf den <em>Filter</em>-Button klicken.'
     weight: 5
-    attributes:
-      data-id: edit-submit
+    selector: '#edit-submit'
   locale-translate:
     id: locale-translate
     plugin: text
-    label: Translate
+    label: Übersetzen
     body: 'Die eigene Übersetzung kann in die Textfelder in der rechten Spalte eingegeben werden. Es sollte versucht werden herauszufinden in welchem Kontext der Text verwendet werden soll, um ihn sachgemäß zu übersetzen.'
     weight: 6
-    attributes:
-      data-class: js-form-type-textarea
+    selector: .js-form-type-textarea
   locale-validate:
     id: locale-validate
     plugin: text
     label: 'Die Übersetzungen prüfen und speichern'
     body: 'Sobald die Übersetzungen abgeschlossen sind, werden diese über einen Klick auf den Button </em>Übersetzungen speichern</em> abgespeichert. Die Übersetzungen müssen immer abgespeichert werden, bevor Änderungen an der Seite vorgenommen werden oder eine neue Suche durchgeführt wird. Andernfalls gehen die vorgenommenen Änderungen verloren.'
     weight: 7
-    attributes:
-      data-id: edit-submit--2
+    selector: '#edit-submit--2'
   locale-continue:
     id: locale-continue
     plugin: text

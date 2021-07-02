@@ -9,4 +9,8 @@ _core:
   default_config_hash: 0saefTQh-QUbxCT1hBxeNaEN2g63K2R21rRXxGXQoCs
 id: marital_status
 label: Familienstand
-options: "Single: Single\nVerheiratet: verheiratet\ngeschieden: geschieden\nverwitwet: verwitwet\n"
+options: |
+  Single: Single
+  Verheiratet: verheiratet
+  geschieden: geschieden
+  verwitwet: verwitwet

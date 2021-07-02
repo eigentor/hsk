@@ -11,6 +11,7 @@ permissions:
   - 'access content overview'
   - 'access in-place editing'
   - 'access toolbar'
+  - 'clone event content'
   - 'create article content'
   - 'create event content'
   - 'delete own article content'

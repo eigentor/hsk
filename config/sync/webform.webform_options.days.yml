@@ -9,4 +9,11 @@ _core:
   default_config_hash: T744d_CMtx_CsVZD1MNNvyiSNlemzmFgmzVdBKtuKq8
 id: days
 label: Tage
-options: "Sonntag: Sonntag\nMontag: Montag\nDienstag: Dienstag\nMittwoch: Mittwoch\nDonnerstag: Donnerstag\nFreitag: Freitag\nSamstag: Samstag\n"
+options: |
+  Sonntag: Sonntag
+  Montag: Montag
+  Dienstag: Dienstag
+  Mittwoch: Mittwoch
+  Donnerstag: Donnerstag
+  Freitag: Freitag
+  Samstag: Samstag

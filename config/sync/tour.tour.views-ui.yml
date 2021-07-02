@@ -27,71 +27,62 @@ tips:
     label: 'Anzeigen in dieser Ansicht'
     body: 'Eine Anzeige ist eine Möglichkeit, die Ergebnisse auszugeben, z. B. als Seite oder Block. Eine Ansicht kann mehrere Anzeigen enthalten, die hier aufgelistet sind. Die aktive Anzeige wird hervorgehoben.'
     weight: 2
-    attributes:
-      data-id: views-display-top
+    selector: '#views-display-top'
   views-ui-view-admin:
     id: views-ui-view-admin
     plugin: text
     label: Ansichtverwaltung
     body: 'Führen Sie Verwaltungsaufgaben aus, einschließlich dem Hinzufügen einer Beschreibung und dem Duplizieren einer Ansicht. Klicken Sie auf den Dropdown-Button, um die verfügbaren Optionen anzuzeigen.'
     weight: 3
-    location: left
-    attributes:
-      data-id: views-display-extra-actions
+    selector: '#views-display-extra-actions'
+    position: left-start
   views-ui-format:
     id: views-ui-format
     plugin: text
-    label: 'Output format'
+    label: Ausgabeformat
     body: 'Wählen Sie, wie die Ergebnisse ausgegeben werden sollen. Wählen Sie z. B. <em>Inhalt</em>, um jedes Element vollständig auszugeben, wobei Sie Ihre konfigurierten Anzeigeeinstellungen verwenden. Oder wählen Sie <em>Felder</em>, um nur bestimmte Felder für jedes Ergebnis auszugeben. Zusätzliche Formate können durch die Installation von Modulen, die Drupal''s Basisfunktionalität <em>erweitern</em>, hinzugefügt werden.'
     weight: 4
-    attributes:
-      data-class: views-ui-display-tab-bucket.format
+    selector: .views-ui-display-tab-bucket.format
   views-ui-fields:
     id: views-ui-fields
     plugin: text
-    label: Fields
+    label: Felder
     body: 'Wenn diese Ansicht Felder verwendet, werden diese hier aufgelistet. Sie können auf ein Feld klicken, um es zu konfigurieren.'
     weight: 5
-    attributes:
-      data-class: views-ui-display-tab-bucket.field
+    selector: .views-ui-display-tab-bucket.field
   views-ui-filter:
     id: views-ui-filter
     plugin: text
     label: 'Ansicht filtern'
     body: 'Fügen Sie Filter hinzu, um die Ergebnisse in der Ausgabe einzuschränken. Um z. B. nur Inhalte anzuzeigen, die <em>veröffentlicht</em> sind, würden Sie einen Filter für <em>Veröffentlicht</em> hinzufügen und <em>Ja</em> auswählen.'
     weight: 6
-    attributes:
-      data-class: views-ui-display-tab-bucket.filter
+    selector: .views-ui-display-tab-bucket.filter
   views-ui-filter-operations:
     id: views-ui-filter-operations
     plugin: text
     label: Filteraktionen
     body: 'Filter hinzufügen, umsortieren oder entfernen.'
     weight: 7
-    attributes:
-      data-class: 'views-ui-display-tab-bucket.filter .dropbutton-widget'
+    selector: '.views-ui-display-tab-bucket.filter .dropbutton-widget'
   views-ui-sorts:
     id: views-ui-sorts
     plugin: text
-    label: 'Sort Criteria'
+    label: Sortierkriterium
     body: 'Die Reihenfolge steuern, in der die Ergebnisse ausgegeben werden. Auf eine aktive Sortierregel klicken, um diese zu konfigurieren.'
     weight: 8
-    attributes:
-      data-class: views-ui-display-tab-bucket.sort
+    selector: .views-ui-display-tab-bucket.sort
   views-ui-sorts-operations:
     id: views-ui-sorts-operations
     plugin: text
     label: Sortieraktionen
     body: 'Sortierregeln hinzufügen, umsortieren oder entfernen.'
     weight: 9
-    attributes:
-      data-class: 'views-ui-display-tab-bucket.sort .dropbutton-widget'
+    selector: '.views-ui-display-tab-bucket.sort .dropbutton-widget'
   views-ui-preview:
     id: views-ui-preview
     plugin: text
-    label: Preview
+    label: Vorschau
     body: 'Eine Vorschau der Ansicht anzeigen.'
     weight: 10
-    location: left
-    attributes:
-      data-id: preview-submit
+    selector: '#preview-submit'
+    position: left-start

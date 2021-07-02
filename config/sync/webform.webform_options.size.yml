@@ -9,4 +9,9 @@ _core:
   default_config_hash: Tq6nZxoRP6_RwY5Q6Z4ecRFadf4xCmFRgg6PqnBzJLc
 id: size
 label: Größe
-options: "Extra klein: Extra klein\nKlein: Klein\nMittel: Mittel\nGroß: Groß\nExtra groß: Extra groß\n"
+options: |
+  Extra klein: Extra klein
+  Klein: Klein
+  Mittel: Mittel
+  Groß: Groß
+  Extra groß: Extra groß

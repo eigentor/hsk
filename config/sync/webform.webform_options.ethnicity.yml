@@ -9,4 +9,12 @@ _core:
   default_config_hash: SSV6f9SV3qO5qcz99jSqj7-2eGNaD9RfOYDdMPUffew
 id: ethnicity
 label: Volkszugehörigkeit
-options: "Kaukasisch: Kaukasisch\n'Latino/Hispanisch': 'Latino/Hispanisch'\n'Nahöstlich': 'Nahöstlich'\nAfrikanisch: Afrikanisch\nKaribisch: Karibisch\n'Südasiatisch':'Südasiatisch'\n'Ostasiatisch': 'Ostasiatisch'\nGemischt: Gemischt\n"
+options: |
+  Kaukasisch: Kaukasisch
+  'Latino/Hispanisch': 'Latino/Hispanisch'
+  'Nahöstlich': 'Nahöstlich'
+  Afrikanisch: Afrikanisch
+  Karibisch: Karibisch
+  'Südasiatisch':'Südasiatisch'
+  'Ostasiatisch': 'Ostasiatisch'
+  Gemischt: Gemischt

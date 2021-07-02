@@ -19,6 +19,7 @@ permissions:
   - 'administer nodes'
   - 'administer webform submission'
   - 'bypass node access'
+  - 'clone event content'
   - 'create url aliases'
   - 'entityconnect add button'
   - 'entityconnect edit button'

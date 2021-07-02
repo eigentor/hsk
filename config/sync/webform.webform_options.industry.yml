@@ -9,4 +9,43 @@ _core:
   default_config_hash: AkLS04Kjzd3Z8UBlMVBMBYgJdpYZhF9ZVyPIUQs9dRk
 id: industry
 label: Industrie
-options: "Rechnungswesen/Finanzen: Rechnungswesen/Finanzen\nWerbung/Public Relations: Werbung/Public Relations\nLuft- und Raumfahrt: Luft- und Raumfahrt\nKunst/Unterhaltung/Verlag: Kunst/Unterhaltung/Verlag\nAutomobil: Automobil\nBankwesen/Hypothek: Bankwesen/Hypothek\nGeschäftsentwicklung: Geschäftsentwicklung\nGeschäftschance: Geschäftschance\nSachbearbeiter/Verwalter: Sachbearbeiter/Verwalter\nBauen/Einrichtungen: Bauen/Einrichtungen\nKonsumgüter: Konsumgüter\nKundenservice: Kundenservice\nBildung/Ausbildung: Bildung/Ausbildung\nEnergie/Versorger: Energie/Versorger\nIngenieurwesen: Ingenieurwesen\nRegierung/Militär: Regierung/Militär\nGesundheitswesen: Gesundheitswesen\nGastfreundschaft/Reisen: Gastfreundschaft/Reisen\nPersonalwesen: Personalwesen\nInstallation/Instandhaltung: Installation/Instandhaltung\nVersicherung: Versicherung\nInternet: Internet\nStrafverfolgung/Sicherheit: Strafverfolgung/Sicherheit\nRecht: Recht\nManagement/Führungskräfte: Management/Führungskräfte\nFertigung/Betrieb: Fertigung/Betrieb\nMarketing: Marketing\nGemeinnützig/Freiwillige: Gemeinnützig/Freiwillige\nPharmazeutik/Biotech: Pharmazeutik/Biotech\nProfessionelle Dienstleistungen: Professionelle Dienstleistungen\nImmobilien: Immobilien\nRestaurant/Lebensmittel-Service: Restaurant/Lebensmittel-Service\nEinzelhandel: Einzelhandel\nVertrieb: Vertrieb\nWissenschaft/Forschung: Wissenschaft/Forschung\nFacharbeit: Facharbeit\nTechnologie: Technologie\nTelekommunikation: Telekommunikation\nTransportation/Logistik: Transportation/Logistik\n"
+options: |
+  Rechnungswesen/Finanzen: Rechnungswesen/Finanzen
+  Werbung/Public Relations: Werbung/Public Relations
+  Luft- und Raumfahrt: Luft- und Raumfahrt
+  Kunst/Unterhaltung/Verlag: Kunst/Unterhaltung/Verlag
+  Automobil: Automobil
+  Bankwesen/Hypothek: Bankwesen/Hypothek
+  Geschäftsentwicklung: Geschäftsentwicklung
+  Geschäftschance: Geschäftschance
+  Sachbearbeiter/Verwalter: Sachbearbeiter/Verwalter
+  Bauen/Einrichtungen: Bauen/Einrichtungen
+  Konsumgüter: Konsumgüter
+  Kundenservice: Kundenservice
+  Bildung/Ausbildung: Bildung/Ausbildung
+  Energie/Versorger: Energie/Versorger
+  Ingenieurwesen: Ingenieurwesen
+  Regierung/Militär: Regierung/Militär
+  Gesundheitswesen: Gesundheitswesen
+  Gastfreundschaft/Reisen: Gastfreundschaft/Reisen
+  Personalwesen: Personalwesen
+  Installation/Instandhaltung: Installation/Instandhaltung
+  Versicherung: Versicherung
+  Internet: Internet
+  Strafverfolgung/Sicherheit: Strafverfolgung/Sicherheit
+  Recht: Recht
+  Management/Führungskräfte: Management/Führungskräfte
+  Fertigung/Betrieb: Fertigung/Betrieb
+  Marketing: Marketing
+  Gemeinnützig/Freiwillige: Gemeinnützig/Freiwillige
+  Pharmazeutik/Biotech: Pharmazeutik/Biotech
+  Professionelle Dienstleistungen: Professionelle Dienstleistungen
+  Immobilien: Immobilien
+  Restaurant/Lebensmittel-Service: Restaurant/Lebensmittel-Service
+  Einzelhandel: Einzelhandel
+  Vertrieb: Vertrieb
+  Wissenschaft/Forschung: Wissenschaft/Forschung
+  Facharbeit: Facharbeit
+  Technologie: Technologie
+  Telekommunikation: Telekommunikation
+  Transportation/Logistik: Transportation/Logistik

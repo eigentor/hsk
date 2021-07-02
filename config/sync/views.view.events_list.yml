@@ -234,7 +234,9 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"date\">{{ field_ev_date }}</div>\n<div class=\"time\">{{ field_ev_start_time }}</div>"
+            text: |-
+              <div class="date">{{ field_ev_date }}</div>
+              <div class="time">{{ field_ev_start_time }}</div>
             make_link: false
             path: ''
             absolute: false
@@ -680,7 +682,9 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"date\">{{ field_ev_date }}</div>\n<div class=\"time\">{{ field_ev_start_time }}</div>"
+            text: |-
+              <div class="date">{{ field_ev_date }}</div>
+              <div class="time">{{ field_ev_start_time }}</div>
             make_link: false
             path: ''
             absolute: false

@@ -9,4 +9,9 @@ _core:
   default_config_hash: y8t4RZdGS6VERGR7rBmSPFIG0fO5OZb87IB6P5A6Avw
 id: relationship
 label: Relationship
-options: "Eltern: Eltern\nBezugsperson: 'Bezugsperson'\nGeschwister: Geschwister\nKind: Kind\nFreunde: Freunde\n"
+options: |
+  Eltern: Eltern
+  Bezugsperson: 'Bezugsperson'
+  Geschwister: Geschwister
+  Kind: Kind
+  Freunde: Freunde

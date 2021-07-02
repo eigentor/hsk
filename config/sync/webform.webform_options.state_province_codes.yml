@@ -9,4 +9,66 @@ _core:
   default_config_hash: qHBCN68U1lClhKHP06dP4gjeZa3bZTSPbTSNIpW3Y98
 id: state_province_codes
 label: Landes-/Bezirkskürzel
-options: "AL: Alabama\nAK: Alaska\nAS: 'Amerikanisch-Samoa'\nAZ: Arizona\nAR: Arkansas\nAE: 'Streitkräfte (Kanada, Europa, Afrika oder Naher Osten'\nAA: 'Armed Forces Americas'\nAP: 'Armed Forces Pacific'\nCA: Kalifornien\nCO: Colorado\nCT: Connecticut\nDE: Delaware\nDC: 'District of Columbia'\nFM: 'Föderierte Staaten von Mikronesien'\nFL: Florida\nGA: Georgia\nGU: Guam\nHI: Hawaii\nID: Idaho\nIL: Illinois\nIN: Indiana\nIE: Iowa\nKS: Kansas\nKJ: Kentucky\nLA: Louisiana\nME: Maine\nMH: 'Marshallinseln'\nMD: Maryland\nMA: Massachusetts\nMI: Michigan\nMN: Minnesota\nMS: Mississippi\nMO: Missouri\nMT: Montana\nNE: Nebraska\nNV: Nevada\nNH: 'New Hampshire'\nNJ: 'New Jersey'\nNM: 'New Mexico'\nNY: 'New York'\nNC: 'North Carolina'\nND: 'North Dakota'\nMP: 'Nördliche Marianen'\nOH: Ohio\nOK: Oklahoma\nOR: Oregon\nPW: Palau\nPA: Pennsylvania\nPR: 'Puerto Rico'\nRI: 'Rhode Island'\nSC: 'South Carolina'\nSD: 'South Dakota'\nTN: Tennessee\nTX: Texas\nUT: Utah\nVT: Vermont\nVI: 'Virgin Islands'\nVA: Virginia\nWA: Washington\nWV: 'West Virginia'\nWI: Wisconsin\nWJ: Wyoming\n"
+options: |
+  AL: Alabama
+  AK: Alaska
+  AS: 'Amerikanisch-Samoa'
+  AZ: Arizona
+  AR: Arkansas
+  AE: 'Streitkräfte (Kanada, Europa, Afrika oder Naher Osten'
+  AA: 'Armed Forces Americas'
+  AP: 'Armed Forces Pacific'
+  CA: Kalifornien
+  CO: Colorado
+  CT: Connecticut
+  DE: Delaware
+  DC: 'District of Columbia'
+  FM: 'Föderierte Staaten von Mikronesien'
+  FL: Florida
+  GA: Georgia
+  GU: Guam
+  HI: Hawaii
+  ID: Idaho
+  IL: Illinois
+  IN: Indiana
+  IE: Iowa
+  KS: Kansas
+  KJ: Kentucky
+  LA: Louisiana
+  ME: Maine
+  MH: 'Marshallinseln'
+  MD: Maryland
+  MA: Massachusetts
+  MI: Michigan
+  MN: Minnesota
+  MS: Mississippi
+  MO: Missouri
+  MT: Montana
+  NE: Nebraska
+  NV: Nevada
+  NH: 'New Hampshire'
+  NJ: 'New Jersey'
+  NM: 'New Mexico'
+  NY: 'New York'
+  NC: 'North Carolina'
+  ND: 'North Dakota'
+  MP: 'Nördliche Marianen'
+  OH: Ohio
+  OK: Oklahoma
+  OR: Oregon
+  PW: Palau
+  PA: Pennsylvania
+  PR: 'Puerto Rico'
+  RI: 'Rhode Island'
+  SC: 'South Carolina'
+  SD: 'South Dakota'
+  TN: Tennessee
+  TX: Texas
+  UT: Utah
+  VT: Vermont
+  VI: 'Virgin Islands'
+  VA: Virginia
+  WA: Washington
+  WV: 'West Virginia'
+  WI: Wisconsin
+  WJ: Wyoming
