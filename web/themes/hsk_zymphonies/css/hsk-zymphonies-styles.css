@@ -3360,6 +3360,7 @@ nav#block-hsk-footer ul li a {
     -ms-border-radius: 0 4px 4px 4px;
     -o-border-radius: 0 4px 4px 4px;
     border-radius: 0 4px 4px 4px;
+    z-index: 7;
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li ul li {
     margin-right: 0;
