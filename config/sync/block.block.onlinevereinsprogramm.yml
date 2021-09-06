@@ -17,7 +17,7 @@ provider: null
 plugin: 'block_content:5538f16e-2233-499a-ae19-fb4fe8f2e3a2'
 settings:
   id: 'block_content:5538f16e-2233-499a-ae19-fb4fe8f2e3a2'
-  label: Online-Vereinsprogramm
+  label: Vereinsprogramm
   provider: block_content
   label_display: visible
   status: true
