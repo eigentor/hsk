@@ -1,0 +1,46 @@
+uuid: 87b85ecd-c3bf-4b78-aebc-f067987d25a5
+langcode: de
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.autor_info
+    - field.field.node.player.body
+    - field.field.node.player.field_dwz
+    - field.field.node.player.field_fide_id
+    - field.field.node.player.field_function_club
+    - field.field.node.player.field_member_no_dsb
+    - field.field.node.player.field_player_image
+    - image.style.medium
+    - node.type.player
+  module:
+    - image
+    - text
+    - user
+id: node.player.autor_info
+targetEntityType: node
+bundle: player
+mode: autor_info
+content:
+  body:
+    weight: 1
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_player_image:
+    weight: 0
+    label: visually_hidden
+    settings:
+      image_style: medium
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  field_dwz: true
+  field_fide_id: true
+  field_function_club: true
+  field_member_no_dsb: true
+  langcode: true
+  links: true

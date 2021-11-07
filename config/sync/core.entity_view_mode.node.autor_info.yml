@@ -1,0 +1,10 @@
+uuid: bb6c3ebc-35e7-4de1-9a26-0a54e9990ef9
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+id: node.autor_info
+label: Autor-Info
+targetEntityType: node
+cache: true
