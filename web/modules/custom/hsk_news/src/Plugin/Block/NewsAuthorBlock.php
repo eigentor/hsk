@@ -76,6 +76,19 @@ class NewsAuthorBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $news_entity = $this->entityTypeManager->getStorage('node')->load($nid);
     $uid = $news_entity->getOwnerId();
     $author = $this->userStorage->load($uid);
+    if($author->hasField('field_matching_player')) {
+      if(!empty($author->field_matching_player)) {
+        $player = $author->field_matching_player->entity;
+        $name = $player->getTitle();
+        if($player->hasField('field_player_image')) {
+          if(!empty($player->field_player_image)) {
+            $file = $player->field_player_image->entity;
+            $peter = 9;
+          }
+        }
+        $peter = 7;
+      }
+    }
     $peter = 7;
     return $news_entity;
   }
