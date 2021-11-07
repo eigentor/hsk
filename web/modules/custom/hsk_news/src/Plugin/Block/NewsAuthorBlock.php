@@ -75,6 +75,7 @@ class NewsAuthorBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $nid = $this->getContextValue('node')->id();
     $news_entity = $this->entityTypeManager->getStorage('node')->load($nid);
     $uid = $news_entity->getOwnerId();
+    $author = $this->userStorage->load($uid);
     $peter = 7;
     return $news_entity;
   }
