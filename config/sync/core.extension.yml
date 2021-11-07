@@ -47,6 +47,7 @@ module:
   hsk_comments: 0
   hsk_images: 0
   hsk_import_dwz: 0
+  hsk_news: 0
   hsk_pgn_formatter: 0
   image: 0
   inline_entity_form: 0

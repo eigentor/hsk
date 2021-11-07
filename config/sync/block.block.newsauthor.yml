@@ -1,0 +1,30 @@
+uuid: 0c2e60ef-6ea6-4a2c-a79b-d0c541c84664
+langcode: de
+status: true
+dependencies:
+  module:
+    - ctools
+    - hsk_news
+  theme:
+    - hsk_zymphonies
+id: newsauthor
+theme: hsk_zymphonies
+region: sidebar_second
+weight: -9
+provider: null
+plugin: hsk_news_author
+settings:
+  id: hsk_news_author
+  label: 'Der Autor'
+  provider: hsk_news
+  label_display: visible
+  context_mapping:
+    node: '@node.node_route_context:node'
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      article: article
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
