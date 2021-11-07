@@ -16,7 +16,7 @@ provider: null
 plugin: search_form_block
 settings:
   id: search_form_block
-  label: Search
+  label: Suche
   provider: search
   label_display: visible
   page_id: ''

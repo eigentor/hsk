@@ -1,17 +1,16 @@
-uuid: 7971d23b-3df6-4113-9cec-9b5e31015b80
+uuid: e270e50d-5d43-4f0b-8aee-81c97d226cd9
 langcode: de
 status: true
 dependencies:
   module:
+    - node
     - user
-id: user.field_user_last_name
-field_name: field_user_last_name
+id: user.field_matching_player
+field_name: field_matching_player
 entity_type: user
-type: string
+type: entity_reference
 settings:
-  max_length: 255
-  is_ascii: false
-  case_sensitive: false
+  target_type: node
 module: core
 locked: false
 cardinality: 1

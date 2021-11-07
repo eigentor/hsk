@@ -37,9 +37,9 @@ settings:
   default_wizard_confirmation_label: Complete
   default_wizard_toggle_show_label: 'Show all'
   default_wizard_toggle_hide_label: 'Hide all'
-  default_preview_next_button_label: Preview
+  default_preview_next_button_label: Vorschau
   default_preview_prev_button_label: '< Zurück'
-  default_preview_label: Preview
+  default_preview_label: Vorschau
   default_preview_title: '[webform:title]: Preview'
   default_preview_message: 'Please review your submission. Your submission is not complete until you press the "Submit" button!'
   default_draft_button_label: 'Als Entwurf speichern'

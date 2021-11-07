@@ -4,12 +4,8 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.user.referenced_user
-    - field.field.user.user.field_user_first_name
-    - field.field.user.user.field_user_last_name
-    - field.field.user.user.user_picture
-    - image.style.portrait
+    - field.field.user.user.field_matching_player
   module:
-    - image
     - user
 _core:
   default_config_hash: L2mtwGWH_7wDRCMIR4r_Iu_jmvQ10DV1L8ht8iNZ5qY
@@ -18,36 +14,12 @@ targetEntityType: user
 bundle: user
 mode: referenced_user
 content:
-  field_user_first_name:
-    weight: 1
-    label: visually_hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_user_last_name:
-    weight: 2
-    label: visually_hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   masquerade:
     weight: 50
     region: content
     settings: {  }
     third_party_settings: {  }
-  user_picture:
-    type: image
-    weight: 0
-    settings:
-      image_style: portrait
-      image_link: ''
-    third_party_settings: {  }
-    label: hidden
-    region: content
 hidden:
+  field_matching_player: true
   langcode: true
   member_for: true
