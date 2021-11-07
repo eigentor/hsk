@@ -4,12 +4,8 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.user.compact
-    - field.field.user.user.field_user_first_name
-    - field.field.user.user.field_user_last_name
-    - field.field.user.user.user_picture
-    - image.style.thumbnail
+    - field.field.user.user.field_matching_player
   module:
-    - image
     - user
 _core:
   default_config_hash: C3k_McOy8bL8rTnIjspy5OfFdgqV1z6OdGZaI-tO5eM
@@ -23,17 +19,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  user_picture:
-    type: image
-    weight: 0
-    settings:
-      image_style: thumbnail
-      image_link: content
-    third_party_settings: {  }
-    label: hidden
-    region: content
 hidden:
-  field_user_first_name: true
-  field_user_last_name: true
+  field_matching_player: true
   langcode: true
   member_for: true

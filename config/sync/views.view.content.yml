@@ -570,7 +570,7 @@ display:
           1: AND
       display_extenders: {  }
     display_plugin: default
-    display_title: Master
+    display_title: Standard
     id: default
     position: 0
     cache_metadata:
