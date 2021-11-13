@@ -64,33 +64,32 @@ class NewsAuthorBlock extends BlockBase implements ContainerFactoryPluginInterfa
   public function build()
   {
     $data = $this->getUserData();
-    ksm($data);
-    return [
-      '#markup' => 'Print author image and description',
-    ];
+    return $data;
   }
 
   public function getUserData()
   {
     $nid = $this->getContextValue('node')->id();
     $news_entity = $this->entityTypeManager->getStorage('node')->load($nid);
-    $uid = $news_entity->getOwnerId();
-    $author = $this->userStorage->load($uid);
-    $player_data = [];
-    if($author->hasField('field_matching_player')) {
-      if(!empty($author->field_matching_player)) {
-        $player = $author->field_matching_player->entity;
-        $name = $player->getTitle();
-        $player_data['name'] = $name;
-        if($player->hasField('field_player_image')) {
-          if(!empty($player->field_player_image->target_id)) {
-            $file = $player->field_player_image->entity;
-            $player_data['image'] = $file;
-            $peter = 9;
-          }
+    if($news_entity->getType() == 'article') {
+      $uid = $news_entity->getOwnerId();
+      $author = $this->userStorage->load($uid);
+
+      if($author->hasField('field_matching_player')) {
+        if(!empty($author->field_matching_player)) {
+          $player = $author->field_matching_player->entity;
+          $player_view_builder = $this->entityTypeManager->getViewBuilder('node');
+          $player_data = $player_view_builder->view($player, 'autor_info');
+        } else {
+          $player_data = ['#markup' => $this->t('The news author does not have a matching player.')];
+
         }
       }
+
+    } else {
+      $player_data = ['#markup' => $this->t('This block needs to be displayed in a news article to show the author information')];
     }
+
     $peter = 7;
     return $player_data;
   }

@@ -10,7 +10,7 @@ dependencies:
     - field.field.node.player.field_function_club
     - field.field.node.player.field_member_no_dsb
     - field.field.node.player.field_player_image
-    - image.style.medium
+    - image.style.portrait_autor
     - node.type.player
   module:
     - image
@@ -32,7 +32,7 @@ content:
     weight: 0
     label: visually_hidden
     settings:
-      image_style: medium
+      image_style: portrait_autor
       image_link: ''
     third_party_settings: {  }
     type: image

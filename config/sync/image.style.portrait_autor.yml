@@ -1,0 +1,17 @@
+uuid: abe669ed-6d2e-4510-9e06-c67a84406cc0
+langcode: de
+status: true
+dependencies:
+  module:
+    - focal_point
+name: portrait_autor
+label: 'Portrait Autor'
+effects:
+  a0fef343-275b-4ee8-b76e-c5c874c2746e:
+    uuid: a0fef343-275b-4ee8-b76e-c5c874c2746e
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 110
+      height: 160
+      crop_type: focal_point
