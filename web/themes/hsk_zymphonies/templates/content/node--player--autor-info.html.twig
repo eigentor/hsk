@@ -14,7 +14,7 @@
   {{ title_prefix }}
   {% if not page %}
     <div class="pre-label">Autor dieser News:</div>
-    <h2{{ title_attributes }}>
+    <h2{{ title_attributes.addClass('title') }}>
       {{ label }}
     </h2>
   {% endif %}

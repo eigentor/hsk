@@ -25,12 +25,13 @@
         {% trans %}{{ author_name }} - {{ date }}{% endtrans %}
         {{ metadata }}
       </div>
+      {% if page %}
+        <a class="post-comment" href ="#comment-form">Kommentar schreiben</a>
+      {% endif %}
     </footer>
   {% endif %}
 
-  {% if page %}
-    <a class="post-comment" href ="#comment-form">Kommentar schreiben</a>
-  {% endif %}
+
 
   <div{{ content_attributes.addClass('node__content') }}>
     {{ pgn_viewer_script }}
