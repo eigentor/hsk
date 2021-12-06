@@ -2099,13 +2099,14 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 /* End Media Query Tablet */
 .block-hsk-news-author {
   text-align: center;
-  margin-top: 1.7em;
+  margin-top: 0.4em;
   padding: 0.6em 1em;
   border: 1px solid #ddd;
   background: #f3f3f3;
 }
 .block-hsk-news-author .pre-label {
-  color: #666;
+  color: #777;
+  font-size: 0.78rem;
 }
 .block-hsk-news-author h2.title {
   font-size: 20.15px;
