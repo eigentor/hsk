@@ -119,6 +119,30 @@
 .page-node-type-article
   article
     &.node--type-article
+      footer.comment-submitted
+        +legacy-pie-clearfix
+        display: flex
+        justify-content: space-between
+        border-top: 1px solid #ececec
+        border-bottom: 1px solid #ececec
+        padding-top: 0.3em
+        padding-bottom: 0.3em
+        margin-bottom: 1.5em
+        .node__submitted
+          margin-bottom: 0
+        a.post-comment
+          margin-left: auto
+          &:before
+            display: inline-block
+            font-family: Fontawesome
+            color: #aaa
+            content: "\f075"
+            padding-right: 8px
+            text-decoration: none
+          &:hover
+            &:before
+              color: $link-color
+
       &.default-image
         .field--name-field-image
           display: none

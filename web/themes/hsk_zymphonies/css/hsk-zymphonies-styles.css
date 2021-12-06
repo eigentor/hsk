@@ -909,11 +909,25 @@
   }
 }
 @font-face {
-  font-family: "FontAwesome";
-  src: url("../fonts/fontawesome-webfont.eot?v=4.5.0");
-  src: url("../fonts/fontawesome-webfont.eot?#iefix&v=4.5.0") format("embedded-opentype"), url("../fonts/fontawesome-webfont.woff2?v=4.5.0") format("woff2"), url("../fonts/fontawesome-webfont.woff?v=4.5.0") format("woff"), url("../fonts/fontawesome-webfont.ttf?v=4.5.0") format("truetype"), url("../fonts/fontawesome-webfont.svg?v=4.5.0#fontawesomeregular") format("svg");
-  font-weight: normal;
+  font-family: "Fontawesome";
   font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/fontawesome/webfonts/fa-solid-900.eot");
+  src: url("../fonts/fontawesome/webfonts/fa-solid-900.eot?#iefix") format("embedded-opentype"), url("../fonts/fontawesome/webfonts/fa-solid-900.woff2") format("woff2"), url("../fonts/fontawesome/webfonts/fa-solid-900.woff") format("woff"), url("../fonts/fontawesome/webfonts/fa-solid-900.ttf") format("truetype"), url("../fonts/fontawesome/webfonts/fa-solid-900.svg#fontawesome") format("svg");
+}
+@font-face {
+  font-family: "Fontawesome-Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/fontawesome/webfonts/fa-regular-400.eot");
+  src: url("../fonts/fontawesome/webfonts/fa-regular-400.eot?#iefix") format("embedded-opentype"), url("../fonts/fontawesome/webfonts/fa-regular-400.woff2") format("woff2"), url("../fonts/fontawesome/webfonts/fa-regular-400.woff") format("woff"), url("../fonts/fontawesome/webfonts/fa-regular-400.ttf") format("truetype"), url("../fonts/fontawesome/webfonts/fa-regular-400.svg#fontawesome") format("svg");
+}
+@font-face {
+  font-family: "Fontawesome-Brands";
+  font-style: normal;
+  font-weight: normal;
+  src: url("../fonts/fontawesome/webfonts/fa-brands-400.eot");
+  src: url("../fonts/fontawesome/webfonts/fa-brands-400.eot?#iefix") format("embedded-opentype"), url("../fonts/fontawesome/webfonts/fa-brands-400.woff2") format("woff2"), url("../fonts/fontawesome/webfonts/fa-brands-400.woff") format("woff"), url("../fonts/fontawesome/webfonts/fa-brands-400.ttf") format("truetype"), url("../fonts/fontawesome/webfonts/fa-brands-400.svg#fontawesome") format("svg");
 }
 html {
   font-size: 15.5px;
@@ -2083,6 +2097,31 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 /*------------------------------------------- */
 /*------------------------------------------- */
 /* End Media Query Tablet */
+.block-hsk-news-author {
+  text-align: center;
+  margin-top: 0.4em;
+  padding: 0.6em 1em;
+  border: 1px solid #ddd;
+  background: #f3f3f3;
+}
+.block-hsk-news-author .pre-label {
+  color: #777;
+  font-size: 0.78rem;
+}
+.block-hsk-news-author h2.title {
+  font-size: 20.15px;
+  font-size: 1.3rem;
+}
+.block-hsk-news-author .field--name-field-player-image {
+  margin-bottom: 0.5em;
+}
+.block-hsk-news-author .field--name-body {
+  font-size: 0.75rem;
+  line-height: 1.6em;
+  text-align: left;
+  color: #555;
+}
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*------------- All Screen Sizes -------------*/
@@ -2234,6 +2273,41 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   padding-left: 0;
 }
 
+.page-node-type-article article.node--type-article footer.comment-submitted {
+  *zoom: 1;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #ececec;
+  border-bottom: 1px solid #ececec;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  margin-bottom: 1.5em;
+}
+.page-node-type-article article.node--type-article footer.comment-submitted:after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+}
+.page-node-type-article article.node--type-article footer.comment-submitted .node__submitted {
+  margin-bottom: 0;
+}
+.page-node-type-article article.node--type-article footer.comment-submitted a.post-comment {
+  margin-left: auto;
+}
+.page-node-type-article article.node--type-article footer.comment-submitted a.post-comment:before {
+  display: inline-block;
+  font-family: Fontawesome;
+  color: #aaa;
+  content: "";
+  padding-right: 8px;
+  text-decoration: none;
+}
+.page-node-type-article article.node--type-article footer.comment-submitted a.post-comment:hover:before {
+  color: #E27500;
+}
 .page-node-type-article article.node--type-article.default-image .field--name-field-image {
   display: none;
 }

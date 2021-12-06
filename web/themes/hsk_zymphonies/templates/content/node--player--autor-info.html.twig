@@ -13,8 +13,9 @@
 
   {{ title_prefix }}
   {% if not page %}
-    <h2{{ title_attributes }}>
-      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    <div class="pre-label">Autor dieser News:</div>
+    <h2{{ title_attributes.addClass('title') }}>
+      {{ label }}
     </h2>
   {% endif %}
   {{ title_suffix }}
@@ -25,13 +26,8 @@
         {% trans %}{{ author_name }} - {{ date }}{% endtrans %}
         {{ metadata }}
       </div>
-      {% if page %}
-        <a class="post-comment" href ="#comment-form">Kommentar schreiben</a>
-      {% endif %}
     </footer>
   {% endif %}
-
-
 
   <div{{ content_attributes.addClass('node__content') }}>
     {{ pgn_viewer_script }}
