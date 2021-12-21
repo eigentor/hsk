@@ -162,13 +162,7 @@ class WebformCodeMirror extends Textarea {
       if ($element['#mode'] === 'yaml'
         && (isset($element['#default_value']) && is_array($element['#default_value']) || $element['#decode_value'])
       ) {
-        // Handle rare case where single array value is not parsed correctly.
-        if (preg_match('/^- (.*?)\s*$/', $element['#value'], $match)) {
-          $value = [$match[1]];
-        }
-        else {
-          $value = $element['#value'] ? Yaml::decode($element['#value']) : [];
-        }
+        $value = $element['#value'] ? Yaml::decode($element['#value']) : [];
         $form_state->setValueForElement($element, $value);
       }
     }
@@ -239,9 +233,9 @@ class WebformCodeMirror extends Textarea {
     return (isset(static::$modes[$mode])) ? static::$modes[$mode] : static::$modes['text'];
   }
 
-  /****************************************************************************/
+  /* ************************************************************************ */
   // Language/markup validation callback.
-  /****************************************************************************/
+  /* ************************************************************************ */
 
   /**
    * Validate HTML.
@@ -345,7 +339,7 @@ class WebformCodeMirror extends Textarea {
       $value = $element['#value'];
       $data = Yaml::decode($value);
       if (!is_array($data) && $value) {
-        throw new \Exception(t('YAML must contain an associative array of elements.'));
+        throw new \Exception('YAML must contain an associative array of elements.');
       }
       return NULL;
     }

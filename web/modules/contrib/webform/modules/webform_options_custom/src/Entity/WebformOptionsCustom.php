@@ -334,9 +334,9 @@ class WebformOptionsCustom extends ConfigEntityBase implements WebformOptionsCus
     // Set default #options.
     if (empty($element['#options'])) {
       $element['#options'] = [
-        'one' => t('One -- This is the number 1.'),
-        'two' => t('Two -- This is the number 2.'),
-        'three' => t('Three -- This is the number 3.'),
+        'one' => $this->t('One -- This is the number 1.'),
+        'two' => $this->t('Two -- This is the number 2.'),
+        'three' => $this->t('Three -- This is the number 3.'),
       ];
     }
 

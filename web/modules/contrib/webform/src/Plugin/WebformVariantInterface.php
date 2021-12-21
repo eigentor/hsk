@@ -17,7 +17,7 @@ use Drupal\webform\WebformInterface;
  * @see \Drupal\webform\Plugin\WebformVariantManagerInterface
  * @see plugin_api
  */
-interface WebformVariantInterface extends PluginInspectionInterface, ConfigurableInterface, ContainerFactoryPluginInterface, PluginFormInterface, WebformEntityInjectionInterface {
+interface WebformVariantInterface extends PluginInspectionInterface, ConfigurableInterface, ContainerFactoryPluginInterface, PluginFormInterface, WebformEntityInjectionInterface, WebformPluginSettingsInterface {
 
   /**
    * Returns a render array summarizing the configuration of the webform variant.
@@ -46,7 +46,7 @@ interface WebformVariantInterface extends PluginInspectionInterface, Configurabl
   /**
    * Returns the webform variant machine name replacement pattern.
    *
-   * @return string|NULL
+   * @return string|null
    *   The webform variant machine name replacement pattern.
    */
   public function getMachineNameReplacePattern();
@@ -54,7 +54,7 @@ interface WebformVariantInterface extends PluginInspectionInterface, Configurabl
   /**
    * Returns the webform variant machine name replacement character.
    *
-   * @return string|NULL
+   * @return string|null
    *   The webform variant machine name replacement character.
    */
   public function getMachineNameReplace();

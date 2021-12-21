@@ -28,9 +28,9 @@ class WebformOptionsCustomTest extends WebformBrowserTestBase {
   public function testOptionsCustom() {
     $webform = Webform::load('test_element_options_custom_html');
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Webform custom options element.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $this->drupalGet('/webform/test_element_options_custom_html');
 
@@ -84,9 +84,9 @@ webform_options_custom_html_advanced:
     $this->drupalGet('/webform/javascript/test_element_options_custom_html');
     $this->assertRaw("window.console && window.console.log('Test: HTML advanced loaded.');");
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Webform custom options entity.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $this->drupalLogin($this->rootUser);
 
@@ -121,9 +121,9 @@ webform_options_custom_html_advanced:
     // Check 'data-select-hidden' attribute.
     $this->assertCssSelect('.webform-options-custom--test-html[data-select-hidden]');
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Webform custom options Twig.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     // Get preview has 3 options.
     $this->drupalGet('/admin/structure/webform/options/custom/manage/test_twig/preview');

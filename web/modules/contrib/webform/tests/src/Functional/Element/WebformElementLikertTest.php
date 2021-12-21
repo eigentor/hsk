@@ -34,7 +34,7 @@ class WebformElementLikertTest extends WebformElementBrowserTestBase {
     // Check advanced likert element with N/A.
     $this->assertPattern('#<tr>\s+<th><span class="visually-hidden">Questions</span></th>\s+<th>Option 1</th>\s+<th>Option 2</th>\s+<th>Option 3</th>\s+<th>Not applicable</th>\s+</tr>#');
     $this->assertRaw('<td><div class="js-form-item form-item js-form-type-radio form-item-likert-advanced-q1 js-form-item-likert-advanced-q1">');
-    $this->assertRaw('<input aria-labelledby="edit-likert-advanced-table-q1-likert-question" data-drupal-selector="edit-likert-advanced-q1" type="radio" id="edit-likert-advanced-q1--4" name="likert_advanced[q1]" value="N/A" class="form-radio" />');
+    $this->assertRaw('<input aria-labelledby="edit-likert-advanced-table-q1-likert-question" required="required" aria-required="true" data-drupal-selector="edit-likert-advanced-q1" type="radio" id="edit-likert-advanced-q1--4" name="likert_advanced[q1]" value="N/A" class="form-radio" />');
     $this->assertRaw('<label for="edit-likert-advanced-q1--4" class="option"><span class="webform-likert-label visually-hidden">Not applicable</span></label>');
 
     // Check likert with description.
@@ -45,9 +45,9 @@ class WebformElementLikertTest extends WebformElementBrowserTestBase {
     $this->assertRaw('<span class="webform-likert-description hidden">This is a description</span>');
 
     // Check likert with help.
-    $this->assertRaw('<th>Option 1<span class="webform-element-help js-webform-element-help" role="tooltip" tabindex="0" data-webform-help="&lt;div class=&quot;webform-element-help--title&quot;&gt;Option 1&lt;/div&gt;&lt;div class=&quot;webform-element-help--content&quot;&gt;This is help text&lt;/div&gt;"><span aria-hidden="true">?</span></span>');
-    $this->assertRaw('<label>Question 1<span class="webform-element-help js-webform-element-help" role="tooltip" tabindex="0" data-webform-help="&lt;div class=&quot;webform-element-help--title&quot;&gt;Question 1&lt;/div&gt;&lt;div class=&quot;webform-element-help--content&quot;&gt;This is help text&lt;/div&gt;"><span aria-hidden="true">?</span></span>');
-    $this->assertRaw('<label for="edit-likert-help-q1--2" class="option"><span class="webform-likert-label visually-hidden">Option 2<span class="webform-likert-help hidden"><span class="webform-element-help js-webform-element-help" role="tooltip" tabindex="0" data-webform-help="&lt;div class=&quot;webform-element-help--title&quot;&gt;Option 2&lt;/div&gt;&lt;div class=&quot;webform-element-help--content&quot;&gt;This is help text&lt;/div&gt;"><span aria-hidden="true">?</span></span>');
+    $this->assertRaw('<th>Option 1<span class="webform-element-help js-webform-element-help" role="tooltip" tabindex="0" aria-label="Option 1" data-webform-help="&lt;div class=&quot;webform-element-help--title&quot;&gt;Option 1&lt;/div&gt;&lt;div class=&quot;webform-element-help--content&quot;&gt;This is help text&lt;/div&gt;"><span aria-hidden="true">?</span></span>');
+    $this->assertRaw('<label>Question 1<span class="webform-element-help js-webform-element-help" role="tooltip" tabindex="0" aria-label="Question 1" data-webform-help="&lt;div class=&quot;webform-element-help--title&quot;&gt;Question 1&lt;/div&gt;&lt;div class=&quot;webform-element-help--content&quot;&gt;This is help text&lt;/div&gt;"><span aria-hidden="true">?</span></span>');
+    $this->assertRaw('<label for="edit-likert-help-q1--2" class="option"><span class="webform-likert-label visually-hidden">Option 2<span class="webform-likert-help hidden"><span class="webform-element-help js-webform-element-help" role="tooltip" tabindex="0" aria-label="Option 2" data-webform-help="&lt;div class=&quot;webform-element-help--title&quot;&gt;Option 2&lt;/div&gt;&lt;div class=&quot;webform-element-help--content&quot;&gt;This is help text&lt;/div&gt;"><span aria-hidden="true">?</span></span>');
 
     // Check likert with custom required error.
     $this->drupalPostForm('/webform/test_element_likert', [], 'Submit');

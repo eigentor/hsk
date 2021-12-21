@@ -26,9 +26,9 @@ class WebformElementMultipleTest extends WebformElementBrowserTestBase {
    */
   public function testMultiple() {
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Processing.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $webform = Webform::load('test_element_multiple');
 
@@ -118,9 +118,9 @@ webform_multiple_elements_flattened:
 webform_multiple_no_items: {  }
 webform_multiple_custom_attributes: {  }");
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Rendering.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $this->drupalGet('/webform/test_element_multiple');
 
@@ -171,9 +171,9 @@ webform_multiple_custom_attributes: {  }");
     $this->assertRaw('<div class="custom-wrapper js-form-item form-item');
     $this->assertRaw('<input class="custom-element form-text"');
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Validation.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     // Check unique #key validation.
     $edit = [
@@ -182,9 +182,9 @@ webform_multiple_custom_attributes: {  }");
     $this->drupalPostForm('/webform/test_element_multiple', $edit, 'Submit');
     $this->assertRaw('The <em class="placeholder">Option value</em> \'one\' is already in use. It must be unique.');
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Processing.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     // Check populated 'webform_multiple_default'.
     $this->assertFieldByName('webform_multiple_default[items][0][_item_]', 'One');
@@ -246,9 +246,9 @@ webform_multiple_custom_attributes: {  }");
     $this->drupalPostForm(NULL, $edit, 'webform_multiple_default_table_remove_0');
     $this->assertNoRaw('No items entered. Please add items below.');
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Header.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $this->drupalGet('/webform/test_element_multiple_header');
 

@@ -33,7 +33,7 @@ class WebformResultsExportOptionsTest extends WebformBrowserTestBase {
       'administer webform submission',
     ]);
 
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     /** @var \Drupal\webform\WebformInterface $webform */
     $webform = Webform::load('test_submissions');
@@ -157,6 +157,13 @@ class WebformResultsExportOptionsTest extends WebformBrowserTestBase {
     $this->getExport($webform, ['range_type' => 'sid', 'range_start' => $submissions[1]->id(), 'range_end' => $submissions[1]->id()]);
     $this->assertNoRaw('George,Washington');
     $this->assertRaw('Abraham,Lincoln');
+    $this->assertNoRaw('Hillary,Clinton');
+
+    // Check uid.
+    $submissions[0]->setOwner($admin_submission_user)->save();
+    $this->getExport($webform, ['uid' => $admin_submission_user->id()]);
+    $this->assertRaw('George,Washington');
+    $this->assertNoRaw('Abraham,Lincoln');
     $this->assertNoRaw('Hillary,Clinton');
 
     // Check date range.

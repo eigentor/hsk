@@ -57,7 +57,7 @@ class WebformSignature extends WebformElementBase {
     return $properties;
   }
 
-  /****************************************************************************/
+  /* ************************************************************************ */
 
   /**
    * {@inheritdoc}
@@ -228,7 +228,6 @@ class WebformSignature extends WebformElementBase {
     $image_directory = "$image_base_directory/$element_key/$sid";
     if (file_exists($image_directory)) {
       $this->fileSystem->deleteRecursive($image_directory);
-      $this->fileSystem->deleteRecursive($image_directory);
     }
 
     // Please node, the signature image (no results) directory is deleted when
@@ -236,9 +235,9 @@ class WebformSignature extends WebformElementBase {
     // @see \Drupal\webform\WebformEntityStorage::delete
   }
 
-  /****************************************************************************/
+  /* ************************************************************************ */
   // Signature image helpers.
-  /****************************************************************************/
+  /* ************************************************************************ */
 
   /**
    * Get a signature element's image URL.

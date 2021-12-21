@@ -275,9 +275,9 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
    *   along with the default configuration values.
    */
   public function getEmailConfiguration() {
-    $configuration = $this->getConfiguration();
+    $settings = $this->getSettings();
     $email = [];
-    foreach ($configuration['settings'] as $key => $value) {
+    foreach ($settings as $key => $value) {
       $email[$key] = ($value === static::DEFAULT_VALUE) ? $this->getDefaultConfigurationValue($key) : $value;
     }
     return $email;
@@ -894,7 +894,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     foreach ($this->configuration as $configuration_key => $configuration_value) {
       // Get configuration name (to, cc, bcc, from, name, subject, mail)
       // and type (mail, options, or text).
-      list($configuration_name, $configuration_type) = (strpos($configuration_key, '_') !== FALSE) ? explode('_', $configuration_key) : [$configuration_key, 'text'];
+      [$configuration_name, $configuration_type] = (strpos($configuration_key, '_') !== FALSE) ? explode('_', $configuration_key) : [$configuration_key, 'text'];
 
       // Set options and continue.
       if ($configuration_type === 'options') {
@@ -1095,6 +1095,20 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       $element_plugin = $this->elementManager->getElementInstance($element);
       $attachments = array_merge($attachments, $element_plugin->getEmailAttachments($element, $webform_submission));
     }
+
+    // For SwiftMailer && Mime Mail use filecontent and not the filepath.
+    // @see \Drupal\swiftmailer\Plugin\Mail\SwiftMailer::attachAsMimeMail
+    // @see \Drupal\mimemail\Utility\MimeMailFormatHelper::mimeMailFile
+    // @see https://www.drupal.org/project/webform/issues/3232756
+    if ($this->moduleHandler->moduleExists('swiftmailer')
+      || $this->moduleHandler->moduleExists('mimemail')) {
+      foreach ($attachments as &$attachment) {
+        if (isset($attachment['filecontent']) && isset($attachment['filepath'])) {
+          unset($attachment['filepath']);
+        }
+      }
+    }
+
     return $attachments;
   }
 
@@ -1113,6 +1127,35 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     }
 
     $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
+
+    // @todo [Drupal 9.x] Remove below class exists check.
+    // Issue #84883: Unicode::mimeHeaderEncode() doesn't correctly
+    // follow RFC 2047.
+    // @see https://www.drupal.org/project/drupal/issues/84883
+    // Don't send the message if the From address is not valid.
+    if (class_exists('\Symfony\Component\Mime\Address')) {
+      try {
+        // phpcs:ignore Drupal.Classes.FullyQualifiedNamespace.UseStatementMissing
+        \Symfony\Component\Mime\Address::create($from);
+      }
+      catch (\Exception $exception) {
+        if ($this->configuration['debug']) {
+          $t_args = [
+            '%form' => $this->getWebform()->label(),
+            '%handler' => $this->label(),
+            '%from_email' => $from,
+          ];
+          $this->messenger()->addWarning($this->t('%form: Email not sent for %handler handler because the <em>From</em> email (%from_email) is not valid.', $t_args), TRUE);
+        }
+        $context = [
+          '@form' => $this->getWebform()->label(),
+          '@handler' => $this->label(),
+          '@from_email' => $from,
+        ];
+        $this->getLogger('webform_submission')->error("@form: Email not sent for '@handler' handler because the 'From' email (@from_email) is not valid.", $context);
+        return;
+      }
+    }
 
     // Don't send the message if To, CC, and BCC is empty.
     if (!$this->hasRecipient($webform_submission, $message)) {
@@ -1253,7 +1296,6 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     $element['reply_to'] = [
       '#type' => 'email',
       '#title' => $this->t('Reply to'),
-      '#required' => TRUE,
       '#default_value' => $message['reply_to'],
     ];
     $element['message_divider'] = ['#markup' => '<hr/>'];
@@ -1467,7 +1509,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
    *   A select other element.
    */
   protected function buildElement($name, $title, $label, $required = FALSE, array $element_options = [], array $options_options = NULL, array $role_options = NULL, array $other_options = NULL) {
-    list($element_name, $element_type) = (strpos($name, '_') !== FALSE) ? explode('_', $name) : [$name, 'text'];
+    [$element_name, $element_type] = (strpos($name, '_') !== FALSE) ? explode('_', $name) : [$name, 'text'];
 
     $default_option = $this->getDefaultConfigurationValue($name);
 
@@ -1636,10 +1678,10 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       ];
       if (!empty($attachment['_fileurl'])) {
         $t_args[':href'] = $attachment['_fileurl'];
-        $build[] = ['#markup' => $this->t('<strong><a href=":href">@filename</a></strong> (@filemime) - @filesize ', $t_args)];
+        $build[] = ['#markup' => $this->t('<strong><a href=":href">@filename</a></strong> (@filemime) - @filesize', $t_args)];
       }
       else {
-        $build[] = ['#markup' => $this->t('<strong>@filename</strong> (@filemime) - @filesize ', $t_args)];
+        $build[] = ['#markup' => $this->t('<strong>@filename</strong> (@filemime) - @filesize', $t_args)];
       }
     }
     return $build;

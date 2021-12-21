@@ -21,7 +21,7 @@ use Drupal\webform\WebformSubmissionInterface;
 /**
  * The name of the query parameter for webform entity print image tokens.
  */
-define('WEBFORM_ENTITY_PRINT_IMAGE_TOKEN', 'webform_entity_print_itok');
+define('WEBFORM_ENTITY_PRINT_IMAGE_TOKEN', 'webform_entity_print_itok'); // phpcs:ignore
 
 /**
  * Implements hook_webform_submission_access().
@@ -286,7 +286,7 @@ function webform_entity_print_preprocess_entity_print(array &$variables) {
   $webform_id = $webform->id();
   $sid = $webform_submission->id();
 
-  // Render the webform submission data
+  // Render the webform submission data.
   $html = (string) \Drupal::service('renderer')->render($content);
 
   // Only matching <img src=""/>.

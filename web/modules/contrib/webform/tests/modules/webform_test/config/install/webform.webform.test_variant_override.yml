@@ -24,7 +24,7 @@ elements: |
   textfield:
     '#type': textfield
     '#title': textfield
-
+  
 css: ''
 javascript: ''
 settings:
@@ -66,6 +66,9 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_method: ''
+  form_action: ''
+  form_attributes: {  }
   share: false
   share_node: false
   share_theme_name: ''
@@ -212,7 +215,9 @@ handlers:
     status: false
     conditions: {  }
     weight: 0
-    settings: {  }
+    settings:
+      format: yaml
+      submission: false
 variants:
   settings:
     id: override
@@ -241,7 +246,7 @@ variants:
       elements: |
         textfield:
           '#placeholder': 'This is a placeholder'
-
+        
       handlers: {  }
       debug: true
   handlers:
@@ -287,6 +292,6 @@ variants:
       elements: |
         '#method': get
         '#action': 'https://drupal.org'
-
+        
       handlers: {  }
       debug: true

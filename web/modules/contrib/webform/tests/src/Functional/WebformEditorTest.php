@@ -4,7 +4,6 @@ namespace Drupal\Tests\webform\Functional;
 
 use Drupal\file\Entity\File;
 use Drupal\Tests\TestFileCreationTrait;
-use Drupal\webform\Entity\Webform;
 
 /**
  * Tests for webform editor.
@@ -20,7 +19,7 @@ class WebformEditorTest extends WebformBrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['file', 'webform'];
+  public static $modules = ['file', 'filter', 'webform', 'webform_ui'];
 
   /**
    * The file usage service.
@@ -34,6 +33,9 @@ class WebformEditorTest extends WebformBrowserTestBase {
    */
   protected function setUp() {
     parent::setUp();
+
+    // Create filters.
+    $this->createFilters();
 
     $this->fileUsage = $this->container->get('file.usage');
   }
@@ -57,6 +59,7 @@ class WebformEditorTest extends WebformBrowserTestBase {
     $this->assertTrue($images[0]->isTemporary());
     $this->assertTrue($images[1]->isTemporary());
     $this->assertTrue($images[2]->isTemporary());
+    $this->assertTrue($images[3]->isTemporary());
 
     // Upload the first image.
     $edit = [
@@ -69,6 +72,7 @@ class WebformEditorTest extends WebformBrowserTestBase {
     $this->assertFalse($images[0]->isTemporary());
     $this->assertTrue($images[1]->isTemporary());
     $this->assertTrue($images[2]->isTemporary());
+    $this->assertTrue($images[3]->isTemporary());
 
     // Check create first image file usage.
     $this->assertIdentical(['editor' => ['webform' => ['contact' => '1']]], $this->fileUsage->listUsage($images[0]), 'The file has 1 usage.');
@@ -84,6 +88,7 @@ class WebformEditorTest extends WebformBrowserTestBase {
     $this->assertFalse($images[0]->isTemporary());
     $this->assertFalse($images[1]->isTemporary());
     $this->assertTrue($images[2]->isTemporary());
+    $this->assertTrue($images[3]->isTemporary());
 
     // Check first and second image file usage.
     $this->assertIdentical(['editor' => ['webform' => ['contact' => '1']]], $this->fileUsage->listUsage($images[0]), 'The file has 1 usage.');
@@ -100,22 +105,29 @@ class WebformEditorTest extends WebformBrowserTestBase {
     $this->assertTrue($images[0]->isTemporary());
     $this->assertFalse($images[1]->isTemporary());
     $this->assertTrue($images[2]->isTemporary());
+    $this->assertTrue($images[3]->isTemporary());
 
     // Check first and second image file usage.
     $this->assertIdentical([], $this->fileUsage->listUsage($images[0]), 'The file has 0 usage.');
     $this->assertIdentical(['editor' => ['webform' => ['contact' => '1']]], $this->fileUsage->listUsage($images[1]), 'The file has 1 usage.');
 
-    // Set all files back to temporary.
+    // Check that processed text's image is parsed.
     $edit = [
-      'description[value]' => '',
+      'key' => 'test',
+      'properties[text][value]' => '<img data-entity-type="file" data-entity-uuid="' . $images[3]->uuid() . '"/>',
     ];
-    $this->drupalPostForm('/admin/structure/webform/manage/contact/settings', $edit, 'Save');
+    $this->drupalPostForm('/admin/structure/webform/manage/contact/element/add/processed_text', $edit, 'Save');
     $this->reloadImages($images);
 
-    // Check that first and second image are temporary.
-    $this->assertTrue($images[0]->isTemporary());
-    $this->assertTrue($images[1]->isTemporary());
-    $this->assertTrue($images[2]->isTemporary());
+    // Check that fourth is not temporary.
+    $this->assertFalse($images[3]->isTemporary());
+
+    // Delete the processed text.
+    $this->drupalPostForm('admin/structure/webform/manage/contact/element/test/delete', [], 'Delete');
+    $this->reloadImages($images);
+
+    // Check that fourth image is temporary.
+    $this->assertTrue($images[3]->isTemporary());
 
     // Stop marking unused files as temporary.
     \Drupal::configFactory()->getEditable('webform.settings')
@@ -155,7 +167,7 @@ class WebformEditorTest extends WebformBrowserTestBase {
     $this->assertFalse($images[0]->isTemporary());
 
     // Delete the webform.
-    Webform::load('contact')->delete();
+    $this->reloadWebform('contact')->delete();
     $this->reloadImages($images);
 
     // Check that file is temporary after the webform is deleted.
@@ -241,9 +253,9 @@ class WebformEditorTest extends WebformBrowserTestBase {
     $this->assertTrue($images[2]->isTemporary());
   }
 
-  /****************************************************************************/
+  /* ************************************************************************ */
   // Helper functions.
-  /****************************************************************************/
+  /* ************************************************************************ */
 
   /**
    * Reload images.

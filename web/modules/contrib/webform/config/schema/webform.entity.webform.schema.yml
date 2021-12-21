@@ -171,6 +171,15 @@
         form_elements_attributes:
           type: ignore
           label: 'Form elements attributes'
+        form_attributes:
+          type: ignore
+          label: 'Form attributes'
+        form_method:
+          type: string
+          label: 'Form method'
+        form_action:
+          type: string
+          label: 'Form action'
         share:
           type: boolean
           label: 'Enable form sharing'

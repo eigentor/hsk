@@ -68,7 +68,7 @@ class WebformTestController extends ControllerBase implements ContainerInjection
   public function testForm(Request $request) {
     /** @var \Drupal\webform\WebformInterface $webform */
     /** @var \Drupal\Core\Entity\EntityInterface $source_entity */
-    list($webform, $source_entity) = $this->requestHandler->getWebformEntities();
+    [$webform, $source_entity] = $this->requestHandler->getWebformEntities();
 
     // Test a single webform handler which is set via
     // ?_webform_handler={handler_id}.
@@ -140,7 +140,7 @@ class WebformTestController extends ControllerBase implements ContainerInjection
   public function title(WebformInterface $webform) {
     /** @var \Drupal\webform\WebformInterface $webform */
     /** @var \Drupal\Core\Entity\EntityInterface $source_entity */
-    list($webform, $source_entity) = $this->requestHandler->getWebformEntities();
+    [$webform, $source_entity] = $this->requestHandler->getWebformEntities();
     return $this->t('Testing %title webform', ['%title' => ($source_entity) ? $source_entity->label() : $webform->label()]);
   }
 

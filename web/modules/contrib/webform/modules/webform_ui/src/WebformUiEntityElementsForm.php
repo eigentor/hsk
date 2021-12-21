@@ -106,28 +106,28 @@ class WebformUiEntityElementsForm extends BundleEntityFormBase {
     }
 
     $form['webform_ui_elements'] = [
-        '#type' => 'table',
-        '#header' => $header,
-        '#empty' => $this->t('Please add elements to this webform.'),
-        '#attributes' => [
-          'class' => ['webform-ui-elements-table'],
+      '#type' => 'table',
+      '#header' => $header,
+      '#empty' => $this->t('Please add elements to this webform.'),
+      '#attributes' => [
+        'class' => ['webform-ui-elements-table'],
+      ],
+      '#tabledrag' => [
+        [
+          'action' => 'match',
+          'relationship' => 'parent',
+          'group' => 'row-parent-key',
+          'source' => 'row-key',
+          'hidden' => TRUE, /* hides the WEIGHT & PARENT tree columns below */
+          'limit' => FALSE,
         ],
-        '#tabledrag' => [
-          [
-            'action' => 'match',
-            'relationship' => 'parent',
-            'group' => 'row-parent-key',
-            'source' => 'row-key',
-            'hidden' => TRUE, /* hides the WEIGHT & PARENT tree columns below */
-            'limit' => FALSE,
-          ],
-          [
-            'action' => 'order',
-            'relationship' => 'sibling',
-            'group' => 'row-weight',
-          ],
+        [
+          'action' => 'order',
+          'relationship' => 'sibling',
+          'group' => 'row-weight',
         ],
-      ] + $rows;
+      ],
+    ] + $rows;
 
     if ($rows && !$webform->hasActions()) {
       $form['webform_ui_elements'] += ['webform_actions_default' => $this->getCustomizeActionsRow()];
@@ -187,7 +187,7 @@ class WebformUiEntityElementsForm extends BundleEntityFormBase {
           }
 
           $parent_keys[] = $current_parent_key;
-          $current_parent_key = (isset($webform_ui_elements[$current_parent_key]['parent_key'])) ? $webform_ui_elements[$current_parent_key]['parent_key'] : NULL;
+          $current_parent_key = $webform_ui_elements[$current_parent_key]['parent_key'] ?? NULL;
         }
       }
 
@@ -484,7 +484,7 @@ class WebformUiEntityElementsForm extends BundleEntityFormBase {
 
     // Add element key and type.
     $row['#attributes']['data-webform-key'] = $element['#webform_key'];
-    $row['#attributes']['data-webform-type'] = (isset($element['#type'])) ? $element['#type'] : '';
+    $row['#attributes']['data-webform-type'] = $element['#type'] ?? '';
 
     $row['#attributes']['class'] = $row_class;
 

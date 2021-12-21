@@ -31,7 +31,7 @@ class WebformImageSelectImagesTest extends WebformElementBrowserTestBase {
       'administer webform',
     ]);
 
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $this->drupalLogin($normal_user);
 

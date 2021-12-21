@@ -327,9 +327,9 @@ abstract class WebformExporterBase extends PluginBase implements WebformExporter
     return $this->configFactory->get('webform.settings')->get('batch.default_batch_export_size') ?: 500;
   }
 
-  /****************************************************************************/
+  /* ************************************************************************ */
   // Archive helper methods.
-  /****************************************************************************/
+  /* ************************************************************************ */
 
   /**
    * Add file, directory, or content to Tar archive.
@@ -389,7 +389,7 @@ abstract class WebformExporterBase extends PluginBase implements WebformExporter
       if (is_dir($path)) {
         // Add directory to ZIP file.
         $options += ['add_path' => $name . '/'];
-        $this->archive->addPattern('/\.[a-z0-9]+$/', $path, $options);
+        $this->archive->addPattern('/\.[a-zA-Z0-9]+$/', $path, $options);
       }
       else {
         // Add file to ZIP file.

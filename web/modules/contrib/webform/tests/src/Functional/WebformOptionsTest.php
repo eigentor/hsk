@@ -40,7 +40,7 @@ class WebformOptionsTest extends WebformBrowserTestBase {
       'administer users',
     ]);
 
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $this->drupalLogin($normal_user);
 
@@ -129,6 +129,10 @@ class WebformOptionsTest extends WebformBrowserTestBase {
     $this->assertResponse(200);
     $this->drupalGet('/admin/structure/webform/options/manage/add');
     $this->assertResponse(200);
+
+    // Check duplicate copies dynamic options.
+    $this->drupalGet('/admin/structure/webform/options/time_zones/duplicate');
+    $this->assertRaw('Africa/Abidjan: Africa/Abidjan');
   }
 
 }

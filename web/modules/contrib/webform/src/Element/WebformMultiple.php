@@ -35,9 +35,9 @@ class WebformMultiple extends FormElement {
       '#header_label' => '',
       '#element' => [
         '#type' => 'textfield',
-        '#title' => t('Item value'),
+        '#title' => $this->t('Item value'),
         '#title_display' => 'invisible',
-        '#placeholder' => t('Enter value…'),
+        '#placeholder' => $this->t('Enter value…'),
       ],
       '#cardinality' => FALSE,
       '#min_items' => NULL,
@@ -362,7 +362,7 @@ class WebformMultiple extends FormElement {
     /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
     $element_manager = \Drupal::service('plugin.manager.webform.element');
     foreach ($child_keys as $child_key) {
-      $sub_element =& $sub_elements[$child_key];
+      $sub_element = &$sub_elements[$child_key];
 
       $element_plugin = $element_manager->getElementInstance($sub_element);
 
@@ -509,7 +509,7 @@ class WebformMultiple extends FormElement {
       }
       else {
         $header['item'] = [
-          'data' => (isset($element['#element']['#title'])) ? $element['#element']['#title'] : '',
+          'data' => $element['#element']['#title'] ?? '',
           'class' => ["$table_id--item", "webform-multiple-table--item"],
         ];
       }
@@ -797,9 +797,9 @@ class WebformMultiple extends FormElement {
     }
   }
 
-  /****************************************************************************/
+  /* ************************************************************************ */
   // Callbacks.
-  /****************************************************************************/
+  /* ************************************************************************ */
 
   /**
    * Webform submission handler for adding more items.
@@ -962,9 +962,9 @@ class WebformMultiple extends FormElement {
     $form_state->setValueForElement($element, $items);
   }
 
-  /****************************************************************************/
+  /* ************************************************************************ */
   // Helper functions.
-  /****************************************************************************/
+  /* ************************************************************************ */
 
   /**
    * Get unique key used to store the number of items for an element.
@@ -1084,7 +1084,7 @@ class WebformMultiple extends FormElement {
 
       if (isset($unique_keys[$key_value])) {
         $elements = WebformElementHelper::getFlattened($element['#element']);
-        $key_title = isset($elements[$key_name]['#title']) ? $elements[$key_name]['#title'] : $key_name;
+        $key_title = $elements[$key_name]['#title'] ?? $key_name;
         $t_args = ['@key' => $key_value, '%title' => $key_title];
         return t("The %title '@key' is already in use. It must be unique.", $t_args);
       }

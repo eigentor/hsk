@@ -29,9 +29,9 @@ class WebformSubmissionApiTest extends WebformBrowserTestBase {
 
     $contact_webform = Webform::load('contact');
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Basic form.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     // Check submitting a simple webform.
     $values = [
@@ -89,9 +89,9 @@ class WebformSubmissionApiTest extends WebformBrowserTestBase {
     $webform_submission = WebformSubmissionForm::submitFormValues($values);
     $this->assertInstanceOf(WebformSubmissionInterface::class, $webform_submission);
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Multistep form.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $test_form_wizard_advanced_webform = Webform::load('test_form_wizard_advanced');
 
@@ -143,9 +143,9 @@ class WebformSubmissionApiTest extends WebformBrowserTestBase {
       'sex' => 'An illegal choice has been detected. Please contact the site administrator.',
     ]);
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Submission limit form.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $this->drupalLogin($normal_user);
 

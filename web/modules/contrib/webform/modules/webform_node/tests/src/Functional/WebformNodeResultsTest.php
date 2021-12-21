@@ -50,7 +50,7 @@ class WebformNodeResultsTest extends WebformNodeBrowserTestBase {
     /** @var \Drupal\webform\WebformSubmissionStorageInterface $submission_storage */
     $submission_storage = \Drupal::entityTypeManager()->getStorage('webform_submission');
 
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $webform = Webform::load('contact');
 
@@ -164,6 +164,7 @@ class WebformNodeResultsTest extends WebformNodeBrowserTestBase {
     $edit = [
       'columns[created][checkbox]' => FALSE,
       'columns[changed][checkbox]' => TRUE,
+      'sort' => 'serial',
       'direction' => 'asc',
       'limit' => 20,
       'default' => TRUE,

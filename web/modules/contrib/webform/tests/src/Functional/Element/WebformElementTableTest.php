@@ -36,9 +36,9 @@ class WebformElementTableTest extends WebformElementBrowserTestBase {
 
     $this->drupalGet('/webform/test_element_table');
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Rendering.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     // Check default table rendering.
     $this->assertRaw('<table class="js-form-wrapper responsive-enabled" data-drupal-selector="edit-table" id="edit-table" data-striping="1">');
@@ -60,9 +60,9 @@ class WebformElementTableTest extends WebformElementBrowserTestBase {
     $this->assertRaw('<table data-drupal-selector="edit-table-states" class="webform-table responsive-enabled" id="edit-table-states" data-drupal-states="{&quot;invisible&quot;:{&quot;.webform-submission-test-element-table-add-form :input[name=\u0022table_rows\u0022]&quot;:{&quot;value&quot;:&quot;&quot;}}}" data-striping="1">');
     $this->assertRaw('<tr data-drupal-selector="edit-table-states-01" class="webform-table-row js-form-item" data-drupal-states="{&quot;visible&quot;:{&quot;.webform-submission-test-element-table-add-form :input[name=\u0022table_rows\u0022]&quot;:{&quot;value&quot;:{&quot;greater&quot;:&quot;0&quot;}}}}">');
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // Display.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $edit = [
       'table_basic_01_first_name' => 'Ringo',
@@ -111,9 +111,9 @@ table_advanced_04_textfield: ''");
     // Check states table display.
     $this->assertPattern('<div class="webform-element webform-element-type-webform-table js-form-item form-item js-form-type-item form-item-table-states js-form-item-table-states" id="test_element_table--table_states">');
 
-    /**************************************************************************/
+    /* ********************************************************************** */
     // User interface.
-    /**************************************************************************/
+    /* ********************************************************************** */
 
     $this->drupalLogin($this->rootUser);
 

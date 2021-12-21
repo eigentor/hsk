@@ -28,7 +28,7 @@ elements: |
     '#type': webform_image_file
     '#title': image_file
     '#file_extensions': gif
-
+  
 css: '/** custom webform css **/'
 javascript: ''
 settings:
@@ -70,6 +70,9 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_method: ''
+  form_action: ''
+  form_attributes: {  }
   share: false
   share_node: false
   share_theme_name: ''
@@ -132,6 +135,7 @@ settings:
   confirmation_title: ''
   confirmation_message: |
     <p>You can view your submission via <a href="[webform_submission:view-url]">[webform_submission:view-url:relative]</a></p>
+    
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true

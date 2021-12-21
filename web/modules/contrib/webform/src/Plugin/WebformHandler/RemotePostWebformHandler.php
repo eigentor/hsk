@@ -122,8 +122,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function getSummary() {
-    $configuration = $this->getConfiguration();
-    $settings = $configuration['settings'];
+    $settings = $this->getSettings();
 
     if (!$this->isResultsEnabled()) {
       $settings['updated_url'] = '';
@@ -155,6 +154,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       'excluded_data' => $excluded_data,
       'custom_data' => '',
       'custom_options' => '',
+      'file_data' => TRUE,
       'cast' => FALSE,
       'debug' => FALSE,
       // States.
@@ -273,12 +273,14 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '#title' => $this->t('Method'),
       '#description' => $this->t('The <b>POST</b> request method requests that a web server accept the data enclosed in the body of the request message. It is often used when uploading a file or when submitting a completed webform. In contrast, the HTTP <b>GET</b> request method retrieves information from the server.'),
       '#required' => TRUE,
+      // phpcs:disable DrupalPractice.General.OptionsT.TforValue
       '#options' => [
         'POST' => 'POST',
         'PUT' => 'PUT',
         'PATCH' => 'PATCH',
         'GET' => 'GET',
       ],
+      // phpcs:enable DrupalPractice.General.OptionsT.TforValue
       '#default_value' => $this->configuration['method'],
     ];
     $form['additional']['type'] = [
@@ -294,6 +296,14 @@ class RemotePostWebformHandler extends WebformHandlerBase {
         '!required' => [':input[name="settings[method]"]' => ['value' => 'GET']],
       ],
       '#default_value' => $this->configuration['type'],
+    ];
+    $form['additional']['file_data'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Include files as Base64 encoded post data'),
+      '#description' => $this->t('If checked, uploaded and attached file data will be included using Base64 encoding.'),
+      '#return_value' => TRUE,
+      '#default_value' => $this->configuration['file_data'],
+      '#access' => $this->getWebform()->hasAttachments(),
     ];
     $form['additional']['cast'] = [
       '#type' => 'checkbox',
@@ -404,6 +414,24 @@ class RemotePostWebformHandler extends WebformHandlerBase {
         '#message_close' => TRUE,
         '#message_id' => 'webform_node.references',
         '#message_storage' => WebformMessage::STORAGE_SESSION,
+        '#states' => [
+          'visible' => [
+            ':input[name="settings[file_data]"]' => ['checked' => TRUE],
+          ],
+        ],
+      ];
+      $form['submission_data']['managed_file_message_no_data'] = [
+        '#type' => 'webform_message',
+        '#message_message' => $this->t("Upload files will include the file's id, name and uri."),
+        '#message_type' => 'warning',
+        '#message_close' => TRUE,
+        '#message_id' => 'webform_node.references',
+        '#message_storage' => WebformMessage::STORAGE_SESSION,
+        '#states' => [
+          'visible' => [
+            ':input[name="settings[file_data]"]' => ['checked' => FALSE],
+          ],
+        ],
       ];
     }
     $form['submission_data']['excluded_data'] = [
@@ -509,7 +537,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     }
 
     // If debugging is enabled, display the request and response.
-    $this->debug(t('Remote post successful!'), $state, $request_url, $request_method, $request_type, $request_options, $response, 'warning');
+    $this->debug($this->t('Remote post successful!'), $state, $request_url, $request_method, $request_type, $request_options, $response, 'warning');
 
     // Replace [webform:handler] tokens in submission data.
     // Data structured for [webform:handler:remote_post:completed:key] tokens.
@@ -563,7 +591,9 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     // Append uploaded file name, uri, and base64 data to data.
     $webform = $this->getWebform();
     foreach ($data as $element_key => $element_value) {
-      if (empty($element_value)) {
+      // Ignore empty and not equal to zero values.
+      // @see https://stackoverflow.com/questions/732979/php-whats-an-alternative-to-empty-where-string-0-is-not-treated-as-empty
+      if (empty($element_value) && $element_value !== 0 && $element_value !== '0') {
         continue;
       }
 
@@ -752,7 +782,9 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     $data[$prefix . 'uri'] = $file->getFileUri();
     $data[$prefix . 'mime'] = $file->getMimeType();
     $data[$prefix . 'uuid'] = $file->uuid();
-    $data[$prefix . 'data'] = base64_encode(file_get_contents($file->getFileUri()));
+    if ($this->configuration['file_data']) {
+      $data[$prefix . 'data'] = base64_encode(file_get_contents($file->getFileUri()));
+    }
     return $data;
   }
 
@@ -825,9 +857,9 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     return $this->isDraftEnabled() && ($this->getWebform()->getSetting('form_convert_anonymous') === TRUE);
   }
 
-  /****************************************************************************/
+  /* ************************************************************************ */
   // Debug and exception handlers.
-  /****************************************************************************/
+  /* ************************************************************************ */
 
   /**
    * Display debugging information.
