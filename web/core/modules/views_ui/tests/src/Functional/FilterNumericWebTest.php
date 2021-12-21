@@ -76,9 +76,9 @@ class FilterNumericWebTest extends UITestBase {
     $this->submitForm(['age' => '2'], 'Apply');
     $this->assertSession()->pageTextContains('John');
     $this->assertSession()->pageTextContains('Paul');
-    $this->assertNoText('Ringo');
+    $this->assertSession()->pageTextNotContains('Ringo');
     $this->assertSession()->pageTextContains('George');
-    $this->assertNoText('Meredith');
+    $this->assertSession()->pageTextNotContains('Meredith');
 
     // Change the filter to a single filter to test the schema when the operator
     // is not exposed.
@@ -94,16 +94,16 @@ class FilterNumericWebTest extends UITestBase {
     // Test that the filter works as expected.
     $this->drupalGet('test_view-path');
     $this->assertSession()->pageTextContains('John');
-    $this->assertNoText('Paul');
-    $this->assertNoText('Ringo');
-    $this->assertNoText('George');
-    $this->assertNoText('Meredith');
+    $this->assertSession()->pageTextNotContains('Paul');
+    $this->assertSession()->pageTextNotContains('Ringo');
+    $this->assertSession()->pageTextNotContains('George');
+    $this->assertSession()->pageTextNotContains('Meredith');
     $this->submitForm(['age' => '26'], 'Apply');
-    $this->assertNoText('John');
+    $this->assertSession()->pageTextNotContains('John');
     $this->assertSession()->pageTextContains('Paul');
-    $this->assertNoText('Ringo');
-    $this->assertNoText('George');
-    $this->assertNoText('Meredith');
+    $this->assertSession()->pageTextNotContains('Ringo');
+    $this->assertSession()->pageTextNotContains('George');
+    $this->assertSession()->pageTextNotContains('Meredith');
 
     // Change the filter to a 'between' filter to test if the label and
     // description are set for the 'minimum' filter element.
@@ -123,12 +123,10 @@ class FilterNumericWebTest extends UITestBase {
     // Check the field (wrapper) label.
     $this->assertSession()->elementTextContains('css', 'fieldset#edit-age-wrapper legend', 'Age between');
     // Check the min/max labels.
-    $min_element_label = $this->xpath('//fieldset[contains(@id, "edit-age-wrapper")]//label[contains(@for, "edit-age-min") and contains(text(), "Min")]');
-    $this->assertCount(1, $min_element_label);
-    $max_element_label = $this->xpath('//fieldset[contains(@id, "edit-age-wrapper")]//label[contains(@for, "edit-age-max") and contains(text(), "Max")]');
-    $this->assertCount(1, $max_element_label);
+    $this->assertSession()->elementsCount('xpath', '//fieldset[contains(@id, "edit-age-wrapper")]//label[contains(@for, "edit-age-min") and contains(text(), "Min")]', 1);
+    $this->assertSession()->elementsCount('xpath', '//fieldset[contains(@id, "edit-age-wrapper")]//label[contains(@for, "edit-age-max") and contains(text(), "Max")]', 1);
     // Check that the description is shown in the right place.
-    $this->assertEquals(trim($this->cssSelect('#edit-age-wrapper--description')[0]->getText()), 'Description of the exposed filter');
+    $this->assertEquals('Description of the exposed filter', trim($this->cssSelect('#edit-age-wrapper--description')[0]->getText()));
 
     // Change to an operation that only requires one form element ('>').
     $this->drupalGet('admin/structure/views/nojs/handler/test_view/default/filter/age');
@@ -145,8 +143,7 @@ class FilterNumericWebTest extends UITestBase {
     $this->submitForm([], 'Update preview');
 
     // Make sure the label is visible and that there's no fieldset wrapper.
-    $label = $this->xpath('//label[contains(@for, "edit-age") and contains(text(), "Age greater than")]');
-    $this->assertCount(1, $label);
+    $this->assertSession()->elementsCount('xpath', '//label[contains(@for, "edit-age") and contains(text(), "Age greater than")]', 1);
     $fieldset = $this->xpath('//fieldset[contains(@id, "edit-age-wrapper")]');
     $this->assertEmpty($fieldset);
   }

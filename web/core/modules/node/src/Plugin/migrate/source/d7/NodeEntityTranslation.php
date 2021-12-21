@@ -6,7 +6,7 @@ use Drupal\migrate\Row;
 use Drupal\migrate_drupal\Plugin\migrate\source\d7\FieldableEntity;
 
 /**
- * Provides Drupal 7 node entity translations source plugin.
+ * Drupal 7 node entity translations source from database.
  *
  * Available configuration keys:
  * - node_type: The node_types to get from the source - can be a string or
@@ -31,7 +31,8 @@ use Drupal\migrate_drupal\Plugin\migrate\source\d7\FieldableEntity;
  * In this example nodes of type page and test are retrieved from the source
  * database.
  *
- * For additional configuration keys, refer to the parent classes:
+ * For additional configuration keys, refer to the parent classes.
+ *
  * @see \Drupal\migrate\Plugin\migrate\source\SqlBase
  * @see \Drupal\migrate\Plugin\migrate\source\SourcePluginBase
  *

@@ -22,7 +22,7 @@ class FieldOptionTranslation extends ProcessPluginBase {
    * Get the field default/mapped settings.
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    list($type, $data) = $value;
+    [$type, $data] = $value;
 
     $data = unserialize($data);
     $new_allowed_values = '';
@@ -42,6 +42,7 @@ class FieldOptionTranslation extends ProcessPluginBase {
           break;
 
         default:
+          $new_allowed_values = $allowed_values;
       }
     }
     return ["settings.allowed_values.$translation_key", $new_allowed_values];

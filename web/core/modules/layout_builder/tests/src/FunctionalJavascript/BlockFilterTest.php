@@ -65,7 +65,6 @@ class BlockFilterTest extends WebDriverTestBase {
 
     // Get all blocks, for assertions later.
     $blocks = $page->findAll('css', '.js-layout-builder-block-link');
-    $blocks_count = count($blocks);
     $categories = $page->findAll('css', '.js-layout-builder-category');
 
     $filter = $assert_session->elementExists('css', '.js-layout-builder-filter');
@@ -77,7 +76,7 @@ class BlockFilterTest extends WebDriverTestBase {
     $filter->setValue('a');
     $this->assertAnnounceContains($init_message);
     $visible_rows = $this->filterVisibleElements($blocks);
-    $this->assertCount($blocks_count, $visible_rows);
+    $this->assertSameSize($blocks, $visible_rows);
 
     // Get the Content Fields category, which will be closed before filtering.
     $contentFieldsCategory = $page->find('named', ['content', 'Content fields']);
@@ -150,8 +149,10 @@ class BlockFilterTest extends WebDriverTestBase {
    *
    * @param string $expected_message
    *   The text expected to be present in #drupal-live-announce.
+   *
+   * @internal
    */
-  protected function assertAnnounceContains($expected_message) {
+  protected function assertAnnounceContains(string $expected_message): void {
     $assert_session = $this->assertSession();
     $this->assertNotEmpty($assert_session->waitForElement('css', "#drupal-live-announce:contains('$expected_message')"));
   }

@@ -14,6 +14,8 @@ use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Plugin\RequirementsInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+// cspell:ignore destid sourceid
+
 /**
  * Sources whose data may be fetched via a database connection.
  *
@@ -276,7 +278,7 @@ abstract class SqlBase extends SourcePluginBase implements ContainerFactoryPlugi
       //    conditions, so we need to OR them together (but AND with any existing
       //    conditions in the query). So, ultimately the SQL condition will look
       //    like (original conditions) AND (map IS NULL OR map needs update
-      //      OR above high water).
+      //    OR above high water).
       $conditions = $this->query->orConditionGroup();
       $condition_added = FALSE;
       $added_fields = [];

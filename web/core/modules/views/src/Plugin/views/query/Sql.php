@@ -326,8 +326,14 @@ class Sql extends QueryPluginBase {
    */
   public function submitOptionsForm(&$form, FormStateInterface $form_state) {
     $element = ['#parents' => ['query', 'options', 'query_tags']];
-    $value = explode(',', NestedArray::getValue($form_state->getValues(), $element['#parents']));
-    $value = array_filter(array_map('trim', $value));
+    $value = NestedArray::getValue($form_state->getValues(), $element['#parents']);
+    // When toggling a display to override defaults or vice-versa the submit
+    // handler gets invoked twice, and we don't want to bash the values from the
+    // original call.
+    if (is_array($value)) {
+      return;
+    }
+    $value = array_filter(array_map('trim', explode(',', $value)));
     $form_state->setValueForElement($element, $value);
   }
 
@@ -834,7 +840,7 @@ class Sql extends QueryPluginBase {
     $alias = $alias ? $alias : $field;
 
     // PostgreSQL truncates aliases to 63 characters:
-    //   https://www.drupal.org/node/571548.
+    // https://www.drupal.org/node/571548.
 
     // We limit the length of the original alias up to 60 characters
     // to get a unique alias later if its have duplicates
@@ -1068,7 +1074,7 @@ class Sql extends QueryPluginBase {
    * @see \Drupal\views\Plugin\views\query\Sql::addField
    */
   protected function getFieldAlias($table_alias, $field) {
-    return isset($this->fieldAliases[$table_alias][$field]) ? $this->fieldAliases[$table_alias][$field] : FALSE;
+    return $this->fieldAliases[$table_alias][$field] ?? FALSE;
   }
 
   /**

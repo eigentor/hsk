@@ -111,19 +111,17 @@ class ModuleHandlerTest extends UnitTestCase {
           ],
         ], $this->cacheBackend,
       ])
-      ->setMethods(['load'])
+      ->onlyMethods(['load'])
       ->getMock();
-    // First reload.
-    $module_handler->expects($this->at(0))
+    $module_handler->expects($this->exactly(3))
       ->method('load')
-      ->with($this->equalTo('module_handler_test'));
-    // Second reload.
-    $module_handler->expects($this->at(1))
-      ->method('load')
-      ->with($this->equalTo('module_handler_test'));
-    $module_handler->expects($this->at(2))
-      ->method('load')
-      ->with($this->equalTo('module_handler_test_added'));
+      ->withConsecutive(
+        // First reload.
+        ['module_handler_test'],
+        // Second reload.
+        ['module_handler_test'],
+        ['module_handler_test_added'],
+      );
     $module_handler->reload();
     $module_handler->addModule('module_handler_test_added', 'core/tests/Drupal/Tests/Core/Extension/modules/module_handler_test_added');
     $module_handler->reload();
@@ -180,14 +178,14 @@ class ModuleHandlerTest extends UnitTestCase {
       ->setConstructorArgs([
         $this->root, [], $this->cacheBackend,
       ])
-      ->setMethods(['resetImplementations'])
+      ->onlyMethods(['resetImplementations'])
       ->getMock();
 
     // Ensure we reset implementations when settings a new modules list.
     $module_handler->expects($this->once())->method('resetImplementations');
 
     // Make sure we're starting empty.
-    $this->assertEquals($module_handler->getModuleList(), []);
+    $this->assertEquals([], $module_handler->getModuleList());
 
     // Replace the list with a prebuilt list.
     $module_handler->setModuleList($fixture_module_handler->getModuleList());
@@ -208,7 +206,7 @@ class ModuleHandlerTest extends UnitTestCase {
       ->setConstructorArgs([
         $this->root, [], $this->cacheBackend,
       ])
-      ->setMethods(['resetImplementations'])
+      ->onlyMethods(['resetImplementations'])
       ->getMock();
 
     // Ensure we reset implementations when settings a new modules list.
@@ -230,7 +228,7 @@ class ModuleHandlerTest extends UnitTestCase {
       ->setConstructorArgs([
         $this->root, [], $this->cacheBackend,
       ])
-      ->setMethods(['resetImplementations'])
+      ->onlyMethods(['resetImplementations'])
       ->getMock();
 
     // Ensure we reset implementations when settings a new modules list.
@@ -268,7 +266,7 @@ class ModuleHandlerTest extends UnitTestCase {
           ],
         ], $this->cacheBackend,
       ])
-      ->setMethods(['loadInclude'])
+      ->onlyMethods(['loadInclude'])
       ->getMock();
 
     // Ensure we reset implementations when settings a new modules list.
@@ -357,7 +355,7 @@ class ModuleHandlerTest extends UnitTestCase {
           ],
         ], $this->cacheBackend,
       ])
-      ->setMethods(['buildImplementationInfo', 'loadInclude'])
+      ->onlyMethods(['buildImplementationInfo', 'loadInclude'])
       ->getMock();
     $module_handler->load('module_handler_test');
 
@@ -395,7 +393,7 @@ class ModuleHandlerTest extends UnitTestCase {
           ],
         ], $this->cacheBackend,
       ])
-      ->setMethods(['buildImplementationInfo'])
+      ->onlyMethods(['buildImplementationInfo'])
       ->getMock();
     $module_handler->load('module_handler_test');
 

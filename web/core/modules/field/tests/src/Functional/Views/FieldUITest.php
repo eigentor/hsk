@@ -98,7 +98,7 @@ class FieldUITest extends FieldTestBase {
     $this->assertEquals([], $view->field['field_name_0']->options['settings']);
 
     // Ensure that the view depends on the field storage.
-    $dependencies = \Drupal::service('config.manager')->findConfigEntityDependents('config', [$this->fieldStorages[0]->getConfigDependencyName()]);
+    $dependencies = \Drupal::service('config.manager')->findConfigEntityDependencies('config', [$this->fieldStorages[0]->getConfigDependencyName()]);
     $this->assertTrue(isset($dependencies['views.view.test_view_fieldapi']), 'The view is dependent on the field storage.');
   }
 
@@ -150,16 +150,13 @@ class FieldUITest extends FieldTestBase {
     $this->assertSession()->statusCodeEquals(200);
     // Verify that using a boolean field as a filter also results in using the
     // boolean plugin.
-    $option = $this->xpath('//label[@for="edit-options-value-1"]');
-    $this->assertEquals(t('True'), $option[0]->getText());
-    $option = $this->xpath('//label[@for="edit-options-value-0"]');
-    $this->assertEquals(t('False'), $option[0]->getText());
+    $this->assertSession()->elementTextEquals('xpath', '//label[@for="edit-options-value-1"]', 'True');
+    $this->assertSession()->elementTextEquals('xpath', '//label[@for="edit-options-value-0"]', 'False');
 
     // Expose the filter and see if the 'Any' option is added and if we can save
     // it.
     $this->submitForm([], 'Expose filter');
-    $option = $this->xpath('//label[@for="edit-options-value-all"]');
-    $this->assertEquals(t('- Any -'), $option[0]->getText());
+    $this->assertSession()->elementTextEquals('xpath', '//label[@for="edit-options-value-all"]', '- Any -');
     $this->submitForm(['options[value]' => 'All', 'options[expose][required]' => FALSE], 'Apply');
     $this->submitForm([], 'Save');
     $this->drupalGet('/admin/structure/views/nojs/handler/test_view_fieldapi/default/filter/field_boolean_value');

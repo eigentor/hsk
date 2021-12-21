@@ -412,8 +412,10 @@ class MenuTreeStorageTest extends KernelTestBase {
    *   An ordered array of the IDs of the menu links that are the parents.
    * @param array $children
    *   Array of child IDs that are visible (enabled == 1).
+   *
+   * @internal
    */
-  protected function assertMenuLink($id, array $expected_properties, array $parents = [], array $children = []) {
+  protected function assertMenuLink(string $id, array $expected_properties, array $parents = [], array $children = []): void {
     $query = $this->connection->select('menu_tree');
     $query->fields('menu_tree');
     $query->condition('id', $id);
@@ -432,7 +434,7 @@ class MenuTreeStorageTest extends KernelTestBase {
     $query->condition('id', $parents, 'IN');
     $found_parents = $query->execute()->fetchAllKeyed(0, 1);
 
-    $this->assertSame(count($parents), count($found_parents), 'Found expected number of parents');
+    $this->assertSameSize($parents, $found_parents, 'Found expected number of parents');
     $this->assertCount($raw['depth'], $found_parents, 'Number of parents is the same as the depth');
 
     $materialized_path = $this->treeStorage->getRootPathIds($id);

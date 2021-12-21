@@ -81,6 +81,7 @@ class UserMailNotifyTest extends EntityKernelTestBase {
    * @dataProvider userMailsProvider
    */
   public function testUserMailsSent($op, array $mail_keys) {
+    $this->installConfig('user');
     $this->config('user.settings')->set('notify.' . $op, TRUE)->save();
     $return = _user_mail_notify($op, $this->createUser());
     $this->assertTrue($return);
@@ -88,7 +89,7 @@ class UserMailNotifyTest extends EntityKernelTestBase {
       $filter = ['key' => $key];
       $this->assertNotEmpty($this->getMails($filter));
     }
-    $this->assertCount(count($mail_keys), $this->getMails());
+    $this->assertSameSize($mail_keys, $this->getMails());
   }
 
   /**

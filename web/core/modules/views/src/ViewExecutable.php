@@ -1082,7 +1082,7 @@ class ViewExecutable {
 
       $argument->setRelationship();
 
-      $arg = isset($this->args[$position]) ? $this->args[$position] : NULL;
+      $arg = $this->args[$position] ?? NULL;
       $argument->position = $position;
 
       if (isset($arg) || $argument->hasDefaultArgument()) {
@@ -1467,7 +1467,7 @@ class ViewExecutable {
 
     $module_handler = \Drupal::moduleHandler();
 
-    // @TODO In the longrun, it would be great to execute a view without
+    // @todo In the long run, it would be great to execute a view without
     //   the theme system at all. See https://www.drupal.org/node/2322623.
     $active_theme = \Drupal::theme()->getActiveTheme();
     $themes = array_keys($active_theme->getBaseThemeExtensions());
@@ -1703,7 +1703,7 @@ class ViewExecutable {
       $old_view = array_pop($this->old_view);
     }
 
-    views_set_current_view(isset($old_view) ? $old_view : FALSE);
+    views_set_current_view($old_view ?? FALSE);
   }
 
   /**
@@ -2291,7 +2291,7 @@ class ViewExecutable {
     // Get the existing configuration
     $fields = $this->displayHandlers->get($display_id)->getOption($types[$type]['plural']);
 
-    return isset($fields[$id]) ? $fields[$id] : NULL;
+    return $fields[$id] ?? NULL;
   }
 
   /**
@@ -2451,7 +2451,7 @@ class ViewExecutable {
    */
   public function hasFormElements() {
     foreach ($this->field as $field) {
-      if (property_exists($field, 'views_form_callback') || method_exists($field, 'viewsForm')) {
+      if (method_exists($field, 'viewsForm')) {
         return TRUE;
       }
     }

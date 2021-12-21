@@ -1,13 +1,11 @@
 # The modules listed here do not have an migration. A status of finished is
 # assigned so that they appear in the will not be upgraded list on the Review
 # form.
-# cspell:ignore imageapi imagefield imagemagick multiupload
+# cspell:ignore blogapi calendarsignup ctools datepicker ddblock entityreference
+# cspell:ignore filefield imageapi imagefield imagemagick multigroup multiupload
+# cspell:ignore nodeaccess openid
 finished:
   6:
-    nodereference: core
-    userreference: core
-    # Blog requires node.
-    blog: node
     # The following do not have an upgrade path.
     blogapi: core
     calendarsignup: core
@@ -47,8 +45,6 @@ finished:
     views_export: core
     views_ui: core
   7:
-    # Blog requires node.
-    blog: node
     # The following do not need have an upgrade path.
     bulk_export: core
     contextual: core

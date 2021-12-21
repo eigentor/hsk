@@ -19,6 +19,14 @@
           flex-basis: auto;
         }
 
+      body:not(.is-always-mobile-nav) .primary-nav__menu-item.primary-nav__menu-item--has-children {
+
+        /* Remove hover state if submenu exists. */
+      }
+        body:not(.is-always-mobile-nav) .primary-nav__menu-item.primary-nav__menu-item--has-children .primary-nav__menu-link--level-1 .primary-nav__menu-link-inner:after {
+          content: none;
+        }
+
     body:not(.is-always-mobile-nav) .primary-nav__menu-link {
       letter-spacing: 0.02em;
       font-size: 1rem;
@@ -103,11 +111,14 @@
     }
 
     body:not(.is-always-mobile-nav) .primary-nav__menu-link-inner {
-      padding-top: 2.25rem;
-      padding-bottom: 2.25rem;
-      transform-origin: center;
-      border-top-width: 9px;
+      padding-top: 1.125rem;
+      padding-bottom: 1.125rem
     }
+
+      body:not(.is-always-mobile-nav) .primary-nav__menu-link-inner:after {
+        transform-origin: center;
+        border-top-width: 9px;
+      }
 
     [dir="ltr"] body:not(.is-always-mobile-nav) .primary-nav__menu--level-1 {
       margin-right: 1.125rem;
@@ -142,7 +153,6 @@
       position: relative; /* Anchor secondary menu */
       display: flex;
       align-items: center;
-      width: -webkit-max-content;
       width: max-content;
       max-width: 12.5rem;
       margin-top: 0;
@@ -222,7 +232,10 @@
     }
 
       body:not(.is-always-mobile-nav) .primary-nav__menu-link--level-2:focus:before {
+        top: 0;
+        left: -0.5625rem;
         height: 100%;
+        transform: none;
       }
 
       [dir="ltr"] body:not(.is-always-mobile-nav) .primary-nav__menu-link--level-2 .primary-nav__menu-link-inner {
@@ -287,7 +300,7 @@ body:not(.is-always-mobile-nav) {
      * little extra room when the toolbar is fixed (and is shorter).
      */
 }
-    body:not(.is-always-mobile-nav) .js-fixed .primary-nav__menu--level-2 {
+    body:not(.is-always-mobile-nav) .is-fixed .primary-nav__menu--level-2 {
       max-height: calc(100vh - 7.875rem);
     }
   }
@@ -305,7 +318,7 @@ body:not(.is-always-mobile-nav) {
         max-height: calc(100vh - 14.8125rem);
       }
 
-      body:not(.is-always-mobile-nav).toolbar-vertical .js-fixed .primary-nav__menu--level-2, body:not(.is-always-mobile-nav).toolbar-horizontal.toolbar-fixed .js-fixed .primary-nav__menu--level-2 {
+      body:not(.is-always-mobile-nav).toolbar-vertical .is-fixed .primary-nav__menu--level-2, body:not(.is-always-mobile-nav).toolbar-horizontal.toolbar-fixed .is-fixed .primary-nav__menu--level-2 {
         max-height: calc(100vh - 10.3125rem);
       }
   body:not(.is-always-mobile-nav) {
@@ -316,7 +329,7 @@ body:not(.is-always-mobile-nav) {
         max-height: calc(100vh - 17.3125rem);
       }
 
-      body:not(.is-always-mobile-nav).toolbar-horizontal.toolbar-fixed.toolbar-tray-open .js-fixed .primary-nav__menu--level-2 {
+      body:not(.is-always-mobile-nav).toolbar-horizontal.toolbar-fixed.toolbar-tray-open .is-fixed .primary-nav__menu--level-2 {
         max-height: calc(100vh - 12.8125rem);
       }
 }

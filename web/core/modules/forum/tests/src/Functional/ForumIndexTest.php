@@ -53,7 +53,7 @@ class ForumIndexTest extends BrowserTestBase {
 
     // Create the forum topic, preselecting the forum ID via a URL parameter.
     $this->drupalGet("forum/$tid");
-    $this->clickLink(t('Add new @node_type', ['@node_type' => 'Forum topic']));
+    $this->clickLink('Add new Forum topic');
     $this->assertSession()->addressEquals("node/add/forum?forum_id=$tid");
     $this->submitForm($edit, 'Save');
 
@@ -92,7 +92,7 @@ class ForumIndexTest extends BrowserTestBase {
 
     // Verify that the node no longer appears on the index.
     $this->drupalGet('forum/' . $tid);
-    $this->assertNoText($title);
+    $this->assertSession()->pageTextNotContains($title);
   }
 
 }

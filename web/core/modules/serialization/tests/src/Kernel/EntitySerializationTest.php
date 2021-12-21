@@ -2,11 +2,15 @@
 
 namespace Drupal\Tests\serialization\Kernel;
 
+use Drupal\Core\Cache\CacheableDependencyInterface;
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\entity_test\Entity\EntityTestComputedField;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\entity_test\Entity\EntitySerializedField;
 use Drupal\entity_test\Entity\EntityTestMulRev;
 use Drupal\filter\Entity\FilterFormat;
+use Drupal\serialization\Normalizer\CacheableNormalizerInterface;
 
 /**
  * Tests that entities can be serialized to supported core formats.
@@ -295,7 +299,7 @@ class EntitySerializationTest extends NormalizerTestBase {
   public function testDenormalizeCustomSerializedItem() {
     $entity = EntitySerializedField::create(['serialized_text' => serialize(['Hello world!'])]);
     $normalized = $this->serializer->normalize($entity);
-    $this->assertEquals($normalized['serialized_text'][0]['value'], ['Hello world!']);
+    $this->assertEquals(['Hello world!'], $normalized['serialized_text'][0]['value']);
     $this->expectException(\LogicException::class);
     $this->expectExceptionMessage('The generic FieldItemNormalizer cannot denormalize string values for "value" properties of the "serialized_text" field (field item class: Drupal\entity_test\Plugin\Field\FieldType\SerializedPropertyItem).');
     $this->serializer->denormalize([
@@ -314,7 +318,7 @@ class EntitySerializationTest extends NormalizerTestBase {
   public function testDenormalizeInvalidCustomSerializedField() {
     $entity = EntitySerializedField::create(['serialized_long' => serialize(['Hello world!'])]);
     $normalized = $this->serializer->normalize($entity);
-    $this->assertEquals($normalized['serialized_long'][0]['value'], ['Hello world!']);
+    $this->assertEquals(['Hello world!'], $normalized['serialized_long'][0]['value']);
     $this->expectException(\LogicException::class);
     $this->expectExceptionMessage('The generic FieldItemNormalizer cannot denormalize string values for "value" properties of the "serialized_long" field (field item class: Drupal\Core\Field\Plugin\Field\FieldType\StringLongItem).');
     $this->serializer->denormalize([
@@ -363,6 +367,21 @@ class EntitySerializationTest extends NormalizerTestBase {
       'serialized_long' => ['boo'],
       'type' => 'entity_test_serialized_field',
     ], EntitySerializedField::class);
+  }
+
+  /**
+   * Tests normalizing cacheable computed field.
+   */
+  public function testCacheableComputedField() {
+    $context[CacheableNormalizerInterface::SERIALIZATION_CONTEXT_CACHEABILITY] = new CacheableMetadata();
+    $entity = EntityTestComputedField::create();
+    $normalized = $this->serializer->normalize($entity, NULL, $context);
+    $this->assertEquals('computed test cacheable string field', $normalized['computed_test_cacheable_string_field'][0]['value']);
+    $this->assertInstanceOf(CacheableDependencyInterface::class, $context[CacheableNormalizerInterface::SERIALIZATION_CONTEXT_CACHEABILITY]);
+    // See \Drupal\entity_test\Plugin\Field\ComputedTestCacheableStringItemList::computeValue().
+    $this->assertEquals($context[CacheableNormalizerInterface::SERIALIZATION_CONTEXT_CACHEABILITY]->getCacheContexts(), ['url.query_args:computed_test_cacheable_string_field']);
+    $this->assertEquals($context[CacheableNormalizerInterface::SERIALIZATION_CONTEXT_CACHEABILITY]->getCacheTags(), ['field:computed_test_cacheable_string_field']);
+    $this->assertEquals($context[CacheableNormalizerInterface::SERIALIZATION_CONTEXT_CACHEABILITY]->getCacheMaxAge(), 800);
   }
 
 }
