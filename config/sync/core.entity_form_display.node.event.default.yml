@@ -10,14 +10,12 @@ dependencies:
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_type
-    - field.field.node.event.field_uhrzeit
     - node.type.event
   module:
     - datetime
     - hms_field
     - path
     - text
-    - timefield
 id: node.event.default
 targetEntityType: node
 bundle: event
@@ -84,32 +82,6 @@ content:
     weight: 6
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_uhrzeit:
-    type: timefield_standard_widget
-    weight: 3
-    region: content
-    settings:
-      disable_plugin: false
-      input_format:
-        separator: ':'
-        showLeadingZero: false
-        showMinutesLeadingZero: true
-        showPeriod: true
-        periodSeparator: ''
-        showHours: true
-        showMinutes: true
-        am_text: AM
-        pm_text: PM
-        minute_interval: 5
-        showCloseButton: false
-        closeButtonText: Done
-        showNowButton: false
-        nowButtonText: Now
-        showDeselectButton: false
-        deselectButtonText: Deselect
-        myPosition: 'left top'
-        atPosition: 'left bottom'
     third_party_settings: {  }
   langcode:
     type: language_select

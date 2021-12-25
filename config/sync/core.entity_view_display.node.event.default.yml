@@ -10,13 +10,11 @@ dependencies:
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_type
-    - field.field.node.event.field_uhrzeit
     - node.type.event
   module:
     - datetime
     - hms_field
     - text
-    - timefield
     - user
 id: node.event.default
 targetEntityType: node
@@ -80,19 +78,6 @@ content:
       link: false
     third_party_settings: {  }
     weight: 6
-    region: content
-  field_uhrzeit:
-    type: timefield_default_formatter
-    label: above
-    settings:
-      display_format:
-        hour: G
-        minute: i
-        separator: ':'
-        period: none
-        periodSeparator: ''
-    third_party_settings: {  }
-    weight: 3
     region: content
   links:
     settings: {  }
