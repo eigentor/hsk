@@ -3831,7 +3831,7 @@ nav#block-hsk-footer ul li a {
   .path-frontpage #block-views-block-events-list-block-1 .views-row {
     margin-bottom: 13px;
   }
-  .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date {
+  .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date, .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-uhrzeit .date {
     background: #999;
     font-size: 10.85px;
     font-size: 0.7rem;
