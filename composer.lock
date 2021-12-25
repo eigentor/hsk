@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b76502771a7847409bd3cb854707ecae",
+    "content-hash": "fbd94a7828c58b86a22fd79fff6dadfa",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1834,17 +1834,17 @@
         },
         {
             "name": "drupal/admin_toolbar",
-            "version": "3.0.1",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/admin_toolbar.git",
-                "reference": "3.0.1"
+                "reference": "3.0.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/admin_toolbar-3.0.1.zip",
-                "reference": "3.0.1",
-                "shasum": "e25ca22db1317174a7fba4734c0412293b573f43"
+                "url": "https://ftp.drupal.org/files/projects/admin_toolbar-3.0.3.zip",
+                "reference": "3.0.3",
+                "shasum": "ce735c931c0bd6da79bd8e45ca459d61015bbe44"
             },
             "require": {
                 "drupal/core": "^8.8.0 || ^9.0"
@@ -1855,8 +1855,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "3.0.1",
-                    "datestamp": "1622644077",
+                    "version": "3.0.3",
+                    "datestamp": "1632322497",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3334,17 +3334,17 @@
         },
         {
             "name": "drupal/entity_embed",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/entity_embed.git",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/entity_embed-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "f2c3f4b3071cbd69db94c5255e1db89510995b5d"
+                "url": "https://ftp.drupal.org/files/projects/entity_embed-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "e1d4c9d6931984836c1ea550c32ae40f42367525"
             },
             "require": {
                 "drupal/core": "^8.8 || ^9",
@@ -3356,8 +3356,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1585252806",
+                    "version": "8.x-1.2",
+                    "datestamp": "1631726164",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4337,17 +4337,17 @@
         },
         {
             "name": "drupal/linkit",
-            "version": "5.0.0-beta12",
+            "version": "6.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/linkit.git",
-                "reference": "8.x-5.0-beta12"
+                "reference": "6.0.0-beta3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/linkit-8.x-5.0-beta12.zip",
-                "reference": "8.x-5.0-beta12",
-                "shasum": "9e03975b476f893112d8b12d8b8610926a4e7f2c"
+                "url": "https://ftp.drupal.org/files/projects/linkit-6.0.0-beta3.zip",
+                "reference": "6.0.0-beta3",
+                "shasum": "39a5bf54cbc88324d788a573df7b3fecf7622065"
             },
             "require": {
                 "drupal/core": "^8.7.7 || ^9"
@@ -4358,8 +4358,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-5.0-beta12",
-                    "datestamp": "1608957625",
+                    "version": "6.0.0-beta3",
+                    "datestamp": "1632946984",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -4376,6 +4376,10 @@
                     "homepage": "https://stjerneman.com",
                     "email": "emil@stjerneman.com",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "johnwebdev",
+                    "homepage": "https://www.drupal.org/user/3331569"
                 }
             ],
             "description": "Linkit - Enriched linking experience",
