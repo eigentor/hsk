@@ -11,19 +11,19 @@ id: inhaltsbild_volle_breite
 label: 'Inhaltsbild volle Breite'
 image_style_mappings:
   -
+    image_mapping_type: image_style
+    image_mapping: inline_full_width
     breakpoint_id: hsk_zymphonies.desktop_narrow
     multiplier: 1x
+  -
     image_mapping_type: image_style
     image_mapping: inline_full_width
-  -
     breakpoint_id: hsk_zymphonies.tablet_portrait
     multiplier: 1x
-    image_mapping_type: image_style
-    image_mapping: inline_full_width
   -
-    breakpoint_id: hsk_zymphonies.mobile
-    multiplier: 1x
     image_mapping_type: image_style
     image_mapping: inhaltsbild_mobile_volle_breite
+    breakpoint_id: hsk_zymphonies.mobile
+    multiplier: 1x
 breakpoint_group: hsk_zymphonies
 fallback_image_style: inline_full_width

@@ -14,10 +14,10 @@ bundle: header_slideshow
 mode: teaser
 content:
   links:
-    weight: 100
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 100
+    region: content
 hidden:
   body: true
   field_par_slideshow: true

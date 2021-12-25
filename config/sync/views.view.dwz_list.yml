@@ -21,98 +21,12 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
-        options:
-          perm: 'access content'
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Filtern
-          reset_button: true
-          reset_button_label: Zurücksetzen
-          exposed_sorts_label: 'Sortieren nach'
-          expose_sort_order: true
-          sort_asc_label: Aufsteigend
-          sort_desc_label: Absteigend
-      pager:
-        type: none
-        options:
-          items_per_page: null
-          offset: 0
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          override: true
-          sticky: false
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            nid: nid
-            field_player_image: field_player_image
-            title: title
-            field_dwz: field_dwz
-            nothing: nothing
-          info:
-            nid:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_player_image:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            title:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_dwz:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            nothing:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: '-1'
-          empty_table: false
-      row:
-        type: fields
+      title: DWZ-Rangliste
       fields:
         counter:
           id: counter
@@ -121,6 +35,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: counter
           label: ''
           exclude: false
           alter:
@@ -163,7 +78,6 @@ display:
           empty_zero: false
           hide_alter_empty: true
           counter_start: 1
-          plugin_id: counter
         nid:
           id: nid
           table: node_field_data
@@ -171,6 +85,9 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Node ID'
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
           label: ID
           exclude: true
           alter:
@@ -227,9 +144,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: field
         field_player_image:
           id: field_player_image
           table: node__field_player_image
@@ -237,6 +151,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -281,8 +196,8 @@ display:
           click_sort_column: target_id
           type: image
           settings:
-            image_style: portrait_tiny
             image_link: ''
+            image_style: portrait_tiny
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -293,7 +208,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         title:
           id: title
           table: node_field_data
@@ -301,6 +215,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: Name
           exclude: false
           alter:
@@ -356,9 +273,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
         field_dwz:
           id: field_dwz
           table: node__field_dwz
@@ -366,6 +280,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: DWZ
           exclude: false
           alter:
@@ -422,7 +337,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         nothing:
           id: nothing
           table: views
@@ -430,6 +344,7 @@ display:
           relationship: none
           group_type: group
           admin_label: Bearbeiten-Link
+          plugin_id: custom
           label: ''
           exclude: false
           alter:
@@ -471,30 +386,82 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: false
-          plugin_id: custom
+      pager:
+        type: none
+        options:
+          offset: 0
+          items_per_page: null
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Filtern
+          reset_button: true
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: 'Sortieren nach'
+          expose_sort_order: true
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
+      sorts:
+        field_dwz_value:
+          id: field_dwz_value
+          table: node__field_dwz
+          field: field_dwz_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: field_dwz_value
+          exposed: false
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: title
+          exposed: false
+      arguments: {  }
       filters:
         status:
-          value: '1'
+          id: status
           table: node_field_data
           field: status
-          plugin_id: boolean
           entity_type: node
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            player: player
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            player: player
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -505,6 +472,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: string
           operator: contains
           value: ''
           group: 1
@@ -515,6 +485,8 @@ display:
             description: ''
             use_operator: false
             operator: title_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: title
             required: false
             remember: false
@@ -526,8 +498,6 @@ display:
               redakteur: '0'
               chefredakteur: '0'
             placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -540,37 +510,72 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: title
-          plugin_id: string
-      sorts:
-        field_dwz_value:
-          id: field_dwz_value
-          table: node__field_dwz
-          field: field_dwz_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-          plugin_id: standard
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: standard
-      title: DWZ-Rangliste
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            nid: nid
+            field_player_image: field_player_image
+            title: title
+            field_dwz: field_dwz
+            nothing: nothing
+          default: '-1'
+          info:
+            nid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_player_image:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            title:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_dwz:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nothing:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships: {  }
       header: {  }
       footer:
         area_text_custom:
@@ -580,13 +585,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: false
-          tokenize: false
-          content: '<a href="http://www.schachbund.de/verein/70107.html">DWZ-Liste des HSK auf schachbund.de</a>'
           plugin_id: text_custom
-      empty: {  }
-      relationships: {  }
-      arguments: {  }
+          empty: false
+          content: '<a href="http://www.schachbund.de/verein/70107.html">DWZ-Liste des HSK auf schachbund.de</a>'
+          tokenize: false
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -601,9 +603,9 @@ display:
         - 'config:field.storage.node.field_dwz'
         - 'config:field.storage.node.field_player_image'
   page_1:
-    display_plugin: page
     id: page_1
     display_title: Page
+    display_plugin: page
     position: 1
     display_options:
       display_extenders: {  }
@@ -612,11 +614,11 @@ display:
         type: normal
         title: DWZ-Rangliste
         description: ''
-        expanded: false
-        parent: 'menu_link_content:b72aaacd-27f9-4375-936a-ba8281ace066'
         weight: 5
-        context: '0'
+        expanded: false
         menu_name: main
+        parent: 'menu_link_content:b72aaacd-27f9-4375-936a-ba8281ace066'
+        context: '0'
     cache_metadata:
       max-age: -1
       contexts:

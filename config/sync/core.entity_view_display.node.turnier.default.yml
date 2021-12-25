@@ -20,58 +20,58 @@ third_party_settings:
         - field_standings
         - field_current_results
         - field_pairings
+      label: Tabellen
       parent_name: ''
+      region: content
       weight: 20
       format_type: html_element
       format_settings:
         label: Tabellen
+        classes: ''
+        id: info-tabs
         element: div
         show_label: false
         label_element: h3
         attributes: ''
         effect: none
         speed: fast
-        id: info-tabs
-        classes: ''
-      label: Tabellen
-      region: content
 id: node.turnier.default
 targetEntityType: node
 bundle: turnier
 mode: default
 content:
   body:
-    label: hidden
     type: text_default
-    weight: 1
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 1
     region: content
   field_current_results:
-    weight: 3
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 3
     region: content
   field_pairings:
-    weight: 4
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 4
     region: content
   field_standings:
-    weight: 2
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 2
     region: content
   links:
-    weight: 0
     settings: {  }
     third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   field_vorhol_nachhol: true

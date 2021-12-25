@@ -1,4 +1,6 @@
-api_url: api.drupal.org
+_core:
+  default_config_hash: Oh8B61MshOYvTf_pcKAeB8_OL7C_snqYbbLjqpgfdTM
+langcode: de
 page_alter: false
 raw_names: false
 error_handlers:
@@ -7,8 +9,6 @@ rebuild_theme: false
 debug_mail_file_format: '%to-%subject-%datetime.mail.txt'
 debug_mail_directory: 'temporary://devel-mails'
 devel_dumper: var_dumper
-_core:
-  default_config_hash: Oh8B61MshOYvTf_pcKAeB8_OL7C_snqYbbLjqpgfdTM
-langcode: de
 debug_logfile: 'temporary://drupal_debug.txt'
 debug_pre: false
+api_url: api.drupal.org

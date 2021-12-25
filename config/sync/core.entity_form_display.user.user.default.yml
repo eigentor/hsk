@@ -25,15 +25,15 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_matching_player:
+    type: entity_reference_autocomplete
     weight: 4
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   language:
     weight: 5
     region: content
@@ -42,9 +42,9 @@ content:
   path:
     type: path
     weight: 8
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   timezone:
     weight: 7
     region: content

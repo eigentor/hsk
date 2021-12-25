@@ -13,11 +13,11 @@ bundle: video
 mode: default
 content:
   field_video:
+    type: video_embed_field_textfield
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: video_embed_field_textfield
-    region: content
 hidden:
   created: true
   status: true

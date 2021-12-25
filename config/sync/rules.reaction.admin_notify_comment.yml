@@ -24,6 +24,7 @@ expression:
       -
         id: rules_action
         uuid: fc0cd59d-8646-4a4c-94a1-f02847493b4b
+        action_id: rules_send_email
         context_values:
           to:
             - felix.hampel@web.de
@@ -46,4 +47,3 @@ expression:
           language:
             rules_tokens: {  }
         provides_mapping: {  }
-        action_id: rules_send_email

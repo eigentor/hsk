@@ -21,53 +21,11 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
-        options:
-          perm: 'access content'
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: none
-        options:
-          offset: 0
-      style:
-        type: default
-        options:
-          grouping: {  }
-          row_class: 'row-{{ counter }}'
-          default_row_class: true
-      row:
-        type: fields
-        options:
-          inline: {  }
-          separator: ''
-          hide_empty: false
-          default_field_elements: true
       fields:
         title:
           id: title
@@ -76,6 +34,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -131,9 +92,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
         counter:
           id: counter
           table: views
@@ -141,6 +99,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: counter
           label: ''
           exclude: false
           alter:
@@ -183,7 +142,6 @@ display:
           empty_zero: false
           hide_alter_empty: true
           counter_start: 1
-          plugin_id: counter
         field_player_image:
           id: field_player_image
           table: node__field_player_image
@@ -191,6 +149,7 @@ display:
           relationship: field_team_players
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -235,8 +194,8 @@ display:
           click_sort_column: target_id
           type: image
           settings:
-            image_style: portrait_tiny
             image_link: content
+            image_style: portrait_tiny
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -247,7 +206,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         title_1:
           id: title_1
           table: node_field_data
@@ -255,6 +213,9 @@ display:
           relationship: field_team_players
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -310,9 +271,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
         field_dwz:
           id: field_dwz
           table: node__field_dwz
@@ -320,6 +278,7 @@ display:
           relationship: field_team_players
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -376,73 +335,45 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
-      filters:
-        status:
-          value: '1'
-          table: node_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: node
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
-        type:
-          id: type
-          table: node_field_data
-          field: type
-          value:
-            team: team
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
+      pager:
+        type: none
+        options:
+          offset: 0
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
       sorts:
         created:
           id: created
           table: node_field_data
           field: created
-          order: DESC
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: node
           entity_field: created
           plugin_id: date
-          relationship: none
-          group_type: group
-          admin_label: ''
-          exposed: false
+          order: DESC
           expose:
             label: ''
+            field_identifier: created
+          exposed: false
           granularity: second
-      header:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: true
-          content: '<!--<h3>Kader der {{ title }}</h3>-->'
-          plugin_id: text_custom
-      footer: {  }
-      empty: {  }
-      relationships:
-        field_team_players:
-          id: field_team_players
-          table: node__field_team_players
-          field: field_team_players
-          relationship: none
-          group_type: group
-          admin_label: 'field_team_players: Content'
-          required: false
-          plugin_id: standard
       arguments:
         nid:
           id: nid
@@ -451,6 +382,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
           default_action: 'not found'
           exception:
             value: all
@@ -465,8 +399,8 @@ display:
           summary_options:
             base_path: ''
             count: true
-            items_per_page: 25
             override: false
+            items_per_page: 25
           summary:
             sort_order: asc
             number_of_records: 0
@@ -478,9 +412,76 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
+      filters:
+        status:
+          id: status
+          table: node_field_data
+          field: status
           entity_type: node
-          entity_field: nid
-          plugin_id: node_nid
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          value:
+            team: team
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+      style:
+        type: default
+        options:
+          grouping: {  }
+          row_class: 'row-{{ counter }}'
+          default_row_class: true
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships:
+        field_team_players:
+          id: field_team_players
+          table: node__field_team_players
+          field: field_team_players
+          relationship: none
+          group_type: group
+          admin_label: 'field_team_players: Content'
+          plugin_id: standard
+          required: false
+      header:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: false
+          content: '<!--<h3>Kader der {{ title }}</h3>-->'
+          tokenize: true
+      footer: {  }
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -494,9 +495,9 @@ display:
         - 'config:field.storage.node.field_dwz'
         - 'config:field.storage.node.field_player_image'
   entity_view_1:
-    display_plugin: entity_view
     id: entity_view_1
     display_title: EVA
+    display_plugin: entity_view
     position: 1
     display_options:
       display_extenders: {  }

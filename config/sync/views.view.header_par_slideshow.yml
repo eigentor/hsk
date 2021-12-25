@@ -22,44 +22,12 @@ base_table: paragraphs_item_revision_field_data
 base_field: revision_id
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: none
-        options: {  }
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Anwenden
-          reset_button: false
-          reset_button_label: Zurücksetzen
-          exposed_sorts_label: 'Sortieren nach'
-          expose_sort_order: true
-          sort_asc_label: Aufsteigend
-          sort_desc_label: Absteigend
-      pager:
-        type: none
-        options:
-          items_per_page: null
-          offset: 0
-      style:
-        type: default
-      row:
-        type: fields
+      title: 'Header Slideshow'
       fields:
         field_sli_link_heading:
           id: field_sli_link_heading
@@ -68,6 +36,7 @@ display:
           relationship: field_sl_image
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -127,7 +96,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_sli_image:
           id: field_sli_image
           table: paragraph__field_sli_image
@@ -135,6 +103,7 @@ display:
           relationship: field_sl_image
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -191,7 +160,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_sli_heading:
           id: field_sli_heading
           table: paragraph__field_sli_heading
@@ -199,6 +167,7 @@ display:
           relationship: field_sl_image
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -254,7 +223,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_sli_text:
           id: field_sli_text
           table: paragraph__field_sli_text
@@ -262,6 +230,7 @@ display:
           relationship: field_sl_image
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -316,21 +285,44 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
+      pager:
+        type: none
+        options:
+          offset: 0
+          items_per_page: null
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Anwenden
+          reset_button: false
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: 'Sortieren nach'
+          expose_sort_order: true
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
+      access:
+        type: none
+        options: {  }
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
+      sorts: {  }
+      arguments: {  }
       filters:
         status:
-          value: '1'
+          id: status
           table: paragraphs_item_revision_field_data
           field: status
-          plugin_id: boolean
           entity_type: paragraph
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         parent_field_name:
           id: parent_field_name
           table: paragraphs_item_field_data
@@ -338,6 +330,9 @@ display:
           relationship: field_sl_image
           group_type: group
           admin_label: ''
+          entity_type: paragraph
+          entity_field: parent_field_name
+          plugin_id: string
           operator: '='
           value: field_sl_image
           group: 1
@@ -348,6 +343,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -355,8 +352,6 @@ display:
             remember_roles:
               authenticated: authenticated
             placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -369,14 +364,18 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: paragraph
-          entity_field: parent_field_name
-          plugin_id: string
-      sorts: {  }
-      title: 'Header Slideshow'
-      header: {  }
-      footer: {  }
-      empty: {  }
+      style:
+        type: default
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
       relationships:
         field_sl_image:
           id: field_sl_image
@@ -385,9 +384,10 @@ display:
           relationship: none
           group_type: group
           admin_label: 'field_sl_image: Seitenabschnitt'
-          required: false
           plugin_id: standard
-      arguments: {  }
+          required: false
+      header: {  }
+      footer: {  }
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -400,9 +400,9 @@ display:
         - 'config:field.storage.paragraph.field_sli_link_heading'
         - 'config:field.storage.paragraph.field_sli_text'
   block_1:
-    display_plugin: block
     id: block_1
     display_title: Block
+    display_plugin: block
     position: 1
     display_options:
       display_extenders: {  }

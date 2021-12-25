@@ -25,75 +25,12 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
-        options:
-          perm: 'access content'
-      cache:
-        type: time
-        options:
-          results_lifespan: 3600
-          results_lifespan_custom: 0
-          output_lifespan: 3600
-          output_lifespan_custom: 0
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: mini
-        options:
-          items_per_page: 10
-          offset: 0
-          id: 0
-          total_pages: null
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          tags:
-            previous: ‹‹
-            next: ››
-      style:
-        type: default
-        options:
-          grouping:
-            -
-              field: field_ev_date_1
-              rendered: true
-              rendered_strip: false
-          row_class: ''
-          default_row_class: true
-      row:
-        type: fields
-        options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: true
+      title: Termine
       fields:
         field_ev_date_1:
           id: field_ev_date_1
@@ -102,6 +39,7 @@ display:
           relationship: none
           group_type: group
           admin_label: Monat
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -158,7 +96,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_ev_date:
           id: field_ev_date
           table: node__field_ev_date
@@ -166,6 +103,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -222,7 +160,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_ev_start_time:
           id: field_ev_start_time
           table: node__field_ev_start_time
@@ -230,6 +167,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -288,7 +226,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         title:
           id: title
           table: node_field_data
@@ -296,6 +233,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -351,9 +291,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
         field_event_room:
           id: field_event_room
           table: node__field_event_room
@@ -361,6 +298,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'Raum '
           exclude: false
           alter:
@@ -416,30 +354,85 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
+      pager:
+        type: mini
+        options:
+          offset: 0
+          items_per_page: 10
+          total_pages: null
+          id: 0
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: time
+        options:
+          results_lifespan: 3600
+          results_lifespan_custom: 0
+          output_lifespan: 3600
+          output_lifespan_custom: 0
+      empty: {  }
+      sorts:
+        field_ev_date_value:
+          id: field_ev_date_value
+          table: node__field_ev_date
+          field: field_ev_date_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: datetime
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: field_ev_date_value
+          exposed: false
+          granularity: day
+      arguments: {  }
       filters:
         status:
-          value: '1'
+          id: status
           table: node_field_data
           field: status
-          plugin_id: boolean
           entity_type: node
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            event: event
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            event: event
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -450,6 +443,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: datetime
           operator: '>='
           value:
             min: ''
@@ -472,9 +466,9 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -487,32 +481,39 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: datetime
-      sorts:
-        field_ev_date_value:
-          id: field_ev_date_value
-          table: node__field_ev_date
-          field: field_ev_date_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          granularity: day
-          plugin_id: datetime
-      header: {  }
-      footer: {  }
-      empty: {  }
+      style:
+        type: default
+        options:
+          grouping:
+            -
+              field: field_ev_date_1
+              rendered: true
+              rendered_strip: false
+          row_class: ''
+          default_row_class: true
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: true
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
       relationships: {  }
-      arguments: {  }
-      display_extenders: {  }
-      title: Termine
+      use_ajax: false
       use_more: true
       use_more_always: true
       use_more_text: '» alle Termine'
-      use_ajax: false
+      header: {  }
+      footer: {  }
+      display_extenders: {  }
     cache_metadata:
       max-age: -1
       contexts:
@@ -526,22 +527,12 @@ display:
         - 'config:field.storage.node.field_ev_start_time'
         - 'config:field.storage.node.field_event_room'
   block_1:
-    display_plugin: block
     id: block_1
     display_title: Block
+    display_plugin: block
     position: 2
     display_options:
-      display_extenders: {  }
       title: 'Aktuelle Termine'
-      defaults:
-        title: false
-        pager: false
-        fields: false
-      pager:
-        type: some
-        options:
-          items_per_page: 6
-          offset: 0
       fields:
         field_ev_date_1:
           id: field_ev_date_1
@@ -550,6 +541,7 @@ display:
           relationship: none
           group_type: group
           admin_label: Monat
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -606,7 +598,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_ev_date:
           id: field_ev_date
           table: node__field_ev_date
@@ -614,6 +605,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -670,7 +662,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_ev_start_time:
           id: field_ev_start_time
           table: node__field_ev_start_time
@@ -678,6 +669,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -736,7 +728,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         title:
           id: title
           table: node_field_data
@@ -744,6 +735,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -799,9 +793,16 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 6
+      defaults:
+        title: false
+        pager: false
+        fields: false
+      display_extenders: {  }
     cache_metadata:
       max-age: -1
       contexts:
@@ -813,55 +814,67 @@ display:
         - 'config:field.storage.node.field_ev_date'
         - 'config:field.storage.node.field_ev_start_time'
   page_1:
-    display_plugin: page
     id: page_1
     display_title: Page
+    display_plugin: page
     position: 1
     display_options:
-      display_extenders: {  }
-      path: termine
-      menu:
-        type: normal
-        title: Termine
-        description: ''
-        expanded: false
-        parent: ''
-        weight: -48
-        context: '0'
-        menu_name: main
-      use_more: false
-      defaults:
-        use_more: false
-        use_more_always: false
-        use_more_text: false
-        filters: false
-        filter_groups: false
-        exposed_form: false
-      use_more_always: true
-      use_more_text: '» alle Termine'
+      exposed_form:
+        type: bef
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+          input_required: false
+          text_input_required: 'Wählen Sie eine beliebige Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
+          text_input_required_format: basic_html
+          bef:
+            general:
+              autosubmit: true
+              autosubmit_exclude_textfield: false
+              autosubmit_hide: true
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Erweiterte Optionen'
+              text_input_required: 'Wählen Sie eine beliebige Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
+              text_input_required_format: basic_html
+            filter:
+              field_event_type_target_id:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  placeholder_text: ''
+                  rewrite:
+                    filter_rewrite_values: ''
+                  collapsible: false
+                  is_secondary: false
       filters:
         status:
-          value: '1'
+          id: status
           table: node_field_data
           field: status
-          plugin_id: boolean
           entity_type: node
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            event: event
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            event: event
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -872,6 +885,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: datetime
           operator: '>='
           value:
             min: ''
@@ -886,17 +900,17 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -909,7 +923,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: datetime
         field_event_type_target_id:
           id: field_event_type_target_id
           table: node__field_event_type
@@ -917,6 +930,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: taxonomy_index_tid
           operator: or
           value: {  }
           group: 1
@@ -927,6 +941,8 @@ display:
             description: ''
             use_operator: false
             operator: field_event_type_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: field_event_type_target_id
             required: false
             remember: false
@@ -938,8 +954,6 @@ display:
               redakteur: '0'
               chefredakteur: '0'
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -953,49 +967,36 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          type: select
-          limit: true
           vid: event_type
+          type: select
           hierarchy: false
+          limit: true
           error_message: true
-          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
           1: AND
-      exposed_form:
-        type: bef
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-          input_required: false
-          text_input_required: 'Wählen Sie eine beliebige Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
-          bef:
-            general:
-              autosubmit: true
-              autosubmit_exclude_textfield: false
-              autosubmit_hide: true
-              input_required: false
-              text_input_required: 'Wählen Sie eine beliebige Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
-              text_input_required_format: basic_html
-              allow_secondary: false
-              secondary_label: 'Erweiterte Optionen'
-            filter:
-              field_event_type_target_id:
-                plugin_id: default
-                advanced:
-                  collapsible: false
-                  is_secondary: false
-                  placeholder_text: ''
-                  rewrite:
-                    filter_rewrite_values: ''
-                  sort_options: false
-          text_input_required_format: basic_html
+      defaults:
+        use_more: false
+        use_more_always: false
+        use_more_text: false
+        exposed_form: false
+        filters: false
+        filter_groups: false
+      use_more: false
+      use_more_always: true
+      use_more_text: '» alle Termine'
+      display_extenders: {  }
+      path: termine
+      menu:
+        type: normal
+        title: Termine
+        description: ''
+        weight: -48
+        expanded: false
+        menu_name: main
+        parent: ''
+        context: '0'
     cache_metadata:
       max-age: -1
       contexts:

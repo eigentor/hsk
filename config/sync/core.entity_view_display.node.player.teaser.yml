@@ -23,20 +23,20 @@ mode: teaser
 content:
   body:
     type: text_trimmed
-    weight: 1
     label: visually_hidden
     settings:
       trim_length: 600
     third_party_settings: {  }
+    weight: 1
     region: content
   field_player_image:
     type: image
-    weight: 0
     label: visually_hidden
     settings:
-      image_style: portrait
       image_link: ''
+      image_style: portrait
     third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   field_dwz: true

@@ -1,7 +1,20 @@
 uuid: d6c1d1de-4309-4376-9940-21ec222a0a96
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.article
+    - node.type.event
+  module:
+    - comment
+    - entityconnect
+    - node
+    - override_node_options
+    - quick_node_clone
+    - quickedit
+    - system
+    - toolbar
+    - view_unpublished
 id: redakteur
 label: Redakteur
 weight: 3

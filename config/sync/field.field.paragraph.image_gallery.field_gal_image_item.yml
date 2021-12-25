@@ -21,13 +21,13 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       gallery_image: gallery_image
+    negate: 0
     target_bundles_drag_drop:
       gallery_image:
-        enabled: true
         weight: 5
+        enabled: true
       image_gallery:
         weight: 6
         enabled: false

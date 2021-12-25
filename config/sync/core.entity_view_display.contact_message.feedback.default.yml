@@ -13,19 +13,19 @@ bundle: feedback
 mode: default
 content:
   field_contact_privacy_notice:
-    weight: 1
+    type: markup
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: markup
+    weight: 1
     region: content
   message:
     type: string
-    weight: 0
     label: above
-    region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   langcode: true

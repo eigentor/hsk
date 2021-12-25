@@ -11,16 +11,16 @@ pattern: '[node:title]'
 selection_criteria:
   7691a037-1627-483a-b5d6-060e11f5d38b:
     id: node_type
+    negate: false
+    uuid: 7691a037-1627-483a-b5d6-060e11f5d38b
+    context_mapping:
+      node: node
     bundles:
       article: article
       event: event
       page: page
       team: team
       turnier: turnier
-    negate: false
-    context_mapping:
-      node: node
-    uuid: 7691a037-1627-483a-b5d6-060e11f5d38b
 selection_logic: and
 weight: -5
 relationships: {  }

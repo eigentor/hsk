@@ -12,19 +12,19 @@ id: header_slideshow
 label: 'Header Slideshow'
 image_style_mappings:
   -
-    breakpoint_id: hsk_zymphonies.desktop_narrow
-    multiplier: 1x
     image_mapping_type: image_style
     image_mapping: header_slideshow
-  -
-    breakpoint_id: hsk_zymphonies.tablet_portrait
+    breakpoint_id: hsk_zymphonies.desktop_narrow
     multiplier: 1x
+  -
     image_mapping_type: image_style
     image_mapping: header_slideshow_tablet_portrait
-  -
-    breakpoint_id: hsk_zymphonies.mobile
+    breakpoint_id: hsk_zymphonies.tablet_portrait
     multiplier: 1x
+  -
     image_mapping_type: image_style
     image_mapping: header_slideshow_smartphone
+    breakpoint_id: hsk_zymphonies.mobile
+    multiplier: 1x
 breakpoint_group: hsk_zymphonies
 fallback_image_style: header_slideshow

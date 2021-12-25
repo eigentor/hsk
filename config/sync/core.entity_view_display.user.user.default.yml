@@ -14,22 +14,22 @@ bundle: user
 mode: default
 content:
   field_matching_player:
-    weight: 2
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 2
     region: content
   masquerade:
+    settings: {  }
+    third_party_settings: {  }
     weight: 5
     region: content
+  member_for:
     settings: {  }
     third_party_settings: {  }
-  member_for:
     weight: 1
     region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   langcode: true

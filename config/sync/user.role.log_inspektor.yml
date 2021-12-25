@@ -1,7 +1,9 @@
 uuid: 2eda5ba7-0335-40bb-90ba-94412116d018
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - system
 id: log_inspektor
 label: Log-Inspektor
 weight: 6

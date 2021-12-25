@@ -16,15 +16,15 @@ plugin: hsk_news_author
 settings:
   id: hsk_news_author
   label: 'Der Autor'
-  provider: hsk_news
   label_display: '0'
+  provider: hsk_news
   context_mapping:
     node: '@node.node_route_context:node'
 visibility:
   'entity_bundle:node':
     id: 'entity_bundle:node'
-    bundles:
-      article: article
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+    bundles:
+      article: article

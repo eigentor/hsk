@@ -15,17 +15,17 @@ mode: default
 content:
   field_par_slideshow:
     type: entity_reference_revisions_entity_view
-    weight: 103
     label: above
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 103
     region: content
   links:
-    weight: 100
     settings: {  }
     third_party_settings: {  }
+    weight: 100
     region: content
 hidden:
   body: true

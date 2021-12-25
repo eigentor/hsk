@@ -22,124 +22,124 @@ third_party_settings:
       children:
         - field_team_description
         - referenced_player_entity_view_1
+      label: Top
       parent_name: ''
+      region: content
       weight: 0
       format_type: html_element
       format_settings:
         label: Top
+        classes: group-top
+        id: ''
         element: div
         show_label: false
         label_element: h3
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: group-top
-      label: Top
-      region: content
     group_team_middle:
       children:
         - field_league
         - field_results_standings
+      label: Middle
       parent_name: ''
+      region: content
       weight: 1
       format_type: html_element
       format_settings:
-        id: ''
         classes: group-middle
+        id: ''
         element: div
         show_label: false
         label_element: h3
         attributes: ''
         effect: none
         speed: fast
-      label: Middle
-      region: content
     group_kader:
       children: {  }
+      label: Kader
       parent_name: ''
+      region: content
       weight: 2
       format_type: html_element
       format_settings:
-        id: ''
         classes: group-kader
+        id: ''
         element: div
         show_label: false
         label_element: h3
         attributes: ''
         effect: none
         speed: fast
-      label: Kader
-      region: content
     group_team_and_results:
       children:
         - group_team
         - group_results
         - group_tabelle
+      label: 'Kader und Ergebnisse'
       parent_name: ''
+      region: content
       weight: 4
       format_type: tabs
       format_settings:
         label: 'Kader und Ergebnisse'
-        direction: horizontal
-        id: ''
         classes: group-team-results
-      label: 'Kader und Ergebnisse'
-      region: content
+        id: ''
+        direction: horizontal
     group_team:
       children:
         - kader_2_entity_view_1
+      label: Kader
       parent_name: group_team_and_results
+      region: content
       weight: 3
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
-      label: Kader
-      region: content
     group_results:
       children:
         - field_team_results
+      label: Ergebnisse
       parent_name: group_team_and_results
+      region: content
       weight: 4
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
-      label: Ergebnisse
-      region: content
     group_tabelle:
       children:
         - field_team_standings
+      label: Tabelle
       parent_name: group_team_and_results
+      region: content
       weight: 5
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
-      label: Tabelle
-      region: content
 id: node.team.default
 targetEntityType: node
 bundle: team
 mode: default
 content:
   field_league:
-    weight: 1
+    type: string
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   field_results_standings:
-    weight: 2
+    type: link
     label: visually_hidden
     settings:
       trim_length: 80
@@ -148,38 +148,38 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 2
     region: content
   field_team_description:
-    weight: 3
+    type: text_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 3
     region: content
   field_team_results:
-    weight: 7
+    type: text_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 7
     region: content
   field_team_standings:
-    weight: 8
+    type: text_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 8
     region: content
   kader_2_entity_view_1:
-    weight: 6
     settings: {  }
     third_party_settings: {  }
+    weight: 6
     region: content
   referenced_player_entity_view_1:
-    weight: 4
     settings: {  }
     third_party_settings: {  }
+    weight: 4
     region: content
 hidden:
   field_team_leader: true

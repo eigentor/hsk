@@ -13,10 +13,10 @@ bundle: pgn_viewer
 mode: default
 content:
   field_pgn_txt_pgn:
-    weight: 0
+    type: hsk_pgn_display
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: hsk_pgn_display
+    weight: 0
     region: content
 hidden: {  }

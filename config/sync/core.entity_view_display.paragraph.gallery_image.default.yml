@@ -16,7 +16,7 @@ bundle: gallery_image
 mode: default
 content:
   field_gallery_image:
-    weight: 0
+    type: colorbox
     label: above
     settings:
       colorbox_node_style: image_gallery_thumb
@@ -27,7 +27,7 @@ content:
       colorbox_caption: custom
       colorbox_caption_custom: '[paragraph:field_gallery_image_caption]'
     third_party_settings: {  }
-    type: colorbox
+    weight: 0
     region: content
 hidden:
   field_gallery_image_caption: true

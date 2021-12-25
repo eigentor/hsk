@@ -25,47 +25,12 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: role
-        options:
-          role:
-            administrator: administrator
-            redakteur: redakteur
-            chefredakteur: chefredakteur
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Anwenden
-          reset_button: false
-          reset_button_label: Zurücksetzen
-          exposed_sorts_label: 'Sortieren nach'
-          expose_sort_order: true
-          sort_asc_label: Aufsteigend
-          sort_desc_label: Absteigend
-      pager:
-        type: none
-        options:
-          offset: 0
-      style:
-        type: table
-      row:
-        type: fields
+      title: Spieler
       fields:
         counter:
           id: counter
@@ -74,6 +39,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: counter
           label: ''
           exclude: false
           alter:
@@ -116,7 +82,6 @@ display:
           empty_zero: false
           hide_alter_empty: true
           counter_start: 1
-          plugin_id: counter
         field_player_image:
           id: field_player_image
           table: node__field_player_image
@@ -124,6 +89,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Portraitbild
           exclude: false
           alter:
@@ -168,8 +134,8 @@ display:
           click_sort_column: target_id
           type: image
           settings:
-            image_style: portrait_tiny
             image_link: ''
+            image_style: portrait_tiny
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -180,32 +146,27 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         title:
           id: title
           table: node_field_data
           field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: node
           entity_field: title
+          plugin_id: field
+          label: Titel
+          exclude: false
           alter:
             alter_text: false
             make_link: false
             absolute: false
-            trim: false
             word_boundary: false
             ellipsis: false
             strip_tags: false
+            trim: false
             html: false
-          hide_empty: false
-          empty_zero: false
-          settings:
-            link_to_entity: true
-          plugin_id: field
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Titel
-          exclude: false
           element_type: ''
           element_class: ''
           element_label_type: ''
@@ -215,9 +176,13 @@ display:
           element_wrapper_class: ''
           element_default_classes: true
           empty: ''
+          hide_empty: false
+          empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
           type: string
+          settings:
+            link_to_entity: true
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -235,6 +200,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'DWZ Spieler'
           exclude: false
           alter:
@@ -291,7 +257,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_member_no_dsb:
           id: field_member_no_dsb
           table: node__field_member_no_dsb
@@ -299,6 +264,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'Mitgliedsnummer DSB'
           exclude: false
           alter:
@@ -354,7 +320,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         edit_node:
           id: edit_node
           table: node_field_revision
@@ -362,6 +327,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: entity_link_edit
           label: ''
           exclude: false
           alter:
@@ -406,34 +373,31 @@ display:
           text: Bearbeiten
           output_url_as_text: false
           absolute: false
-          entity_type: node
-          plugin_id: entity_link_edit
-      filters:
-        status:
-          value: '1'
-          table: node_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: node
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
-        type:
-          id: type
-          table: node_field_data
-          field: type
-          value:
-            player: player
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
+      pager:
+        type: none
+        options:
+          offset: 0
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Anwenden
+          reset_button: false
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: 'Sortieren nach'
+          expose_sort_order: true
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
+      access:
+        type: role
+        options:
+          role:
+            administrator: administrator
+            redakteur: redakteur
+            chefredakteur: chefredakteur
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
       sorts:
         field_dwz_value:
           id: field_dwz_value
@@ -442,17 +406,54 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: standard
           order: DESC
-          exposed: false
           expose:
             label: ''
-          plugin_id: standard
-      title: Spieler
+            field_identifier: field_dwz_value
+          exposed: false
+      arguments: {  }
+      filters:
+        status:
+          id: status
+          table: node_field_data
+          field: status
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          value:
+            player: player
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+      style:
+        type: table
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships: {  }
       header: {  }
       footer: {  }
-      empty: {  }
-      relationships: {  }
-      arguments: {  }
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -466,9 +467,9 @@ display:
         - 'config:field.storage.node.field_member_no_dsb'
         - 'config:field.storage.node.field_player_image'
   page_1:
-    display_plugin: page
     id: page_1
     display_title: Page
+    display_plugin: page
     position: 1
     display_options:
       display_extenders: {  }
@@ -477,11 +478,11 @@ display:
         type: normal
         title: Spieler-Liste
         description: ''
-        expanded: false
-        parent: system.admin_content
         weight: 50
-        context: '0'
+        expanded: false
         menu_name: admin
+        parent: system.admin_content
+        context: '0'
     cache_metadata:
       max-age: -1
       contexts:

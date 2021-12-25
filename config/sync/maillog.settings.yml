@@ -1,6 +1,6 @@
-send: true
-log: true
-verbose: true
 _core:
   default_config_hash: qE7nRF7VKMVNntpJzc4mJtGeq3MOzeYF9orshg3dXyE
 langcode: de
+send: true
+log: true
+verbose: true

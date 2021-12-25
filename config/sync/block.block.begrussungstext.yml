@@ -17,8 +17,8 @@ plugin: 'block_content:7da41258-75ca-4a9f-8a9d-6f4a9c72d213'
 settings:
   id: 'block_content:7da41258-75ca-4a9f-8a9d-6f4a9c72d213'
   label: 'Schachklub HSK Lister Turm Hannover'
-  provider: block_content
   label_display: visible
+  provider: block_content
   status: true
   info: ''
   view_mode: full

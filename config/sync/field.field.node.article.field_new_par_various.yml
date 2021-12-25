@@ -23,11 +23,11 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       text: text
       pgn_viewer: pgn_viewer
       video: video
+    negate: 0
     target_bundles_drag_drop:
       gallery_image:
         weight: 8
@@ -36,8 +36,8 @@ settings:
         weight: 5
         enabled: false
       pgn_viewer:
-        enabled: true
         weight: 6
+        enabled: true
       slideshow:
         weight: 11
         enabled: false
@@ -45,9 +45,9 @@ settings:
         weight: 12
         enabled: false
       text:
-        enabled: true
         weight: 4
-      video:
         enabled: true
+      video:
         weight: 14
+        enabled: true
 field_type: entity_reference_revisions

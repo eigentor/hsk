@@ -20,20 +20,20 @@ bundle: team
 mode: teaser
 content:
   kader_2_entity_view_1:
-    weight: 10
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 10
+    region: content
   links:
+    settings: {  }
+    third_party_settings: {  }
     weight: 100
     region: content
+  referenced_player_entity_view_1:
     settings: {  }
     third_party_settings: {  }
-  referenced_player_entity_view_1:
     weight: 10
     region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   field_league: true
   field_results_standings: true

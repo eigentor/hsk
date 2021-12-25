@@ -11,14 +11,14 @@ id: news_thumb_startseite
 label: 'News Thumb Startseite'
 image_style_mappings:
   -
-    breakpoint_id: hsk_zymphonies.tablet
-    multiplier: 1x
     image_mapping_type: image_style
     image_mapping: news_thumb_startseite
-  -
-    breakpoint_id: hsk_zymphonies.mobile
+    breakpoint_id: hsk_zymphonies.tablet
     multiplier: 1x
+  -
     image_mapping_type: image_style
     image_mapping: news_thumb_mobile
+    breakpoint_id: hsk_zymphonies.mobile
+    multiplier: 1x
 breakpoint_group: hsk_zymphonies
 fallback_image_style: news_thumb_startseite

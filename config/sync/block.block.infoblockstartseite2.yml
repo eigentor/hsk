@@ -17,8 +17,8 @@ plugin: 'block_content:83519218-57f2-40c5-9c4f-5ff33e4887c2'
 settings:
   id: 'block_content:83519218-57f2-40c5-9c4f-5ff33e4887c2'
   label: 'Info-Block Startseite 2'
-  provider: block_content
   label_display: '0'
+  provider: block_content
   status: true
   info: ''
   view_mode: full

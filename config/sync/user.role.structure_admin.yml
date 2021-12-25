@@ -1,7 +1,14 @@
 uuid: f0ef360d-d09b-4bc8-9712-cdb327f64af8
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
+  module:
+    - block
+    - filter
+    - quick_node_clone
+    - system
 id: structure_admin
 label: Struktur-Admin
 weight: 5

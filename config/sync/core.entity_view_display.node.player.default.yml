@@ -21,37 +21,37 @@ bundle: player
 mode: default
 content:
   body:
-    weight: 2
+    type: text_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 2
     region: content
   field_dwz:
     type: number_integer
-    weight: 3
-    region: content
     label: inline
     settings:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
+    weight: 3
+    region: content
   field_function_club:
-    weight: 1
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   field_player_image:
-    weight: 0
+    type: image
     label: visually_hidden
     settings:
-      image_style: medium
       image_link: ''
+      image_style: medium
     third_party_settings: {  }
-    type: image
+    weight: 0
     region: content
 hidden:
   field_fide_id: true

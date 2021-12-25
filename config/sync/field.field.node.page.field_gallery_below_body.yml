@@ -25,6 +25,6 @@ settings:
       image_gallery: image_gallery
     target_bundles_drag_drop:
       image_gallery:
-        enabled: true
         weight: 2
+        enabled: true
 field_type: entity_reference_revisions

@@ -15,10 +15,10 @@ bundle: user
 mode: referenced_user
 content:
   masquerade:
-    weight: 50
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 50
+    region: content
 hidden:
   field_matching_player: true
   langcode: true

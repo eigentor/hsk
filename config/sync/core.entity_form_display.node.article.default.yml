@@ -27,16 +27,16 @@ third_party_settings:
       children:
         - field_image
         - field_main_image_teaser_only
+      label: Hauptbild
+      region: content
       parent_name: ''
       weight: 1
       format_type: fieldset
-      region: content
       format_settings:
-        id: ''
         classes: main-image
+        id: ''
         description: ''
         required_fields: true
-      label: Hauptbild
 _core:
   default_config_hash: 7CvVDwPYotAZFBa36mcpMKZOfVRRp_iGuPHpHaavI6E
 id: node.article.default
@@ -47,22 +47,23 @@ content:
   body:
     type: text_textarea_with_summary
     weight: 6
+    region: content
     settings:
       rows: 9
       summary_rows: 3
       placeholder: ''
       show_summary: false
     third_party_settings: {  }
-    region: content
   created:
     type: datetime_timestamp
     weight: 12
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_gallery_above_body:
     type: entity_reference_paragraphs
     weight: 5
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -71,10 +72,10 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
     third_party_settings: {  }
-    region: content
   field_gallery_below_body:
     type: entity_reference_paragraphs
     weight: 8
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -83,17 +84,16 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
     third_party_settings: {  }
-    region: content
   field_image:
     type: image_focal_point
     weight: 2
+    region: content
     settings:
+      progress_indicator: throbber
       preview_image_style: max_325x325
       preview_link: true
       offsets: '50,50'
-      progress_indicator: throbber
     third_party_settings: {  }
-    region: content
   field_main_image_teaser_only:
     type: boolean_checkbox
     weight: 3
@@ -104,6 +104,7 @@ content:
   field_new_par_various:
     type: paragraphs
     weight: 7
+    region: content
     settings:
       title: Absatz
       title_plural: Paragraphs
@@ -115,40 +116,39 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
       features:
-        duplicate: '0'
-        collapse_edit_all: '0'
         add_above: '0'
+        collapse_edit_all: '0'
+        duplicate: '0'
     third_party_settings:
       paragraphs_features:
         add_in_between: true
         delete_confirmation: false
         split_text: false
-    region: content
   field_new_txt_capt_main_img:
+    type: string_textfield
     weight: 4
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_tags:
     type: entity_reference_autocomplete_tags
     weight: 10
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    region: content
   langcode:
     type: language_select
     weight: 9
+    region: content
     settings:
       include_locked: true
     third_party_settings: {  }
-    region: content
   node_class:
     type: string_textfield
     weight: 16
@@ -160,47 +160,47 @@ content:
   path:
     type: path
     weight: 15
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   promote:
     type: boolean_checkbox
+    weight: 13
+    region: content
     settings:
       display_label: true
-    weight: 13
     third_party_settings: {  }
-    region: content
   status:
     type: boolean_checkbox
+    weight: 17
+    region: content
     settings:
       display_label: true
-    weight: 17
     third_party_settings: {  }
-    region: content
   sticky:
     type: boolean_checkbox
+    weight: 14
+    region: content
     settings:
       display_label: true
-    weight: 14
     third_party_settings: {  }
-    region: content
   title:
     type: string_textfield
     weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    region: content
   uid:
     type: entity_reference_autocomplete
     weight: 11
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    region: content
 hidden:
   comment: true

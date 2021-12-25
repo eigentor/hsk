@@ -22,20 +22,20 @@ mode: entity_embed
 content:
   field_function_club:
     type: string
-    weight: 1
     label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 1
     region: content
   field_player_image:
-    weight: 0
+    type: image
     label: visually_hidden
     settings:
-      image_style: portrait
       image_link: ''
+      image_style: portrait
     third_party_settings: {  }
-    type: image
+    weight: 0
     region: content
 hidden:
   body: true

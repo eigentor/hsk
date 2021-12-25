@@ -19,22 +19,22 @@ plugin: 'views_block:events_list-block_1'
 settings:
   id: 'views_block:events_list-block_1'
   label: ''
-  provider: views
   label_display: visible
+  provider: views
   views_label: ''
   items_per_page: '5'
 visibility:
-  node_type:
-    id: node_type
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "<front>\r\n/turniere\r\n/vereinsmeisterschaft\r\n/vereinspokal\r\n/monatsblitz\r\n/schnellschach\r\n/turnier-simultan-tusi\r\n/thema-turnier\r\n/vorstand\r\n/node/351"
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
     bundles:
       article: article
       event: event
       page: page
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
-  request_path:
-    id: request_path
-    pages: "<front>\r\n/turniere\r\n/vereinsmeisterschaft\r\n/vereinspokal\r\n/monatsblitz\r\n/schnellschach\r\n/turnier-simultan-tusi\r\n/thema-turnier\r\n/vorstand\r\n/node/351"
-    negate: true
-    context_mapping: {  }
