@@ -1,0 +1,60 @@
+# Schema for configuration files of the time_field module.
+field.value.time:
+  type: mapping
+  label: 'Time field value'
+  mapping:
+    value:
+      type: integer
+      label: 'Default value'
+
+field.value.time_range:
+  type: mapping
+  label: 'Time range field value'
+  mapping:
+    from:
+      type: integer
+      label: 'Default value'
+    to:
+      type: integer
+      label: 'Default value'
+
+field.formatter.settings.time_formatter:
+  type: mapping
+  label: 'Time formatter settings'
+  mapping:
+    time_format:
+      type: date_format
+      label: 'Time format'
+
+field.formatter.settings.time_range_formatter:
+  type: mapping
+  label: 'Time formatter settings'
+  mapping:
+    time_format:
+      type: date_format
+      label: 'Time format'
+    timerange_format:
+      type: label
+      label: 'Time range format'
+
+field.widget.settings.time_widget:
+  type: mapping
+  label: 'Time widget settings'
+  mapping:
+    enabled:
+      type: boolean
+      label: 'Add seconds parameter to input widget'
+    step:
+      type: integer
+      label: 'Step to change seconds'
+
+field.widget.settings.time_range_widget:
+  type: mapping
+  label: 'Time range widget settings'
+  mapping:
+    enabled:
+      type: boolean
+      label: 'Add seconds parameter to input widget'
+    step:
+      type: integer
+      label: 'Step to change seconds'

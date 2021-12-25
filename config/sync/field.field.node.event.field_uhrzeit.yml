@@ -1,0 +1,21 @@
+uuid: 3d4ca6c3-3029-4636-822f-0e688fd6d86f
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_uhrzeit
+    - node.type.event
+  module:
+    - time_field
+id: node.event.field_uhrzeit
+field_name: field_uhrzeit
+entity_type: node
+bundle: event
+label: Uhrzeit
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: time_range

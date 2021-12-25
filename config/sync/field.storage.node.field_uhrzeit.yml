@@ -1,0 +1,19 @@
+uuid: 96d1a02f-437c-4829-b582-975a7424c5ac
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+    - time_field
+id: node.field_uhrzeit
+field_name: field_uhrzeit
+entity_type: node
+type: time_range
+settings: {  }
+module: time_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

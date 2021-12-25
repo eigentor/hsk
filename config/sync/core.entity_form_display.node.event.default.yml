@@ -10,12 +10,14 @@ dependencies:
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_type
+    - field.field.node.event.field_uhrzeit
     - node.type.event
   module:
     - datetime
     - hms_field
     - path
     - text
+    - time_field
 id: node.event.default
 targetEntityType: node
 bundle: event
@@ -82,6 +84,14 @@ content:
     weight: 6
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_uhrzeit:
+    type: time_range_widget
+    weight: 3
+    region: content
+    settings:
+      enabled: false
+      step: 5
     third_party_settings: {  }
   langcode:
     type: language_select
