@@ -1,0 +1,12 @@
+{
+  "name": "drupal/timefield",
+  "description": "Implements a time field (HH:MM), with optional to time and weekly repeat value.",
+  "type": "drupal-module",
+  "homepage": "http://drupal.org/project/timefield",
+  "license": "GPL-2.0-or-later",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "suggest": {
+    "fgelinas/timepicker": "Required to use drupal/timefield. jQuery UI Timepicker a jQuery UI time picker plugin build to match with other official jQuery UI widgets. Based on the existing date picker, it will blend nicely with your form and use your selected jQuery UI theme. The plugin is very easy to integrate in your form for you time (hours / minutes) inputs."
+  }
+}

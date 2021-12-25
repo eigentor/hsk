@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '105e1b6f678243dfbecb39734169c5ab166a4443',
+        'reference' => '20f17eee4db45fe1e53126324ca0c32311002b79',
         'name' => 'drupal/recommended-project',
         'dev' => true,
     ),
@@ -1188,7 +1188,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '105e1b6f678243dfbecb39734169c5ab166a4443',
+            'reference' => '20f17eee4db45fe1e53126324ca0c32311002b79',
             'dev_requirement' => false,
         ),
         'drupal/responsive_image' => array(
@@ -1318,6 +1318,17 @@
             'replaced' => array(
                 0 => '9.3.0',
             ),
+        ),
+        'drupal/timefield' => array(
+            'pretty_version' => 'dev-1.0.x',
+            'version' => 'dev-1.0.x',
+            'type' => 'drupal-module',
+            'install_path' => __DIR__ . '/../../web/modules/contrib/timefield',
+            'aliases' => array(
+                0 => '1.0.x-dev',
+            ),
+            'reference' => '85aa8351f8b079508338ff7c4ed8aceab6e8715c',
+            'dev_requirement' => false,
         ),
         'drupal/token' => array(
             'pretty_version' => '1.9.0',

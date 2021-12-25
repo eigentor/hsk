@@ -1,0 +1,24 @@
+uuid: 25fda709-5939-42c7-a488-f4424570d214
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_uhrzeit
+    - node.type.event
+  module:
+    - timefield
+id: node.event.field_uhrzeit
+field_name: field_uhrzeit
+entity_type: node
+bundle: event
+label: Uhrzeit
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  totime: optional
+  weekly_summary: 0
+  weekly_summary_with_label: 0
+field_type: timefield

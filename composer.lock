@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fbd94a7828c58b86a22fd79fff6dadfa",
+    "content-hash": "2c9bebd5ae0b7ae70a1d7a17467fcf6e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5215,6 +5215,58 @@
             }
         },
         {
+            "name": "drupal/timefield",
+            "version": "dev-1.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/timefield.git",
+                "reference": "85aa8351f8b079508338ff7c4ed8aceab6e8715c"
+            },
+            "require": {
+                "drupal/core": "^8.7.7 || ^9"
+            },
+            "suggest": {
+                "fgelinas/timepicker": "Required to use drupal/timefield. jQuery UI Timepicker a jQuery UI time picker plugin build to match with other official jQuery UI widgets. Based on the existing date picker, it will blend nicely with your form and use your selected jQuery UI theme. The plugin is very easy to integrate in your form for you time (hours / minutes) inputs."
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.x": "1.0.x-dev"
+                },
+                "drupal": {
+                    "version": "1.0.x-dev",
+                    "datestamp": "1626801107",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "awm",
+                    "homepage": "https://www.drupal.org/user/1059398"
+                },
+                {
+                    "name": "keen-on.digital",
+                    "homepage": "https://www.drupal.org/user/3675657"
+                },
+                {
+                    "name": "wesnick",
+                    "homepage": "https://www.drupal.org/user/511834"
+                }
+            ],
+            "description": "Implements a time field (HH:MM), with optional to time and weekly repeat value.",
+            "homepage": "http://drupal.org/project/timefield",
+            "support": {
+                "source": "https://git.drupalcode.org/project/timefield"
+            }
+        },
+        {
             "name": "drupal/token",
             "version": "1.9.0",
             "source": {
@@ -10282,6 +10334,7 @@
         "drupal/markup": 10,
         "drupal/masquerade": 10,
         "drupal/rules": 20,
+        "drupal/timefield": 20,
         "drupal/typed_data": 15
     },
     "prefer-stable": true,
