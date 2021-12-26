@@ -3542,7 +3542,7 @@ nav#block-hsk-footer ul li a {
   font-size: 12.4px;
   font-size: 0.8rem;
 }
-.path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time {
+.path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time, .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-uhrzeit-1 {
   margin-top: 3px;
   font-size: 11.625px;
   font-size: 0.75rem;
@@ -3550,12 +3550,12 @@ nav#block-hsk-footer ul li a {
   text-align: center;
   min-width: 80px;
 }
-.path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date {
+.path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date, .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-uhrzeit-1 .date {
   background: #888;
   color: white;
   padding: 1px 6px;
 }
-.path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .time {
+.path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .time, .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-uhrzeit-1 .time {
   padding: 2px 0;
   border: 1px solid #ccc;
   border-top: 0;
@@ -3831,7 +3831,7 @@ nav#block-hsk-footer ul li a {
   .path-frontpage #block-views-block-events-list-block-1 .views-row {
     margin-bottom: 13px;
   }
-  .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date, .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-uhrzeit .date {
+  .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date, .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-uhrzeit-1 .date {
     background: #999;
     font-size: 10.85px;
     font-size: 0.7rem;
