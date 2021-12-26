@@ -5,8 +5,6 @@ dependencies:
   config:
     - field.field.node.event.body
     - field.field.node.event.field_ev_date
-    - field.field.node.event.field_ev_end_time
-    - field.field.node.event.field_ev_start_time
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_type
@@ -14,7 +12,6 @@ dependencies:
     - node.type.event
   module:
     - datetime
-    - hms_field
     - path
     - text
     - time_field
@@ -44,24 +41,6 @@ content:
     weight: 2
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_ev_end_time:
-    type: hms_default
-    weight: 5
-    region: content
-    settings:
-      format: 'h:mm'
-      default_placeholder: 1
-      placeholder: ''
-    third_party_settings: {  }
-  field_ev_start_time:
-    type: hms_default
-    weight: 4
-    region: content
-    settings:
-      format: 'h:mm'
-      default_placeholder: 1
-      placeholder: ''
     third_party_settings: {  }
   field_event_location:
     type: string_textfield

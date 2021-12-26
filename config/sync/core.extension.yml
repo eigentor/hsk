@@ -46,7 +46,6 @@ module:
   focal_point: 0
   help: 0
   history: 0
-  hms_field: 0
   hsk_comments: 0
   hsk_images: 0
   hsk_import_dwz: 0
