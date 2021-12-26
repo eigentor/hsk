@@ -197,9 +197,14 @@
         i:before
           background: $primary-color
           content: "\f135"
+          +x-rem(font-size, 3.8)
+          padding-top: 0.03em
+          padding-right: 0.03em
         h3, h3 a
           color: $primary-color
       &.pokal
+        i:before
+          +x-rem(font-size, 3.5)
         h3, h3 a
           color: darken($grey-background, 10%)
       &.blitz
@@ -217,13 +222,14 @@
         i:before
           content: "\f248"
           background: $blue
-          +x-rem(font-size, 3)
+          +x-rem(font-size, 3.5)
         h3, h3 a
           color: darken($blue, 10%)
       &.thema
         i:before
           content: "\f02d"
           background: $primary-color
+          +x-rem(font-size, 3.5)
         h3, h3 a
           color: $primary-color
 

@@ -2399,9 +2399,17 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft i:before {
   background: #ED8600;
   content: "";
+  font-size: 58.9px;
+  font-size: 3.8rem;
+  padding-top: 0.03em;
+  padding-right: 0.03em;
 }
 .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft h3, .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft h3 a {
   color: #ED8600;
+}
+.page-node-type-page .node-turniere .content-box.pokal i:before {
+  font-size: 54.25px;
+  font-size: 3.5rem;
 }
 .page-node-type-page .node-turniere .content-box.pokal h3, .page-node-type-page .node-turniere .content-box.pokal h3 a {
   color: #6f6f6f;
@@ -2422,8 +2430,8 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .page-node-type-page .node-turniere .content-box.tusi i:before {
   content: "";
   background: #6A7BA8;
-  font-size: 46.5px;
-  font-size: 3rem;
+  font-size: 54.25px;
+  font-size: 3.5rem;
 }
 .page-node-type-page .node-turniere .content-box.tusi h3, .page-node-type-page .node-turniere .content-box.tusi h3 a {
   color: #52628d;
@@ -2431,6 +2439,8 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .page-node-type-page .node-turniere .content-box.thema i:before {
   content: "";
   background: #ED8600;
+  font-size: 54.25px;
+  font-size: 3.5rem;
 }
 .page-node-type-page .node-turniere .content-box.thema h3, .page-node-type-page .node-turniere .content-box.thema h3 a {
   color: #ED8600;
@@ -2809,8 +2819,8 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   left: -115px;
   bottom: -22px;
   display: block;
-  font-size: 62px;
-  font-size: 4rem;
+  font-size: 54.25px;
+  font-size: 3.5rem;
   width: 100px;
   height: 100px;
   line-height: 100px;
@@ -2836,8 +2846,8 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   left: -115px;
   bottom: -22px;
   display: block;
-  font-size: 62px;
-  font-size: 4rem;
+  font-size: 54.25px;
+  font-size: 3.5rem;
   width: 100px;
   height: 100px;
   line-height: 100px;
@@ -2867,8 +2877,8 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   left: -115px;
   bottom: -22px;
   display: block;
-  font-size: 62px;
-  font-size: 4rem;
+  font-size: 54.25px;
+  font-size: 3.5rem;
   width: 100px;
   height: 100px;
   line-height: 100px;
@@ -2898,8 +2908,8 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   left: -115px;
   bottom: -22px;
   display: block;
-  font-size: 62px;
-  font-size: 4rem;
+  font-size: 54.25px;
+  font-size: 3.5rem;
   width: 100px;
   height: 100px;
   line-height: 100px;
@@ -3730,8 +3740,8 @@ nav#block-hsk-footer ul li a {
 .path-frontpage #block-infoblockstartseite2 h3.freizeitheim:before {
   position: absolute;
   font-family: Fontawesome;
-  content: "";
-  left: -35px;
+  content: "";
+  left: -39px;
   top: -5px;
   font-size: 35.65px;
   font-size: 2.3rem;
@@ -3741,8 +3751,8 @@ nav#block-hsk-footer ul li a {
 }
 .path-frontpage #block-infoblockstartseite2 p.vorsitzender:before {
   position: absolute;
-  font-family: Fontawesome;
-  content: "";
+  font-family: Fontawesome-Regular;
+  content: "";
   left: -40px;
   top: -6px;
   font-size: 27.9px;
