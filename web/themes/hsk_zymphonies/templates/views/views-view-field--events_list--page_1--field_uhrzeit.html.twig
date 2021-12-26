@@ -21,8 +21,8 @@
 */
 #}
 <div class="date">
-  {{ row._entity.fields.field_ev_date.date|date('d.m.Y') }}
+  {{ row._entity.fields.field_ev_date.date|date('d.m.Y', false, 'Europe/Berlin') }}
 </div>
 <div class="time">
-  {{ row._entity.fields.field_uhrzeit.from|date('H:i') }}
+  {{ row._entity.fields.field_uhrzeit.from|date('H:i', false, 'Europe/Berlin') }}
 </div>
