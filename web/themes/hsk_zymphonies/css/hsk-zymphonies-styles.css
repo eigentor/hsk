@@ -1566,20 +1566,20 @@ input, button, select, textarea {
   border: none;
   padding-bottom: 0;
 }
-.sidebar .view-events-list .views-field-field-ev-start-time {
+.sidebar .view-events-list .views-field-field-ev-start-time, .sidebar .view-events-list .views-field-field-uhrzeit {
   color: #777;
   line-height: 1.2;
   margin-bottom: -2px;
   font-size: 13.95px;
   font-size: 0.9rem;
 }
-.sidebar .view-events-list .views-field-field-ev-start-time .date {
+.sidebar .view-events-list .views-field-field-ev-start-time .date, .sidebar .view-events-list .views-field-field-uhrzeit .date {
   display: inline;
 }
-.sidebar .view-events-list .views-field-field-ev-start-time .time {
+.sidebar .view-events-list .views-field-field-ev-start-time .time, .sidebar .view-events-list .views-field-field-uhrzeit .time {
   display: inline;
 }
-.sidebar .view-events-list .views-field-field-ev-start-time .time:before {
+.sidebar .view-events-list .views-field-field-ev-start-time .time:before, .sidebar .view-events-list .views-field-field-uhrzeit .time:before {
   content: "-";
   padding: 0 0 0 1px;
 }
@@ -1670,7 +1670,7 @@ input, button, select, textarea {
   font-size: 12.4px;
   font-size: 0.8rem;
 }
-.path-termine .view-events-list .views-row .views-field-field-ev-start-time {
+.path-termine .view-events-list .views-row .views-field-field-ev-start-time, .path-termine .view-events-list .views-row .views-field-field-uhrzeit {
   margin-top: 3px;
   font-size: 11.625px;
   font-size: 0.75rem;
@@ -1678,12 +1678,12 @@ input, button, select, textarea {
   text-align: center;
   min-width: 80px;
 }
-.path-termine .view-events-list .views-row .views-field-field-ev-start-time .date {
+.path-termine .view-events-list .views-row .views-field-field-ev-start-time .date, .path-termine .view-events-list .views-row .views-field-field-uhrzeit .date {
   background: #888;
   color: white;
   padding: 1px 6px;
 }
-.path-termine .view-events-list .views-row .views-field-field-ev-start-time .time {
+.path-termine .view-events-list .views-row .views-field-field-ev-start-time .time, .path-termine .view-events-list .views-row .views-field-field-uhrzeit .time {
   padding: 2px 0;
   border: 1px solid #ccc;
   border-top: 0;
@@ -1859,13 +1859,28 @@ input, button, select, textarea {
   }
 }
 @media only screen and (min-width: 991px) {
+  .sidebar .view-events-list .views-row {
+    margin-bottom: 0.7em;
+  }
   .sidebar .view-events-list .views-field-title h3 {
     font-size: 13.175px;
     font-size: 0.85rem;
   }
-  .sidebar .view-events-list .views-field-field-ev-start-time {
-    font-size: 12.4px;
-    font-size: 0.8rem;
+  .sidebar .view-events-list .views-field-field-ev-start-time, .sidebar .view-events-list .views-field-field-uhrzeit-1 {
+    font-family: "Roboto Slab", serif;
+    margin-bottom: -0.2em;
+    font-size: 13.175px;
+    font-size: 0.85rem;
+  }
+  .sidebar .view-events-list .views-field-field-ev-start-time .field-content, .sidebar .view-events-list .views-field-field-uhrzeit-1 .field-content {
+    display: inline-block;
+  }
+  .sidebar .view-events-list .views-field-field-ev-start-time .date, .sidebar .view-events-list .views-field-field-ev-start-time .time, .sidebar .view-events-list .views-field-field-uhrzeit-1 .date, .sidebar .view-events-list .views-field-field-uhrzeit-1 .time {
+    display: inline;
+  }
+  .sidebar .view-events-list .views-field-field-ev-start-time .date:after, .sidebar .view-events-list .views-field-field-uhrzeit-1 .date:after {
+    content: "-";
+    padding-left: 0.15em;
   }
 }
 .path-mannschaften .view-mannschaften .views-row {

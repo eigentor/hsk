@@ -66,7 +66,7 @@
         +x-rem(font-size, 1)
         border: none
         padding-bottom: 0
-    .views-field-field-ev-start-time
+    .views-field-field-ev-start-time, .views-field-field-uhrzeit
       color: #777
       line-height: 1.2
       margin-bottom: -2px
@@ -146,7 +146,7 @@
       +legacy-pie-clearfix
       .views-field-field-ev-date
         +x-rem(font-size, 0.8)
-      .views-field-field-ev-start-time
+      .views-field-field-ev-start-time, .views-field-field-uhrzeit
         margin-top: 3px
         +x-rem(font-size, 0.75)
         //float: left
@@ -311,11 +311,22 @@
 
   .sidebar
     .view-events-list
+      .views-row
+        margin-bottom: 0.7em
       .views-field-title
         h3
           +x-rem(font-size, 0.85)
-      .views-field-field-ev-start-time
-        +x-rem(font-size, 0.8)
+      .views-field-field-ev-start-time, .views-field-field-uhrzeit-1
+        font-family: $roboto-slab
+        .field-content
+          display: inline-block
+        margin-bottom: -0.2em
+        +x-rem(font-size, 0.85)
+        .date, .time
+          display: inline
+        .date:after
+          content: "-"
+          padding-left: 0.15em
 
 .path-mannschaften
   .view-mannschaften
