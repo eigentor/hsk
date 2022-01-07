@@ -2664,6 +2664,16 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   color: #777;
 }
 
+.cbreplay #westNorth0 {
+  min-height: 480px;
+}
+.cbreplay .nota-container {
+  font-size: 14px;
+}
+.cbreplay .nota-container .nota-game {
+  padding-left: 15px;
+}
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/
@@ -2980,6 +2990,17 @@ figure figcaption {
   .page-node-type-turnier.node-schnellschach .col-md-9, .page-node-type-turnier.node-monatsblitz .col-md-9, .page-node-type-turnier.node-vereinspokal .col-md-9, .page-node-type-turnier.node-seniorenschnellschach .col-md-9 {
     float: none;
     width: 100%;
+  }
+}
+@media only screen and (min-width: 991px) {
+  .cbreplay #westNorth0 {
+    min-height: 480px;
+  }
+  .cbreplay .nota-container {
+    font-size: 14px;
+  }
+  .cbreplay .nota-container .nota-game {
+    padding-left: 15px;
   }
 }
 /* End Media Query Tablet */
