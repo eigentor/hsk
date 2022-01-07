@@ -2992,17 +2992,6 @@ figure figcaption {
     width: 100%;
   }
 }
-@media only screen and (min-width: 991px) {
-  .cbreplay #westNorth0 {
-    min-height: 480px;
-  }
-  .cbreplay .nota-container {
-    font-size: 14px;
-  }
-  .cbreplay .nota-container .nota-game {
-    padding-left: 15px;
-  }
-}
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
