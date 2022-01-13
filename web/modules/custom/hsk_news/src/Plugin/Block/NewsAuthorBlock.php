@@ -73,10 +73,11 @@ class NewsAuthorBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $news_entity = $this->entityTypeManager->getStorage('node')->load($nid);
     if($news_entity->getType() == 'article') {
       $uid = $news_entity->getOwnerId();
+      if(!empty($uid))  {
       $author = $this->userStorage->load($uid);
 
       if($author->hasField('field_matching_player')) {
-        if(!empty($author->field_matching_player)) {
+        if(!empty($author->field_matching_player->target_id)) {
           $player = $author->field_matching_player->entity;
           $player_view_builder = $this->entityTypeManager->getViewBuilder('node');
           $player_data = $player_view_builder->view($player, 'autor_info');
@@ -92,6 +93,7 @@ class NewsAuthorBlock extends BlockBase implements ContainerFactoryPluginInterfa
 
     $peter = 7;
     return $player_data;
+    }
   }
 
 
