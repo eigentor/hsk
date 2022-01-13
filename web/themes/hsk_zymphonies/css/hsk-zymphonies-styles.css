@@ -2119,6 +2119,9 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   border: 1px solid #ddd;
   background: #f3f3f3;
 }
+.block-hsk-news-author.player-no {
+  display: none;
+}
 .block-hsk-news-author .pre-label {
   color: #777;
   font-size: 0.78rem;

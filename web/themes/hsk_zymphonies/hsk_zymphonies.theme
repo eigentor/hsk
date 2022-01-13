@@ -4,7 +4,8 @@
  * @param $variables
  * preprocess_page function
  */
-function hsk_zymphonies_preprocess_page(&$variables) {
+function hsk_zymphonies_preprocess_page(&$variables)
+{
   // Load the header Slideshow script on the front page
   $variables['page']['#cache']['contexts'][] = 'route';
   if (\Drupal::service('path.matcher')->isFrontPage()) {
@@ -40,7 +41,8 @@ function hsk_zymphonies_preprocess_page(&$variables) {
  * @param $variables
  * preprocess_html function
  */
-function hsk_zymphonies_preprocess_html(&$variables) {
+function hsk_zymphonies_preprocess_html(&$variables)
+{
   // Add the node classes from the node_class Module as body class
   if ($node = \Drupal::request()->attributes->get('node')) {
     if (!is_string($node)) {
@@ -59,17 +61,18 @@ function hsk_zymphonies_preprocess_html(&$variables) {
  * Implement template_preprocess_views_view();
  * @param $variables
  */
-function hsk_zymphonies_preprocess_views_view_unformatted__news(&$variables) {
+function hsk_zymphonies_preprocess_views_view_unformatted__news(&$variables)
+{
   // If the there is no value for the image field, the default image is used.
   // Add the class 'default-image' if this is the case.
-  if($variables['view']->current_display == 'block_1') {
-    foreach($variables['rows'] as $id => $row) {
+  if ($variables['view']->current_display == 'block_1') {
+    foreach ($variables['rows'] as $id => $row) {
       if ($row['content']['#row']->_entity->field_image->isEmpty()) {
         $variables['rows'][$id]['attributes']->addClass('default-image');
       }
     }
-  } elseif ($variables['view']->current_display == 'page_1'){
-    foreach($variables['rows'] as $id => $row) {
+  } elseif ($variables['view']->current_display == 'page_1') {
+    foreach ($variables['rows'] as $id => $row) {
       if ($row['content']['#node']->field_image->isEmpty()) {
         $variables['rows'][$id]['attributes']->addClass('default-image');
       }
@@ -82,10 +85,11 @@ function hsk_zymphonies_preprocess_views_view_unformatted__news(&$variables) {
  * implements template_preprocess_node();
  * @param $variables
  */
-function hsk_zymphonies_preprocess_node__article(&$variables) {
+function hsk_zymphonies_preprocess_node__article(&$variables)
+{
   // If the there is no value for the image field, the default image is used.
   // Add the class 'default-image' if this is the case.
-  if($variables['node']->field_image->isEmpty()) {
+  if ($variables['node']->field_image->isEmpty()) {
     $variables['attributes']['class'][] = 'default-image';
   }
 }

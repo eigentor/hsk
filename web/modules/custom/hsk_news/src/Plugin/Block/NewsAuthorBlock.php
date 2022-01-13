@@ -81,9 +81,16 @@ class NewsAuthorBlock extends BlockBase implements ContainerFactoryPluginInterfa
           $player = $author->field_matching_player->entity;
           $player_view_builder = $this->entityTypeManager->getViewBuilder('node');
           $player_data = $player_view_builder->view($player, 'autor_info');
+          $player_data['output']['#attributes']['class'] = 'player-yes';
         } else {
-          $player_data = ['#markup' => $this->t('The news author does not have a matching player.')];
-
+          $player_data = [
+            'output' => [
+              '#attributes'=> [
+                'class' => 'player-no'
+              ],
+            '#markup' => $this->t('The news author does not have a matching player.')
+             ],
+            ];
         }
       }
 
@@ -91,7 +98,6 @@ class NewsAuthorBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $player_data = ['#markup' => $this->t('This block needs to be displayed in a news article to show the author information')];
     }
 
-    $peter = 7;
     return $player_data;
     }
   }

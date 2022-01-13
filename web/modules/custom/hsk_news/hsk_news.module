@@ -1,0 +1,11 @@
+<?php
+
+function hsk_news_preprocess_block(&$variables)
+{
+  if ($variables['plugin_id'] == 'hsk_news_author') {
+    if (!empty($variables['content']['output']['#attributes']['class'])) {
+      $player_exists_class = $variables['content']['output']['#attributes']['class'];
+      $variables['attributes']['class'][] = $player_exists_class;
+    }
+  }
+}
