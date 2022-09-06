@@ -23,5 +23,6 @@ matchers:
         turnier: turnier
       group_by_bundle: false
       substitution_type: canonical
+      limit: 100
       include_unpublished: false
     weight: 0
