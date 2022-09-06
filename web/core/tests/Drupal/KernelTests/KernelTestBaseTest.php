@@ -320,11 +320,11 @@ class KernelTestBaseTest extends KernelTestBase {
         ':table_name' => '%',
         ':pattern' => 'sqlite_%',
       ])->fetchAllKeyed(0, 0);
-      $this->assertTrue(empty($result), 'All test tables have been removed.');
+      $this->assertEmpty($result, 'All test tables have been removed.');
     }
     else {
       $tables = $connection->schema()->findTables($this->databasePrefix . '%');
-      $this->assertTrue(empty($tables), 'All test tables have been removed.');
+      $this->assertEmpty($tables, 'All test tables have been removed.');
     }
   }
 
@@ -439,6 +439,16 @@ class KernelTestBaseTest extends KernelTestBase {
 
     $this->assertStringContainsString('Drupal\user\Entity\Role', StreamCapturer::$cache);
     $this->assertStringContainsString('test_role', StreamCapturer::$cache);
+  }
+
+  /**
+   * @covers ::bootEnvironment
+   */
+  public function testDatabaseDriverModuleEnabled() {
+    $module = Database::getConnection()->getProvider();
+
+    // Test that the module that is providing the database driver is enabled.
+    $this->assertSame(1, \Drupal::service('extension.list.module')->get($module)->status);
   }
 
 }

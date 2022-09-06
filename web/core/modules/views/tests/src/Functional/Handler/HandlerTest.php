@@ -39,8 +39,8 @@ class HandlerTest extends ViewTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  protected function setUp($import_test_views = TRUE): void {
-    parent::setUp($import_test_views);
+  protected function setUp($import_test_views = TRUE, $modules = ['views_test_config']): void {
+    parent::setUp($import_test_views, $modules);
     $this->drupalCreateContentType(['type' => 'page']);
     $this->addDefaultCommentField('node', 'page');
     $this->enableViewsTestModule();
@@ -304,7 +304,7 @@ class HandlerTest extends ViewTestBase {
 
     $field->options['relationship'] = 'valid_relationship';
     $field->setRelationship();
-    $this->assertFalse(!empty($field->relationship), 'Make sure that the relationship alias was not set without building a views query before.');
+    $this->assertEmpty($field->relationship, 'Make sure that the relationship alias was not set without building a views query before.');
 
     // Remove the invalid relationship.
     unset($view->relationship['broken_relationship']);

@@ -24,8 +24,6 @@ class SessionTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  protected $dumpHeaders = TRUE;
-
   /**
    * Tests for \Drupal\Core\Session\WriteSafeSessionHandler::setSessionWritable()
    * ::isSessionWritable and \Drupal\Core\Session\SessionManager::regenerate().
@@ -60,7 +58,7 @@ class SessionTest extends BrowserTestBase {
     $this->drupalGet('session-test/id');
     $matches = [];
     preg_match('/\s*session_id:(.*)\n/', $this->getSession()->getPage()->getContent(), $matches);
-    $this->assertTrue(!empty($matches[1]), 'Found session ID before logging in.');
+    $this->assertNotEmpty($matches[1], 'Found session ID before logging in.');
     $original_session = $matches[1];
 
     // We cannot use $this->drupalLogin($user); because we exit in
@@ -77,7 +75,7 @@ class SessionTest extends BrowserTestBase {
     $this->drupalGet('session-test/id');
     $matches = [];
     preg_match('/\s*session_id:(.*)\n/', $this->getSession()->getPage()->getContent(), $matches);
-    $this->assertTrue(!empty($matches[1]), 'Found session ID after logging in.');
+    $this->assertNotEmpty($matches[1], 'Found session ID after logging in.');
     $this->assertNotSame($original_session, $matches[1], 'Session ID changed after login.');
   }
 

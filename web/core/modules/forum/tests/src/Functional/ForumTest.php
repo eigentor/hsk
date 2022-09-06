@@ -382,8 +382,7 @@ class ForumTest extends BrowserTestBase {
     $this->drupalGet('admin/structure/taxonomy/manage/tags/add');
     $this->assertSession()->fieldExists('parent[]');
     // Test relations widget exists.
-    $relations_widget = $this->xpath("//details[@id='edit-relations']");
-    $this->assertTrue(isset($relations_widget[0]), 'Relations widget element found.');
+    $this->assertSession()->elementExists('xpath', "//details[@id='edit-relations']");
   }
 
   /**
@@ -464,7 +463,7 @@ class ForumTest extends BrowserTestBase {
       'description__value' => $description,
     ]);
     $term = array_shift($term);
-    $this->assertTrue(!empty($term), 'The ' . $type . ' exists in the database');
+    $this->assertNotEmpty($term, "The forum type '$type' should exist in the database.");
 
     // Verify forum hierarchy.
     $tid = $term->id();

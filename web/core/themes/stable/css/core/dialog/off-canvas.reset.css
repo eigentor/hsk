@@ -169,7 +169,6 @@
     perspective-origin: 50% 50%;
     position: static;
     right: auto;
-    -moz-tab-size: 8;
     tab-size: 8;
     table-layout: auto;
     text-align: left;
@@ -433,7 +432,6 @@
       perspective-origin: 50% 50%;
       position: static;
       right: auto;
-      -moz-tab-size: 8;
       tab-size: 8;
       table-layout: auto;
       text-align: left;
@@ -799,8 +797,12 @@
   box-shadow: none;
 }
 
-#drupal-off-canvas input:placeholder,
-#drupal-off-canvas textarea:placeholder {
+#drupal-off-canvas input:-ms-input-placeholder, #drupal-off-canvas textarea:-ms-input-placeholder {
+  color: gray;
+}
+
+#drupal-off-canvas input::placeholder,
+#drupal-off-canvas textarea::placeholder {
   color: gray;
 }
 
@@ -820,6 +822,10 @@
   width: 100%;
   min-height: 2.5rem;
   resize: vertical;
+}
+
+#drupal-off-canvas select[multiple] {
+  overflow: auto;
 }
 
 #drupal-off-canvas optgroup {

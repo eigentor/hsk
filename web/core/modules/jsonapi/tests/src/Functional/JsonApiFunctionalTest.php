@@ -179,9 +179,9 @@ class JsonApiFunctionalTest extends JsonApiFunctionalTestBase {
       'user--user',
       $first_include['type']
     );
-    $this->assertFalse(empty($first_include['attributes']));
-    $this->assertTrue(empty($first_include['attributes']['mail']));
-    $this->assertTrue(empty($first_include['attributes']['pass']));
+    $this->assertNotEmpty($first_include['attributes']);
+    $this->assertArrayNotHasKey('mail', $first_include['attributes']);
+    $this->assertArrayNotHasKey('pass', $first_include['attributes']);
     // 12. Collection with one access denied.
     $this->nodes[1]->set('status', FALSE);
     $this->nodes[1]->save();
@@ -284,8 +284,8 @@ class JsonApiFunctionalTest extends JsonApiFunctionalTestBase {
     $this->assertEquals(200, $response->getStatusCode());
     $this->assertEquals('user--user', $single_output['data']['type']);
     $this->assertEquals($this->user->get('name')->value, $single_output['data']['attributes']['name']);
-    $this->assertTrue(empty($single_output['data']['attributes']['mail']));
-    $this->assertTrue(empty($single_output['data']['attributes']['pass']));
+    $this->assertArrayNotHasKey('mail', $single_output['data']['attributes']);
+    $this->assertArrayNotHasKey('pass', $single_output['data']['attributes']);
     // 18. Test filtering on the column of a link.
     $filter = [
       'linkUri' => [
@@ -513,6 +513,39 @@ class JsonApiFunctionalTest extends JsonApiFunctionalTestBase {
     ]));
     $this->assertSession()->statusCodeEquals(200);
     $this->assertCount(0, $collection_output['data']);
+
+    // Request in maintenance mode returns valid JSON.
+    $this->container->get('state')->set('system.maintenance_mode', TRUE);
+    $response = $this->drupalGet('/jsonapi/taxonomy_term/tags');
+    $this->assertSession()->statusCodeEquals(503);
+    $this->assertSession()->responseHeaderContains('Content-Type', 'application/vnd.api+json');
+    $retry_after_time = $this->getSession()->getResponseHeader('Retry-After');
+    $this->assertTrue($retry_after_time >= 5 && $retry_after_time <= 10);
+    $expected_message = 'Drupal is currently under maintenance. We should be back shortly. Thank you for your patience.';
+    $this->assertSame($expected_message, Json::decode($response)['errors'][0]['detail']);
+
+    // Test that logged in user does not get logged out in maintenance mode
+    // when hitting jsonapi route.
+    $this->container->get('state')->set('system.maintenance_mode', FALSE);
+    $this->drupalLogin($this->userCanViewProfiles);
+    $this->container->get('state')->set('system.maintenance_mode', TRUE);
+    $this->drupalGet('/jsonapi/taxonomy_term/tags');
+    $this->assertSession()->statusCodeEquals(503);
+    $this->assertTrue($this->drupalUserIsLoggedIn($this->userCanViewProfiles));
+    // Test that user gets logged out when hitting non-jsonapi route.
+    $this->drupalGet('/some/normal/route');
+    $this->assertFalse($this->drupalUserIsLoggedIn($this->userCanViewProfiles));
+    $this->container->get('state')->set('system.maintenance_mode', FALSE);
+
+    // Test that admin user can bypass maintenance mode.
+    $admin_user = $this->drupalCreateUser([], NULL, TRUE);
+    $this->drupalLogin($admin_user);
+    $this->container->get('state')->set('system.maintenance_mode', TRUE);
+    $this->drupalGet('/jsonapi/taxonomy_term/tags');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertTrue($this->drupalUserIsLoggedIn($admin_user));
+    $this->container->get('state')->set('system.maintenance_mode', FALSE);
+    $this->drupalLogout();
   }
 
   /**
@@ -606,7 +639,6 @@ class JsonApiFunctionalTest extends JsonApiFunctionalTestBase {
       'auth' => [$this->user->getAccountName(), $this->user->pass_raw],
       'headers' => ['Accept' => 'application/vnd.api+json'],
     ]);
-    $created_response = Json::decode($response->getBody()->__toString());
     $this->assertEquals(415, $response->getStatusCode());
 
     // 4. Article with a duplicate ID.
@@ -633,7 +665,6 @@ class JsonApiFunctionalTest extends JsonApiFunctionalTestBase {
       'auth' => [$this->user->getAccountName(), $this->user->pass_raw],
       'headers' => ['Content-Type' => 'application/vnd.api+json'],
     ]);
-    $created_response = Json::decode($response->getBody()->__toString());
     $this->assertEquals(404, $response->getStatusCode());
     // 6. Decoding error.
     $response = $this->request('POST', $collection_url, [
