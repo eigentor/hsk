@@ -11,6 +11,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Site\Settings;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_help().
@@ -45,6 +46,14 @@ function antibot_theme($existing, $type, $theme, $path) {
  * Implements hook_form_alter().
  */
 function antibot_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  $skip_antibot = FALSE;
+
+  // Set skip antibot to true if user has appropriate permission.
+  if (\Drupal::currentUser()->hasPermission('skip antibot')) {
+    $skip_antibot = TRUE;
+  }
+
   $protection = FALSE;
 
   // Load module config.
@@ -53,9 +62,13 @@ function antibot_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Get the configured active form IDs for antibot.
   if ($form_ids = $config->get('form_ids')) {
     // Check if this form is a match.
-    if (\Drupal::service('path.matcher')->matchPath($form_id, implode("\n", $form_ids))) {
-      // Enable protection for this form.
-      antibot_protect_form($form);
+    $pathMatcher = \Drupal::service('path.matcher');
+    if ($pathMatcher->matchPath($form_id, implode("\n", $form_ids)) || $pathMatcher->matchPath($form['#id'], implode("\n", $form_ids))) {
+
+      // Enable protection for this form if user doesn't have skip permission.
+      if (!$skip_antibot) {
+        antibot_protect_form($form);
+      }
 
       // Track that protection was added.
       $protection = TRUE;
@@ -114,7 +127,7 @@ function antibot_protect_form(array &$form) {
   $form['#antibot_key'] = $key;
 
   // Add a hidden value which will receive the key via JS.
-  // The point of this is to add an additonal layer of protection for remotely
+  // The point of this is to add an additional layer of protection for remotely
   // POSTed forms. Since the key will not be present in that scenario, the
   // remote post will fail.
   $form['antibot_key'] = [
@@ -162,5 +175,16 @@ function antibot_form_validation($form, FormStateInterface $form_state) {
   // Check if the key is missing or is not a match.
   if (!$submitted_key || ($submitted_key != $form['#antibot_key'])) {
     $form_state->setErrorByName('', t('Submission failed. Please reload the page, ensure JavaScript is enabled and try again.'));
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Unset antibot_key from exposed_raw_input to remove it from pagers link.
+ */
+function antibot_views_pre_render(ViewExecutable $view) {
+  if (isset($view->exposed_raw_input['antibot_key'])) {
+    unset($view->exposed_raw_input['antibot_key']);
   }
 }

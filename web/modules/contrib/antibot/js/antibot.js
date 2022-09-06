@@ -8,7 +8,7 @@
  * pressed.
  */
 
-(function ($, Drupal, drupalSettings) {
+(function (Drupal, drupalSettings) {
   "use strict";
 
   Drupal.antibot = {};
@@ -19,20 +19,20 @@
       drupalSettings.antibot.human = false;
 
       // Wait for a mouse to move, indicating they are human.
-      $('body').mousemove(function () {
+      document.body.addEventListener('mousemove', function () {
         // Unlock the forms.
         Drupal.antibot.unlockForms();
       });
 
       // Wait for a touch move event, indicating that they are human.
-      $('body').bind('touchmove', function () {
+      document.body.addEventListener('touchmove', function () {
         // Unlock the forms.
         Drupal.antibot.unlockForms();
       });
 
       // A tab or enter key pressed can also indicate they are human.
-      $('body').keydown(function (e) {
-        if ((e.keyCode == 9) || (e.keyCode == 13)) {
+      document.body.addEventListener('keydown', function (e) {
+        if ((e.code == 'Tab') || (e.code == 'Enter')) {
           // Unlock the forms.
           Drupal.antibot.unlockForms();
         }
@@ -49,16 +49,22 @@
       // Check if there are forms to unlock.
       if (drupalSettings.antibot.forms != undefined) {
         // Iterate all antibot forms that we need to unlock.
-        $.each(drupalSettings.antibot.forms, function (id, config) {
+        Object.values(drupalSettings.antibot.forms).forEach(function (config) {
           // Switch the action.
-          $('form#' + config.id).attr('action', $('form#' + config.id).data('action'));
+          const form = document.getElementById(config.id);
+          if (form) {
+            form.setAttribute('action', form.getAttribute('data-action'));
 
-          // Set the key.
-          $('form#' + config.id).find('input[name="antibot_key"]').val(config.key);
+            // Set the key.
+            const input = form.querySelector('input[name="antibot_key"]');
+            if (input) {
+              input.value = config.key;
+            }
+          }
         });
       }
       // Mark this user as being human.
       drupalSettings.antibot.human = true;
     }
   };
-})(jQuery, Drupal, drupalSettings);
+})(Drupal, drupalSettings);

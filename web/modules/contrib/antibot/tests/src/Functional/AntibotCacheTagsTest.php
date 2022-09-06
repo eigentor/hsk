@@ -15,7 +15,7 @@ class AntibotCacheTagsTest extends PageCacheTagsTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['antibot'];
+  protected static $modules = ['antibot'];
 
   /**
    * Default theme.

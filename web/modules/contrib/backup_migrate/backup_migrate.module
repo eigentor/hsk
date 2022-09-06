@@ -300,7 +300,7 @@ function backup_migrate_help($route_name, RouteMatchInterface $route_match) {
 
     $output = '';
     foreach ($help as $key => $value) {
-      $output .= render($value);
+      $output .= \Drupal::service('renderer')->render($value);
     }
 
     return $output;

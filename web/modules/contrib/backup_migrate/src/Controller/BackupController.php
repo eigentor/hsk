@@ -190,6 +190,8 @@ class BackupController extends ControllerBase {
 
     $browser = new DrupalBrowserDownloadDestination();
     $browser->saveFile($file);
+
+    return $this->redirect('backup_migrate.backups');
   }
 
 }

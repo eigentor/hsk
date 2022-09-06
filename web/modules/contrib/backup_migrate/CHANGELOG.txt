@@ -1,3 +1,12 @@
+Backup and Migrate 5.0.2, 2022-08-19
+------------------------------------
+#3261770 by hmendes, solideogloria, Adrianm6254, DamienMcKenna: PHP notice when
+  downloading saved backup.
+#3296606 by Project Update Bot, DamienMcKenna: Automated Drupal 10 compatibility
+  fixes.
+#3224457 by jcnventura, DamienMcKenna: Wrong type hint in DrupalTempFileAdapter.
+
+
 Backup and Migrate 5.0.1, 2021-07-09
 ------------------------------------
 #3220548 by paulocs, senzaesclusiva, DamienMcKenna: Warning: Invalid argument

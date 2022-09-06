@@ -3,10 +3,10 @@ description: 'Backup the Drupal database and files or migrate them to another en
 package: Other
 php: 7.1
 type: module
-core_version_requirement: ^8.7.7 || ^9
+core_version_requirement: ^9.3 || ^10
 configure: backup_migrate.quick_backup
 
-# Information added by Drupal.org packaging script on 2021-07-09
-version: '5.0.1'
+# Information added by Drupal.org packaging script on 2022-08-19
+version: '5.0.2'
 project: 'backup_migrate'
-datestamp: 1625856248
+datestamp: 1660935350

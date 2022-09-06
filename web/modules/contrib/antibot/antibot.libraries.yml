@@ -7,5 +7,4 @@ antibot.form:
     js/antibot.js: {}
   dependencies:
     - core/drupal
-    - core/jquery
     - core/drupalSettings

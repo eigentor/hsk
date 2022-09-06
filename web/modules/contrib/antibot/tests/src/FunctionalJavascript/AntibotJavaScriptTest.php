@@ -36,18 +36,16 @@ class AntibotJavaScriptTest extends WebDriverTestBase {
 
     // Post the form by using JavaScript, as if we were a bot. We avoid using
     // Mink methods that are simulating mouse or keyboard interaction.
-    $javascript = <<<javascript
-jQuery('form[data-drupal-selector="user-pass"]').submit();
-javascript;
-    $this->assertJsCondition($javascript);
+    $session = $this->getSession();
+    $session->executeScript('document.forms["user-pass"].submit()');
 
     // Check that we reached the antibot closed road when the form is posted by
     // a bot even having JavaScript capabilities and no mouse or keyboard were
     // performed.
-    $this->assertSession()->pageTextContains('Submission failed');
+    $this->assertSession()->waitForText('Submission failed');
     $this->assertSession()->pageTextContains('You have reached this page because you submitted a form that required JavaScript to be enabled on your browser. This protection is in place to attempt to prevent automated submissions made on forms. Please return to the page that you came from and enable JavaScript on your browser before attempting to submit the form again.');
 
-    // Mimic a human behaviour.
+    // Mimic a human behavior.
     $this->drupalGet('/user/password');
 
     // Fill the name field with an arbitrary value.
@@ -56,17 +54,18 @@ javascript;
 
     // Do the same post, via JavaScript but move the mouse before.
     $driver->mouseOver('//h1[text() = "Reset your password"]');
-    $this->assertJsCondition($javascript);
+    $session->executeScript('document.forms["user-pass"].submit()');
     // Check that the form has been posted (even with a validation error).
-    $this->assertSession()->pageTextContains("{$name} is not recognized as a username or an email address.");
+    $this->assertSession()->waitForText("{$name} is not recognized as a username or an email address.");
 
     // Do the same post, via JavaScript but do a drag-and-drop before.
-    $driver->dragTo('//h1[text() = "Reset your password"]', '//p[text() = "Password reset instructions will be sent to your registered email address."]');
+    $this->drupalGet('/user/password');
+    $driver->dragTo("//h1[text()='Reset your password']", '//p[text() = "Password reset instructions will be sent to your registered email address."]');
     $name = $this->randomMachineName();
     $page->fillField('Username or email address', $name);
-    $this->assertJsCondition($javascript);
+    $session->executeScript('document.forms["user-pass"].submit()');
     // Check that the form has been posted (even with a validation error).
-    $this->assertSession()->pageTextContains("{$name} is not recognized as a username or an email address.");
+    $this->assertSession()->waitForText("{$name} is not recognized as a username or an email address.");
 
     // @todo Testing ENTER and TAB keys it's not easy because is hard to emulate
     // a key press in Selenium2. Keep trying.

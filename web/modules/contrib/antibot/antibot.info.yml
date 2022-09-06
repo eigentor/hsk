@@ -2,10 +2,10 @@ name: Antibot
 type: module
 description: Prevent forms from being submitted without JavaScript enabled
 package: Spam control
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 configure: antibot.settings
 
-# Information added by Drupal.org packaging script on 2020-05-27
-version: '8.x-1.4'
+# Information added by Drupal.org packaging script on 2022-03-01
+version: '2.0.0'
 project: 'antibot'
-datestamp: 1590592552
+datestamp: 1646139801

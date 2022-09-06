@@ -30,13 +30,14 @@ class AntibotNoJavascriptTest extends BrowserTestBase {
    * the perspective of bot trying to post a form.
    */
   public function testNoJavaScript() {
-    $this->drupalPostForm('/user/password', [
+    $this->drupalGet('/user/password');
+    $this->submitForm([
       'name' => $this->randomMachineName(),
     ], 'Submit');
 
     // Check the we reached the antibot closed road when the form is posted by a
     // bot even having JavaScript capabilities..
-    $this->assertUrl('/antibot');
+    $this->assertSession()->addressEquals('/antibot');
     $this->assertSession()->pageTextContains('Submission failed');
     $this->assertSession()->pageTextContains('You have reached this page because you submitted a form that required JavaScript to be enabled on your browser. This protection is in place to attempt to prevent automated submissions made on forms. Please return to the page that you came from and enable JavaScript on your browser before attempting to submit the form again.');
   }
