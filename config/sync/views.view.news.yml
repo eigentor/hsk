@@ -497,6 +497,8 @@ display:
           settings:
             image_link: content
             image_style: news_thumb_mobile
+            image_loading:
+              attribute: lazy
           group_column: ''
           group_columns: {  }
           group_rows: true

@@ -259,6 +259,8 @@ display:
           settings:
             image_link: content
             image_style: portrait
+            image_loading:
+              attribute: lazy
           group_column: ''
           group_columns: {  }
           group_rows: true
