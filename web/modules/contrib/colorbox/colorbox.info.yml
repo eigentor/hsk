@@ -8,7 +8,7 @@ configure: colorbox.admin_settings
 dependencies:
   - drupal:image
 
-# Information added by Drupal.org packaging script on 2021-03-05
-version: '8.x-1.7'
+# Information added by Drupal.org packaging script on 2022-04-19
+version: '8.x-1.10'
 project: 'colorbox'
-datestamp: 1614960643
+datestamp: 1650376981

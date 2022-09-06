@@ -2,16 +2,32 @@
 
 namespace Drupal\colorbox\Form;
 
+use Drupal\Core\Asset\LibraryDiscoveryInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Extension\ModuleExtensionList;
 
 /**
  * General configuration form for controlling the colorbox behaviour..
  */
 class ColorboxSettingsForm extends ConfigFormBase {
+
+  /**
+   * The list of available modules.
+   *
+   * @var \Drupal\Core\Extension\ModuleExtensionList
+   */
+  protected $extensionListModule;
+
+  /**
+   * Library discovery service.
+   *
+   * @var LibraryDiscoveryInterface
+   */
+  protected $libraryDiscovery;
 
   /**
    * A state that represents the custom settings being enabled.
@@ -32,10 +48,24 @@ class ColorboxSettingsForm extends ConfigFormBase {
 
   /**
    * Class constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The Configuration Factory.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
+   *   The module handler service.
+   * @param \Drupal\Core\Extension\ModuleExtensionList $extension_list_module
+   *   The list of available modules.
+   * @param \Drupal\Core\Asset\LibraryDiscoveryInterface $libraryDiscovery
+   *   The library discovery service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $moduleHandler) {
+  public function __construct(ConfigFactoryInterface $config_factory,
+                              ModuleHandlerInterface $moduleHandler,
+                              ModuleExtensionList $extension_list_module,
+                              LibraryDiscoveryInterface $libraryDiscovery) {
     parent::__construct($config_factory);
     $this->moduleHandler = $moduleHandler;
+    $this->extensionListModule = $extension_list_module;
+    $this->libraryDiscovery = $libraryDiscovery;
   }
 
   /**
@@ -44,7 +74,9 @@ class ColorboxSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('module_handler')
+      $container->get('module_handler'),
+      $container->get('extension.list.module'),
+      $container->get('library.discovery')
     );
   }
 
@@ -67,10 +99,48 @@ class ColorboxSettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     global $base_url;
-    $module_path = \Drupal::service('extension.list.module')->getPath('colorbox');
+    $module_path = $this->extensionListModule->getPath('colorbox');
     $img_folder_path = $base_url . '/' . $module_path . '/images/admin';
 
     $config = $this->configFactory->get('colorbox.settings');
+
+    $dompurify = $this->libraryDiscovery->getLibraryByName('colorbox', 'dompurify');
+    $dompurify_file = !empty($dompurify['js'][0]['data']) ?
+      DRUPAL_ROOT . '/' . $dompurify['js'][0]['data'] : NULL;
+    $dompurify_exists = !empty($dompurify) && !empty($dompurify_file) &&
+      file_exists($dompurify_file);
+
+    $form['colorbox_dompurify'] = [
+      '#type' => 'details',
+      '#title' => $this->t('DOMPurify Library'),
+      '#open' => TRUE,
+    ];
+    $dompurify_message = $dompurify_exists ?
+      $this->t('The DOMPurify library is installed. ' .
+        'This library will sanitize HTML in Colorbox captions.') :
+      $this->t('The <a href="@dompurify_link">DOMPurify</a> ' .
+        'library is not installed. ' .
+        'This library is necessary if you want to use HTML in Colorbox captions. ' .
+        'Without it, all captions will be treated as plain text.',
+        [
+          '@dompurify_link' => 'https://github.com/cure53/DOMPurify/archive/main.zip'
+        ]);
+    $form['colorbox_dompurify']['dompurify_message'] = array(
+      '#type' => 'markup',
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+      '#markup' => $dompurify_message,
+    );
+    if (!$dompurify_exists) {
+      $form['colorbox_dompurify']['dompurify_hide_warning'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Don\'t show warning on status report'),
+        '#default_value' => $config->get('dompurify_hide_warning'),
+        '#description' => t('By default, a warning appears on Drupal\'s ' .
+          'status report if this library is missing. Check this box to ' .
+          'suppress the warning.'),
+      );
+    }
 
     $form['colorbox_custom_settings'] = [
       '#type' => 'details',
@@ -353,6 +423,7 @@ class ColorboxSettingsForm extends ConfigFormBase {
     $config = $this->configFactory->getEditable('colorbox.settings');
 
     $config
+      ->set('dompurify_hide_warning', $form_state->getValue('dompurify_hide_warning'))
       ->set('custom.style', $form_state->getValue('colorbox_style'))
       ->set('custom.activate', $form_state->getValue('colorbox_custom_settings_activate'))
       ->set('custom.transition_type', $form_state->getValue('colorbox_transition_type'))
