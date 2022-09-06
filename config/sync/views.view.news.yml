@@ -674,6 +674,30 @@ display:
       tags:
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_image'
+  feed_1:
+    id: feed_1
+    display_title: Newsfeed
+    display_plugin: feed
+    position: 3
+    display_options:
+      title: 'HSK Lister Turm News'
+      row:
+        type: node_rss
+        options: {  }
+      defaults:
+        title: false
+        sitename_title: false
+      display_extenders: {  }
+      path: news/rss
+      sitename_title: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+        - user.permissions
+      tags: {  }
   page_1:
     id: page_1
     display_title: Page
