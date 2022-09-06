@@ -1,3 +1,4 @@
+langcode: de
 exclude:
   node: {  }
 text_to_prepend_to_title: 'Clone of'
