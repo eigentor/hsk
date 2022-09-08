@@ -17,6 +17,7 @@ use Drupal\Core\TypedData\DataDefinition;
  *   category = @Translation("General"),
  *   default_widget = "markup",
  *   default_formatter = "markup",
+ *   list_class = "\Drupal\markup\Field\MarkupItemList",
  * )
  */
 class MarkupItem extends FieldItemBase {
@@ -79,6 +80,14 @@ class MarkupItem extends FieldItemBase {
     ];
 
     return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isEmpty() {
+    $value = $this->getFieldDefinition()->getSetting('markup')['value'];
+    return $value === NULL || $value === '';
   }
 
 }

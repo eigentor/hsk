@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\inline_responsive_images\Plugin\CKEditorPlugin\DrupalImageStyle.
- */
-
 namespace Drupal\inline_responsive_images\Plugin\CKEditorPlugin;
 
 use Drupal\Component\Plugin\PluginBase;
