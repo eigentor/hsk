@@ -18,7 +18,7 @@ use Drupal\Core\Template\TwigEnvironment;
 use Drupal\Core\Theme\Registry;
 
 /**
- * Controller for AdminToolbar Tools.
+ * Class ToolbarController.
  *
  * @package Drupal\admin_toolbar_tools\Controller
  */

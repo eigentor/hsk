@@ -6,6 +6,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityWithPluginCollectionInterface;
 use Drupal\file\Entity\File;
+use Drupal\file\FileInterface;
 use Drupal\paragraphs\ParagraphsBehaviorCollection;
 use Drupal\paragraphs\ParagraphsTypeInterface;
 use Drupal\Core\File\FileSystemInterface;
@@ -118,7 +119,7 @@ class ParagraphsType extends ConfigEntityBundleBase implements ParagraphsTypeInt
       // Compose the default icon file destination.
       $icon_meta = stream_get_meta_data($icon_data);
       // File extension from MIME, only JPG/JPEG, PNG and SVG expected.
-      list(, $icon_file_ext) = explode('image/', $icon_meta['mediatype']);
+      [, $icon_file_ext] = explode('image/', $icon_meta['mediatype']);
       // SVG special case.
       if ($icon_file_ext == 'svg+xml') {
         $icon_file_ext = 'svg';
@@ -137,7 +138,7 @@ class ParagraphsType extends ConfigEntityBundleBase implements ParagraphsTypeInt
           'uri' => $icon_file_uri,
           'uid' => \Drupal::currentUser()->id(),
           'uuid' => $this->icon_uuid,
-          'status' => FILE_STATUS_PERMANENT,
+          'status' => FileInterface::STATUS_PERMANENT,
         ];
 
         // Delete existent icon file if it exists.
@@ -159,9 +160,11 @@ class ParagraphsType extends ConfigEntityBundleBase implements ParagraphsTypeInt
    * {@inheritdoc}
    */
   public function getIconFile() {
-    $icon = $this->getFileByUuid($this->icon_uuid) ?: $this->restoreDefaultIcon();
-    if ($this->icon_uuid && $icon) {
-      return $icon;
+    if ($this->icon_uuid !== NULL) {
+      $icon = $this->getFileByUuid($this->icon_uuid) ?: $this->restoreDefaultIcon();
+      if ($icon) {
+        return $icon;
+      }
     }
 
     return FALSE;
@@ -182,7 +185,7 @@ class ParagraphsType extends ConfigEntityBundleBase implements ParagraphsTypeInt
    */
   public function getIconUrl() {
     if ($image = $this->getIconFile()) {
-      return file_create_url($image->getFileUri());
+      return \Drupal::service('file_url_generator')->generateString($image->getFileUri());
     }
 
     return FALSE;

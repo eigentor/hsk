@@ -6,7 +6,7 @@ use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Security\TrustedCallbackInterface;
 
 /**
- * Render element element for AdminToolbar.
+ * Class AdminToolbar.
  *
  * @package Drupal\admin_toolbar\Render\Element
  */
@@ -38,7 +38,7 @@ class AdminToolbar implements TrustedCallbackInterface {
     $parameters = new MenuTreeParameters();
     $max_depth = \Drupal::config('admin_toolbar.settings')->get('menu_depth');
     $parameters->setRoot('system.admin')->excludeRoot()->setMaxDepth($max_depth)->onlyEnabledLinks();
-    $tree = $menu_tree->load('admin', $parameters);
+    $tree = $menu_tree->load(NULL, $parameters);
     $manipulators = [
       ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],

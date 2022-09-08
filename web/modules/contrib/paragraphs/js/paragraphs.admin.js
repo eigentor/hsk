@@ -1,4 +1,4 @@
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   'use strict';
 
@@ -18,12 +18,14 @@
   *   Main paragraph region.
   */
   var setUpTab = function ($parWidget, $parTabs, $parContent, $parBehavior, $mainRegion) {
-    var $tabContent = $parTabs.find('#content');
-    var $tabBehavior = $parTabs.find('#behavior');
+    var $tabContent = $parTabs.find('.paragraphs_content_tab');
+    var $tabBehavior = $parTabs.find('.paragraphs_behavior_tab');
     if ($tabBehavior.hasClass('is-active')) {
       $parWidget.removeClass('content-active').addClass('behavior-active');
       $tabContent.removeClass('is-active');
+      $tabContent.find('a').removeClass('is-active');
       $tabBehavior.addClass('is-active');
+      $tabBehavior.find('a').addClass('is-active');
     }
     else {
       // Activate content tab visually if there is no previously
@@ -31,12 +33,13 @@
       if (!($mainRegion.hasClass('content-active'))
         && !($mainRegion.hasClass('behavior-active'))) {
         $tabContent.addClass('is-active');
+        $tabContent.find('a').addClass('is-active');
         $parWidget.addClass('content-active');
       }
 
-      $parTabs.show();
+      $parTabs.removeClass('paragraphs-tabs-hide');
       if ($parBehavior.length === 0) {
-        $parTabs.hide();
+        $parTabs.addClass('paragraphs-tabs-hide');
       }
     }
   };
@@ -54,10 +57,12 @@
     var $clickedTabParent = $clickedTab.parent();
 
     $parTabs.find('li').removeClass('is-active');
+    $parTabs.find('li').find('a').removeClass('is-active');
     $clickedTabParent.addClass('is-active');
+    $clickedTabParent.find('a').addClass('is-active');
 
     $parWidget.removeClass('behavior-active content-active');
-    if ($clickedTabParent.attr('id') === 'content') {
+    if ($clickedTabParent.hasClass('paragraphs_content_tab')) {
       $parWidget.addClass('content-active');
       $parWidget.find('.paragraphs-add-wrapper').parent().removeClass('hidden');
     }
@@ -131,7 +136,7 @@
       });
 
       // Initialization.
-      $topLevelParWidgets.once('paragraphs-bodytabs').each(function() {
+      $(once('paragraphs-bodytabs', $topLevelParWidgets)).each(function() {
         var $parWidget = $(this);
         var $parTabs = $parWidget.find('.paragraphs-tabs');
 
@@ -185,5 +190,5 @@
       }
     }
   };
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);
 

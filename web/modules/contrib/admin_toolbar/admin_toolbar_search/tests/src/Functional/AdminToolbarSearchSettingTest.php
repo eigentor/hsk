@@ -44,10 +44,7 @@ class AdminToolbarSearchSettingTest extends BrowserTestBase {
    */
   protected $noAccessUser;
 
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
+  public function setUp(): void {
     parent::setUp();
 
     $permissions = [

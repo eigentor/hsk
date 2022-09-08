@@ -36,8 +36,7 @@
       });
 
       // Always hide the dropdown menu on mobile.
-      if (window.matchMedia("(max-width: 767px)").matches && $('body').hasClass('toolbar-tray-open')) {
-        $('body').removeClass('toolbar-tray-open');
+      if ($('body:not(.toolbar-fixed) #toolbar-item-administration-tray').hasClass('toolbar-tray-vertical')) {
         $('#toolbar-item-administration').removeClass('is-active');
         $('#toolbar-item-administration-tray').removeClass('is-active');
       };
