@@ -13,3 +13,4 @@ tablesaw-filter:
     js/customizations.js: {}
   dependencies:
     - core/jquery
+    - core/once

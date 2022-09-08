@@ -1,12 +1,11 @@
 name: Responsive Tables Filter
 type: module
-description: Make tables in WYSIWYG fields responsive
-core: 8.x
-core_version_requirement: ^8 || ^9
+description: Make tables in text format fields responsive
+core_version_requirement: '^9 || ^10'
 package: Other
 configure: responsive_tables_filter.settings
 
-# Information added by Drupal.org packaging script on 2021-06-01
-version: '8.x-1.8'
+# Information added by Drupal.org packaging script on 2022-08-30
+version: '8.x-1.16'
 project: 'responsive_tables_filter'
-datestamp: 1622553637
+datestamp: 1661878049

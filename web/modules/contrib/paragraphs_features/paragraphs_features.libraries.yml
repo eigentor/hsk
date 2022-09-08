@@ -7,7 +7,8 @@ drupal.paragraphs_features.add_in_between:
       css/paragraphs-features.add-in-between.css: {}
   dependencies:
     - core/drupal
-    - core/jquery.once
+    - core/jquery
+    - core/once
     - paragraphs/drupal.paragraphs.modal
 
 drupal.paragraphs_features.delete_confirmation:
@@ -20,3 +21,9 @@ drupal.paragraphs_features.split_text:
   dependencies:
     - core/drupal
     - core/jquery.once
+
+drupal.paragraphs_features.scroll_to_element:
+  js:
+    js/paragraphs-features.scroll-to-element.js: {}
+  dependencies:
+    - core/drupal

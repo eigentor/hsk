@@ -1,14 +1,14 @@
 name: 'Paragraphs Features'
 type: module
 description: 'Provides additional paragraphs widgets.'
-core_version_requirement: ^8.7.7 || ^9
+core_version_requirement: ^9.2
 package: Paragraphs
 configure: paragraphs_features.settings_form
 dependencies:
-  - paragraphs:paragraphs (>= 8.x-1.10)
+  - paragraphs:paragraphs
   - drupal:field
 
-# Information added by Drupal.org packaging script on 2020-09-17
-version: '8.x-1.11'
+# Information added by Drupal.org packaging script on 2022-03-02
+version: '8.x-1.16'
 project: 'paragraphs_features'
-datestamp: 1600331590
+datestamp: 1646219275

@@ -33,15 +33,6 @@ function responsive_tables_filter_help($route_name, RouteMatchInterface $route_m
 }
 
 /**
- * Implements hook_theme().
- */
-function responsive_tables_filter_theme() {
-  $theme = [];
-
-  return $theme;
-}
-
-/**
  * Implements template_preprocess_views_view_table().
  *
  * Adds tablesaw JS when tables present and CSS/JS aggregation is off to table.
@@ -67,8 +58,36 @@ function responsive_tables_filter_preprocess_views_view_table(&$variables) {
       }
       $inc++;
     }
-    $variables['attributes']['data-tablesaw-mode'][] = $mode;
+    $variables['attributes']['data-tablesaw-mode'] = $mode;
     $variables['view']->element['#attached']['library'][] = 'responsive_tables_filter/tablesaw-filter';
+    $variables['#cache']['tags'][] = 'config:responsive_tables_filter.settings';
+  }
+}
+
+/**
+ * Implements hook_preprocess_table().
+ *
+ * Adds Tablesaw to all Drupal tables generated using the 'table' render.
+ */
+function responsive_tables_filter_preprocess_table(&$variables) {
+  $config = \Drupal::config('responsive_tables_filter.settings');
+  // Add tablesaw classes & data attribute to Drupal Views.
+  if ($config->get('views_enabled')) {
+    $mode = $config->get('views_tablesaw_mode');
+    // Some contexts do not define any classes (see #3274360), so ensure it is
+    // defined to avoid PHP notices.
+    if (!isset($variables['attributes']['class'])) {
+      $variables['attributes']['class'] = [];
+    }
+    // In case other processes have cast the `class` attribute to a string,
+    // cast it to an array (Drupal's expected data type for `class`).
+    if (is_string($variables['attributes']['class'])) {
+      $variables['attributes']['class'] = [$variables['attributes']['class']];
+    }
+    $variables['attributes']['class'][] = 'tablesaw';
+    $variables['attributes']['class'][] = 'tablesaw-' . $mode;
+    $variables['attributes']['data-tablesaw-mode'] = $mode;
+    $variables['#attached']['library'][] = 'responsive_tables_filter/tablesaw-filter';
     $variables['#cache']['tags'][] = 'config:responsive_tables_filter.settings';
   }
 }

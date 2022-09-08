@@ -12,7 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
  * @Filter(
  *   id = "filter_responsive_tables_filter",
  *   title = @Translation("Apply responsive behavior to HTML tables."),
- *   type = Drupal\filter\Plugin\FilterInterface::TYPE_MARKUP_LANGUAGE,
+ *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
  *   settings = {
  *     "tablesaw_type" = "stack",
  *     "tablesaw_persist" = TRUE
@@ -100,6 +100,12 @@ class FilterResponsiveTablesFilter extends FilterBase {
       // Find all tables in text.
       if ($tables->length !== 0) {
         foreach ($tables as $table) {
+          // Check if the table has a thead element #3244317. If the thead is
+          // missing then skip any further modifications.
+          $thead = iterator_to_array($table->getElementsByTagName('thead'));
+          if (empty($thead)) {
+            continue;
+          }
           // Find existing class attributes, if any, and append tablesaw class.
           $existing_classes = $table->getAttribute('class');
           if (strpos($existing_classes, 'no-tablesaw') === FALSE) {
@@ -115,11 +121,12 @@ class FilterResponsiveTablesFilter extends FilterBase {
             $table->setAttribute('class', $new_classes);
             // Set data-tablesaw-mode & minimap.
             $table->setAttribute('data-tablesaw-mode', $mode);
-            $table->setAttribute('data-tablesaw-minimap', NULL);
+            $table->setAttribute('data-tablesaw-minimap', '');
             $persist = $this->settings['tablesaw_persist'] ?? TRUE;
             $ths = $table->getElementsByTagName('th');
             $inc = 1;
             foreach ($ths as $delta => $th) {
+              $th->setAttribute('role', 'columnheader');
               // Add required columntoggle- & swipe- specific attributes.
               if (in_array($mode, ['columntoggle', 'swipe'])) {
                 $th->setAttribute('data-tablesaw-sortable-col', '');

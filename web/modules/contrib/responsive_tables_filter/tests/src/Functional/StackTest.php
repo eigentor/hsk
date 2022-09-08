@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\responsive_tables_filter\Tests\FilterTest.
- */
-
 namespace Drupal\Tests\responsive_tables_filter\Functional;
 
 /**
@@ -25,17 +20,18 @@ class StackTest extends TestBase {
    * @var data
    */
   private static $data = [
-    '<table class="no-tablesaw"></table>' => '<table class="no-tablesaw"></table>',
-    '<table></table>' => '<table class="tablesaw tablesaw-stack" data-tablesaw-mode="stack" data-tablesaw-minimap=""></table>',
-    '<table class="test"></table>' => '<table class="test tablesaw tablesaw-stack" data-tablesaw-mode="stack" data-tablesaw-minimap=""></table>',
-    '<table additional="test"><thead><tr><th data-tablesaw-priority="persist">Header One<th>Header 2<tbody><tr><td>Easily add tables with the WYSIWYG toolbar<td>Encoded characters test öô & , ?<tr><td>Tables respond to display on smaller screens<td>Fully accessible to screen readers</table>' => '<table additional="test" class="tablesaw tablesaw-stack" data-tablesaw-mode="stack" data-tablesaw-minimap=""><thead><tr><th data-tablesaw-priority="persist">Header One</th><th>Header 2</th></tr></thead><tbody><tr><td>Easily add tables with the WYSIWYG toolbar</td><td>Encoded characters test öô &amp; , ?</td></tr><tr><td>Tables respond to display on smaller screens</td><td>Fully accessible to screen readers</td></tr></tbody></table>',
+    '<table class="no-tablesaw"><thead></thead></table>' => '<table class="no-tablesaw"><thead></thead></table>',
+    '<table><thead></thead></table>' => '<table class="tablesaw tablesaw-stack" data-tablesaw-mode="stack" data-tablesaw-minimap><thead></thead></table>',
+    '<table class="test"><thead></thead></table>' => '<table class="test tablesaw tablesaw-stack" data-tablesaw-mode="stack" data-tablesaw-minimap><thead></thead></table>',
+    '<table additional="test"><thead><tr><th role="columnheader" data-tablesaw-priority="persist">Header One<th>Header 2<tbody><tr><td>Easily add tables with the WYSIWYG toolbar<td>Encoded characters test öô & , ?<tr><td>Tables respond to display on smaller screens<td>Fully accessible to screen readers</table>' => '<table additional="test" class="tablesaw tablesaw-stack" data-tablesaw-mode="stack" data-tablesaw-minimap><thead><tr><th role="columnheader" data-tablesaw-priority="persist">Header One</th><th role="columnheader">Header 2</th></tr></thead><tbody><tr><td>Easily add tables with the WYSIWYG toolbar</td><td>Encoded characters test öô &amp; , ?</td></tr><tr><td>Tables respond to display on smaller screens</td><td>Fully accessible to screen readers</td></tr></tbody></table>',
   ];
 
   /**
    * Tests the responsive_tables_filter Stack (default) mode.
    */
   public function testStack() {
-    foreach (self::$data as $input => $output) {
+    $page = $this->getSession()->getPage();
+    foreach (self::$data as $input => $expected) {
       $settings = [];
       $settings['type'] = 'page';
       $settings['title'] = 'Test Tablesaw Stack Only mode';
@@ -45,7 +41,8 @@ class StackTest extends TestBase {
       ];
       $node = $this->drupalCreateNode($settings);
       $this->drupalGet('node/' . $node->id());
-      $this->assertRaw($output);
+      $table = $page->find('css', 'table');
+      $this->assertEquals($expected, $table->getOuterHtml());
     }
   }
 

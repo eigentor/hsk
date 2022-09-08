@@ -15,6 +15,10 @@
   box-sizing: border-box;
 }
 
+.tablesaw a.tabledrag-handle .handle {
+  box-sizing: content-box;
+}
+
 .tablesaw-btn {
   border: 1px solid #ccc;
   border-radius: .25em;
@@ -100,7 +104,6 @@ a.tablesaw-btn {
 }
 
 .tablesaw-btn-select {
-  padding-right: 1.5em;
   text-align: left;
   display: inline-block;
   color: #4d4d4d;
@@ -109,7 +112,6 @@ a.tablesaw-btn {
 }
 
 .tablesaw-btn-select:after {
-  content: " ";
   position: absolute;
   background: none;
   background-repeat: no-repeat;

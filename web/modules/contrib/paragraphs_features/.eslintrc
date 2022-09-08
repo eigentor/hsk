@@ -2,7 +2,8 @@
   "extends": "eslint:recommended",
   "root": true,
   "env": {
-    "browser": true
+    "browser": true,
+    "es6": true
   },
   "globals": {
     "Drupal": true,
@@ -14,6 +15,7 @@
     "matchMedia": true,
     "Backbone": true,
     "Modernizr": true,
+    "once": true,
     "CKEDITOR": true
   },
   "rules": {
@@ -65,7 +67,7 @@
     "no-trailing-spaces": "error",
     "no-undef-init": "error",
     "no-undefined": "error",
-    "no-unused-expressions": "error",
+    "no-unused-expressions": ["error", {"allowTernary": true }],
     "no-unused-vars": ["error", {"vars": "all", "args": "none"}],
     "no-with": "error",
     "object-curly-spacing": ["error", "never"],

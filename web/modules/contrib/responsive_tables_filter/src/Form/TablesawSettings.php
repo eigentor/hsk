@@ -37,7 +37,7 @@ class TablesawSettings extends ConfigFormBase {
 
     $form['views_enabled'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Automatically add to all table-based Drupal views'),
+      '#title' => $this->t('Automatically add to all table-based Drupal Views and tables generated via theme rendering.'),
       '#description' => $this->t('For more fine-grained control of which Views tables should use the Tablesaw library, leave this unchecked and add the table attributes programmatically. See https://github.com/filamentgroup/tablesaw'),
       '#default_value' => $config->get('views_enabled'),
     ];
