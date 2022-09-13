@@ -39,6 +39,8 @@ permissions:
   - 'administer webform submission'
   - 'bypass node access'
   - 'clone event content'
+  - 'clone page content'
+  - 'clone turnier content'
   - 'create url aliases'
   - 'entityconnect add button'
   - 'entityconnect edit button'
