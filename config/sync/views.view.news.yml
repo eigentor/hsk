@@ -659,10 +659,25 @@ display:
         style: false
         row: false
         fields: false
+        footer: false
       display_description: ''
-      use_more: true
+      use_more: false
       use_more_always: true
       use_more_text: 'Alle News »'
+      footer:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: '<a class="more-link" href="/news">alle News >></a>'
+            format: basic_html
+          tokenize: false
       display_extenders: {  }
     cache_metadata:
       max-age: -1

@@ -3551,6 +3551,12 @@ nav#block-hsk-footer ul li a {
   color: #888;
   padding-right: 30px;
 }
+.path-frontpage #block-views-block-events-list-block-1 a.more-link {
+  font-size: 12.4px;
+  font-size: 0.8rem;
+  color: #888;
+  padding-right: 30px;
+}
 .path-frontpage #block-views-block-events-list-block-1 .view-header {
   margin-bottom: 20px;
   font-size: 13.175px;
@@ -3631,6 +3637,12 @@ nav#block-hsk-footer ul li a {
   margin-top: -20px;
 }
 .path-frontpage #block-views-block-news-block-1 .more-link a {
+  font-size: 12.4px;
+  font-size: 0.8rem;
+  color: #888;
+  padding-right: 30px;
+}
+.path-frontpage #block-views-block-news-block-1 a.more-link {
   font-size: 12.4px;
   font-size: 0.8rem;
   color: #888;
