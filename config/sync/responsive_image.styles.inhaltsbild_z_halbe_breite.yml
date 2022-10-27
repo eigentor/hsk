@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - image.style.inhaltsbild_halbe_breite
-    - image.style.inhaltsbild_mobile_volle_breite
   theme:
     - hsk_zymphonies
 id: inhaltsbild_z_halbe_breite
@@ -12,12 +11,12 @@ label: 'Inhaltsbild halbe Breite'
 image_style_mappings:
   -
     image_mapping_type: image_style
-    image_mapping: inhaltsbild_halbe_breite
+    image_mapping: ''
     breakpoint_id: hsk_zymphonies.tablet
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: inhaltsbild_mobile_volle_breite
+    image_mapping: inhaltsbild_halbe_breite
     breakpoint_id: hsk_zymphonies.mobile
     multiplier: 1x
 breakpoint_group: hsk_zymphonies
