@@ -7,6 +7,7 @@ dependencies:
     - entity_embed
     - inline_responsive_images
     - linkit
+    - responsive_tables_filter
     - spamspan
 _core:
   default_config_hash: P8ddpAIKtawJDi5SzOwCzVnnNYqONewSTJ6Xn0dW_aQ
@@ -20,32 +21,32 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <button class=""> <h2 id class=""> <h3 id class=""> <h4 id class=""> <h5 id class=""> <h6 id> <p class=""> <br> <span class=""> <img class="" data-responsive-image-style src alt data-entity-type data-entity-uuid data-align data-caption height width> <a href hreflang data-entity-type data-entity-uuid title class=""> <table class="center-table no-style"> <caption> <tbody> <thead> <tfoot> <th colspan rowspan=""> <td colspan rowspan=""> <tr><drupal-entity data-entity-type data-entity-uuid data-view-mode data-entity-embed-display data-entity-embed-display-settings data-align data-caption data-embed-button>'
+      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <button class=""> <h2 id class=""> <h3 id class=""> <h4 id class=""> <h5 id class=""> <h6 id> <p class=""> <br> <span class=""> <img data-responsive-image-style src alt data-entity-type data-entity-uuid data-align data-caption height width class=""> <a href hreflang data-entity-type data-entity-uuid title class=""> <table class="center-table no-style"> <caption> <tbody> <thead> <tfoot> <th colspan rowspan> <td colspan rowspan> <tr> <drupal-entity data-entity-type data-entity-uuid data-view-mode data-entity-embed-display data-entity-embed-display-settings data-align data-caption data-embed-button data-langcode alt title>'
       filter_html_help: false
       filter_html_nofollow: false
   filter_align:
     id: filter_align
     provider: filter
     status: true
-    weight: -44
+    weight: -46
     settings: {  }
   filter_caption:
     id: filter_caption
     provider: filter
     status: true
-    weight: -43
+    weight: -45
     settings: {  }
   filter_html_image_secure:
     id: filter_html_image_secure
     provider: filter
     status: false
-    weight: -45
+    weight: -40
     settings: {  }
   editor_file_reference:
     id: editor_file_reference
     provider: editor
     status: true
-    weight: -42
+    weight: -43
     settings: {  }
   linkit:
     id: linkit
@@ -58,7 +59,7 @@ filters:
     id: filter_spamspan
     provider: spamspan
     status: true
-    weight: -46
+    weight: -47
     settings:
       spamspan_at: ' [at] '
       spamspan_use_graphic: '1'
@@ -72,42 +73,45 @@ filters:
     id: entity_embed
     provider: entity_embed
     status: true
-    weight: -48
+    weight: -44
     settings: {  }
   filter_url:
     id: filter_url
     provider: filter
     status: true
-    weight: -47
+    weight: -48
     settings:
       filter_url_length: 72
   filter_htmlcorrector:
     id: filter_htmlcorrector
     provider: filter
     status: true
-    weight: -39
+    weight: -42
     settings: {  }
   filter_autop:
     id: filter_autop
     provider: filter
     status: false
-    weight: -40
+    weight: -38
     settings: {  }
   filter_html_escape:
     id: filter_html_escape
     provider: filter
     status: false
-    weight: -41
+    weight: -39
     settings: {  }
   filter_imagestyle:
     id: filter_imagestyle
     provider: inline_responsive_images
     status: false
-    weight: 0
+    weight: -37
     settings:
       image_style_gallery_full: '0'
       image_style_header_slideshow: '0'
+      image_style_header_slideshow_smartphone: '0'
+      image_style_header_slideshow_tablet_portrait: '0'
       image_style_image_gallery_thumb: '0'
+      image_style_inhaltsbild_halbe_breite: '0'
       image_style_inhaltsbild_mobile_volle_breite: '0'
       image_style_inline_full_width: '0'
       image_style_large: '0'
@@ -117,7 +121,10 @@ filters:
       image_style_max_325x325: '0'
       image_style_max_650x650: '0'
       image_style_medium: '0'
+      image_style_news_thumb_mobile: '0'
+      image_style_news_thumb_startseite: '0'
       image_style_portrait: '0'
+      image_style_portrait_autor: '0'
       image_style_portrait_medium: '0'
       image_style_portrait_tiny: '0'
       image_style_thumbnail: '0'
@@ -125,8 +132,19 @@ filters:
     id: filter_responsive_image_style
     provider: inline_responsive_images
     status: true
-    weight: 0
+    weight: -41
     settings:
+      responsive_style_header_slideshow: '0'
+      responsive_style_inhaltsbild_halbe_breite: '1'
       responsive_style_inhaltsbild_volle_breite: '1'
       responsive_style_narrow: '0'
+      responsive_style_news_thumb_startseite: '0'
       responsive_style_wide: '0'
+  filter_responsive_tables_filter:
+    id: filter_responsive_tables_filter
+    provider: responsive_tables_filter
+    status: false
+    weight: -36
+    settings:
+      tablesaw_type: stack
+      tablesaw_persist: '1'

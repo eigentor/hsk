@@ -1,0 +1,15 @@
+uuid: 0ad291cb-4945-4d08-9b28-c007c72c8ca1
+langcode: de
+status: true
+dependencies: {  }
+name: inhaltsbild_halbe_breite
+label: 'Inhaltsbild halbe Breite'
+effects:
+  a0e6640f-029a-46f4-9bf5-9c4c937c7273:
+    uuid: a0e6640f-029a-46f4-9bf5-9c4c937c7273
+    id: image_scale
+    weight: 1
+    data:
+      width: 460
+      height: 460
+      upscale: false
