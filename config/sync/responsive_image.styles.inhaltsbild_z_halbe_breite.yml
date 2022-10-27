@@ -1,4 +1,4 @@
-uuid: 3e27f8b0-26a2-4992-af71-bfcaba0d3f79
+uuid: b4ca2120-f18b-43fc-ae01-e63d93183ab7
 langcode: de
 status: true
 dependencies:
@@ -7,7 +7,7 @@ dependencies:
     - image.style.inhaltsbild_mobile_volle_breite
   theme:
     - hsk_zymphonies
-id: inhaltsbild_halbe_breite
+id: inhaltsbild_z_halbe_breite
 label: 'Inhaltsbild halbe Breite'
 image_style_mappings:
   -

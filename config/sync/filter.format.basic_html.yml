@@ -135,8 +135,8 @@ filters:
     weight: -41
     settings:
       responsive_style_header_slideshow: '0'
-      responsive_style_inhaltsbild_halbe_breite: '1'
       responsive_style_inhaltsbild_volle_breite: '1'
+      responsive_style_inhaltsbild_z_halbe_breite: '1'
       responsive_style_narrow: '0'
       responsive_style_news_thumb_startseite: '0'
       responsive_style_wide: '0'
