@@ -1081,7 +1081,7 @@ table th, table td {
   font-size: 1rem;
 }
 table th {
-  background: #6f809b;
+  background: #6e7b99;
   color: white;
 }
 
@@ -2419,11 +2419,11 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   color: #6f6f6f;
 }
 .page-node-type-page .node-turniere .content-box.blitz i:before {
-  background: #6f809b;
+  background: #6e7b99;
   content: "";
 }
 .page-node-type-page .node-turniere .content-box.blitz h3, .page-node-type-page .node-turniere .content-box.blitz h3 a {
-  color: #58677f;
+  color: #58637c;
 }
 .page-node-type-page .node-turniere .content-box.schnellschach i:before {
   content: "";
@@ -2433,12 +2433,12 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 }
 .page-node-type-page .node-turniere .content-box.tusi i:before {
   content: "";
-  background: #6f809b;
+  background: #6e7b99;
   font-size: 54.25px;
   font-size: 3.5rem;
 }
 .page-node-type-page .node-turniere .content-box.tusi h3, .page-node-type-page .node-turniere .content-box.tusi h3 a {
-  color: #58677f;
+  color: #58637c;
 }
 .page-node-type-page .node-turniere .content-box.thema i:before {
   content: "";
@@ -2634,7 +2634,7 @@ div#sliding-popup {
   background: transparent;
 }
 div#sliding-popup .eu-cookie-compliance-banner {
-  background: #6f809b;
+  background: #6e7b99;
   padding-top: 0.5em;
 }
 div#sliding-popup .eu-cookie-compliance-banner p {
@@ -2908,7 +2908,7 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   color: white;
 }
 .node-monatsblitz #page-title h1:before {
-  background: #6f809b;
+  background: #6e7b99;
   content: "";
 }
 
@@ -3562,7 +3562,7 @@ nav#block-hsk-footer ul li a {
   }
   header #block-hsk-zymphonies-branding .logo {
     width: 30%;
-    margin-left: -3%;
+    margin-left: -5%;
     margin-right: 3.5%;
   }
   header #block-hsk-zymphonies-branding .logo img {
