@@ -44,6 +44,7 @@ nav#block-hsk-zymphonies-main-menu
       a
         background: #f3f3f3
         border-bottom: 1px solid #ccc
+        +font-size-menu
         color: $base-text-color
         &:hover, &.highlighted
           background: #e5e5e5
@@ -275,15 +276,26 @@ nav#block-hsk-footer
           margin-top: 8px
       .navigation
         clear: none
-    #block-hsk-branding
+        height: 155px
+        display: flex
+        margin-left: -5%
+        margin-right: 0
+        align-items: center
+        align-items: center
+    #block-hsk-zymphonies-branding
+      display: flex
+      align-items: center
       width: auto
       .logo
+        width: 33%
+        margin-left: -6%
+        margin-right: 3.5%
         img
           margin-left: 10px
 
     .brand
       .site-branding__name, .site-branding__name a
-        +x-rem(font-size, 2)
+        +x-rem(font-size, 1.7)
         margin-bottom: 2px
       .site-branding__slogan
         +x-rem(font-size, 0.88)
@@ -330,11 +342,11 @@ nav#block-hsk-footer
                   background: none
           a
             background: none
-            border: none
-            color: $light-grey-text
-            float: left
-            padding: 3px 10px
-            +border-radius(5px)
+            border: 1px solid #e8e8e8
+            color: #777
+            //float: left
+            padding: 5px 7px
+            +border-radius(9px)
             &.is-active
               background: $primary-color
               color: white
@@ -370,13 +382,15 @@ nav#block-hsk-footer
               a
                 float: none
                 color: white
+                border: none
                 padding: 6px 15px
                 background: none
+                +x-rem(font-size, 0.9)
                 &:hover, &.highlighted
                   color: black
                   background: none
               ul
-                background: #b76400
+                background: darken($ci-flaeche, 7%)
                 top: 27px!important
                 min-width: 210px!important
                 li
@@ -404,6 +418,40 @@ nav#block-hsk-footer
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop)
+  header
+    &.main-header
+      .navigation
+        clear: none
+        height: 155px
+        margin-left: -4%
+        align-items: center
+        padding-top: 0.5em
+    #block-hsk-zymphonies-branding
+      display: flex
+      align-items: center
+      width: auto
+      .logo
+        width: 30%
+        margin-left: -3%
+        margin-right: 3.5%
+        img
+          margin-left: 10px
+
+    .brand
+      .site-branding__name, .site-branding__name a
+        +x-rem(font-size, 2)
+        margin-bottom: 2px
+      .site-branding__slogan
+        +x-rem(font-size, 0.88)
+
+    nav#block-hsk-zymphonies-main-menu
+      +legacy-pie-clearfix
+      ul.menu
+        li
+          a
+            //float: left
+            margin-right: 0.2em
+            padding: 5px 10px
 
 
 /* End Media Query Tablet */

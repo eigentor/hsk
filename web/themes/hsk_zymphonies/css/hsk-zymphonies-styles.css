@@ -979,11 +979,11 @@ h2 {
 }
 
 a {
-  color: #E27500;
+  color: #c41717;
   text-decoration: none;
 }
 a:hover {
-  color: #E27500;
+  color: #c41717;
   text-decoration: underline;
 }
 
@@ -1262,11 +1262,7 @@ input, button, select, textarea {
   padding-bottom: 25px;
   font-size: 31px;
   font-size: 2rem;
-  border-bottom: 5px solid #ED8600;
-}
-
-.container {
-  max-width: 1000px;
+  border-bottom: 5px solid #AB3131;
 }
 
 .content_layout {
@@ -1371,7 +1367,7 @@ input, button, select, textarea {
   border-bottom: 1px solid #ccc;
 }
 .sidebar ul.menu li.active > a {
-  color: #E27500;
+  color: #c41717;
   background: none;
 }
 .sidebar ul.menu li a {
@@ -1382,12 +1378,12 @@ input, button, select, textarea {
 }
 .sidebar ul.menu li a:hover {
   text-decoration: none;
-  color: #E27500;
+  color: #c41717;
   background: none;
   border: none;
 }
 .sidebar ul.menu li a.is-active {
-  color: #E27500;
+  color: #c41717;
 }
 .sidebar ul.menu li ul {
   display: block;
@@ -2325,7 +2321,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   text-decoration: none;
 }
 .page-node-type-article article.node--type-article footer.comment-submitted a.post-comment:hover:before {
-  color: #E27500;
+  color: #c41717;
 }
 .page-node-type-article article.node--type-article.default-image .field--name-field-image {
   display: none;
@@ -2401,7 +2397,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   color: #333;
 }
 .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft i:before {
-  background: #ED8600;
+  background: #AB3131;
   content: "";
   font-size: 58.9px;
   font-size: 3.8rem;
@@ -2409,7 +2405,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   padding-right: 0.03em;
 }
 .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft h3, .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft h3 a {
-  color: #ED8600;
+  color: #AB3131;
 }
 .page-node-type-page .node-turniere .content-box.pokal i:before {
   font-size: 54.25px;
@@ -2442,12 +2438,12 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 }
 .page-node-type-page .node-turniere .content-box.thema i:before {
   content: "";
-  background: #ED8600;
+  background: #AB3131;
   font-size: 54.25px;
   font-size: 3.5rem;
 }
 .page-node-type-page .node-turniere .content-box.thema h3, .page-node-type-page .node-turniere .content-box.thema h3 a {
-  color: #ED8600;
+  color: #AB3131;
 }
 
 .page-node-type-turnier #table-tabs {
@@ -2642,7 +2638,7 @@ div#sliding-popup .eu-cookie-compliance-banner p {
   line-height: 1.7;
 }
 div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button {
-  background: #ED8600;
+  background: #AB3131;
   text-shadow: none;
   border: none;
   box-shadow: none;
@@ -2654,7 +2650,7 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button {
   margin-right: 0.5em;
 }
 div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
-  background: #ba6900;
+  background: #832626;
 }
 
 .field--name-field-pgn-txt-pgn .cbreplay {
@@ -2844,7 +2840,7 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   -ms-border-radius: 55px;
   -o-border-radius: 55px;
   border-radius: 55px;
-  background: #ED8600;
+  background: #AB3131;
   font-family: "fontawesome";
   content: "";
   color: white;
@@ -2871,7 +2867,7 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   -ms-border-radius: 55px;
   -o-border-radius: 55px;
   border-radius: 55px;
-  background: #ED8600;
+  background: #AB3131;
   font-family: "fontawesome";
   content: "";
   color: white;
@@ -2902,7 +2898,7 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   -ms-border-radius: 55px;
   -o-border-radius: 55px;
   border-radius: 55px;
-  background: #ED8600;
+  background: #AB3131;
   font-family: "fontawesome";
   content: "";
   color: white;
@@ -2933,7 +2929,7 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   -ms-border-radius: 55px;
   -o-border-radius: 55px;
   border-radius: 55px;
-  background: #ED8600;
+  background: #AB3131;
   font-family: "fontawesome";
   content: "";
   color: white;
@@ -3076,7 +3072,16 @@ nav#block-hsk-zymphonies-main-menu ul.menu {
 nav#block-hsk-zymphonies-main-menu ul.menu li a {
   background: #f3f3f3;
   border-bottom: 1px solid #ccc;
+  font-size: 13.175px;
+  font-size: 0.85rem;
+  font-family: "Roboto Slab", serif;
   color: #333;
+}
+@media only screen and (min-width: 1200px) {
+  nav#block-hsk-zymphonies-main-menu ul.menu li a {
+    font-size: 14.725px;
+    font-size: 0.95rem;
+  }
 }
 nav#block-hsk-zymphonies-main-menu ul.menu li a:hover, nav#block-hsk-zymphonies-main-menu ul.menu li a.highlighted {
   background: #e5e5e5;
@@ -3090,7 +3095,7 @@ nav#block-hsk-zymphonies-main-menu ul.menu li a .sub-arrow:hover {
   color: black;
   border: 1px solid #aaa;
   color: white;
-  background: #ED8600;
+  background: #AB3131;
 }
 nav#block-hsk-zymphonies-main-menu ul.menu li ul {
   display: none;
@@ -3184,7 +3189,7 @@ nav#block-hsk-zymphonies-main-menu ul li a span.sub-arrow {
 nav#block-hsk-zymphonies-main-menu ul li a span.sub-arrow:hover {
   border: 1px solid #aaa;
   color: white;
-  background: #ED8600;
+  background: #AB3131;
 }
 nav#block-hsk-zymphonies-main-menu ul ul {
   background: rgba(102, 102, 102, 0.1);
@@ -3357,16 +3362,29 @@ nav#block-hsk-footer ul li a {
   }
   header.main-header .navigation {
     clear: none;
+    height: 155px;
+    display: flex;
+    margin-left: -5%;
+    margin-right: 0;
+    align-items: center;
+    align-items: center;
   }
-  header #block-hsk-branding {
+  header #block-hsk-zymphonies-branding {
+    display: flex;
+    align-items: center;
     width: auto;
   }
-  header #block-hsk-branding .logo img {
+  header #block-hsk-zymphonies-branding .logo {
+    width: 33%;
+    margin-left: -6%;
+    margin-right: 3.5%;
+  }
+  header #block-hsk-zymphonies-branding .logo img {
     margin-left: 10px;
   }
   header .brand .site-branding__name, header .brand .site-branding__name a {
-    font-size: 31px;
-    font-size: 2rem;
+    font-size: 26.35px;
+    font-size: 1.7rem;
     margin-bottom: 2px;
   }
   header .brand .site-branding__slogan {
@@ -3418,7 +3436,7 @@ nav#block-hsk-footer ul li a {
     background: none;
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li.active a {
-    background: #ED8600;
+    background: #AB3131;
     color: white;
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li.active ul li a {
@@ -3426,22 +3444,21 @@ nav#block-hsk-footer ul li a {
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li a {
     background: none;
-    border: none;
-    color: #888;
-    float: left;
-    padding: 3px 10px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
-    border-radius: 5px;
+    border: 1px solid #e8e8e8;
+    color: #777;
+    padding: 5px 7px;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    -ms-border-radius: 9px;
+    -o-border-radius: 9px;
+    border-radius: 9px;
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li a.is-active {
-    background: #ED8600;
+    background: #AB3131;
     color: white;
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li a:hover, header nav#block-hsk-zymphonies-main-menu ul.menu li a:active, header nav#block-hsk-zymphonies-main-menu ul.menu li a:focus {
-    background: #ED8600;
+    background: #AB3131;
     color: white;
     text-decoration: none;
   }
@@ -3450,7 +3467,7 @@ nav#block-hsk-footer ul li a {
     color: #888;
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li a.highlighted, header nav#block-hsk-zymphonies-main-menu ul.menu li a.highlighted:hover {
-    background: #ED8600;
+    background: #AB3131;
     color: white;
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li a.has-submenu.highlighted {
@@ -3465,7 +3482,7 @@ nav#block-hsk-footer ul li a {
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li ul {
     position: absolute;
-    background: #ED8600;
+    background: #AB3131;
     min-width: 210px !important;
     border: none;
     top: 27px !important;
@@ -3485,15 +3502,18 @@ nav#block-hsk-footer ul li a {
   header nav#block-hsk-zymphonies-main-menu ul.menu li ul li a {
     float: none;
     color: white;
+    border: none;
     padding: 6px 15px;
     background: none;
+    font-size: 13.95px;
+    font-size: 0.9rem;
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li ul li a:hover, header nav#block-hsk-zymphonies-main-menu ul.menu li ul li a.highlighted {
     color: black;
     background: none;
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li ul li ul {
-    background: #b76400;
+    background: #8f2929;
     top: 27px !important;
     min-width: 210px !important;
   }
@@ -3522,6 +3542,52 @@ nav#block-hsk-footer ul li a {
 /*---------------- Desktop  ------------------*/
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 1200px) {
+  header.main-header .navigation {
+    clear: none;
+    height: 155px;
+    margin-left: -4%;
+    align-items: center;
+    padding-top: 0.5em;
+  }
+  header #block-hsk-zymphonies-branding {
+    display: flex;
+    align-items: center;
+    width: auto;
+  }
+  header #block-hsk-zymphonies-branding .logo {
+    width: 30%;
+    margin-left: -3%;
+    margin-right: 3.5%;
+  }
+  header #block-hsk-zymphonies-branding .logo img {
+    margin-left: 10px;
+  }
+  header .brand .site-branding__name, header .brand .site-branding__name a {
+    font-size: 31px;
+    font-size: 2rem;
+    margin-bottom: 2px;
+  }
+  header .brand .site-branding__slogan {
+    font-size: 13.64px;
+    font-size: 0.88rem;
+  }
+  header nav#block-hsk-zymphonies-main-menu {
+    *zoom: 1;
+  }
+  header nav#block-hsk-zymphonies-main-menu:after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden;
+  }
+  header nav#block-hsk-zymphonies-main-menu ul.menu li a {
+    margin-right: 0.2em;
+    padding: 5px 10px;
+  }
+}
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -3711,13 +3777,13 @@ nav#block-hsk-footer ul li a {
   margin-bottom: 5px;
 }
 .path-frontpage #block-begrussungstext a.btn {
-  background: #ED8600;
+  background: #AB3131;
   font-weight: bold;
   color: white;
   letter-spacing: 0.02em;
 }
 .path-frontpage #block-begrussungstext a.btn:hover {
-  background: #ba6900;
+  background: #832626;
 }
 .path-frontpage #block-begrussungstext a.btn:before {
   font-family: Fontawesome;

@@ -81,6 +81,12 @@ $bold: 700
   +slab-font
   +x-rem(font-size, 0.9)
 
+@mixin font-size-menu
+  +x-rem(font-size, 0.85)
+  +slab-font
+  +breakpoint($breakpoint-desktop)
+    +x-rem(font-size, 0.95)
+
 
 html
   font-size: 15.5px
