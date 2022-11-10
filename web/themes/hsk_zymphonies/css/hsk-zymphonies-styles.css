@@ -1458,6 +1458,10 @@ input, button, select, textarea {
 /*------------------------------------------- */
 /*------------------------------------------- */
 @media only screen and (min-width: 991px) {
+  .content_layout .content-layout-inner {
+    padding-left: 0;
+  }
+
   .footer-menu nav ul {
     margin-left: 0;
   }
@@ -3485,7 +3489,8 @@ nav#block-hsk-footer ul li a {
     background: #AB3131;
     min-width: 210px !important;
     border: none;
-    top: 27px !important;
+    top: 35px !important;
+    left: 1px !important;
     padding: 8px 0;
     -webkit-border-radius: 0 4px 4px 4px;
     -moz-border-radius: 0 4px 4px 4px;
