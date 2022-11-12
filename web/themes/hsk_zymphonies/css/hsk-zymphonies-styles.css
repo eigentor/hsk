@@ -3416,6 +3416,9 @@ nav#block-hsk-footer ul li a {
   header #block-hsk-zymphonies-branding .logo img {
     margin-left: 10px;
   }
+  header .brand.site-name {
+    text-align: left;
+  }
   header .brand .site-branding__name, header .brand .site-branding__name a {
     font-size: 26.35px;
     font-size: 1.7rem;
