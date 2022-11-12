@@ -82,8 +82,10 @@ $bold: 700
   +x-rem(font-size, 0.9)
 
 @mixin font-size-menu
-  +x-rem(font-size, 0.85)
+  +x-rem(font-size, 1.1)
   +slab-font
+  +breakpoint($breakpoint-desktop-narrow)
+    +x-rem(font-size, 0.85)
   +breakpoint($breakpoint-desktop)
     +x-rem(font-size, 0.95)
 

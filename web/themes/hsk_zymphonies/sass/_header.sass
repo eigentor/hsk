@@ -13,8 +13,12 @@ header
   padding-top: 20px
   +legacy-pie-clearfix
   #block-hsk-zymphonies-branding
-    display: inline-block
   .brand
+    &.logo
+      width: 40%
+      margin: auto
+    &.site-name
+      text-align: center
     .site-branding__name, .site-branding__name a
       line-height: 1.2
       font-family: $roboto-slab
@@ -218,6 +222,24 @@ nav#block-hsk-footer
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-tablet-portrait)
+  header
+    &.main-header
+      .brand
+        &.logo
+          width: 40%
+          max-width: 150px
+        .site-branding__name, .site-branding__name a
+          line-height: 1.2
+          font-family: $roboto-slab
+          color: #888
+          +x-rem(font-size, 1.9)
+        .site-branding__slogan
+          color: #555
+          font-family: $roboto-slab
+          +x-rem(font-size, 0.9)
+      .navigation
+        clear: both
+
 
 
 /* End Media Query Tablet Portrait */
@@ -243,9 +265,6 @@ nav#block-hsk-footer
       //  width: 22px
       //  height: 2px
       //  border-radius: 1px
-    &.main-header
-      .navigation
-        clear: both
 
   .search-block-form
     display: block
@@ -280,6 +299,7 @@ nav#block-hsk-footer
         display: flex
         margin-left: -5%
         margin-right: 0
+        margin-top: -3px
         align-items: center
         align-items: center
     #block-hsk-zymphonies-branding
@@ -298,7 +318,7 @@ nav#block-hsk-footer
         +x-rem(font-size, 1.7)
         margin-bottom: 2px
       .site-branding__slogan
-        +x-rem(font-size, 0.88)
+        +x-rem(font-size, 0.83)
 
     nav#block-useraccountmenu
       float: right
@@ -342,7 +362,7 @@ nav#block-hsk-footer
                   background: none
           a
             background: none
-            border: 1px solid #e8e8e8
+            border: 1px solid #dddddd
             color: #777
             //float: left
             padding: 5px 7px
@@ -425,22 +445,23 @@ nav#block-hsk-footer
         clear: none
         height: 155px
         margin-left: -4%
+        margin-top: -5px
         align-items: center
-        padding-top: 0.5em
     #block-hsk-zymphonies-branding
       display: flex
       align-items: center
       width: auto
       .logo
-        width: 30%
+        width: 27%
         margin-left: -5%
         margin-right: 3.5%
+        padding-top: 5px
         img
           margin-left: 10px
 
     .brand
       .site-branding__name, .site-branding__name a
-        +x-rem(font-size, 2)
+        +x-rem(font-size, 1.9)
         margin-bottom: 2px
       .site-branding__slogan
         +x-rem(font-size, 0.88)

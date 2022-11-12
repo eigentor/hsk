@@ -1528,7 +1528,7 @@ input, button, select, textarea {
   line-height: 1.35;
 }
 .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container {
-  padding: 0 15px 10px;
+  padding: 0 15px 10px 30px;
 }
 .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container p {
   margin: 0 0 5px;
@@ -3032,8 +3032,12 @@ header:after {
   overflow: hidden;
   visibility: hidden;
 }
-header #block-hsk-zymphonies-branding {
-  display: inline-block;
+header .brand.logo {
+  width: 40%;
+  margin: auto;
+}
+header .brand.site-name {
+  text-align: center;
 }
 header .brand .site-branding__name, header .brand .site-branding__name a {
   line-height: 1.2;
@@ -3076,10 +3080,16 @@ nav#block-hsk-zymphonies-main-menu ul.menu {
 nav#block-hsk-zymphonies-main-menu ul.menu li a {
   background: #f3f3f3;
   border-bottom: 1px solid #ccc;
-  font-size: 13.175px;
-  font-size: 0.85rem;
+  font-size: 17.05px;
+  font-size: 1.1rem;
   font-family: "Roboto Slab", serif;
   color: #333;
+}
+@media only screen and (min-width: 991px) {
+  nav#block-hsk-zymphonies-main-menu ul.menu li a {
+    font-size: 13.175px;
+    font-size: 0.85rem;
+  }
 }
 @media only screen and (min-width: 1200px) {
   nav#block-hsk-zymphonies-main-menu ul.menu li a {
@@ -3320,6 +3330,28 @@ nav#block-hsk-footer ul li a {
 /*----------- Tablet Portrait ----------------*/
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 480px) {
+  header.main-header .brand.logo {
+    width: 40%;
+    max-width: 150px;
+  }
+  header.main-header .brand .site-branding__name, header.main-header .brand .site-branding__name a {
+    line-height: 1.2;
+    font-family: "Roboto Slab", serif;
+    color: #888;
+    font-size: 29.45px;
+    font-size: 1.9rem;
+  }
+  header.main-header .brand .site-branding__slogan {
+    color: #555;
+    font-family: "Roboto Slab", serif;
+    font-size: 13.95px;
+    font-size: 0.9rem;
+  }
+  header.main-header .navigation {
+    clear: both;
+  }
+}
 /* End Media Query Tablet Portrait */
 /*------------------------------------------- */
 /*------------------------------------------- */
@@ -3338,9 +3370,6 @@ nav#block-hsk-footer ul li a {
     margin-top: 8px;
     margin-right: 15px;
     margin-bottom: 8px;
-  }
-  header.main-header .navigation {
-    clear: both;
   }
 
   .search-block-form {
@@ -3370,6 +3399,7 @@ nav#block-hsk-footer ul li a {
     display: flex;
     margin-left: -5%;
     margin-right: 0;
+    margin-top: -3px;
     align-items: center;
     align-items: center;
   }
@@ -3392,8 +3422,8 @@ nav#block-hsk-footer ul li a {
     margin-bottom: 2px;
   }
   header .brand .site-branding__slogan {
-    font-size: 13.64px;
-    font-size: 0.88rem;
+    font-size: 12.865px;
+    font-size: 0.83rem;
   }
   header nav#block-useraccountmenu {
     float: right;
@@ -3448,7 +3478,7 @@ nav#block-hsk-footer ul li a {
   }
   header nav#block-hsk-zymphonies-main-menu ul.menu li a {
     background: none;
-    border: 1px solid #e8e8e8;
+    border: 1px solid #dddddd;
     color: #777;
     padding: 5px 7px;
     -webkit-border-radius: 9px;
@@ -3552,8 +3582,8 @@ nav#block-hsk-footer ul li a {
     clear: none;
     height: 155px;
     margin-left: -4%;
+    margin-top: -5px;
     align-items: center;
-    padding-top: 0.5em;
   }
   header #block-hsk-zymphonies-branding {
     display: flex;
@@ -3561,16 +3591,17 @@ nav#block-hsk-footer ul li a {
     width: auto;
   }
   header #block-hsk-zymphonies-branding .logo {
-    width: 30%;
+    width: 27%;
     margin-left: -5%;
     margin-right: 3.5%;
+    padding-top: 5px;
   }
   header #block-hsk-zymphonies-branding .logo img {
     margin-left: 10px;
   }
   header .brand .site-branding__name, header .brand .site-branding__name a {
-    font-size: 31px;
-    font-size: 2rem;
+    font-size: 29.45px;
+    font-size: 1.9rem;
     margin-bottom: 2px;
   }
   header .brand .site-branding__slogan {
