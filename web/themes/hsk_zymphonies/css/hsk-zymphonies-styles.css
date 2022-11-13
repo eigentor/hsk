@@ -3013,10 +3013,6 @@ figure figcaption {
 /*------------- All Screen Sizes -------------*/
 /*------------------------------------------- */
 /*------------------------------------------- */
-#toolbar-item-administration-tray {
-  font-weight: normal;
-}
-
 header {
   padding-top: 20px;
   *zoom: 1;
@@ -3032,33 +3028,33 @@ header:after {
   overflow: hidden;
   visibility: hidden;
 }
+header #block-hsk-zymphonies-branding {
+  display: flex;
+  align-items: center;
+}
 header .brand.logo {
-  width: 40%;
-  margin: auto;
+  width: 70px;
+  margin-right: 10px;
 }
 header .brand.site-name {
-  text-align: center;
+  text-align: left;
 }
 header .brand .site-branding__name, header .brand .site-branding__name a {
   line-height: 1.2;
   font-family: "Roboto Slab", serif;
   color: #888;
-  font-size: 23.25px;
-  font-size: 1.5rem;
+  font-size: 18.6px;
+  font-size: 1.2rem;
 }
 header .brand .site-branding__slogan {
-  color: #555;
+  color: #757575;
   font-family: "Roboto Slab", serif;
   font-size: 12.4px;
   font-size: 0.8rem;
 }
-header .region-primary-menu {
-  display: none;
-}
 
-#block-hsk-branding {
-  width: 55%;
-  float: left;
+#toolbar-item-administration-tray {
+  font-weight: normal;
 }
 
 nav#block-hsk-zymphonies-main-menu {
@@ -3232,7 +3228,7 @@ nav#block-hsk-zymphonies-main-menu ul ul ul ul a, nav#block-hsk-zymphonies-main-
   float: right;
   padding: 9px 10px;
   margin-top: 4px;
-  margin-right: 15px;
+  margin-right: 7px;
   margin-bottom: 8px;
   background-color: transparent;
   background-image: none;
@@ -3249,7 +3245,7 @@ nav#block-hsk-zymphonies-main-menu ul ul ul ul a, nav#block-hsk-zymphonies-main-
 #block-mobilemenubutton {
   width: 29px;
   height: 29px;
-  background: url(../images/menu-icon.png) no-repeat center center;
+  background: url(../images/mobile-menu.svg) no-repeat center center;
   float: right;
   margin-left: 20px;
 }
@@ -3327,13 +3323,55 @@ nav#block-hsk-footer ul li a {
 
 /*------------------------------------------- */
 /*------------------------------------------- */
+/*------------- Smartphone (ab 340) ----------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
+@media only screen and (min-width: 340px) {
+  header .brand.logo {
+    width: 85px;
+    max-width: 120px;
+    margin-right: 10px;
+  }
+  header .brand.site-name {
+    text-align: left;
+    margin-bottom: 0.5em;
+  }
+  header .brand .site-branding__name, header .brand .site-branding__name a {
+    line-height: 1.2;
+    font-family: "Roboto Slab", serif;
+    color: #888;
+    font-size: 20.15px;
+    font-size: 1.3rem;
+  }
+  header .brand .site-branding__slogan {
+    color: #757575;
+    font-family: "Roboto Slab", serif;
+    font-size: 12.4px;
+    font-size: 0.8rem;
+    max-width: 45vw;
+  }
+  header .region-primary-menu {
+    display: none;
+  }
+
+  #block-hsk-branding {
+    width: 55%;
+    float: left;
+  }
+
+  .navbar-toggle {
+    margin-top: 20px;
+    margin-right: 10px;
+  }
+}
+/*------------------------------------------- */
+/*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/
 /*------------------------------------------- */
 /*------------------------------------------- */
 @media only screen and (min-width: 480px) {
   header.main-header .brand.logo {
-    width: 40%;
-    max-width: 150px;
+    width: 100px;
   }
   header.main-header .brand .site-branding__name, header.main-header .brand .site-branding__name a {
     line-height: 1.2;
@@ -3351,6 +3389,11 @@ nav#block-hsk-footer ul li a {
   header.main-header .navigation {
     clear: both;
   }
+
+  .navbar-toggle {
+    margin-top: 30px;
+    margin-right: 15px;
+  }
 }
 /* End Media Query Tablet Portrait */
 /*------------------------------------------- */
@@ -3362,12 +3405,12 @@ nav#block-hsk-footer ul li a {
   header {
     padding-top: 30px;
   }
-  header .navbar-toggle {
+
+  .navbar-toggle {
     display: block;
     position: relative;
     float: right;
     padding: 9px 10px;
-    margin-top: 8px;
     margin-right: 15px;
     margin-bottom: 8px;
   }
