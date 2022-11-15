@@ -1,0 +1,12 @@
+<div class="date">
+  <span class="weekday">
+    {{ date_weekday }}
+  </span>
+  <span class="date-inner">
+    {{ row._entity.fields.field_ev_date.date|date('d.m.Y', false, false) }}
+  </span>
+
+</div>
+<div class="time">
+  {{ row._entity.fields.field_uhrzeit.from|date('H:i', false, false) }}
+</div>

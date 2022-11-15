@@ -1879,7 +1879,7 @@ input, button, select, textarea {
   .sidebar .view-events-list .views-field-field-ev-start-time .date, .sidebar .view-events-list .views-field-field-ev-start-time .time, .sidebar .view-events-list .views-field-field-uhrzeit-1 .date, .sidebar .view-events-list .views-field-field-uhrzeit-1 .time {
     display: inline;
   }
-  .sidebar .view-events-list .views-field-field-ev-start-time .date:after, .sidebar .view-events-list .views-field-field-uhrzeit-1 .date:after {
+  .sidebar .view-events-list .views-field-field-ev-start-time .date.date:after, .sidebar .view-events-list .views-field-field-uhrzeit-1 .date.date:after {
     content: "-";
     padding-left: 0.15em;
   }
@@ -3751,7 +3751,7 @@ nav#block-hsk-footer ul li a {
   border: 1px solid #ccc;
   border-bottom: 0;
 }
-.path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date .date, .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-uhrzeit-1 .date .date {
+.path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date .date-inner, .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-uhrzeit-1 .date .date-inner {
   background: #888;
   display: block;
   color: white;
@@ -3765,17 +3765,18 @@ nav#block-hsk-footer ul li a {
 }
 .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-title {
   display: flex;
+  align-items: center;
 }
 .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-title h3 {
-  font-size: 14.725px;
-  font-size: 0.95rem;
-  align-self: flex-start;
+  font-size: 15.5px;
+  font-size: 1rem;
   margin-top: 3px;
   margin-bottom: 0;
   border: none;
 }
 .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-event-room {
   display: flex;
+  align-items: center;
   margin-top: 0.3em;
   font-size: 12.4px;
   font-size: 0.8rem;

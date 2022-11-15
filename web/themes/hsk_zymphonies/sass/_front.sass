@@ -68,7 +68,7 @@
             border: 1px solid #ccc
             border-bottom: 0
 
-          .date
+          .date-inner
             background: #888
             display: block
             color: white
@@ -82,17 +82,18 @@
 
       .views-field-title
         display: flex
+        align-items: center
 
         h3
           //font-family: $open-sans
-          +x-rem(font-size, 0.95)
-          align-self: flex-start
+          +x-rem(font-size, 1)
           margin-top: 3px
           margin-bottom: 0
           border: none
 
       .views-field-field-event-room
         display: flex
+        align-items: center
         margin-top: 0.3em
         +small-grey-links
         margin-left: 10px

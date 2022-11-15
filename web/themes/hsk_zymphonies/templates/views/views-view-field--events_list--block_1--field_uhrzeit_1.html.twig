@@ -22,10 +22,9 @@
 #}
 <div class="date">
   <span class="weekday">
-{{ huppa }}
-    {{ row._entity.fields.field_ev_date.date|date('D', de, de) }}
+    {{ date_weekday }}
   </span>
-  <span class="date">
+  <span class="date-inner">
     {{ row._entity.fields.field_ev_date.date|date('d.m.Y', false, false) }}
   </span>
 

@@ -86,12 +86,12 @@ function hsk_zymphonies_preprocess_views_view_unformatted__news(&$variables)
 //  var_dump($variables);
 //}
 
-function hsk_zymphonies_preprocess_views_view_field__events_list__block_1(&$variables)
+function hsk_zymphonies_preprocess_views_view_field__events_list(&$variables)
 {
-  if ($variables['field']->field == 'field_uhrzeit') {
-    ksm($variables);
-  }
-  $variables['huppa'] = 'glotz';
+  $node = $variables['row']->_entity;
+  $date_raw = $node->field_ev_date->date;
+  $date_weekday = $date_raw->format('D');
+  $variables['date_weekday'] = $date_weekday;
 }
 
 
