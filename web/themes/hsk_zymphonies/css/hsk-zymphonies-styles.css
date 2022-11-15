@@ -3954,7 +3954,7 @@ nav#block-hsk-footer ul li a {
   }
   .path-frontpage #block-views-block-news-block-1 .views-row .views-field-field-image-1 {
     display: block;
-    min-width: 115px;
+    min-width: 170px;
     margin-right: 1em;
   }
   .path-frontpage #block-views-block-news-block-1 .views-row .views-field-field-image-1 img {
@@ -3996,7 +3996,7 @@ nav#block-hsk-footer ul li a {
     padding-left: 15px;
   }
   .path-frontpage #block-views-block-news-block-1 .view-news {
-    padding-right: 2em;
+    padding-right: 5em;
   }
 }
 @media only screen and (min-width: 991px) and (min-width: 992px) {

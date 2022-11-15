@@ -7,11 +7,11 @@ dependencies:
 name: news_thumb_startseite
 label: 'News Thumb Startseite Desktop'
 effects:
-  c2f3b828-7595-47fe-9d74-41f0c0b94439:
-    uuid: c2f3b828-7595-47fe-9d74-41f0c0b94439
+  68164085-6b83-4329-8218-ed8a1c368631:
+    uuid: 68164085-6b83-4329-8218-ed8a1c368631
     id: focal_point_scale_and_crop
-    weight: 2
+    weight: 1
     data:
-      width: 115
-      height: 115
+      width: 170
+      height: 140
       crop_type: focal_point
