@@ -51,6 +51,10 @@
       .views-field-field-ev-date
         +x-rem(font-size, 0.8)
 
+      .views-field-field-uhrzeit-1
+        span.weekday
+          display: block
+
       .views-field-field-ev-start-time, .views-field-field-uhrzeit-1
         margin-top: 3px
         +x-rem(font-size, 0.75)
@@ -60,9 +64,14 @@
         min-width: 80px
 
         .date
-          background: #888
-          color: white
-          padding: 1px 6px
+          .weekday
+            border: 1px solid #ccc
+            border-bottom: 0
+
+          .date
+            background: #888
+            color: white
+            padding: 1px 6px
 
         .time
           padding: 2px 0
@@ -290,7 +299,6 @@
         margin-bottom: 13px
         .views-field-field-ev-start-time, .views-field-field-uhrzeit-1
           .date
-            background: #999
             +x-rem(font-size, 0.7)
 
 
