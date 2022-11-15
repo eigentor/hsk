@@ -80,6 +80,20 @@ function hsk_zymphonies_preprocess_views_view_unformatted__news(&$variables)
   }
 }
 
+//function hsk_zymphonies_preprocess_views_view_field__events_list__block_1__field_uhrzeit_1(&$variables) {
+//  $peter = 7;
+//  return 'heyo';
+//  var_dump($variables);
+//}
+
+function hsk_zymphonies_preprocess_views_view_field__events_list__block_1(&$variables)
+{
+  if ($variables['field']->field == 'field_uhrzeit') {
+    ksm($variables);
+  }
+  $variables['huppa'] = 'glotz';
+}
+
 
 /**
  * implements template_preprocess_node();

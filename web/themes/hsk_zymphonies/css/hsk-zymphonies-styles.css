@@ -3753,6 +3753,7 @@ nav#block-hsk-footer ul li a {
 }
 .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-ev-start-time .date .date, .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-uhrzeit-1 .date .date {
   background: #888;
+  display: block;
   color: white;
   padding: 1px 6px;
 }
