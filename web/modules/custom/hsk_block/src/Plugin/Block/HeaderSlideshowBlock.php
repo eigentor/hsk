@@ -7,6 +7,18 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Block for Header Slideshow.
+ *
+ * @package Drupal\hsk_block\Plugin\Block
+ *
+ * @Block (
+ *  id = "header_slideshow_block",
+ *  admin_label = @Translation("Header Slideshow"),
+ *  category = @Translation("HSK")
+ * )
+ */
+
 class HeaderSlideshowBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   protected $entityTypeManager;
