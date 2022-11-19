@@ -35,11 +35,10 @@ class HeaderSliDeltaSort extends SortPluginBase implements CacheableDependencyIn
 public function query()
 {
   $this->ensureMyTable();
-  $andrea = 2;
-//  $delta = ($this->tableAlias, $this->realField;
+  $delta = $this->tableAlias . '.' . $this->realField;
 //  $this->query()->addOrderBy($delta);
 //  ksm($delta);
-  $this->query->addOrderBy($this->tableAlias, $this->realField, $this->options['order']);
+  $this->query->addOrderBy($delta);
   $peter = 7;
 }
 
