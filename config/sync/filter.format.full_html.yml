@@ -115,12 +115,6 @@ filters:
       responsive_style_narrow: '0'
       responsive_style_news_thumb_startseite: '0'
       responsive_style_wide: '0'
-  filter_html_escape:
-    id: filter_html_escape
-    provider: filter
-    status: false
-    weight: -41
-    settings: {  }
   filter_html_image_secure:
     id: filter_html_image_secure
     provider: filter
@@ -134,6 +128,12 @@ filters:
     weight: -39
     settings:
       filter_url_length: 72
+  filter_html_escape:
+    id: filter_html_escape
+    provider: filter
+    status: false
+    weight: -41
+    settings: {  }
   filter_autop:
     id: filter_autop
     provider: filter

@@ -1,0 +1,60 @@
+uuid: 18fef71e-5bf4-46a9-a123-5b5c897a0a9b
+langcode: de
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.slideshow
+    - field.field.paragraph.slideshow_image.field_gbl_css_class
+    - field.field.paragraph.slideshow_image.field_sli_heading
+    - field.field.paragraph.slideshow_image.field_sli_image
+    - field.field.paragraph.slideshow_image.field_sli_link_heading
+    - field.field.paragraph.slideshow_image.field_sli_text
+    - paragraphs.paragraphs_type.slideshow_image
+    - responsive_image.styles.header_slideshow
+  module:
+    - link
+    - responsive_image
+    - text
+id: paragraph.slideshow_image.slideshow
+targetEntityType: paragraph
+bundle: slideshow_image
+mode: slideshow
+content:
+  field_sli_heading:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_sli_image:
+    type: responsive_image
+    label: hidden
+    settings:
+      responsive_image_style: header_slideshow
+      image_link: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_sli_link_heading:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_sli_text:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  field_gbl_css_class: true
