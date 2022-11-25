@@ -34,6 +34,10 @@ class HeaderSlideshowBlock extends BlockBase implements ContainerFactoryPluginIn
   {
     $items = $this->getSlideshowItems();
 
+
+
+    $peter = 7;
+
     return [
       '#markup' => 'Platzhalter-Text',
     ];
@@ -50,11 +54,29 @@ class HeaderSlideshowBlock extends BlockBase implements ContainerFactoryPluginIn
   }
 
   protected function getSlideshowItems() {
-    $paragraphs_ids = $this->entityTypeManager->getStorage('paragraph')->getQuery()
-      ->condition('type', 'slideshow_image')
-      ->execute()
-      ;
 
-    return($paragraphs_ids);
+    // There might be multiple "slideshow" paragraph items, so we load them all
+    $slideshow_parent_item = $this->entityTypeManager->getStorage('paragraph')->getQuery()
+      ->condition('type', 'slideshow')
+      ->execute()
+    ;
+
+    // load the full paragraph entities for the slideshow items
+    $parent_items = $this->entityTypeManager->getStorage('paragraph')->loadMultiple($slideshow_parent_item);
+
+    // We write "slideshow_image" paragraphs that are referenced on the "field_sl_image" field inside
+    // the slideshow items into an array that is keyed by the "slideshow" paragraph ids.
+    // This way we stay flexible if in the future there might be multiple "slideshow" paragraph items
+    $slideshow_items = [];
+    foreach($parent_items as $parent_item) {
+      $paragraph_id = $parent_item->id();
+      $children = $parent_item->get('field_sl_image')->referencedEntities();
+      $slideshow_items[$paragraph_id] = $children;
+    }
+
+    // But now we are pragmatic: we only load the "slideshow_image" items from the first "slideshow" item.
+    $selected_items = reset($slideshow_items);
+
+    return($selected_items);
   }
 }
