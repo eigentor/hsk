@@ -1,0 +1,11 @@
+<?php
+
+function hsk_block_theme() {
+  return [
+    'header_slideshow_block' => [
+      'variables' => [
+        'slides' =>[],
+      ],
+    ],
+  ];
+}

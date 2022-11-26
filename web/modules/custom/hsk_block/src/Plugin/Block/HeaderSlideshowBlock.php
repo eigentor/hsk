@@ -37,15 +37,13 @@ class HeaderSlideshowBlock extends BlockBase implements ContainerFactoryPluginIn
     $builder = $this->entityTypeManager->getViewBuilder('paragraph');
     $view_mode = 'slideshow';
 
-    $slideshow_list = [];
-    foreach($items as $item) {
-      $slideshow_list[] = $builder->view($item, $view_mode);
-    }
+    $slideshow_list = $builder->viewMultiple($items, $view_mode);
+
 
     $peter = 7;
 
     return [
-      '#markup' => 'Platzhalter-Text',
+      '#theme' => 'header_slideshow_block',
       '#slides' => $slideshow_list,
     ];
   }
