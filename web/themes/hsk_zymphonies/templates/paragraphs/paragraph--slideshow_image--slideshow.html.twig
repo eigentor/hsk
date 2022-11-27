@@ -1,0 +1,25 @@
+{%
+  set classes = [
+  'paragraph',
+  'paragraph--type--' ~ paragraph.bundle|clean_class,
+  view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+  not paragraph.isPublished() ? 'paragraph--unpublished'
+
+  set link_node_id = content.field_sli_link_heading.0['#url'].routeParameters.node
+]
+
+
+%}
+{% block paragraph %}
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
+      {{ content }}
+      {% if slide_link %}
+      <a href="{{ slide_link }}">Zum Node</a>
+      {% endif %}
+      {{ path('entity.node.canonical', {'node': link_node_id }) }}
+      {{ dd(content.field_sli_link_heading.0['#url'].routeParameters.node) }}
+
+    {% endblock %}
+  </div>
+{% endblock paragraph %}
