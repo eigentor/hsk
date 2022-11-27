@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '07c4f15cd20c64aae921379a4c3f4584d7e14ffb',
+        'reference' => '958b54fcd90d7eec90eb510d90424233026bf250',
         'name' => 'drupal/recommended-project',
         'dev' => true,
     ),
@@ -813,7 +813,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '07c4f15cd20c64aae921379a4c3f4584d7e14ffb',
+            'reference' => '958b54fcd90d7eec90eb510d90424233026bf250',
             'dev_requirement' => false,
         ),
         'drupal/responsive_tables_filter' => array(
@@ -870,6 +870,15 @@
             'install_path' => __DIR__ . '/../../web/modules/contrib/token',
             'aliases' => array(),
             'reference' => '8.x-1.11',
+            'dev_requirement' => false,
+        ),
+        'drupal/twig_tweak' => array(
+            'pretty_version' => '3.2.0',
+            'version' => '3.2.0.0',
+            'type' => 'drupal-module',
+            'install_path' => __DIR__ . '/../../web/modules/contrib/twig_tweak',
+            'aliases' => array(),
+            'reference' => '3.2.0',
             'dev_requirement' => false,
         ),
         'drupal/typed_data' => array(

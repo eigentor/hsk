@@ -1,5 +1,8 @@
 <?php
 
+use Drupal\Core\Url;
+use Laminas\Diactoros\Uri;
+
 function hsk_block_theme() {
   return [
     'header_slideshow_block' => [
@@ -8,4 +11,15 @@ function hsk_block_theme() {
       ],
     ],
   ];
+}
+
+
+function hsk_block_preprocess_paragraph__slideshow_image__slideshow(&$variables) {
+  $paragraph = $variables['paragraph'];
+  if(!empty($paragraph->field_sli_link_heading->uri)) {
+    $uri = $paragraph->field_sli_link_heading->uri;
+    $url = Url::fromUri($uri)->toString();
+    $variables['slide_link'] = $url;
+    $peter = 7;
+  }
 }
