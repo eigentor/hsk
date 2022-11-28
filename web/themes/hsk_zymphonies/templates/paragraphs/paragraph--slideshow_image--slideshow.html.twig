@@ -1,29 +1,55 @@
-{%
-  set classes = [
+{% set classes = [
   'paragraph',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished'
-]
-%}
-{%
-set node_id = content.field_sli_link_heading.0['#url'].routeParameters.node
-%}
-
-{%
-set node_id = content.field_sli_link_heading.0['#url'].routeParameters.node
-%}
+] %}
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
     {% block content %}
-      {{ content }}
-      {% if slide_link %}
-      <a href="{{ slide_link }}">Zum Node</a>
-      {% endif %}
-      {{ content.field_sli_link_heading.0['#url'].routeParameters.node }}
-      {% if node_id != NULL      %}
-          {{ path('entity.node.canonical', {'node': node_id }) }}
-      {% endif %}
+      <div class="slide-image">
+        {% if slide_link %}
+        <a href="{{ slide_link }}">
+          {% endif %}
+          {{ content.field_sli_image }}
+          {% if slide_link %}
+        </a>
+        {% endif %}
+      </div>
+
+      <div class="text-box">
+        <div class="container">
+          <div class="row">
+            <div class="inner-container">
+
+              {% if content.field_sli_heading %}
+
+                <h3 class="slide-headline">
+                  {% if slide_link %}
+                  <a href="{{ slide_link }}">
+                    {% endif %}
+                    {{ content.field_sli_heading }}
+                    {% if slide_link %}
+                  </a>
+                  {% endif %}
+                </h3>
+
+              {% endif %}
+              <div class="text">
+                {% if slide_link %}
+                <a href="{{ slide_link }}">
+                  {% endif %}
+                  {{ content.field_sli_text }}
+                  {% if slide_link %}
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
 
     {% endblock %}
   </div>
