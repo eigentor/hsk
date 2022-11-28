@@ -9,14 +9,14 @@ dependencies:
     - hsk_zymphonies
 id: headerslideshow
 theme: hsk_zymphonies
-region: content
-weight: -6
+region: slideshow
+weight: -10
 provider: null
 plugin: header_slideshow_block
 settings:
   id: header_slideshow_block
   label: 'Header Slideshow'
-  label_display: visible
+  label_display: '0'
   provider: hsk_block
 visibility:
   request_path:
