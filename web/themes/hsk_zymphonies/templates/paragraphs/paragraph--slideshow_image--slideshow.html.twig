@@ -9,6 +9,10 @@
 {%
 set node_id = content.field_sli_link_heading.0['#url'].routeParameters.node
 %}
+
+{%
+set node_id = content.field_sli_link_heading.0['#url'].routeParameters.node
+%}
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
     {% block content %}
@@ -16,7 +20,10 @@ set node_id = content.field_sli_link_heading.0['#url'].routeParameters.node
       {% if slide_link %}
       <a href="{{ slide_link }}">Zum Node</a>
       {% endif %}
-      {{ path('entity.node.canonical', content.field_sli_link_heading.0['#url'].routeParameters, {} ) }}
+      {{ content.field_sli_link_heading.0['#url'].routeParameters.node }}
+      {% if node_id != NULL      %}
+          {{ path('entity.node.canonical', {'node': node_id }) }}
+      {% endif %}
 
     {% endblock %}
   </div>
