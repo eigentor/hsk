@@ -1589,6 +1589,9 @@ input, button, select, textarea {
 .path-frontpage #block-headerslideshow .paragraph--type--slideshow-image .text-box .inner-container h3.slide-headline a {
   color: white;
 }
+.path-frontpage #block-headerslideshow .paragraph--type--slideshow-image .text-box .inner-container .text {
+  font-size: x-rem(font-size, 0.95);
+}
 
 .sidebar .view-events-list .view-header {
   display: none;
@@ -1929,8 +1932,6 @@ input, button, select, textarea {
 @media only screen and (min-width: 991px) {
   .path-frontpage #block-headerslideshow .paragraph--type--slideshow-image .text-box .inner-container a {
     color: white;
-    font-size: 20.15px;
-    font-size: 1.3rem;
     text-align: left;
     line-height: 1.35;
   }
