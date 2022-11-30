@@ -1,5 +1,0 @@
-name: HSK Views
-description: Custom Views Plugins and Hooks
-type: module
-core_version_requirement: ^9
-package: HSK
