@@ -5,7 +5,7 @@
  */
 function hsk_views_views_data_alter(array &$data)
 {
-  $data['paragraph__field_sl_image']['slideshow'] = [
+  $data['paragraph__field_sl_image']['slideshow_image'] = [
     'title' => t('Sort Header Slideshow'),
     'group' => t('Paragraph'),
     'help' => t('Sort Header Slideshow by paragraph weight'),
@@ -15,3 +15,5 @@ function hsk_views_views_data_alter(array &$data)
     ],
   ];
 }
+
+

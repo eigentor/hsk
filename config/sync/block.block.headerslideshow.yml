@@ -1,0 +1,25 @@
+uuid: cdf9b06e-b003-4926-9d28-44c6868381f8
+langcode: de
+status: true
+dependencies:
+  module:
+    - hsk_block
+    - system
+  theme:
+    - hsk_zymphonies
+id: headerslideshow
+theme: hsk_zymphonies
+region: slideshow
+weight: -10
+provider: null
+plugin: header_slideshow_block
+settings:
+  id: header_slideshow_block
+  label: 'Header Slideshow'
+  label_display: '0'
+  provider: hsk_block
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '<front>'

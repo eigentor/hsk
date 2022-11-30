@@ -46,6 +46,7 @@ module:
   focal_point: 0
   help: 0
   history: 0
+  hsk_block: 0
   hsk_comments: 0
   hsk_images: 0
   hsk_import_dwz: 0
@@ -93,6 +94,7 @@ module:
   token: 0
   toolbar: 0
   tour: 0
+  twig_tweak: 0
   typed_data: 0
   update: 0
   user: 0

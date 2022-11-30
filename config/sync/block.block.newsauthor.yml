@@ -3,8 +3,8 @@ langcode: de
 status: true
 dependencies:
   module:
-    - ctools
     - hsk_news
+    - node
   theme:
     - hsk_zymphonies
 id: newsauthor
