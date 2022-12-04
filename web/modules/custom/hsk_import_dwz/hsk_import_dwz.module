@@ -12,7 +12,7 @@ function hsk_import_dwz_cron() {
   $parsed_response = (simplexml_load_string($response));
 
   // First we set execution to FALSE
-  $import_dwz = TRUE;
+  $import_dwz = FALSE;
 
   $current_time = new DateTime();
   //  $current_weekday = $current_time->format('D');
