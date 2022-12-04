@@ -11,15 +11,14 @@ function hsk_import_dwz_cron() {
   $response = $request->getBody();
   $parsed_response = (simplexml_load_string($response));
 
-  // Only execute the import once a week
   // First we set execution to FALSE
-  $import_dwz = FALSE;
+  $import_dwz = TRUE;
 
   $current_time = new DateTime();
   //  $current_weekday = $current_time->format('D');
   $current_hour = $current_time->format('G');
 
-  // Check the weekday. Must be 6 for Saturday and 0 for Sunday.
+  // Only execute the import during the night between 23:00 and 8:00
   if ($current_hour > 23 || $current_hour < 8) {
     $import_dwz = TRUE;
   };
@@ -42,10 +41,18 @@ function hsk_import_dwz_cron() {
           ->condition('field_member_no_dsb', $member_no)
           ->condition('field_fide_id', $fide_id);
 
+        // Condition group to check if either the old dwz had no value or
+        // the old one had a value and the new one is different from the old one.
+        // We have to do this because if the old value is null the compare does not work.
+        $dwz_changed_or_was_null = $player_to_update_query
+          ->orConditionGroup()
+          ->notExists('field_dwz')
+          ->condition('field_dwz', $player->dwz->__toString(), '<>');
+
         $player_to_update = $player_to_update_query
           ->condition('type', 'player')
           ->condition($group)
-          ->condition('field_dwz', $player->dwz->__toString(), '<>')
+          ->condition($dwz_changed_or_was_null)
           ->execute();
 
         if (!empty($player_to_update)) {
