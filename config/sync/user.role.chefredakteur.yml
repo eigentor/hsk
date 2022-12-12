@@ -40,6 +40,7 @@ permissions:
   - 'bypass node access'
   - 'clone event content'
   - 'clone page content'
+  - 'clone team content'
   - 'clone turnier content'
   - 'create url aliases'
   - 'entityconnect add button'
