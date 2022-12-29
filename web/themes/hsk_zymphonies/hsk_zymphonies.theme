@@ -107,3 +107,14 @@ function hsk_zymphonies_preprocess_node__article(&$variables)
     $variables['attributes']['class'][] = 'default-image';
   }
 }
+
+/**
+ * Block template name suggestions for custom block types
+ */
+function hsk_zymphonies_theme_suggestions_block_alter(array &$suggestions, array $variables)
+{
+  // Block suggestions for custom block bundles.
+  if (isset($variables['elements']['content']['#block_content'])) {
+    array_splice($suggestions, 1, 0, 'block__bundle__' . $variables['elements']['content']['#block_content']->bundle());
+  }
+}

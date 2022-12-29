@@ -1,0 +1,27 @@
+{% set classes = [
+  'paragraph',
+  'paragraph--type--' ~ paragraph.bundle|clean_class,
+  view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+  not paragraph.isPublished() ? 'paragraph--unpublished'
+] %}
+
+{% set entity_reference_link =  path('entity.node.canonical', {'node':  paragraph.field_node_link.target_id}) %}
+{% block paragraph %}
+
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
+      <div class="image">
+        {{ content.field_sli_image }}
+      </div>
+      <div class="infobox">
+        {{ content.field_titel }}
+        {{ content.field_text }}
+        {{ content.field_node_link }}
+        {{ entity_reference_link }}
+      </div>
+
+
+
+    {% endblock %}
+  </div>
+{% endblock paragraph %}
