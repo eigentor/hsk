@@ -1,0 +1,10 @@
+uuid: 189758de-f829-4bf7-a6d9-ce0ecbdabdbb
+langcode: de
+status: true
+dependencies: {  }
+id: imageblock_small
+label: 'Kleiner Block mit Bild'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

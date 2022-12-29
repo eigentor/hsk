@@ -1,0 +1,55 @@
+uuid: 24b7a30e-d7fd-4fc6-b61d-b1c4a54f54f3
+langcode: de
+status: true
+dependencies:
+  config:
+    - block_content.type.page_section_paragraphs
+    - field.storage.block_content.field_paragraphs
+    - paragraphs.paragraphs_type.imageblock_small
+  module:
+    - entity_reference_revisions
+id: block_content.page_section_paragraphs.field_paragraphs
+field_name: field_paragraphs
+entity_type: block_content
+bundle: page_section_paragraphs
+label: Inhalts-Elemente
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      imageblock_small: imageblock_small
+    negate: 0
+    target_bundles_drag_drop:
+      gallery_image:
+        weight: 9
+        enabled: false
+      image_gallery:
+        weight: 10
+        enabled: false
+      imageblock_small:
+        weight: 11
+        enabled: true
+      infoblock:
+        weight: 11
+        enabled: false
+      pgn_viewer:
+        weight: 12
+        enabled: false
+      slideshow:
+        weight: 13
+        enabled: false
+      slideshow_image:
+        weight: 14
+        enabled: false
+      text:
+        weight: 15
+        enabled: false
+      video:
+        weight: 16
+        enabled: false
+field_type: entity_reference_revisions

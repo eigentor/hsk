@@ -1,0 +1,19 @@
+uuid: ab39c780-114f-405b-a274-50ffc69c92fa
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_titel
+    - paragraphs.paragraphs_type.imageblock_small
+id: paragraph.imageblock_small.field_titel
+field_name: field_titel
+entity_type: paragraph
+bundle: imageblock_small
+label: Titel
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

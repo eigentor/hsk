@@ -1,0 +1,34 @@
+uuid: 8543293e-3bd7-422f-9074-836c14ca55ba
+langcode: de
+status: true
+dependencies:
+  config:
+    - block_content.type.page_section_paragraphs
+    - field.field.block_content.page_section_paragraphs.body
+    - field.field.block_content.page_section_paragraphs.field_paragraphs
+  module:
+    - entity_reference_revisions
+    - text
+id: block_content.page_section_paragraphs.default
+targetEntityType: block_content
+bundle: page_section_paragraphs
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_paragraphs:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  langcode: true

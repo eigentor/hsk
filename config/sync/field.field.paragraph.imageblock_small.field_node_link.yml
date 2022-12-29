@@ -1,0 +1,47 @@
+uuid: 80bc372c-85c5-4546-9de6-2b1923e971e9
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_node_link
+    - node.type.article
+    - node.type.event
+    - node.type.page
+    - node.type.team
+    - node.type.turnier
+    - paragraphs.paragraphs_type.imageblock_small
+  module:
+    - entityconnect
+third_party_settings:
+  entityconnect:
+    buttons:
+      button_add: 1
+      button_edit: 1
+    icons:
+      icon_add: 0
+      icon_edit: 0
+id: paragraph.imageblock_small.field_node_link
+field_name: field_node_link
+entity_type: paragraph
+bundle: imageblock_small
+label: 'Link zu Seite'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      page: page
+      team: team
+      article: article
+      turnier: turnier
+      event: event
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: page
+field_type: entity_reference

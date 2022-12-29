@@ -1,0 +1,25 @@
+uuid: 2c83e2e6-735d-4abb-b904-769616c56a96
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.bildblock_desktop
+    - image.style.bildblock_mobile
+    - image.style.large
+  theme:
+    - hsk_zymphonies
+id: bildblock_klein
+label: 'Bildblock klein'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: bildblock_desktop
+    breakpoint_id: hsk_zymphonies.desktop_narrow
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: bildblock_mobile
+    breakpoint_id: hsk_zymphonies.mobile
+    multiplier: 1x
+breakpoint_group: hsk_zymphonies
+fallback_image_style: large

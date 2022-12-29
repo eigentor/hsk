@@ -1,0 +1,19 @@
+uuid: 47cb4769-c166-49a5-a83e-bb25dde5ad19
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_text
+    - paragraphs.paragraphs_type.imageblock_small
+id: paragraph.imageblock_small.field_text
+field_name: field_text
+entity_type: paragraph
+bundle: imageblock_small
+label: Text
+description: 'Kurzer Text (max. 150 Zeichen)'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

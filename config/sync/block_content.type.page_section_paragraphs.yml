@@ -1,0 +1,8 @@
+uuid: 65216a3a-02c6-430d-b219-13fb52841254
+langcode: de
+status: true
+dependencies: {  }
+id: page_section_paragraphs
+label: 'Seitenslot mit Paragraphs'
+revision: 0
+description: ''

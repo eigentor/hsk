@@ -1,0 +1,67 @@
+uuid: 26254676-541e-426a-af71-1d3ed56cea8f
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.imageblock_small.field_node_link
+    - field.field.paragraph.imageblock_small.field_sli_image
+    - field.field.paragraph.imageblock_small.field_text
+    - field.field.paragraph.imageblock_small.field_titel
+    - paragraphs.paragraphs_type.imageblock_small
+    - responsive_image.styles.bildblock_klein
+  module:
+    - field_group
+    - responsive_image
+third_party_settings:
+  field_group:
+    group_infos:
+      children:
+        - field_titel
+        - field_text
+      label: Infos
+      parent_name: ''
+      region: content
+      weight: 1
+      format_type: html_element
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+id: paragraph.imageblock_small.default
+targetEntityType: paragraph
+bundle: imageblock_small
+mode: default
+content:
+  field_sli_image:
+    type: responsive_image
+    label: visually_hidden
+    settings:
+      responsive_image_style: bildblock_klein
+      image_link: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_text:
+    type: basic_string
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_titel:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  field_node_link: true

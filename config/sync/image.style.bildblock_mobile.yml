@@ -1,0 +1,17 @@
+uuid: ebe49f85-ec4b-4f1f-bf4f-172d46b5b1c7
+langcode: de
+status: true
+dependencies:
+  module:
+    - focal_point
+name: bildblock_mobile
+label: 'Bildblock Mobile'
+effects:
+  71b66460-2d9c-4096-b475-4e34ea3c5c2d:
+    uuid: 71b66460-2d9c-4096-b475-4e34ea3c5c2d
+    id: focal_point_crop
+    weight: 1
+    data:
+      width: 500
+      height: 300
+      crop_type: focal_point

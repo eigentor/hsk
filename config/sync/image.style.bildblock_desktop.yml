@@ -1,0 +1,17 @@
+uuid: 2b2f0ada-1868-4853-9c8c-5ac9c6ef0d92
+langcode: de
+status: true
+dependencies:
+  module:
+    - focal_point
+name: bildblock_desktop
+label: 'Bildblock Desktop'
+effects:
+  1ecd4c5a-0077-4b16-a08b-80c32890c762:
+    uuid: 1ecd4c5a-0077-4b16-a08b-80c32890c762
+    id: focal_point_crop
+    weight: 1
+    data:
+      width: 300
+      height: 180
+      crop_type: focal_point
