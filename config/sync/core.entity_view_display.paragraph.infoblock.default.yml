@@ -8,11 +8,11 @@ dependencies:
     - field.field.paragraph.infoblock.field_sli_image
     - field.field.paragraph.infoblock.field_sli_text
     - field.field.paragraph.infoblock.field_target_audience
-    - image.style.inline_full_width
     - paragraphs.paragraphs_type.infoblock
+    - responsive_image.styles.inhaltsbild_volle_breite
   module:
     - field_group
-    - image
+    - responsive_image
     - text
 third_party_settings:
   field_group:
@@ -60,13 +60,11 @@ content:
     weight: 4
     region: content
   field_sli_image:
-    type: image
+    type: responsive_image
     label: above
     settings:
+      responsive_image_style: inhaltsbild_volle_breite
       image_link: ''
-      image_style: inline_full_width
-      image_loading:
-        attribute: lazy
     third_party_settings: {  }
     weight: 1
     region: content
