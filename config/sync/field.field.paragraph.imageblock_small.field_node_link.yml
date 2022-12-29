@@ -4,11 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_node_link
-    - node.type.article
-    - node.type.event
     - node.type.page
-    - node.type.team
-    - node.type.turnier
     - paragraphs.paragraphs_type.imageblock_small
   module:
     - entityconnect
@@ -35,10 +31,6 @@ settings:
   handler_settings:
     target_bundles:
       page: page
-      team: team
-      article: article
-      turnier: turnier
-      event: event
     sort:
       field: _none
       direction: ASC
