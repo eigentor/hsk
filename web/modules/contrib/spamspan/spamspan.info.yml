@@ -8,7 +8,7 @@ configure: filter.admin_overview
 dependencies:
   - drupal:filter
 
-# Information added by Drupal.org packaging script on 2020-04-28
-version: '8.x-1.2'
+# Information added by Drupal.org packaging script on 2022-09-12
+version: '8.x-1.3'
 project: 'spamspan'
-datestamp: 1588076391
+datestamp: 1662974323

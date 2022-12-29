@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\spamspan\Plugin;
+namespace Drupal\spamspan;
 
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Provides common methods for Spamspan plugins.
+ * Provides a common Settings form for Spamspan plugins.
  */
 trait SpamspanSettingsFormTrait {
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element = [];
@@ -60,17 +60,8 @@ trait SpamspanSettingsFormTrait {
       '#title' => $this->t('Replacement string for the email address'),
       '#default_value' => $this->getSetting('spamspan_form_pattern'),
       '#required' => TRUE,
-      '#description' => $this->t('Replace the email link with this string and substitute the following <br />%url = the url where the form resides,<br />%email = the email address (base64 and urlencoded),<br />%displaytext = text to display instead of the email address.'),
+      '#description' => $this->t('Replace the email link with this string and substitute the following: <br />%url = the url where the form resides,<br />%email = the email address (base64 and urlencoded),<br />%displaytext = text to display instead of the email address.'),
     ];
-    // Required checkbox? what is the point?
-    // If needed, then make an annotation entry as well *     "spamspan_email_encode" = TRUE,
-    /*$element['use_form']['spamspan_email_encode'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Encode the email address'),
-      '#default_value' => $this->settings['spamspan_email_encode'],
-      '#required' => TRUE,
-      '#description' => $this->t('Encode the email address using base64 to protect from spammers. Must be enabled for forms because the email address ends up in a URL.'),
-    ];*/
     $element['use_form']['spamspan_form_default_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Default url'),
@@ -87,7 +78,7 @@ trait SpamspanSettingsFormTrait {
     ];
 
     // We need this to insert our own validate/submit handlers.
-    // We use our own validate handler to extract use_form settings
+    // We use our own validate handler to extract use_form settings.
     $element['#process'] = [
       [$this, 'processSettingsForm'],
     ];
@@ -110,7 +101,7 @@ trait SpamspanSettingsFormTrait {
    * @return mixed
    *   The setting value.
    *
-   * @see PluginSettingsBase::getSetting().
+   * @see PluginSettingsBase::getSetting()
    */
   public function getSetting($key) {
     // Merge defaults if we have no value for the key.

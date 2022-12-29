@@ -1,16 +1,11 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Field\Plugin\Field\FieldFormatter\EmailSpamspanFormatter.
- */
-
 namespace Drupal\spamspan\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\spamspan\Plugin\SpamspanSettingsFormTrait;
+use Drupal\spamspan\SpamspanSettingsFormTrait;
 
 /**
  * Plugin implementation of the 'email_mailto' formatter.
@@ -64,13 +59,18 @@ class EmailSpamspanFormatter extends FormatterBase {
    */
   public function validateSettingsForm(array &$form, FormStateInterface $form_state) {
     $field_name = $form_state->get('plugin_settings_edit');
-    $settings = $form_state->getValue(['fields', $field_name, 'settings_edit_form', 'settings']);
+    $settings = $form_state->getValue(
+      ['fields', $field_name, 'settings_edit_form', 'settings']
+    );
     $use_form = $settings['use_form'];
 
     // No trees, see https://www.drupal.org/node/2378437.
     unset($settings['use_form']);
     $settings += $use_form;
-    $form_state->setValue(['fields', $field_name, 'settings_edit_form', 'settings'], $settings);
+    $form_state->setValue(
+      ['fields', $field_name, 'settings_edit_form', 'settings'],
+      $settings
+    );
   }
 
   /**

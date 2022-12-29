@@ -2,7 +2,9 @@
 
 /**
  * @file
- * This module implements the spamspan technique (http://www.spamspan.com ) for hiding email addresses from spambots.
+ * Implements the spamspan technique for hiding email addresses from spambots.
+ *
+ * @see http://www.spamspan.com
  *
  * If javascript is disabled on the client-side, addresses appear as
  * example [at] example [dot] com.
@@ -10,13 +12,10 @@
  * @author Lawrence Akka
  * @copyright 2006-2010, Lawrence Akka
  * @license http://www.gnu.org/licenses/gpl.txt  GPL v 2.0
- *
  */
-
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
-
 
 /**
  * Implements hook_help().
@@ -24,24 +23,29 @@ use Drupal\Core\Url;
 function spamspan_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.spamspan':
-      return t('<p>The SpamSpan module obfuscates email addresses to help prevent spambots from collecting them. See the <a href="@url">Spamspan test page</a>.</p>', ['@url' => Url::fromRoute('spamspan.test')->toString()]);
+      return t(
+        '<p>The SpamSpan module obfuscates email addresses to help prevent spambots from collecting them. See the <a href="@url">Spamspan test page</a>.</p>',
+        [
+          '@url' => Url::fromRoute('spamspan.test')->toString(),
+        ]
+      );
   }
 }
 
-
-
 /**
  * A simple utility function wrapping the main processing callback.
+ *
  * This function may be called by other modules and themes.
  *
- * @param $text
- *  Text, maybe containing email addresses.
- * @param $settings
- * An associative array of settings to be applied.
- * @return
- *  The input text with emails replaced by spans
+ * @param string $text
+ *   Text, maybe containing email addresses.
+ * @param array $settings
+ *   An associative array of settings to be applied.
+ *
+ * @return string
+ *   The input text with emails replaced by spans
  */
-function spamspan($text = '', $settings = []) {
+function spamspan($text = '', array $settings = []) {
   $plugin_manager = \Drupal::service('plugin.manager.filter');
 
   $configuration = $plugin_manager->getDefinition('filter_spamspan');
@@ -59,9 +63,7 @@ function spamspan_theme($existing, $type, $theme, $path) {
   return [
     'spamspan_at_sign' => [
       'variables' => [
-        // path to '@' image file
-        'path' => base_path() . drupal_get_path('module', 'spamspan') . '/image.gif',
-        // the spamspan filter settings if anyone needs them
+        'path' => base_path() . \Drupal::service('extension.list.module')->getPath('spamspan') . '/image.gif',
         'settings' => [],
       ],
     ],

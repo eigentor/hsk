@@ -1,6 +1,6 @@
 services:  
   spamspan.twig.spamspan_filter:
     arguments: ['@renderer']
-    class: Drupal\spamspan\TwigExtension\SpamSpanExtension
+    class: Drupal\spamspan\TwigExtension\SpamspanExtension
     tags:
       - { name: twig.extension }

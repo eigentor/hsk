@@ -47,4 +47,3 @@ Module Author
 Original: Lawrence Akka : http://drupal.org/user/63367
 November 2014 rewrite: Peter Moulding : http://petermoulding.com/spamspan
 Drupal 8 port: Vitalie Cracan [@Wunderkraut]
-

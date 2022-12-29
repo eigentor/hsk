@@ -3,11 +3,13 @@
 namespace Drupal\spamspan\TwigExtension;
 
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Render\Renderer;
+use Drupal\spamspan\SpamspanInterface;
 
 /**
  * Provides the SpamSpan filter function within Twig templates.
  */
-class SpamSpanExtension extends \Twig_Extension {
+class SpamspanExtension extends \Twig_Extension {
 
   /**
    * The renderer.
@@ -15,17 +17,17 @@ class SpamSpanExtension extends \Twig_Extension {
    * @var \Drupal\Core\Render\Renderer
    */
   protected $renderer;
-  
+
   /**
    * Constructor of SpamSpanExtension.
    *
    * @param \Drupal\Core\Render\Renderer $renderer
    *   The renderer.
    */
-  public function __construct($renderer) {
+  public function __construct(Renderer $renderer) {
     $this->renderer = $renderer;
   }
-  
+
   /**
    * {@inheritdoc}
    */
@@ -54,7 +56,7 @@ class SpamSpanExtension extends \Twig_Extension {
   public function spamSpanFilter($string) {
     $template_attached = ['#attached' => ['library' => ['spamspan/obfuscate']]];
     $this->renderer->render($template_attached);
-    return Xss::filterAdmin(spamspan($string));
+    return Xss::filter(spamspan($string), SpamspanInterface::ALLOWED_HTML);
   }
 
 }

@@ -52,7 +52,7 @@ Licence version 2, available at http://www.gnu.org/licenses/gpl.txt
         var _attributes = $("span.e", this).html();
         var _tag = "<a></a>";
         if (_attributes) {
-          _tag = "<a " + _attributes.replace("<!--", "").replace("-->", "") + "></a>";
+          _tag = "<a " + _attributes + "></a>";
         }
 
         $(this).after(
