@@ -1,0 +1,19 @@
+uuid: 031894a3-3947-4e34-a9a6-ed0c4e43e2d0
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_target_audience
+    - paragraphs.paragraphs_type.infoblock
+id: paragraph.infoblock.field_target_audience
+field_name: field_target_audience
+entity_type: paragraph
+bundle: infoblock
+label: Zielgruppe
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

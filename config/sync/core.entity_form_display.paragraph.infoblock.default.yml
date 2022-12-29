@@ -1,0 +1,63 @@
+uuid: 69956d65-b19a-4970-895d-174344fc1cf7
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.infoblock.field_date_text
+    - field.field.paragraph.infoblock.field_responsible_person
+    - field.field.paragraph.infoblock.field_sli_image
+    - field.field.paragraph.infoblock.field_sli_text
+    - field.field.paragraph.infoblock.field_target_audience
+    - image.style.thumbnail
+    - paragraphs.paragraphs_type.infoblock
+  module:
+    - image
+    - text
+id: paragraph.infoblock.default
+targetEntityType: paragraph
+bundle: infoblock
+mode: default
+content:
+  field_date_text:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_responsible_person:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_sli_image:
+    type: image_image
+    weight: 0
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+  field_sli_text:
+    type: text_textarea
+    weight: 4
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_target_audience:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

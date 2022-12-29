@@ -1,28 +1,26 @@
-uuid: 4e4a45fd-174d-44a4-a8f2-9f1457d07e60
+uuid: 58ff06e3-0c61-4d1d-8247-2d036c9c8341
 langcode: de
 status: true
 dependencies:
   config:
-    - field.storage.node.field_image
-    - node.type.article
+    - field.storage.paragraph.field_sli_image
+    - paragraphs.paragraphs_type.infoblock
   module:
     - image
-_core:
-  default_config_hash: tgJzhA7Swh4M_gWU5FwFe5lPxPj5rebpMbvhpdNrERs
-id: node.article.field_image
-field_name: field_image
-entity_type: node
-bundle: article
-label: Hauptbild
+id: paragraph.infoblock.field_sli_image
+field_name: field_sli_image
+entity_type: paragraph
+bundle: infoblock
+label: Bild
 description: ''
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:file'
   handler_settings: {  }
-  file_directory: content-image
+  file_directory: '[date:custom:Y]-[date:custom:m]'
   file_extensions: 'png gif jpg jpeg'
   max_filesize: ''
   max_resolution: ''
@@ -32,9 +30,9 @@ settings:
   title_field: false
   title_field_required: false
   default_image:
-    uuid: a0ad9a48-a35e-4b2b-be00-a1f48d1324dc
+    uuid: ''
     alt: ''
     title: ''
-    width: 510
-    height: 420
+    width: null
+    height: null
 field_type: image

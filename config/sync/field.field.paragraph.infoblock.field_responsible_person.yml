@@ -1,0 +1,19 @@
+uuid: e7c77114-7f88-4f5e-a052-21cf18e8858a
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_responsible_person
+    - paragraphs.paragraphs_type.infoblock
+id: paragraph.infoblock.field_responsible_person
+field_name: field_responsible_person
+entity_type: paragraph
+bundle: infoblock
+label: Ansprechpartner
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

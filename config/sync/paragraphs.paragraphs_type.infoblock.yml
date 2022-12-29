@@ -1,0 +1,10 @@
+uuid: 1f555012-6195-4f97-b021-ece1328eea40
+langcode: de
+status: true
+dependencies: {  }
+id: infoblock
+label: 'Infoblock mit Bild'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

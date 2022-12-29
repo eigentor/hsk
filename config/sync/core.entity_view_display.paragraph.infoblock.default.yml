@@ -1,0 +1,87 @@
+uuid: bf7d58a8-3378-45cb-a456-5d7eb40c8de8
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.infoblock.field_date_text
+    - field.field.paragraph.infoblock.field_responsible_person
+    - field.field.paragraph.infoblock.field_sli_image
+    - field.field.paragraph.infoblock.field_sli_text
+    - field.field.paragraph.infoblock.field_target_audience
+    - paragraphs.paragraphs_type.infoblock
+  module:
+    - field_group
+    - image
+    - text
+third_party_settings:
+  field_group:
+    group_infobox:
+      children:
+        - field_date_text
+        - field_target_audience
+        - field_responsible_person
+        - field_sli_text
+      label: Infobox
+      parent_name: ''
+      region: content
+      weight: 0
+      format_type: html_element
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+id: paragraph.infoblock.default
+targetEntityType: paragraph
+bundle: infoblock
+mode: default
+content:
+  field_date_text:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_responsible_person:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_sli_image:
+    type: image
+    label: above
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_sli_text:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_target_audience:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden: {  }
