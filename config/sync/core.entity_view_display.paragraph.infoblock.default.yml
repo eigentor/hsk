@@ -8,6 +8,7 @@ dependencies:
     - field.field.paragraph.infoblock.field_sli_image
     - field.field.paragraph.infoblock.field_sli_text
     - field.field.paragraph.infoblock.field_target_audience
+    - image.style.inline_full_width
     - paragraphs.paragraphs_type.infoblock
   module:
     - field_group
@@ -63,7 +64,7 @@ content:
     label: above
     settings:
       image_link: ''
-      image_style: ''
+      image_style: inline_full_width
       image_loading:
         attribute: lazy
     third_party_settings: {  }
