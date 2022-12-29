@@ -1,0 +1,30 @@
+uuid: 4f302967-2e63-4bd1-88b4-3f9b4e2e0a56
+langcode: de
+status: true
+dependencies:
+  content:
+    - 'block_content:page_section_paragraphs:e90212db-7528-45eb-9c46-a7365f4b03f0'
+  module:
+    - block_content
+    - system
+  theme:
+    - hsk_zymphonies
+id: angebotehskstartseite
+theme: hsk_zymphonies
+region: content
+weight: 0
+provider: null
+plugin: 'block_content:e90212db-7528-45eb-9c46-a7365f4b03f0'
+settings:
+  id: 'block_content:e90212db-7528-45eb-9c46-a7365f4b03f0'
+  label: 'Angebote HSK Startseite'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '<front>'
