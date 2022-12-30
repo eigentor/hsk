@@ -3980,6 +3980,16 @@ nav#block-hsk-footer ul li a {
   font-size: 0.8rem;
   color: #888;
 }
+.path-frontpage .block-infoblock {
+  clear: both;
+  background: #eee;
+  width: 100vw;
+  padding-top: 77.5px;
+  padding-top: 5rem;
+  padding-bottom: 77.5px;
+  padding-bottom: 5rem;
+  margin-bottom: 0;
+}
 .path-frontpage .bottom-widgets {
   background: #eee;
   padding-top: 40px;

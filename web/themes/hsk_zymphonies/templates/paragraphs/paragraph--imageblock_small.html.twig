@@ -11,13 +11,27 @@
   <div{{ attributes.addClass(classes) }}>
     {% block content %}
       <div class="image">
-        {{ content.field_sli_image }}
+        {% if paragraph.field_node_link.target_id %}
+        <a href="{{ entity_reference_link }}">
+          {% endif %}
+          {{ content.field_sli_image.0 }}
+          {% if paragraph.field_node_link.target_id %}
+        </a>
+        {% endif %}
       </div>
       <div class="infobox">
-        {{ content.field_titel }}
-        {{ content.field_text }}
-        {{ content.field_node_link }}
-        {{ entity_reference_link }}
+        <h3 class="title">
+          {% if paragraph.field_node_link.target_id %}
+          <a href="{{ entity_reference_link }}">
+            {% endif %}
+            {{ content.field_titel.0 }}
+            {% if paragraph.field_node_link.target_id %}
+          </a>
+          {% endif %}
+        </h3>
+        <div class="text">{{ content.field_text.0 }}</div>
+
+
       </div>
 
 
