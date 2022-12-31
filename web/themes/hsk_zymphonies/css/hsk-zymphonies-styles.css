@@ -4111,6 +4111,16 @@ nav#block-hsk-footer ul li a {
   .path-frontpage #block-views-block-news-block-1 .views-row h3.title span.date:before {
     content: "- ";
   }
+  .path-frontpage .block-infoblock .field--name-field-paragraphs .field__item .paragraph {
+    display: flex;
+  }
+  .path-frontpage .block-infoblock .field--name-field-paragraphs .field__item .paragraph .image {
+    width: 50%;
+  }
+  .path-frontpage .block-infoblock .field--name-field-paragraphs .field__item .paragraph .infobox {
+    width: 50%;
+    padding: 2em;
+  }
 }
 /* End Media Query Tablet */
 /*------------------------------------------- */
