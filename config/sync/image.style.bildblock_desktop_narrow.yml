@@ -1,0 +1,17 @@
+uuid: fee81eac-6450-495f-ba26-d457c080b851
+langcode: de
+status: true
+dependencies:
+  module:
+    - focal_point
+name: bildblock_desktop_narrow
+label: 'Bildblock Desktop narrow'
+effects:
+  430108e2-168b-4560-961e-1fc76532add5:
+    uuid: 430108e2-168b-4560-961e-1fc76532add5
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 220
+      height: 200
+      crop_type: focal_point

@@ -12,13 +12,19 @@ hsk_zymphonies.tablet_portrait:
     - 1x
 hsk_zymphonies.tablet:
   label: Tablet
-  mediaQuery: '(min-width: 767px)'
+  mediaQuery: '(min-width: 768px)'
   weight: 2
   multipliers:
     - 1x
 hsk_zymphonies.desktop_narrow:
   label: Desktop narrow
-  mediaQuery: '(min-width: 1024px)'
+  mediaQuery: '(min-width: 992px)'
   weight: 3
+  multipliers:
+    - 1x
+hsk_zymphonies.desktop:
+  label: Desktop
+  mediaQuery: '(min-width: 1200px)'
+  weight: 4
   multipliers:
     - 1x

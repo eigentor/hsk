@@ -1,0 +1,17 @@
+uuid: 7c09877e-91d7-43c7-a387-45ec0f466f23
+langcode: de
+status: true
+dependencies:
+  module:
+    - focal_point
+name: bildblock_tablet_portrait
+label: 'Bildblock Tablet Portrait'
+effects:
+  77ee91fc-39d7-41f4-a89c-ddccb7f462cd:
+    uuid: 77ee91fc-39d7-41f4-a89c-ddccb7f462cd
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 400
+      height: 430
+      crop_type: focal_point

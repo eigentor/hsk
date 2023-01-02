@@ -3,12 +3,13 @@
   'block',
   'block-' ~ configuration.provider|clean_class,
   'block-' ~ plugin_id|clean_class,
-  'block-infoblock',
+  'block-infoblock'
 ]
 %}
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
   <div class="block-content container">
+    <div class="block-inner row">
   {% if label %}
     <h2{{ title_attributes }}>{{ label }}</h2>
   {% endif %}
@@ -16,5 +17,6 @@
   {% block content %}
     {{ content }}
   {% endblock %}
+    </div>
   </div>
 </div>

@@ -4,7 +4,9 @@ status: true
 dependencies:
   config:
     - image.style.bildblock_desktop
+    - image.style.bildblock_desktop_narrow
     - image.style.bildblock_mobile
+    - image.style.bildblock_tablet_portrait
     - image.style.large
   theme:
     - hsk_zymphonies
@@ -14,7 +16,22 @@ image_style_mappings:
   -
     image_mapping_type: image_style
     image_mapping: bildblock_desktop
+    breakpoint_id: hsk_zymphonies.desktop
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: bildblock_desktop_narrow
     breakpoint_id: hsk_zymphonies.desktop_narrow
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: bildblock_mobile
+    breakpoint_id: hsk_zymphonies.tablet
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: bildblock_tablet_portrait
+    breakpoint_id: hsk_zymphonies.tablet_portrait
     multiplier: 1x
   -
     image_mapping_type: image_style
