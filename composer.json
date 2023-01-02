@@ -52,6 +52,7 @@
         "drupal/maillog": "^1.0@beta",
         "drupal/markup": "^1.0@beta",
         "drupal/masquerade": "^2.0@RC",
+        "drupal/maxlength": "*",
         "drupal/metatag": "^1.21",
         "drupal/override_node_options": "^2.6",
         "drupal/paragraphs": "^1.15",
