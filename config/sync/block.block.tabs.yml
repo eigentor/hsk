@@ -7,7 +7,7 @@ dependencies:
 id: tabs
 theme: hsk_zymphonies
 region: content
-weight: -10
+weight: -11
 provider: null
 plugin: local_tasks_block
 settings:

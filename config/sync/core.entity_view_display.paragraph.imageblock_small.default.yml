@@ -10,30 +10,7 @@ dependencies:
     - paragraphs.paragraphs_type.imageblock_small
     - responsive_image.styles.bildblock_klein
   module:
-    - field_group
     - responsive_image
-third_party_settings:
-  field_group:
-    group_infos:
-      children:
-        - field_titel
-        - field_text
-      label: Infos
-      parent_name: ''
-      region: content
-      weight: 1
-      format_type: html_element
-      format_settings:
-        classes: ''
-        show_empty_fields: false
-        id: ''
-        element: div
-        show_label: false
-        label_element: h3
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
 id: paragraph.imageblock_small.default
 targetEntityType: paragraph
 bundle: imageblock_small

@@ -11,6 +11,7 @@ dependencies:
     - paragraphs.paragraphs_type.imageblock_small
   module:
     - image
+    - maxlength
 id: paragraph.imageblock_small.default
 targetEntityType: paragraph
 bundle: imageblock_small
@@ -41,7 +42,11 @@ content:
     settings:
       rows: 5
       placeholder: ''
-    third_party_settings: {  }
+    third_party_settings:
+      maxlength:
+        maxlength_js: 150
+        maxlength_js_label: 'Eingabe begrenzt auf @limit Zeichen, verbleibend: <strong>@remaining</strong>'
+        maxlength_js_enforce: true
   field_titel:
     type: string_textfield
     weight: 1
