@@ -9,11 +9,8 @@ dependencies:
     - field.field.paragraph.infoblock.field_sli_text
     - field.field.paragraph.infoblock.field_target_audience
     - paragraphs.paragraphs_type.infoblock
-    - responsive_image.styles.inhaltsbild_volle_breite
   module:
     - field_group
-    - responsive_image
-    - text
 third_party_settings:
   field_group:
     group_infobox:
@@ -24,11 +21,11 @@ third_party_settings:
         - field_sli_text
       label: Infobox
       parent_name: ''
-      region: content
+      region: hidden
       weight: 0
       format_type: html_element
       format_settings:
-        classes: ''
+        classes: data-box
         show_empty_fields: false
         id: ''
         element: div
@@ -42,45 +39,10 @@ id: paragraph.infoblock.default
 targetEntityType: paragraph
 bundle: infoblock
 mode: default
-content:
-  field_date_text:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  field_responsible_person:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 4
-    region: content
-  field_sli_image:
-    type: responsive_image
-    label: above
-    settings:
-      responsive_image_style: inhaltsbild_volle_breite
-      image_link: ''
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  field_sli_text:
-    type: text_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
-    region: content
-  field_target_audience:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 3
-    region: content
-hidden: {  }
+content: {  }
+hidden:
+  field_date_text: true
+  field_responsible_person: true
+  field_sli_image: true
+  field_sli_text: true
+  field_target_audience: true

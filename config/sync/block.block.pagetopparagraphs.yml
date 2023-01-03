@@ -1,0 +1,28 @@
+uuid: 2c43ceea-cb2e-4308-9f4d-7638bf876709
+langcode: de
+status: true
+dependencies:
+  module:
+    - hsk_block
+    - node
+  theme:
+    - hsk_zymphonies
+id: pagetopparagraphs
+theme: hsk_zymphonies
+region: highlighted
+weight: 0
+provider: null
+plugin: page_paragraph_top
+settings:
+  id: page_paragraph_top
+  label: 'Page Top Paragraphs'
+  label_display: '0'
+  provider: hsk_block
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      page: page

@@ -1,0 +1,87 @@
+uuid: 9bceb8ed-e804-4a6c-9f87-c24d60aaa760
+langcode: de
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.infoblock
+    - field.field.paragraph.infoblock.field_date_text
+    - field.field.paragraph.infoblock.field_responsible_person
+    - field.field.paragraph.infoblock.field_sli_image
+    - field.field.paragraph.infoblock.field_sli_text
+    - field.field.paragraph.infoblock.field_target_audience
+    - paragraphs.paragraphs_type.infoblock
+    - responsive_image.styles.inhaltsbild_volle_breite
+  module:
+    - field_group
+    - responsive_image
+    - text
+third_party_settings:
+  field_group:
+    group_infobox:
+      children:
+        - field_date_text
+        - field_target_audience
+        - field_responsible_person
+        - field_sli_text
+      label: Infobox
+      parent_name: ''
+      region: content
+      weight: 0
+      format_type: html_element
+      format_settings:
+        classes: data-box
+        show_empty_fields: false
+        id: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+id: paragraph.infoblock.infoblock
+targetEntityType: paragraph
+bundle: infoblock
+mode: infoblock
+content:
+  field_date_text:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_responsible_person:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_sli_image:
+    type: responsive_image
+    label: hidden
+    settings:
+      responsive_image_style: inhaltsbild_volle_breite
+      image_link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_sli_text:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_target_audience:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden: {  }

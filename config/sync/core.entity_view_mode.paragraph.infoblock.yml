@@ -1,0 +1,10 @@
+uuid: bdf83970-2341-4dfe-9d10-e840ff1262cf
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.infoblock
+label: Infoblock
+targetEntityType: paragraph
+cache: true

@@ -25,6 +25,5 @@ function hsk_block_preprocess_paragraph__slideshow_image__slideshow(&$variables)
     $uri = $paragraph->field_sli_link_heading->uri;
     $url = Url::fromUri($uri)->toString();
     $variables['slide_link'] = $url;
-    $peter = 7;
   }
 }
