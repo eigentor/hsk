@@ -10,6 +10,11 @@ function hsk_block_theme() {
         'slides' =>[],
       ],
     ],
+    'page_paragraph_top_block' => [
+      'variables' => [
+        'paragraphs' =>[],
+      ],
+    ],
   ];
 }
 

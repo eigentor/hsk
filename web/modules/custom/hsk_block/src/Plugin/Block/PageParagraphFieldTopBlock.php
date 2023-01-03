@@ -58,9 +58,27 @@ class PageParagraphFieldTopBlock extends BlockBase implements ContainerFactoryPl
       return [];
     }
 
-    $build = [
-      '#markup' => 'Platzhalter Text Page Top Paragraph Block'
-    ];
+    // Return an empty render array if we don't have the paragraph type we want.
+    $build = [];
+
+    $builder = $this->entityTypeManager->getViewBuilder('paragraph');
+    $view_mode = 'default';
+
+
+
+    if(!empty ($node->field_gallery_above_body)) {
+      $paragraphs = $node->field_gallery_above_body->referencedEntities();
+//      foreach($paragraphs->referencedEntities() as $key => $paragraph) {
+//        if($paragraph->getType() == 'infoblock') {
+//          $build['#paragraphs'] = $paragraph;
+//        }
+//      }
+      $paragraphs_items = $builder->viewMultiple($paragraphs, $view_mode);
+      $build['#paragraphs'] = $paragraphs_items;
+
+
+    }
+    $build['#theme'] = 'page_paragraph_top_block';
 
     // Build block render array here.
 
