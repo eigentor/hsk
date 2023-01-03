@@ -117,18 +117,6 @@
 <!--End Search-->
 
 
-<!--Highlighted-->
-  {% if page.highlighted %}
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          {{ page.highlighted }}
-        </div>
-      </div>
-    </div>
-  {% endif %}
-<!--End Highlighted-->
-
 
 <!-- Start Top Widget -->
 {% if is_front %}
@@ -178,6 +166,18 @@
   </div>
 {% endif %}
 <!-- End Page Title ---- >
+
+<!--Highlighted-->
+{% if page.highlighted %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        {{ page.highlighted }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+<!--End Highlighted-->
 
 
 

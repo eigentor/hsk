@@ -232,6 +232,18 @@
           +x-rem(font-size, 3.5)
         h3, h3 a
           color: $primary-color
+  .paragraph--type--infoblock
+    .data-box
+      background: #eee
+      padding: 1em
+      .field
+        margin-bottom: 1em
+        > .field__label
+          font-family: $roboto-slab
+          font-weight: 700
+          margin-bottom: 0.5em
+
+
 
 .page-node-type-turnier
   #table-tabs
@@ -400,6 +412,12 @@ div#sliding-popup
       .content-box
         +make-sm-column(6)
         min-height: 320px
+    .paragraph--type--infoblock
+      width: 100vw
+      display: flex
+      .data-box
+        width: 33%
+
 
   .page-node-type-team
     .node__content

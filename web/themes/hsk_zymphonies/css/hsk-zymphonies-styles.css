@@ -2582,6 +2582,18 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .page-node-type-page .node-turniere .content-box.thema h3, .page-node-type-page .node-turniere .content-box.thema h3 a {
   color: #AB3131;
 }
+.page-node-type-page .paragraph--type--infoblock .data-box {
+  background: #eee;
+  padding: 1em;
+}
+.page-node-type-page .paragraph--type--infoblock .data-box .field {
+  margin-bottom: 1em;
+}
+.page-node-type-page .paragraph--type--infoblock .data-box .field > .field__label {
+  font-family: "Roboto Slab", serif;
+  font-weight: 700;
+  margin-bottom: 0.5em;
+}
 
 .page-node-type-turnier #table-tabs {
   -webkit-border-radius: 5px 5px 0 0;
@@ -2890,6 +2902,15 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   .page-node-type-page .node-turniere .content-box {
     float: left;
     width: 50%;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .page-node-type-page .paragraph--type--infoblock {
+    width: 100vw;
+    display: flex;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box {
+    width: 33%;
   }
 }
 @media only screen and (min-width: 768px) {
