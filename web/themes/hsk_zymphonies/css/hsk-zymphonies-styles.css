@@ -912,22 +912,19 @@
   font-family: "Fontawesome";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/fontawesome/webfonts/fa-solid-900.eot");
-  src: url("../fonts/fontawesome/webfonts/fa-solid-900.eot?#iefix") format("embedded-opentype"), url("../fonts/fontawesome/webfonts/fa-solid-900.woff2") format("woff2"), url("../fonts/fontawesome/webfonts/fa-solid-900.woff") format("woff"), url("../fonts/fontawesome/webfonts/fa-solid-900.ttf") format("truetype"), url("../fonts/fontawesome/webfonts/fa-solid-900.svg#fontawesome") format("svg");
+  src: url("../fonts/fontawesome/webfonts/fa-solid-900.woff2") format("woff2"), url("../fonts/fontawesome/webfonts/fa-solid-900.ttf") format("truetype");
 }
 @font-face {
   font-family: "Fontawesome-Regular";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/fontawesome/webfonts/fa-regular-400.eot");
-  src: url("../fonts/fontawesome/webfonts/fa-regular-400.eot?#iefix") format("embedded-opentype"), url("../fonts/fontawesome/webfonts/fa-regular-400.woff2") format("woff2"), url("../fonts/fontawesome/webfonts/fa-regular-400.woff") format("woff"), url("../fonts/fontawesome/webfonts/fa-regular-400.ttf") format("truetype"), url("../fonts/fontawesome/webfonts/fa-regular-400.svg#fontawesome") format("svg");
+  src: url("../fonts/fontawesome/webfonts/fa-regular-400.woff2") format("woff2"), url("../fonts/fontawesome/webfonts/fa-regular-400.ttf") format("truetype");
 }
 @font-face {
   font-family: "Fontawesome-Brands";
   font-style: normal;
   font-weight: normal;
-  src: url("../fonts/fontawesome/webfonts/fa-brands-400.eot");
-  src: url("../fonts/fontawesome/webfonts/fa-brands-400.eot?#iefix") format("embedded-opentype"), url("../fonts/fontawesome/webfonts/fa-brands-400.woff2") format("woff2"), url("../fonts/fontawesome/webfonts/fa-brands-400.woff") format("woff"), url("../fonts/fontawesome/webfonts/fa-brands-400.ttf") format("truetype"), url("../fonts/fontawesome/webfonts/fa-brands-400.svg#fontawesome") format("svg");
+  src: url("../fonts/fontawesome/webfonts/fa-brands-400.woff2") format("woff2"), url("../fonts/fontawesome/webfonts/fa-brands-400.ttf") format("truetype");
 }
 html {
   font-size: 15.5px;
@@ -1275,14 +1272,14 @@ input, button, select, textarea {
 .content_layout:after {
   clear: both;
 }
-.content_layout .content-layout-inner {
+.content_layout .content_layout {
   position: relative;
   min-height: 1px;
   padding-right: 15px;
   padding-left: 15px;
 }
 @media (min-width: 992px) {
-  .content_layout .content-layout-inner {
+  .content_layout .content_layout {
     float: left;
     width: 100%;
   }
@@ -2582,9 +2579,15 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .page-node-type-page .node-turniere .content-box.thema h3, .page-node-type-page .node-turniere .content-box.thema h3 a {
   color: #AB3131;
 }
+.page-node-type-page .paragraph--type--infoblock {
+  margin-top: 3em;
+  margin-bottom: -20px;
+}
 .page-node-type-page .paragraph--type--infoblock .data-box {
   background: #eee;
   padding: 1em;
+  padding-top: 2em;
+  padding-left: 3.5em;
 }
 .page-node-type-page .paragraph--type--infoblock .data-box .field {
   margin-bottom: 1em;
@@ -2593,6 +2596,20 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   font-family: "Roboto Slab", serif;
   font-weight: 700;
   margin-bottom: 0.5em;
+  position: relative;
+}
+.page-node-type-page .paragraph--type--infoblock .data-box .field > .field__label:before {
+  position: absolute;
+}
+.page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-date-text > .field__label:before {
+  font-family: Fontawesome-Regular;
+  content: "";
+  top: -0.2em;
+  left: -1.5em;
+  font-size: 1.5rem;
+}
+.page-node-type-page .paragraph--type--infoblock .field--name-field-sli-image img {
+  display: block;
 }
 
 .page-node-type-turnier #table-tabs {
@@ -2906,11 +2923,24 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
 }
 @media only screen and (min-width: 768px) {
   .page-node-type-page .paragraph--type--infoblock {
-    width: 100vw;
     display: flex;
   }
   .page-node-type-page .paragraph--type--infoblock .data-box {
-    width: 33%;
+    width: 33.33%;
+    padding-top: 1.3em;
+    padding-left: 1.5em;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field {
+    margin-bottom: 0.55em;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field > .field__label {
+    margin-bottom: 0em;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-date-text > .field__label:before {
+    content: none;
+  }
+  .page-node-type-page .paragraph--type--infoblock .field--name-field-sli-image {
+    width: 66.66%;
   }
 }
 @media only screen and (min-width: 768px) {
@@ -3125,6 +3155,56 @@ figure figcaption {
   .page-node-type-page .node-turniere .content-box {
     float: left;
     width: 33.3333333333%;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .page-node-type-page .paragraph--type--infoblock .data-box {
+    width: 33%;
+    padding: 2em;
+    padding-left: 4em;
+    font-size: 15.5px;
+    font-size: 1rem;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field {
+    margin-bottom: 1em;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field > .field__label {
+    position: relative;
+    margin-bottom: 0.5em;
+    font-size: 17.05px;
+    font-size: 1.1rem;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field > .field__label:before {
+    position: absolute;
+    font-weight: bold;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-date-text > .field__label:before {
+    font-family: Fontawesome-Regular;
+    content: "";
+    top: -0.2em;
+    left: -1.5em;
+    font-size: 1.5rem;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-target-audience > .field__label:before {
+    font-family: Fontawesome;
+    content: "";
+    top: -0.2em;
+    left: -1.7em;
+    font-size: 1.5rem;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-responsible-person > .field__label:before {
+    font-family: Fontawesome;
+    content: "";
+    top: 0em;
+    left: -1.7em;
+    font-size: 1.6rem;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-sli-text > .field__label:before {
+    font-family: Fontawesome-Regular;
+    content: "";
+    top: -0.2em;
+    left: -1.5em;
+    font-size: 1.5rem;
   }
 }
 @media only screen and (min-width: 992px) {

@@ -233,15 +233,36 @@
         h3, h3 a
           color: $primary-color
   .paragraph--type--infoblock
+    margin-top: 3em
+    margin-bottom: -20px
     .data-box
       background: #eee
       padding: 1em
+      padding-top: 2em
+      padding-left: 3.5em
       .field
         margin-bottom: 1em
         > .field__label
           font-family: $roboto-slab
           font-weight: 700
           margin-bottom: 0.5em
+          position: relative
+          &:before
+            position: absolute
+        &.field--name-field-date-text
+          > .field__label
+            &:before
+              font-family: Fontawesome-Regular
+              content: "\f133"
+              top: -0.2em
+              left: -1.5em
+              font-size: 1.5rem
+        &.field--name-field-target-audience
+        &.field--name-field-responsible-person
+        &.field--name-field-sli-text
+    .field--name-field-sli-image
+      img
+        display: block
 
 
 
@@ -413,10 +434,24 @@ div#sliding-popup
         +make-sm-column(6)
         min-height: 320px
     .paragraph--type--infoblock
-      width: 100vw
       display: flex
       .data-box
-        width: 33%
+        width: 33.33%
+        padding-top: 1.3em
+        padding-left: 1.5em
+        .field
+          margin-bottom: 0.55em
+          > .field__label
+            margin-bottom: 0em
+          &.field--name-field-date-text
+            > .field__label
+              &:before
+                content: none
+          &.field--name-field-target-audience
+          &.field--name-field-responsible-person
+          &.field--name-field-sli-text
+      .field--name-field-sli-image
+        width: 66.66%
 
 
   .page-node-type-team
@@ -499,6 +534,56 @@ figure
       .content-box
         +make-md-column(4)
         min-height: 320px
+    .paragraph--type--infoblock
+      .data-box
+        width: 33%
+        padding: 2em
+        padding-left: 4em
+        +x-rem(font-size, 1)
+        .field
+          margin-bottom: 1em
+          > .field__label
+            position: relative
+            margin-bottom: 0.5em
+            +x-rem(font-size, 1.1)
+            &:before
+              position: absolute
+              font-weight: bold
+          &.field--name-field-date-text
+            > .field__label
+              &:before
+                font-family: Fontawesome-Regular
+                content: "\f133"
+                top: -0.2em
+                left: -1.5em
+                font-size: 1.5rem
+          &.field--name-field-target-audience
+            > .field__label
+              &:before
+                font-family: Fontawesome
+                content: "\e533"
+                top: -0.2em
+                left: -1.7em
+                font-size: 1.5rem
+          &.field--name-field-responsible-person
+            > .field__label
+              &:before
+                font-family: Fontawesome
+                content: "\e53d"
+                top: 0em
+                left: -1.7em
+                font-size: 1.6rem
+          &.field--name-field-sli-text
+            > .field__label
+              &:before
+                font-family: Fontawesome-Regular
+                content: "\f0e0"
+                top: -0.2em
+                left: -1.5em
+                font-size: 1.5rem
+
+
+
 
   .page-node-type-turnier
     #info-tabs
