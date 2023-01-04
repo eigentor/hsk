@@ -2608,6 +2608,27 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   left: -1.5em;
   font-size: 1.5rem;
 }
+.page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-target-audience > .field__label:before {
+  font-family: Fontawesome;
+  content: "";
+  top: -0.2em;
+  left: -1.7em;
+  font-size: 1.5rem;
+}
+.page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-responsible-person > .field__label:before {
+  font-family: Fontawesome;
+  content: "";
+  top: 0em;
+  left: -1.7em;
+  font-size: 1.6rem;
+}
+.page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-sli-text > .field__label:before {
+  font-family: Fontawesome-Regular;
+  content: "";
+  top: -0.2em;
+  left: -1.5em;
+  font-size: 1.5rem;
+}
 .page-node-type-page .paragraph--type--infoblock .field--name-field-sli-image img {
   display: block;
 }
@@ -2937,6 +2958,15 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
     margin-bottom: 0em;
   }
   .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-date-text > .field__label:before {
+    content: none;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-target-audience > .field__label:before {
+    content: none;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-responsible-person > .field__label:before {
+    content: none;
+  }
+  .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-sli-text > .field__label:before {
     content: none;
   }
   .page-node-type-page .paragraph--type--infoblock .field--name-field-sli-image {
