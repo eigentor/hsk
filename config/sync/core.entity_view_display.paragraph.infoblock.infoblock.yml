@@ -10,7 +10,7 @@ dependencies:
     - field.field.paragraph.infoblock.field_sli_text
     - field.field.paragraph.infoblock.field_target_audience
     - paragraphs.paragraphs_type.infoblock
-    - responsive_image.styles.inhaltsbild_volle_breite
+    - responsive_image.styles.infoblock
   module:
     - field_group
     - responsive_image
@@ -64,7 +64,7 @@ content:
     type: responsive_image
     label: hidden
     settings:
-      responsive_image_style: inhaltsbild_volle_breite
+      responsive_image_style: infoblock
       image_link: ''
     third_party_settings: {  }
     weight: 1

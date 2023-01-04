@@ -8,10 +8,10 @@ dependencies:
     - field.field.paragraph.infoblock.field_sli_image
     - field.field.paragraph.infoblock.field_sli_text
     - field.field.paragraph.infoblock.field_target_audience
-    - image.style.thumbnail
+    - image.style.medium
     - paragraphs.paragraphs_type.infoblock
   module:
-    - image
+    - focal_point
     - text
 id: paragraph.infoblock.default
 targetEntityType: paragraph
@@ -35,12 +35,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_sli_image:
-    type: image_image
+    type: image_focal_point
     weight: 0
     region: content
     settings:
       progress_indicator: throbber
-      preview_image_style: thumbnail
+      preview_image_style: medium
+      preview_link: true
+      offsets: '50,50'
     third_party_settings: {  }
   field_sli_text:
     type: text_textarea

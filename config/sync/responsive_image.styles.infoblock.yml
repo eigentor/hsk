@@ -1,0 +1,24 @@
+uuid: 018f271c-0f56-467e-9170-9ba0d9b4495b
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.infoblock_desktop
+    - image.style.inhaltsbild_mobile_volle_breite
+  theme:
+    - hsk_zymphonies
+id: infoblock
+label: Infoblock
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: infoblock_desktop
+    breakpoint_id: hsk_zymphonies.desktop_narrow
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: inhaltsbild_mobile_volle_breite
+    breakpoint_id: hsk_zymphonies.mobile
+    multiplier: 1x
+breakpoint_group: hsk_zymphonies
+fallback_image_style: infoblock_desktop

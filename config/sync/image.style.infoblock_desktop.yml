@@ -1,0 +1,17 @@
+uuid: e8b798ce-b3ad-462f-8cd1-25dd84e9c128
+langcode: de
+status: true
+dependencies:
+  module:
+    - focal_point
+name: infoblock_desktop
+label: 'Infoblock Desktop'
+effects:
+  71292d2e-e333-4a58-b50b-9e433cd7db12:
+    uuid: 71292d2e-e333-4a58-b50b-9e433cd7db12
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 755
+      height: 400
+      crop_type: focal_point
