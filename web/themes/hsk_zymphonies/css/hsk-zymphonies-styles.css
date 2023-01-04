@@ -2580,7 +2580,6 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   color: #AB3131;
 }
 .page-node-type-page .paragraph--type--infoblock {
-  margin-top: 3em;
   margin-bottom: -20px;
 }
 .page-node-type-page .paragraph--type--infoblock .data-box {
@@ -2944,6 +2943,7 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
 }
 @media only screen and (min-width: 768px) {
   .page-node-type-page .paragraph--type--infoblock {
+    margin-top: 3em;
     display: flex;
   }
   .page-node-type-page .paragraph--type--infoblock .data-box {

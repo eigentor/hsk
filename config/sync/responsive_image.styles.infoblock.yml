@@ -5,6 +5,7 @@ dependencies:
   config:
     - image.style.infoblock_desktop
     - image.style.inhaltsbild_mobile_volle_breite
+    - image.style.inline_full_width
   theme:
     - hsk_zymphonies
 id: infoblock
@@ -13,7 +14,17 @@ image_style_mappings:
   -
     image_mapping_type: image_style
     image_mapping: infoblock_desktop
+    breakpoint_id: hsk_zymphonies.desktop
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: inline_full_width
     breakpoint_id: hsk_zymphonies.desktop_narrow
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: inline_full_width
+    breakpoint_id: hsk_zymphonies.tablet_portrait
     multiplier: 1x
   -
     image_mapping_type: image_style
