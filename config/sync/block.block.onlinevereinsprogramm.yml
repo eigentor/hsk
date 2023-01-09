@@ -18,7 +18,7 @@ plugin: 'block_content:5538f16e-2233-499a-ae19-fb4fe8f2e3a2'
 settings:
   id: 'block_content:5538f16e-2233-499a-ae19-fb4fe8f2e3a2'
   label: Vereinsprogramm
-  label_display: visible
+  label_display: '0'
   provider: block_content
   status: true
   info: ''

@@ -1,0 +1,25 @@
+uuid: 6f9efbd3-7fb6-44ec-a3b3-202bcf803da6
+langcode: de
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:0e7a90ad-6724-40dc-a464-51b0c8e8d1aa'
+  module:
+    - block_content
+  theme:
+    - hsk_zymphonies
+id: vereinsprogramm2
+theme: hsk_zymphonies
+region: bottom_third
+weight: 0
+provider: null
+plugin: 'block_content:0e7a90ad-6724-40dc-a464-51b0c8e8d1aa'
+settings:
+  id: 'block_content:0e7a90ad-6724-40dc-a464-51b0c8e8d1aa'
+  label: 'Vereinsprogramm 2'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

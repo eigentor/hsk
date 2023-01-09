@@ -10,7 +10,7 @@ dependencies:
     - hsk_zymphonies
 id: infoblockstartseite2
 theme: hsk_zymphonies
-region: bottom_third
+region: bottom_forth
 weight: 0
 provider: null
 plugin: 'block_content:83519218-57f2-40c5-9c4f-5ff33e4887c2'
