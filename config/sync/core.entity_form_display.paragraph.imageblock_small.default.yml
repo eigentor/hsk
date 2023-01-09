@@ -7,10 +7,10 @@ dependencies:
     - field.field.paragraph.imageblock_small.field_sli_image
     - field.field.paragraph.imageblock_small.field_text
     - field.field.paragraph.imageblock_small.field_titel
-    - image.style.thumbnail
+    - image.style.medium
     - paragraphs.paragraphs_type.imageblock_small
   module:
-    - image
+    - focal_point
     - maxlength
 id: paragraph.imageblock_small.default
 targetEntityType: paragraph
@@ -28,12 +28,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_sli_image:
-    type: image_image
+    type: image_focal_point
     weight: 0
     region: content
     settings:
       progress_indicator: throbber
-      preview_image_style: thumbnail
+      preview_image_style: medium
+      preview_link: true
+      offsets: '50,50'
     third_party_settings: {  }
   field_text:
     type: string_textarea
