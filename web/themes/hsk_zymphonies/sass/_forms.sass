@@ -77,10 +77,19 @@ form.webform-submission-kontakt-add-form
 +breakpoint($breakpoint-tablet)
   form.webform-submission-anmeldung-als-vereinsmitglied-form
     .description
-      margin-left: 147px
+      margin-left: 136px
       margin-top: 2px
       +x-rem(font-size, 0.85)
       color: #888
+    .form-item
+      +legacy-pie-clearfix
+      margin-bottom: 1.5em
+      > label
+        float: left
+        width: 135px
+      &.form-item-sepa-consent
+        label
+          width: auto
     .form-required
       &:after
         background-image: url(../../../../core/misc/icons/ee0000/required.svg)

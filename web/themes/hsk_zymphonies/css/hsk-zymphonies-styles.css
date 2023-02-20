@@ -2150,11 +2150,30 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 /*------------------------------------------- */
 @media only screen and (min-width: 768px) {
   form.webform-submission-anmeldung-als-vereinsmitglied-form .description {
-    margin-left: 147px;
+    margin-left: 136px;
     margin-top: 2px;
     font-size: 13.175px;
     font-size: 0.85rem;
     color: #888;
+  }
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item {
+    *zoom: 1;
+    margin-bottom: 1.5em;
+  }
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item:after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden;
+  }
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item > label {
+    float: left;
+    width: 135px;
+  }
+  form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item.form-item-sepa-consent label {
+    width: auto;
   }
   form.webform-submission-anmeldung-als-vereinsmitglied-form .form-required:after {
     background-image: url(../../../../core/misc/icons/ee0000/required.svg);
