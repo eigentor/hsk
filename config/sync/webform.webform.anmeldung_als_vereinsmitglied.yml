@@ -306,7 +306,7 @@ handlers:
       to_options: {  }
       bcc_mail: ''
       bcc_options: {  }
-      cc_mail: 'thomas@rufzeichen-online.de, lukahoffmann@aol.com'
+      cc_mail: 'thomas@rufzeichen-online.de, lukahoffmann@aol.com, klaus.luetjen@web.de, finanzen@schachklub-hannover.de'
       cc_options: {  }
       from_mail: info@schachklub-hannover.de
       from_options: {  }
@@ -316,14 +316,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       subject: 'Anmeldung als Vereinsmitglied über die HSK Website [site:url]'
-      body: |
-        Es wurde eine Anmeldung als Vereinsmitglied über die HSK Website eingegeben.
-
-        Datum der Eingabe: [webform_submission:created]
-        Hier geht es zu den eingegebenen Daten auf der Website: [webform_submission:original]
-
-        Eingegebene Daten: 
-        [webform_submission:values]
+      body: "Es wurde eine Anmeldung als Vereinsmitglied über die HSK Website eingegeben.\r\n\r\nDatum der Eingabe: [webform_submission:created]\r\nHier geht es zu den eingegebenen Daten auf der Website: [webform_submission:original]\r\n\r\nEingegebene Daten: \r\n[webform_submission:values]\r\n"
       excluded_elements:
         iban: iban
         bic: bic
