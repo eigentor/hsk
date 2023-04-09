@@ -1,5 +1,5 @@
 langcode: de
 exclude:
   node: {  }
-text_to_prepend_to_title: 'Clone of'
+text_to_prepend_to_title: ''
 clone_status: false
