@@ -26,7 +26,7 @@
         "drupal/businessgroup_zymphonies_theme": "^2.0",
         "drupal/chosen": "^3.0",
         "drupal/colorbox": "^1.10",
-        "drupal/content_access": "^1.0@alpha",
+        "drupal/content_access": "^2.0@RC",
         "drupal/core-composer-scaffold": "^9.2",
         "drupal/core-recommended": "^9.2",
         "drupal/crop": "^2.2",

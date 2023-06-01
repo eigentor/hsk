@@ -107,10 +107,10 @@ class ContentAccessPageForm extends FormBase {
     if ($this->moduleHandler->moduleExists('acl')) {
       // This is disabled when there is no node passed.
       $form['acl'] = [
-        '#type' => 'fieldset',
+        '#type' => 'details',
         '#title' => $this->t('User access control lists'),
         '#description' => $this->t('These settings allow you to grant access to specific users.'),
-        '#collapsible' => TRUE,
+        '#open' => TRUE,
         '#tree' => TRUE,
       ];
 
@@ -182,7 +182,7 @@ class ContentAccessPageForm extends FormBase {
     // Apply new settings.
     $grants = $this->entityTypeManager->getAccessControlHandler('node')->acquireGrants($node);
     $this->grantStorage->write($node, $grants);
-    $this->moduleHandler->invokeAll('per_node', $settings);
+    $this->moduleHandler->invokeAll('per_node', [$settings, $node]);
 
     foreach (Cache::getBins() as $cache_backend) {
       $cache_backend->deleteAll();

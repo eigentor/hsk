@@ -2879,6 +2879,27 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   color: #777;
 }
 
+.page-node-type-event .field--name-field-ev-date {
+  font-weight: 700;
+  margin-bottom: 1em;
+  font-size: 1.2rem;
+  color: #444;
+}
+.page-node-type-event .field--name-field-ev-date time {
+  background: #eee;
+  padding: 0.5em 0.8em;
+  padding-left: 2.3em;
+  font-family: "Roboto Slab", serif;
+}
+.page-node-type-event .field--name-field-ev-date:before {
+  position: absolute;
+  font-family: Fontawesome-Regular;
+  content: "";
+  top: -0.2em;
+  left: 0.4em;
+  font-size: 1.5rem;
+}
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*----------- Tablet Portrait ----------------*/
