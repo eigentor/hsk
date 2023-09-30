@@ -9,14 +9,12 @@ dependencies:
   module:
     - comment
     - contextual
-    - entityconnect
     - filter
     - locale
     - node
     - override_node_options
     - path
     - quick_node_clone
-    - quickedit
     - system
     - toolbar
     - view_unpublished
@@ -30,7 +28,6 @@ permissions:
   - 'access comments'
   - 'access content overview'
   - 'access contextual links'
-  - 'access in-place editing'
   - 'access site reports'
   - 'access toolbar'
   - 'access user profiles'
@@ -43,8 +40,6 @@ permissions:
   - 'clone team content'
   - 'clone turnier content'
   - 'create url aliases'
-  - 'entityconnect add button'
-  - 'entityconnect edit button'
   - 'override all published option'
   - 'post comments'
   - 'skip comment approval'

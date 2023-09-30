@@ -1,7 +1,10 @@
 uuid: d611a786-0f8f-4353-896e-990e69a030ca
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - inline_responsive_images
+    - responsive_tables_filter
 _core:
   default_config_hash: KUjJ8Ti_ZJSlhGM88E_mhJP-8mmQRNUB6RFof615Kt0
 name: 'Eingeschränktes HTML'
@@ -14,7 +17,7 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id>'
+      allowed_html: '<br> <p> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <cite> <dl> <dt> <dd> <a hreflang href> <blockquote cite> <ul type> <ol type start> <strong> <em> <code> <li>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_autop:
@@ -30,3 +33,58 @@ filters:
     weight: 0
     settings:
       filter_url_length: 72
+  filter_responsive_image_style:
+    id: filter_responsive_image_style
+    provider: inline_responsive_images
+    status: false
+    weight: 0
+    settings:
+      responsive_style_bildblock_klein: '0'
+      responsive_style_header_slideshow: '0'
+      responsive_style_infoblock: '0'
+      responsive_style_inhaltsbild_volle_breite: '0'
+      responsive_style_inhaltsbild_z_halbe_breite: '0'
+      responsive_style_narrow: '0'
+      responsive_style_news_thumb_startseite: '0'
+      responsive_style_wide: '0'
+  filter_imagestyle:
+    id: filter_imagestyle
+    provider: inline_responsive_images
+    status: false
+    weight: 0
+    settings:
+      image_style_bildblock_desktop: '0'
+      image_style_bildblock_desktop_narrow: '0'
+      image_style_bildblock_mobile: '0'
+      image_style_bildblock_tablet_portrait: '0'
+      image_style_gallery_full: '0'
+      image_style_header_slideshow: '0'
+      image_style_header_slideshow_smartphone: '0'
+      image_style_header_slideshow_tablet_portrait: '0'
+      image_style_image_gallery_thumb: '0'
+      image_style_infoblock_desktop: '0'
+      image_style_inhaltsbild_halbe_breite: '0'
+      image_style_inhaltsbild_mobile_volle_breite: '0'
+      image_style_inline_full_width: '0'
+      image_style_large: '0'
+      image_style_linkit_result_thumbnail: '0'
+      image_style_max_1300x1300: '0'
+      image_style_max_2600x2600: '0'
+      image_style_max_325x325: '0'
+      image_style_max_650x650: '0'
+      image_style_medium: '0'
+      image_style_news_thumb_mobile: '0'
+      image_style_news_thumb_startseite: '0'
+      image_style_portrait: '0'
+      image_style_portrait_autor: '0'
+      image_style_portrait_medium: '0'
+      image_style_portrait_tiny: '0'
+      image_style_thumbnail: '0'
+  filter_responsive_tables_filter:
+    id: filter_responsive_tables_filter
+    provider: responsive_tables_filter
+    status: false
+    weight: 0
+    settings:
+      tablesaw_type: stack
+      tablesaw_persist: '1'

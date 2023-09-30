@@ -16,8 +16,7 @@ module:
   breakpoint: 0
   chosen: 0
   chosen_lib: 0
-  ckeditor: 0
-  color: 0
+  ckeditor5: 0
   colorbox: 0
   comment: 0
   config: 0
@@ -31,11 +30,9 @@ module:
   devel: 0
   dynamic_page_cache: 0
   editor: 0
-  editor_file: 0
   embed: 0
   entity_embed: 0
   entity_reference_revisions: 0
-  entityconnect: 0
   eva: 0
   field: 0
   field_group: 0
@@ -79,8 +76,6 @@ module:
   path: 0
   path_alias: 0
   quick_node_clone: 0
-  quickedit: 0
-  rdf: 0
   responsive_image: 0
   responsive_tables_filter: 0
   rules: 0

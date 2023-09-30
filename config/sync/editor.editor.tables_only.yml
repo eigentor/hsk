@@ -1,45 +1,25 @@
-uuid: ef9df9e7-c0cb-416a-9342-90c76398a48a
+uuid: c380b776-a289-4eaf-9012-c8c9e9d2cb89
 langcode: de
 status: true
 dependencies:
   config:
     - filter.format.tables_only
   module:
-    - ckeditor
+    - ckeditor5
 format: tables_only
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Formatierung
-          items:
-            - Bold
-            - Italic
-            - Format
-        -
-          name: Links
-          items:
-            - DrupalLink
-            - DrupalUnlink
-        -
-          name: Tabellen
-          items:
-            - Table
-        -
-          name: Werkzeuge
-          items:
-            - Source
+    items:
+      - heading
+      - bold
+      - italic
+      - '|'
+      - insertTable
   plugins:
-    drupallink:
-      linkit_enabled: false
-      linkit_profile: ''
-image_upload:
-  status: false
-  scheme: public
-  directory: inline-images
-  max_size: ''
-  max_dimensions:
-    width: null
-    height: null
+    ckeditor5_heading:
+      enabled_headings:
+        - heading2
+        - heading3
+        - heading4
+image_upload: {  }

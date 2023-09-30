@@ -1,12 +1,12 @@
-uuid: 14ea511f-a769-4388-a6a4-ec7c20ce599f
+uuid: 222edc83-28be-463a-adf9-ea9cc461454c
 langcode: de
 status: true
 dependencies:
   config:
-    - filter.format.basic_html
+    - filter.format.restricted_html
   module:
     - ckeditor5
-format: basic_html
+format: restricted_html
 editor: ckeditor5
 settings:
   toolbar:
@@ -15,12 +15,11 @@ settings:
       - bold
       - italic
       - '|'
+      - link
       - blockQuote
       - code
       - bulletedList
       - numberedList
-      - link
-      - insertTable
       - sourceEditing
   plugins:
     ckeditor5_heading:
@@ -36,15 +35,10 @@ settings:
         - '<dl>'
         - '<dt>'
         - '<dd>'
+        - '<a hreflang>'
         - '<blockquote cite>'
         - '<ul type>'
         - '<ol type>'
-        - '<button class>'
-        - '<span class>'
-        - '<img data-responsive-image-style src alt data-entity-type data-entity-uuid data-align data-caption height width class>'
-        - '<a hreflang data-entity-type data-entity-uuid title class>'
-        - '<table class="center-table no-style">'
-        - '<drupal-entity data-entity-type data-entity-uuid data-view-mode data-entity-embed-display data-entity-embed-display-settings data-align data-caption data-embed-button data-langcode alt title>'
         - '<h2 id>'
         - '<h3 id>'
         - '<h4 id>'

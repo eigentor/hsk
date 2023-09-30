@@ -6,16 +6,6 @@ dependencies:
     - field.storage.paragraph.field_node_link
     - node.type.page
     - paragraphs.paragraphs_type.imageblock_small
-  module:
-    - entityconnect
-third_party_settings:
-  entityconnect:
-    buttons:
-      button_add: 1
-      button_edit: 1
-    icons:
-      icon_add: 0
-      icon_edit: 0
 id: paragraph.imageblock_small.field_node_link
 field_name: field_node_link
 entity_type: paragraph

@@ -62,10 +62,10 @@ filters:
     weight: -48
     settings:
       spamspan_at: ' [at] '
-      spamspan_use_graphic: '1'
-      spamspan_dot_enable: '1'
+      spamspan_use_graphic: true
+      spamspan_dot_enable: true
       spamspan_dot: ' [dot] '
-      spamspan_use_form: '0'
+      spamspan_use_form: false
       spamspan_form_pattern: '<a href="%url?goto=%email">%displaytext</a>'
       spamspan_form_default_url: contact
       spamspan_form_default_displaytext: 'contact form'
@@ -81,11 +81,16 @@ filters:
     status: false
     weight: -38
     settings:
+      image_style_bildblock_desktop: '0'
+      image_style_bildblock_desktop_narrow: '0'
+      image_style_bildblock_mobile: '0'
+      image_style_bildblock_tablet_portrait: '0'
       image_style_gallery_full: '0'
       image_style_header_slideshow: '0'
       image_style_header_slideshow_smartphone: '0'
       image_style_header_slideshow_tablet_portrait: '0'
       image_style_image_gallery_thumb: '0'
+      image_style_infoblock_desktop: '0'
       image_style_inhaltsbild_halbe_breite: '0'
       image_style_inhaltsbild_mobile_volle_breite: '0'
       image_style_inline_full_width: '0'
@@ -109,7 +114,9 @@ filters:
     status: true
     weight: -49
     settings:
+      responsive_style_bildblock_klein: '0'
       responsive_style_header_slideshow: '0'
+      responsive_style_infoblock: '0'
       responsive_style_inhaltsbild_volle_breite: '1'
       responsive_style_inhaltsbild_z_halbe_breite: '1'
       responsive_style_narrow: '0'
