@@ -55,6 +55,9 @@ class LinkFieldTest extends BrowserTestBase {
    */
   protected $field;
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp(): void {
     parent::setUp();
 
@@ -66,9 +69,23 @@ class LinkFieldTest extends BrowserTestBase {
   }
 
   /**
+   * Tests the functionality and rendering of the link field.
+   *
+   * This is being as one to avoid multiple Drupal install.
+   */
+  public function testLinkField() {
+    $this->doTestURLValidation();
+    $this->doTestLinkTitle();
+    $this->doTestLinkFormatter();
+    $this->doTestLinkSeparateFormatter();
+    $this->doTestEditNonNodeEntityLink();
+    $this->doTestLinkTypeOnLinkWidget();
+  }
+
+  /**
    * Tests link field URL validation.
    */
-  public function testURLValidation() {
+  protected function doTestURLValidation() {
     $field_name = mb_strtolower($this->randomMachineName());
     // Create a field with settings to validate.
     $this->fieldStorage = FieldStorageConfig::create([
@@ -252,7 +269,7 @@ class LinkFieldTest extends BrowserTestBase {
   /**
    * Tests the link title settings of a link field.
    */
-  public function testLinkTitle() {
+  protected function doTestLinkTitle() {
     $field_name = mb_strtolower($this->randomMachineName());
     // Create a field with settings to validate.
     $this->fieldStorage = FieldStorageConfig::create([
@@ -377,7 +394,7 @@ class LinkFieldTest extends BrowserTestBase {
   /**
    * Tests the default 'link' formatter.
    */
-  public function testLinkFormatter() {
+  protected function doTestLinkFormatter() {
     $field_name = mb_strtolower($this->randomMachineName());
     // Create a field with settings to validate.
     $this->fieldStorage = FieldStorageConfig::create([
@@ -534,7 +551,7 @@ class LinkFieldTest extends BrowserTestBase {
    * This test is mostly the same as testLinkFormatter(), but they cannot be
    * merged, since they involve different configuration and output.
    */
-  public function testLinkSeparateFormatter() {
+  protected function doTestLinkSeparateFormatter() {
     $field_name = mb_strtolower($this->randomMachineName());
     // Create a field with settings to validate.
     $this->fieldStorage = FieldStorageConfig::create([
@@ -661,7 +678,7 @@ class LinkFieldTest extends BrowserTestBase {
    * a link and also which LinkItemInterface::LINK_* is (EXTERNAL, GENERIC,
    * INTERNAL).
    */
-  public function testLinkTypeOnLinkWidget() {
+  protected function doTestLinkTypeOnLinkWidget() {
 
     $link_type = LinkItemInterface::LINK_EXTERNAL;
     $field_name = mb_strtolower($this->randomMachineName());
@@ -699,7 +716,7 @@ class LinkFieldTest extends BrowserTestBase {
   /**
    * Tests editing a link to a non-node entity.
    */
-  public function testEditNonNodeEntityLink() {
+  protected function doTestEditNonNodeEntityLink() {
 
     $entity_type_manager = \Drupal::entityTypeManager();
     $entity_test_storage = $entity_type_manager->getStorage('entity_test');
@@ -839,78 +856,6 @@ class LinkFieldTest extends BrowserTestBase {
     $output = $this->renderTestEntity($id);
     $expected_link = (string) $this->container->get('link_generator')->generate('Title, button', Url::fromUri('route:<button>'));
     $this->assertStringContainsString($expected_link, $output);
-  }
-
-  /**
-   * Test attributes preserved on save.
-   *
-   * Make sure that attributes are retained when the link is saved via the UI.
-   */
-  public function testAttributesOnLink() {
-
-    $field_name = mb_strtolower($this->randomMachineName());
-    $this->fieldStorage = FieldStorageConfig::create([
-      'field_name' => $field_name,
-      'entity_type' => 'entity_test',
-      'type' => 'link',
-      'cardinality' => 1,
-    ]);
-    $this->fieldStorage->save();
-    FieldConfig::create([
-      'field_storage' => $this->fieldStorage,
-      'label' => 'Read more about this entity',
-      'bundle' => 'entity_test',
-      'settings' => [
-        'title' => DRUPAL_OPTIONAL,
-        'link_type' => LinkItemInterface::LINK_INTERNAL,
-      ],
-    ])->save();
-
-    $this->container->get('entity_type.manager')
-      ->getStorage('entity_form_display')
-      ->load('entity_test.entity_test.default')
-      ->setComponent($field_name, [
-        'type' => 'link_default',
-      ])
-      ->save();
-
-    EntityViewDisplay::create([
-      'targetEntityType' => 'entity_test',
-      'bundle' => 'entity_test',
-      'mode' => 'full',
-      'status' => TRUE,
-    ])->setComponent($field_name, [
-      'type' => 'link',
-    ])
-      ->save();
-
-    // Test a link with attributes.
-    $edit = [
-      "{$field_name}[0][title]" => 'Link with attributes.',
-      "{$field_name}[0][uri]" => '<front>',
-    ];
-
-    $this->drupalGet('entity_test/add');
-    $this->submitForm($edit, t('Save'));
-    preg_match('|entity_test/manage/(\d+)|', $this->getUrl(), $match);
-    $id = $match[1];
-
-    $entity = EntityTest::load($id);
-    $field = $entity->get($field_name)->first();
-
-    $attribute_value = mb_strtolower($this->randomMachineName());
-
-    $field->set('options', ['attributes' => ['custom-attribute' => $attribute_value]]);
-    $entity->save();
-
-    $output = $this->renderTestEntity($id);
-    $this->assertStringContainsString($attribute_value, $output);
-
-    $this->drupalGet($entity->toUrl('edit-form'));
-    $this->submitForm([], 'Save');
-
-    $output = $this->renderTestEntity($id);
-    $this->assertStringContainsString($attribute_value, $output);
   }
 
   /**

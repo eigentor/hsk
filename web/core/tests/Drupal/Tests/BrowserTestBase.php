@@ -76,13 +76,6 @@ abstract class BrowserTestBase extends TestCase {
   use ExtensionListTestTrait;
 
   /**
-   * The database prefix of this test run.
-   *
-   * @var string
-   */
-  protected $databasePrefix;
-
-  /**
    * Time limit in seconds for the test.
    *
    * @var int
@@ -202,13 +195,6 @@ abstract class BrowserTestBase extends TestCase {
    * @var array
    */
   protected $originalShutdownCallbacks = [];
-
-  /**
-   * The app root.
-   *
-   * @var string
-   */
-  protected $root;
 
   /**
    * The original container.
@@ -334,9 +320,11 @@ abstract class BrowserTestBase extends TestCase {
   }
 
   /**
-   * Get the Mink driver args from an environment variable, if it is set. Can
-   * be overridden in a derived class so it is possible to use a different
-   * value for a subset of tests, e.g. the JavaScript tests.
+   * Gets the Mink driver args from an environment variable.
+   *
+   * The environment variable can be overridden in a derived class so it is
+   * possible to use a different value for a subset of tests, e.g. the
+   * JavaScript tests.
    *
    * @return string|false
    *   The JSON-encoded argument string. False if it is not set.
