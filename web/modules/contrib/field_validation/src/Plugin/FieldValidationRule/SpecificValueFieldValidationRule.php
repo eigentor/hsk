@@ -7,15 +7,15 @@ use Drupal\field_validation\ConfigurableFieldValidationRuleBase;
 use Drupal\field_validation\FieldValidationRuleSetInterface;
 
 /**
- * IntegerFieldValidationRule.
+ * Provides functionality for SpecificvalueFieldValidationRule.
  *
  * @FieldValidationRule(
- *   id = "integer_field_validation_rule",
- *   label = @Translation("Integer"),
- *   description = @Translation("Integer values.")
+ *   id = "specific_value_field_validation_rule",
+ *   label = @Translation("Specific value(s)"),
+ *   description = @Translation("Specific value(s).")
  * )
  */
-class IntegerFieldValidationRule extends ConfigurableFieldValidationRuleBase {
+class SpecificValueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
 
   /**
    * {@inheritdoc}
@@ -39,8 +39,7 @@ class IntegerFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    */
   public function defaultConfiguration() {
     return [
-      'min' => NULL,
-      'max' => NULL,
+      'setting' => "",
     ];
   }
 
@@ -48,16 +47,11 @@ class IntegerFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['min'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Minimum value'),
-      '#default_value' => $this->configuration['min'],
-      '#required' => TRUE,
-    ];
-    $form['max'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Maximum value'),
-      '#default_value' => $this->configuration['max'],
+    $form['setting'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('(Key) value'),
+      '#description' => $this->t('Specify the specific value(s) you want the field to contain. Separate multiple options by a comma. For fields that have keys, use the key value instead.'),
+      '#default_value' => $this->configuration['setting'],
       '#required' => TRUE,
     ];
     return $form;
@@ -69,12 +63,11 @@ class IntegerFieldValidationRule extends ConfigurableFieldValidationRuleBase {
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
 
-    $this->configuration['min'] = $form_state->getValue('min');
-    $this->configuration['max'] = $form_state->getValue('max');
+    $this->configuration['setting'] = $form_state->getValue('setting') ?: "";
   }
 
   /**
-   *
+   * Validate the field Specific value.
    */
   public function validate($params) {
     $value = $params['value'] ?? '';
@@ -85,21 +78,18 @@ class IntegerFieldValidationRule extends ConfigurableFieldValidationRuleBase {
       $settings = $rule->configuration;
     }
 
-    if ($value !== '' && !is_null($value)) {
-      $options = [];
-      if (isset($settings['min']) && $settings['min'] != '') {
-        $min = $settings['min'];
-        $options['options']['min_range'] = $min;
-      }
-      if (isset($settings['max']) && $settings['max'] != '') {
-        $max = $settings['max'];
-        $options['options']['max_range'] = $max;
+    if ($value != '') {
+      $flag = FALSE;
+      $specific_values = explode(',', $settings['setting']);
+      $specific_values = array_map('trim', $specific_values);
+
+      if (in_array($value, $specific_values)) {
+        $flag = TRUE;
       }
 
-      if (FALSE === filter_var($value, FILTER_VALIDATE_INT, $options)) {
+      if (!$flag) {
         $context->addViolation($rule->getReplacedErrorMessage($params));
       }
-
     }
   }
 

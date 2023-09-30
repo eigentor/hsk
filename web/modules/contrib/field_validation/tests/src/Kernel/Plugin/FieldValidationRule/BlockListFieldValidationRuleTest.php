@@ -3,13 +3,42 @@
 namespace Drupal\Tests\field_validation\Kernel\Plugin\FieldValidationRule;
 
 /**
- * Tests WordsFieldValidationRule.
+ * Tests BlocklistFieldValidationRule.
  *
  * @group field_validation
  *
  * @package Drupal\Tests\field_validation\Kernel
  */
-class WordsFieldValidationRuleTest extends FieldValidationRuleBase {
+class BlockListFieldValidationRuleTest extends FieldValidationRuleBase {
+
+  /**
+   * Stores blocklisted words.
+   *
+   * @var array
+   */
+  private $blocklisted = [
+    'bug',
+    'issue',
+    'patch',
+  ];
+
+  /**
+   * Stores whitelisted words.
+   *
+   * @var array
+   */
+  private $whitelisted = [
+    'release',
+    'drupal',
+    'docs',
+  ];
+
+  /**
+   * Stores mock ruleset.
+   *
+   * @var \Drupal\field_validation\Entity\FieldValidationRuleSet
+   */
+  protected $ruleSet;
 
   /**
    * Entity interface.
@@ -21,47 +50,29 @@ class WordsFieldValidationRuleTest extends FieldValidationRuleBase {
   /**
    * Field name.
    */
-  const FIELD_NAME = 'field_word_text';
+  const FIELD_NAME = 'field_blocklist_text';
 
   /**
-   * Rule id.
-   */
-  const RULE_ID = 'words_field_validation_rule';
-
-  /**
-   * Rule title.
-   */
-  const RULE_TITLE = 'validation rule word text';
-
-  /**
-   * Stores mock ruleset.
-   *
-   * @var \Drupal\field_validation\Entity\FieldValidationRuleSet
-   */
-  protected $ruleSet;
-
-  /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    */
   protected function setUp(): void {
     parent::setUp();
     $this->setupTestArticle(self::FIELD_NAME);
 
     $this->ruleSet = $this->ruleSetStorage->create([
-      'name' => 'words_test',
+      'name' => 'Blocklist_test',
       'entity_type' => 'node',
       'bundle' => 'article',
     ]);
     $this->ruleSet->addFieldValidationRule([
-      'id' => self::RULE_ID,
-      'title' => self::RULE_TITLE,
+      'id' => 'blocklist_field_validation_rule',
+      'title' => 'validation rule blocklist',
       'weight' => 1,
       'field_name' => self::FIELD_NAME,
       'column' => 'value',
-      'error_message' => 'Words error!',
+      'error_message' => 'Blocklisted words are in field',
       'data' => [
-        'min' => 5,
-        'max' => 10,
+        'setting' => implode(',', $this->blocklisted),
       ],
     ]);
     $this->ruleSet->save();
@@ -69,7 +80,7 @@ class WordsFieldValidationRuleTest extends FieldValidationRuleBase {
     $this->entity = $this->nodeStorage->create([
       'type' => 'article',
       'title' => 'test',
-      self::FIELD_NAME => '',
+      self::FIELD_NAME => $this->blocklisted[array_rand($this->blocklisted)],
     ]);
     $this->entity->get(self::FIELD_NAME)
       ->getFieldDefinition()
@@ -80,45 +91,34 @@ class WordsFieldValidationRuleTest extends FieldValidationRuleBase {
   }
 
   /**
-   * Tests WordFieldValidationRule.
+   * Tests BlocklistFieldValidationRule.
    */
-  public function testCountWords() {
+  public function testBlocklistRule() {
     $this->assertConstraintFail(
       $this->entity,
       self::FIELD_NAME,
-      'one',
+      $this->blocklisted[array_rand($this->blocklisted)],
       $this->ruleSet
     );
+
     $this->assertConstraintFail(
       $this->entity,
       self::FIELD_NAME,
-      'one two three four five six seven eight nine ten eleven',
+      implode(',', $this->blocklisted),
       $this->ruleSet
     );
+
     $this->assertConstraintPass(
       $this->entity,
       self::FIELD_NAME,
-      'one two three four five six'
+      $this->whitelisted[array_rand($this->whitelisted)]
     );
 
-    $this->updateSettings(
-      [
-        'min' => '1',
-        'max' => '2',
-      ],
-      self::RULE_ID,
-      self::RULE_TITLE,
-      $this->ruleSet,
-      self::FIELD_NAME
-    );
-
-    $this->assertConstraintFail(
+    $this->assertConstraintPass(
       $this->entity,
       self::FIELD_NAME,
-      'one two three four five six',
-      $this->ruleSet
+      implode(',', $this->whitelisted)
     );
-    $this->assertConstraintPass($this->entity, self::FIELD_NAME, 'one');
   }
 
 }
