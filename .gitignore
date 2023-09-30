@@ -43,3 +43,5 @@ node_modules/
 
 
 stage_file_proxy.settings.yml
+
+.vscode
