@@ -58,7 +58,6 @@ function content_access_help($route_name, RouteMatchInterface $route_match) {
   }
 }
 
-
 /**
  * Implements hook__ENTITY_TYPE_update().
  */
@@ -72,7 +71,6 @@ function content_access_user_update(EntityInterface $account) {
       [':rebuild' => Url::fromRoute('node.configure_rebuild_confirm')->toString()]));
   }
 }
-
 
 /**
  * Implements hook_node_grants().
@@ -136,7 +134,8 @@ function content_access_node_access_records(NodeInterface $node) {
           $grant['realm'] = 'content_access_author';
           $grants_translation[] = content_access_proccess_grant($grant, $translated_node->getOwnerId(), $translated_node);
         }
-      } else {
+      }
+      else {
         // Apply the content type defaults.
         $grants_translation = content_access_get_type_grant($translated_node);
       }
@@ -144,11 +143,12 @@ function content_access_node_access_records(NodeInterface $node) {
       if (empty($grants_translation)) {
         // This means we grant no access.
         $grants[] = content_access_proccess_grant([], 0, $translated_node);
-      } else {
+      }
+      else {
         content_access_optimize_grants($grants_translation, $translated_node);
       }
 
-      foreach($grants_translation as $grant) {
+      foreach ($grants_translation as $grant) {
         $grants[] = $grant;
       }
     }
@@ -172,7 +172,7 @@ function content_access_entity_insert(EntityInterface $entity) {
   $config = \Drupal::configFactory()->getEditable('content_access.settings');
 
   if ($entity instanceof RoleInterface) {
-    $roles_gids = array_flip($config->get('content_access_roles_gids'));
+    $roles_gids = array_flip((array) $config->get('content_access_roles_gids'));
     $roles_gids[] = $entity->id();
     $config->set('content_access_roles_gids', array_flip($roles_gids));
     $config->save();
@@ -251,7 +251,7 @@ function content_access_disabling($set = NULL) {
  */
 function content_access_get_settings($setting, $type_name) {
   $config = \Drupal::configFactory()->getEditable('content_access.settings');
-  $settings = unserialize($config->get('content_access_node_type.' . $type_name) ?? '');
+  $settings = unserialize($config->get('content_access_node_type.' . $type_name) ?? '', ['allowed_classes' => FALSE]);
   if (empty($settings)) {
     $settings = [];
   }
@@ -261,7 +261,7 @@ function content_access_get_settings($setting, $type_name) {
     return $settings;
   }
 
-  return isset($settings[$setting]) ? $settings[$setting] : NULL;
+  return $settings[$setting] ?? NULL;
 }
 
 /**
@@ -333,7 +333,7 @@ function content_access_get_permission_access($perm, $reset = FALSE) {
       }
     }
   }
-  return isset($roles[$perm]) ? $roles[$perm] : [];
+  return $roles[$perm] ?? [];
 }
 
 /**
@@ -367,21 +367,19 @@ function content_access_get_type_grant(NodeInterface $node) {
   static $defaults = [];
 
   $node_type = $node->getType();
+  $node_lang = $node->language()->getId();
 
-  if (!isset($defaults[$node_type])) {
+  if (!isset($defaults[$node_type][$node_lang])) {
     $grants = [];
 
     // Only process the 'view' op as node_access() will take care of
     // edit and delete.
     foreach (content_access_get_settings('view', $node_type) as $rid) {
       $gid = content_access_get_role_gid($rid);
-      if (!$gid) {
-        continue;
-      }
       $grant['grant_view'] = 1;
       $grants[] = content_access_proccess_grant($grant, $gid, $node);
     }
-    $defaults[$node_type] = $grants;
+    $defaults[$node_type][$node_lang] = $grants;
   }
 
   // Care for the author grant.
@@ -398,7 +396,7 @@ function content_access_get_type_grant(NodeInterface $node) {
     ];
   }
 
-  return $defaults[$node_type] + $grants;
+  return $defaults[$node_type][$node_lang] + $grants;
 }
 
 /**
@@ -518,7 +516,7 @@ function content_access_per_node_setting($op, NodeInterface $node, array $settin
   }
 
   // Return the content type defaults if no per node settings are available.
-  return isset($grants[$node->id()][$op]) ? $grants[$node->id()][$op] : content_access_get_settings($op, $node->getType());
+  return $grants[$node->id()][$op] ?? content_access_get_settings($op, $node->getType());
 }
 
 /**
@@ -535,7 +533,7 @@ function content_access_get_per_node_settings(NodeInterface $node) {
   $result = $query->fetch(PDO::FETCH_OBJ);
 
   if (!empty($result->settings)) {
-    return unserialize($result->settings);
+    return json_decode($result->settings, TRUE);
   }
 
   return [];
@@ -557,12 +555,12 @@ function content_access_save_per_node_settings(NodeInterface $node, $settings) {
   if ($count > 0) {
     $database->update('content_access')
       ->condition('nid', $node->id())
-      ->fields(['settings' => serialize($settings)])
+      ->fields(['settings' => json_encode($settings)])
       ->execute();
   }
   else {
     $database->insert('content_access')
-      ->fields(['nid' => $node->id(), 'settings' => serialize($settings)])
+      ->fields(['nid' => $node->id(), 'settings' => json_encode($settings)])
       ->execute();
   }
 
@@ -586,7 +584,7 @@ function content_access_delete_per_node_settings(NodeInterface $node) {
 
   // Delete possible acl settings.
   if (\Drupal::moduleHandler()->moduleExists('acl')) {
-    \Drupal::modulehandler()->load_include('inc', 'content_access', 'content_access.admin');
+    \Drupal::modulehandler()->loadInclude('content_access', 'inc', 'content_access.admin');
     foreach (['view', 'update', 'delete'] as $op) {
       $acl_id = content_access_get_acl_id($node, $op);
       acl_delete_acl($acl_id);

@@ -8,7 +8,7 @@ dependencies:
 test_dependencies:
   - acl:acl
 
-# Information added by Drupal.org packaging script on 2023-05-07
-version: '2.0.0-rc1'
+# Information added by Drupal.org packaging script on 2023-09-06
+version: '2.0.0'
 project: 'content_access'
-datestamp: 1683474266
+datestamp: 1694005980

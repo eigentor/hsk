@@ -124,7 +124,7 @@ class ContentAccessPageForm extends FormBase {
         $form['acl'][$op] = acl_edit_form($form_state, $acl_id, $this->t('Grant @op access', ['@op' => $op]));
 
         $post_acl_id = $this->getRequest()->request->get('acl_' . $acl_id, NULL);
-        $form['acl'][$op]['#collapsed'] = !isset($post_acl_id) && !unserialize($form['acl'][$op]['user_list']['#default_value']);
+        $form['acl'][$op]['#collapsed'] = !isset($post_acl_id) && !json_decode($form['acl'][$op]['user_list']['#default_value']);
       }
     }
 

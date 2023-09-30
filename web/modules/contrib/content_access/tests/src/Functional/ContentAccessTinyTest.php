@@ -106,7 +106,7 @@ class ContentAccessTinyTest extends BrowserTestBase {
 
     // Allow access for test user.
     $edit = [
-      'acl[view][add]' => $this->testUser->getAccountName(),
+      'acl[view][add]' => $this->getAutocompleteInputString($this->testUser),
     ];
     $this->drupalGet('node/' . $this->node1->id() . '/access');
     $this->submitForm($edit, 'Add User');

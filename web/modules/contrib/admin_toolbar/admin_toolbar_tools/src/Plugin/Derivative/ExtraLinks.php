@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
+use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -56,14 +57,22 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
   protected $config;
 
   /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ModuleHandlerInterface $module_handler, RouteProviderInterface $route_provider, ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ModuleHandlerInterface $module_handler, RouteProviderInterface $route_provider, ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
     $this->entityTypeManager = $entity_type_manager;
     $this->moduleHandler = $module_handler;
     $this->routeProvider = $route_provider;
     $this->themeHandler = $theme_handler;
     $this->config = $config_factory->get('admin_toolbar_tools.settings');
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -75,7 +84,8 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
       $container->get('module_handler'),
       $container->get('router.route_provider'),
       $container->get('theme_handler'),
-      $container->get('config.factory')
+      $container->get('config.factory'),
+      $container->get('current_user')
     );
   }
 
@@ -101,14 +111,14 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
       $content_entity_bundle = $entities['content_entity_bundle'];
       $content_entity = $entities['content_entity'];
       $content_entity_bundle_storage = $this->entityTypeManager->getStorage($content_entity_bundle);
-      $bundles_ids = $content_entity_bundle_storage->getQuery()->pager($max_bundle_number)->execute();
+      $bundles_ids = $content_entity_bundle_storage->getQuery()->sort('weight')->pager($max_bundle_number)->execute();
       $bundles = $this->entityTypeManager->getStorage($content_entity_bundle)->loadMultiple($bundles_ids);
       if (count($bundles) == $max_bundle_number && $this->routeExists('entity.' . $content_entity_bundle . '.collection')) {
         $links[$content_entity_bundle . '.collection'] = [
           'title' => $this->t('All types'),
           'route_name' => 'entity.' . $content_entity_bundle . '.collection',
           'parent' => 'entity.' . $content_entity_bundle . '.collection',
-          'weight' => -1,
+          'weight' => -999,
         ] + $base_plugin_definition;
       }
       foreach ($bundles as $machine_name => $bundle) {
@@ -128,6 +138,10 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
               'entity_id' => $bundle->id(),
             ],
           ] + $base_plugin_definition;
+          $weight = $bundles[$machine_name]->get('weight');
+          if (isset($weight) && is_numeric($weight)) {
+            $links[$content_entity_bundle_root]['weight'] = $weight;
+          }
         }
         if ($this->routeExists('entity.' . $content_entity_bundle . '.edit_form')) {
           $key = 'entity.' . $content_entity_bundle . '.edit_form.' . $machine_name;
@@ -180,6 +194,17 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
               'weight' => 3,
             ] + $base_plugin_definition;
           }
+          if ($this->routeExists('entity.' . $bundle->getEntityTypeId() . '.entity_permissions_form')) {
+            $links['entity.entity_permissions_form.' . $content_entity . '.default.' . $machine_name] = [
+              'title' => $this->t('Manage permissions'),
+              'route_name' => 'entity.' . $bundle->getEntityTypeId() . '.entity_permissions_form',
+              'parent' => $base_plugin_definition['id'] . ':' . $content_entity_bundle_root,
+              'route_parameters' => [
+                $bundle->getEntityTypeId() => $machine_name,
+              ],
+              'weight' => 3,
+            ] + $base_plugin_definition;
+          }
         }
         if ($this->moduleHandler->moduleExists('devel') && $this->routeExists('entity.' . $content_entity_bundle . '.devel_load')) {
           $links['entity.' . $content_entity_bundle . '.devel_load.' . $machine_name] = [
@@ -217,6 +242,12 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
       'title' => $this->t('Roles'),
       'route_name' => 'entity.user_role.collection',
       'parent' => 'entity.user.collection',
+    ] + $base_plugin_definition;
+    $links['user.logout'] = [
+      'title' => $this->t('Logout'),
+      'route_name' => 'user.logout',
+      'parent' => 'admin_toolbar_tools.help',
+      'weight' => 10,
     ] + $base_plugin_definition;
     $links['user.role_add'] = [
       'title' => $this->t('Add role'),
@@ -327,7 +358,7 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
         'title' => $this->t('Add vocabulary'),
         'route_name' => 'entity.taxonomy_vocabulary.add_form',
         'parent' => 'entity.taxonomy_vocabulary.collection',
-        'weight' => -5,
+        'weight' => -998,
       ] + $base_plugin_definition;
     }
 

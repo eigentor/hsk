@@ -106,7 +106,7 @@ class ContentAccessAclTest extends BrowserTestBase {
 
     // Allow access for test user.
     $edit = [
-      'acl[view][add]' => $this->testUser->getAccountName(),
+      'acl[view][add]' => $this->getAutocompleteInputString($this->testUser),
     ];
     $this->drupalGet('node/' . $this->node1->id() . '/access');
     $this->submitForm($edit, 'edit-acl-view-add-button');
@@ -146,7 +146,7 @@ class ContentAccessAclTest extends BrowserTestBase {
 
     // Allow edit access for test user.
     $edit = [
-      'acl[update][add]' => $this->testUser->getAccountName(),
+      'acl[update][add]' => $this->getAutocompleteInputString($this->testUser),
     ];
     $this->drupalGet('node/' . $this->node1->id() . '/access');
     $this->submitForm($edit, 'edit-acl-update-add-button');
@@ -186,7 +186,7 @@ class ContentAccessAclTest extends BrowserTestBase {
 
     // Allow delete access for test user.
     $edit = [
-      'acl[delete][add]' => $this->testUser->getAccountName(),
+      'acl[delete][add]' => $this->getAutocompleteInputString($this->testUser),
     ];
     $this->drupalGet('node/' . $this->node1->id() . '/access');
     $this->submitForm($edit, 'edit-acl-delete-add-button');
