@@ -7,7 +7,7 @@ use Drupal\field_validation\ConfigurableFieldValidationRuleBase;
 use Drupal\field_validation\FieldValidationRuleSetInterface;
 
 /**
- * Words Field Validation Rule.
+ * WordsFieldValidationRule.
  *
  * @FieldValidationRule(
  *   id = "words_field_validation_rule",
@@ -20,6 +20,7 @@ class WordsFieldValidationRule extends ConfigurableFieldValidationRuleBase {
   /**
    * {@inheritdoc}
    */
+   
   public function addFieldValidationRule(FieldValidationRuleSetInterface $field_validation_rule_set) {
 
     return TRUE;
@@ -41,7 +42,7 @@ class WordsFieldValidationRule extends ConfigurableFieldValidationRuleBase {
   public function defaultConfiguration() {
     return [
       'min' => NULL,
-      'max' => NULL,
+      'max' => NULL
     ];
   }
 
@@ -49,14 +50,14 @@ class WordsFieldValidationRule extends ConfigurableFieldValidationRuleBase {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-
+ 
     $form['min'] = [
       '#type' => 'textfield',
       '#title' => 'Minimum number of words',
       '#default_value' => $this->configuration['min'],
       '#required' => TRUE,
     ];
-
+    
     $form['max'] = [
       '#type' => 'textfield',
       '#title' => 'Maximum number of words',
@@ -74,43 +75,39 @@ class WordsFieldValidationRule extends ConfigurableFieldValidationRuleBase {
     parent::submitConfigurationForm($form, $form_state);
 
     $this->configuration['min'] = $form_state->getValue('min');
-    $this->configuration['max'] = $form_state->getValue('max');
-  }
+	$this->configuration['max'] = $form_state->getValue('max');
 
-  /**
-   *
-   */
+  }
+  
   public function validate($params) {
-    $value = $params['value'] ?? '';
-    $rule = $params['rule'] ?? NULL;
-    $context = $params['context'] ?? NULL;
-    $settings = [];
-    if (!empty($rule) && !empty($rule->configuration)) {
-      $settings = $rule->configuration;
-    }
+   $value = isset($params['value']) ? $params['value'] : '';
+	$rule = isset($params['rule']) ? $params['rule'] : null;
+	$context = isset($params['context']) ? $params['context'] : null;
+	$settings = array();
+	if(!empty($rule) && !empty($rule->configuration)){
+	  $settings = $rule->configuration;
+	}
     if ($value != '') {
       $flag = TRUE;
-      $length = count(explode(' ', trim(preg_replace('/\s+/', ' ', str_replace('&nbsp;', ' ', (strip_tags(str_replace('<', ' <', $value))))))));
-      $token_data = $this->getTokenData($params);
-      if (isset($settings['min']) && $settings['min'] != '') {
-        $settings['min'] = $this->tokenService->replace($settings['min'], $token_data);
-        $min = $settings['min'];
-        if ($length < $min) {
+      $length =count(explode(' ', trim(preg_replace('/\s+/', ' ', str_replace('&nbsp;', ' ', (strip_tags(str_replace('<', ' <', $value))))))));
+      if (isset($settings['min']) && $settings['min'] != '') {   
+		$min = $settings['min'];
+		if ($length < $min) {
           $flag = FALSE;
         }
       }
       if (isset($settings['max']) && $settings['max'] != '') {
-        $settings['max'] = $this->tokenService->replace($settings['max'], $token_data);
-        $max = $settings['max'];
-        if ($length > $max) {
+		$max = $settings['max'];
+		if ($length > $max) {
           $flag = FALSE;
         }
-      }
+      }       
 
       if (!$flag) {
-        $context->addViolation($rule->getReplacedErrorMessage($params));
+        //$this->set_error($token);
+		$context->addViolation($rule->getErrorMessage());
       }
-    }
+    }	
+    //return true;
   }
-
 }

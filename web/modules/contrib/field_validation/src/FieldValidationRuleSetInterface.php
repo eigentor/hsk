@@ -3,6 +3,7 @@
 namespace Drupal\field_validation;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\field_validation\FieldValidationRuleInterface;
 
 /**
  * Provides an interface defining a FieldValidationRuleSet entity.
@@ -27,6 +28,8 @@ interface FieldValidationRuleSetInterface extends ConfigEntityInterface {
    *   The class instance this method is called on.
    */
   public function setName($name);
+
+
 
   /**
    * Returns a specific FieldValidationRule.
@@ -67,7 +70,7 @@ interface FieldValidationRuleSetInterface extends ConfigEntityInterface {
    * @return $this
    */
   public function deleteFieldValidationRule(FieldValidationRuleInterface $field_validation_rule);
-
+  
   /**
    * Returns the entity type of FieldValidationRuleSet.
    *
@@ -85,8 +88,8 @@ interface FieldValidationRuleSetInterface extends ConfigEntityInterface {
    * @return \Drupal\field_validation\FieldValidationRuleSetInterface
    *   The class instance this method is called on.
    */
-  public function setAttachedEntityType($entity_type);
-
+  public function setAttachedEntityType($entity_type);  
+  
   /**
    * Returns the bundle of FieldValidationRuleSet.
    *
@@ -104,6 +107,6 @@ interface FieldValidationRuleSetInterface extends ConfigEntityInterface {
    * @return \Drupal\field_validation\FieldValidationRuleSetInterface
    *   The class instance this method is called on.
    */
-  public function setAttachedBundle($bundle);
+  public function setAttachedBundle($bundle);   
 
 }

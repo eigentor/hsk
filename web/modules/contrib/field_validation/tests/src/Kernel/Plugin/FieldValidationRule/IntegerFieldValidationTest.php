@@ -47,7 +47,7 @@ class IntegerFieldValidationTest extends FieldValidationRuleBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     $this->min = -255;

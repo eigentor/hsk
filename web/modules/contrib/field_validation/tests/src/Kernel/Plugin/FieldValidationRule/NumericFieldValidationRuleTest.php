@@ -47,7 +47,7 @@ class NumericFieldValidationRuleTest extends FieldValidationRuleBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
     $this->min = -255;
     $this->max = 255;

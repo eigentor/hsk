@@ -3,20 +3,20 @@
 namespace Drupal\Tests\field_validation\Kernel\Plugin\FieldValidationRule;
 
 /**
- * Tests SpecificValueFieldValidationRule.
+ * Tests BlacklistFieldValidationRule.
  *
  * @group field_validation
  *
  * @package Drupal\Tests\field_validation\Kernel
  */
-class SpecificValueFieldValidationRuleTest extends FieldValidationRuleBase {
+class BlackListFieldValidationRuleTest extends FieldValidationRuleBase {
 
   /**
-   * Stores blocklisted words.
+   * Stores blacklisted words.
    *
    * @var array
    */
-  private $blocklisted = [
+  private $blacklisted = [
     'bug',
     'issue',
     'patch',
@@ -50,29 +50,29 @@ class SpecificValueFieldValidationRuleTest extends FieldValidationRuleBase {
   /**
    * Field name.
    */
-  const FIELD_NAME = 'field_specific_value_text';
+  const FIELD_NAME = 'field_blacklist_text';
 
   /**
    * {@inheritDoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
     $this->setupTestArticle(self::FIELD_NAME);
 
     $this->ruleSet = $this->ruleSetStorage->create([
-      'name' => 'specific_value_test',
+      'name' => 'Blacklist_test',
       'entity_type' => 'node',
       'bundle' => 'article',
     ]);
     $this->ruleSet->addFieldValidationRule([
-      'id' => 'specific_value_field_validation_rule',
-      'title' => 'validation rule specific value',
+      'id' => 'blacklist_field_validation_rule',
+      'title' => 'validation rule blacklist',
       'weight' => 1,
       'field_name' => self::FIELD_NAME,
       'column' => 'value',
-      'error_message' => 'Words should use specific value',
+      'error_message' => 'Blacklisted words are in field',
       'data' => [
-        'setting' => implode(',', $this->whitelisted),
+        'setting' => implode(',', $this->blacklisted),
       ],
     ]);
     $this->ruleSet->save();
@@ -80,7 +80,7 @@ class SpecificValueFieldValidationRuleTest extends FieldValidationRuleBase {
     $this->entity = $this->nodeStorage->create([
       'type' => 'article',
       'title' => 'test',
-      self::FIELD_NAME => $this->blocklisted[array_rand($this->blocklisted)],
+      self::FIELD_NAME => $this->blacklisted[array_rand($this->blacklisted)],
     ]);
     $this->entity->get(self::FIELD_NAME)
       ->getFieldDefinition()
@@ -91,20 +91,20 @@ class SpecificValueFieldValidationRuleTest extends FieldValidationRuleBase {
   }
 
   /**
-   * Tests SpecificValueFieldValidationRule.
+   * Tests BlacklistFieldValidationRule.
    */
-  public function testSpecificValueRule() {
+  public function testBlacklistRule() {
     $this->assertConstraintFail(
       $this->entity,
       self::FIELD_NAME,
-      $this->blocklisted[array_rand($this->blocklisted)],
+      $this->blacklisted[array_rand($this->blacklisted)],
       $this->ruleSet
     );
 
     $this->assertConstraintFail(
       $this->entity,
       self::FIELD_NAME,
-      implode(',', $this->blocklisted),
+      implode(',', $this->blacklisted),
       $this->ruleSet
     );
 
@@ -114,11 +114,10 @@ class SpecificValueFieldValidationRuleTest extends FieldValidationRuleBase {
       $this->whitelisted[array_rand($this->whitelisted)]
     );
 
-    $this->assertConstraintFail(
+    $this->assertConstraintPass(
       $this->entity,
       self::FIELD_NAME,
-      implode(',', $this->whitelisted),
-      $this->ruleSet
+      implode(',', $this->whitelisted)
     );
   }
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd5a5850b273d947e5ee9effcf60ac65",
+    "content-hash": "4aace3c93f08c0eac08339c9478676a0",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3793,29 +3793,29 @@
         },
         {
             "name": "drupal/field_validation",
-            "version": "1.1.0",
+            "version": "1.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/field_validation.git",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.0-beta3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/field_validation-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "c9998e29523373aac43095632b2b2b0992bc497b"
+                "url": "https://ftp.drupal.org/files/projects/field_validation-8.x-1.0-beta3.zip",
+                "reference": "8.x-1.0-beta3",
+                "shasum": "d527fa9696e069f582d1b0c3f7d81928082346ca"
             },
             "require": {
-                "drupal/core": "^9 || ^10"
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1690428219",
+                    "version": "8.x-1.0-beta3",
+                    "datestamp": "1601896531",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },

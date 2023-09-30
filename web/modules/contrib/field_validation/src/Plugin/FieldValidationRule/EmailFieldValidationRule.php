@@ -7,7 +7,7 @@ use Drupal\field_validation\ConfigurableFieldValidationRuleBase;
 use Drupal\field_validation\FieldValidationRuleSetInterface;
 
 /**
- * Provides funcationality for EmailFieldValidationRule.
+ * EmailFieldValidationRule.
  *
  * @FieldValidationRule(
  *   id = "email_field_validation_rule",
@@ -20,6 +20,7 @@ class EmailFieldValidationRule extends ConfigurableFieldValidationRuleBase {
   /**
    * {@inheritdoc}
    */
+
   public function addFieldValidationRule(FieldValidationRuleSetInterface $field_validation_rule_set) {
 
     return TRUE;
@@ -57,17 +58,19 @@ class EmailFieldValidationRule extends ConfigurableFieldValidationRuleBase {
 
   }
 
-  /**
-   * Validate the Email.
-   */
   public function validate($params) {
-    $value = $params['value'] ?? '';
-    $rule = $params['rule'] ?? NULL;
-    $context = $params['context'] ?? NULL;
-
+    $value = isset($params['value']) ? $params['value'] : '';
+	$rule = isset($params['rule']) ? $params['rule'] : null;
+	$context = isset($params['context']) ? $params['context'] : null;
+	$settings = array();
+	if(!empty($rule) && !empty($rule->configuration)){
+	  $settings = $rule->configuration;
+	}
+    $pattern = isset($settings['setting']) ? $settings['setting'] : '';
+	//$settings = $this->rule->settings;
     if ($value != '' && (!\Drupal::service('email.validator')->isValid($value))) {
-      $context->addViolation($rule->getReplacedErrorMessage($params));
+		$context->addViolation($rule->getErrorMessage());
     }
-  }
 
+  }
 }
