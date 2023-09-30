@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ */
+
+declare(strict_types = 1);
+
+/**
+ * @file
+ * Install, update and uninstall functions for the SpamSpan module.
+ */
+
+/**
+ * Rebuild the container cache to avoid service issues.
+ */
+function spamspan_update_9001() {
+  \Drupal::service('kernel')->rebuildContainer();
+}

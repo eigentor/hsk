@@ -3,29 +3,42 @@
 namespace Drupal\spamspan\TwigExtension;
 
 use Drupal\Component\Utility\Xss;
-use Drupal\Core\Render\Renderer;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\spamspan\SpamspanInterface;
+use Drupal\spamspan\SpamspanService;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * Provides the SpamSpan filter function within Twig templates.
  */
-class SpamspanExtension extends \Twig_Extension {
+class SpamspanExtension extends AbstractExtension {
 
   /**
    * The renderer.
    *
-   * @var \Drupal\Core\Render\Renderer
+   * @var \Drupal\Core\Render\RendererInterface
    */
   protected $renderer;
 
   /**
+   * The Spamspan Service.
+   *
+   * @var \Drupal\spamspan\SpamspanService
+   */
+  protected $spamspan;
+
+  /**
    * Constructor of SpamSpanExtension.
    *
-   * @param \Drupal\Core\Render\Renderer $renderer
+   * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
+   * @param \Drupal\spamspan\SpamspanService $spamspan
+   *   The Spamspan Service.
    */
-  public function __construct(Renderer $renderer) {
+  public function __construct(RendererInterface $renderer, SpamspanService $spamspan) {
     $this->renderer = $renderer;
+    $this->spamspan = $spamspan;
   }
 
   /**
@@ -33,7 +46,7 @@ class SpamspanExtension extends \Twig_Extension {
    */
   public function getFilters() {
     return [
-      new \Twig_SimpleFilter('spamspan', [$this, 'spamSpanFilter'], ['is_safe' => ['html']]),
+      new TwigFilter('spamspan', [$this, 'spamspanFilter'], ['is_safe' => ['html']]),
     ];
   }
 
@@ -53,10 +66,16 @@ class SpamspanExtension extends \Twig_Extension {
    * @return string
    *   The input text with emails replaced by spans
    */
-  public function spamSpanFilter($string) {
-    $template_attached = ['#attached' => ['library' => ['spamspan/obfuscate']]];
+  public function spamspanFilter($string) {
+    $template_attached = [
+      '#attached' => [
+        'library' => [
+          'spamspan/obfuscate',
+        ],
+      ],
+    ];
     $this->renderer->render($template_attached);
-    return Xss::filter(spamspan($string), SpamspanInterface::ALLOWED_HTML);
+    return Xss::filter($this->spamspan->spamspan($string), SpamspanInterface::ALLOWED_HTML);
   }
 
 }

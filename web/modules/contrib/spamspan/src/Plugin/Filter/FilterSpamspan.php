@@ -19,14 +19,14 @@ use Drupal\spamspan\SpamspanTrait;
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_IRREVERSIBLE,
  *   settings = {
  *     "spamspan_at" = " [at] ",
- *     "spamspan_use_graphic" = 0,
- *     "spamspan_dot_enable" = 0,
+ *     "spamspan_use_graphic" = FALSE,
+ *     "spamspan_dot_enable" = FALSE,
  *     "spamspan_dot" = " [dot] ",
- *     "spamspan_use_form" = 0,
- *     "spamspan_form_pattern" = "<a href=""%url?goto=%email"">%displaytext</a>",
+ *     "spamspan_use_form" = FALSE,
+ *     "spamspan_form_pattern" =
+ *        "<a href=""%url?goto=%email"">%displaytext</a>",
  *     "spamspan_form_default_url" = "contact",
- *     "spamspan_form_default_displaytext" = "contact form",
- *     "spamspan_parse_dom" = 0
+ *     "spamspan_form_default_displaytext" = "contact form"
  *   }
  * )
  */
@@ -75,12 +75,7 @@ class FilterSpamspan extends FilterBase implements SpamspanInterface {
       $text
     );
 
-    if (!empty($this->settings['spamspan_parse_dom'])) {
-      $text = $this->processAsDom($text, $this->textAltered);
-    }
-    else {
-      $text = $this->processAsText($text, $this->textAltered);
-    }
+    $text = $this->processAsDom($text, $this->textAltered);
 
     // Revert back to the original image contents.
     foreach ($images[0] as $image) {
@@ -111,27 +106,6 @@ class FilterSpamspan extends FilterBase implements SpamspanInterface {
     }
 
     return $result;
-  }
-
-  /**
-   * Replaces email addresses using regex.
-   *
-   * @param string $text
-   *   Input text.
-   * @param bool $altered
-   *   Set to true if any replacements happen.
-   *
-   * @return string
-   *   Output text.
-   */
-  protected function processAsText($text, &$altered) {
-    $text = $this->replaceMailtoLinks($text, $altered);
-    if (!empty($this->settings['spamspan_use_form'])) {
-      $text = $this->replaceEmailAddressesWithOptions($text, $altered);
-    }
-    $text = $this->replaceBareEmailAddresses($text, $altered);
-
-    return $text;
   }
 
 }

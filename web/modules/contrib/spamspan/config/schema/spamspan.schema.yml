@@ -1,0 +1,28 @@
+filter_settings.filter_spamspan:
+  type: filter
+  label: 'Filter Spamspan'
+  mapping:
+    spamspan_at:
+      type: string
+      label: 'At replacement'
+    spamspan_use_graphic:
+      type: boolean
+      label: 'Use graphic'
+    spamspan_dot_enable:
+      type: boolean
+      label: 'Enable dot'
+    spamspan_dot:
+      type: string
+      label: 'Dot replacement'
+    spamspan_use_form:
+      type: boolean
+      label: 'Use Form'
+    spamspan_form_pattern:
+      type: string
+      label: 'Form pattern'
+    spamspan_form_default_url:
+      type: string
+      label: 'Form default url'
+    spamspan_form_default_displaytext:
+      type: label
+      label: 'Form default display text'

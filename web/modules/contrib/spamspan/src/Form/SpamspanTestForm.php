@@ -4,11 +4,51 @@ namespace Drupal\spamspan\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\filter\FilterPluginManager;
+use Drupal\spamspan\SpamspanService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Implements an example form.
  */
 class SpamspanTestForm extends FormBase {
+
+  /**
+   * The filter manager object.
+   *
+   * @var \Drupal\filter\FilterPluginManager
+   */
+  protected $pluginManager;
+
+  /**
+   * The spamspan service instance.
+   *
+   * @var \Drupal\spamspan\SpamspanService
+   */
+  protected $spamspanService;
+
+  /**
+   * Constructs a new SpamspanTestForm object.
+   *
+   * @param \Drupal\filter\Plugin\Filter\FilterPluginManager $plugin_manager
+   *   The filter plugin manager.
+   * @param \Drupal\spamspan\SpamspanService $spamspan_service
+   *   The spamspan service.
+   */
+  public function __construct(FilterPluginManager $plugin_manager, SpamspanService $spamspan_service) {
+    $this->pluginManager = $plugin_manager;
+    $this->spamspanService = $spamspan_service;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('plugin.manager.filter'),
+      $container->get('spamspan')
+    );
+  }
 
   /**
    * {@inheritDoc}
@@ -21,10 +61,9 @@ class SpamspanTestForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $plugin_manager = \Drupal::service('plugin.manager.filter');
-    $configuration = $plugin_manager->getDefinition('filter_spamspan');
+    $configuration = $this->pluginManager->getDefinition('filter_spamspan');
     $defaults = $configuration['settings'];
-    $filter = $plugin_manager->createInstance('filter_spamspan', $configuration);
+    $filter = $this->pluginManager->createInstance('filter_spamspan', $configuration);
     $test_text = 'My work email is me@example.com and my home email is me@example.org.';
     $storage = $form_state->getStorage();
 
@@ -40,7 +79,7 @@ class SpamspanTestForm extends FormBase {
     $form['configure'] = [
       '#markup' => $this->t('<p>The @dn module obfuscates email addresses to help prevent spambots from collecting them. It will produce clickable links if JavaScript is enabled and will show the email address as <code>example [at] example [dot] com</code> if the browser does not support JavaScript.</p>
 
-<p>To configure the module: 
+<p>To configure the module:
     <ol>
         <li>Read the list of text formats at <a href="/admin/config/content/formats">Text formats</a>.</li>
         <li>Select <strong>configure</strong> for the format requiring email addresses.</li>
@@ -87,7 +126,7 @@ class SpamspanTestForm extends FormBase {
       }
     }
 
-    $test_result = spamspan($test_text, $defaults);
+    $test_result = $this->spamspanService->spamspan($test_text, $defaults);
     $form['test_js'] = ['#markup' => '<p>The result passed through spamspan() and processed by Javasript:</p><div style="background-color: #ccffcc;">' . $test_result . '</div>'];
     $form['test_result'] = [
       '#markup' => '<p>The result passed through spamspan() but not processed by Javascript:</p><div style="background-color: #ccccff;">' . str_replace('class="spamspan"',
@@ -95,7 +134,10 @@ class SpamspanTestForm extends FormBase {
     ];
     $form['test_as_html'] = ['#markup' => '<p>The HTML in the result:</p><div style="background-color: #ffcccc;">' . nl2br(htmlentities($test_result)) . '</div>'];
     $form['actions'] = ['#type' => 'actions'];
-    $form['actions']['submit'] = ['#type' => 'submit', '#value' => t('Test')];
+    $form['actions']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Test'),
+    ];
 
     $form['#attached']['library'][] = 'spamspan/obfuscate';
 

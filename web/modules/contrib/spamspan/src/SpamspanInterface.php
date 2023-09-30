@@ -78,7 +78,20 @@ interface SpamspanInterface {
   /**
    * The list of HTML tags allowed.
    */
-  const ALLOWED_HTML = ['abbr', 'acronym', 'address', 'article', 'aside', 'b', 'bdi', 'bdo', 'big', 'blockquote', 'br', 'caption', 'cite', 'code', 'col', 'colgroup', 'command', 'dd', 'del', 'details', 'dfn', 'div', 'dl', 'dt', 'em', 'figcaption', 'figure', 'footer', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'hgroup', 'hr', 'i', 'img', 'ins', 'kbd', 'li', 'mark', 'menu', 'meter', 'nav', 'ol', 'output', 'p', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'section', 'small', 'span', 'strong', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'time', 'tr', 'tt', 'u', 'ul', 'var', 'wbr', '!--', 'svg', 'animate', 'title', 'use', 'g', 'text', 'textPath', 'tspan', 'symbol', 'defs', 'desc', 'mask', 'marker', 'mpath', 'path', 'polygon', 'polyline', 'circle', 'clipPath', 'ellipse', 'line', 'radialGradient', 'rect', 'image', 'linearGradient'];
+  const ALLOWED_HTML = [
+    'a', 'abbr', 'acronym', 'address', 'article', 'aside', 'b', 'bdi', 'bdo',
+    'big', 'blockquote', 'br', 'caption', 'cite', 'code', 'col', 'colgroup',
+    'command', 'dd', 'del', 'details', 'dfn', 'div', 'dl', 'dt', 'em',
+    'figcaption', 'figure', 'footer', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'header', 'hgroup', 'hr', 'i', 'img', 'ins', 'kbd', 'li', 'mark', 'menu',
+    'meter', 'nav', 'ol', 'output', 'p', 'pre', 'progress', 'q', 'rp', 'rt',
+    'ruby', 's', 'samp', 'section', 'small', 'span', 'strong', 'sub',
+    'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'time',
+    'tr', 'tt', 'u', 'ul', 'var', 'wbr', '!--', 'svg', 'animate', 'title',
+    'use', 'g', 'text', 'textPath', 'tspan', 'symbol', 'defs', 'desc', 'mask',
+    'marker', 'mpath', 'path', 'polygon', 'polyline', 'circle', 'clipPath',
+    'ellipse', 'line', 'radialGradient', 'rect', 'image', 'linearGradient',
+  ];
 
   /**
    * Obfuscation based on PATTERN_EMAIL_BARE.

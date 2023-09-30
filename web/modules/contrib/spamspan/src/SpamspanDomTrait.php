@@ -3,7 +3,7 @@
 namespace Drupal\spamspan;
 
 /**
- * Trait SpamspanDomTrait.
+ * Provides processing based on DOM.
  *
  * @package Drupal\spamspan
  *
@@ -29,21 +29,30 @@ trait SpamspanDomTrait {
    */
   protected function processAsDom($text, &$altered) {
     $document = $this->loadHtmlDocument($text);
+    $original_text = $text;
 
-    // Process mailto <a> tags.
+    // Gather all <a> tags in an array. We are making an array to avoid
+    // processing the DOMDocument directly as it would get modified by each
+    // iteration and after that the next iteration would process the modified
+    // document which may not contain the same elements anymore.
+    $atags = [];
     foreach ($document->getElementsByTagName('a') as $atag) {
       $href = trim($atag->getAttribute('href'));
       if (strpos($href, 'mailto:') === 0) {
         $atag->setAttribute('href', $href);
-
+        $this->disableAttributes($atag);
         $text = $this->replaceMailtoLinks($document->saveHTML($atag), $altered);
-        $this->replaceDomNode($atag, $text);
+        $atags[] = ['old' => $atag, 'new' => $text];
       }
+    }
+
+    // Replace the nodes after gathering them.
+    foreach ($atags as $nodes) {
+      $this->replaceDomNode($nodes['old'], $nodes['new']);
     }
 
     // Parse all text nodes.
     $xpath = new \DomXPath($document);
-
     foreach ($xpath->query('//text()') as $text_node) {
       $text = $text_node->nodeValue;
       $node_altered = FALSE;
@@ -59,7 +68,32 @@ trait SpamspanDomTrait {
       }
     }
 
-    return $this->toStringHtmlDocument($document);
+    // Do not touch the text, if it wasn't altered.
+    return $altered ? $this->toStringHtmlDocument($document) : $original_text;
+  }
+
+  /**
+   * Disabled the attributes by prefixing all attributes with "data-spamspan-".
+   *
+   * @param \DOMElement $element
+   *   The element to disable the attributes on.
+   */
+  protected function disableAttributes(\DOMElement $element): void {
+    // We can not add / remove attributes, while iterating over the attribute
+    // collection here, as it automatically reindexes as soon as an attribute
+    // is removed. Instead we need a helper array here:
+    $attributesArray = [];
+    foreach ($element->attributes as $attribute) {
+      if (!in_array($attribute->name, ['href'])) {
+        $attributesArray[$attribute->name] = $attribute->value;
+      }
+    }
+    // Outside the iterator we may not change the attributes:
+    foreach ($attributesArray as $name => $value) {
+      // @todo Put the prefix into a constant:
+      $element->setAttribute('data-spamspan-' . $name, $value);
+      $element->removeAttribute($name);
+    }
   }
 
   /**

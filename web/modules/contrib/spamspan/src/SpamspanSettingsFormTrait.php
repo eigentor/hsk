@@ -108,7 +108,7 @@ trait SpamspanSettingsFormTrait {
     if (method_exists($this, 'mergeDefaults') && !$this->defaultSettingsMerged && !array_key_exists($key, $this->settings)) {
       $this->mergeDefaults();
     }
-    return isset($this->settings[$key]) ? $this->settings[$key] : NULL;
+    return $this->settings[$key] ?? NULL;
   }
 
   /**

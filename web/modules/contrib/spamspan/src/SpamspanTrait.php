@@ -6,7 +6,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 
 /**
- * Trait SpamspanTrait.
+ * Provides regex-based email-to-spamspan functionality.
  *
  * @package Drupal\spamspan
  *
@@ -258,12 +258,7 @@ trait SpamspanTrait {
       $output .= '<span class="t"> (' . $contents . ')</span>';
     }
 
-    // Put in the extra <a> attributes.
-    if (!empty($vars['extra_attributes'])) {
-      $output .= '<span class="e">' . strip_tags($vars['extra_attributes']) . '</span>';
-    }
-
-    $output = '<span class="spamspan">' . $output . '</span>';
+    $output = '<span class="spamspan"' . (isset($vars['extra_attributes']) ? ' ' . strip_tags($vars['extra_attributes']) : '') . '>' . $output . '</span>';
 
     return $output;
   }
@@ -271,26 +266,34 @@ trait SpamspanTrait {
   /**
    * Clean up the contents of <a> tag.
    *
-   * Remove emails from the tag contents, otherwise the tag contents are
-   * themselves converted into a spamspan, with undesirable consequences.
-   * See bug #305464.
-   *
-   * Applies Xss::filter.
+   * Find email addresses inside the anchor text and make sure they are
+   * obfuscated in a basic way instead of removing them and let the JavaScript
+   * normalize it back.
    *
    * @param string $contents
    *   The tag contents.
+   *
+   * @see https://www.drupal.org/project/spamspan/issues/3372583
+   *
+   * Applies Xss::filter.
    *
    * @return string
    *   Cleaned up contents.
    */
   protected function filterTagContents($contents) {
-
     if (!empty($contents)) {
-      $contents = preg_replace(SpamspanInterface::PATTERN_EMAIL_BARE, '', $contents);
+      // If there is an email address in the content of the "a" tag, perform a
+      // basic obfuscation that the JS will be able to normalize after.
+      // Previously we removed any email address that was part of the link label
+      // which is loss of information for the end user.
+      if (preg_match_all(SpamspanInterface::PATTERN_EMAIL_BARE, $contents, $matches)) {
+        foreach ($matches[0] as $text_email) {
+          $email = str_replace(['.', '@'], ['[dot]', '[at]'], $text_email);
+          $contents = str_replace([$text_email], [$email], $contents);
+        }
+      }
 
-      // Remove anything except certain inline elements, just in case.
-      // Nested <a> elements are illegal.
-      // <img> needs to be here to allow for graphic @.
+      // Remove anything except certain inline elements, just in case:
       $contents = Xss::filter($contents, SpamspanInterface::ALLOWED_HTML);
     }
 
@@ -318,7 +321,7 @@ trait SpamspanTrait {
         $vars['custom_form_url'] = $this->settings['spamspan_form_default_url'];
       }
       if (empty($vars['custom_displaytext'])) {
-        $vars['custom_displaytext'] = $this->t($this->settings['spamspan_form_default_displaytext']);
+        $vars['custom_displaytext'] = $this->settings['spamspan_form_default_displaytext'];
       }
       $vars['custom_form_url'] = strip_tags($vars['custom_form_url']);
       $vars['custom_displaytext'] = strip_tags($vars['custom_displaytext']);

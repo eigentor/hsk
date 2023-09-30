@@ -2,10 +2,13 @@
 
 namespace Drupal\spamspan\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\spamspan\SpamspanService;
 use Drupal\spamspan\SpamspanSettingsFormTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'email_mailto' formatter.
@@ -21,8 +24,38 @@ use Drupal\spamspan\SpamspanSettingsFormTrait;
  * @ingroup field_formatter
  */
 class EmailSpamspanFormatter extends FormatterBase {
-
   use SpamspanSettingsFormTrait;
+
+  /**
+   * The Spamspan service.
+   *
+   * @var \Drupal\spamspan\SpamspanService
+   */
+  protected $spamspanService;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, SpamspanService $spamspan_service) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
+    $this->spamspanService = $spamspan_service;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['label'],
+      $configuration['view_mode'],
+      $configuration['third_party_settings'],
+      $container->get('spamspan'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -81,7 +114,7 @@ class EmailSpamspanFormatter extends FormatterBase {
 
     foreach ($items as $delta => $item) {
       $elements[$delta] = [
-        '#markup' => spamspan($item->value, $this->getSettings()),
+        '#markup' => $this->spamspanService->spamspan($item->value, $this->getSettings()),
         '#attached' => ['library' => ['spamspan/obfuscate']],
       ];
     }
