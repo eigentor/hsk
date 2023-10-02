@@ -100,7 +100,7 @@
 
   Drupal.behaviors.betterExposedFiltersAllNoneNested = {
     attach:function (context, settings) {
-      $(once('bef-all-none-nested', '.bef-select-all-none-nested li li')).each(function () {
+      $(once('bef-all-none-nested', '.bef-select-all-none-nested ul li')).each(function () {
         var $this = $(this);
         // Check/uncheck child terms along with their parent.
         $this.find('input:checkbox:first').change(function () {
