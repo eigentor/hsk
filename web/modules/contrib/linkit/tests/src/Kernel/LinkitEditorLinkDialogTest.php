@@ -9,6 +9,7 @@ use Drupal\entity_test\Entity\EntityTest;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\linkit\SubstitutionManagerInterface;
 use Drupal\linkit\Tests\ProfileCreationTrait;
+use Drupal\user\Entity\User;
 
 /**
  * Tests EditorLinkDialog validation and conversion functionality.
@@ -38,16 +39,20 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['editor', 'ckeditor', 'entity_test'];
+  protected static $modules = ['editor', 'entity_test'];
 
   /**
    * Sets up the test.
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
+    if (!in_array('ckeditor', $this->container->get('extension.list.module')->reset()->getList(), TRUE)) {
+      $this->markTestSkipped('CKEditor 4 module not available to install, skipping test.');
+    }
+    $this->enableModules(['ckeditor']);
+
     $this->installEntitySchema('entity_test');
-    $this->installSchema('system', ['key_value_expire']);
 
     // Create a profile.
     $this->linkitProfile = $this->createProfile();
@@ -75,15 +80,18 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
       'format' => 'filtered_html',
       'editor' => 'ckeditor',
     ]);
-    $this->editor->setSettings([
-      'plugins' => [
-        'drupallink' => [
-          'linkit_enabled' => TRUE,
-          'linkit_profile' => $this->linkitProfile->id(),
-        ],
-      ],
-    ]);
     $this->editor->save();
+    $settings = $this->editor->getSettings();
+    $settings['plugins']['drupallink']['linkit_enabled'] = TRUE;
+    $settings['plugins']['drupallink']['linkit_profile'] = $this->linkitProfile->id();
+    $this->editor->setSettings($settings);
+    $this->editor->save();
+
+    // Setup an anonymous user for our tests.
+    User::create([
+      'name' => '',
+      'uid' => 0,
+    ])->save();
   }
 
   /**
@@ -134,8 +142,10 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
     $form_builder->submitForm($form_object, $form_state);
     $this->assertEmpty($form_state->getValue(['attributes', 'data-entity-type']));
     $this->assertEmpty($form_state->getValue(['attributes', 'data-entity-uuid']));
-    $this->assertEmpty($form_state->getValue(['attributes', 'data-entity-substitution']));
-
+    $this->assertEmpty($form_state->getValue([
+      'attributes',
+      'data-entity-substitution',
+    ]));
     $entity_url = $entity->toUrl('canonical', ['path_processing' => FALSE])->toString();
     $form_state->setValue(['attributes', 'href'], $entity_url);
     $form_state->setValue('href_dirty_check', $entity_url);
@@ -144,9 +154,18 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
     $form_state->setValue(['attributes', 'data-entity-substitution'], SubstitutionManagerInterface::DEFAULT_SUBSTITUTION);
     $form_builder->submitForm($form_object, $form_state);
 
-    $this->assertEquals($entity->getEntityTypeId(), $form_state->getValue(['attributes', 'data-entity-type']), 'Attribute "data-entity-type" exists and has the correct value.');
-    $this->assertEquals($entity->uuid(), $form_state->getValue(['attributes', 'data-entity-uuid']), 'Attribute "data-entity-uuid" exists and has the correct value.');
-    $this->assertEquals(SubstitutionManagerInterface::DEFAULT_SUBSTITUTION, $form_state->getValue(['attributes', 'data-entity-substitution']), 'Attribute "data-entity-substitution" exists and has the correct value.');
+    $this->assertEquals($entity->getEntityTypeId(), $form_state->getValue([
+      'attributes',
+      'data-entity-type',
+    ]), 'Attribute "data-entity-type" exists and has the correct value.');
+    $this->assertEquals($entity->uuid(), $form_state->getValue([
+      'attributes',
+      'data-entity-uuid',
+    ]), 'Attribute "data-entity-uuid" exists and has the correct value.');
+    $this->assertEquals(SubstitutionManagerInterface::DEFAULT_SUBSTITUTION, $form_state->getValue([
+      'attributes',
+      'data-entity-substitution',
+    ]), 'Attribute "data-entity-substitution" exists and has the correct value.');
   }
 
   /**
@@ -194,9 +213,18 @@ class LinkitEditorLinkDialogTest extends LinkitKernelTestBase {
 
     $this->assertEquals('linkit.autocomplete', $form['attributes']['href']['#autocomplete_route_name'], 'Linkit is enabled on the href field.');
     $this->assertEquals($entity_url, $form['attributes']['href']['#default_value'], 'The href field has the url as default value.');
-    $this->assertEquals($entity->getEntityTypeId(), $form_state->getValue(['attributes', 'data-entity-type']), 'Attribute "data-entity-type" exists and has the correct value.');
-    $this->assertEquals($entity->uuid(), $form_state->getValue(['attributes', 'data-entity-uuid']), 'Attribute "data-entity-uuid" exists and has the correct value.');
-    $this->assertEquals(SubstitutionManagerInterface::DEFAULT_SUBSTITUTION, $form_state->getValue(['attributes', 'data-entity-substitution']), 'Attribute "data-entity-substitution" exists and has the correct value.');
+    $this->assertEquals($entity->getEntityTypeId(), $form_state->getValue([
+      'attributes',
+      'data-entity-type',
+    ]), 'Attribute "data-entity-type" exists and has the correct value.');
+    $this->assertEquals($entity->uuid(), $form_state->getValue([
+      'attributes',
+      'data-entity-uuid',
+    ]), 'Attribute "data-entity-uuid" exists and has the correct value.');
+    $this->assertEquals(SubstitutionManagerInterface::DEFAULT_SUBSTITUTION, $form_state->getValue([
+      'attributes',
+      'data-entity-substitution',
+    ]), 'Attribute "data-entity-substitution" exists and has the correct value.');
   }
 
   /**

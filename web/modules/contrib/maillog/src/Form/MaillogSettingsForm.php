@@ -45,19 +45,19 @@ class MaillogSettingsForm extends ConfigFormBase {
 
     $form['maillog_send'] = [
       '#type' => 'checkbox',
-      '#title' => t('Allow the e-mails to be sent.'),
+      '#title' => $this->t('Allow the e-mails to be sent.'),
       '#default_value' => $config->get('send'),
     ];
 
     $form['maillog_log'] = [
       '#type' => 'checkbox',
-      '#title' => t('Create table entries in maillog table for each e-mail.'),
+      '#title' => $this->t('Create table entries in maillog table for each e-mail.'),
       '#default_value' => $config->get('log'),
     ];
 
     $form['maillog_verbose'] = [
       '#type' => 'checkbox',
-      '#title' => t('Display the e-mails on page.'),
+      '#title' => $this->t('Display the e-mails on page.'),
       '#default_value' => $config->get('verbose'),
       '#description' => $this->t('If enabled, anonymous users with permissions will see any verbose output mail.'),
     ];

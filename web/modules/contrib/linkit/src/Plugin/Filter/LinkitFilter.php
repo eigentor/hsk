@@ -109,17 +109,29 @@ class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface
 
             $entity = $this->entityRepository->getTranslationFromContext($entity, $langcode);
 
-            /** @var \Drupal\Core\GeneratedUrl $url */
+            /** @var \Drupal\Core\Url $url */
             $url = $this->substitutionManager
               ->createInstance($substitution_type)
               ->getUrl($entity);
 
+            if (!$url) {
+              continue;
+            }
+
             // Parse link href as url, extract query and fragment from it.
             $href_url = parse_url($element->getAttribute('href'));
-            $anchor = empty($href_url["fragment"]) ? '' : '#' . $href_url["fragment"];
-            $query = empty($href_url["query"]) ? '' : '?' . $href_url["query"];
+            if (!empty($href_url["fragment"])) {
+              $url->setOption('fragment', $href_url["fragment"]);
+            }
+            if (!empty($href_url["query"])) {
+              $parsed_query = [];
+              parse_str($href_url['query'], $parsed_query);
+              if (!empty($parsed_query)) {
+                $url->setOption('query', $parsed_query);
+              }
+            }
 
-            $element->setAttribute('href', $url->getGeneratedUrl() . $query . $anchor);
+            $element->setAttribute('href', $url->toString());
 
             // Set the appropriate title attribute.
             if ($this->settings['title'] && !$element->getAttribute('title')) {

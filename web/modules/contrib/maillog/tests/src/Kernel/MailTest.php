@@ -16,7 +16,7 @@ class MailTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'maillog',
     'maillog_test',
     'user',
@@ -27,7 +27,7 @@ class MailTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->installSchema('maillog', 'maillog');
     $this->installConfig(['system', 'maillog']);
@@ -57,8 +57,8 @@ class MailTest extends KernelTestBase {
     // Compare the maillog db entry with the sent mail.
     $logged_email = $this->getLatestMaillogEntry();
     $this->assertTrue(is_array($logged_email), 'Email is captured.');
-    $this->assertEqual($from_email, $logged_email['header_from'], 'Email is sent correctly.');
-    $this->assertEqual($reply_email, $logged_email['header_all']['Reply-to'], 'Message is sent with correct reply address.');
+    $this->assertEquals($from_email, $logged_email['header_from'], 'Email is sent correctly.');
+    $this->assertEquals($reply_email, $logged_email['header_all']['Reply-to'], 'Message is sent with correct reply address.');
   }
 
   /**
@@ -74,7 +74,7 @@ class MailTest extends KernelTestBase {
 
     if ($maillog = $result->fetchAssoc()) {
       // Unserialize values.
-      $maillog['header_all'] = unserialize($maillog['header_all']);
+      $maillog['header_all'] = unserialize($maillog['header_all'], ['allowed_classes' => FALSE]);
     }
     return $maillog;
   }

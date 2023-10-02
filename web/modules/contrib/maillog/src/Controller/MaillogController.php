@@ -58,22 +58,22 @@ class MaillogController extends ControllerBase {
     $output['#title'] = $maillog_entry['subject'];
 
     $output['header_from'] = [
-      '#title' => t('From'),
+      '#title' => $this->t('From'),
       '#type' => 'item',
       '#markup' => Html::escape($maillog_entry['header_from']),
     ];
     $output['header_to'] = [
-      '#title' => t('To'),
+      '#title' => $this->t('To'),
       '#type' => 'item',
       '#markup' => Html::escape($maillog_entry['header_to']),
     ];
     $output['header_reply_to'] = [
-      '#title' => t('Reply to'),
+      '#title' => $this->t('Reply to'),
       '#type' => 'item',
       '#markup' => Html::escape($maillog_entry['header_reply_to']),
     ];
     $output['header_all'] = [
-      '#title' => t('All'),
+      '#title' => $this->t('All'),
       '#type' => 'item',
       '#markup' => '<pre>',
     ];
@@ -85,7 +85,7 @@ class MaillogController extends ControllerBase {
     $output['header_all']['#markup'] .= '</pre>';
 
     $output['body'] = [
-      '#title' => t('Body'),
+      '#title' => $this->t('Body'),
       '#type' => 'item',
       '#markup' => '<pre>' . Html::escape($maillog_entry['body']) . '</pre>',
     ];
@@ -123,7 +123,7 @@ class MaillogController extends ControllerBase {
 
     if ($maillog = $result->fetchAssoc()) {
       // Unserialize values.
-      $maillog['header_all'] = unserialize($maillog['header_all']);
+      $maillog['header_all'] = unserialize($maillog['header_all'], ['allowed_classes' => FALSE]);
     }
 
     return $maillog;

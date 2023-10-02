@@ -322,6 +322,7 @@ class EntityMatcher extends ConfigurableMatcherBase {
   public function execute($string) {
     $suggestions = new SuggestionCollection();
     $query = $this->buildEntityQuery($string);
+    $query->accessCheck(TRUE);
     $query_result = $query->execute();
     $url_results = $this->findEntityIdByUrl($string);
     $result = array_merge($query_result, $url_results);
@@ -365,6 +366,7 @@ class EntityMatcher extends ConfigurableMatcherBase {
 
     $entity_type = $this->entityTypeManager->getDefinition($this->targetType);
     $query = $this->entityTypeManager->getStorage($this->targetType)->getQuery();
+    $query->accessCheck(TRUE);
     $label_key = $entity_type->getKey('label');
 
     if ($label_key) {
@@ -426,6 +428,7 @@ class EntityMatcher extends ConfigurableMatcherBase {
       ->setEntityUuid($entity->uuid())
       ->setEntityTypeId($entity->getEntityTypeId())
       ->setSubstitutionId($this->configuration['substitution_type'])
+      ->setStatus($this->buildStatus($entity))
       ->setPath($this->buildPath($entity));
 
     return $suggestion;
@@ -503,6 +506,24 @@ class EntityMatcher extends ConfigurableMatcherBase {
       }
     }
     return $path;
+  }
+
+  /**
+   * Builds the status string used in the suggestion.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The matched entity.
+   *
+   * @return string
+   *   The status for this entity.
+   */
+  protected function buildStatus(EntityInterface $entity) {
+    $entity_type = $entity->getEntityTypeId();
+    if ($entity->getEntityType()->hasKey('status')) {
+      $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity->id());
+      return $entity->isPublished() ? 'published' : 'unpublished';
+    }
+    return '';
   }
 
   /**

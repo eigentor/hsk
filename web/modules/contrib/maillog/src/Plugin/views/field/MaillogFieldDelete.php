@@ -31,4 +31,3 @@ class MaillogFieldDelete extends FieldPluginBase {
   }
 
 }
-

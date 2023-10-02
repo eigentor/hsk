@@ -1,3 +1,19 @@
+Maillog 8.x-1.1, 2023-06-01
+---------------------------
+#3327968 by Charchil Khandelwal, samit.310@gmail.com, Serhii Shandaliuk,
+  paraderojether, DamienMcKenna: Fix the issues reported by phpcs.
+
+
+Maillog 8.x-1.0, 2022-10-14
+---------------------------
+#3172610 by ankithashetty, kleiton_rodrigues, TR, DamienMcKenna: t() calls
+  should be avoided in classes.
+#3297567 by DamienMcKenna, Project Update Bot: Automated Drupal 10
+  compatibility fixes.
+#3315366 by DamienMcKenna: One more Unicode reference.
+#3172542 by DamienMcKenna: Improve documentation.
+
+
 Maillog 8.x-1.0-beta1, 2020-09-22
 ---------------------------------
 #2214815 by tonnosf: Initial port to Drupal 8

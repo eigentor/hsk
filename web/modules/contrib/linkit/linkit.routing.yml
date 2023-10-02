@@ -61,7 +61,7 @@ linkit.matcher.edit:
     _permission: 'administer linkit profiles'
 
 linkit.autocomplete:
-  path: '/linkit/autocomplete/{linkit_profile_id}'
+  path: '/linkit/autocomplete/{linkit_profile}'
   defaults:
     _controller: '\Drupal\linkit\Controller\AutocompleteController::autocomplete'
   requirements:

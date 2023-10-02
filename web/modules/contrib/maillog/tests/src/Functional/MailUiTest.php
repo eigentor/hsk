@@ -17,7 +17,7 @@ class MailUiTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['maillog', 'user', 'system', 'views', 'contact'];
+  protected static $modules = ['maillog', 'user', 'system', 'views', 'contact'];
 
   /**
    * Define the default theme used for all tests.
@@ -29,7 +29,7 @@ class MailUiTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Use the maillog mail plugin.
@@ -65,22 +65,22 @@ class MailUiTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(200);
 
     // Assert some values and click the subject link.
-    $this->assertText('simpletest@example.com');
-    $this->assertText('test@example.com');
+    $this->assertSession()->pageTextContains('simpletest@example.com');
+    $this->assertSession()->pageTextContains('test@example.com');
     $this->clickLink('This is a test subject.');
-    $this->assertText('This message is a test email body.');
+    $this->assertSession()->pageTextContains('This message is a test email body.');
 
     // Test clear log.
     $this->drupalGet('admin/config/development/maillog');
     $this->assertSession()->statusCodeEquals(200);
-    $this->drupalPostForm(NULL, [], 'Clear all maillog entries');
+    $this->submitForm([], 'Clear all maillog entries');
     $this->assertSession()->statusCodeEquals(200);
-    $this->drupalPostForm(NULL, [], 'Clear');
+    $this->submitForm([], 'Clear');
     $this->assertSession()->statusCodeEquals(200);
     $this->drupalGet('admin/reports/maillog');
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertNoText('simpletest@example.com');
-    $this->assertText('There are no mail logs in the database.');
+    $this->assertSession()->pageTextNotContains('simpletest@example.com');
+    $this->assertSession()->pageTextContains('There are no mail logs in the database.');
   }
 
   /**
@@ -101,10 +101,11 @@ class MailUiTest extends BrowserTestBase {
       'subject[0][value]' => 'Test Message',
       'message[0][value]' => 'This is a test.',
     ];
-    $this->drupalPostForm('user/' . $recipient->id() . '/contact', $edit, 'Send message');
+    $this->drupalGet('user/' . $recipient->id() . '/contact');
+    $this->submitForm($edit, 'Send message');
     $this->clickLink('here');
-    $this->assertResponse(200);
-    $this->assertTitle('Maillog Settings | Drupal');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->titleEquals('Maillog Settings | Drupal');
   }
 
   /**
@@ -128,16 +129,16 @@ class MailUiTest extends BrowserTestBase {
       'subject[0][value]' => 'Test Message',
       'message[0][value]' => 'This is a test.',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Send message');
+    $this->submitForm($edit, 'Send message');
     $this->assertSession()->statusCodeEquals(200);
 
     // Assert the verbose output.
-    $this->assertText('A mail has been sent:');
-    $this->assertRaw('[To] => ' . $account->getAccountName() . '@example.com');
-    $this->assertRaw('[Header] => Array');
-    $this->assertRaw('[X-Mailer] =&gt; Drupal');
-    $this->assertRaw('[Content-Type] =&gt; text/plain; charset=UTF-8; format=flowed; delsp=yes');
-    $this->assertRaw('[Body] => Hello ' . $account->getAccountName());
+    $this->assertSession()->pageTextContains('A mail has been sent:');
+    $this->assertSession()->responseContains('[To] => ' . $account->getAccountName() . '@example.com');
+    $this->assertSession()->responseContains('[Header] => Array');
+    $this->assertSession()->responseContains('[X-Mailer] =&gt; Drupal');
+    $this->assertSession()->responseContains('[Content-Type] =&gt; text/plain; charset=UTF-8; format=flowed; delsp=yes');
+    $this->assertSession()->responseContains('[Body] => Hello ' . $account->getAccountName());
 
     // Set verbose to false.
     $this->config('maillog.settings')->set('verbose', FALSE)->save();
@@ -148,13 +149,13 @@ class MailUiTest extends BrowserTestBase {
       'subject[0][value]' => 'Test Message',
       'message[0][value]' => 'This is a test.',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Send message');
+    $this->submitForm($edit, 'Send message');
     $this->assertSession()->statusCodeEquals(200);
 
     // Assert there is no output.
-    $this->assertNoText('A mail has been sent:');
-    $this->assertNoRaw('[To] => ' . $account->getAccountName() . '@example.com');
-    $this->assertNoRaw('[Header] => Array');
+    $this->assertSession()->pageTextNotContains('A mail has been sent:');
+    $this->assertSession()->responseNotContains('[To] => ' . $account->getAccountName() . '@example.com');
+    $this->assertSession()->responseNotContains('[Header] => Array');
 
     // Tests that users without permission cannot see verbose output.
     $this->config('maillog.settings')->set('verbose', TRUE)->save();
@@ -169,13 +170,13 @@ class MailUiTest extends BrowserTestBase {
       'subject[0][value]' => 'Test Message',
       'message[0][value]' => 'This is a test.',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Send message');
+    $this->submitForm($edit, 'Send message');
     $this->assertSession()->statusCodeEquals(200);
 
     // Assert there is no output.
-    $this->assertNoText('A mail has been sent:');
-    $this->assertNoRaw('[To] => ' . $account->getAccountName() . '@example.com');
-    $this->assertNoRaw('[Header] => Array');
+    $this->assertSession()->pageTextNotContains('A mail has been sent:');
+    $this->assertSession()->responseNotContains('[To] => ' . $account->getAccountName() . '@example.com');
+    $this->assertSession()->responseNotContains('[Header] => Array');
   }
 
 }
