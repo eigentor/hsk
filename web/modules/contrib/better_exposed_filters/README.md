@@ -39,7 +39,7 @@ jquery_ui_datepicker and drupal core views.
 INSTALLATION
 ------------
 Install as you would normally install a contributed Drupal module.
-Visit https://www.drupal.org/node/1897420 for further information.
+Visit https://www.drupal.org/docs/extending-drupal/installing-modules for further information.
 
 
 CONFIGURATION
