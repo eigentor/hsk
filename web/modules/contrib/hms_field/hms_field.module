@@ -27,14 +27,26 @@ function hms_field_help($route_name, RouteMatchInterface $route_match) {
  * Implements hook_theme().
  */
 function hms_field_theme() {
-  $theme = array(
-    'hms' => array(
-      'variables' => array('value' => 0, 'format' => 'h:mm', 'leading_zero' => TRUE, 'running_since' => 0, 'offset' => 0, 'default_value' => 0),
-    ),
-    'hms_natural_language' => array(
-      'variables' => array('value' => 0, 'format' => 'w:d:h:m:s', 'separator' => ', ', 'last_separator' => ' and '),
-    ),
-  );
+  $theme = [
+    'hms' => [
+      'variables' => [
+        'value' => 0,
+        'format' => 'h:mm',
+        'leading_zero' => TRUE,
+        'running_since' => 0,
+        'offset' => 0,
+        'default_value' => 0,
+      ],
+    ],
+    'hms_natural_language' => [
+      'variables' => [
+        'value' => 0,
+        'format' => 'w:d:h:m:s',
+        'separator' => ', ',
+        'last_separator' => ' and ',
+      ],
+    ],
+  ];
   return $theme;
 }
 
@@ -44,7 +56,10 @@ function hms_field_theme() {
  * Attach JS when needed.
  */
 function template_preprocess_hms(&$variables) {
-  $classes = array('hms', str_replace(':', '-', 'hms-format-' . $variables['format']));
+  $classes = [
+    'hms',
+    str_replace(':', '-', 'hms-format-' . $variables['format']),
+  ];
 
   $value = $variables['value'];
   $offset = $variables['offset'];
@@ -58,50 +73,47 @@ function template_preprocess_hms(&$variables) {
       $value = 0;
     }
     $value = $default_value;
-    // It is not possible to run longer then from 1970-01-01 00:00:01
-    // Request time.
-    $request_time = \Drupal::time()->getRequestTime();
+    // It is not possible to run longer then from 1970-01-01 00:00:01.
     $classes[] = 'hms-running';
     // We also need to pass the running since value to JS.
     // When format h is presented, the underlaying value can be at 3599
     // The next second h needs to update.
     // Be sure to pass running_since as time() (== GMT time)
     if ($variables['running_since'] < 0) {
-      $variables['running_since'] = $request_time;
+      $variables['running_since'] = \Drupal::time()->getRequestTime();
     }
     $classes[] = 'hms-since-' . $variables['running_since'];
     $classes[] = 'hms-offset-' . $offset;
     $classes[] = 'hms-leading_zero-' . $variables['leading_zero'];
     if ($offset) {
-      $value = ($request_time - $variables['running_since']) + $offset;
+      $value = (\Drupal::time()->getRequestTime() - $variables['running_since']) + $offset;
     }
     $variables['#attached']['library'][] = 'hms_field/hms_field';
-    $variables['#attached']['drupalSettings']['hms_field']['servertime'] = $request_time;
-    $variables['#attached']['drupalSettings']['hms_field']['factor_map'] = \Drupal::service('hms_field.hms')->factor_map();
+    $variables['#attached']['drupalSettings']['hms_field']['servertime'] = \Drupal::time()->getRequestTime();
+    $variables['#attached']['drupalSettings']['hms_field']['factor_map'] = \Drupal::service('hms_field.hms')->factorMap();
   }
-  $variables['classes'] = implode(' ' , $classes);
-  $variables['hms_value_formatted'] = \Drupal::service('hms_field.hms')->seconds_to_formatted($value, $variables['format'], $variables['leading_zero']);
+  $variables['classes'] = implode(' ', $classes);
+  $variables['hms_value_formatted'] = \Drupal::service('hms_field.hms')->secondsToFormatted($value, $variables['format'], $variables['leading_zero']);
 }
-
 
 /**
  * Preprocess theme hms_natural_language.
  *
- * TODO: Investigate running since options (see theme_hms)
+ * @todo Investigate running since options (see theme_hms)
  *   Would be cool if we can also make this format a 'Forrest Gump' format.
  */
 function template_preprocess_hms_natural_language(&$variables) {
 
   $hms_service = \Drupal::service('hms_field.hms');
-  $labels = $hms_service->factor_map(TRUE);
+  $labels = $hms_service->factorMap(TRUE);
 
   // Assign keyed values array.
   $values = array_combine(
     explode(':', $variables['format']),
-    explode(':', $hms_service->seconds_to_formatted($variables['value'], $variables['format'], TRUE))
+    explode(':', $hms_service->secondsToFormatted($variables['value'], $variables['format'], TRUE))
   );
   $variables['labels'] = $labels;
-  $variables['formatted_values'] = array();
+  $variables['formatted_values'] = [];
   // Build array for output in template.
   foreach ($values as $key => $value) {
     if ($value != 0) {

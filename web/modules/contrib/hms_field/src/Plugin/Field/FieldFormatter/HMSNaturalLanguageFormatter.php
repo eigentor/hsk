@@ -1,15 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\hms_field\Plugin\Field\FieldFormatter\HMSNaturalLanguageFormatter.
- */
-
 namespace Drupal\hms_field\Plugin\Field\FieldFormatter;
 
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -31,11 +24,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class HMSNaturalLanguageFormatter extends FormatterBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Constructor
+   * Constructor.
    */
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, HMSServiceInterface $hms_service) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
-
     $this->hms_service = $hms_service;
   }
 
@@ -59,11 +51,11 @@ class HMSNaturalLanguageFormatter extends FormatterBase implements ContainerFact
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return array(
-      'display_formats' => array("w", "d", "h", "m", "s"),
+    return [
+      'display_formats' => ["w", "d", "h", "m", "s"],
       'separator' => ", ",
       "last_separator" => " and ",
-    ) + parent::defaultSettings();
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -72,35 +64,35 @@ class HMSNaturalLanguageFormatter extends FormatterBase implements ContainerFact
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $elements = parent::settingsForm($form, $form_state);
 
-    $options = array();
-    $factors = $this->hms_service->factor_map(TRUE);
-    $order = $this->hms_service->factor_map();
+    $options = [];
+    $factors = $this->hms_service->factorMap(TRUE);
+    $order = $this->hms_service->factorMap();
     arsort($order, SORT_NUMERIC);
     foreach ($order as $factor => $info) {
-      $options[$factor] = t($factors[$factor]['label multiple']);
+      $options[$factor] = $factors[$factor]['label multiple'];
     }
-    $elements['display_formats'] = array(
+    $elements['display_formats'] = [
       '#type' => 'checkboxes',
-      '#title' => t('Display fragments'),
+      '#title' => $this->t('Display fragments'),
       '#options' => $options,
-      '#description' => t('Formats that are displayed in this field'),
+      '#description' => $this->t('Formats that are displayed in this field'),
       '#default_value' => $this->getSetting('display_formats'),
       '#required' => TRUE,
-    );
-    $elements['separator'] = array(
+    ];
+    $elements['separator'] = [
       '#type' => 'textfield',
-      '#title' => t('Separator'),
-      '#description' => t('Separator used between fragments'),
+      '#title' => $this->t('Separator'),
+      '#description' => $this->t('Separator used between fragments'),
       '#default_value' => $this->getSetting('separator'),
       '#required' => TRUE,
-    );
-    $elements['last_separator'] = array(
+    ];
+    $elements['last_separator'] = [
       '#type' => 'textfield',
-      '#title' => t('Last separator'),
-      '#description' => t('Separator used between the last 2 fragments'),
+      '#title' => $this->t('Last separator'),
+      '#description' => $this->t('Separator used between the last 2 fragments'),
       '#default_value' => $this->getSetting('last_separator'),
       '#required' => FALSE,
-    );
+    ];
     return $elements;
   }
 
@@ -108,20 +100,20 @@ class HMSNaturalLanguageFormatter extends FormatterBase implements ContainerFact
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = array();
+    $summary = [];
 
-    $factors = $this->hms_service->factor_map(TRUE);
+    $factors = $this->hms_service->factorMap(TRUE);
     $fragments = $this->getSetting('display_formats');
-    $fragment_list = array();
+    $fragment_list = [];
     foreach ($fragments as $fragment) {
       if ($fragment) {
-        $fragment_list[] = t($factors[$fragment]['label multiple']);
+        $fragment_list[] = $factors[$fragment]['label multiple'];
       }
     }
-    $summary[] = t('Displays: @display', array('@display' => implode(', ', $fragment_list)));
-    $summary[] = t('Separator: \'@separator\'', array('@separator' => $this->getSetting('separator')));
+    $summary[] = $this->t('Displays: @display', ['@display' => implode(', ', $fragment_list)]);
+    $summary[] = $this->t("Separator: '@separator'", ['@separator' => $this->getSetting('separator')]);
     if (strlen($this->getSetting('last_separator'))) {
-      $summary[] = t('Last Separator: \'@last_separator\'', array('@last_separator' => $this->getSetting('last_separator')));
+      $summary[] = $this->t("Last Separator: '@last_separator'", ['@last_separator' => $this->getSetting('last_separator')]);
     }
 
     return $summary;
@@ -131,7 +123,7 @@ class HMSNaturalLanguageFormatter extends FormatterBase implements ContainerFact
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $element = array();
+    $element = [];
 
     foreach ($items as $delta => $item) {
       $element[$delta]['#theme'] = 'hms_natural_language';
@@ -143,7 +135,7 @@ class HMSNaturalLanguageFormatter extends FormatterBase implements ContainerFact
         }
       }
       if (!strlen($element[$delta]['#format'])) {
-        $element[$delta]['#format'] = implode(':', array_keys($this->hms_service->factor_map(TRUE)));
+        $element[$delta]['#format'] = implode(':', array_keys($this->hms_service->factorMap(TRUE)));
       }
       else {
         $element[$delta]['#format'] = substr($element[$delta]['#format'], 1);
@@ -154,4 +146,5 @@ class HMSNaturalLanguageFormatter extends FormatterBase implements ContainerFact
 
     return $element;
   }
+
 }

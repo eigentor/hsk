@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\hms_field\Element\Hmsfield.
- */
-
 namespace Drupal\hms_field\Element;
 
 use Drupal\Core\Render\Element;
@@ -24,7 +19,7 @@ class HMS extends FormElement {
   public function getInfo() {
 
     $class = get_class($this);
-    return array(
+    return [
       '#input' => TRUE,
       '#size' => 8,
       '#maxlength' => 16,
@@ -32,22 +27,22 @@ class HMS extends FormElement {
       '#format' => 'h:mm:ss',
       '#placeholder' => 'h:mm:ss',
       '#autocomplete_route_name' => FALSE,
-      '#process' => array(
-        array($class, 'processAutocomplete'),
-        array($class, 'processAjaxForm'),
-        array($class, 'processPattern'),
-        array($class, 'processGroup'),
-      ),
-      '#pre_render' => array(
-        array($class, 'preRenderHMS'),
-      ),
-      '#element_validate' => array(
-        array($class, 'validateHMS'),
-      ),
+      '#process' => [
+        [$class, 'processAutocomplete'],
+        [$class, 'processAjaxForm'],
+        [$class, 'processPattern'],
+        [$class, 'processGroup'],
+      ],
+      '#pre_render' => [
+        [$class, 'preRenderHms'],
+      ],
+      '#element_validate' => [
+        [$class, 'validateHms'],
+      ],
       '#theme' => 'input__textfield',
-      '#theme_wrappers' => array('form_element'),
+      '#theme_wrappers' => ['form_element'],
 
-    );
+    ];
   }
 
   /**
@@ -55,16 +50,16 @@ class HMS extends FormElement {
    *
    * Note that #required is validated by _form_validate() already.
    */
-  public static function validateHMS(&$element, FormStateInterface $form_state, &$complete_form) {
+  public static function validateHms(&$element, FormStateInterface $form_state, &$complete_form) {
     $value = trim($element['#value']);
 
     $form_state->setValueForElement($element, $value);
-    if ($value !== '' && !\Drupal::service('hms_field.hms')->isValid($value, $element['#format'])) {
-      $form_state->setError($element, t('Please enter a correct hms value in format %format.', array('%format' => $element['#format'])));
-    } else {
+    if ($value !== '' && !\Drupal::service('hms_field.hms')->isValid($value, $element['#format'], $element, $form_state)) {
+      $form_state->setError($element, t('Please enter a correct hms value in format %format.', ['%format' => $element['#format']]));
+    }
+    else {
       // Format given value to seconds if input is valid.
-      $seconds = \Drupal::service('hms_field.hms')
-        ->formatted_to_seconds($value, $element['#format']);
+      $seconds = \Drupal::service('hms_field.hms')->formattedToSeconds($value, $element['#format'], $element, $form_state);
       $form_state->setValueForElement($element, $seconds);
     }
   }
@@ -80,17 +75,17 @@ class HMS extends FormElement {
    * @return array
    *   The $element with prepared variables ready for input.html.twig.
    */
-  public static function preRenderHMS($element) {
+  public static function preRenderHms(array $element) {
 
-    Element::setAttributes($element, array(
+    Element::setAttributes($element, [
       'id',
       'name',
       'value',
       'size',
       'maxlength',
-      'placeholder'
-    ));
-    static::setAttributes($element, array('form-hms'));
+      'placeholder',
+    ]);
+    static::setAttributes($element, ['form-hms']);
 
     return $element;
   }
@@ -101,9 +96,9 @@ class HMS extends FormElement {
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
     // Get saved value from db.
     if ($input === FALSE) {
-      $formatted = \Drupal::service('hms_field.hms')
-        ->seconds_to_formatted($element['#default_value'], $element['#format']);
+      $formatted = \Drupal::service('hms_field.hms')->secondsToFormatted($element['#default_value'], $element['#format']);
       return $formatted;
     }
   }
+
 }

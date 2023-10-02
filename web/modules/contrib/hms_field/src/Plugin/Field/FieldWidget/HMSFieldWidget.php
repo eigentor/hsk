@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\hms_field\Plugin\Field\FieldWidget\HMSFieldWidget.
- */
-
 namespace Drupal\hms_field\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -47,11 +42,11 @@ class HMSFieldWidget extends WidgetBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return array(
+    return [
       'format' => "h:mm",
       'default_placeholder' => 1,
-      'placeholder' => ''
-    ) + parent::defaultSettings();
+      'placeholder' => '',
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -60,30 +55,30 @@ class HMSFieldWidget extends WidgetBase implements ContainerFactoryPluginInterfa
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $elements = parent::settingsForm($form, $form_state);
 
-    $elements['format'] = array(
+    $elements['format'] = [
       '#type' => 'select',
-      '#title' => t('Input format'),
+      '#title' => $this->t('Input format'),
       '#default_value' => $this->getSetting('format'),
-      '#options' => $this->hms_service->format_options(),
-      '#description' => t('The input format used for this field.'),
-    );
-    $elements['default_placeholder'] = array(
+      '#options' => $this->hms_service->formatOptions(),
+      '#description' => $this->t('The input format used for this field.'),
+    ];
+    $elements['default_placeholder'] = [
       '#type' => 'checkbox',
-      '#title' => t('Default placeholder'),
+      '#title' => $this->t('Default placeholder'),
       '#default_value' => $this->getSetting('default_placeholder'),
-      '#description' => t('Provide a default placeholder with the format.'),
-    );
-    $elements['placeholder'] = array(
+      '#description' => $this->t('Provide a default placeholder with the format.'),
+    ];
+    $elements['placeholder'] = [
       '#type' => 'textfield',
-      '#title' => t('Placeholder'),
+      '#title' => $this->t('Placeholder'),
       '#default_value' => $this->getSetting('placeholder'),
-      '#description' => t('Text that will be shown inside the field until a value is entered. This hint is usually a sample value or a brief description of the expected format.'),
-      '#states' => array(
-        'invisible' => array(
-          ':input[name*="default_placeholder"]' => array('checked' => TRUE),
-        ),
-      ),
-    );
+      '#description' => $this->t('Text that will be shown inside the field until a value is entered. This hint is usually a sample value or a brief description of the expected format.'),
+      '#states' => [
+        'invisible' => [
+          ':input[name*="default_placeholder"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
     return $elements;
   }
 
@@ -91,10 +86,10 @@ class HMSFieldWidget extends WidgetBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = array();
+    $summary = [];
 
-    $summary[] = t('Format: @format', array('@format' => $this->getSetting('format')));
-    $summary[] = t('Placeholder: @value', array('@value' => ($this->getSetting('default_placeholder') ? $this->getSetting('format') : $this->getSetting('placeholder'))));
+    $summary[] = $this->t('Format: @format', ['@format' => $this->getSetting('format')]);
+    $summary[] = $this->t('Placeholder: @value', ['@value' => ($this->getSetting('default_placeholder') ? $this->getSetting('format') : $this->getSetting('placeholder'))]);
 
     return $summary;
   }
@@ -103,13 +98,14 @@ class HMSFieldWidget extends WidgetBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $element += array(
-      '#attributes' => array('class' => array('hms-field')),
+    $element += [
+      '#attributes' => ['class' => ['hms-field']],
       '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
       '#format' => $this->getSetting('format'),
       '#placeholder' => ($this->getSetting('default_placeholder')) ? $this->getSetting('format') : $this->getSetting('placeholder'),
       '#type' => 'hms',
-    );
-    return array('value' => $element);
+    ];
+    return ['value' => $element];
   }
+
 }

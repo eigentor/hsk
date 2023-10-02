@@ -1,36 +1,21 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\hms_field\HMSServiceInterface.
- */
-
 namespace Drupal\hms_field;
 
+use Drupal\Core\Form\FormStateInterface;
+
 /**
- * Interface HMSServiceInterface.
- *
- * @package Drupal\hms_field
+ * Interface for HMS service.
  */
 interface HMSServiceInterface {
-
-
-  /**
-   * Get nested array values.
-   *
-   * @param array $array
-   * @param array $parents
-   * @param null $key_exists
-   * @return mixed
-   */
-  public function array_get_nested_value(array &$array, array $parents, &$key_exists = NULL);
 
   /**
    * Returns possible format options.
    *
    * @return array
+   *   List of possible format options.
    */
-  public function format_options();
+  public function formatOptions(): array;
 
   /**
    * Returns the factor map of the format options.
@@ -43,57 +28,85 @@ interface HMSServiceInterface {
    *
    *  Use HOOK_hms_factor_alter($factors) to do your own magic.
    *
-   * @param boolean $return_full
+   * @param bool $return_full
+   *   Whether to return full value or only the factor value.
    *
    * @return array
+   *   The factor map.
    */
-  public function factor_map($return_full = FALSE);
+  public function factorMap(bool $return_full = FALSE): array;
 
   /**
    * Returns number of seconds from a formatted string.
    *
-   * @param $str
+   * @param string $str
+   *   The formatted string.
    * @param string $format
-   * @return mixed
+   *   The format for the string.
+   * @param array $element
+   *   The element array.
+   * @param \Drupal\Core\Form\FormStateInterface|null $form_state
+   *   The current form state.
+   *
+   * @return int|bool|null
+   *   The number of seconds, or FALSE in case of error.
    */
-  public function formatted_to_seconds($str, $format = 'h:m:s');
+  public function formattedToSeconds(string $str, string $format = 'h:m:s', array $element = [], FormStateInterface $form_state = NULL): int|bool|NULL;
 
   /**
    * Returns a formatted string form the number of seconds.
    *
-   * @param $seconds
+   * @param string|int $seconds
+   *   The number of seconds.
    * @param string $format
-   * @param bool|TRUE $leading_zero
-   * @return mixed
+   *   The format for the string.
+   * @param bool $leading_zero
+   *   Whether to show leading zero.
+   *
+   * @return string|null
+   *   The formatted string.
    */
-  public function seconds_to_formatted($seconds, $format = 'h:mm', $leading_zero = TRUE);
+  public function secondsToFormatted(string|int $seconds, string $format = 'h:mm', bool $leading_zero = TRUE): ?string;
 
   /**
    * Validate hms field input.
    *
-   * @param integer $input
+   * @param string|int $input
+   *   The field input.
    * @param string $format
+   *   The format.
+   * @param array $element
+   *   The element array.
+   * @param \Drupal\Core\Form\FormStateInterface|null $form_state
+   *   The current form state.
    *
-   * @return boolean
+   * @return bool
+   *   Whether this is valid or not.
    */
-  public function isValid($input, $format);
+  public function isValid(string|int $input, string $format, array $element = [], FormStateInterface $form_state = NULL): bool;
 
   /**
    * Helper to normalize format.
    *
    * Changes double keys to single keys.
    *
-   * @param $format
-   * @return mixed
+   * @param string $format
+   *   The format to normalize.
+   *
+   * @return string
+   *   The normalized format.
    */
-  public function normalize_format($format);
+  public function normalizeFormat(string $format): string;
 
   /**
-   * Helper to extend values in search array
+   * Helper to extend values in search array.
    *
-   * @param $item
-   * @return mixed
+   * @param string $item
+   *   Item to process.
+   *
+   * @return string
+   *   The processed item.
    */
-  public function add_multi_search_tokens($item);
+  public function addMultiSearchTokens(string $item): string;
 
 }

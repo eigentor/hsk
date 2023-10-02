@@ -1,17 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\hms_field\Plugin\Field\FieldType\HMSFieldItem.
- */
-
 namespace Drupal\hms_field\Plugin\Field\FieldType;
 
-use Drupal\Component\Utility\Random;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
 
@@ -32,7 +24,7 @@ class HMSFieldItem extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
-    // Prevent early t() calls by using the TranslationWrapper.
+    // Prevent early t() calls by using the TranslatableMarkup.
     $properties['value'] = DataDefinition::create('integer')
       ->setLabel(new TranslatableMarkup('HMS integer value'));
 
@@ -43,15 +35,15 @@ class HMSFieldItem extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    $schema = array(
-      'columns' => array(
-        'value' => array(
+    $schema = [
+      'columns' => [
+        'value' => [
           'type' => 'int',
           'unsigned' => FALSE,
           'not null' => FALSE,
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
     return $schema;
   }
 
@@ -62,4 +54,5 @@ class HMSFieldItem extends FieldItemBase {
     $value = $this->get('value')->getValue();
     return $value === NULL || $value === '';
   }
+
 }

@@ -1,12 +1,12 @@
 name: HMS Field
 type: module
-description: Provides a field for Hours, Minutes and Seconds stored as seconds. Patched dev version because no Drupal 9 ready version available on June 19th 2021 by Thomas Moseler
+description: Provides a field for Hours, Minutes and Seconds stored as seconds.
+core_version_requirement: ^9 || ^10
 package: Field types
 dependencies:
-  - field
+  - drupal:field
 
-# Information added by Drupal.org packaging script on 2016-09-21
-version: '8.x-1.0-beta1-patched'
-core_version_requirement: ^8.8 || ^9
+# Information added by Drupal.org packaging script on 2023-03-03
+version: '2.0.0'
 project: 'hms_field'
-datestamp: 1474456740
+datestamp: 1677832089
