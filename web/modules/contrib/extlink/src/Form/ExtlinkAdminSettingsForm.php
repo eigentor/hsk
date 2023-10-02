@@ -129,11 +129,17 @@ class ExtlinkAdminSettingsForm extends ConfigFormBase {
     ];
 
     $form['extlink_icon_placement'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Add icon in front of any processed link.'),
+      '#type' => 'select',
+      '#title' => $this->t('Where to place icon in reference to link.'),
+      '#options' => [
+        'before' => $this->t('Before'),
+        'prepend' => $this->t('Prepend'),
+        'append' => $this->t('Append'),
+        'after' => $this->t('After'),
+      ],
       '#return_value' => 'prepend',
       '#default_value' => $config->get('extlink_icon_placement', 'append'),
-      '#description' => $this->t('If checked, the icon will be placed in front of any external link, otherwise it will be placed behind it.'),
+      '#description' => $this->t('Choose the location of the external link icon relative to the link. Before and after will place the graphic outside the link, while append and prepend will place the graphic inside the link.'),
     ];
 
     $form['extlink_subdomains'] = [

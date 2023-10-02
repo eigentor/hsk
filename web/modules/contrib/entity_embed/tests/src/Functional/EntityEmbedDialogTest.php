@@ -16,7 +16,7 @@ class EntityEmbedDialogTest extends EntityEmbedTestBase {
    *
    * @var array
    */
-  public static $modules = ['image'];
+  protected static $modules = ['image'];
 
   /**
    * Tests the entity embed dialog.
@@ -113,7 +113,7 @@ class EntityEmbedDialogTest extends EntityEmbedTestBase {
       'entity_id' => $this->node->getTitle() . ' (' . $this->node->id() . ')',
     ];
     $this->drupalGet('/entity-embed/dialog/custom_format/node');
-    $this->drupalPostForm(NULL, $edit, t('Next'));
+    $this->submitForm($edit, 'Next');
     // Tests that the embed dialog doesn't trow a fatal in
     // ImageFieldFormatter::isValidImage()
     $this->assertSession()->statusCodeEquals(200);

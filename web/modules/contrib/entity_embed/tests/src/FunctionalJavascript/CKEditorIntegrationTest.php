@@ -22,6 +22,7 @@ class CKEditorIntegrationTest extends EntityEmbedTestBase {
     'node',
     'ckeditor',
     'views',
+    'embed',
     'entity_embed',
     'entity_embed_test',
   ];
@@ -34,7 +35,7 @@ class CKEditorIntegrationTest extends EntityEmbedTestBase {
   /**
    * The test button.
    *
-   * @var Drupal\embed\Entity\EmbedButton
+   * @var \Drupal\embed\Entity\EmbedButtonInterface
    */
   protected $button;
 
@@ -55,7 +56,7 @@ class CKEditorIntegrationTest extends EntityEmbedTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->button = $this->container->get('entity_type.manager')

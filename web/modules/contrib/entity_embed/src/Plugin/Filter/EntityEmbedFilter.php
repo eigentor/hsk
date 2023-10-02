@@ -5,6 +5,7 @@ namespace Drupal\entity_embed\Plugin\Filter;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\BubbleableMetadata;
@@ -68,6 +69,13 @@ class EntityEmbedFilter extends FilterBase implements ContainerFactoryPluginInte
   protected $loggerFactory;
 
   /**
+   * The file URL generator.
+   *
+   * @var \Drupal\Core\File\FileUrlGeneratorInterface
+   */
+  protected $fileUrlGenerator;
+
+  /**
    * An array of counters for the recursive rendering protection.
    *
    * Each counter takes into account all the relevant information about the
@@ -96,13 +104,16 @@ class EntityEmbedFilter extends FilterBase implements ContainerFactoryPluginInte
    *   The entity embed builder service.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   The logger factory.
+   * @param \Drupal\Core\File\FileUrlGeneratorInterface
+   *   The file URL generator.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, RendererInterface $renderer, EntityEmbedBuilderInterface $builder, LoggerChannelFactoryInterface $logger_factory) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, RendererInterface $renderer, EntityEmbedBuilderInterface $builder, LoggerChannelFactoryInterface $logger_factory, FileUrlGeneratorInterface $file_url_generator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
     $this->renderer = $renderer;
     $this->builder = $builder;
     $this->loggerFactory = $logger_factory;
+    $this->fileUrlGenerator = $file_url_generator;
   }
 
   /**
@@ -116,7 +127,8 @@ class EntityEmbedFilter extends FilterBase implements ContainerFactoryPluginInte
       $container->get('entity_type.manager'),
       $container->get('renderer'),
       $container->get('entity_embed.builder'),
-      $container->get('logger.factory')
+      $container->get('logger.factory'),
+      $container->get('file_url_generator')
     );
   }
 
@@ -158,7 +170,7 @@ class EntityEmbedFilter extends FilterBase implements ContainerFactoryPluginInte
           }
           if (!$entity instanceof EntityInterface) {
             $missing_text = $this->t('Missing @type.', ['@type' => $this->entityTypeManager->getDefinition($entity_type)->getSingularLabel()]);
-            $entity_output = '<img src="' . file_url_transform_relative(file_create_url('core/modules/media/images/icons/no-thumbnail.png')) . '" width="180" height="180" alt="' . $missing_text . '" title="' . $missing_text . '"/>';
+            $entity_output = '<img src="' . $this->fileUrlGenerator->generateString('core/modules/media/images/icons/no-thumbnail.png') . '" width="180" height="180" alt="' . $missing_text . '" title="' . $missing_text . '"/>';
             throw new EntityNotFoundException(sprintf('Unable to load embedded %s entity %s.', $entity_type, $id));
           }
         }

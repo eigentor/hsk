@@ -4,9 +4,9 @@ description: 'Modify behavior and appearance of external links.'
 package: User interface
 core: 8.x
 configure: extlink_admin.settings
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10
 
-# Information added by Drupal.org packaging script on 2021-03-05
-version: '8.x-1.6'
+# Information added by Drupal.org packaging script on 2022-10-14
+version: '8.x-1.7'
 project: 'extlink'
-datestamp: 1614961996
+datestamp: 1665770297

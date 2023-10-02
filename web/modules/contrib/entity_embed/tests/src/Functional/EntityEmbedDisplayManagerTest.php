@@ -58,7 +58,7 @@ class EntityEmbedDisplayManagerTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->imageButton = $this->container->get('entity_type.manager')
@@ -82,10 +82,7 @@ class EntityEmbedDisplayManagerTest extends BrowserTestBase {
     $this->imageButton->save();
 
     // Create a sample image to embed.
-    $entity_embed_path = $this->container->get('module_handler')
-      ->getModule('entity_embed')
-      ->getPath();
-    \Drupal::service('file_system')->copy($entity_embed_path . '/js/plugins/drupalentity/entity.png', 'public://example1.png');
+    \Drupal::service('file_system')->copy('core/tests/fixtures/files/image-1.png', 'public://example1.png');
 
     // Resize the test image so that it will be scaled down during token
     // replacement.

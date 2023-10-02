@@ -22,7 +22,7 @@ class EntityEmbedFilterTranslationTest extends EntityEmbedFilterTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     ConfigurableLanguage::createFromLangcode('pt-br')->save();

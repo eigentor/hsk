@@ -19,7 +19,7 @@ class EntityEmbedEntityBrowserTest extends EntityEmbedDialogTest {
    *
    * @var array
    */
-  public static $modules = ['entity_browser'];
+  protected static $modules = ['entity_browser'];
 
   /**
    * Tests the entity browser integration.

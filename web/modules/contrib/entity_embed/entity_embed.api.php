@@ -1,5 +1,8 @@
 <?php
 
+use Drupal\file\FileInterface;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Entity\EntityInterface;
 /**
  * @file
  * Hooks provided by the Entity Embed module.
@@ -40,17 +43,17 @@ function hook_entity_embed_display_plugins_for_context_alter(array &$definitions
   $entity = $contexts['entity'];
 
   // For video and audio files, limit the available options to the media player.
-  if ($entity instanceof \Drupal\file\FileInterface && in_array($entity->bundle(), ['audio', 'video'])) {
+  if ($entity instanceof FileInterface && in_array($entity->bundle(), ['audio', 'video'])) {
     $definitions = array_intersect_key($definitions, array_flip(['file:jwplayer_formatter']));
   }
 
   // For images, use the image formatter.
-  if ($entity instanceof \Drupal\file\FileInterface && in_array($entity->bundle(), ['image'])) {
+  if ($entity instanceof FileInterface && in_array($entity->bundle(), ['image'])) {
     $definitions = array_intersect_key($definitions, array_flip(['image:image']));
   }
 
   // For nodes, use the default option.
-  if ($entity instanceof \Drupal\node\NodeInterface) {
+  if ($entity instanceof NodeInterface) {
     $definitions = array_intersect_key($definitions, array_flip(['entity_reference:entity_reference_entity_view']));
   }
 }
@@ -63,7 +66,7 @@ function hook_entity_embed_display_plugins_for_context_alter(array &$definitions
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity object.
  */
-function hook_entity_embed_context_alter(array &$context, \Drupal\Core\Entity\EntityInterface $entity) {
+function hook_entity_embed_context_alter(array &$context, EntityInterface $entity) {
   if (isset($context['overrides']) && is_array($context['overrides'])) {
     foreach ($context['overrides'] as $key => $value) {
       $entity->key = $value;
@@ -79,7 +82,7 @@ function hook_entity_embed_context_alter(array &$context, \Drupal\Core\Entity\En
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity object.
  */
-function hook_ENTITY_TYPE_embed_context_alter(array &$context, \Drupal\Core\Entity\EntityInterface $entity) {
+function hook_ENTITY_TYPE_embed_context_alter(array &$context, EntityInterface $entity) {
   if (isset($context['overrides']) && is_array($context['overrides'])) {
     foreach ($context['overrides'] as $key => $value) {
       $entity->key = $value;
@@ -101,7 +104,7 @@ function hook_ENTITY_TYPE_embed_context_alter(array &$context, \Drupal\Core\Enti
  * @param array $context
  *   The context array.
  */
-function hook_entity_embed_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, array &$context) {
+function hook_entity_embed_alter(array &$build, EntityInterface $entity, array &$context) {
   // Remove the contextual links.
   if (isset($build['#contextual_links'])) {
     unset($build['#contextual_links']);
@@ -118,7 +121,7 @@ function hook_entity_embed_alter(array &$build, \Drupal\Core\Entity\EntityInterf
  * @param array $context
  *   The context array.
  */
-function hook_ENTITY_TYPE_embed_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, array &$context) {
+function hook_ENTITY_TYPE_embed_alter(array &$build, EntityInterface $entity, array &$context) {
   // Remove the contextual links.
   if (isset($build['#contextual_links'])) {
     unset($build['#contextual_links']);

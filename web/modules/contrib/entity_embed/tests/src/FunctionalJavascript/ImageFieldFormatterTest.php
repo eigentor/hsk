@@ -63,7 +63,7 @@ class ImageFieldFormatterTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->button = $this->container->get('entity_type.manager')

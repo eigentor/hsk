@@ -19,11 +19,11 @@ class ExtlinkAdminTest extends ExtlinkTestBase {
   public function testAdminAccess() {
     $this->drupalLogin($this->normalUser);
     $this->drupalGet(self::EXTLINK_ADMIN_PATH);
-    $this->assertSession()->pageTextContains($this->t('Access denied'), 'Normal users should not be able to access the External Links admin pages', 'External Links');
+    $this->assertSession()->pageTextContains($this->t('Access denied'));
 
     $this->drupalLogin($this->adminUser);
     $this->drupalGet(self::EXTLINK_ADMIN_PATH);
-    $this->assertSession()->pageTextNotContains($this->t('Access denied'), 'Admin users should be able to access the External Links admin pages', 'External Links');
+    $this->assertSession()->pageTextNotContains($this->t('Access denied'));
   }
 
   /**
@@ -33,12 +33,12 @@ class ExtlinkAdminTest extends ExtlinkTestBase {
     $this->drupalLogin($this->adminUser);
     $this->drupalGet(self::EXTLINK_ADMIN_PATH);
     $this->assertSession()->checkboxNotChecked('extlink_exclude_admin_routes');
-    $this->assertRaw('/extlink/extlink.js');
+    $this->assertSession()->responseContains('/extlink/extlink.js');
 
     // Disable Extlink on admin routes.
     $this->drupalGet(self::EXTLINK_ADMIN_PATH);
     $this->submitForm(['extlink_exclude_admin_routes' => TRUE], 'Save configuration');
-    $this->assertNoRaw('/extlink/extlink.js');
+    $this->assertSession()->responseNotContains('/extlink/extlink.js');
   }
 
 }

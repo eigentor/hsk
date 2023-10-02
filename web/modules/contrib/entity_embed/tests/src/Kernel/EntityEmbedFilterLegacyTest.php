@@ -12,7 +12,7 @@ class EntityEmbedFilterLegacyTest extends EntityEmbedFilterTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installConfig('system');
@@ -35,7 +35,7 @@ class EntityEmbedFilterLegacyTest extends EntityEmbedFilterTestBase {
       'data-entity-uuid' => static::EMBEDDED_ENTITY_UUID,
       'data-langcode' => 'en',
       'data-entity-embed-display' => 'entity_reference:entity_reference_entity_view',
-      'data-entity-embed-display-settings' => 'teaser',
+      'data-entity-embed-display-settings' => '{"view_mode":"teaser"}',
     ]);
   }
 
@@ -58,7 +58,7 @@ class EntityEmbedFilterLegacyTest extends EntityEmbedFilterTestBase {
       'data-entity-uuid' => static::EMBEDDED_ENTITY_UUID,
       'data-langcode' => 'en',
       'data-entity-embed-display' => 'entity_reference:entity_reference_entity_view',
-      'data-entity-embed-display-settings' => 'teaser',
+      'data-entity-embed-display-settings' => '{"view_mode":"teaser"}',
     ]);
   }
 
@@ -92,7 +92,7 @@ class EntityEmbedFilterLegacyTest extends EntityEmbedFilterTestBase {
       'data-entity-type' => 'node',
       'data-entity-uuid' => static::EMBEDDED_ENTITY_UUID,
       'data-entity-embed-display' => 'entity_reference:entity_reference_entity_view',
-      'data-entity-embed-display-settings' => 'teaser',
+      'data-entity-embed-display-settings' => '{"view_mode":"teaser"}',
       'data-langcode' => 'en',
     ]);
   }

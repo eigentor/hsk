@@ -23,7 +23,7 @@ abstract class ExtlinkTestBase extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['extlink', 'node', 'filter', 'image'];
+  protected static $modules = ['extlink', 'node', 'filter', 'image'];
 
   /**
    * User with various administrative permissions.
@@ -69,7 +69,7 @@ abstract class ExtlinkTestBase extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     // Enable any module that you will need in your tests.
     parent::setUp();
     // Create a normal user.

@@ -80,3 +80,6 @@ extlink.settings:
     whitelisted_domains:
       type: sequence
       label: 'Whitelisted domains'
+      sequence:
+        type: string
+        label: 'Domain'

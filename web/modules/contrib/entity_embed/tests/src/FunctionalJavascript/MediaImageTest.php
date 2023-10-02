@@ -45,17 +45,17 @@ class MediaImageTest extends EntityEmbedTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stable';
+  protected $defaultTheme = 'stable9';
 
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['entity_embed_test'];
+  protected static $modules = ['entity_embed_test'];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Note that media_install() grants 'view media' to all users by default.
@@ -715,8 +715,8 @@ class MediaImageTest extends EntityEmbedTestBase {
 
     // Configure a different default and admin theme, like on most Drupal sites.
     $this->config('system.theme')
-      ->set('default', 'stable')
-      ->set('admin', 'classy')
+      ->set('default', 'stable9')
+      ->set('admin', 'stark')
       ->save();
 
     // Assert that when looking at an embedded entity in the CKEditor Widget,
@@ -730,7 +730,7 @@ class MediaImageTest extends EntityEmbedTestBase {
     $this->getSession()->switchToIFrame('ckeditor');
     $this->assertSession()->waitForElementVisible('css', 'img[src*="image-test.png"]');
     $element = $this->assertSession()->elementExists('css', '[data-entity-embed-test-active-theme]');
-    $this->assertSame('stable', $element->getAttribute('data-entity-embed-test-active-theme'));
+    $this->assertSame('stable9', $element->getAttribute('data-entity-embed-test-active-theme'));
 
     // Assert that the first preview request transferred data over the wire.
     // Then toggle source mode on and off. This causes the CKEditor widget to be
@@ -761,7 +761,7 @@ class MediaImageTest extends EntityEmbedTestBase {
   return window.performance
     .getEntries()
     .filter(function (entry) {
-      return entry.initiatorType == 'xmlhttprequest' && entry.name.indexOf('/entity-embed/preview/') !== -1;
+      return entry.initiatorType == 'xmlhttprequest' && entry.name.indexOf('/embed/preview/') !== -1;
     })
     .pop()
     .transferSize;

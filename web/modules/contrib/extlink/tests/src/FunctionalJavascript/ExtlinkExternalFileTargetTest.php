@@ -12,7 +12,7 @@ class ExtlinkExternalFileTargetTest extends ExtlinkTestTarget {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // Enable the use of the external JS file.

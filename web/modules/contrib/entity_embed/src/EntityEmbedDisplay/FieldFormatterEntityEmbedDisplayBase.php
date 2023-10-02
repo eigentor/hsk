@@ -49,43 +49,13 @@ abstract class FieldFormatterEntityEmbedDisplayBase extends EntityEmbedDisplayBa
   protected $fieldFormatter;
 
   /**
-   * Constructs a FieldFormatterEntityEmbedDisplayBase object.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager service.
-   * @param \Drupal\Core\Field\FormatterPluginManager $formatter_plugin_manager
-   *   The field formatter plugin manager.
-   * @param \Drupal\Core\TypedData\TypedDataManager $typed_data_manager
-   *   The typed data manager.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
-   *   The language manager.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, FormatterPluginManager $formatter_plugin_manager, TypedDataManager $typed_data_manager, LanguageManagerInterface $language_manager) {
-    $this->formatterPluginManager = $formatter_plugin_manager;
-    $this->setConfiguration($configuration);
-    $this->typedDataManager = $typed_data_manager;
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $language_manager);
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('entity_type.manager'),
-      $container->get('plugin.manager.field.formatter'),
-      $container->get('typed_data_manager'),
-      $container->get('language_manager')
-    );
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $instance->formatterPluginManager = $container->get('plugin.manager.field.formatter');
+    $instance->typedDataManager = $container->get('typed_data_manager');
+    return $instance;
   }
 
   /**
@@ -130,7 +100,7 @@ abstract class FieldFormatterEntityEmbedDisplayBase extends EntityEmbedDisplayBa
    *   Returns the access result.
    */
   protected function isApplicableFieldFormatter() {
-    $definition = $this->formatterPluginManager->getDefinition($this->getFieldFormatterId());
+    $definition = $this->formatterPluginManager()->getDefinition($this->getFieldFormatterId());
     return AccessResult::allowedIf($definition['class']::isApplicable($this->getFieldDefinition()));
   }
 
@@ -180,7 +150,7 @@ abstract class FieldFormatterEntityEmbedDisplayBase extends EntityEmbedDisplayBa
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return $this->formatterPluginManager->getDefaultSettings($this->getFieldFormatterId());
+    return $this->formatterPluginManager()->getDefaultSettings($this->getFieldFormatterId());
   }
 
   /**
@@ -240,11 +210,27 @@ abstract class FieldFormatterEntityEmbedDisplayBase extends EntityEmbedDisplayBa
   public function calculateDependencies() {
     $this->addDependencies(parent::calculateDependencies());
 
-    $definition = $this->formatterPluginManager->getDefinition($this->getFieldFormatterId());
+    $definition = $this->formatterPluginManager()->getDefinition($this->getFieldFormatterId());
     $this->addDependency('module', $definition['provider']);
     // @todo Investigate why this does not work currently.
     // $this->calculatePluginDependencies($this->getFieldFormatter());
     return $this->dependencies;
+  }
+
+  /**
+   * Gets the field formatter plugin manager.
+   *
+   * This is needed for the defaultConfiguration() method since that gets
+   * invoked via the constructor, and our services are injected after the
+   * constructor are called.
+   *
+   * @return \Drupal\Core\Field\FormatterPluginManager
+   */
+  public function formatterPluginManager() {
+    if (!isset($this->formatterPluginManager)) {
+      $this->formatterPluginManager = \Drupal::service('plugin.manager.field.formatter');
+    }
+    return $this->formatterPluginManager;
   }
 
 }

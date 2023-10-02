@@ -5,6 +5,7 @@
  * Framework for allowing entities to be embedded in CKEditor.
  */
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -55,6 +56,11 @@ function template_preprocess_entity_embed_container(array &$variables) {
   $variables['element'] += ['#attributes' => []];
   $variables['attributes'] = $variables['element']['#attributes'];
   $variables['children'] = $variables['element']['#children'];
+
+  // Ensure the display settings get converted to a JSON string again.
+  if (isset($variables['attributes']['data-entity-embed-display-settings']) && is_array($variables['attributes']['data-entity-embed-display-settings'])) {
+    $variables['attributes']['data-entity-embed-display-settings'] = Json::encode($variables['attributes']['data-entity-embed-display-settings']);
+  }
 }
 
 /**
@@ -152,7 +158,7 @@ function entity_embed_filter_format_edit_form_validate($form, FormStateInterface
     'status',
   ]);
 
-  if ($entity_embed_enabled && $filter_html_enabled && $allowed_html = $form_state->getValue($allowed_html_path)) {
+  if ($entity_embed_enabled && $filter_html_enabled && $form_state->getValue($allowed_html_path)) {
     if ($button_groups = $form_state->getValue($button_group_path)) {
       $buttons = [];
       $button_groups = json_decode($button_groups, TRUE);
@@ -280,21 +286,15 @@ function entity_embed_filter_format_edit_form_validate($form, FormStateInterface
 }
 
 /**
- * Implements hook_field_widget_form_alter().
+ * Implements hook_field_widget_single_element_form_alter().
  */
-function entity_embed_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+function entity_embed_field_widget_single_element_form_alter(&$element, FormStateInterface $form_state, $context) {
   // Add a `data-entity_embed-host-entity-langcode` attribute so that
   // entity_embed's JavaScript can pass the host entity's language to
   // EntityEmbedDialog, allowing it to present entities in the same language.
-  if (!empty($element['#type']) && $element['#type'] == 'text_format') {
-    if (!empty($context['items']) && $context['items'] instanceof FieldItemListInterface) {
-      $element['#attributes']['data-entity_embed-host-entity-langcode'] = $context['items']->getLangcode();
-    }
-    else {
-      $entity = $form_state->getFormObject()->getEntity();
-      if ($entity instanceof ContentEntityInterface) {
-        $element['#attributes']['data-entity_embed-host-entity-langcode'] = $entity->language()->getId();
-      }
-    }
+  if (isset($element['#type']) && $element['#type'] === 'text_format') {
+    /** @var FieldItemListInterface $items */
+    $items = $context['items'];
+    $element['#attributes']['data-entity_embed-host-entity-langcode'] = $items->getEntity()->language()->getId();
   }
 }

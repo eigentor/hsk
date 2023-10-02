@@ -321,11 +321,11 @@
         _loadPreview: function (callback) {
           var widget = this;
           jQuery.get({
-            url: Drupal.url('entity-embed/preview/' + editor.config.drupal.format + '?text=' + encodeURIComponent(this.downcast().getOuterHtml())),
+            url: Drupal.url('embed/preview/' + editor.config.drupal.format + '?text=' + encodeURIComponent(this.downcast().getOuterHtml())),
             dataType: 'html',
             headers: {
-              'X-Drupal-EntityPreview-CSRF-Token': editor.config.drupalEntity_previewCsrfToken,
-            }
+              'X-Drupal-EmbedPreview-CSRF-Token': editor.config.DrupalEntity_previewCsrfToken
+            },
           }).done(function(previewHtml) {
             widget.element.setHtml(previewHtml);
             callback(widget);

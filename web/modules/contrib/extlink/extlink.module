@@ -89,12 +89,15 @@ function _extlink_get_settings_from_config(Config $config) {
   $fa_mailto_classes = $config->get('extlink_font_awesome_classes.mailto') ?: 'fa fa-envelope-o';
   $fa_mailto_classes = array_map($callback, explode(' ', $fa_mailto_classes));
 
-  $extAlertText =  "";
-
-  if( !is_array($settings['extlink_alert_text']) ){
-    $extAlertText = ((isset($settings['extlink_alert_text'])) ? Xss::filterAdmin($settings['extlink_alert_text']) : t('This link will take you to an external web site. We are not responsible for their content.'));
-  } else {
-    $extAlertText = ((isset($settings['extlink_alert_text']['value'])) ? Html::escape($settings['extlink_alert_text']['value']) : t('This link will take you to an external web site. We are not responsible for their content.'));
+  $defaultText = t('This link will take you to an external web site. We are not responsible for their content.');
+  $extAlertText = $defaultText;
+  if (!empty($settings['extlink_alert_text'])) {
+    if(!is_array($settings['extlink_alert_text'])) {
+      $extAlertText = ((isset($settings['extlink_alert_text'])) ? Xss::filterAdmin($settings['extlink_alert_text']) : $defaultText);
+    }
+    else {
+      $extAlertText = ((isset($settings['extlink_alert_text']['value'])) ? Html::escape($settings['extlink_alert_text']['value']) : $defaultText);
+    }
   }
 
   return [

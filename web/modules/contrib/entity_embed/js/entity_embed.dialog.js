@@ -6,7 +6,7 @@
  * embed dialog.
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   "use strict";
 
@@ -27,7 +27,7 @@
    */
   Drupal.behaviors.entityEmbedDialog = {
     attach: function (context, settings) {
-      $('body').once('js-entity-embed-dialog').on('entityBrowserIFrameAppend', function () {
+      $(once('js-entity-embed-dialog', 'body')).on('entityBrowserIFrameAppend', function () {
         $('.entity-select-dialog').trigger('resize');
         // Hide the next button, the click is triggered by Drupal.entityEmbedDialog.selectionCompleted.
         $('#drupal-modal').parent().find('.js-button-next').addClass('visually-hidden');
@@ -52,4 +52,4 @@
     }
   };
 
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);

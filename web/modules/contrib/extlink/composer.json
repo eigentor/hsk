@@ -27,6 +27,6 @@
     "source": "https://git.drupalcode.org/project/extlink"
   },
   "require": {
-    "drupal/core": "^8 || ^9"
+    "drupal/core": "^8 || ^9 || ^10"
   }
 }

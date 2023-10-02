@@ -92,6 +92,7 @@ module:
   tour: 0
   typed_data: 0
   update: 0
+  upgrade_status: 0
   user: 0
   video_embed_field: 0
   view_unpublished: 0

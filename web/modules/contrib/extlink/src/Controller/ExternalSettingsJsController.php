@@ -49,9 +49,9 @@ class ExternalSettingsJsController extends ControllerBase {
 })(drupalSettings);
 EOT;
 
-    return CacheableResponse::create($js, 200, [
+    return (new CacheableResponse($js, 200, [
       'Content-Type' => 'application/javascript',
-    ])->addCacheableDependency($config);
+    ]))->addCacheableDependency($config);
   }
 
   /**

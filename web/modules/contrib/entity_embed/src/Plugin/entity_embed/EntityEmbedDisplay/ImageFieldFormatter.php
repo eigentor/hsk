@@ -44,48 +44,13 @@ class ImageFieldFormatter extends FileFieldFormatter {
   protected $messenger;
 
   /**
-   * Constructs an ImageFieldFormatter object.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity manager service.
-   * @param \Drupal\Core\Field\FormatterPluginManager $formatter_plugin_manager
-   *   The field formatter plugin manager.
-   * @param \Drupal\Core\TypedData\TypedDataManager $typed_data_manager
-   *   The typed data manager.
-   * @param \Drupal\Core\Image\ImageFactory $image_factory
-   *   The image factory.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
-   *   The language manager.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, FormatterPluginManager $formatter_plugin_manager, TypedDataManager $typed_data_manager, ImageFactory $image_factory, LanguageManagerInterface $language_manager, MessengerInterface $messenger) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $formatter_plugin_manager, $typed_data_manager, $language_manager);
-    $this->imageFactory = $image_factory;
-    $this->messenger = $messenger;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('entity_type.manager'),
-      $container->get('plugin.manager.field.formatter'),
-      $container->get('typed_data_manager'),
-      $container->get('image.factory'),
-      $container->get('language_manager'),
-      $container->get('messenger')
-    );
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $instance->imageFactory = $container->get('image.factory');
+    $instance->messenger = $container->get('messenger');
+    return $instance;
   }
 
   /**

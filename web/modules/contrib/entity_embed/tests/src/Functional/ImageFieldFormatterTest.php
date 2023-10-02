@@ -17,7 +17,7 @@ class ImageFieldFormatterTest extends EntityEmbedTestBase {
    *
    * @var array
    */
-  public static $modules = ['file', 'image', 'responsive_image'];
+  protected static $modules = ['file', 'image', 'responsive_image'];
 
   /**
    * Created file entity.
@@ -36,7 +36,7 @@ class ImageFieldFormatterTest extends EntityEmbedTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->image = $this->getTestFile('image');
     $this->file = $this->getTestFile('text');
@@ -64,12 +64,24 @@ class ImageFieldFormatterTest extends EntityEmbedTestBase {
       ->createInstance('image:image', []);
     $display->setContextValue('entity', $this->image);
     $conf_form = $display->buildConfigurationForm($form, $form_state);
-    $expected = [
-      'image_style',
-      'image_link',
-      'alt',
-      'title',
-    ];
+    if (version_compare(\Drupal::VERSION, '9.4', '<')) {
+      $expected = [
+        'image_style',
+        'image_link',
+        'alt',
+        'title',
+      ];
+    }
+    else {
+      // Drupal 9.4+ added a new option to the image formatter settings.
+      $expected = [
+        'image_style',
+        'image_link',
+        'image_loading',
+        'alt',
+        'title',
+      ];
+    }
     $this->assertSame($expected, array_keys($conf_form));
     $this->assertSame('select', $conf_form['image_style']['#type']);
     $this->assertSame('Image style', (string) $conf_form['image_style']['#title']);
@@ -95,7 +107,7 @@ class ImageFieldFormatterTest extends EntityEmbedTestBase {
     // when embed is successful.
     $this->assertSession()->responseContains($alt_text);
     $this->assertSession()->responseNotContains('This placeholder should not be rendered.');
-    $this->assertSession()->linkByHrefExists(file_create_url($this->image->getFileUri()), 0, 'Link to the embedded image exists.');
+    $this->assertSession()->linkByHrefExists(\Drupal::service('file_url_generator')->generateString($this->image->getFileUri()), 0, 'Link to the embedded image exists.');
 
     // Embed all three field types in one, to ensure they all render correctly.
     $content = '<drupal-entity data-entity-type="node" data-entity-uuid="' . $this->node->uuid() . '" data-entity-embed-display="entity_reference:entity_reference_label"></drupal-entity>';

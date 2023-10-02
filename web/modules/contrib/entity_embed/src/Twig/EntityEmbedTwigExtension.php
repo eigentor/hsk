@@ -5,11 +5,13 @@ namespace Drupal\entity_embed\Twig;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\entity_embed\EntityEmbedBuilderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Provide entity embedding function within Twig templates.
  */
-class EntityEmbedTwigExtension extends \Twig_Extension {
+class EntityEmbedTwigExtension extends AbstractExtension {
 
   /**
    * The entity type manager service.
@@ -60,7 +62,7 @@ class EntityEmbedTwigExtension extends \Twig_Extension {
    */
   public function getFunctions() {
     return [
-      new \Twig_SimpleFunction('entity_embed', [$this, 'getRenderArray']),
+      new TwigFunction('entity_embed', [$this, 'getRenderArray']),
     ];
   }
 

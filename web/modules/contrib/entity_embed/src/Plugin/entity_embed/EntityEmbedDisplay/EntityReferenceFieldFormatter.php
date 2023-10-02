@@ -36,45 +36,12 @@ class EntityReferenceFieldFormatter extends FieldFormatterEntityEmbedDisplayBase
   protected $configFactory;
 
   /**
-   * Constructs a new EntityReferenceFieldFormatter.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager service.
-   * @param \Drupal\Core\Field\FormatterPluginManager $formatter_plugin_manager
-   *   The field formatter plugin manager.
-   * @param \Drupal\Core\TypedData\TypedDataManager $typed_data_manager
-   *   The typed data manager.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
-   *   The language manager.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface|null $config_factory
-   *   The configuration factory, or null to get from global container for
-   *   backwards compatibility.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, FormatterPluginManager $formatter_plugin_manager, TypedDataManager $typed_data_manager, LanguageManagerInterface $language_manager, ConfigFactoryInterface $config_factory = NULL) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $formatter_plugin_manager, $typed_data_manager, $language_manager);
-    $this->configFactory = $config_factory instanceof ConfigFactoryInterface ? $config_factory : \Drupal::configFactory();
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('entity_type.manager'),
-      $container->get('plugin.manager.field.formatter'),
-      $container->get('typed_data_manager'),
-      $container->get('language_manager'),
-      $container->get('config.factory')
-    );
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $instance->configFactory = $container->get('config.factory');
+    return $instance;
   }
 
   /**

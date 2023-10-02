@@ -23,12 +23,12 @@ class ContentTranslationTest extends EntityEmbedTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['entity_embed_translation_test'];
+  protected static $modules = ['entity_embed_translation_test'];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->translator = $this->drupalCreateUser([

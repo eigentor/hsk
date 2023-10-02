@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -81,6 +82,13 @@ class EntityEmbedDialog extends FormBase {
   protected $moduleHandler;
 
   /**
+   * The file URL generator.
+   *
+   * @var \Drupal\Core\File\FileUrlGeneratorInterface
+   */
+  protected $fileUrlGenerator;
+
+  /**
    * The entity browser settings from the entity embed button.
    *
    * @var array
@@ -102,14 +110,17 @@ class EntityEmbedDialog extends FormBase {
    *   The entity field manager.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
+   * @param \Drupal\Core\File\FileUrlGeneratorInterface
+   *   The file URL generator.
    */
-  public function __construct(EntityEmbedDisplayManager $entity_embed_display_manager, FormBuilderInterface $form_builder, EntityTypeManagerInterface $entity_type_manager, EventDispatcherInterface $event_dispatcher, EntityFieldManagerInterface $entity_field_manager, ModuleHandlerInterface $module_handler) {
+  public function __construct(EntityEmbedDisplayManager $entity_embed_display_manager, FormBuilderInterface $form_builder, EntityTypeManagerInterface $entity_type_manager, EventDispatcherInterface $event_dispatcher, EntityFieldManagerInterface $entity_field_manager, ModuleHandlerInterface $module_handler, FileUrlGeneratorInterface $file_url_generator) {
     $this->entityEmbedDisplayManager = $entity_embed_display_manager;
     $this->formBuilder = $form_builder;
     $this->entityTypeManager = $entity_type_manager;
     $this->eventDispatcher = $event_dispatcher;
     $this->entityFieldManager = $entity_field_manager;
     $this->moduleHandler = $module_handler;
+    $this->fileUrlGenerator = $file_url_generator;
   }
 
   /**
@@ -123,7 +134,7 @@ class EntityEmbedDialog extends FormBase {
       $container->get('event_dispatcher'),
       $container->get('entity_field.manager'),
       $container->get('module_handler'),
-      $container->get('language_manager')
+      $container->get('file_url_generator')
     );
   }
 
@@ -416,7 +427,7 @@ class EntityEmbedDialog extends FormBase {
         $entity_label = $entity->toLink($entity->label(), 'canonical', $options)->toString();
       }
       elseif ($entity->getEntityTypeId() == 'file') {
-        $entity_label = '<a href="' . file_create_url($entity->getFileUri()) . '" target="_blank">' . $entity->label() . '</a>';
+          $entity_label = '<a href="' . $this->fileUrlGenerator->generateAbsoluteString($entity->getFileUri()) . '" target="_blank">' . $entity->label() . '</a>';
       }
       else {
         $entity_label = '<a href="' . $entity->toUrl()->toString() . '" target="_blank">' . $entity->label() . '</a>';
@@ -492,7 +503,7 @@ class EntityEmbedDialog extends FormBase {
         $entity_element['data-entity-embed-display-settings'] = [];
       }
       elseif (is_string($entity_element['data-entity-embed-display-settings'])) {
-        $entity_element['data-entity-embed-display-settings'] = Json::decode($entity_element['data-entity-embed-display-settings']);
+        $entity_element['data-entity-embed-display-settings'] = Json::decode($entity_element['data-entity-embed-display-settings']) ?: [];
       }
       $display = $this->entityEmbedDisplayManager->createInstance($plugin_id, $entity_element['data-entity-embed-display-settings']);
       $display->setContextValue('entity', $entity);

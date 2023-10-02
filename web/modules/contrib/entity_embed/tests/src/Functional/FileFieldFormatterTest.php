@@ -17,7 +17,7 @@ class FileFieldFormatterTest extends EntityEmbedTestBase {
    *
    * @var array
    */
-  public static $modules = ['file', 'image'];
+  protected static $modules = ['file', 'image'];
 
   /**
    * Created file entity.
@@ -29,7 +29,7 @@ class FileFieldFormatterTest extends EntityEmbedTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->file = $this->getTestFile('text');
   }
@@ -81,7 +81,7 @@ class FileFieldFormatterTest extends EntityEmbedTestBase {
     // Verify description of the embedded file exists in page.
     $this->assertSession()->responseContains($embed_settings['description']);
     $this->assertSession()->responseNotContains('This placeholder should not be rendered.');
-    $this->assertSession()->linkByHrefExists(file_create_url($this->file->getFileUri()), 0, 'Link to the embedded file exists.');
+    $this->assertSession()->linkByHrefExists(\Drupal::service('file_url_generator')->generateString($this->file->getFileUri()), 0, 'Link to the embedded file exists.');
   }
 
 }

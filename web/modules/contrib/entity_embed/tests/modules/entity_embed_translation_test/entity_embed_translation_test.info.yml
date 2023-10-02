@@ -14,7 +14,7 @@ dependencies:
  - embed:embed
  - entity_embed:entity_embed
 
-# Information added by Drupal.org packaging script on 2021-09-15
-version: '8.x-1.2'
+# Information added by Drupal.org packaging script on 2023-06-08
+version: '8.x-1.4'
 project: 'entity_embed'
-datestamp: 1631711006
+datestamp: 1686251087

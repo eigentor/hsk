@@ -17,6 +17,11 @@ class ConfigurationUiTest extends EntityEmbedTestBase {
   /**
    * {@inheritdoc}
    */
+  protected $failOnJavascriptConsoleErrors = FALSE;
+
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = [
     'ckeditor',
     'entity_embed',
@@ -25,14 +30,14 @@ class ConfigurationUiTest extends EntityEmbedTestBase {
   /**
    * The test administrative user.
    *
-   * @var \Drupal\user\UserInterface
+   * @var \Drupal\Core\Session\AccountInterface
    */
   protected $adminUser;
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $format = FilterFormat::create([
@@ -85,7 +90,6 @@ class ConfigurationUiTest extends EntityEmbedTestBase {
    *   The error message that should display.
    *
    * @dataProvider providerTestValidations
-   * @dataProvider providerTestValidationWhenAdding
    */
   public function testValidationWhenAdding($filter_html_status, $entity_embed_status, $allowed_html, $expected_error_message) {
     $this->drupalGet('admin/config/content/formats/add');
@@ -115,11 +119,14 @@ class ConfigurationUiTest extends EntityEmbedTestBase {
     $this->assertSession()->waitForElementVisible('css', $target);
     $this->sortableTo($item, $from, $target);
 
-    if ($allowed_html == 'default' && $entity_embed_status) {
-      // Unfortunately the <drupal-entity> tag is not yet allowed due to
-      // https://www.drupal.org/project/drupal/issues/2763075.
+    if ($allowed_html === 'default' && $entity_embed_status) {
       $allowed_html = $this->assertSession()->fieldExists('filters[filter_html][settings][allowed_html]')->getValue();
-      $this->assertStringNotContainsString('drupal-entity', $allowed_html);
+      if ($entity_embed_status) {
+        $this->assertStringContainsString('drupal-entity', $allowed_html);
+      }
+      else {
+        $this->assertStringNotContainsString('drupal-entity', $allowed_html);
+      }
     }
     elseif (!empty($allowed_html)) {
       $page->fillField('filters[filter_html][settings][allowed_html]', $allowed_html);
@@ -137,20 +144,6 @@ class ConfigurationUiTest extends EntityEmbedTestBase {
   }
 
   /**
-   * Data provider for testValidationWhenAdding().
-   */
-  public function providerTestValidationWhenAdding() {
-    return [
-      'Tests validation when drupal-entity not added.' => [
-        'filters[filter_html][status]' => TRUE,
-        'filters[entity_embed][status]' => TRUE,
-        'allowed_html' => 'default',
-        'expected_error_message' => 'The Media Entity Embed button requires <drupal-entity> among the allowed HTML tags.',
-      ],
-    ];
-  }
-
-  /**
    * Test integration with Filter and Text Editor form validation.
    *
    * @param bool $filter_html_status
@@ -164,7 +157,6 @@ class ConfigurationUiTest extends EntityEmbedTestBase {
    *   The error message that should display.
    *
    * @dataProvider providerTestValidations
-   * @dataProvider providerTestValidationWhenEditing
    */
   public function testValidationWhenEditing($filter_html_status, $entity_embed_status, $allowed_html, $expected_error_message) {
     $this->drupalGet('admin/config/content/formats/manage/embed_test');
@@ -191,9 +183,14 @@ class ConfigurationUiTest extends EntityEmbedTestBase {
     $this->assertSession()->waitForElementVisible('css', $target);
     $this->sortableTo($item, $from, $target);
 
-    if ($allowed_html == 'default' && $entity_embed_status) {
+    if ($allowed_html === 'default' && $entity_embed_status) {
       $allowed_html = $this->assertSession()->fieldExists('filters[filter_html][settings][allowed_html]')->getValue();
-      $this->assertStringContainsString('drupal-entity', $allowed_html);
+      if ($entity_embed_status) {
+        $this->assertStringContainsString('drupal-entity', $allowed_html);
+      }
+      else {
+        $this->assertStringNotContainsString('drupal-entity', $allowed_html);
+      }
     }
     elseif (!empty($allowed_html)) {
       $page->fillField('filters[filter_html][settings][allowed_html]', $allowed_html);
@@ -208,20 +205,6 @@ class ConfigurationUiTest extends EntityEmbedTestBase {
     else {
       $this->assertSession()->pageTextContains('The text format Embed format has been updated.');
     }
-  }
-
-  /**
-   * Data provider for testValidationWhenEditing().
-   */
-  public function providerTestValidationWhenEditing() {
-    return [
-      'Tests validation when drupal-entity not added.' => [
-        'filters[filter_html][status]' => TRUE,
-        'filters[entity_embed][status]' => TRUE,
-        'allowed_html' => 'default',
-        'expected_error_message' => FALSE,
-      ],
-    ];
   }
 
   /**
@@ -247,6 +230,18 @@ class ConfigurationUiTest extends EntityEmbedTestBase {
         'filters[entity_embed][status]' => FALSE,
         'allowed_html' => 'default',
         'expected_error_message' => FALSE,
+      ],
+      'Tests validation when entity_embed filter enabled and filter_html is enabled.' => [
+        'filters[filter_html][status]' => TRUE,
+        'filters[entity_embed][status]' => TRUE,
+        'allowed_html' => 'default',
+        'expected_error_message' => FALSE,
+      ],
+      'Tests validation when drupal-entity not added.' => [
+        'filters[filter_html][status]' => TRUE,
+        'filters[entity_embed][status]' => TRUE,
+        'allowed_html' => "<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type='1 A I'> <li> <dl> <dt> <dd> <h2 id='jump-*'> <h3 id> <h4 id> <h5 id> <h6 id>",
+        'expected_error_message' => 'The Media Entity Embed button requires <drupal-entity> among the allowed HTML tags.',
       ],
       'Tests validation when drupal-entity element has no attributes.' => [
         'filters[filter_html][status]' => TRUE,

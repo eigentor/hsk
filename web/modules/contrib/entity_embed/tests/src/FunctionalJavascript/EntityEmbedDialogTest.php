@@ -18,7 +18,7 @@ class EntityEmbedDialogTest extends EntityEmbedTestBase {
    *
    * @var array
    */
-  public static $modules = ['image'];
+  protected static $modules = ['image'];
 
   /**
    * The test user.
@@ -37,7 +37,7 @@ class EntityEmbedDialogTest extends EntityEmbedTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create a page content type.

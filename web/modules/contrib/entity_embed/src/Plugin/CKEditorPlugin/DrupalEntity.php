@@ -31,18 +31,7 @@ class DrupalEntity extends EmbedCKEditorPluginBase implements CKEditorPluginCssI
    * {@inheritdoc}
    */
   public function getFile() {
-    return drupal_get_path('module', 'entity_embed') . '/js/plugins/drupalentity/plugin.js';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getLibraries(Editor $editor) {
-    return [
-      'core/jquery',
-      'core/drupal',
-      'core/drupal.ajax',
-    ];
+    return $this->getModulePath('entity_embed') . '/js/plugins/drupalentity/plugin.js';
   }
 
   /**
@@ -53,7 +42,7 @@ class DrupalEntity extends EmbedCKEditorPluginBase implements CKEditorPluginCssI
       'DrupalEntity_dialogTitleAdd' => t('Insert entity'),
       'DrupalEntity_dialogTitleEdit' => t('Edit entity'),
       'DrupalEntity_buttons' => $this->getButtons(),
-      'drupalEntity_previewCsrfToken' => \Drupal::csrfToken()->get('X-Drupal-EntityPreview-CSRF-Token'),
+      'DrupalEntity_previewCsrfToken' => \Drupal::csrfToken()->get('X-Drupal-EmbedPreview-CSRF-Token'),
     ];
   }
 
@@ -62,8 +51,8 @@ class DrupalEntity extends EmbedCKEditorPluginBase implements CKEditorPluginCssI
    */
   public function getCssFiles(Editor $editor) {
     return [
-      drupal_get_path('module', 'system') . '/css/components/hidden.module.css',
-      drupal_get_path('module', 'entity_embed') . '/css/entity_embed.editor.css',
+      $this->getModulePath('system') . '/css/components/hidden.module.css',
+      $this->getModulePath('entity_embed') . '/css/entity_embed.editor.css',
     ];
   }
 

@@ -8,6 +8,7 @@ drupal.entity_embed.dialog:
   dependencies:
     - core/drupal
     - core/jquery
+    - core/once
 
 caption:
   version: VERSION
