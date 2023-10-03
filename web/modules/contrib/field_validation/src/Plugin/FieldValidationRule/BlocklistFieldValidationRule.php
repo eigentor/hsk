@@ -7,20 +7,19 @@ use Drupal\field_validation\ConfigurableFieldValidationRuleBase;
 use Drupal\field_validation\FieldValidationRuleSetInterface;
 
 /**
- * BlacklistFieldValidationRule.
+ * Provides functaionality for BlocklistFieldValidationRule.
  *
  * @FieldValidationRule(
- *   id = "blacklist_field_validation_rule",
- *   label = @Translation("Words blacklist"),
+ *   id = "blocklist_field_validation_rule",
+ *   label = @Translation("Words blocklist"),
  *   description = @Translation("Validates that user-entered data doesn't contain any of the specified illegal words.")
  * )
  */
-class BlacklistFieldValidationRule extends ConfigurableFieldValidationRuleBase {
+class BlocklistFieldValidationRule extends ConfigurableFieldValidationRuleBase {
 
   /**
    * {@inheritdoc}
    */
-   
   public function addFieldValidationRule(FieldValidationRuleSetInterface $field_validation_rule_set) {
 
     return TRUE;
@@ -50,7 +49,7 @@ class BlacklistFieldValidationRule extends ConfigurableFieldValidationRuleBase {
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form['setting'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Blacklisted words'),
+      '#title' => $this->t('Blocklisted words'),
       '#description' => $this->t('Specify illegal words, seperated by commas. Make sure to escape reserved regex characters with an escape (\) character.'),
       '#default_value' => $this->configuration['setting'],
       '#required' => TRUE,
@@ -67,23 +66,26 @@ class BlacklistFieldValidationRule extends ConfigurableFieldValidationRuleBase {
 
     $this->configuration['setting'] = $form_state->getValue('setting');
   }
-  
-  public function validate($params) {
-    $value = isset($params['value']) ? $params['value'] : '';
-	$rule = isset($params['rule']) ? $params['rule'] : null;
-	$context = isset($params['context']) ? $params['context'] : null;
-	$settings = array();
-	if(!empty($rule) && !empty($rule->configuration)){
-	  $settings = $rule->configuration;
-	}
-    $setting = isset($settings['setting']) ? $settings['setting'] : '';
-    $blacklist = explode(',', $setting);
-    $blacklist = array_map('trim', $blacklist);
-    $blacklist_regex = implode('|', $blacklist);	
-	//$settings = $this->rule->settings;
-	if ($value !== '' && !is_null($value) && preg_match("/$blacklist_regex/i", $value)) {
-	  $context->addViolation($rule->getErrorMessage());
-    }	
 
+  /**
+   * {@inheritdoc}
+   */
+  public function validate($params) {
+    $value = $params['value'] ?? '';
+    $rule = $params['rule'] ?? NULL;
+    $context = $params['context'] ?? NULL;
+    $settings = [];
+    if (!empty($rule) && !empty($rule->configuration)) {
+      $settings = $rule->configuration;
+    }
+    $setting = $settings['setting'] ?? '';
+    $blocklist = explode(',', $setting);
+    $blocklist = array_map('trim', $blocklist);
+    $blocklist_regex = implode('|', $blocklist);
+    // $settings = $this->rule->settings;
+    if ($value !== '' && !is_null($value) && preg_match("/$blocklist_regex/i", $value)) {
+      $context->addViolation($rule->getReplacedErrorMessage($params));
+    }
   }
+
 }

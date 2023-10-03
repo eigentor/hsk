@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.page
+  module:
+    - better_formats
+    - text
+third_party_settings:
+  better_formats:
+    allowed_formats_toggle: true
+    allowed_formats:
+      format1: format1
+      format2: format2
+      plain_text: 0
+    default_order_toggle: false
+    default_order_wrapper:
+      formats:
+        format1:
+          weight: '-10'
+        format2:
+          weight: '0'
+        plain_text:
+          weight: '0'
+id: node.page.body
+field_name: body
+entity_type: node
+bundle: page
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

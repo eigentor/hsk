@@ -7,7 +7,7 @@ use Drupal\field_validation\ConfigurableFieldValidationRuleBase;
 use Drupal\field_validation\FieldValidationRuleSetInterface;
 
 /**
- * LengthFieldValidationRule.
+ * Provides the length field validation rule.
  *
  * @FieldValidationRule(
  *   id = "length_field_validation_rule",
@@ -20,7 +20,6 @@ class LengthFieldValidationRule extends ConfigurableFieldValidationRuleBase {
   /**
    * {@inheritdoc}
    */
-   
   public function addFieldValidationRule(FieldValidationRuleSetInterface $field_validation_rule_set) {
 
     return TRUE;
@@ -41,7 +40,9 @@ class LengthFieldValidationRule extends ConfigurableFieldValidationRuleBase {
   public function defaultConfiguration() {
     return [
       'min' => NULL,
-	  'max' => NULL,
+      'max' => NULL,
+      'strip_tags' => FALSE,
+      'trim' => FALSE,
     ];
   }
 
@@ -60,7 +61,17 @@ class LengthFieldValidationRule extends ConfigurableFieldValidationRuleBase {
       '#title' => $this->t('Max'),
       '#default_value' => $this->configuration['max'],
       '#required' => TRUE,
-    ];	
+    ];
+    $form['strip_tags'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Strip tags'),
+      '#default_value' => $this->configuration['strip_tags'],
+    ];
+    $form['trim'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Trim'),
+      '#default_value' => $this->configuration['trim'],
+    ];
     return $form;
   }
 
@@ -71,41 +82,54 @@ class LengthFieldValidationRule extends ConfigurableFieldValidationRuleBase {
     parent::submitConfigurationForm($form, $form_state);
 
     $this->configuration['min'] = $form_state->getValue('min');
-	$this->configuration['max'] = $form_state->getValue('max');
+    $this->configuration['max'] = $form_state->getValue('max');
+    $this->configuration['strip_tags'] = $form_state->getValue('strip_tags');
+    $this->configuration['trim'] = $form_state->getValue('trim');
   }
-  
+
+  /**
+   * Validate the length.
+   */
   public function validate($params) {
-    $value = isset($params['value']) ? $params['value'] : '';
-	$rule = isset($params['rule']) ? $params['rule'] : null;
-	$context = isset($params['context']) ? $params['context'] : null;
-	$settings = array();
-	if(!empty($rule) && !empty($rule->configuration)){
-	  $settings = $rule->configuration;
-	}
-	//$settings = $this->rule->settings;
+    $value = $params['value'] ?? '';
+    $rule = $params['rule'] ?? NULL;
+    $context = $params['context'] ?? NULL;
+    $settings = [];
+    if (!empty($rule) && !empty($rule->configuration)) {
+      $settings = $rule->configuration;
+    }
+
     if ($value != '') {
       $flag = TRUE;
+
+      if (!empty($settings['strip_tags'])) {
+        $value = strip_tags($value);
+      }
+      if (!empty($settings['trim'])) {
+        $value = trim($value);
+      }
+
       $length = mb_strlen($value, 'UTF-8');
+      $token_data = $this->getTokenData($params);
       if (isset($settings['min']) && $settings['min'] != '') {
-        //$min = token_replace($settings['min'], array($this->get_token_type() => $this->entity));
-		$min = $settings['min'];
-		if ($length < $min) {
+        $settings['min'] = $this->tokenService->replace($settings['min'], $token_data);
+        $min = $settings['min'];
+        if ($length < $min) {
           $flag = FALSE;
         }
       }
       if (isset($settings['max']) && $settings['max'] != '') {
-        //$max = token_replace($settings['max'], array($this->get_token_type() => $this->entity));
-		$max = $settings['max'];
-		if ($length > $max) {
+        $settings['max'] = $this->tokenService->replace($settings['max'], $token_data);
+        $max = $settings['max'];
+        if ($length > $max) {
           $flag = FALSE;
         }
-      }       
+      }
 
       if (!$flag) {
-        //$this->set_error($token);
-		$context->addViolation($rule->getErrorMessage());
+        $context->addViolation($rule->getReplacedErrorMessage($params));
       }
-    }	
-    //return true;
+    }
   }
+
 }

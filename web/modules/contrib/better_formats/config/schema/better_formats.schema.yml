@@ -4,3 +4,36 @@ better_formats.settings:
     per_field_core:
       type: boolean
       label: 'Use field default'
+
+# Schema for field config Better Formats third party settings.
+field.field.*.*.*.third_party.better_formats:
+  type: mapping
+  label: 'Better formats field settings'
+  mapping:
+    allowed_formats_toggle:
+      type: boolean
+      label: 'Restrict to allowed formats'
+    allowed_formats:
+      type: sequence
+      label: 'Allowed formats'
+      sequence:
+        # Ignoring: The value can be either string or integer.
+        type: ignore
+        label: Format
+    default_order_toggle:
+      type: boolean
+      label: 'Reorder formats'
+    default_order_wrapper:
+      type: mapping
+      label: 'Default Order'
+      mapping:
+        formats:
+          type: sequence
+          label: 'List of ordered formats'
+          sequence:
+            type: mapping
+            label: 'Format entry'
+            mapping:
+              weight:
+                type: string
+                label: Weight

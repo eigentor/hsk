@@ -24,8 +24,8 @@ class BetterFormatsPermissions implements ContainerInjectionInterface {
   /**
    * Constructs a new BetterFormatsPermissions instance.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_manager
-   *   The entity manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
@@ -42,6 +42,7 @@ class BetterFormatsPermissions implements ContainerInjectionInterface {
    * Returns an array of better formats permissions.
    *
    * @return array
+   *   Returns an array of better formats permissions.
    */
   public function permissions() {
     $permissions = [];

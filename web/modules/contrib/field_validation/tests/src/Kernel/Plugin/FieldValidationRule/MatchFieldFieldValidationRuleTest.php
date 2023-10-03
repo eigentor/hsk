@@ -2,36 +2,17 @@
 
 namespace Drupal\Tests\field_validation\Kernel\Plugin\FieldValidationRule;
 
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\Entity\NodeType;
 /**
- * Tests BlacklistFieldValidationRule.
+ * Tests MatchFieldFieldValidationRule.
  *
  * @group field_validation
  *
  * @package Drupal\Tests\field_validation\Kernel
  */
-class BlackListFieldValidationRuleTest extends FieldValidationRuleBase {
-
-  /**
-   * Stores blacklisted words.
-   *
-   * @var array
-   */
-  private $blacklisted = [
-    'bug',
-    'issue',
-    'patch',
-  ];
-
-  /**
-   * Stores whitelisted words.
-   *
-   * @var array
-   */
-  private $whitelisted = [
-    'release',
-    'drupal',
-    'docs',
-  ];
+class MatchFieldFieldValidationRuleTest extends FieldValidationRuleBase {
 
   /**
    * Stores mock ruleset.
@@ -48,40 +29,72 @@ class BlackListFieldValidationRuleTest extends FieldValidationRuleBase {
   protected $entity;
 
   /**
-   * Field name.
+   * Rule id.
    */
-  const FIELD_NAME = 'field_blacklist_text';
+  const RULE_ID = 'match_field_field_validation_rule';
 
   /**
-   * {@inheritDoc}
+   * Rule title.
    */
-  protected function setUp() {
+  const RULE_TITLE = 'Match against a field value';
+
+  /**
+   * Field name.
+   */
+  const FIELD_NAME = 'field_match';
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
     parent::setUp();
     $this->setupTestArticle(self::FIELD_NAME);
+	
+    NodeType::create([
+      'type' => 'person',
+      'label' => 'Person',
+    ])->save();
+
+    $person1 = $this->nodeStorage->create([
+      'type' => 'person',
+      'title' => 'Name1',
+    ]);
+    $person1->save();
+
+    $person2 = $this->nodeStorage->create([
+      'type' => 'person',
+      'title' => 'Name2',
+    ]);
+    $person2->save();
 
     $this->ruleSet = $this->ruleSetStorage->create([
-      'name' => 'Blacklist_test',
+      'name' => 'Matchfield_test',
       'entity_type' => 'node',
       'bundle' => 'article',
     ]);
+
     $this->ruleSet->addFieldValidationRule([
-      'id' => 'blacklist_field_validation_rule',
-      'title' => 'validation rule blacklist',
+      'id' => self:: RULE_ID,
+      'title' => self:: RULE_TITLE,
       'weight' => 1,
       'field_name' => self::FIELD_NAME,
+      'error_message' => 'Not matching against field value entered',
       'column' => 'value',
-      'error_message' => 'Blacklisted words are in field',
-      'data' => [
-        'setting' => implode(',', $this->blacklisted),
-      ],
+       'data' => [
+        'entity_type' => "node",
+        'bundle' => "person",
+        'field_name' => "title",
+       ]
     ]);
+
     $this->ruleSet->save();
 
     $this->entity = $this->nodeStorage->create([
       'type' => 'article',
       'title' => 'test',
-      self::FIELD_NAME => $this->blacklisted[array_rand($this->blacklisted)],
+      self::FIELD_NAME => 'field_name_value',
     ]);
+
     $this->entity->get(self::FIELD_NAME)
       ->getFieldDefinition()
       ->addConstraint(
@@ -91,34 +104,21 @@ class BlackListFieldValidationRuleTest extends FieldValidationRuleBase {
   }
 
   /**
-   * Tests BlacklistFieldValidationRule.
+   * 
+   * Tests MatchFieldFieldValidationRule.
    */
-  public function testBlacklistRule() {
+  public function testMatchFieldRule() {
     $this->assertConstraintFail(
       $this->entity,
       self::FIELD_NAME,
-      $this->blacklisted[array_rand($this->blacklisted)],
-      $this->ruleSet
-    );
-
-    $this->assertConstraintFail(
-      $this->entity,
-      self::FIELD_NAME,
-      implode(',', $this->blacklisted),
+      'meme',
       $this->ruleSet
     );
 
     $this->assertConstraintPass(
       $this->entity,
       self::FIELD_NAME,
-      $this->whitelisted[array_rand($this->whitelisted)]
-    );
-
-    $this->assertConstraintPass(
-      $this->entity,
-      self::FIELD_NAME,
-      implode(',', $this->whitelisted)
+      'Name1'
     );
   }
-
 }

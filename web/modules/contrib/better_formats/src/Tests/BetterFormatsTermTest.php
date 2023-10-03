@@ -16,12 +16,6 @@ class BetterFormatsTermTest extends TermTest {
    *
    * @var array
    */
-  public static $modules = ['better_formats'];
+  protected static $modules = ['better_formats'];
 
-  /**
-   * {@inheritdoc}
-   */
-  function setUp() {
-    parent::setUp();
-  }
 }

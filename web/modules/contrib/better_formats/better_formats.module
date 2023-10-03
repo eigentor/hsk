@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Enhances the core input format system by managing input format defaults and settings.
+ * Enhances the input format system by managing input format defaults, settings.
  */
 
 use Drupal\Core\Config\Entity\ThirdPartySettingsInterface;
@@ -10,10 +10,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 
 /**
- * Implements hook_field_widget_form_alter().
- *
+ * Implements hook_field_widget_single_element_form_alter().
  */
-function better_formats_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+function better_formats_field_widget_single_element_form_alter(&$element, FormStateInterface $form_state, $context) {
 
   $field_definition = $context['items']->getFieldDefinition();
 
@@ -44,7 +43,7 @@ function better_formats_field_widget_form_alter(&$element, FormStateInterface $f
 
     $default_value = $field_definition->getDefaultValue($entity);
     $default_value = array_shift($default_value);
-    $element['#better_formats']['default_value'] = isset($default_value['format']) ? $default_value['format'] : NULL;
+    $element['#better_formats']['default_value'] = $default_value['format'] ?? NULL;
   }
 
 }
@@ -229,7 +228,7 @@ function better_formats_filter_process_format(array &$element, FormStateInterfac
 
   // Keep the format for validation and submit processing but don't sent it to
   // the browser if the user is not supposed to see anything inside of it.
-  if ($hide_selection && $hide_tips && $hide_tips_link) {
+  if ($hide_selection && $hide_tips && $hide_tips_link && !$user_is_admin) {
     unset($element['format']['#type']);
   }
 
@@ -258,9 +257,9 @@ function better_formats_is_text_format($type) {
  * Set the default format for the element.
  *
  * @param array $element
- *    The form element to set the default format on.
+ *   The form element to set the default format on.
  * @param string $default_value
- *    The id for the format to set as default.
+ *   The id for the format to set as default.
  */
 function better_formats_set_default_format(array &$element, $default_value) {
   $element['#format'] = $default_value;
@@ -279,8 +278,8 @@ function better_formats_set_default_format(array &$element, $default_value) {
  *   TRUE if the weight of $a is greater than $b, FALSE if weight of $b is
  *   greater than $a or equal to $a.
  */
-function better_formats_text_format_sort($a, $b) {
-  return $a['weight'] > $b['weight'];
+function better_formats_text_format_sort(array $a, array $b) {
+  return $a['weight'] <=> $b['weight'];
 }
 
 /**
@@ -320,7 +319,7 @@ function better_formats_form_field_config_edit_form_alter(&$form, FormStateInter
  * @return array
  *   The array of better formats form items.
  */
-function better_formats_field_settings_form($bf_form = []) {
+function better_formats_field_settings_form(array $bf_form = []) {
   $formats = filter_formats();
   // Plain Text Format should not be an option, that is a separate field type.
   unset($formats['plain_text']);
@@ -339,8 +338,8 @@ function better_formats_field_settings_form($bf_form = []) {
     $allowed_options[$format->id()] = $format->label();
   }
 
-  $allowed_toggle_default = isset($bf_form['allowed_formats_toggle']) ? $bf_form['allowed_formats_toggle'] : FALSE;
-  $allowed_defaults = isset($bf_form['allowed_formats']) ? $bf_form['allowed_formats'] : [];
+  $allowed_toggle_default = $bf_form['allowed_formats_toggle'] ?? FALSE;
+  $allowed_defaults = $bf_form['allowed_formats'] ?? [];
 
   if (empty($allowed_defaults)) {
     $allowed_defaults = array_keys($allowed_options);
@@ -367,7 +366,7 @@ function better_formats_field_settings_form($bf_form = []) {
     ],
   ];
 
-  $order_toggle_default = isset($bf_form['default_order_toggle']) ? $bf_form['default_order_toggle'] : FALSE;
+  $order_toggle_default = $bf_form['default_order_toggle'] ?? FALSE;
 
   $form['better_formats']['default_order_toggle'] = [
     '#type' => 'checkbox',
@@ -402,12 +401,12 @@ function better_formats_field_settings_form($bf_form = []) {
   ];
 
   foreach ($formats as $id => $format) {
-    $default = isset($bf_form['default_order_wrapper']['formats'][$id]) ? $bf_form['default_order_wrapper']['formats'][$id] : NULL;
-    $weight = isset($default['weight']) ? $default['weight'] : $format->get('weight');
+    $default = $bf_form['default_order_wrapper']['formats'][$id] ?? NULL;
+    $weight = $default['weight'] ?? $format->get('weight');
 
     // TableDrag: Mark the table row as draggable.
     $form['better_formats']['default_order_wrapper']['formats'][$id]['#attributes']['class'][] = 'draggable';
-    // TableDrag: Sort the table row according to its existing/configured weight.
+    // TableDrag: Sort the table row according to existing/configured weight.
     $form['better_formats']['default_order_wrapper']['formats'][$id]['#weight'] = $weight;
 
     // Some table columns containing raw markup.
@@ -447,7 +446,10 @@ function better_formats_field_config_edit_form_submit(array &$form, FormStateInt
   if ($text_processing) {
     // Handle the default value.
     $default_value = [];
-    $default_input_value = $form_state->getValue(['default_value_input', $entity->getName()]);
+    $default_input_value = $form_state->getValue([
+      'default_value_input',
+      $entity->getName(),
+    ]);
 
     if ($default_input_value != NULL) {
       $default_value = $default_input_value;

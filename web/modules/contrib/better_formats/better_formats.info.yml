@@ -1,6 +1,5 @@
 name: Better Formats
 type: module
 description: 'Enhances the core input format system by managing input format defaults and settings.'
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9.4 || ^10
 configure: better_formats.settings

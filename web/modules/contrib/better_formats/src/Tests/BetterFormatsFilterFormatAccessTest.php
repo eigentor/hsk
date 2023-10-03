@@ -16,12 +16,6 @@ class BetterFormatsFilterFormatAccessTest extends FilterFormatAccessTest {
    *
    * @var array
    */
-  public static $modules = ['better_formats'];
+  protected static $modules = ['better_formats'];
 
-  /**
-   * {@inheritdoc}
-   */
-  function setUp() {
-    parent::setUp();
-  }
 }

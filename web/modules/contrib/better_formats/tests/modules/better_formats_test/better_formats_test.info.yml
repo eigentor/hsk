@@ -1,0 +1,9 @@
+type: module
+core_version_requirement: ^8 || ^9 || ^10
+name: 'Better Formats Test'
+description: 'Testing module used by Better Formats tests.'
+package: Testing
+version: VERSION
+dependencies:
+  - better_formats
+  - node
