@@ -111,7 +111,7 @@ function businessgroup_zymphonies_theme_preprocess_menu(&$variables, $hook) {
 /**
  * Implements hook_form_system_theme_settings_alter().
  */
-function businessgroup_zymphonies_theme_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
+function businessgroup_zymphonies_theme_form_system_theme_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
   
   //Social Icon Link
   $form['businessgroup_zymphonies_theme_settings']['social_icon'] = array(
