@@ -1,0 +1,20 @@
+diff --git a/web/themes/businessgroup_zymphonies_theme/businessgroup_zymphonies_theme.info.yml b/web/themes/businessgroup_zymphonies_theme/businessgroup_zymphonies_theme.info.yml
+index 067ae21fd..303ebb3e8 100644
+--- a/web/themes/businessgroup_zymphonies_theme/businessgroup_zymphonies_theme.info.yml
++++ b/web/themes/businessgroup_zymphonies_theme/businessgroup_zymphonies_theme.info.yml
+@@ -2,7 +2,7 @@ name: Business Group Zymphonies Theme
+ type: theme
+ description: 'Zymphonies Business Group Responsive Theme. Developed & Designed by <a href=http://www.zymphonies.com>Zymphonies</a><br/>Contact us for Drupal Design & Development <a href=mailto:info@zymphonies.com>info@zymphonies.com</a>'
+ package: core
+-# core: 8.x
++core_version_requirement: ^8 | ^9 | ^10
+ base theme: classy
+ 
+ #Libraries
+@@ -37,6 +37,5 @@ regions:
+   auto_hidden_block: 'Auto hidden blocks'
+ # Information added by Drupal.org packaging script on 2017-11-17
+ version: '8.x-1.1'
+-core: '8.x'
+ project: 'businessgroup_zymphonies_theme'
+ datestamp: 1510948391
