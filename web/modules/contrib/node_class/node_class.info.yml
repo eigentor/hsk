@@ -1,9 +1,4 @@
 type: module
 name : Node class
 description : 'Adds classes specific to node.'
-core_version_requirement: ^8.8 || ^9
-
-# Information added by Drupal.org packaging script on 2021-10-16
-version: '2.0.0'
-project: 'node_class'
-datestamp: 1634365436
+core_version_requirement: ^8.9 || ^9 || ^10

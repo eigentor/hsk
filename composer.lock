@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b54c37154fa0dade47ebb79228d33592",
+    "content-hash": "3e80f8710554835afef1300dd0c074d7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4690,29 +4690,26 @@
         },
         {
             "name": "drupal/node_class",
-            "version": "2.0.0",
+            "version": "dev-2.0.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/node_class.git",
-                "reference": "2.0.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/node_class-2.0.0.zip",
-                "reference": "2.0.0",
-                "shasum": "db819cc8d813cccf1102aad4b072e32d35fdb101"
+                "reference": "bb119f3d2d52e9ab318767a600c7b54c1519bdcc"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9"
+                "drupal/core": "^8.9 || ^9 || ^10"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-2.0.x": "2.0.x-dev"
+                },
                 "drupal": {
-                    "version": "2.0.0",
-                    "datestamp": "1634365434",
+                    "version": "2.0.0+1-dev",
+                    "datestamp": "1655719208",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -11141,6 +11138,7 @@
         "drupal/entityconnect": 5,
         "drupal/inline_entity_form": 5,
         "drupal/masquerade": 5,
+        "drupal/node_class": 20,
         "drupal/rules": 15,
         "drupal/typed_data": 10
     },

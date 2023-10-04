@@ -25,10 +25,10 @@ class ResponsiveEditorImageDialog extends EditorImageDialog {
     $fid = $form_state->getValue(['fid', 0]);
     if (!empty($fid)) {
       $file = $this->fileStorage->load($fid);
-      $file_url = file_create_url($file->getFileUri());
+      $file_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
       // Transform absolute image URLs to relative image URLs: prevent problems
       // on multisite set-ups and prevent mixed content errors.
-      $file_url = file_url_transform_relative($file_url);
+      $file_url = \Drupal::service('file_url_generator')->transformRelative($file_url);
       $form_state->setValue(['attributes', 'src'], $file_url);
       $form_state->setValue(['attributes', 'data-entity-uuid'], $file->uuid());
       $form_state->setValue(['attributes', 'data-entity-type'], 'file');

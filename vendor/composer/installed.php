@@ -3,7 +3,7 @@
         'name' => 'drupal/recommended-project',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '9af9bb650d92c51f3baa260063604f10cdc02f28',
+        'reference' => '6ce6beb106a23b157d49dab3ac17dae8de875c8e',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -776,12 +776,14 @@
             'dev_requirement' => false,
         ),
         'drupal/node_class' => array(
-            'pretty_version' => '2.0.0',
-            'version' => '2.0.0.0',
-            'reference' => '2.0.0',
+            'pretty_version' => 'dev-2.0.x',
+            'version' => 'dev-2.0.x',
+            'reference' => 'bb119f3d2d52e9ab318767a600c7b54c1519bdcc',
             'type' => 'drupal-module',
             'install_path' => __DIR__ . '/../../web/modules/contrib/node_class',
-            'aliases' => array(),
+            'aliases' => array(
+                0 => '2.0.x-dev',
+            ),
             'dev_requirement' => false,
         ),
         'drupal/override_node_options' => array(
@@ -832,7 +834,7 @@
         'drupal/recommended-project' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '9af9bb650d92c51f3baa260063604f10cdc02f28',
+            'reference' => '6ce6beb106a23b157d49dab3ac17dae8de875c8e',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
