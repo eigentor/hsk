@@ -3405,61 +3405,6 @@
             "install-path": "../../web/modules/contrib/entity_reference_revisions"
         },
         {
-            "name": "drupal/entityconnect",
-            "version": "2.0.0-rc1",
-            "version_normalized": "2.0.0.0-RC1",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/entityconnect.git",
-                "reference": "8.x-2.0-rc1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/entityconnect-8.x-2.0-rc1.zip",
-                "reference": "8.x-2.0-rc1",
-                "shasum": "651761da061a7d74e2b770038d7527ffadcb6a2a"
-            },
-            "require": {
-                "drupal/core": "^8 || ^9"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-2.0-rc1",
-                    "datestamp": "1597689919",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "installation-source": "dist",
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "amaria",
-                    "homepage": "https://www.drupal.org/user/66428"
-                },
-                {
-                    "name": "jygastaud",
-                    "homepage": "https://www.drupal.org/user/660334"
-                },
-                {
-                    "name": "olmeta.david",
-                    "homepage": "https://www.drupal.org/user/720398"
-                }
-            ],
-            "description": "Allows for referenced entity to be created and edited from the entity reference field",
-            "homepage": "https://www.drupal.org/project/entityconnect",
-            "support": {
-                "source": "https://git.drupalcode.org/project/entityconnect"
-            },
-            "install-path": "../../web/modules/contrib/entityconnect"
-        },
-        {
             "name": "drupal/eu_cookie_compliance",
             "version": "1.21.0",
             "version_normalized": "1.21.0.0",

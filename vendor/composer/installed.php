@@ -3,7 +3,7 @@
         'name' => 'drupal/recommended-project',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '12f0ecae9a6d0e5dda42c441dbbaf5b7811df609',
+        'reference' => 'acb1b9e8435983410e1af4fbc7799ed2b0f401d1',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -577,15 +577,6 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'drupal/entityconnect' => array(
-            'pretty_version' => '2.0.0-rc1',
-            'version' => '2.0.0.0-RC1',
-            'reference' => '8.x-2.0-rc1',
-            'type' => 'drupal-module',
-            'install_path' => __DIR__ . '/../../web/modules/contrib/entityconnect',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'drupal/eu_cookie_compliance' => array(
             'pretty_version' => '1.21.0',
             'version' => '1.21.0.0',
@@ -834,7 +825,7 @@
         'drupal/recommended-project' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '12f0ecae9a6d0e5dda42c441dbbaf5b7811df609',
+            'reference' => 'acb1b9e8435983410e1af4fbc7799ed2b0f401d1',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
