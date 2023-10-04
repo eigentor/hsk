@@ -50,6 +50,10 @@ class ComposerStaticInitabf22a70c6a5e83926a68073a7e0c5d2
         array (
             'mglaman\\PHPStanDrupal\\' => 22,
         ),
+        'c' => 
+        array (
+            'cweagans\\Composer\\' => 18,
+        ),
         'W' => 
         array (
             'Webmozart\\PathUtil\\' => 19,
@@ -173,6 +177,10 @@ class ComposerStaticInitabf22a70c6a5e83926a68073a7e0c5d2
         'mglaman\\PHPStanDrupal\\' => 
         array (
             0 => __DIR__ . '/..' . '/mglaman/phpstan-drupal/src',
+        ),
+        'cweagans\\Composer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cweagans/composer-patches/src',
         ),
         'Webmozart\\PathUtil\\' => 
         array (
