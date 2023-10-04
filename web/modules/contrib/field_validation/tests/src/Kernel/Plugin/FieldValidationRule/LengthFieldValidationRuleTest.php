@@ -54,7 +54,7 @@ class LengthFieldValidationRuleTest extends FieldValidationRuleBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
     $this->min = 10;
     $this->max = 32;

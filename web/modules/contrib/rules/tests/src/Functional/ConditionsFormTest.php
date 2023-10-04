@@ -53,6 +53,9 @@ class ConditionsFormTest extends RulesBrowserTestBase {
       'administer site configuration',
     ]);
     $this->drupalLogin($this->account);
+
+    // Create a named role for use in conditions and actions.
+    $this->createRole(['administer nodes'], 'test-editor', 'Test Editor');
   }
 
   /**
@@ -64,7 +67,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
    *
    * @dataProvider dataConditionsFormWidgets
    */
-  public function testConditionsFormWidgets($id, $values = [], $widgets = [], $selectors = []) {
+  public function testConditionsFormWidgets($id, $required = [], $defaulted = [], $widgets = [], $selectors = []) {
     $expressionManager = $this->container->get('plugin.manager.rules_expression');
     $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
 
@@ -77,7 +80,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
     $condition = $expressionManager->createCondition($id);
     $rule->addExpressionObject($condition);
     // Save the configuration.
-    $expr_id = 'test_condition_' . $id;
+    $expr_id = 'condition_' . str_replace(':', '_', $id);
     $config_entity = $storage->create([
       'id' => $expr_id,
       'expression' => $rule->getConfiguration(),
@@ -91,7 +94,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
     $assert->pageTextContains('Edit ' . $condition->getLabel());
 
     // If any field values have been specified then fill in the form and save.
-    if (!empty($values)) {
+    if (!empty($required) || !empty($defaulted)) {
 
       // Switch to data selector where required.
       if (!empty($selectors)) {
@@ -102,9 +105,16 @@ class ConditionsFormTest extends RulesBrowserTestBase {
         }
       }
 
-      // Fill each given field with the value provided.
-      foreach ($values as $name => $value) {
-        $this->fillField('edit-context-definitions-' . $name . '-setting', $value);
+      // Try to save the form before entering the required values.
+      if (!empty($required)) {
+        $this->pressButton('Save');
+        // Check that the form has not been saved.
+        $assert->pageTextContains('Error message');
+        $assert->pageTextContains('field is required');
+        // Fill each required field with the value provided.
+        foreach ($required as $name => $value) {
+          $this->fillField('edit-context-definitions-' . $name . '-setting', $value);
+        }
       }
 
       // Check that the condition can be saved.
@@ -118,6 +128,13 @@ class ConditionsFormTest extends RulesBrowserTestBase {
 
       // Check that re-edit and re-save works OK.
       $this->clickLink('Edit');
+      if (!empty($defaulted)) {
+        // Fill each previously defaulted field with the value provided.
+        foreach ($defaulted as $name => $value) {
+          $this->fillField('edit-context-definitions-' . $name . '-setting', $value);
+        }
+      }
+
       $this->pressButton('Save');
       $assert->pageTextNotContains('Error message');
       $assert->addressMatches('#admin/config/workflow/rules/reactions/edit/' . $expr_id . '(\?uuid=' . $condition->getUuid() . '|)$#');
@@ -136,9 +153,13 @@ class ConditionsFormTest extends RulesBrowserTestBase {
    *   and relate to the test case. The values are ordered arrays of test case
    *   data with elements that must appear in the following order:
    *   - Machine name of the condition being tested.
-   *   - (optional) Values to enter on the Context form. This is an associative
+   *   - (optional) Required values to enter on the Context form. This is an
+   *     associative array with keys equal to the field names and values equal
+   *     to the required field values.
+   *   - (optional) Values for fields that have defaults. This is an associative
    *     array with keys equal to the field names and values equal to the field
-   *     values.
+   *     values. These are used on the second edit, to alter the fields that
+   *     have been saved with their default value.
    *   - (optional) Widget types we expect to see on the Context form. This is
    *     an associative array with keys equal to the field names as above, and
    *     values equal to expected widget type.
@@ -149,15 +170,18 @@ class ConditionsFormTest extends RulesBrowserTestBase {
     // Instead of directly returning the full set of test data, create variable
     // $data to hold it. This allows for manipulation before the final return.
     $data = [
-      'Data comparison' => [
+
+      // Data.
+      '1. Data comparison' => [
         // Machine name.
         'rules_data_comparison',
-        // Values.
+        // Required values.
         [
           'data' => 'node.title.value',
-          'operation' => '=this=is-not-validated=yet=',
           'value' => 'node_unchanged.title.value',
         ],
+        // Defaulted values.
+        ['operation' => 'contains'],
         // Widgets.
         [
           'data' => 'text-input',
@@ -167,94 +191,119 @@ class ConditionsFormTest extends RulesBrowserTestBase {
         // Selectors.
         ['value'],
       ],
-      'Data is empty' => [
+      '2. Data is empty' => [
         'rules_data_is_empty',
         ['data' => 'node.title.value'],
       ],
-      'List contains' => [
+      '3. List contains' => [
         'rules_list_contains',
         ['list' => 'node.uid.entity.roles', 'item' => 'abc'],
+        [],
         ['list' => 'textarea'],
       ],
-      'List Count' => [
+      '4. List count is' => [
         'rules_list_count_is',
         [
           'list' => 'node.uid.entity.roles',
-          'operator' => 'not * validated * yet',
           'value' => 2,
         ],
+        ['operator' => '<='],
       ],
-      'Entity has field' => [
-        'rules_entity_has_field',
-        ['entity' => 'node', 'field' => 'abc'],
-      ],
-      'Entity is new' => [
-        'rules_entity_is_new',
-        ['entity' => 'node'],
-      ],
-      'Entity is bundle' => [
-        'rules_entity_is_of_bundle',
-        ['entity' => 'node', 'type' => 'node', 'bundle' => 'article'],
-      ],
-      'Entity is type' => [
-        'rules_entity_is_of_type',
-        ['entity' => 'node', 'type' => 'article'],
-      ],
-      'Node is type' => [
-        'rules_node_is_of_type',
-        ['node' => 'node', 'types' => 'article'],
-      ],
-      'Node is promoted' => [
-        'rules_node_is_promoted',
-        ['node' => 'node'],
-      ],
-      'Node is published' => [
-        'rules_node_is_published',
-        ['node' => 'node'],
-      ],
-      'Node is sticky' => [
-        'rules_node_is_sticky',
-        ['node' => 'node'],
-      ],
-      'Path alias exists' => [
-        'rules_path_alias_exists',
-        ['alias' => '/abc'],
-      ],
-      'Path has alias' => [
-        'rules_path_has_alias',
-        ['path' => '/node/1'],
-      ],
-      'Text comparison - direct' => [
+      '5. Text comparison - direct' => [
         'rules_text_comparison',
         ['text' => 'node.title.value', 'match' => 'abc'],
       ],
-      'Text comparison - selector' => [
+      '6. Text comparison - selector' => [
         'rules_text_comparison',
-        ['text' => 'node.title.value', 'match' => 'node.uid.entity.name.value'],
+        [
+          'text' => 'node.title.value',
+          'match' => 'node.uid.entity.name.value',
+        ],
+        ['operator' => 'ends'],
         [],
         ['match'],
       ],
-      'Entity field access' => [
+
+      // Entity.
+      '7. Entity has field' => [
+        'rules_entity_has_field',
+        ['entity' => 'node', 'field' => 'login'],
+      ],
+      '8. Entity is new' => [
+        'rules_entity_is_new',
+        ['entity' => 'node'],
+      ],
+      '9. Entity is of bundle' => [
+        'rules_entity_is_of_bundle',
+        ['entity' => 'node', 'type' => 'node', 'bundle' => 'article'],
+      ],
+      '10. Entity is of type' => [
+        'rules_entity_is_of_type',
+        ['entity' => 'node', 'type' => 'path_alias'],
+      ],
+
+      // Content.
+      '11. Node is of type' => [
+        'rules_node_is_of_type',
+        ['node' => 'node', 'types' => 'article'],
+      ],
+      '12. Node is promoted' => [
+        'rules_node_is_promoted',
+        ['node' => 'node'],
+      ],
+      '13. Node is published' => [
+        'rules_node_is_published',
+        ['node' => 'node'],
+      ],
+      '14. Node is sticky' => [
+        'rules_node_is_sticky',
+        ['node' => 'node'],
+      ],
+
+      // Path.
+      '15. Path alias exists' => [
+        'rules_path_alias_exists',
+        ['alias' => '/abc'],
+        ['language' => 'und'],
+      ],
+      '16. Path has alias' => [
+        'rules_path_has_alias',
+        ['path' => '/node/1'],
+        ['language' => 'en'],
+      ],
+
+      // User.
+      '17. Entity field access' => [
         'rules_entity_field_access',
         [
           'entity' => 'node',
-          'field' => 'abc',
+          'field' => 'timezone',
           'user' => '@user.current_user_context:current_user',
         ],
+        ['operation' => 'edit'],
       ],
-      'Uer has role' => [
+      '18. User has role' => [
         'rules_user_has_role',
         [
           'user' => '@user.current_user_context:current_user',
-          'roles' => 'Developer',
+          'roles' => 'test-editor',
         ],
+        ['operation' => 'OR'],
+        [],
+        ['user'],
       ],
-      'User is blocked' => [
+      '19. User is blocked' => [
         'rules_user_is_blocked',
         ['user' => '@user.current_user_context:current_user'],
+        [],
+        [],
+        ['user'],
       ],
-      'Ip is banned' => [
+
+      // Ban.
+      '20. Ip is banned' => [
         'rules_ip_is_banned',
+        [],
         ['ip' => '192.0.2.1'],
       ],
     ];

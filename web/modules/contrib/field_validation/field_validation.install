@@ -6,6 +6,13 @@
  */
 
 /**
+ * Implements hook_schema().
+ */
+function field_validation_uninstall() {
+
+}
+
+/**
  * Renames validation rules config prefix from "fv" to "rule_set".
  */
 function field_validation_update_8001() {

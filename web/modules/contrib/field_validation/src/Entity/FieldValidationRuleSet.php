@@ -38,7 +38,7 @@ use Drupal\field_validation\FieldValidationRulePluginCollection;
  *     "name",
  *     "label",
  *     "entity_type",
- *     "bundle",
+ *     "bundle", 
  *     "field_validation_rules",
  *   }
  * )
@@ -66,7 +66,7 @@ class FieldValidationRuleSet extends ConfigEntityBase implements FieldValidation
    * @var string
    */
   protected $entity_type;
-
+  
   /**
    * The bundle of FieldValidationRuleSet.
    *
@@ -79,7 +79,8 @@ class FieldValidationRuleSet extends ConfigEntityBase implements FieldValidation
    *
    * @var array
    */
-  protected $field_validation_rules = [];
+  //protected $fieldValidationRules = array();
+  protected $field_validation_rules = array();
 
   /**
    * Holds the collection of fieldValidationRules that are used by this FieldValidationRuleSet.
@@ -100,6 +101,17 @@ class FieldValidationRuleSet extends ConfigEntityBase implements FieldValidation
    */
   public function postSave(EntityStorageInterface $storage, $update = TRUE) {
     parent::postSave($storage, $update);
+
+    if ($update) {
+      if (!empty($this->original) && $this->id() !== $this->original->id()) {
+        if (!$this->isSyncing()) {
+
+        }
+      }
+      else {
+
+      }
+    }
   }
 
   /**
@@ -107,6 +119,9 @@ class FieldValidationRuleSet extends ConfigEntityBase implements FieldValidation
    */
   public static function postDelete(EntityStorageInterface $storage, array $entities) {
     parent::postDelete($storage, $entities);
+
+    foreach ($entities as $field_validation_rule_set) {
+    }
   }
 
   /**
@@ -129,9 +144,11 @@ class FieldValidationRuleSet extends ConfigEntityBase implements FieldValidation
    * {@inheritdoc}
    */
   public function getFieldValidationRules() {
+    //drupal_set_message('getFieldValidationRules');
     if (!$this->fieldValidationRulesCollection) {
       $this->fieldValidationRulesCollection = new FieldValidationRulePluginCollection($this->getFieldValidationRulePluginManager(), $this->field_validation_rules);
       $this->fieldValidationRulesCollection->sort();
+	  //drupal_set_message(var_export($this->field_validation_rules, true));
     }
     return $this->fieldValidationRulesCollection;
   }
@@ -140,7 +157,7 @@ class FieldValidationRuleSet extends ConfigEntityBase implements FieldValidation
    * {@inheritdoc}
    */
   public function getPluginCollections() {
-    return ['field_validation_rules' => $this->getFieldValidationRules()];
+    return array('field_validation_rules' => $this->getFieldValidationRules());
   }
 
   /**
@@ -205,6 +222,5 @@ class FieldValidationRuleSet extends ConfigEntityBase implements FieldValidation
   public function setAttachedBundle($bundle) {
     $this->set('bundle', $bundle);
     return $this;
-  }
-
+  }  
 }

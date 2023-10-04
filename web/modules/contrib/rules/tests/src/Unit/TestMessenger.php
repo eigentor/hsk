@@ -21,7 +21,7 @@ class TestMessenger implements MessengerInterface {
    */
   public function addMessage($message, $type = self::TYPE_STATUS, $repeat = FALSE) {
     if (!empty($message)) {
-      $this->messages[$type] = isset($this->messages[$type]) ? $this->messages[$type] : [];
+      $this->messages[$type] = $this->messages[$type] ?? [];
       if ($repeat || !in_array($message, $this->messages[$type])) {
         $this->messages[$type][] = $message;
       }
@@ -61,7 +61,7 @@ class TestMessenger implements MessengerInterface {
    */
   public function messagesByType($type) {
     if (!empty($type)) {
-      return isset($this->messages[$type]) ? $this->messages[$type] : [];
+      return $this->messages[$type] ?? [];
     }
   }
 

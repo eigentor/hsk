@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\rules\Unit\Integration;
 
+use Drupal\Component\DependencyInjection\ReverseContainer;
 use Drupal\Component\Uuid\Php;
 use Drupal\Core\Cache\NullBackend;
 use Drupal\Core\DependencyInjection\ClassResolverInterface;
@@ -240,6 +241,11 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
     $container->set('uuid', $uuid_service);
     $container->set('typed_data.data_fetcher', $this->dataFetcher);
     $container->set('typed_data.placeholder_resolver', $this->placeholderResolver);
+
+    // The new ReverseContainer service needs to be present to prevent massive
+    // unit test failures.
+    // @see https://www.drupal.org/project/rules/issues/3346846
+    $container->set('Drupal\Component\DependencyInjection\ReverseContainer', new ReverseContainer($container));
 
     \Drupal::setContainer($container);
     $this->container = $container;

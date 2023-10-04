@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c69d0cc366d4a00c80898dea48a75eb",
+    "content-hash": "a96d9f271a8e859a79fff055032e93c5",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3536,29 +3536,29 @@
         },
         {
             "name": "drupal/field_validation",
-            "version": "1.1.0",
+            "version": "1.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/field_validation.git",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.0-beta3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/field_validation-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "c9998e29523373aac43095632b2b2b0992bc497b"
+                "url": "https://ftp.drupal.org/files/projects/field_validation-8.x-1.0-beta3.zip",
+                "reference": "8.x-1.0-beta3",
+                "shasum": "d527fa9696e069f582d1b0c3f7d81928082346ca"
             },
             "require": {
-                "drupal/core": "^9 || ^10"
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1690428219",
+                    "version": "8.x-1.0-beta3",
+                    "datestamp": "1601896531",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -4823,34 +4823,33 @@
         },
         {
             "name": "drupal/paragraphs_features",
-            "version": "1.16.0",
+            "version": "2.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/paragraphs_features.git",
-                "reference": "8.x-1.16"
+                "reference": "2.0.0-beta3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/paragraphs_features-8.x-1.16.zip",
-                "reference": "8.x-1.16",
-                "shasum": "c744a87b5a097e75dc61518e1aa50151c58dc106"
+                "url": "https://ftp.drupal.org/files/projects/paragraphs_features-2.0.0-beta3.zip",
+                "reference": "2.0.0-beta3",
+                "shasum": "b040ba0048101f578752050bc55cc039939a649c"
             },
             "require": {
-                "drupal/core": "^9.2",
+                "drupal/core": "^9.2 || ^10",
                 "drupal/paragraphs": "^1.13"
             },
             "require-dev": {
-                "drupal/gin": "^3.0",
-                "drupal/thunder_admin": "^4.0"
+                "drupal/gin": "^3.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.16",
-                    "datestamp": "1646219273",
+                    "version": "2.0.0-beta3",
+                    "datestamp": "1692697161",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -4960,20 +4959,20 @@
         },
         {
             "name": "drupal/quick_node_clone",
-            "version": "1.15.0",
+            "version": "1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/quick_node_clone.git",
-                "reference": "8.x-1.15"
+                "reference": "8.x-1.16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/quick_node_clone-8.x-1.15.zip",
-                "reference": "8.x-1.15",
-                "shasum": "bac562133cfab05c207d4e45daa95cd36a7fad51"
+                "url": "https://ftp.drupal.org/files/projects/quick_node_clone-8.x-1.16.zip",
+                "reference": "8.x-1.16",
+                "shasum": "44cc517788cf2d9613fd2070b1aa9e62627c5e1c"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9"
+                "drupal/core": "^8.8 || ^9 || ^10"
             },
             "require-dev": {
                 "drupal/paragraphs": "1.x-dev"
@@ -4981,8 +4980,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.15",
-                    "datestamp": "1651684801",
+                    "version": "8.x-1.16",
+                    "datestamp": "1678754974",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5086,30 +5085,30 @@
         },
         {
             "name": "drupal/rules",
-            "version": "dev-3.x",
+            "version": "3.0.0-alpha8",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rules.git",
-                "reference": "615221dd5ec2d4d5bd17328e70e8c1a11f9e2c93"
+                "reference": "8.x-3.0-alpha8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/rules-8.x-3.0-alpha8.zip",
+                "reference": "8.x-3.0-alpha8",
+                "shasum": "22a44298b98000697efd86a29a8df1c0ce0bf44f"
             },
             "require": {
-                "drupal/core": "^8.8.2 || ^9",
+                "drupal/core": "^9.1 || ^10",
                 "drupal/typed_data": "^1.0"
-            },
-            "require-dev": {
-                "drupal/typed_data": "1.x-dev"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-3.x": "3.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-3.x-dev",
-                    "datestamp": "1619156352",
+                    "version": "8.x-3.0-alpha8",
+                    "datestamp": "1696376270",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
@@ -5124,16 +5123,16 @@
             ],
             "authors": [
                 {
-                    "name": "TR",
-                    "homepage": "https://www.drupal.org/user/202830"
-                },
-                {
                     "name": "fago",
                     "homepage": "https://www.drupal.org/user/16747"
                 },
                 {
                     "name": "klausi",
                     "homepage": "https://www.drupal.org/user/262198"
+                },
+                {
+                    "name": "TR",
+                    "homepage": "https://www.drupal.org/user/202830"
                 }
             ],
             "description": "React on events and conditionally evaluate actions.",
@@ -5335,26 +5334,26 @@
         },
         {
             "name": "drupal/time_field",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/time_field.git",
-                "reference": "2.0.0"
+                "reference": "2.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/time_field-2.0.0.zip",
-                "reference": "2.0.0",
-                "shasum": "7385d8ca94dcdaf725e6a3f72ef348db5232d022"
+                "url": "https://ftp.drupal.org/files/projects/time_field-2.1.0.zip",
+                "reference": "2.1.0",
+                "shasum": "5d6668a9deb3e0cd9223796a04b0c87a6272c918"
             },
             "require": {
-                "drupal/core": "^8 || ^9"
+                "drupal/core": "^8 || ^9 || ^10"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0",
-                    "datestamp": "1626688764",
+                    "version": "2.1.0",
+                    "datestamp": "1665151948",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5514,26 +5513,26 @@
         },
         {
             "name": "drupal/typed_data",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/typed_data.git",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-1.0-beta2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/typed_data-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "73d079f29c7a5679e0db3e28ae888e8cce2f1335"
+                "url": "https://ftp.drupal.org/files/projects/typed_data-8.x-1.0-beta2.zip",
+                "reference": "8.x-1.0-beta2",
+                "shasum": "e0aa651b129d8dcd765ca49cba8682ebe09e6e73"
             },
             "require": {
-                "drupal/core": "^8.8.2 || ^9"
+                "drupal/core": "^9.1 || ^10"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1635839873",
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1679429196",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -5541,7 +5540,7 @@
                 },
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^9 || ^10"
+                        "drush.services.yml": ">=9"
                     }
                 }
             },
@@ -5551,12 +5550,12 @@
             ],
             "authors": [
                 {
-                    "name": "TR",
-                    "homepage": "https://www.drupal.org/user/202830"
-                },
-                {
                     "name": "fago",
                     "homepage": "https://www.drupal.org/user/16747"
+                },
+                {
+                    "name": "TR",
+                    "homepage": "https://www.drupal.org/user/202830"
                 }
             ],
             "description": "Extends the core Typed Data API with new APIs and features.",
@@ -5643,30 +5642,31 @@
         },
         {
             "name": "drupal/video_embed_field",
-            "version": "2.4.0",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/video_embed_field.git",
-                "reference": "8.x-2.4"
+                "reference": "8.x-2.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-2.4.zip",
-                "reference": "8.x-2.4",
-                "shasum": "96b14bb93c1bb6a07b84315a4f87367870f8b574"
+                "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-2.5.zip",
+                "reference": "8.x-2.5",
+                "shasum": "997ed67b6873e822fe628f87f65bd6da67e7350c"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9"
+                "drupal/core": "^9.2 || ^10"
             },
             "require-dev": {
-                "drupal/colorbox": "^1.0",
+                "drupal/ckeditor": "^1",
+                "drupal/colorbox": "^2",
                 "drupal/video_embed_media": "*"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.4",
-                    "datestamp": "1587686337",
+                    "version": "8.x-2.5",
+                    "datestamp": "1671413311",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5675,12 +5675,12 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
-                    "name": "Sam152",
-                    "homepage": "https://www.drupal.org/user/1485048"
+                    "name": "abhinesh",
+                    "homepage": "https://www.drupal.org/user/3645979"
                 },
                 {
                     "name": "jec006",
@@ -5689,6 +5689,10 @@
                 {
                     "name": "plopesc",
                     "homepage": "https://www.drupal.org/user/282415"
+                },
+                {
+                    "name": "Sam152",
+                    "homepage": "https://www.drupal.org/user/1485048"
                 }
             ],
             "description": "A pluggable field type for storing videos from external video hosts such as Vimeo and YouTube.",
@@ -11081,8 +11085,7 @@
         "drupal/entityconnect": 5,
         "drupal/inline_entity_form": 5,
         "drupal/masquerade": 5,
-        "drupal/rules": 20,
-        "drupal/typed_data": 10
+        "drupal/rules": 15
     },
     "prefer-stable": true,
     "prefer-lowest": false,

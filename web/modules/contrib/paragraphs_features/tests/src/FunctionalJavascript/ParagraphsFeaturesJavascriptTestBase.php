@@ -8,9 +8,9 @@ use Drupal\editor\Entity\Editor;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
-use Drupal\Tests\paragraphs\Traits\ParagraphsCoreVersionUiTestTrait;
 use Drupal\Tests\paragraphs\FunctionalJavascript\LoginAdminTrait;
 use Drupal\Tests\paragraphs\FunctionalJavascript\ParagraphsTestBaseTrait;
+use Drupal\Tests\paragraphs\Traits\ParagraphsCoreVersionUiTestTrait;
 
 /**
  * Base class for Javascript tests for paragraphs features module.
@@ -38,7 +38,7 @@ abstract class ParagraphsFeaturesJavascriptTestBase extends WebDriverTestBase {
     'field_ui',
     'link',
     'node',
-    'ckeditor',
+    'ckeditor5',
     'paragraphs',
     'paragraphs_test',
     'paragraphs_features',
@@ -49,7 +49,7 @@ abstract class ParagraphsFeaturesJavascriptTestBase extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     if ($theme = getenv('THEME')) {
@@ -60,12 +60,6 @@ abstract class ParagraphsFeaturesJavascriptTestBase extends WebDriverTestBase {
         ->set('admin', $theme)
         ->save();
     }
-
-    // Place the breadcrumb, tested in fieldUIAddNewField().
-    $this->drupalPlaceBlock('system_breadcrumb_block');
-    $this->drupalPlaceBlock('local_tasks_block');
-    $this->drupalPlaceBlock('local_actions_block');
-    $this->drupalPlaceBlock('page_title_block');
   }
 
   /**
@@ -161,7 +155,7 @@ abstract class ParagraphsFeaturesJavascriptTestBase extends WebDriverTestBase {
 
     Editor::create([
       'format' => 'filtered_html',
-      'editor' => 'ckeditor',
+      'editor' => 'ckeditor5',
     ])->save();
 
     // After createTestConfiguration, $this->admin_user will be created by

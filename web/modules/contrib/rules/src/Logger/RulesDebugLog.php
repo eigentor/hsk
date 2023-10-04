@@ -46,7 +46,7 @@ class RulesDebugLog implements LoggerInterface {
   /**
    * {@inheritdoc}
    */
-  public function log($level, $message, array $context = []) {
+  public function log($level, $message, array $context = []): void {
     // Remove any backtraces since they may contain an unserializable variable.
     unset($context['backtrace']);
 
@@ -86,21 +86,21 @@ class RulesDebugLog implements LoggerInterface {
    *     the last of the nested entries.
    *   - path: Path to edit this component.
    */
-  public function getLogs() {
+  public function getLogs(): array {
     return (array) $this->session->get('rules_debug_log');
   }
 
   /**
    * Clears the logs entries from the storage.
    */
-  public function clearLogs() {
+  public function clearLogs(): void {
     $this->session->remove('rules_debug_log');
   }
 
   /**
    * Renders the whole log.
    *
-   * @return string
+   * @return \Drupal\Component\Render\MarkupInterface
    *   An string already rendered to HTML.
    */
   public function render() {
@@ -114,7 +114,7 @@ class RulesDebugLog implements LoggerInterface {
    * @return array
    *   A Drupal render array.
    */
-  public function build() {
+  public function build(): array {
     $this->logs = $this->getLogs();
 
     if (count($this->logs) == 0) {
@@ -137,7 +137,12 @@ class RulesDebugLog implements LoggerInterface {
       $build[$line] = [
         '#type' => 'details',
         // @codingStandardsIgnoreStart
-        '#title' => $this->t($this->logs[$line]['message'], $this->logs[$line]['context']),
+        // Need to filter out context keys that aren't recognized as
+        // placeholders for t(), because Drupal core no longer supports these.
+        '#title' => $this->t(
+          $this->logs[$line]['message'],
+          $this->filterContext($this->logs[$line]['context'])
+        ),
         // @codingStandardsIgnoreEnd
       ];
       // $line is modified inside renderHelper().
@@ -153,8 +158,14 @@ class RulesDebugLog implements LoggerInterface {
    * Renders the log of one event invocation.
    *
    * Called recursively, consuming all the log lines for this event.
+   *
+   * @param int $line
+   *   The line number of the log, starting at 0.
+   *
+   * @return array
+   *   A render array.
    */
-  public function renderHelper(&$line = 0) {
+  protected function renderHelper(int &$line = 0): array {
     $build = [];
     $startTime = $this->logs[$line]['timestamp'];
     while ($line < count($this->logs)) {
@@ -169,7 +180,12 @@ class RulesDebugLog implements LoggerInterface {
         $build[$line] = [
           '#type' => 'details',
           // @codingStandardsIgnoreStart
-          '#title' => $this->t($this->logs[$line]['message'], $this->logs[$line]['context']) . ' [' . $link . ']',
+          // Need to filter out context keys that aren't recognized as
+          // placeholders for t(), because Drupal core no longer supports these.
+          '#title' => $this->t(
+            $this->logs[$line]['message'],
+            $this->filterContext($this->logs[$line]['context'])
+          ) . ' [' . $link . ']',
           // @codingStandardsIgnoreEnd
         ];
         $thisline = $line;
@@ -191,7 +207,12 @@ class RulesDebugLog implements LoggerInterface {
           '#timestamp' => $this->logs[$line]['timestamp'],
           '#level' => $this->logs[$line]['level'],
           // @codingStandardsIgnoreStart
-          '#text' => $this->t($this->logs[$line]['message'], $this->logs[$line]['context']),
+          // Need to filter out context keys that aren't recognized as
+          // placeholders for t(), because Drupal core no longer supports these.
+          '#text' => $this->t(
+            $this->logs[$line]['message'],
+            $this->filterContext($this->logs[$line]['context'])
+          ),
           // @codingStandardsIgnoreEnd
           '#link' => $link,
         ];
@@ -211,6 +232,36 @@ class RulesDebugLog implements LoggerInterface {
       '#theme' => 'item_list',
       '#items' => $build,
     ];
+  }
+
+  /**
+   * Removes invalid placeholders from the given array.
+   *
+   * As of Drupal 10, arrays that contain placeholder replacement strings for
+   * use by the core Drupal t() function may not contain any keys that aren't
+   * valid placeholders for the string being translated. That means we have to
+   * remove keys from these arrays before passing them to the t() function.
+   *
+   * @param array $context
+   *   An array containing placeholder replacements for use by t(), keyed by
+   *   the placeholder.
+   *
+   * @return array
+   *   The context array, with invalid placeholders removed.
+   *
+   * @see \Drupal\Component\Render\FormattableMarkup::placeholderFormat()
+   */
+  protected function filterContext(array $context = []): array {
+    // This implementation assumes that all valid placeholders start with a
+    // punctuation character. In reality Drupal currently supports only '@',
+    // '%', and ':', but testing for just those three is considerably slower
+    // than using the built-in PHP ctype_punct() function. This will work to
+    // remove all invalid placeholders added by the Rules module, but another
+    // invalid placeholder added by a user might fall through and still cause
+    // an error (as it should, to indicate the user has made an error).
+    return array_filter($context, function ($key) {
+      return ctype_punct($key[0]);
+    }, ARRAY_FILTER_USE_KEY);
   }
 
 }

@@ -75,7 +75,7 @@ class LoopExpression extends ActionExpressionContainer {
       return $violation_list;
     }
 
-    $list_item_name = isset($this->configuration['list_item']) ? $this->configuration['list_item'] : 'list_item';
+    $list_item_name = $this->configuration['list_item'] ?? 'list_item';
     if ($metadata_state->hasDataDefinition($list_item_name)) {
       $violation_list->addViolationWithMessage($this->t('List item name %name conflicts with an existing variable.', [
         '%name' => $list_item_name,

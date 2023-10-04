@@ -95,6 +95,9 @@ class EntityFetchByFieldTest extends RulesEntityIntegrationTestBase {
 
     // Create dummy query object.
     $query = $this->prophesize(QueryInterface::class);
+    $query->accessCheck(TRUE)
+      ->willReturn($query->reveal())
+      ->shouldBeCalledTimes(1);
     $query->condition($field_name, $field_value, '=')
       ->willReturn($query->reveal())
       ->shouldBeCalledTimes(1);

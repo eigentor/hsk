@@ -219,8 +219,7 @@ class Time {
   public function on(\DateTime $dateTime) {
     $instance = new \DateTime();
     $instance->setTimestamp($dateTime->getTimestamp());
-    $instance->setTime(0, 0, 0);
-    $instance->setTimestamp($instance->getTimestamp() + $this->getTimestamp());
+    $instance->setTime($this->getHour(), $this->getMinute(), $this->getSecond());
     return $instance;
   }
 

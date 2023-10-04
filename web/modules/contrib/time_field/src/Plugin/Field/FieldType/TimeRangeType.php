@@ -68,8 +68,8 @@ class TimeRangeType extends FieldItemBase {
    * {@inheritdoc}
    */
   public function isEmpty() {
-    $from = $this->get('from')->getValue();
-    $to = $this->get('to')->getValue();
+    $from = $this->get('from')->getValue() ?? '';
+    $to = $this->get('to')->getValue() ?? '';
     return trim($from) === '' || trim($to) === '';
   }
 

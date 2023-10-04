@@ -152,7 +152,7 @@ class ExecutionState implements ExecutionStateInterface {
       // Support global context names as variable name by ignoring points in
       // the service name; e.g. @user.current_user_context:current_user.name.
       if ($property_path[0] == '@') {
-        list($service, $property_path) = explode(':', $property_path, 2);
+        [$service, $property_path] = explode(':', $property_path, 2);
       }
       $parts = explode('.', $property_path);
       $var_name = array_shift($parts);

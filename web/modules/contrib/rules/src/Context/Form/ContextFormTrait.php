@@ -155,7 +155,7 @@ trait ContextFormTrait {
             //
             // Additionally, we want to remove leading and trailing whitespace
             // from each line, and discard any empty lines.
-            $values = preg_split('/\s*\R\s*/', $value['setting'], NULL, PREG_SPLIT_NO_EMPTY);
+            $values = preg_split('/\s*\R\s*/', $value['setting'], 0, PREG_SPLIT_NO_EMPTY);
             $context_config->setValue($context_name, $values);
           }
           else {

@@ -83,7 +83,7 @@ class TimeType extends FieldItemBase {
    * {@inheritdoc}
    */
   public function isEmpty() {
-    $value = $this->get('value')->getValue();
+    $value = $this->get('value')->getValue() ?? '';
     return trim($value) === '';
   }
 

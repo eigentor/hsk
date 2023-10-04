@@ -7,7 +7,7 @@ use Drupal\field_validation\ConfigurableFieldValidationRuleBase;
 use Drupal\field_validation\FieldValidationRuleSetInterface;
 
 /**
- * Unique Field Validation Rule.
+ * UniqueFieldValidationRule.
  *
  * @FieldValidationRule(
  *   id = "unique_field_validation_rule",
@@ -20,6 +20,7 @@ class UniqueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
   /**
    * {@inheritdoc}
    */
+   
   public function addFieldValidationRule(FieldValidationRuleSetInterface $field_validation_rule_set) {
 
     return TRUE;
@@ -41,7 +42,6 @@ class UniqueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
     return [
       'scope' => NULL,
       'per_user' => FALSE,
-      'published' => FALSE,
     ];
   }
 
@@ -60,25 +60,12 @@ class UniqueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
       '#default_value' => $this->configuration['scope'],
     ];
 
-    $rule_set = $form_state->getBuildInfo()['args'][0];
-    $entity_type_id = $rule_set->getAttachedEntityType();
-    $entity_type = \Drupal::entityTypeManager()->getDefinition($entity_type_id, FALSE);
+    $form['per_user'] = [
+      '#title' => $this->t('Per user'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->configuration['per_user'] ?: FALSE,
+    ];
 
-    if ($entity_type->getKey('published')) {
-      $form['published'] = [
-        '#title' => $this->t('Only for published entities'),
-        '#type' => 'checkbox',
-        '#default_value' => $this->configuration['published'] ?: FALSE,
-      ];
-    }
-
-    if ($entity_type->getKey('owner')) {
-      $form['per_user'] = [
-        '#title' => $this->t('Per user'),
-        '#type' => 'checkbox',
-        '#default_value' => $this->configuration['per_user'] ?: FALSE,
-      ];
-    }
     return $form;
   }
 
@@ -89,28 +76,24 @@ class UniqueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
     parent::submitConfigurationForm($form, $form_state);
 
     $this->configuration['scope'] = $form_state->getValue('scope');
-    $this->configuration['published'] = $form_state->getValue('published') ?: FALSE;
-    $this->configuration['per_user'] = $form_state->getValue('per_user') ?: FALSE;
+    $this->configuration['per_user'] = $form_state->getValue('per_user');
   }
-
-  /**
-   * {@inheritdoc}
-   */
+  
   public function validate($params) {
-    $value = $params['value'] ?? '';
-    $rule = $params['rule'] ?? NULL;
-    $context = $params['context'] ?? NULL;
-    $items = $params['items'] ?? [];
-    $delta = $params['delta'] ?? '';
-    $column = $rule->getColumn();
+    $value = isset($params['value']) ? $params['value'] : '';
+	$rule = isset($params['rule']) ? $params['rule'] : null;
+	$context = isset($params['context']) ? $params['context'] : null;
+	$items = isset($params['items']) ? $params['items'] : array();
+	$delta = isset($params['delta']) ? $params['delta'] : '';
+	$column = $rule->getColumn();
 
-    $settings = [];
-    if (!empty($rule) && !empty($rule->configuration)) {
-      $settings = $rule->configuration;
-    }
+	
+	$settings = array();
+	if(!empty($rule) && !empty($rule->configuration)){
+	  $settings = $rule->configuration;
+	}
     $flag = TRUE;
-    $scope = $settings['scope'] ?? '';
-    $published = $settings['published'] ?? FALSE;
+    $scope = isset($settings['scope']) ? $settings['scope'] : '';
     $per_user = $settings['per_user'] ?? FALSE;
     $count = 0;
     foreach ($items as $delta1 => $item1) {
@@ -123,45 +106,45 @@ class UniqueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
     }
     if ($flag) {
       $entity = $items->getEntity();
-      $entity_type_id = $entity->getEntityTypeId();
-
-      $query = \Drupal::entityQuery($entity_type_id);
-      $query->addTag('field_validation');
-      $query->accessCheck(FALSE);
+      $entity_type_id = $entity->getEntityTypeId();	
+	  
+	  $query = \Drupal::entityQuery($entity_type_id);
+	  $query->addTag('field_validation');
+	  $query->accessCheck(FALSE);
 
       if ($scope == 'bundle') {
-        $bundle = $entity->bundle();
-        $bundle_key = $entity->getEntityType()->getKey('bundle');
-        if (!empty($bundle_key)) {
-          $query->condition($bundle_key, $bundle);
-        }
-      }
 
-      if ($published) {
-        $published_key = $entity->getEntityType()->getKey('published');
-        if (!empty($published_key)) {
-          $query->condition($published_key, 1);
-        }
+	    $bundle = $entity->bundle();
+        $bundle_key = $entity->getEntityType()->getKey('bundle');
+        /*		
+	    $bundle_keys = [
+		  "node" => "type",
+		  "taxonomy_term" => "vid",
+		  "comment" => "comment_type",
+		  "block_content" => "type",  
+		];
+		*/
+		if(!empty($bundle_key)){
+          $query->condition($bundle_key, $bundle);
+		}
+
       }
 
       if ($per_user) {
-        $owner_key = $entity->getEntityType()->getKey('owner');
-        if (!empty($owner_key)) {
-          $query->condition($owner_key, \Drupal::currentUser()->id());
-        }
+        $query->condition('uid', \Drupal::currentUser()->id());
       }
 
-      $id_key = $entity->getEntityType()->getKey('id');
-      $query->condition($id_key, (int) $items->getEntity()->id(), '<>');
-
-      $field_name = $items->getFieldDefinition()->getName();
-
-      if (!empty($column)) {
-        $field_name = $field_name . '.' . $column;
-      }
-      $query->condition($field_name, $value);
-
-      $count = $query->range(0, 1)
+	  $id_key = $entity->getEntityType()->getKey('id');
+	  $query->condition($id_key, (int) $items->getEntity()->id(), '<>');
+	  
+	  $field_name = $items->getFieldDefinition()->getName();
+	  
+	  if(!empty($column)){
+	    $field_name = $field_name . '.' . $column;
+	  }
+	  $query->condition($field_name, $value);
+	  
+	  $count = $query->range(0, 1)
         ->count()
         ->execute();
 
@@ -169,11 +152,13 @@ class UniqueFieldValidationRule extends ConfigurableFieldValidationRuleBase {
         $flag = FALSE;
 
       }
+
     }
 
     if (!$flag) {
-      $context->addViolation($rule->getReplacedErrorMessage($params));
-    }
+      $context->addViolation($rule->getErrorMessage());
+    }	
+	
+    //return true;
   }
-
 }

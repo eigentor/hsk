@@ -88,9 +88,19 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
     'required' => 'isRequired',
     'default_value' => 'defaultValue',
     'constraints' => 'constraints',
+    'getter' => 'getter',
     'allow_null' => 'allowNull',
     'assignment_restriction' => 'assignmentRestriction',
   ];
+
+  /**
+   * Name of getter function for this context variable.
+   *
+   * Only applicable for events.
+   *
+   * @var string
+   */
+  protected $getter = NULL;
 
   /**
    * Whether the context value is allowed to be NULL or not.
@@ -140,7 +150,7 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
       throw new ContextException('ContextDefinition class must implement ' . ContextDefinitionInterface::class . '.');
     }
     // Default to Rules context definition class.
-    $values['class'] = isset($values['class']) ? $values['class'] : ContextDefinition::class;
+    $values['class'] = $values['class'] ?? ContextDefinition::class;
     if (!isset($values['value'])) {
       $values['value'] = 'any';
     }
@@ -150,6 +160,20 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
       $definition->$name = $values[$key];
     }
     return $definition;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasGetter() {
+    return !is_null($this->getter);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGetter() {
+    return $this->getter;
   }
 
   /**

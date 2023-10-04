@@ -20,6 +20,7 @@ class IpFieldValidationRule extends ConfigurableFieldValidationRuleBase {
   /**
    * {@inheritdoc}
    */
+   
   public function addFieldValidationRule(FieldValidationRuleSetInterface $field_validation_rule_set) {
 
     return TRUE;
@@ -63,10 +64,10 @@ class IpFieldValidationRule extends ConfigurableFieldValidationRuleBase {
         '4_public' => $this->t('V4_ONLY_PUBLIC'),
         '6_public' => $this->t('V6_ONLY_PUBLIC'),
         'all_public' => $this->t('ALL_ONLY_PUBLIC'),
-      ],
+      ],  
       '#default_value' => $this->configuration['version'],
     ];
-
+	
     return $form;
   }
 
@@ -78,20 +79,17 @@ class IpFieldValidationRule extends ConfigurableFieldValidationRuleBase {
 
     $this->configuration['version'] = $form_state->getValue('version');
   }
-
-  /**
-   *
-   */
+  
   public function validate($params) {
-    $value = $params['value'] ?? '';
-    $rule = $params['rule'] ?? NULL;
-    $context = $params['context'] ?? NULL;
-    $settings = [];
-    if (!empty($rule) && !empty($rule->configuration)) {
-      $settings = $rule->configuration;
-    }
+    $value = isset($params['value']) ? $params['value'] : '';
+	$rule = isset($params['rule']) ? $params['rule'] : null;
+	$context = isset($params['context']) ? $params['context'] : null;
+	$settings = array();
+	if(!empty($rule) && !empty($rule->configuration)){
+	  $settings = $rule->configuration;
+	}
     if ($value !== '' && !is_null($value)) {
-      $version = $settings['version'] ?? '';
+      $version = isset($settings['version']) ? $settings['version'] : '';
       switch ($version) {
         case '4':
           $flag = FILTER_FLAG_IPV4;
@@ -140,12 +138,12 @@ class IpFieldValidationRule extends ConfigurableFieldValidationRuleBase {
         default:
           $flag = NULL;
           break;
-      }
+        }
 
       if (!filter_var($value, FILTER_VALIDATE_IP, $flag)) {
-        $context->addViolation($rule->getReplacedErrorMessage($params));
+        $context->addViolation($rule->getErrorMessage());
       }
-    }
+    }	
+	
   }
-
 }

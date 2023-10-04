@@ -4,9 +4,9 @@ description: 'Provides "Time Field" and "Time Range Field".'
 package: 'Field types'
 dependencies:
   - drupal:datetime
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10
 
-# Information added by Drupal.org packaging script on 2021-07-19
-version: '2.0.0'
+# Information added by Drupal.org packaging script on 2022-10-07
+version: '2.1.0'
 project: 'time_field'
-datestamp: 1626688766
+datestamp: 1665151748

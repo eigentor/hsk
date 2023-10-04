@@ -1,6 +1,13 @@
 /**
  * @file
  * Rules list builders search behavior.
+ *
+ * This code was forked from the core file:
+ *   core/modules/views_ui/js/views_ui.listing.js
+ * and is up-to-date as of core commit:
+ *   8aa8ce1ffbcca9c727f46e58c714e1d351f7ef88 (9 Sept 2022)
+ * Any changes to that core file after the above commit should be applied here
+ * as well.
  */
 
 (function ($, Drupal) {
@@ -17,19 +24,27 @@
    *   Attaches the filter functionality to the rules admin text search field.
    */
   Drupal.behaviors.rulesTableFilterByText = {
-    attach: function attach(context, settings) {
-      var $input = $('input.rules-filter-text').once('rules-filter-text');
-      var $table = $($input.attr('data-table'));
-      var $rows = void 0;
+    attach(context, settings) {
+      const [input] = once('rules-filter-text', 'input.rules-filter-text');
+      if (!input) {
+        return;
+      }
+      const $table = $(input.getAttribute('data-table'));
+      let $rows;
 
       function filterViewList(e) {
-        var query = $(e.target).val().toLowerCase();
+        const query = e.target.value.toLowerCase();
 
         function showViewRow(index, row) {
-          var $row = $(row);
-          var $sources = $row.find('[data-drupal-selector="rules-table-filter-text-source"]');
-          var textMatch = $sources.text().toLowerCase().indexOf(query) !== -1;
-          $row.closest('tr').toggle(textMatch);
+          const sources = row.querySelectorAll(
+            '[data-drupal-selector="rules-table-filter-text-source"]',
+          );
+          let sourcesConcat = '';
+          sources.forEach((item) => {
+            sourcesConcat += item.textContent;
+          });
+          const textMatch = sourcesConcat.toLowerCase().indexOf(query) !== -1;
+          $(row).closest('tr').toggle(textMatch);
         }
 
         // Filter if the length of the query is at least 2 characters.
@@ -42,8 +57,8 @@
 
       if ($table.length) {
         $rows = $table.find('tbody tr');
-        $input.on('keyup', filterViewList);
+        $(input).on('keyup', filterViewList);
       }
-    }
+    },
   };
 })(jQuery, Drupal);

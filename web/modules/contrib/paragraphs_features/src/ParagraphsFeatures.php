@@ -5,11 +5,11 @@ namespace Drupal\paragraphs_features;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\InsertCommand;
-use Drupal\paragraphs_features\Ajax\ScrollToElementCommand;
 use Drupal\Core\Field\WidgetInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
+use Drupal\paragraphs_features\Ajax\ScrollToElementCommand;
 
 /**
  * Paragraphs features class.
@@ -24,7 +24,6 @@ class ParagraphsFeatures {
   public static $availableFeatures = [
     'add_in_between',
     'delete_confirmation',
-    'split_text',
   ];
 
   /**
@@ -55,20 +54,22 @@ class ParagraphsFeatures {
    *   Field Wrapper ID, usually provided by ::getWrapperId().
    */
   public static function registerFormWidgetFeatures(array &$elements, ParagraphsWidget $widget, $fieldWrapperId) {
+    if (!in_array(\Drupal::theme()->getActiveTheme()->getName(),
+      ['claro', 'gin'])) {
+      return;
+    }
     foreach (static::$availableFeatures as $feature) {
       if ($widget->getThirdPartySetting('paragraphs_features', $feature)) {
-        $elements['add_more']['#attached']['library'][] = 'paragraphs_features/drupal.paragraphs_features.' . $feature;
+        $elements['add_more']['#attached']['library'][] = 'paragraphs_features/' . $feature;
         $elements['add_more']['#attached']['drupalSettings']['paragraphs_features'][$feature][$fieldWrapperId] = ['wrapperId' => $fieldWrapperId];
       }
       if ($feature === 'add_in_between') {
         $elements['add_more']['#attached']['drupalSettings']['paragraphs_features'][$feature][$fieldWrapperId]['linkCount'] =
           $widget->getThirdPartySetting('paragraphs_features', 'add_in_between_link_count');
       }
-      // Set module path for split_text feature.
-      $elements['add_more']['#attached']['drupalSettings']['paragraphs_features']['_path'] = drupal_get_path('module', 'paragraphs_features');
     }
 
-    $elements['add_more']['#attached']['library'][] = 'paragraphs_features/drupal.paragraphs_features.scroll_to_element';
+    $elements['add_more']['#attached']['library'][] = 'paragraphs_features/scroll_to_element';
     foreach (Element::children($elements['add_more']) as $button) {
       $elements['add_more'][$button]['#ajax']['callback'] = [
         static::class, 'addMoreAjax',
@@ -115,6 +116,11 @@ class ParagraphsFeatures {
    */
   public static function getThirdPartyForm(WidgetInterface $plugin, $field_name) {
     $elements = [];
+    $disabled = FALSE;
+    if (!in_array(\Drupal::theme()->getActiveTheme()->getName(),
+      ['claro', 'gin'])) {
+      $disabled = TRUE;
+    }
 
     $elements['delete_confirmation'] = [
       '#type' => 'checkbox',
@@ -156,17 +162,6 @@ class ParagraphsFeatures {
         'visible' => $modal_related_options_rule,
       ],
       '#description' => t('Set the number of buttons available to directly add a paragraph.'),
-    ];
-
-    $elements['split_text'] = [
-      '#type' => 'checkbox',
-      '#title' => t('Enable split text for text paragraphs'),
-      '#default_value' => $plugin->getThirdPartySetting('paragraphs_features', 'split_text'),
-      '#attributes' => ['class' => ['paragraphs-features__split-text__option']],
-      '#states' => [
-        'enabled' => $modal_related_options_rule,
-        'visible' => $modal_related_options_rule,
-      ],
     ];
 
     // Only show the drag & drop feature if we can find the sortable library.

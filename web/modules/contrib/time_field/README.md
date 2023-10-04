@@ -32,7 +32,8 @@ MAINTAINERS
 -----------
 Current maintainers:
  * Amin Alizadeh (lostKoder) - https://drupal.org/user/3545132
- 
+ * Bram Driesen (BramDriesen) - https://www.drupal.org/user/3383264
+
 This project has been sponsored by:
  * Drupaly.com
    Specialized in consulting and planning of Drupal powered sites, Drupaly.com

@@ -10,9 +10,7 @@ namespace Drupal\Tests\rules\Functional;
 class TempStorageTest extends RulesBrowserTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   protected static $modules = ['rules'];
 

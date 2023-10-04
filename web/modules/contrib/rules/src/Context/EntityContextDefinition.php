@@ -85,7 +85,7 @@ class EntityContextDefinition extends EntityContextDefinitionCore implements Con
       throw new ContextException('EntityContextDefinition class must implement ' . ContextDefinitionInterface::class . '.');
     }
     // Default to Rules context definition class.
-    $values['class'] = isset($values['class']) ? $values['class'] : EntityContextDefinition::class;
+    $values['class'] = $values['class'] ?? EntityContextDefinition::class;
     if (!isset($values['value'])) {
       $values['value'] = 'any';
     }

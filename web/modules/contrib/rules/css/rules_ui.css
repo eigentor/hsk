@@ -23,9 +23,9 @@
 .edit-events .description,
 .edit-conditions-table .description,
 .edit-actions-table .description {
+  margin-bottom: 1em;
   font-size: 75%;
   line-height: 1.5em;
-  margin-bottom: 1em;
 }
 
 .edit-events tr div.js-form-item,

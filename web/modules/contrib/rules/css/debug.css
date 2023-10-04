@@ -4,9 +4,9 @@
  */
 
 .rules-debug-log {
-  border: 1px solid #ccc;
-  padding: 5px;
   margin: 1.5em 0;
+  padding: 5px;
+  border: 1px solid #ccc;
 }
 
 .rules-debug-open-all {
@@ -21,8 +21,8 @@
   padding-left: 2em; /* LTR */
 }
 [dir="rtl"] .rules-debug-log ul {
-  padding-left: inherit;
   padding-right: 2em;
+  padding-left: inherit;
 }
 
 .rules-debug-log .rules-debug-warning {
@@ -30,6 +30,6 @@
 }
 
 .rules-debug-log .rules-debug-error {
-  font-weight: bold;
   color: #df0101;
+  font-weight: bold;
 }

@@ -13,9 +13,9 @@ use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
 use Drupal\paragraphs_features\ParagraphsFeatures;
 
 /**
- * Implements hook_field_widget_multivalue_form_alter().
+ * Implements hook_field_widget_complete_form_alter().
  */
-function paragraphs_features_field_widget_multivalue_form_alter(array &$elements, FormStateInterface $form_state, array $context) {
+function paragraphs_features_field_widget_complete_form_alter(&$field_widget_complete_form, FormStateInterface $form_state, $context) {
   /** @var \Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget $widget */
   $widget = $context['widget'];
   if (!($widget instanceof ParagraphsWidget)) {
@@ -23,9 +23,9 @@ function paragraphs_features_field_widget_multivalue_form_alter(array &$elements
   }
 
   // For compatibility with Drag & Drop in Paragraphs.
-  if (!empty($elements['#field_name'])) {
-    $fieldWrapperId = ParagraphsFeatures::getWrapperId($context['form']['#parents'], $elements['#field_name']);
-    ParagraphsFeatures::registerFormWidgetFeatures($elements, $widget, $fieldWrapperId);
+  if (!empty($field_widget_complete_form['widget']['#field_name'])) {
+    $fieldWrapperId = ParagraphsFeatures::getWrapperId($context['form']['#parents'], $field_widget_complete_form['widget']['#field_name']);
+    ParagraphsFeatures::registerFormWidgetFeatures($field_widget_complete_form['widget'], $widget, $fieldWrapperId);
   }
 }
 
@@ -46,19 +46,6 @@ function paragraphs_features_field_widget_third_party_settings_form(WidgetInterf
  * Implements hook_paragraphs_widget_actions_alter().
  */
 function paragraphs_features_paragraphs_widget_actions_alter(array &$widget_actions, array &$context) {
-  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraphs_entity */
-  $paragraphs_entity = $context['paragraphs_entity'];
-
-  foreach ($widget_actions as $grouping => $buttons) {
-    foreach ($buttons as $button_id => $button_element) {
-      if ($button_id === 'remove_button') {
-        $widget_actions[$grouping][$button_id]['#attributes']['data-paragraphs-split-text-type'] = $paragraphs_entity->getType();
-
-        break 2;
-      }
-    }
-  }
-
   /* Render single option for dropdown as button. */
 
   // Get configuration setting for reducing dropdown to button on single option.

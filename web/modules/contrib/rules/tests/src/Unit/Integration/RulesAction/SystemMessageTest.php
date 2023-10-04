@@ -121,7 +121,7 @@ class SystemMessageTest extends RulesIntegrationTestBase {
   protected function getMessages($type = NULL) {
     $messages = $this->messenger->all();
     if (isset($type)) {
-      return isset($messages[$type]) ? $messages[$type] : NULL;
+      return $messages[$type] ?? NULL;
     }
     return $messages;
   }

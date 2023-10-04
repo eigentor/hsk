@@ -30,7 +30,7 @@ class TimeElement extends FormElement {
   public function getInfo() {
     $class = get_class($this);
     return [
-      '#show_seconds' => false,
+      '#show_seconds' => FALSE,
       '#input' => TRUE,
       '#process' => [
         [$class, 'processAjaxForm'],

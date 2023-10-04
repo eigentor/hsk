@@ -50,7 +50,6 @@ class TimeRangeWidget extends WidgetBase {
       ];
     }
 
-
     $show_seconds = (bool) $this->getSetting('enabled');
     if ($show_seconds) {
       $element['from']['#attributes']['step'] = $this->getSetting('step');
@@ -66,12 +65,11 @@ class TimeRangeWidget extends WidgetBase {
   /**
    * {@inheritdoc}
    */
-  public static function defaultSettings()
-  {
+  public static function defaultSettings() {
     return [
-        'enabled' => FALSE,
-        'step' => 5,
-      ] + parent::defaultSettings();
+      'enabled' => FALSE,
+      'step' => 5,
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -79,22 +77,23 @@ class TimeRangeWidget extends WidgetBase {
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     return [
-        'enabled' => [
-          '#type' => 'checkbox',
-          '#title' => $this->t('Add seconds parameter to input widget'),
-          '#default_value' => $this->getSetting('enabled'),
-        ],
-        'step' => [
-          '#type' => 'textfield',
-          '#title' => $this->t('Step to change seconds'),
-          '#open' => TRUE,
-          '#default_value' => $this->getSetting('step'),
-          '#states' => [
-            'visible' => [
-              ':input[name$="[enabled]"]' => ['checked' => TRUE],
-            ],
+      'enabled' => [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Add seconds parameter to input widget'),
+        '#default_value' => $this->getSetting('enabled'),
+      ],
+      'step' => [
+        '#type' => 'textfield',
+        '#title' => $this->t('Step to change seconds'),
+        '#open' => TRUE,
+        '#default_value' => $this->getSetting('step'),
+        '#states' => [
+          'visible' => [
+            ':input[name$="[enabled]"]' => ['checked' => TRUE],
           ],
         ],
-      ] + parent::settingsForm($form, $form_state);
+      ],
+    ] + parent::settingsForm($form, $form_state);
   }
+
 }

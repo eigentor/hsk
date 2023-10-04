@@ -3,7 +3,7 @@
  * Paragraphs actions JS code for paragraphs actions button.
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   'use strict';
 
@@ -16,11 +16,11 @@
    * @param {object} options
    *   Options for delete confirmation button.
    *
-   * @return {string}
-   *   Returns markup.
+   * @return {HTMLElement}
+   *   Returns element.
    */
   Drupal.theme.paragraphsFeaturesDeleteConfirmationButton = function (options) {
-    return '<button type="button" class="paragraphs-features__delete-confirm ' + options.class + '">' + Drupal.t('Remove') + '</button>';
+    return '<button type="button" class="paragraphs-features__delete-confirm button--extrasmall ' + options.class + '">' + Drupal.t('Remove') + '</button>';
   };
 
   /**
@@ -36,8 +36,8 @@
       '<div class="paragraphs-features__delete-confirmation">' +
       '  <div class="paragraphs-features__delete-confirmation__message">' + options.message + '</div>' +
       '  <div class="form-actions js-form-wrapper form-wrapper" id="edit-actions">' +
-      '    <button type="button" class="paragraphs-features__delete-confirmation__remove-button button button--primary js-form-submit form-submit">' + options.remove + '</button>' +
-      '    <button type="button" class="paragraphs-features__delete-confirmation__cancel-button button js-form-submit form-submit">' + options.cancel + '</button>' +
+      '    <button type="button" class="paragraphs-features__delete-confirmation__remove-button button button--extrasmall button--primary js-form-submit form-submit">' + options.remove + '</button>' +
+      '    <button type="button" class="paragraphs-features__delete-confirmation__cancel-button button button--extrasmall js-form-submit form-submit">' + options.cancel + '</button>' +
       '  </div>' +
       '</div>';
   };
@@ -99,18 +99,19 @@
    */
   Drupal.behaviors.paragraphsFeaturesDeleteConfirmationInit = {
     attach: function (context, settings) {
-      var $actions = $(context).find('.paragraphs-actions').once('paragraphs-features-delete-confirmation-init');
-      $actions.find('*[data-drupal-selector*="remove"]').each(function () {
-        // Add custom button element and handler.
-        var $element = $(Drupal.theme('paragraphsFeaturesDeleteConfirmationButton', {class: $(this).attr('class')})).insertBefore(this);
-        $element.bind('mousedown', Drupal.paragraphs_features.deleteConfirmHandler());
-        // Propagate disabled attribute.
-        if ($(this).is(':disabled')) {
-          $element.prop('disabled', 'disabled').addClass('is-disabled');
-        }
-        // Hide original Button
-        $(this).wrap('<div class="visually-hidden"></div>');
+      once('paragraphs-features-delete-confirmation-init', '.paragraphs-actions', context).forEach((actions) => {
+        $(actions).find('*[data-drupal-selector*="remove"]').each(function () {
+          // Add custom button element and handler.
+          var $element = $(Drupal.theme('paragraphsFeaturesDeleteConfirmationButton', {class: $(this).attr('class')})).insertBefore(this);
+          $element.bind('mousedown', Drupal.paragraphs_features.deleteConfirmHandler());
+          // Propagate disabled attribute.
+          if ($(this).is(':disabled')) {
+            $element.prop('disabled', 'disabled').addClass('is-disabled');
+          }
+          // Hide original Button
+          $(this).wrap('<div class="visually-hidden"></div>');
+        });
       });
     }
   };
-}(jQuery, Drupal));
+}(jQuery, Drupal, once));

@@ -1,13 +1,15 @@
 /**
  * @file
  * Forked from core's autocomplete.
+ *
+ * Changed to:
+ * - Immediately pop-up autocomplete suggestions when the field gets focus.
+ * - Use rules-* classes instead of form-* classes.
+ * - Start autocompletion with a minimum length of 0.
  */
 
 (function ($, Drupal) {
-
-  'use strict';
-
-  var autocomplete;
+  let autocomplete;
 
   /**
    * JQuery UI autocomplete source callback.
@@ -18,11 +20,14 @@
    *   The function to call with the response.
    */
   function sourceData(request, response) {
-    var elementId = this.element.attr('id');
+    const elementId = this.element.attr('id');
 
     if (!(elementId in autocomplete.cache)) {
       autocomplete.cache[elementId] = {};
     }
+
+    // Get the desired term and construct the autocomplete URL for it.
+    const term = request.term;
 
     /**
      * Transforms the data object into an array and update autocomplete results.
@@ -36,15 +41,14 @@
       response(data);
     }
 
-    // Get the desired term and construct the autocomplete URL for it.
-    var term = request.term;
-
     // Check if the term is already cached.
     if (autocomplete.cache[elementId].hasOwnProperty(term)) {
       response(autocomplete.cache[elementId][term]);
-    }
-    else {
-      var options = $.extend({success: sourceCallbackHandler, data: {q: term}}, autocomplete.ajax);
+    } else {
+      const options = $.extend(
+        { success: sourceCallbackHandler, data: { q: term } },
+        autocomplete.ajax,
+      );
       $.ajax(this.element.attr('data-autocomplete-path'), options);
     }
   }
@@ -52,7 +56,7 @@
   /**
    * Handles an autocompletefocus event.
    *
-   * @return {bool}
+   * @return {boolean}
    *   Always returns false.
    */
   function focusHandler() {
@@ -60,19 +64,22 @@
   }
 
   /**
-   * Handles the autocomplete selection event.
+   * Handles an autocompleteselect event.
    *
    * Restarts autocompleting when the selection ends in a dot, for nested data
    * selectors.
    *
-   * @param {object} event
-   *   The event object.
+   * @param {jQuery.Event} event
+   *   The event triggered.
    * @param {object} ui
-   *   The UI object holding the selected value.
+   *   The jQuery UI settings object.
+   *
+   * @return {boolean}
+   *   Returns false to indicate the event status.
    */
   function selectHandler(event, ui) {
-    var input_value = ui.item.value;
-    if (input_value.substr(input_value.length - 1) === '.') {
+    const inputValue = ui.item.value;
+    if (inputValue.substr(inputValue.length - 1) === '.') {
       $(event.target).trigger('keydown');
     }
   }
@@ -89,9 +96,7 @@
    *   jQuery collection of the ul element.
    */
   function renderItem(ul, item) {
-    return $('<li>')
-      .append($('<a>').html(item.label))
-      .appendTo(ul);
+    return $('<li>').append($('<a>').html(item.label)).appendTo(ul);
   }
 
   /**
@@ -104,43 +109,57 @@
    * @prop {Drupal~behaviorDetach} detach
    *   Detaches the autocomplete behaviors.
    */
-  Drupal.behaviors.rules_autocomplete = {
-    attach: function (context) {
+  Drupal.behaviors.autocomplete = {
+    attach(context) {
       // Act on textfields with the "rules-autocomplete" class.
-      var $autocomplete = $(context).find('input.rules-autocomplete').once('autocomplete');
-      if ($autocomplete.length) {
+      const $autocomplete = $(
+        once('autocomplete', 'input.rules-autocomplete', context),
+      );
 
+      if ($autocomplete.length) {
         var closing = false;
 
         $.extend(autocomplete.options, {
-          close: function() {
+          close: function () {
             // Avoid double-pop-up issue.
             closing = true;
-            setTimeout(function() {
+            setTimeout(function () {
               closing = false;
             }, 300);
-          }
+          },
         });
+
         // Use jQuery UI Autocomplete on the textfield.
-        $autocomplete.autocomplete(autocomplete.options)
-          .each(function() {
-            $(this).data('ui-autocomplete')._renderItem = autocomplete.options.renderItem;
-            // Immediately pop out the autocomplete when the field gets focus.
-            $(this).focus(function() {
-              if (!closing) {
-                $(this).autocomplete('search');
-              }
-            });
+        $autocomplete.autocomplete(autocomplete.options).each(function () {
+          $(this).data('ui-autocomplete')._renderItem =
+            autocomplete.options.renderItem;
+
+          // Immediately pop out the autocomplete when the field gets focus.
+          $(this).focus(function () {
+            if (!closing) {
+              $(this).autocomplete('search');
+            }
           });
+
+          // Use CompositionEvent to handle IME inputs. It requests remote server
+          // on "compositionend" event only.
+          $autocomplete.on('compositionstart.autocomplete', () => {
+            autocomplete.options.isComposing = true;
+          });
+
+          $autocomplete.on('compositionend.autocomplete', () => {
+            autocomplete.options.isComposing = false;
+          });
+        });
       }
     },
-    detach: function (context, settings, trigger) {
+    detach(context, settings, trigger) {
       if (trigger === 'unload') {
-        $(context).find('input.rules-autocomplete')
-          .removeOnce('autocomplete')
-          .autocomplete('destroy');
+        $(
+          once.remove('autocomplete', 'input.rules-autocomplete', context),
+        ).autocomplete('destroy');
       }
-    }
+    },
   };
 
   /**
@@ -161,11 +180,13 @@
       focus: focusHandler,
       select: selectHandler,
       renderItem: renderItem,
-      minLength: 0
+      minLength: 0,
+      // Custom options, indicate IME usage status.
+      isComposing: false,
     },
     ajax: {
-      dataType: 'json'
-    }
+      dataType: 'json',
+      jsonp: false,
+    },
   };
-
 })(jQuery, Drupal);

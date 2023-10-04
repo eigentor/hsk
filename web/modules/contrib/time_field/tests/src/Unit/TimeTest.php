@@ -70,4 +70,21 @@ class TimeTest extends TestCase {
     $this->assertEquals('13:40:30', $time->formatForWidget());
   }
 
+  /**
+   * Test it computes correctly on days when the time changes.
+   */
+  public function testItWorksOnDstDates() {
+    $original_tz = date_default_timezone_get();
+    date_default_timezone_set('America/New_York');
+    $date = new \DateTime('2022-03-13', new \DateTimeZone('America/New_York'));
+    $time = new Time(13, 0, 0);
+    $date_with_time = $time->on($date);
+    $this->assertEquals($date_with_time->format('c'), '2022-03-13T13:00:00-04:00');
+    $date = new \DateTime('2022-11-06', new \DateTimeZone('America/New_York'));
+    $time = new Time(13, 0, 0);
+    $date_with_time = $time->on($date);
+    $this->assertEquals($date_with_time->format('c'), '2022-11-06T13:00:00-05:00');
+    date_default_timezone_set($original_tz);
+  }
+
 }

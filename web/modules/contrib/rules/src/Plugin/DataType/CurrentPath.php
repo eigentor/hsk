@@ -55,7 +55,7 @@ class CurrentPath extends Map {
 
     // Update any existing property objects.
     foreach ($this->properties as $name => $property) {
-      $value = isset($values[$name]) ? $values[$name] : NULL;
+      $value = $values[$name] ?? NULL;
       $property->setValue($value, FALSE);
       // Remove the value from $this->values to ensure it does not contain any
       // value for computed properties.

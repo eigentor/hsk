@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\rules\Unit\Integration;
 
+use Drupal\Component\DependencyInjection\ReverseContainer;
 use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityAccessControlHandlerInterface;
@@ -126,13 +127,15 @@ abstract class RulesEntityIntegrationTestBase extends RulesIntegrationTestBase {
     $this->entityTypeBundleInfo->getBundleInfo(Argument::any())
       ->willReturn(['test' => ['label' => 'Test']]);
 
-    $this->moduleHandler->getImplementations('entity_type_build')
-      ->willReturn([]);
-
     $this->fieldTypeManager = new FieldTypePluginManager(
       $this->namespaces, $this->cacheBackend, $this->moduleHandler->reveal(), $this->typedDataManager
     );
     $this->container->set('plugin.manager.field.field_type', $this->fieldTypeManager);
+
+    // The new ReverseContainer service needs to be present to prevent massive
+    // unit test failures.
+    // @see https://www.drupal.org/project/rules/issues/3346846
+    $this->container->set('Drupal\Component\DependencyInjection\ReverseContainer', new ReverseContainer($this->container));
   }
 
   /**

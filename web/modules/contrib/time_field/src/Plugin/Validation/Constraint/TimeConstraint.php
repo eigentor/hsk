@@ -15,6 +15,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class TimeConstraint extends Constraint {
 
+  /**
+   * The default violation message.
+   *
+   * @var string
+   */
   public static $message = 'This value is not a valid time.';
 
 }

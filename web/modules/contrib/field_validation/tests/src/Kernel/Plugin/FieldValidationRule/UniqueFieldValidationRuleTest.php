@@ -63,7 +63,7 @@ class UniqueFieldValidationRuleTest extends FieldValidationRuleBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
     $this->setupTestArticle(self::FIELD_NAME);
 
