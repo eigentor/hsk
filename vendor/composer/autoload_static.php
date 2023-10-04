@@ -166,6 +166,7 @@ class ComposerStaticInitabf22a70c6a5e83926a68073a7e0c5d2
             'Consolidation\\AnnotatedCommand\\' => 31,
             'Composer\\Semver\\' => 16,
             'Composer\\Installers\\' => 20,
+            'ComposerDrupalLenient\\' => 22,
         ),
         'A' => 
         array (
@@ -504,6 +505,10 @@ class ComposerStaticInitabf22a70c6a5e83926a68073a7e0c5d2
         'Composer\\Installers\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
+        ),
+        'ComposerDrupalLenient\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mglaman/composer-drupal-lenient/src',
         ),
         'Asm89\\Stack\\' => 
         array (
