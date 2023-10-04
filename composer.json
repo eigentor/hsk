@@ -28,7 +28,6 @@
         "drupal/better_exposed_filters": "*",
         "drupal/better_formats": "^1.0@beta",
         "drupal/block_class": "*",
-        "drupal/businessgroup_zymphonies_theme": "^2.0",
         "drupal/chosen": "^3.0",
         "drupal/classy": "^1.0",
         "drupal/colorbox": "*",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f65b08b4e6a62270dff9369ff76ed3a",
+    "content-hash": "36ae8140ded64dc1d7001991546cbd63",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2038,50 +2038,6 @@
                 "source": "https://git.drupalcode.org/project/block_class",
                 "issues": "https://www.drupal.org/project/issues/block_class",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
-        },
-        {
-            "name": "drupal/businessgroup_zymphonies_theme",
-            "version": "2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/businessgroup_zymphonies_theme.git",
-                "reference": "2.0.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/businessgroup_zymphonies_theme-2.0.1.zip",
-                "reference": "2.0.1",
-                "shasum": "b835539de1d7e30a447e3b571cfb5df39f5bbc50"
-            },
-            "require": {
-                "drupal/core": "^8 || ^9"
-            },
-            "type": "drupal-theme",
-            "extra": {
-                "drupal": {
-                    "version": "2.0.1",
-                    "datestamp": "1594487267",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "zymphonies-team",
-                    "homepage": "https://www.drupal.org/user/2280310"
-                }
-            ],
-            "description": "Zymphonies Business Group Responsive Theme. Developed & Designed by <a href=http://www.zymphonies.com>Zymphonies</a><br/>Contact us for Drupal Design & Development <a href=mailto:info@zymphonies.com>info@zymphonies.com</a>",
-            "homepage": "https://www.drupal.org/project/businessgroup_zymphonies_theme",
-            "support": {
-                "source": "https://git.drupalcode.org/project/businessgroup_zymphonies_theme"
             }
         },
         {
