@@ -8,7 +8,7 @@ slogan: 'Dein freundlicher Schachverein'
 page:
   403: ''
   404: ''
-  front: /node/9
+  front: /node/1232
 admin_compact_mode: false
 weight_select_max: 100
 default_langcode: de
