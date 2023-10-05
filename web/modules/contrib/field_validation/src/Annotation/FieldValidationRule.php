@@ -7,7 +7,7 @@ use Drupal\Component\Annotation\Plugin;
 /**
  * Defines a field validation rule annotation object.
  *
- * Plugin Namespace: Plugin\FieldValidationRule
+ * Plugin Namespace: Plugin\FieldValidationRule.
  *
  * For a working example, see
  * \Drupal\field_validation\Plugin\FieldValidationRule\LengthFieldValidationRule
@@ -47,7 +47,7 @@ class FieldValidationRule extends Plugin {
    *
    * @ingroup plugin_translatable
    *
-   * @var \Drupal\Core\Annotation\Translation (optional)
+   * @var \Drupal\Core\Annotation\Translation
    */
   public $description = '';
 
