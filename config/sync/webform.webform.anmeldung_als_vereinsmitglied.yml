@@ -11,7 +11,7 @@ archive: false
 id: anmeldung_als_vereinsmitglied
 title: 'Anmeldung als Vereinsmitglied'
 description: ''
-category: ''
+categories: {  }
 elements: |
   vorname:
     '#type': textfield

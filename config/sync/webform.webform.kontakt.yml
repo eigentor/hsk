@@ -11,7 +11,7 @@ archive: true
 id: kontakt
 title: Kontakt
 description: Standard-Kontaktformular
-category: ''
+categories: {  }
 elements: |-
   name:
     '#type': textfield
