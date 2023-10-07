@@ -1,7 +1,7 @@
 name: HSK Comments
 description: Design Comments and comment forms as we want them
 type: module
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 package: HSK
 version: VERSION
 dependencies:
