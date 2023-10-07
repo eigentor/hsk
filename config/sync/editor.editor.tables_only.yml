@@ -16,10 +16,13 @@ settings:
       - italic
       - '|'
       - insertTable
+      - sourceEditing
   plugins:
     ckeditor5_heading:
       enabled_headings:
         - heading2
         - heading3
         - heading4
+    ckeditor5_sourceEditing:
+      allowed_tags: {  }
 image_upload: {  }
