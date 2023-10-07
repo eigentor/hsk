@@ -1,7 +1,7 @@
 name: HSK Theme
 description: HSK Theme, benutzt Bootstrap Grid
 type: theme
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 #base theme: businessgroup_zymphonies_theme
 base theme: classy
 
