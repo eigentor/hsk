@@ -50,6 +50,7 @@ function hsk_import_dwz_cron() {
           ->condition('field_dwz', $player->dwz->__toString(), '<>');
 
         $player_to_update = $player_to_update_query
+          ->accessCheck(FALSE)
           ->condition('type', 'player')
           ->condition($group)
           ->condition($dwz_changed_or_was_null)

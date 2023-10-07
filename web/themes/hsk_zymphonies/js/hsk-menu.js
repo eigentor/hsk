@@ -10,13 +10,15 @@
       // });
 
       $('#block-hsk-zymphonies-main-menu > ul.menu').addClass('sm')
-        .addClass('menu-base-theme').once('smartmenu').smartmenus({
+        .addClass('menu-base-theme');
+        
+      $(once('smartmenu', '#block-hsk-zymphonies-main-menu > ul.menu')).smartmenus({
         showTimeout: 100,
         hideTimeout: 100
       });
 
       //Mobile menu toggle
-      $('.navbar-toggle').once('slideonce').each(function(){
+      $(once('slideonce', '.navbar-toggle')).each(function(){
         $(this).click(function(){
           $('.region-primary-menu').slideToggle();
         });

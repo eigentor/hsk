@@ -10,7 +10,8 @@
        */
 
       function rufzeichen_tabs(siblings_to_tab_content) {
-        $(siblings_to_tab_content).once('tabcontainer').each(function() {
+        
+        $(once('tabcontainer', siblings_to_tab_content)).each(function() {
           // Add a container for the tab buttons
           $(this).before('<div id="table-tabs"></div>');
 
