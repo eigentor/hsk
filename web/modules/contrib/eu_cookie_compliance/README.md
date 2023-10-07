@@ -129,8 +129,8 @@ methods._ Besides a queue, there are special functions set up called
 'Observers', which are used to observe and execute the functions for each Event.
 **Events: (Event name on the left)**
 Status is retrieved (internal use):
-- PreStatusLoad: Executed BEFORE cookie acceptance status is loaded
-- PostStatusLoad: Executed AFTER cookie acceptance status is loaded
+- preStatusLoad: Executed BEFORE cookie acceptance status is loaded
+- postStatusLoad: Executed AFTER cookie acceptance status is loaded
 - preStatusSave: Executed BEFORE cookie acceptance status is saved
 - postStatusSave Executed AFTER cookie acceptance status is saved
 

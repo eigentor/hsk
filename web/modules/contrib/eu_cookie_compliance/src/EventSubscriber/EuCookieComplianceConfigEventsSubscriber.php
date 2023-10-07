@@ -112,7 +112,7 @@ class EuCookieComplianceConfigEventsSubscriber implements EventSubscriberInterfa
         // Store the actual script name, since we will need it later.
         $disabled_javascripts[$key] = $script;
 
-        if ($category) {
+        if ($category !== NULL) {
           $load_disabled_scripts .= 'if (category === "' . $category . '") {';
         }
         $load_disabled_scripts .= 'var scriptTag = document.createElement("script");';
@@ -123,7 +123,7 @@ class EuCookieComplianceConfigEventsSubscriber implements EventSubscriberInterfa
         if ($attach_name) {
           $load_disabled_scripts .= 'var EUCookieInterval' . $attach_name . '= setInterval(function() { if (Drupal.behaviors.' . $attach_name . ' !== undefined) { Drupal.behaviors.' . $attach_name . '.attach(document, drupalSettings);clearInterval(EUCookieInterval' . $attach_name . ')};}, 100);';
         }
-        if ($category) {
+        if ($category !== NULL) {
           $load_disabled_scripts .= '}';
         }
       }

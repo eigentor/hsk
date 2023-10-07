@@ -25,7 +25,7 @@ enabled in order to use it.
    https://www.drupal.org/project/issues/antibot
 
 
-Requirements
+REQUIREMENTS
 ------------
 
 This module requires no modules outside of Drupal core.
@@ -40,14 +40,14 @@ INSTALLATION
 CONFIGURATION
 -------------
 
- * Specify the forms you want to enable antibot in Administration »
+ * Specify the forms you want to enable Antibot in Administration »
    User interface » Antibot.
 
  * Configure the user permissions in Administration » People » Permissions:
 
-   - Administer antibot configuration
+   - Administer Antibot configuration
 
-     Users with this permission will be able to configure the antibot settings
+     Users with this permission will be able to configure the Antibot settings
      in Administration » User interface » Antibot.
 
 MAINTAINERS

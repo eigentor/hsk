@@ -8,9 +8,10 @@ namespace Drupal\backup_migrate\Core\File;
 interface BackupFileReadableInterface extends BackupFileInterface {
 
   /**
-   * A path or stream that can be used in php file functions.
+   * The realpath of the file on the server.
    *
-   * @return string
+   * @return string|null
+   *   The path or stream URI to the file or NULL if the file does not exist.
    */
   public function realpath();
 

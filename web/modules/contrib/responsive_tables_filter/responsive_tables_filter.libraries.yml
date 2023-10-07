@@ -14,3 +14,4 @@ tablesaw-filter:
   dependencies:
     - core/jquery
     - core/once
+    - core/drupal

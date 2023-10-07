@@ -1000,8 +1000,8 @@ class WebformSubmissionExportImportImporter implements WebformSubmissionExportIm
     $total = -1;
     $handle = fopen($this->importUri, 'r');
     while (!feof($handle)) {
-      $line = fgets($handle);
-      if (!empty(trim($line))) {
+      $line = fgetcsv($handle);
+      if (!empty($line) && !is_null(array_pop($line))) {
         $total++;
       }
     }

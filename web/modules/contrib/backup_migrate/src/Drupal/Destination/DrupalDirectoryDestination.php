@@ -119,7 +119,7 @@ class DrupalDirectoryDestination extends DirectoryDestination {
             return $a->getFullName() <=> $b->getFullName();
           }
           // @todo fix this in core
-          return $a->getMeta($sort) <=> $b->getMeta($sort);
+          return $b->getMeta($sort) <=> $a->getMeta($sort);
         }
         else {
           if ($sort == 'name') {

@@ -400,12 +400,12 @@ abstract class DateBase extends WebformElementBase {
     elseif (is_array($element[$property])) {
       foreach ($element[$property] as $key => $value) {
         $timestamp = strtotime($value);
-        $element[$property][$key] = ($timestamp) ? $this->dateFormatter->format($timestamp, 'html_' . $this->getDateType($element)) : NULL;
+        $element[$property][$key] = ($timestamp !== FALSE) ? $this->dateFormatter->format($timestamp, 'html_' . $this->getDateType($element)) : NULL;
       }
     }
     else {
       $timestamp = strtotime($element[$property]);
-      $element[$property] = ($timestamp) ? $this->dateFormatter->format($timestamp, 'html_' . $this->getDateType($element)) : NULL;
+      $element[$property] = ($timestamp !== FALSE) ? $this->dateFormatter->format($timestamp, 'html_' . $this->getDateType($element)) : NULL;
     }
   }
 

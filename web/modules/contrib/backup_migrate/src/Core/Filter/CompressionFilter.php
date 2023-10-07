@@ -301,7 +301,7 @@ class CompressionFilter extends PluginBase implements FileProcessorInterface {
 
     if (class_exists('ZipArchive')) {
       $zip = new \ZipArchive();
-      $res = $zip->open(\Drupal::service('file_system')->realpath($to->realpath()), constant("ZipArchive::CREATE"));
+      $res = $zip->open(\Drupal::service('file_system')->realpath($to->realpath()), \ZipArchive::CREATE);
       if ($res === TRUE) {
         $zip->addFile(\Drupal::service('file_system')->realpath($from->realpath()), $from->getFullName());
       }

@@ -15,7 +15,7 @@ class BackupMigratePermissionsTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['backup_migrate'];
+  protected static $modules = ['backup_migrate'];
 
   /**
    * {@inheritdoc}
