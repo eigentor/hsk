@@ -1,25 +1,81 @@
-uuid: c380b776-a289-4eaf-9012-c8c9e9d2cb89
+uuid: fc8e4c92-756a-4cd2-b115-ce9f66dae894
 langcode: de
 status: true
 dependencies:
-  config:
-    - filter.format.tables_only
   module:
-    - ckeditor5
+    - inline_responsive_images
+    - responsive_tables_filter
+name: Tabellen
 format: tables_only
-editor: ckeditor5
-settings:
-  toolbar:
-    items:
-      - heading
-      - bold
-      - italic
-      - '|'
-      - insertTable
-  plugins:
-    ckeditor5_heading:
-      enabled_headings:
-        - heading2
-        - heading3
-        - heading4
-image_upload: {  }
+weight: 0
+filters:
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: true
+    weight: -10
+    settings:
+      allowed_html: '<br> <p> <h2> <h3> <h4> <strong> <em> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption>'
+      filter_html_help: true
+      filter_html_nofollow: false
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: true
+    weight: 0
+    settings: {  }
+  filter_responsive_image_style:
+    id: filter_responsive_image_style
+    provider: inline_responsive_images
+    status: false
+    weight: 0
+    settings:
+      responsive_style_bildblock_klein: '0'
+      responsive_style_header_slideshow: '0'
+      responsive_style_infoblock: '0'
+      responsive_style_inhaltsbild_volle_breite: '0'
+      responsive_style_inhaltsbild_z_halbe_breite: '0'
+      responsive_style_narrow: '0'
+      responsive_style_news_thumb_startseite: '0'
+      responsive_style_wide: '0'
+  filter_imagestyle:
+    id: filter_imagestyle
+    provider: inline_responsive_images
+    status: false
+    weight: 0
+    settings:
+      image_style_bildblock_desktop: '0'
+      image_style_bildblock_desktop_narrow: '0'
+      image_style_bildblock_mobile: '0'
+      image_style_bildblock_tablet_portrait: '0'
+      image_style_gallery_full: '0'
+      image_style_header_slideshow: '0'
+      image_style_header_slideshow_smartphone: '0'
+      image_style_header_slideshow_tablet_portrait: '0'
+      image_style_image_gallery_thumb: '0'
+      image_style_infoblock_desktop: '0'
+      image_style_inhaltsbild_halbe_breite: '0'
+      image_style_inhaltsbild_mobile_volle_breite: '0'
+      image_style_inline_full_width: '0'
+      image_style_large: '0'
+      image_style_linkit_result_thumbnail: '0'
+      image_style_max_1300x1300: '0'
+      image_style_max_2600x2600: '0'
+      image_style_max_325x325: '0'
+      image_style_max_650x650: '0'
+      image_style_medium: '0'
+      image_style_news_thumb_mobile: '0'
+      image_style_news_thumb_startseite: '0'
+      image_style_portrait: '0'
+      image_style_portrait_autor: '0'
+      image_style_portrait_medium: '0'
+      image_style_portrait_tiny: '0'
+      image_style_thumbnail: '0'
+  filter_responsive_tables_filter:
+    id: filter_responsive_tables_filter
+    provider: responsive_tables_filter
+    status: false
+    weight: 0
+    settings:
+      tablesaw_type: stack
+      tablesaw_persist: '1'
