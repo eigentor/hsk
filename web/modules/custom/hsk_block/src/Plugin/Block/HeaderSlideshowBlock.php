@@ -62,6 +62,7 @@ class HeaderSlideshowBlock extends BlockBase implements ContainerFactoryPluginIn
 
     // There might be multiple "slideshow" paragraph items, so we load them all
     $slideshow_parent_item = $this->entityTypeManager->getStorage('paragraph')->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'slideshow')
       ->execute()
     ;
