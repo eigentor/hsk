@@ -32,8 +32,8 @@
         "drupal/classy": "^1.0",
         "drupal/colorbox": "*",
         "drupal/content_access": "^2.0",
-        "drupal/core-composer-scaffold": "^9.2",
-        "drupal/core-recommended": "^9.2",
+        "drupal/core-composer-scaffold": "^10.0",
+        "drupal/core-recommended": "^10.0",
         "drupal/crop": "*",
         "drupal/ctools": "3.11",
         "drupal/devel": "^5.1",
@@ -79,7 +79,7 @@
         "drupal/video_embed_field": "^2.5",
         "drupal/view_unpublished": "^1.1",
         "drupal/webform": "^6.2",
-        "drush/drush": "^10.5",
+        "drush/drush": "^12.2",
         "mglaman/composer-drupal-lenient": "*"
     },
     "conflict": {
