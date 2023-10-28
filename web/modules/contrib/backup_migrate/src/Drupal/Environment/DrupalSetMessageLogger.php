@@ -19,7 +19,7 @@ class DrupalSetMessageLogger extends AbstractLogger {
    * @param string $message
    * @param array $context
    */
-  public function log($level, $message, array $context = []) {
+  public function log($level, $message, array $context = []): void {
     // Translate the PSR logging level to a drupal message type.
     switch ($level) {
       case LogLevel::EMERGENCY:

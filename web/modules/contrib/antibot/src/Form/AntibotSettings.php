@@ -6,7 +6,7 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class AntibotSettings.
+ * Implement Class AntibotSettings.
  *
  * @package Drupal\antibot\Form
  */

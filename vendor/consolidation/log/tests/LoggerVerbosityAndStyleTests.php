@@ -41,6 +41,27 @@ class LoggerVerbosityAndStyleTests extends TestCase
       [
         '\Consolidation\Log\UnstyledLogOutputStyler',
         $TEST_ALL_LOG_LEVELS,
+        LogLevel::EMERGENCY,
+        'The planet is melting. Consume less.',
+        ' [emergency] The planet is melting. Consume less.',
+      ],
+      [
+        '\Consolidation\Log\UnstyledLogOutputStyler',
+        $TEST_ALL_LOG_LEVELS,
+        LogLevel::ALERT,
+        'Masks required.',
+        ' [alert] Masks required.',
+      ],
+      [
+        '\Consolidation\Log\UnstyledLogOutputStyler',
+        $TEST_ALL_LOG_LEVELS,
+        LogLevel::CRITICAL,
+        'Reactor meltdown imminent.',
+        ' [critical] Reactor meltdown imminent.',
+      ],
+      [
+        '\Consolidation\Log\UnstyledLogOutputStyler',
+        $TEST_ALL_LOG_LEVELS,
         LogLevel::ERROR,
         'Do not enter - wrong way.',
         ' [error] Do not enter - wrong way.',
@@ -96,20 +117,6 @@ class LoggerVerbosityAndStyleTests extends TestCase
         '',
       ],
       [
-        '\Consolidation\Log\UnstyledLogOutputStyler',
-        $TEST_ALL_LOG_LEVELS,
-        ConsoleLogLevel::SUCCESS,
-        'It worked!',
-        ' [success] It worked!',
-      ],
-      [
-        '\Consolidation\Log\LogOutputStyler',
-        OutputInterface::VERBOSITY_NORMAL,
-        ConsoleLogLevel::SUCCESS,
-        'It worked!',
-        ' [success] It worked!',
-      ],
-      [
         '\Consolidation\Log\SymfonyLogOutputStyler',
         OutputInterface::VERBOSITY_DEBUG,
         LogLevel::WARNING,
@@ -136,13 +143,6 @@ class LoggerVerbosityAndStyleTests extends TestCase
         LogLevel::DEBUG,
         'Counter incremented.',
         "\n ! [NOTE] Counter incremented.",
-      ],
-      [
-        '\Consolidation\Log\SymfonyLogOutputStyler',
-        OutputInterface::VERBOSITY_NORMAL,
-        ConsoleLogLevel::SUCCESS,
-        'It worked!',
-        "\n [OK] It worked!",
       ],
     ]);
   }

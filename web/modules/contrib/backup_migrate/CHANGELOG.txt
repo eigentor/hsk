@@ -1,3 +1,16 @@
+Backup and Migrate 5.0.3, 2022-12-18
+------------------------------------
+#3304922 by ressa, DamienMcKenna: Drupal 10: Fatal error, logger must be
+  compatible with Psr\Log\AbstractLogger.
+#3309272 by DamienMcKenna: Tests must define $modules as a protected variable.
+#3268401 by DamienMcKenna, Mok7tar, robcarr, crutch, solideogloria, donpwinston:
+  filectime() and filesize() receiving NULL values.
+#3305241 by DamienMcKenna, WagnerMelo: Improve test coverage, fix D10 issues.
+#3258786 by DamienMcKenna, Universaldenker, keithn, elber, fchandler, Grevil:
+  Using empty file as ZipArchive is deprecated.
+#3247231 by DamienMcKenna, guille_rodri: Sort in queryFiles function.
+
+
 Backup and Migrate 5.0.2, 2022-08-19
 ------------------------------------
 #3261770 by hmendes, solideogloria, Adrianm6254, DamienMcKenna: PHP notice when

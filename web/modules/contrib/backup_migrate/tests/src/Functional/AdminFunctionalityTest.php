@@ -15,7 +15,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['backup_migrate'];
+  protected static $modules = ['backup_migrate'];
 
   /**
    * {@inheritdoc}
@@ -292,7 +292,7 @@ class AdminFunctionalityTest extends BrowserTestBase {
     $session->pageTextContains('Every 0 weeks');
     $session->pageTextContains('Never');
     $session->pageTextContains('Disabled');
-    $session->pageTextContains('Last backups');
+    $session->pageTextContains('All backups');
     // @todo Confirm the table only has one record.
 
     // Edit an existing schedule - turn on the default schedule.

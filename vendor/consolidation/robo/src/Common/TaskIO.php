@@ -4,10 +4,12 @@ namespace Robo\Common;
 
 use Robo\Robo;
 use Robo\TaskInfo;
-use Consolidation\Log\ConsoleLogLevel;
+use Robo\Log\RoboLogLevel;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Robo\Contract\ProgressIndicatorAwareInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Task input/output methods.  TaskIO is 'used' in BaseTask, so any
@@ -18,12 +20,31 @@ use Robo\Contract\ProgressIndicatorAwareInterface;
  */
 trait TaskIO
 {
-    use LoggerAwareTrait;
     use ConfigAwareTrait;
     use VerbosityThresholdTrait;
+    use OutputAwareTrait;
+    use LoggerAwareTrait;
+
+    protected $output;
+
+    public function setOutput(OutputInterface $output)
+    {
+        $this->output = $output;
+        $this->resetLoggerOutput();
+    }
+
+    private function resetLoggerOutput()
+    {
+        if (isset($this->output) && isset($this->logger) && ($this->logger instanceof \Robo\Log\Logger)) {
+            $this->logger->setErrorStream(null);
+            $this->logger->setOutputStream($this->output);
+        }
+    }
 
     /**
      * @return null|\Psr\Log\LoggerInterface
+     *
+     * @deprecated
      */
     public function logger()
     {
@@ -40,7 +61,7 @@ trait TaskIO
 
         static $gaveDeprecationWarning = false;
         if (!$gaveDeprecationWarning) {
-            trigger_error('No logger set for ' . get_class($this) . '. Use $this->task(Foo::class) rather than new Foo() in loadTasks to ensure the builder can initialize task the task, or use $this->collectionBuilder()->taskFoo() if creating one task from within another.', E_USER_DEPRECATED);
+            trigger_error('No logger set for ' . get_class($this) . '. Use $this->task(Foo::class) rather than new Foo() in Tasks to ensure the builder can initialize task the task, or use $this->collectionBuilder()->taskFoo() if creating one task from within another.', E_USER_DEPRECATED);
             $gaveDeprecationWarning = true;
         }
         return Robo::logger();
@@ -81,11 +102,11 @@ trait TaskIO
      */
     protected function printTaskSuccess($text, $context = null)
     {
-        // Not all loggers will recognize ConsoleLogLevel::SUCCESS.
+        // Not all loggers will recognize RoboLogLevel::SUCCESS.
         // We therefore log as LogLevel::NOTICE, and apply a '_level'
         // override in the context so that this message will be
         // logged as SUCCESS if that log level is recognized.
-        $context['_level'] = ConsoleLogLevel::SUCCESS;
+        $context['_level'] = RoboLogLevel::SUCCESS;
         $this->printTaskOutput(LogLevel::NOTICE, $text, $this->getTaskContext($context));
     }
 
@@ -134,6 +155,8 @@ trait TaskIO
      *   One of the \Psr\Log\LogLevel constant
      * @param string $text
      * @param null|array $context
+     *
+     * @deprecated
      */
     protected function printTaskOutput($level, $text, $context)
     {

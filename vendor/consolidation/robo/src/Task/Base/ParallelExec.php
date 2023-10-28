@@ -8,6 +8,7 @@ use Robo\Result;
 use Robo\Task\BaseTask;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
+use Robo\Common\CommandReceiver;
 
 /**
  * Class ParallelExecTask
@@ -24,7 +25,7 @@ use Symfony\Component\Process\Process;
  */
 class ParallelExec extends BaseTask implements CommandInterface, PrintedInterface
 {
-    use \Robo\Common\CommandReceiver;
+    use CommandReceiver;
 
     /**
      * @var Process[]
@@ -199,6 +200,9 @@ class ParallelExec extends BaseTask implements CommandInterface, PrintedInterfac
         foreach ($this->processes as $p) {
             if ($p->getExitCode() === 0) {
                 continue;
+            }
+            if (trim($p->getErrorOutput())) {
+                $this->printTaskError("Error for {command} \n{output}", ['command' => $process->getCommandLine(), 'output' => $p->getErrorOutput()]);
             }
             $errorMessage .= "'" . $p->getCommandLine() . "' exited with code " . $p->getExitCode() . " \n";
             $exitCode = max($exitCode, $p->getExitCode());

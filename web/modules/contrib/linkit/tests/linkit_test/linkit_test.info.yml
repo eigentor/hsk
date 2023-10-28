@@ -8,6 +8,6 @@ dependencies:
   - drupal:text
 
 # Information added by Drupal.org packaging script on 2023-09-30
-version: '6.0.1'
+version: '6.1.1'
 project: 'linkit'
-datestamp: 1696099908
+datestamp: 1696099843

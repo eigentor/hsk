@@ -5,7 +5,7 @@ namespace Drupal\antibot\Controller;
 use Drupal\Core\Controller\ControllerBase;
 
 /**
- * Class AntibotPage.
+ * Implement Class AntibotPage.
  *
  * @package Drupal\antibot\Controller
  */

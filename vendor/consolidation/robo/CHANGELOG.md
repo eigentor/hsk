@@ -1,20 +1,66 @@
 # Changelog
 
-### 2.2.2 12/18/2020
+### 4.0.4, 4.0.5, 4.0.6 4/30/2023
 
-* Restore symfony/yaml dependency by Dan Untenzu (#1010)
-* Backport Logfile tasks from Robo 3.x by Christin Gruber (#995)
-* TaskInterface::Run() should always return a Result by Pieter Frenssen (#986)
-* PHP 7.3 compatibility issues by Yogesh Pawar (#984)
-* Fix Parallel Exec example.
-* Stopped using deprecated "printed()" method in taskExec and used recommended "printOutput()" instead. (#980)
-* Removed problematic annotation in try:capture-exec
+* Move register command out of runner and into Robo class. (#1143)
+* More PHP 8.2 and 8.1 Fixes (#1131, #1133, #1135, #1141)
+* docs: update getting-started.md (#1139)
 
-### 2.2.1 09/08/2020
+### 4.0.2, 4.0.3 12/6/2022
 
-* Do not call ignorelist on the archive if it is empty. (#979)
-* Backport #977
-* Make sure that output from ExecTrait is passed through when "printOutput(false)" is called. (#977)
+* PHP 8.2 support
+
+### 4.0.0 9/20/2022
+
+* Minimum version of PHP supported is now 8.0
+* BREAKING: Removed support for Symfony 4 and 5; Symfony 6 required.
+* BREAKING: Removed support for league/container 1; version 2 or 3 required.
+* BREAKING: Use \Robo\Robo::version() instead of \Robo\Robo::VERSION
+* BREAKING: Use RoboLogLevel::SUCCESS instead of ConsoleLogLevel::SUCCESS
+* BREAKING: Cannot pass `null` to \Robo\Config\Config constructor any longer
+
+### 3.0.10 2/21/2022
+
+* symfony/process ^6
+
+### 3.0.8 2/15/2022
+
+* Fix bug when using dot-access-data ^3 (#1104)
+* ProgressIndicator uses the stdError by Andor (#1101)
+* Use TaskAccessor trait in Task\Archive\Extract by Andor (#1089)
+* Avoid cross volume rename in Task\Archive\Extract by Andor (#1090)
+* Fixing PHPDoc block @param on BuilderAwareTrait::collectionBuilder by Jay Klehr (#1096)
+* League container 4 by Nicos Panayides (#1083)
+* PHP 8.1 TimeKeeper implicit conversion from float to int by Andor (#1095)
+
+### 3.0.7 12/30/2021
+
+* PHP 8.1 & Symfony 6 (#1092, #1091)
+* PackPhar: Don't strip PHP8 attributes by Gintautas Miselis (#1084)
+* Fix image minifier task by Dan Untenzu (#1052)
+
+### 3.0.6 10/5/2021
+
+* Use consolidation/self-update ^2
+
+### 3.0.4 08/28/2021
+
+* Undeprecate escapeArgument() by Mark Dorison (#1039)
+* Add setProcessInput and deprecate setInput by Rodrigo (#1034)
+* Add array as a type accepted for argv parameter by Rodrigo (#1032)
+* Fix null return in createContainer by Rodrigo (#1031)
+* Fix mkdir error in taskExtract on PHP 8 by wxa (#1028)
+* refactor: Remove hardcoded namespace by Pol Dellaiera refactor (#1026)
+* refactor: Use proper use imports by Pol Dellaiera refactor (#1025)
+* Run linter in parallel by Viktor Szépe (#1020)
+* Fix task pack (#1044)
+
+### 3.0.0 02/21/2021
+
+* PHP 8 support
+* Update to league/container ^3
+* Prefer passing `ConsoleIO $io` to commands over `$this->io()`, which is now deprecated.
+* `loadTasks` renamed to `Tasks`
 
 ### 2.2.0 09/05/2020
 

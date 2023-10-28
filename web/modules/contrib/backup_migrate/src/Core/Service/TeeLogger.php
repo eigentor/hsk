@@ -31,7 +31,7 @@ class TeeLogger extends AbstractLogger {
    * @param string $message
    * @param array $context
    */
-  public function log($level, $message, array $context = []) {
+  public function log($level, $message, array $context = []): void {
     foreach ($this->getLoggers() as $logger) {
       $logger->log($level, $message, $context);
     }

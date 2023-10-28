@@ -17,7 +17,7 @@ class BackupMigrateQuickBackupTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['backup_migrate'];
+  protected static $modules = ['backup_migrate'];
 
   /**
    * {@inheritdoc}
@@ -52,21 +52,30 @@ class BackupMigrateQuickBackupTest extends BrowserTestBase {
   }
 
   /**
-   * Tests quick backup.
+   * Run the whole backup, restore, delete process.
    */
-  public function testQuickBackup() {
+  public function testFullProcess() {
     // Load the main B&M admin page.
     $this->drupalGet('admin/config/development/backup_migrate');
     $this->assertSession()->statusCodeEquals(200);
+
+    // Verify the expected fields are present on the form.
+    $this->assertSession()->selectExists('source_id');
+    $this->assertSession()->optionExists('source_id', 'default_db');
+    $this->assertSession()->selectExists('destination_id');
+    $this->assertSession()->optionExists('destination_id', 'private_files');
 
     // Submit the quick backup form.
     $data = [
       'source_id' => 'default_db',
       'destination_id' => 'private_files',
     ];
-    $this->submitForm($data, $this->t('Backup now'));
+    $this->submitForm($data, 'Backup now');
 
-    // Confirm that the form submitted.
+    // Confirm that the form submitted and the backup was created.
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextNotContains('Error message');
+    $this->assertSession()->pageTextNotContains("The backup file could not be saved to 'private://backup_migrate/' because your private files system path has not been set.");
     $this->assertSession()->pageTextContains('Backup Complete.');
 
     // Get backups page.
@@ -78,13 +87,6 @@ class BackupMigrateQuickBackupTest extends BrowserTestBase {
     $table = $page->find('css', 'table');
     $row = $table->find('css', sprintf('tbody tr:contains("%s")', '.mysql.gz'));
     $this->assertNotNull($row);
-  }
-
-  /**
-   * Verify that backups can be restored.
-   */
-  public function testBackupsCanBeRestored() {
-    $this->testQuickBackup();
 
     // Load the destination page for the private files destination.
     $this->drupalGet('admin/config/development/backup_migrate/settings/destination/backups/private_files');
@@ -106,13 +108,6 @@ class BackupMigrateQuickBackupTest extends BrowserTestBase {
     $session->statusCodeEquals(200);
     $session->addressEquals('admin/config/development/backup_migrate/settings/destination/backups/private_files');
     $session->pageTextContains('Restore Complete.');
-  }
-
-  /**
-   * Verify that backups can be deleted.
-   */
-  public function testBackupsCanBeDeleted() {
-    $this->testQuickBackup();
 
     // Load the destination page for the private files destination.
     $this->drupalGet('admin/config/development/backup_migrate/settings/destination/backups/private_files');

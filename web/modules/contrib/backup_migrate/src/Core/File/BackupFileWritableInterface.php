@@ -8,14 +8,6 @@ namespace Drupal\backup_migrate\Core\File;
 interface BackupFileWritableInterface extends BackupFileReadableInterface {
 
   /**
-   * Get the realpath of the file.
-   *
-   * @return string
-   *   The path or stream URI to the file or NULL if the file does not exist.
-   */
-  public function realpath();
-
-  /**
    * Write a line to the file.
    *
    * @param string $data

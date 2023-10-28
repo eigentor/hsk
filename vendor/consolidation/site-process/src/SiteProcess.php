@@ -11,6 +11,8 @@ use Consolidation\Config\Util\Interpolator;
 use Consolidation\SiteProcess\Util\Shell;
 use Consolidation\SiteProcess\Util\ShellOperatorInterface;
 use Consolidation\SiteProcess\Util\Escape;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 /**
  * A wrapper around Symfony Process that uses site aliases
@@ -55,7 +57,7 @@ class SiteProcess extends ProcessBase
      *
      * @return string|null
      */
-    public function getWorkingDirectory()
+    public function getWorkingDirectory(): ?string
     {
         return $this->cd_remote;
     }
@@ -67,7 +69,7 @@ class SiteProcess extends ProcessBase
      *
      * @return \Consolidation\SiteProcess\SiteProcess
      */
-    public function setWorkingDirectory($cd_remote)
+    public function setWorkingDirectory($cd_remote): static
     {
         $this->cd_remote = $cd_remote;
         return $this;
@@ -181,14 +183,14 @@ class SiteProcess extends ProcessBase
     /**
      * @inheritDoc
      */
-    public function getCommandLine()
+    public function getCommandLine(): string
     {
         $commandLine = parent::getCommandLine();
         if (empty($commandLine)) {
             $processedArgs = $this->processArgs();
             $commandLine = Escape::argsForSite($this->siteAlias, $processedArgs);
             $commandLine = implode(' ', $commandLine);
-            $this->setCommandLine($commandLine);
+            $this->overrideCommandLine($commandLine);
         }
         return $commandLine;
     }
@@ -202,10 +204,23 @@ class SiteProcess extends ProcessBase
         parent::start($callback, $env);
     }
 
+    public function mustRun(callable $callback = null, array $env = []): static
+    {
+        if (0 !== $this->run($callback, $env)) {
+            // Be less verbose when there is nothing in stdout or stderr.
+            if (empty($this->getOutput()) && empty($this->getErrorOutput())) {
+                $this->disableOutput();
+            }
+            throw new ProcessFailedException($this);
+        }
+
+        return $this;
+    }
+
     /**
      * @inheritDoc
      */
-    public function wait(callable $callback = null)
+    public function wait(callable $callback = null): int
     {
         $return = parent::wait($callback);
         return $return;
@@ -240,5 +255,24 @@ class SiteProcess extends ProcessBase
             },
             $args
         );
+    }
+
+    /**
+     * Overrides the command line to be executed.
+     *
+     * @param string|array $commandline The command to execute
+     *
+     * @return $this
+     *
+     * @todo refactor library so this hack to get around changes in
+     *   symfony/process 5 is unnecessary.
+     */
+    private function overrideCommandLine($commandline)
+    {
+        $commandlineSetter = function ($commandline) {
+            $this->commandline = $commandline;
+        };
+        $commandlineSetter->bindTo($this, Process::class)($commandline);
+        return $this;
     }
 }

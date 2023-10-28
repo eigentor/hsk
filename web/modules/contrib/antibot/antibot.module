@@ -164,7 +164,7 @@ function antibot_form_validation($form, FormStateInterface $form_state) {
   $input = $form_state->getUserInput();
 
   // Extract the submitted key.
-  $submitted_key = isset($input['antibot_key']) ? $input['antibot_key'] : NULL;
+  $submitted_key = $input['antibot_key'] ?? NULL;
 
   // Views exposed forms will initially load and submit without the key.
   if (($form['#form_id'] == 'views_exposed_form') && ($submitted_key === NULL)) {

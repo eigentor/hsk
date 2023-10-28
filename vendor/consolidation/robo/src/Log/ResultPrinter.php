@@ -2,23 +2,31 @@
 
 namespace Robo\Log;
 
-use Robo\Result;
+use Robo\Log\RoboLogLevel;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LogLevel;
+use Robo\Common\ProgressIndicatorAwareTrait;
+use Robo\Contract\OutputAwareInterface;
 use Robo\Contract\PrintedInterface;
 use Robo\Contract\ProgressIndicatorAwareInterface;
 use Robo\Contract\VerbosityThresholdInterface;
-use Robo\Common\ProgressIndicatorAwareTrait;
-use Psr\Log\LogLevel;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use Consolidation\Log\ConsoleLogLevel;
+use Robo\Result;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Log the creation of Result objects.
  */
-class ResultPrinter implements LoggerAwareInterface, ProgressIndicatorAwareInterface
+class ResultPrinter implements LoggerAwareInterface, ProgressIndicatorAwareInterface, OutputAwareInterface
 {
     use LoggerAwareTrait;
     use ProgressIndicatorAwareTrait;
+
+    public function setOutput(OutputInterface $output)
+    {
+        $this->logger->setErrorStream(null);
+        $this->logger->setOutputStream($output);
+    }
 
     /**
      * Log the result of a Robo task.
@@ -91,7 +99,7 @@ class ResultPrinter implements LoggerAwareInterface, ProgressIndicatorAwareInter
         $context = $result->getContext() + ['timer-label' => 'in'];
         $time = $result->getExecutionTime();
         if ($time) {
-            $this->printMessage(ConsoleLogLevel::SUCCESS, 'Done', $context);
+            $this->printMessage(RoboLogLevel::SUCCESS, 'Done', $context);
         }
         return false;
     }

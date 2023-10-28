@@ -66,7 +66,16 @@ class ScheduleListBuilder extends ConfigEntityListBuilder {
       }
     }
 
-    $row['keep'] = \Drupal::translation()->formatPlural($entity->get('keep'), 'Last 1 backup', 'Last @count backups');
+    // The "keep" option isn't required, so this may not be a positive integer.
+    // @todo Add some extra validation to the form so this doesn't save 0 to
+    // the field, especially when the user submits a non-numeric value.
+    $keep = $entity->get('keep');
+    if (is_numeric($keep)) {
+      $row['keep'] = \Drupal::translation()->formatPlural($keep, 'Last 1 backup', 'Last @count backups');
+    }
+    else {
+      $row['keep'] = $this->t('All backups');
+    }
 
     return $row + parent::buildRow($entity);
   }

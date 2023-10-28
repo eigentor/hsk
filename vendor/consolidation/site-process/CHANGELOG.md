@@ -1,5 +1,36 @@
 # Changelog
 
+### 5.2.0 - 2022/Dec/6
+
+* Transport support for Skpr (#66)
+* Allow to set an entrypoint on KubectlTransport (#70)
+
+### 5.1.1 - 2022/Oct/18
+
+* Allow site-alias ^4
+
+### 5.1.0 - 2022/Sep/15
+
+* Support use of "docker-compose run". (#67)
+* Support kubeconfig on KubectlTransport.php (#64)
+
+### 5.0.0 - 2022/Feb/18
+
+* Support symfony/process ^6
+
+### 4.2.0 - 2022/Feb/18
+
+* Support kubectl transport (#60)
+
+### 4.1.3 / 4.1.2 - 2022/Jan/18
+
+* Support symfony/process ^5 via illicit access to a private member (#58)
+* Avoid verbose output when we have nothing to say in ProcessFailedException. (#54)
+
+### 4.1.1 - 2022/Jan/3
+
+* Support PHP 8.1. (n.b. No code changes to library; this release is merely to enable testing on 8.1 and explicitly declare support.)
+
 ### 4.1.0 - 2021/Feb/20
 
 * Support PHP 8

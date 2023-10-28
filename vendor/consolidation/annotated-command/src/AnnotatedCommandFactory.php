@@ -25,6 +25,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class AnnotatedCommandFactory implements AutomaticOptionsProviderInterface
 {
+    /** var bool */
+    protected static $ignoreCommandsInTraits = false;
+
+    /** var bool */
+    protected static $ignoreCommandsInParentClasses = false;
+
     /** var CommandProcessor */
     protected $commandProcessor;
 
@@ -45,6 +51,38 @@ class AnnotatedCommandFactory implements AutomaticOptionsProviderInterface
 
     /** var string[] */
     protected $ignoredCommandsRegexps = [];
+
+    /**
+     * Typically, traits should not contain commands; however, some
+     * applications make use of this feature to package commands in
+     * libraries, so we must allow command files in traits to maintain
+     * backwards compatibility. Call this method to skip the parsing
+     * of trait files for a performance boost.
+     *
+     * In future versions, this property be removed, and commands will
+     * not be parsed from traits. Use Robo plugins as the preferred method
+     * of distributing shared commands.
+     */
+    public static function setIgnoreCommandsInTraits(bool $skipTraitFiles)
+    {
+        static::$ignoreCommandsInTraits = $skipTraitFiles;
+    }
+
+    /**
+     * Typically, commands should not be inherited from parent classes;
+     * however, some applications make use of this feature to package
+     * commands in libraries, so we must allow command files in traits
+     * to maintain backwards compatibility. Call this method to skip the
+     * parsing of trait files for a performance boost.
+     *
+     * In future versions, this property be removed, and commands will
+     * not be parsed from traits. Use Robo plugins as the preferred method
+     * of distributing shared commands.
+     */
+    public static function setIgnoreCommandsInParentClasses(bool $ignoreCommandsInParentClasses)
+    {
+        static::$ignoreCommandsInParentClasses = $ignoreCommandsInParentClasses;
+    }
 
     public function __construct()
     {
@@ -262,11 +300,22 @@ class AnnotatedCommandFactory implements AutomaticOptionsProviderInterface
 
         // Ignore special functions, such as __construct and __call, which
         // can never be commands.
+        $commandClass = get_class($commandFileInstance);
         $commandMethodNames = array_filter(
             get_class_methods($commandFileInstance) ?: [],
-            function ($m) use ($commandFileInstance) {
+            function ($m) use ($commandFileInstance, $commandClass) {
                 $reflectionMethod = new \ReflectionMethod($commandFileInstance, $m);
-                return !$reflectionMethod->isStatic() && !preg_match('#^_#', $m);
+                $name = $reflectionMethod->getFileName();
+                if (static::$ignoreCommandsInParentClasses && $reflectionMethod->getDeclaringClass()->getName() !== $commandClass) {
+                    return false;
+                }
+                if ($reflectionMethod->isStatic() || preg_match('#^_#', $m)) {
+                    return false;
+                }
+                if (!static::$ignoreCommandsInTraits) {
+                    return true;
+                }
+                return basename($name) !== 'IO.php' && strpos($name, 'Trait') === false;
             }
         );
 
@@ -467,6 +516,11 @@ class AnnotatedCommandFactory implements AutomaticOptionsProviderInterface
         $command = new AnnotatedCommand($commandInfo->getName());
         $commandCallback = [$commandFileInstance, $commandInfo->getMethodName()];
         $command->setCommandCallback($commandCallback);
+        $completionCallback = null;
+        if ($annotation = $commandInfo->getAnnotation('complete')) {
+            $completionCallback = is_callable($annotation) ?: [$commandFileInstance, $annotation];
+        }
+        $command->setCompletionCallback($completionCallback);
         $command->setCommandProcessor($this->commandProcessor);
         $command->setCommandInfo($commandInfo);
         $automaticOptions = $this->callAutomaticOptionsProviders($commandInfo);

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drush\Drupal\Migrate;
 
+use Drupal\migrate\MigrateException;
 use Drupal\Component\Utility\Timer;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigrateImportEvent;
@@ -24,18 +27,13 @@ class MigrateExecutable extends MigrateExecutableBase
 {
     /**
      * The Symfony console output.
-     *
-     * @var \Symfony\Component\Console\Output\OutputInterface
      */
-    protected $output;
+    protected OutputInterface $output;
 
     /**
      * Counters of map statuses.
-     *
-     * @var array
-     *   Set of counters, keyed by MigrateIdMapInterface::STATUS_* constant.
      */
-    protected $saveCounters = [
+    protected array $saveCounters = [
         MigrateIdMapInterface::STATUS_FAILED => 0,
         MigrateIdMapInterface::STATUS_IGNORED => 0,
         MigrateIdMapInterface::STATUS_IMPORTED => 0,
@@ -44,131 +42,114 @@ class MigrateExecutable extends MigrateExecutableBase
 
     /**
      * Counter of map deletions.
-     *
-     * @var int
      */
-    protected $deleteCounter = 0;
+    protected int $deleteCounter = 0;
 
     /**
      * Maximum number of items to process in this migration.
-     *
-     * @var int|null
      */
-    protected $limit;
+    protected ?string $limit;
 
     /**
      * Frequency (in items) at which progress messages should be emitted.
-     *
-     * @var int
      */
-    protected $feedback;
+    protected ?string $feedback;
 
     /**
      * Show timestamp in progress message.
-     *
-     * @var bool
      */
-    protected $showTimestamp;
+    protected bool $showTimestamp;
 
     /**
      * Show internal counter in progress message.
-     *
-     * @var bool
      */
-    protected $showTotal = false;
+    protected bool $showTotal;
 
     /**
      * List of specific source IDs to import.
-     *
-     * @var array
      */
-    protected $idlist;
+    protected array $idlist;
+
+    /**
+     * List of all source IDs that are found in source during this migration.
+     */
+    protected array $allSourceIdValues = [];
 
     /**
      * Count of number of items processed so far in this migration.
-     *
-     * @var int
      */
-    protected $counter = 0;
+    protected int $counter = 0;
 
     /**
      * Whether the destination item exists before saving.
-     *
-     * @var bool
      */
-    protected $preExistingItem = false;
+    protected bool $preExistingItem = false;
 
     /**
      * List of event listeners we have registered.
      *
      * @var callable[]
      */
-    protected $listeners = [];
+    protected array $listeners = [];
 
     /**
      * Whether to delete rows missing from source after an import.
-     *
-     * @var bool|null
      */
-    protected $deleteMissingSourceRows;
+    protected bool $deleteMissingSourceRows;
 
     /**
      * Static cached ID map.
-     *
-     * @var \Drush\Drupal\Migrate\MigrateIdMapFilter
      */
-    protected $idMap;
+    protected ?MigrateIdMapFilter $idMap;
 
     /**
-     * If the execution exposes an progress bar.
-     *
-     * @var bool
+     * If the execution exposes a progress bar.
      */
-    protected $exposeProgressBar;
+    protected bool $exposeProgressBar;
 
     /**
      * The Symfony progress bar.
-     *
-     * @var \Symfony\Component\Console\Helper\ProgressBar
      */
-    protected $progressBar;
-
-    /**
-     * Used to bypass the prepare row feedback.
-     *
-     * @var bool
-     *
-     * @see \Drush\Drupal\Migrate\MigrateExecutable::handleMissingSourceRows()
-     */
-    protected $showPrepareRowFeedback = true;
+    protected ?ProgressBar $progressBar;
 
     /**
      * Constructs a new migrate executable instance.
-     *
-     * @param \Drupal\migrate\Plugin\MigrationInterface $migration
-     * @param \Drupal\migrate\MigrateMessageInterface $message
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param array $options
-     *
-     * @throws \Drupal\migrate\MigrateException
      */
     public function __construct(MigrationInterface $migration, MigrateMessageInterface $message, OutputInterface $output, array $options = [])
     {
         Timer::start('migrate:' . $migration->getPluginId());
+
+        // Provide sane defaults.
+        $options += [
+            'idlist' => null,
+            'limit' => null,
+            'feedback' => null,
+            'timestamp' => false,
+            'total' => false,
+            'delete' => false,
+            'progress' => true,
+        ];
+
         $this->idlist = MigrateUtils::parseIdList($options['idlist']);
 
         parent::__construct($migration, $message);
 
         $this->output = $output;
         $this->limit = $options['limit'];
-        $this->feedback = $options['feedback'] ?? 0;
+        $this->feedback = $options['feedback'];
         $this->showTimestamp = $options['timestamp'];
         $this->showTotal = $options['total'];
-        $this->deleteMissingSourceRows = $options['delete'];
+        // Deleting the missing source rows is not compatible with options that
+        // limit number of source rows that will be processed. It should be
+        // ignored when:
+        // - `--idlist` option is used,
+        // - `--limit` option is used,
+        // - The migration source plugin has high_water_property set.
+        $this->deleteMissingSourceRows = $options['delete'] && !($this->limit || !empty($this->idlist) || !empty($migration->getSourceConfiguration()['high_water_property']));
         // Cannot use the progress bar when:
         // - `--no-progress` option is used,
         // - `--feedback` option is used,
-        // - The migration source plugin is configured to skips count.
+        // - The migration source plugin is configured to skip count.
         $this->exposeProgressBar = $options['progress'] && !$this->feedback && empty($migration->getSourceConfiguration()['skip_count']);
 
         $this->listeners[MigrateEvents::MAP_SAVE] = [$this, 'onMapSave'];
@@ -191,7 +172,7 @@ class MigrateExecutable extends MigrateExecutableBase
     /**
      * Counts up any map save events.
      *
-     * @param \Drupal\migrate\Event\MigrateMapSaveEvent $event
+     * @param MigrateMapSaveEvent $event
      *   The map event.
      */
     public function onMapSave(MigrateMapSaveEvent $event): void
@@ -211,7 +192,7 @@ class MigrateExecutable extends MigrateExecutableBase
     /**
      * Counts up any rollback events.
      *
-     * @param \Drupal\migrate\Event\MigrateMapDeleteEvent $event
+     * @param MigrateMapDeleteEvent $event
      *   The map event.
      */
     public function onMapDelete(MigrateMapDeleteEvent $event): void
@@ -223,13 +204,12 @@ class MigrateExecutable extends MigrateExecutableBase
     /**
      * Reacts when the import is about to start.
      *
-     * @param \Drupal\migrate\Event\MigrateImportEvent $event
+     * @param MigrateImportEvent $event
      *   The import event.
      */
     public function onPreImport(MigrateImportEvent $event): void
     {
         $migration = $event->getMigration();
-        $this->handleMissingSourceRows($migration);
         $this->initProgressBar($migration);
     }
 
@@ -249,44 +229,20 @@ class MigrateExecutable extends MigrateExecutableBase
      * propagation, thus avoiding the destination object rollback, even when
      * the`--delete` option has been passed.
      *
-     * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+     * @param MigrationInterface $migration
      *
      * @see \Drush\Drupal\Migrate\MigrateExecutable::onMissingSourceRows()
      */
     protected function handleMissingSourceRows(MigrationInterface $migration): void
     {
-        // Clone so that any generators aren't initialized prematurely.
-        $source = clone $migration->getSourcePlugin();
-
         $idMap = $migration->getIdMap();
-        if (empty($this->idlist)) {
-            $idMap->prepareUpdate();
-        } else {
-            $keys = array_keys($migration->getSourcePlugin()->getIds());
-            foreach ($this->idlist as $sourceIdValues) {
-                $idMap->setUpdate(array_combine($keys, $sourceIdValues));
-            }
-        }
-
-        // As $source->next() is preparing the row, don't want to show the
-        // feedback in such circumstances.
-        // @see \Drush\Drupal\Migrate\MigrateExecutable::onPrepareRow()
-        $this->showPrepareRowFeedback = false;
-        $source->rewind();
-        $sourceIdValues = [];
-        while ($source->valid()) {
-            $sourceIdValues[] = $source->current()->getSourceIdValues();
-            $source->next();
-        }
-        $this->showPrepareRowFeedback = true;
-
         $idMap->rewind();
 
         // Collect the destination IDs no more present in source.
         $destinationIds = [];
         while ($idMap->valid()) {
             $mapSourceId = $idMap->currentSource();
-            if (!in_array($mapSourceId, $sourceIdValues)) {
+            if (!in_array($mapSourceId, $this->allSourceIdValues)) {
                 $destinationIds[] = $idMap->currentDestination();
             }
             $idMap->next();
@@ -294,7 +250,7 @@ class MigrateExecutable extends MigrateExecutableBase
 
         if ($destinationIds) {
             $missingSourceEvent = new MigrateMissingSourceRowsEvent($migration, $destinationIds);
-            $this->getEventDispatcher()->dispatch(MigrateMissingSourceRowsEvent::class, $missingSourceEvent);
+            $this->getEventDispatcher()->dispatch($missingSourceEvent);
         }
     }
 
@@ -306,7 +262,7 @@ class MigrateExecutable extends MigrateExecutableBase
      * destination entity and then stopping the event propagation, thus avoiding
      * the destination object deletion, even the `--delete` option was passed.
      *
-     * @param \Drush\Drupal\Migrate\MigrateMissingSourceRowsEvent $event
+     * @param MigrateMissingSourceRowsEvent $event
      *   The event object.
      */
     public function onMissingSourceRows(MigrateMissingSourceRowsEvent $event): void
@@ -322,7 +278,11 @@ class MigrateExecutable extends MigrateExecutableBase
             );
             // Filter the map on destination IDs.
             $this->idMap = new MigrateIdMapFilter(parent::getIdMap(), [], $event->getDestinationIds());
+
+            $status = $this->migration->getStatus();
+            $this->migration->setStatus(MigrationInterface::STATUS_IDLE);
             $this->rollback();
+            $this->migration->setStatus($status);
             // Reset the ID map filter.
             $this->idMap = null;
         }
@@ -331,7 +291,7 @@ class MigrateExecutable extends MigrateExecutableBase
     /**
      * Reacts to migration completion.
      *
-     * @param \Drupal\migrate\Event\MigrateImportEvent $event
+     * @param MigrateImportEvent $event
      *   The map event.
      */
     public function onPostImport(MigrateImportEvent $event): void
@@ -340,15 +300,14 @@ class MigrateExecutable extends MigrateExecutableBase
         $migrateLastImportedStore->set($event->getMigration()->id(), round(microtime(true) * 1000));
         $this->progressFinish();
         $this->importFeedbackMessage();
+        $this->handleMissingSourceRows($event->getMigration());
         $this->unregisterListeners();
     }
 
     /**
      * Emits information on the import progress.
-     *
-     * @param bool $done
      */
-    protected function importFeedbackMessage($done = true): void
+    protected function importFeedbackMessage(bool $done = true): void
     {
         $processed = $this->getProcessedCount();
         $timer = Timer::read('migrate:' . $this->migration->getPluginId());
@@ -396,7 +355,7 @@ class MigrateExecutable extends MigrateExecutableBase
     /**
      * Reacts when the rollback is about to starts.
      *
-     * @param \Drupal\migrate\Event\MigrateRollbackEvent $event
+     * @param MigrateRollbackEvent $event
      *   The map event.
      */
     public function onPreRollback(MigrateRollbackEvent $event): void
@@ -407,7 +366,7 @@ class MigrateExecutable extends MigrateExecutableBase
     /**
      * Reacts to rollback completion.
      *
-     * @param \Drupal\migrate\Event\MigrateRollbackEvent $event
+     * @param MigrateRollbackEvent $event
      *   The map event.
      */
     public function onPostRollback(MigrateRollbackEvent $event): void
@@ -427,10 +386,8 @@ class MigrateExecutable extends MigrateExecutableBase
 
     /**
      * Emits information on the rollback execution  progress.
-     *
-     * @param bool $done
      */
-    protected function rollbackFeedbackMessage($done = true): void
+    protected function rollbackFeedbackMessage(bool $done = true): void
     {
         $rolledBack = $this->getRollbackCount();
         if ($done) {
@@ -456,7 +413,7 @@ class MigrateExecutable extends MigrateExecutableBase
     /**
      * Reacts to an item about to be imported.
      *
-     * @param \Drupal\migrate\Event\MigratePreRowSaveEvent $event
+     * @param MigratePreRowSaveEvent $event
      *   The pre-save event.
      */
     public function onPreRowSave(MigratePreRowSaveEvent $event): void
@@ -472,7 +429,7 @@ class MigrateExecutable extends MigrateExecutableBase
     /**
      * Reacts aftre a row has been deleted.
      *
-     * @param \Drupal\migrate\Event\MigratePostRowSaveEvent $event
+     * @param MigratePostRowSaveEvent $event
      *   The event.
      */
     public function onPostRowSave(MigratePostRowSaveEvent $event): void
@@ -483,7 +440,7 @@ class MigrateExecutable extends MigrateExecutableBase
     /**
      * Reacts to item rollback.
      *
-     * @param \Drupal\migrate\Event\MigrateRowDeleteEvent $event
+     * @param MigrateRowDeleteEvent $event
      *   The post-save event.
      */
     public function onPostRowDelete(MigrateRowDeleteEvent $event): void
@@ -497,16 +454,17 @@ class MigrateExecutable extends MigrateExecutableBase
     /**
      * Reacts to a new row being prepared.
      *
-     * @param \Drush\Drupal\Migrate\MigratePrepareRowEvent $event
+     * @param MigratePrepareRowEvent $event
      *   The prepare-row event.
      *
-     * @throws \Drupal\migrate\MigrateSkipRowException
+     * @throws MigrateSkipRowException
      */
     public function onPrepareRow(MigratePrepareRowEvent $event): void
     {
+        $row = $event->getRow();
+        $sourceId = $row->getSourceIdValues();
+
         if (!empty($this->idlist)) {
-            $row = $event->getRow();
-            $sourceId = $row->getSourceIdValues();
             $skip = true;
             foreach ($this->idlist as $id) {
                 if (array_values($sourceId) == $id) {
@@ -515,15 +473,13 @@ class MigrateExecutable extends MigrateExecutableBase
                 }
             }
             if ($skip) {
-                throw new MigrateSkipRowException(null, false);
+                throw new MigrateSkipRowException('', false);
             }
         }
 
-        // If we're preparing the row in context of ::handleMissingSourceRows(),
-        // we don't need any counters update.
-        if (!$this->showPrepareRowFeedback) {
-            return;
-        }
+        // Collect all Source ID values so that we can handle missing source
+        // rows post import.
+        $this->allSourceIdValues[] = $sourceId;
 
         if ($this->feedback && $this->counter && $this->counter % $this->feedback === 0) {
             $this->importFeedbackMessage(false);
@@ -626,7 +582,7 @@ class MigrateExecutable extends MigrateExecutableBase
     /**
      * Initializes the command progress bar if possible.
      *
-     * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+     * @param MigrationInterface $migration
      *   The migration.
      */
     protected function initProgressBar(MigrationInterface $migration): void

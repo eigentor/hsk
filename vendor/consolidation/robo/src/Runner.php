@@ -11,6 +11,7 @@ use Robo\Common\IO;
 use Robo\Exception\TaskExitException;
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
+use League\Container\Exception\ContainerException;
 use Consolidation\Config\Util\EnvConfig;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -218,7 +219,7 @@ class Runner implements ContainerAwareInterface
     }
 
     /**
-     * @param null|\Symfony\Component\Console\Input\InputInterface $input
+     * @param null|array|\Symfony\Component\Console\Input\InputInterface $input
      * @param null|\Symfony\Component\Console\Output\OutputInterface $output
      * @param null|\Robo\Application $app
      * @param array[] $commandFiles
@@ -242,7 +243,9 @@ class Runner implements ContainerAwareInterface
         $this->setOutput($output);
 
         // If we were not provided a container, then create one
-        if (!$this->getContainer()) {
+        try {
+            $this->getContainer();
+        } catch (ContainerException $e) {
             $configFiles = $this->getConfigFilePaths($this->configFilename);
             $config = Robo::createConfiguration($configFiles);
             if ($this->envConfigPrefix) {
@@ -286,7 +289,8 @@ class Runner implements ContainerAwareInterface
         // successfully.
         if ($statusCode) {
             foreach ($this->errorConditions as $msg => $color) {
-                $this->yell($msg, 40, $color);
+                // TODO: This was 'yell'. Add styling?
+                $output->writeln($msg); // used to wrap at 40 and write in $color
             }
         }
         return $statusCode;
@@ -312,7 +316,7 @@ class Runner implements ContainerAwareInterface
     public function registerCommandClasses($app, $commandClasses)
     {
         foreach ((array)$commandClasses as $commandClass) {
-            $this->registerCommandClass($app, $commandClass);
+            Robo::register($app, $commandClass);
         }
     }
 
@@ -334,62 +338,21 @@ class Runner implements ContainerAwareInterface
      * @param \Robo\Application $app
      * @param string|BuilderAwareInterface|ContainerAwareInterface $commandClass
      *
+     * @deprecated Use Robo::register directly
+     *
      * @return null|object
      */
     public function registerCommandClass($app, $commandClass)
     {
-        $container = Robo::getContainer();
-        $roboCommandFileInstance = $this->instantiateCommandClass($commandClass);
-        if (!$roboCommandFileInstance) {
-            return;
-        }
-
-        // Register commands for all of the public methods in the RoboFile.
-        $commandFactory = $container->get('commandFactory');
-        $commandList = $commandFactory->createCommandsFromClass($roboCommandFileInstance);
-        foreach ($commandList as $command) {
-            $app->add($command);
-        }
-        return $roboCommandFileInstance;
+        return Robo::register($app, $commandClass);
     }
 
     /**
-     * @param string|\Robo\Contract\BuilderAwareInterface|\League\Container\ContainerAwareInterface $commandClass
-     *
-     * @return null|object
+     * @deprecated Use Robo::instantiate directly
      */
     protected function instantiateCommandClass($commandClass)
     {
-        $container = Robo::getContainer();
-
-        // Register the RoboFile with the container and then immediately
-        // fetch it; this ensures that all of the inflectors will run.
-        // If the command class is already an instantiated object, then
-        // just use it exactly as it was provided to us.
-        if (is_string($commandClass)) {
-            if (!class_exists($commandClass)) {
-                return;
-            }
-            $reflectionClass = new \ReflectionClass($commandClass);
-            if ($reflectionClass->isAbstract()) {
-                return;
-            }
-
-            $commandFileName = "{$commandClass}Commands";
-            $container->share($commandFileName, $commandClass);
-            $commandClass = $container->get($commandFileName);
-        }
-        // If the command class is a Builder Aware Interface, then
-        // ensure that it has a builder.  Every command class needs
-        // its own collection builder, as they have references to each other.
-        if ($commandClass instanceof BuilderAwareInterface) {
-            $builder = CollectionBuilder::create($container, $commandClass);
-            $commandClass->setBuilder($builder);
-        }
-        if ($commandClass instanceof ContainerAwareInterface) {
-            $commandClass->setContainer($container);
-        }
-        return $commandClass;
+        return Robo::instantiate($commandClass);
     }
 
     public function installRoboHandlers()

@@ -52,10 +52,7 @@ class ReadableStreamBackupFile extends BackupFile implements BackupFileReadableI
   }
 
   /**
-   * Get the realpath of the file.
-   *
-   * @return string
-   *   The path or stream URI to the file or NULL if the file does not exist.
+   * {@inheritdoc}
    */
   public function realpath() {
     if (file_exists($this->path)) {
@@ -192,8 +189,11 @@ class ReadableStreamBackupFile extends BackupFile implements BackupFileReadableI
    */
   protected function loadFileStats() {
     clearstatcache();
-    $this->setMeta('filesize', filesize($this->realpath()));
-    $this->setMeta('datestamp', filectime($this->realpath()));
+    $path = $this->realpath();
+    if (!empty($path)) {
+      $this->setMeta('filesize', filesize($path));
+      $this->setMeta('datestamp', filectime($path));
+    }
   }
 
 }

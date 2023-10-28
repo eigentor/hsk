@@ -6,6 +6,7 @@ namespace PhpParser\Builder;
 
 use PhpParser;
 use PhpParser\BuilderHelpers;
+use PhpParser\Node;
 use PhpParser\Node\Const_;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt;
@@ -15,6 +16,11 @@ class ClassConst implements PhpParser\Builder
     protected $flags = 0;
     protected $attributes = [];
     protected $constants = [];
+
+    /** @var Node\AttributeGroup[] */
+    protected $attributeGroups = [];
+    /** @var Identifier|Node\Name|Node\ComplexType */
+    protected $type;
 
     /**
      * Creates a class constant builder
@@ -74,6 +80,17 @@ class ClassConst implements PhpParser\Builder
     }
 
     /**
+     * Makes the constant final.
+     *
+     * @return $this The builder instance (for fluid interface)
+     */
+    public function makeFinal() {
+        $this->flags = BuilderHelpers::addModifier($this->flags, Stmt\Class_::MODIFIER_FINAL);
+
+        return $this;
+    }
+
+    /**
      * Sets doc comment for the constant.
      *
      * @param PhpParser\Comment\Doc|string $docComment Doc comment to set
@@ -89,6 +106,32 @@ class ClassConst implements PhpParser\Builder
     }
 
     /**
+     * Adds an attribute group.
+     *
+     * @param Node\Attribute|Node\AttributeGroup $attribute
+     *
+     * @return $this The builder instance (for fluid interface)
+     */
+    public function addAttribute($attribute) {
+        $this->attributeGroups[] = BuilderHelpers::normalizeAttribute($attribute);
+
+        return $this;
+    }
+
+    /**
+     * Sets the constant type.
+     *
+     * @param string|Node\Name|Identifier|Node\ComplexType $type
+     *
+     * @return $this
+     */
+    public function setType($type) {
+        $this->type = BuilderHelpers::normalizeType($type);
+
+        return $this;
+    }
+
+    /**
      * Returns the built class node.
      *
      * @return Stmt\ClassConst The built constant node
@@ -97,7 +140,9 @@ class ClassConst implements PhpParser\Builder
         return new Stmt\ClassConst(
             $this->constants,
             $this->flags,
-            $this->attributes
+            $this->attributes,
+            $this->attributeGroups,
+            $this->type
         );
     }
 }
