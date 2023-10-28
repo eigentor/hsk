@@ -3,7 +3,7 @@
         'name' => 'drupal/recommended-project',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '90d904c0098abba9f38624e308f523cafe3a171c',
+        'reference' => '551fec48bd977e43ef275deff92f70c869aa9a35',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -804,7 +804,7 @@
         'drupal/recommended-project' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '90d904c0098abba9f38624e308f523cafe3a171c',
+            'reference' => '551fec48bd977e43ef275deff92f70c869aa9a35',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -928,9 +928,9 @@
             'dev_requirement' => false,
         ),
         'drush/drush' => array(
-            'pretty_version' => '12.2.0',
-            'version' => '12.2.0.0',
-            'reference' => 'b924aa6cfad1c0eb3ae853ccc373422c16184b8e',
+            'pretty_version' => '12.4.1',
+            'version' => '12.4.1.0',
+            'reference' => 'edfd51adaa25ef0c5054fb5cd2c89a47a4269f47',
             'type' => 'library',
             'install_path' => __DIR__ . '/../drush/drush',
             'aliases' => array(),
@@ -1207,8 +1207,8 @@
             'dev_requirement' => false,
             'provided' => array(
                 0 => '^1.1 || ^2.0',
-                1 => '1.1|2.0',
-                2 => '^1.0',
+                1 => '^1.0',
+                2 => '1.1|2.0',
             ),
         ),
         'psr/event-dispatcher' => array(
