@@ -9,6 +9,7 @@ dependencies:
   module:
     - comment
     - contextual
+    - file
     - filter
     - locale
     - node
@@ -40,6 +41,7 @@ permissions:
   - 'clone team content'
   - 'clone turnier content'
   - 'create url aliases'
+  - 'delete own files'
   - 'override all published option'
   - 'post comments'
   - 'skip comment approval'

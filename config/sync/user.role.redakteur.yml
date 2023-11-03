@@ -7,6 +7,7 @@ dependencies:
     - node.type.event
   module:
     - comment
+    - file
     - node
     - override_node_options
     - quick_node_clone
@@ -26,6 +27,7 @@ permissions:
   - 'create event content'
   - 'delete own article content'
   - 'delete own event content'
+  - 'delete own files'
   - 'edit any event content'
   - 'edit own article content'
   - 'edit own event content'

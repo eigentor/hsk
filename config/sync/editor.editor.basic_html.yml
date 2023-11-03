@@ -30,6 +30,11 @@ settings:
         - heading4
         - heading5
         - heading6
+    ckeditor5_imageResize:
+      allow_resize: true
+    ckeditor5_list:
+      reversed: false
+      startIndex: true
     ckeditor5_sourceEditing:
       allowed_tags:
         - '<cite>'
@@ -50,11 +55,6 @@ settings:
         - '<h4 id>'
         - '<h5 id>'
         - '<h6 id>'
-    ckeditor5_list:
-      reversed: false
-      startIndex: true
-    ckeditor5_imageResize:
-      allow_resize: true
     linkit_extension:
       linkit_enabled: false
 image_upload:

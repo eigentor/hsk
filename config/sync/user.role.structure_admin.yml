@@ -6,6 +6,8 @@ dependencies:
     - filter.format.full_html
   module:
     - block
+    - block_content
+    - file
     - filter
     - quick_node_clone
     - system
@@ -14,7 +16,11 @@ label: Struktur-Admin
 weight: 5
 is_admin: null
 permissions:
+  - 'access block library'
+  - 'administer block content'
+  - 'administer block types'
   - 'administer blocks'
   - 'administer menu'
   - 'clone event content'
+  - 'delete own files'
   - 'use text format full_html'

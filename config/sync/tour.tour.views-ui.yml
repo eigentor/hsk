@@ -42,7 +42,7 @@ tips:
     label: Ausgabeformat
     weight: 4
     selector: .views-ui-display-tab-bucket.format
-    body: 'Wählen Sie, wie die Ergebnisse ausgegeben werden sollen. Wählen Sie z. B. <em>Inhalt</em>, um jedes Element vollständig auszugeben, wobei Sie Ihre konfigurierten Anzeigeeinstellungen verwenden. Oder wählen Sie <em>Felder</em>, um nur bestimmte Felder für jedes Ergebnis auszugeben. Zusätzliche Formate können durch die Installation von Modulen, die Drupal''s Basisfunktionalität <em>erweitern</em>, hinzugefügt werden.'
+    body: "Wählen Sie, wie die Ergebnisse ausgegeben werden sollen. Wählen Sie z. B. <em>Inhalt</em>, um jedes Element vollständig auszugeben, wobei Sie Ihre konfigurierten Anzeigeeinstellungen verwenden. Oder wählen Sie <em>Felder</em>, um nur bestimmte Felder für jedes Ergebnis auszugeben. Zusätzliche Formate können durch die Installation von Modulen, die Drupal's Basisfunktionalität <em>erweitern</em>, hinzugefügt werden."
   views-ui-fields:
     id: views-ui-fields
     plugin: text

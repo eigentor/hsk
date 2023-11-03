@@ -3,6 +3,7 @@ langcode: de
 status: true
 dependencies:
   module:
+    - file
     - system
 id: log_inspektor
 label: Log-Inspektor
@@ -10,3 +11,4 @@ weight: 6
 is_admin: null
 permissions:
   - 'access site reports'
+  - 'delete own files'
