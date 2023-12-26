@@ -1,0 +1,48 @@
+uuid: 180840ab-c14d-4421-aff4-31f04015d524
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_main_text
+    - filter.format.basic_html
+    - node.type.layout_page
+  module:
+    - allowed_formats
+    - better_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - basic_html
+  better_formats:
+    allowed_formats_toggle: true
+    allowed_formats:
+      basic_html: basic_html
+      restricted_html: 0
+      tables_only: 0
+      full_html: 0
+    default_order_toggle: false
+    default_order_wrapper:
+      formats:
+        basic_html:
+          weight: '0'
+        restricted_html:
+          weight: '0'
+        tables_only:
+          weight: '0'
+        full_html:
+          weight: '1'
+id: node.layout_page.field_main_text
+field_name: field_main_text
+entity_type: node
+bundle: layout_page
+label: Text
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long
