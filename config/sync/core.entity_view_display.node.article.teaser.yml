@@ -65,5 +65,4 @@ hidden:
   field_main_image_teaser_only: true
   field_new_par_various: true
   field_new_txt_capt_main_img: true
-  field_tags: true
   langcode: true
