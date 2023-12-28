@@ -30,7 +30,7 @@ third_party_settings:
       label: Hauptbild
       region: content
       parent_name: ''
-      weight: 1
+      weight: 2
       format_type: fieldset
       format_settings:
         classes: main-image
@@ -46,7 +46,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 6
+    weight: 5
     region: content
     settings:
       rows: 9
@@ -56,13 +56,13 @@ content:
     third_party_settings: {  }
   created:
     type: datetime_timestamp
-    weight: 12
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   field_gallery_above_body:
     type: entity_reference_paragraphs
-    weight: 5
+    weight: 4
     region: content
     settings:
       title: Paragraph
@@ -74,7 +74,7 @@ content:
     third_party_settings: {  }
   field_gallery_below_body:
     type: entity_reference_paragraphs
-    weight: 8
+    weight: 7
     region: content
     settings:
       title: Paragraph
@@ -103,7 +103,7 @@ content:
     third_party_settings: {  }
   field_new_par_various:
     type: paragraphs
-    weight: 7
+    weight: 6
     region: content
     settings:
       title: Absatz
@@ -125,32 +125,28 @@ content:
         delete_confirmation: false
   field_new_txt_capt_main_img:
     type: string_textfield
-    weight: 4
+    weight: 3
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   field_tags:
-    type: entity_reference_autocomplete_tags
-    weight: 10
+    type: options_select
+    weight: 1
     region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 9
+    weight: 8
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   node_class:
     type: string_textfield
-    weight: 16
+    weight: 14
     region: content
     settings:
       size: 60
@@ -158,27 +154,27 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 15
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 13
+    weight: 11
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 17
+    weight: 15
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 14
+    weight: 12
     region: content
     settings:
       display_label: true
@@ -193,7 +189,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 11
+    weight: 9
     region: content
     settings:
       match_operator: CONTAINS

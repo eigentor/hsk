@@ -8,6 +8,7 @@ dependencies:
     - node.type.layout_page
   module:
     - layout_builder
+    - layout_builder_restrictions
     - layout_discovery
     - text
     - user
@@ -47,6 +48,29 @@ third_party_settings:
             weight: 1
             additional: {  }
         third_party_settings: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks:
+        'Lists (Views)':
+          - 'views_block:bundesliga_news-block_1'
+          - 'views_block:bundesliga_news-block_2'
+      restricted_categories:
+        - Benutzer
+        - 'Chaos Tools'
+        - 'Content fields'
+        - Devel
+        - 'EU Cookie Compliance'
+        - Forms
+        - Help
+        - 'Inline blocks'
+        - Menus
+        - News
+        - System
+        - Webform
+        - core
 id: node.layout_page.default
 targetEntityType: node
 bundle: layout_page
