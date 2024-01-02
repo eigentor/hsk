@@ -118,3 +118,7 @@ function hsk_zymphonies_theme_suggestions_block_alter(array &$suggestions, array
     array_splice($suggestions, 1, 0, 'block__bundle__' . $variables['elements']['content']['#block_content']->bundle());
   }
 }
+
+function hsk_zymphonies_preprocess_paragraph(&$variables) {
+  $peter = 7;
+}

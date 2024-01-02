@@ -23,6 +23,35 @@ third_party_settings:
       -
         layout_id: layout_onecol
         layout_settings:
+          label: Headerbild
+          context_mapping: {  }
+        components:
+          f330082e-759d-40b0-a030-d29252481a66:
+            uuid: f330082e-759d-40b0-a030-d29252481a66
+            region: content
+            configuration:
+              id: 'field_block:node:layout_page:field_image'
+              label: Hauptbild
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: responsive_image
+                label: hidden
+                settings:
+                  responsive_image_style: headerbild_inhaltsbreite
+                  image_link: ''
+                  image_loading:
+                    attribute: lazy
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
           label: ''
         components:
           0a41ccf5-32eb-41d5-9283-30b21b54e7d4:
@@ -50,25 +79,6 @@ third_party_settings:
                 type: text_default
                 label: hidden
                 settings: {  }
-                third_party_settings: {  }
-            weight: 1
-            additional: {  }
-          f330082e-759d-40b0-a030-d29252481a66:
-            uuid: f330082e-759d-40b0-a030-d29252481a66
-            region: content
-            configuration:
-              id: 'field_block:node:layout_page:field_image'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: image
-                label: hidden
-                settings:
-                  image_link: ''
-                  image_style: inline_full_width
-                  image_loading:
-                    attribute: lazy
                 third_party_settings: {  }
             weight: 2
             additional: {  }

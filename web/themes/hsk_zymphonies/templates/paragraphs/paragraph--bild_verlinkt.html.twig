@@ -1,0 +1,23 @@
+{%
+  set classes = [
+  'paragraph',
+  'paragraph--type--' ~ paragraph.bundle|clean_class,
+  view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+  not paragraph.isPublished() ? 'paragraph--unpublished'
+]
+%}
+{% block paragraph %}
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
+      <div class="image">
+        {% if paragraph.field_sli_link_heading.uri %}
+        <a target="_blank" href="{{ paragraph.field_sli_link_heading.uri }}">
+          {% endif %}
+          {{ content.field_gallery_image.0 }}
+          {% if paragraph.field_sli_link_heading.uri %}
+        </a>
+        {% endif %}
+      </div>
+    {% endblock %}
+  </div>
+{% endblock paragraph %}

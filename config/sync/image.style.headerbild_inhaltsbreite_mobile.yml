@@ -1,0 +1,15 @@
+uuid: ee269481-9912-40b6-b2d5-81798ada8190
+langcode: de
+status: true
+dependencies: {  }
+name: headerbild_inhaltsbreite_mobile
+label: 'Headerbild Inhaltsbreite mobile'
+effects:
+  529d1c39-55ba-48c9-affb-269bab9f0387:
+    uuid: 529d1c39-55ba-48c9-affb-269bab9f0387
+    id: image_scale
+    weight: 1
+    data:
+      width: 765
+      height: null
+      upscale: false

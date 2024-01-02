@@ -1,0 +1,24 @@
+uuid: 900bae6c-0876-449e-9f0f-e1331f55c03b
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.headerbild_inhaltsbreite
+    - image.style.headerbild_inhaltsbreite_mobile
+  theme:
+    - hsk_zymphonies
+id: headerbild_inhaltsbreite
+label: 'Headerbild Inhaltsbreite'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: headerbild_inhaltsbreite
+    breakpoint_id: hsk_zymphonies.desktop
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: headerbild_inhaltsbreite_mobile
+    breakpoint_id: hsk_zymphonies.tablet
+    multiplier: 1x
+breakpoint_group: hsk_zymphonies
+fallback_image_style: headerbild_inhaltsbreite
