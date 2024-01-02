@@ -3,10 +3,13 @@ langcode: de
 status: true
 dependencies:
   config:
+    - field.field.node.layout_page.field_image
     - field.field.node.layout_page.field_main_text
     - field.field.node.layout_page.layout_builder__layout
+    - image.style.inline_full_width
     - node.type.layout_page
   module:
+    - image
     - layout_builder
     - layout_builder_restrictions
     - layout_discovery
@@ -37,15 +40,37 @@ third_party_settings:
             region: content
             configuration:
               id: 'field_block:node:layout_page:field_main_text'
+              label: Text
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+          f330082e-759d-40b0-a030-d29252481a66:
+            uuid: f330082e-759d-40b0-a030-d29252481a66
+            region: content
+            configuration:
+              id: 'field_block:node:layout_page:field_image'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: text_default
-                label: above
-                settings: {  }
+                type: image
+                label: hidden
+                settings:
+                  image_link: ''
+                  image_style: inline_full_width
+                  image_loading:
+                    attribute: lazy
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
@@ -76,6 +101,17 @@ targetEntityType: node
 bundle: layout_page
 mode: default
 content:
+  field_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: inline_full_width
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
   field_main_text:
     type: text_default
     label: above

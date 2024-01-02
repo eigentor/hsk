@@ -1,0 +1,10 @@
+uuid: e5975bd2-e570-45fb-84eb-b17c20921948
+langcode: de
+status: true
+dependencies: {  }
+id: bild_verlinkt
+label: 'Bild verlinkt'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

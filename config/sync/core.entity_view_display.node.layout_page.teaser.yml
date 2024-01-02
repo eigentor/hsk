@@ -4,16 +4,30 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.layout_page.field_image
     - field.field.node.layout_page.field_main_text
     - field.field.node.layout_page.layout_builder__layout
+    - image.style.medium
     - node.type.layout_page
   module:
+    - image
     - user
 id: node.layout_page.teaser
 targetEntityType: node
 bundle: layout_page
 mode: teaser
 content:
+  field_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: content
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: -1
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }

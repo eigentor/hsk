@@ -1,0 +1,30 @@
+uuid: a79b0cb5-e82d-47d0-96da-e17713324bd6
+langcode: de
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.slideshow
+    - field.field.paragraph.bild_verlinkt.field_gallery_image
+    - field.field.paragraph.bild_verlinkt.field_sli_link_heading
+    - paragraphs.paragraphs_type.bild_verlinkt
+  module:
+    - link
+id: paragraph.bild_verlinkt.slideshow
+targetEntityType: paragraph
+bundle: bild_verlinkt
+mode: slideshow
+content:
+  field_sli_link_heading:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  field_gallery_image: true

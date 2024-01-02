@@ -1,0 +1,15 @@
+uuid: e1ebf847-6449-4ab5-b82b-f62cc83a8e32
+langcode: de
+status: true
+dependencies: {  }
+name: headerbild_inhaltsbreite
+label: 'Headerbild Inhaltsbreite'
+effects:
+  4f21c9df-e131-487f-b39c-585e1ff3aa52:
+    uuid: 4f21c9df-e131-487f-b39c-585e1ff3aa52
+    id: image_scale
+    weight: 1
+    data:
+      width: 1150
+      height: null
+      upscale: false

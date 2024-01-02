@@ -1,0 +1,29 @@
+uuid: ebe9f716-eb49-4af9-a569-73bb8d999cb1
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.bild_verlinkt.field_gallery_image
+    - field.field.paragraph.bild_verlinkt.field_sli_link_heading
+    - image.style.logo
+    - paragraphs.paragraphs_type.bild_verlinkt
+  module:
+    - image
+id: paragraph.bild_verlinkt.default
+targetEntityType: paragraph
+bundle: bild_verlinkt
+mode: default
+content:
+  field_gallery_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: logo
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_sli_link_heading: true

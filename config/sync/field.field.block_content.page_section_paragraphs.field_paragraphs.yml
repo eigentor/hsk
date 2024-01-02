@@ -5,6 +5,7 @@ dependencies:
   config:
     - block_content.type.page_section_paragraphs
     - field.storage.block_content.field_paragraphs
+    - paragraphs.paragraphs_type.bild_verlinkt
     - paragraphs.paragraphs_type.imageblock_small
   module:
     - entity_reference_revisions
@@ -22,9 +23,13 @@ settings:
   handler: 'default:paragraph'
   handler_settings:
     target_bundles:
+      bild_verlinkt: bild_verlinkt
       imageblock_small: imageblock_small
     negate: 0
     target_bundles_drag_drop:
+      bild_verlinkt:
+        weight: 11
+        enabled: true
       gallery_image:
         weight: 9
         enabled: false

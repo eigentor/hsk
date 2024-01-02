@@ -3,10 +3,13 @@ langcode: de
 status: true
 dependencies:
   config:
+    - field.field.node.layout_page.field_image
     - field.field.node.layout_page.field_main_text
     - field.field.node.layout_page.layout_builder__layout
+    - image.style.max_325x325
     - node.type.layout_page
   module:
+    - focal_point
     - path
     - text
 id: node.layout_page.default
@@ -19,6 +22,16 @@ content:
     weight: 10
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_image:
+    type: image_focal_point
+    weight: 2
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: max_325x325
+      preview_link: true
+      offsets: '50,50'
     third_party_settings: {  }
   field_main_text:
     type: text_textarea

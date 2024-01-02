@@ -1,0 +1,38 @@
+uuid: e817759a-5fe1-47b3-a639-4e0f4676251a
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image
+    - node.type.layout_page
+  module:
+    - image
+id: node.layout_page.field_image
+field_name: field_image
+entity_type: node
+bundle: layout_page
+label: Hauptbild
+description: 'Headerbild breit'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: content-image
+  file_extensions: 'png gif jpg jpeg'
+  max_filesize: ''
+  max_resolution: ''
+  min_resolution: ''
+  alt_field: true
+  alt_field_required: true
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: 510
+    height: 420
+field_type: image
