@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Provides install, uninstall, and update functions.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function layout_builder_component_attributes_test_install() {
+  module_set_weight('layout_builder_component_attributes_test', -100);
+}

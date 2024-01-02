@@ -54,6 +54,7 @@
         "drupal/jquery_ui_datepicker": "*",
         "drupal/jquery_ui_slider": "*",
         "drupal/jquery_ui_touch_punch": "*",
+        "drupal/layout_builder_component_attributes": "*",
         "drupal/layout_builder_restrictions": "*",
         "drupal/libraries": "*",
         "drupal/linkit": "*",
