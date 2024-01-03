@@ -5,7 +5,21 @@
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop-narrow)
 
+  .page-node-type-layout-page
+    .content_layout
+      float: none
+      width: 100%
+
   .block-block-content
-    .sponsoren-logos
+    &.sponsoren-logos
+      .field--name-field-paragraphs
+        display: flex
+        .field__item
+          margin-right: 4em
+          display: flex
+          align-items: center
       .image
-        max-width: 200px
+        img
+          max-width: 200px
+          max-height: 70px
+          width: auto

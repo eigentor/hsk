@@ -285,207 +285,156 @@
   .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
     float: left;
   }
-
   .col-sm-1 {
     width: 8.3333333333%;
   }
-
   .col-sm-2 {
     width: 16.6666666667%;
   }
-
   .col-sm-3 {
     width: 25%;
   }
-
   .col-sm-4 {
     width: 33.3333333333%;
   }
-
   .col-sm-5 {
     width: 41.6666666667%;
   }
-
   .col-sm-6 {
     width: 50%;
   }
-
   .col-sm-7 {
     width: 58.3333333333%;
   }
-
   .col-sm-8 {
     width: 66.6666666667%;
   }
-
   .col-sm-9 {
     width: 75%;
   }
-
   .col-sm-10 {
     width: 83.3333333333%;
   }
-
   .col-sm-11 {
     width: 91.6666666667%;
   }
-
   .col-sm-12 {
     width: 100%;
   }
-
   .col-sm-pull-0 {
     right: auto;
   }
-
   .col-sm-pull-1 {
     right: 8.3333333333%;
   }
-
   .col-sm-pull-2 {
     right: 16.6666666667%;
   }
-
   .col-sm-pull-3 {
     right: 25%;
   }
-
   .col-sm-pull-4 {
     right: 33.3333333333%;
   }
-
   .col-sm-pull-5 {
     right: 41.6666666667%;
   }
-
   .col-sm-pull-6 {
     right: 50%;
   }
-
   .col-sm-pull-7 {
     right: 58.3333333333%;
   }
-
   .col-sm-pull-8 {
     right: 66.6666666667%;
   }
-
   .col-sm-pull-9 {
     right: 75%;
   }
-
   .col-sm-pull-10 {
     right: 83.3333333333%;
   }
-
   .col-sm-pull-11 {
     right: 91.6666666667%;
   }
-
   .col-sm-pull-12 {
     right: 100%;
   }
-
   .col-sm-push-0 {
     left: auto;
   }
-
   .col-sm-push-1 {
     left: 8.3333333333%;
   }
-
   .col-sm-push-2 {
     left: 16.6666666667%;
   }
-
   .col-sm-push-3 {
     left: 25%;
   }
-
   .col-sm-push-4 {
     left: 33.3333333333%;
   }
-
   .col-sm-push-5 {
     left: 41.6666666667%;
   }
-
   .col-sm-push-6 {
     left: 50%;
   }
-
   .col-sm-push-7 {
     left: 58.3333333333%;
   }
-
   .col-sm-push-8 {
     left: 66.6666666667%;
   }
-
   .col-sm-push-9 {
     left: 75%;
   }
-
   .col-sm-push-10 {
     left: 83.3333333333%;
   }
-
   .col-sm-push-11 {
     left: 91.6666666667%;
   }
-
   .col-sm-push-12 {
     left: 100%;
   }
-
   .col-sm-offset-0 {
     margin-left: 0%;
   }
-
   .col-sm-offset-1 {
     margin-left: 8.3333333333%;
   }
-
   .col-sm-offset-2 {
     margin-left: 16.6666666667%;
   }
-
   .col-sm-offset-3 {
     margin-left: 25%;
   }
-
   .col-sm-offset-4 {
     margin-left: 33.3333333333%;
   }
-
   .col-sm-offset-5 {
     margin-left: 41.6666666667%;
   }
-
   .col-sm-offset-6 {
     margin-left: 50%;
   }
-
   .col-sm-offset-7 {
     margin-left: 58.3333333333%;
   }
-
   .col-sm-offset-8 {
     margin-left: 66.6666666667%;
   }
-
   .col-sm-offset-9 {
     margin-left: 75%;
   }
-
   .col-sm-offset-10 {
     margin-left: 83.3333333333%;
   }
-
   .col-sm-offset-11 {
     margin-left: 91.6666666667%;
   }
-
   .col-sm-offset-12 {
     margin-left: 100%;
   }
@@ -494,207 +443,156 @@
   .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
     float: left;
   }
-
   .col-md-1 {
     width: 8.3333333333%;
   }
-
   .col-md-2 {
     width: 16.6666666667%;
   }
-
   .col-md-3 {
     width: 25%;
   }
-
   .col-md-4 {
     width: 33.3333333333%;
   }
-
   .col-md-5 {
     width: 41.6666666667%;
   }
-
   .col-md-6 {
     width: 50%;
   }
-
   .col-md-7 {
     width: 58.3333333333%;
   }
-
   .col-md-8 {
     width: 66.6666666667%;
   }
-
   .col-md-9 {
     width: 75%;
   }
-
   .col-md-10 {
     width: 83.3333333333%;
   }
-
   .col-md-11 {
     width: 91.6666666667%;
   }
-
   .col-md-12 {
     width: 100%;
   }
-
   .col-md-pull-0 {
     right: auto;
   }
-
   .col-md-pull-1 {
     right: 8.3333333333%;
   }
-
   .col-md-pull-2 {
     right: 16.6666666667%;
   }
-
   .col-md-pull-3 {
     right: 25%;
   }
-
   .col-md-pull-4 {
     right: 33.3333333333%;
   }
-
   .col-md-pull-5 {
     right: 41.6666666667%;
   }
-
   .col-md-pull-6 {
     right: 50%;
   }
-
   .col-md-pull-7 {
     right: 58.3333333333%;
   }
-
   .col-md-pull-8 {
     right: 66.6666666667%;
   }
-
   .col-md-pull-9 {
     right: 75%;
   }
-
   .col-md-pull-10 {
     right: 83.3333333333%;
   }
-
   .col-md-pull-11 {
     right: 91.6666666667%;
   }
-
   .col-md-pull-12 {
     right: 100%;
   }
-
   .col-md-push-0 {
     left: auto;
   }
-
   .col-md-push-1 {
     left: 8.3333333333%;
   }
-
   .col-md-push-2 {
     left: 16.6666666667%;
   }
-
   .col-md-push-3 {
     left: 25%;
   }
-
   .col-md-push-4 {
     left: 33.3333333333%;
   }
-
   .col-md-push-5 {
     left: 41.6666666667%;
   }
-
   .col-md-push-6 {
     left: 50%;
   }
-
   .col-md-push-7 {
     left: 58.3333333333%;
   }
-
   .col-md-push-8 {
     left: 66.6666666667%;
   }
-
   .col-md-push-9 {
     left: 75%;
   }
-
   .col-md-push-10 {
     left: 83.3333333333%;
   }
-
   .col-md-push-11 {
     left: 91.6666666667%;
   }
-
   .col-md-push-12 {
     left: 100%;
   }
-
   .col-md-offset-0 {
     margin-left: 0%;
   }
-
   .col-md-offset-1 {
     margin-left: 8.3333333333%;
   }
-
   .col-md-offset-2 {
     margin-left: 16.6666666667%;
   }
-
   .col-md-offset-3 {
     margin-left: 25%;
   }
-
   .col-md-offset-4 {
     margin-left: 33.3333333333%;
   }
-
   .col-md-offset-5 {
     margin-left: 41.6666666667%;
   }
-
   .col-md-offset-6 {
     margin-left: 50%;
   }
-
   .col-md-offset-7 {
     margin-left: 58.3333333333%;
   }
-
   .col-md-offset-8 {
     margin-left: 66.6666666667%;
   }
-
   .col-md-offset-9 {
     margin-left: 75%;
   }
-
   .col-md-offset-10 {
     margin-left: 83.3333333333%;
   }
-
   .col-md-offset-11 {
     margin-left: 91.6666666667%;
   }
-
   .col-md-offset-12 {
     margin-left: 100%;
   }
@@ -703,207 +601,156 @@
   .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
     float: left;
   }
-
   .col-lg-1 {
     width: 8.3333333333%;
   }
-
   .col-lg-2 {
     width: 16.6666666667%;
   }
-
   .col-lg-3 {
     width: 25%;
   }
-
   .col-lg-4 {
     width: 33.3333333333%;
   }
-
   .col-lg-5 {
     width: 41.6666666667%;
   }
-
   .col-lg-6 {
     width: 50%;
   }
-
   .col-lg-7 {
     width: 58.3333333333%;
   }
-
   .col-lg-8 {
     width: 66.6666666667%;
   }
-
   .col-lg-9 {
     width: 75%;
   }
-
   .col-lg-10 {
     width: 83.3333333333%;
   }
-
   .col-lg-11 {
     width: 91.6666666667%;
   }
-
   .col-lg-12 {
     width: 100%;
   }
-
   .col-lg-pull-0 {
     right: auto;
   }
-
   .col-lg-pull-1 {
     right: 8.3333333333%;
   }
-
   .col-lg-pull-2 {
     right: 16.6666666667%;
   }
-
   .col-lg-pull-3 {
     right: 25%;
   }
-
   .col-lg-pull-4 {
     right: 33.3333333333%;
   }
-
   .col-lg-pull-5 {
     right: 41.6666666667%;
   }
-
   .col-lg-pull-6 {
     right: 50%;
   }
-
   .col-lg-pull-7 {
     right: 58.3333333333%;
   }
-
   .col-lg-pull-8 {
     right: 66.6666666667%;
   }
-
   .col-lg-pull-9 {
     right: 75%;
   }
-
   .col-lg-pull-10 {
     right: 83.3333333333%;
   }
-
   .col-lg-pull-11 {
     right: 91.6666666667%;
   }
-
   .col-lg-pull-12 {
     right: 100%;
   }
-
   .col-lg-push-0 {
     left: auto;
   }
-
   .col-lg-push-1 {
     left: 8.3333333333%;
   }
-
   .col-lg-push-2 {
     left: 16.6666666667%;
   }
-
   .col-lg-push-3 {
     left: 25%;
   }
-
   .col-lg-push-4 {
     left: 33.3333333333%;
   }
-
   .col-lg-push-5 {
     left: 41.6666666667%;
   }
-
   .col-lg-push-6 {
     left: 50%;
   }
-
   .col-lg-push-7 {
     left: 58.3333333333%;
   }
-
   .col-lg-push-8 {
     left: 66.6666666667%;
   }
-
   .col-lg-push-9 {
     left: 75%;
   }
-
   .col-lg-push-10 {
     left: 83.3333333333%;
   }
-
   .col-lg-push-11 {
     left: 91.6666666667%;
   }
-
   .col-lg-push-12 {
     left: 100%;
   }
-
   .col-lg-offset-0 {
     margin-left: 0%;
   }
-
   .col-lg-offset-1 {
     margin-left: 8.3333333333%;
   }
-
   .col-lg-offset-2 {
     margin-left: 16.6666666667%;
   }
-
   .col-lg-offset-3 {
     margin-left: 25%;
   }
-
   .col-lg-offset-4 {
     margin-left: 33.3333333333%;
   }
-
   .col-lg-offset-5 {
     margin-left: 41.6666666667%;
   }
-
   .col-lg-offset-6 {
     margin-left: 50%;
   }
-
   .col-lg-offset-7 {
     margin-left: 58.3333333333%;
   }
-
   .col-lg-offset-8 {
     margin-left: 66.6666666667%;
   }
-
   .col-lg-offset-9 {
     margin-left: 75%;
   }
-
   .col-lg-offset-10 {
     margin-left: 83.3333333333%;
   }
-
   .col-lg-offset-11 {
     margin-left: 91.6666666667%;
   }
-
   .col-lg-offset-12 {
     margin-left: 100%;
   }
@@ -999,13 +846,11 @@ p {
     font-size: 23.25px;
     font-size: 1.5rem;
   }
-
   .block h2.block-title {
     margin-bottom: 10px;
     font-size: 23.25px;
     font-size: 1.5rem;
   }
-
   .sidebar-second .block h2.block-title {
     font-size: 21.7px;
     font-size: 1.4rem;
@@ -1165,7 +1010,6 @@ input, button, select, textarea {
     float: right;
     margin: 5px 0 5px 30px;
   }
-
   .floatleft-far {
     float: left;
     margin: 5px 30px 5px 0;
@@ -1189,7 +1033,6 @@ input, button, select, textarea {
   table th font, table td font {
     font-size: 14px !important;
   }
-
   button.slick-prev, button.slick-next {
     z-index: 7;
     display: block;
@@ -1214,7 +1057,7 @@ input, button, select, textarea {
     border-radius: 21px;
     z-index: 8;
     font-family: Fontawesome;
-    content: "";
+    content: "\f053";
     color: #aaa;
     font-size: 31px;
     font-size: 2rem;
@@ -1224,7 +1067,7 @@ input, button, select, textarea {
     right: 35px;
   }
   button.slick-next:before {
-    content: "";
+    content: "\f054";
     padding-left: 10px;
   }
 }
@@ -1447,7 +1290,6 @@ input, button, select, textarea {
   #toolbar-administration {
     z-index: 90;
   }
-
   header.main-header {
     z-index: 10;
   }
@@ -1468,7 +1310,6 @@ input, button, select, textarea {
   .content_layout .content-layout-inner {
     padding-left: 0;
   }
-
   .footer-menu nav ul {
     margin-left: 0;
   }
@@ -1479,7 +1320,6 @@ input, button, select, textarea {
     display: block;
     padding: 4px 20px 4px 0;
   }
-
   .sidebar {
     margin-top: 30px;
   }
@@ -1777,7 +1617,7 @@ input, button, select, textarea {
 }
 .path-dwz-rangliste table th a:after {
   font-family: Fontawesome;
-  content: "";
+  content: "\f0d7";
   margin-left: 5px;
 }
 .path-dwz-rangliste table th a span.tablesort {
@@ -1883,8 +1723,6 @@ input, button, select, textarea {
     margin-top: 0.2em;
     margin-bottom: 0em;
   }
-}
-@media only screen and (min-width: 992px) {
   .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-text .inner-container a {
     color: white;
     font-size: 20.15px;
@@ -1892,8 +1730,6 @@ input, button, select, textarea {
     text-align: left;
     line-height: 1.35;
   }
-}
-@media only screen and (min-width: 992px) {
   .path-frontpage #block-headerslideshow {
     width: 100%;
     overflow: hidden;
@@ -1935,15 +1771,11 @@ input, button, select, textarea {
     margin-top: 0.2em;
     margin-bottom: 0em;
   }
-}
-@media only screen and (min-width: 992px) {
   .path-frontpage #block-headerslideshow .paragraph--type--slideshow-image .text-box .inner-container a {
     color: white;
     text-align: left;
     line-height: 1.35;
   }
-}
-@media only screen and (min-width: 992px) {
   .path-news .view-news .views-row {
     *zoom: 1;
   }
@@ -1959,8 +1791,6 @@ input, button, select, textarea {
     float: left;
     margin: 5px 15px 5px 0;
   }
-}
-@media only screen and (min-width: 992px) {
   .sidebar .view-events-list .views-row {
     margin-bottom: 0.7em;
   }
@@ -2052,8 +1882,6 @@ input, button, select, textarea {
     margin-top: 0.4em;
     margin-bottom: 0.1em;
   }
-}
-@media only screen and (min-width: 1600px) {
   .path-frontpage #block-headerslideshow .paragraph--type--slideshow-image .text-box {
     bottom: 30px;
   }
@@ -2209,7 +2037,6 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   form.webform-submission-anmeldung-als-vereinsmitglied-form .form-item-city input {
     width: 75%;
   }
-
   .field--name-comment form.comment-form .form-item > label {
     min-width: 90px;
   }
@@ -2226,18 +2053,15 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
     width: auto;
     width: 500px;
   }
-
   .user-anonymous .field--name-comment form.comment-form .field--widget-text-textarea .filter-wrapper {
     display: none;
   }
   .user-anonymous .field--name-comment form.comment-form .field--widget-text-textarea.form-type-textarea {
     margin-bottom: 1.56em;
   }
-
   form.webform-submission-kontakt-add-form input.form-text, form.webform-submission-kontakt-add-form input.form-email {
     width: auto;
   }
-
   .view-events-list .views-exposed-form {
     display: flex;
   }
@@ -2469,7 +2293,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   display: inline-block;
   font-family: Fontawesome;
   color: #aaa;
-  content: "";
+  content: "\f075";
   padding-right: 8px;
   text-decoration: none;
 }
@@ -2530,7 +2354,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 }
 .page-node-type-page .node-turniere .content-box i:before {
   font-family: "Fontawesome";
-  content: "";
+  content: "\f091";
   font-size: 62px;
   font-size: 4rem;
   width: 110px;
@@ -2551,7 +2375,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 }
 .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft i:before {
   background: #AB3131;
-  content: "";
+  content: "\f135";
   font-size: 58.9px;
   font-size: 3.8rem;
   padding-top: 0.03em;
@@ -2569,19 +2393,19 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 }
 .page-node-type-page .node-turniere .content-box.blitz i:before {
   background: #6e7b99;
-  content: "";
+  content: "\f0e7";
 }
 .page-node-type-page .node-turniere .content-box.blitz h3, .page-node-type-page .node-turniere .content-box.blitz h3 a {
   color: #58637c;
 }
 .page-node-type-page .node-turniere .content-box.schnellschach i:before {
-  content: "";
+  content: "\f017";
 }
 .page-node-type-page .node-turniere .content-box.schnellschach h3, .page-node-type-page .node-turniere .content-box.schnellschach h3 a {
   color: #6f6f6f;
 }
 .page-node-type-page .node-turniere .content-box.tusi i:before {
-  content: "";
+  content: "\f248";
   background: #6e7b99;
   font-size: 54.25px;
   font-size: 3.5rem;
@@ -2590,7 +2414,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   color: #58637c;
 }
 .page-node-type-page .node-turniere .content-box.thema i:before {
-  content: "";
+  content: "\f02d";
   background: #AB3131;
   font-size: 54.25px;
   font-size: 3.5rem;
@@ -2621,28 +2445,28 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 }
 .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-date-text > .field__label:before {
   font-family: Fontawesome-Regular;
-  content: "";
+  content: "\f133";
   top: -0.2em;
   left: -1.5em;
   font-size: 1.5rem;
 }
 .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-target-audience > .field__label:before {
   font-family: Fontawesome;
-  content: "";
+  content: "\e533";
   top: -0.2em;
   left: -1.7em;
   font-size: 1.5rem;
 }
 .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-responsible-person > .field__label:before {
   font-family: Fontawesome;
-  content: "";
+  content: "\e53d";
   top: 0em;
   left: -1.7em;
   font-size: 1.6rem;
 }
 .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-sli-text > .field__label:before {
   font-family: Fontawesome-Regular;
-  content: "";
+  content: "\f0e0";
   top: -0.2em;
   left: -1.5em;
   font-size: 1.5rem;
@@ -2895,7 +2719,7 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
 .page-node-type-event .field--name-field-ev-date:before {
   position: absolute;
   font-family: Fontawesome-Regular;
-  content: "";
+  content: "\f133";
   top: -0.2em;
   left: 0.4em;
   font-size: 1.5rem;
@@ -2941,7 +2765,6 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   .node .field--name-comment .comment .comment-wrap .author-comments {
     width: 90%;
   }
-
   .page-node-type-article .field--name-field-image {
     *zoom: 1;
   }
@@ -2956,7 +2779,6 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   .page-node-type-article .field--name-field-image img {
     float: left;
   }
-
   .page-node-type-page .node-turniere {
     margin-right: -15px;
     margin-left: -15px;
@@ -3013,8 +2835,6 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   .page-node-type-page .paragraph--type--infoblock .field--name-field-sli-image {
     width: 66.66%;
   }
-}
-@media only screen and (min-width: 768px) {
   .page-node-type-team .node__content .field {
     margin-right: 20px;
   }
@@ -3062,8 +2882,6 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   .page-node-type-team .group-top .views-element-container .views-field-field-player-image {
     margin-bottom: 5px;
   }
-}
-@media only screen and (min-width: 768px) {
   .page-node-type-team .group-top .views-element-container .views-field-title .views-label {
     font-size: 13.175px;
     font-size: 0.85rem;
@@ -3101,7 +2919,7 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   border-radius: 55px;
   background: #AB3131;
   font-family: "fontawesome";
-  content: "";
+  content: "\f135";
   color: white;
 }
 
@@ -3128,12 +2946,12 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   border-radius: 55px;
   background: #AB3131;
   font-family: "fontawesome";
-  content: "";
+  content: "\f135";
   color: white;
 }
 .node-vereinspokal #page-title h1:before {
   background: #888;
-  content: "";
+  content: "\f091";
 }
 
 .node-monatsblitz #page-title h1 {
@@ -3159,12 +2977,12 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   border-radius: 55px;
   background: #AB3131;
   font-family: "fontawesome";
-  content: "";
+  content: "\f135";
   color: white;
 }
 .node-monatsblitz #page-title h1:before {
   background: #6e7b99;
-  content: "";
+  content: "\f0e7";
 }
 
 .node-schnellschach #page-title h1 {
@@ -3190,12 +3008,12 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   border-radius: 55px;
   background: #AB3131;
   font-family: "fontawesome";
-  content: "";
+  content: "\f135";
   color: white;
 }
 .node-schnellschach #page-title h1:before {
   background: #888;
-  content: "";
+  content: "\f017";
 }
 
 figure figcaption {
@@ -3251,34 +3069,32 @@ figure figcaption {
   }
   .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-date-text > .field__label:before {
     font-family: Fontawesome-Regular;
-    content: "";
+    content: "\f133";
     top: -0.2em;
     left: -1.5em;
     font-size: 1.5rem;
   }
   .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-target-audience > .field__label:before {
     font-family: Fontawesome;
-    content: "";
+    content: "\e533";
     top: -0.2em;
     left: -1.7em;
     font-size: 1.5rem;
   }
   .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-responsible-person > .field__label:before {
     font-family: Fontawesome;
-    content: "";
+    content: "\e53d";
     top: 0em;
     left: -1.7em;
     font-size: 1.6rem;
   }
   .page-node-type-page .paragraph--type--infoblock .data-box .field.field--name-field-sli-text > .field__label:before {
     font-family: Fontawesome-Regular;
-    content: "";
+    content: "\f0e0";
     top: -0.2em;
     left: -1.5em;
     font-size: 1.5rem;
   }
-}
-@media only screen and (min-width: 992px) {
   .page-node-type-turnier #info-tabs .field--name-field-standings table {
     width: 100%;
   }
@@ -3658,12 +3474,10 @@ nav#block-hsk-footer ul li a {
   header .region-primary-menu {
     display: none;
   }
-
   #block-hsk-branding {
     width: 55%;
     float: left;
   }
-
   .navbar-toggle {
     margin-top: 15px;
     margin-right: 10px;
@@ -3694,7 +3508,6 @@ nav#block-hsk-footer ul li a {
   header.main-header .navigation {
     clear: both;
   }
-
   .navbar-toggle {
     margin-top: 30px;
     margin-right: 15px;
@@ -3710,7 +3523,6 @@ nav#block-hsk-footer ul li a {
   header {
     padding-top: 30px;
   }
-
   .navbar-toggle {
     display: block;
     position: relative;
@@ -3719,7 +3531,6 @@ nav#block-hsk-footer ul li a {
     margin-right: 15px;
     margin-bottom: 8px;
   }
-
   .search-block-form {
     display: block;
   }
@@ -3909,7 +3720,6 @@ nav#block-hsk-footer ul li a {
   header nav#block-hsk-zymphonies-main-menu ul.menu li ul li ul li a:hover, header nav#block-hsk-zymphonies-main-menu ul.menu li ul li ul li a.highlighted {
     background: none;
   }
-
   #block-mobilemenubutton {
     display: none;
   }
@@ -3917,7 +3727,6 @@ nav#block-hsk-footer ul li a {
     cursor: pointer;
     cursor: hand;
   }
-
   .path-frontpage nav#block-hsk-main-menu {
     border-bottom: 1px solid #999;
   }
@@ -4249,7 +4058,7 @@ nav#block-hsk-footer ul li a {
 }
 .path-frontpage #block-begrussungstext a.btn:before {
   font-family: Fontawesome;
-  content: "";
+  content: "\f061";
   padding-right: 5px;
   font-weight: normal;
   font-size: 15.5px;
@@ -4276,7 +4085,7 @@ nav#block-hsk-footer ul li a {
 .path-frontpage #block-infoblockstartseite1:before {
   position: absolute;
   font-family: Fontawesome;
-  content: "";
+  content: "\f073";
   left: 0;
   top: -2px;
   font-size: 27.9px;
@@ -4296,7 +4105,7 @@ nav#block-hsk-footer ul li a {
 .path-frontpage #block-infoblockstartseite2 h3.freizeitheim:before {
   position: absolute;
   font-family: Fontawesome;
-  content: "";
+  content: "\f3c5";
   left: -39px;
   top: -5px;
   font-size: 35.65px;
@@ -4308,7 +4117,7 @@ nav#block-hsk-footer ul li a {
 .path-frontpage #block-infoblockstartseite2 p.vorsitzender:before {
   position: absolute;
   font-family: Fontawesome-Regular;
-  content: "";
+  content: "\f0e0";
   left: -40px;
   top: -6px;
   font-size: 27.9px;
@@ -4405,8 +4214,6 @@ nav#block-hsk-footer ul li a {
   .path-frontpage #block-views-block-news-block-1 .views-row .views-field-field-image {
     margin-top: 3px;
   }
-}
-@media only screen and (min-width: 992px) {
   .path-frontpage #block-views-block-events-list-block-1 {
     position: relative;
     min-height: 1px;
@@ -4428,8 +4235,6 @@ nav#block-hsk-footer ul li a {
     font-size: 10.85px;
     font-size: 0.7rem;
   }
-}
-@media only screen and (min-width: 992px) {
   .path-frontpage .block-infoblock .field--name-field-paragraphs .field__item .paragraph .image img {
     margin: 0;
   }
@@ -4458,5 +4263,29 @@ nav#block-hsk-footer ul li a {
   }
 }
 /* End Media Query Tablet */
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*------------- Desktop narrow  --------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
+@media only screen and (min-width: 992px) {
+  .page-node-type-layout-page .content_layout {
+    float: none;
+    width: 100%;
+  }
+  .block-block-content.sponsoren-logos .field--name-field-paragraphs {
+    display: flex;
+  }
+  .block-block-content.sponsoren-logos .field--name-field-paragraphs .field__item {
+    margin-right: 4em;
+    display: flex;
+    align-items: center;
+  }
+  .block-block-content.sponsoren-logos .image img {
+    max-width: 200px;
+    max-height: 70px;
+    width: auto;
+  }
+}
 
 /*# sourceMappingURL=hsk-zymphonies-styles.css.map */

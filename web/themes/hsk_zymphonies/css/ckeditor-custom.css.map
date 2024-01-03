@@ -1,7 +1,1 @@
-{
-"version": 3,
-"mappings": "AACE,kBAAc;EACZ,MAAM,EAAE,QAAQ;;;;;AASd,2CAAc;EACZ,MAAM,EAAE,QAAQ",
-"sources": ["../sass/ckeditor-custom.sass"],
-"names": [],
-"file": "ckeditor-custom.css"
-}
+{"version":3,"sourceRoot":"","sources":["../sass/ckeditor-custom.sass"],"names":[],"mappings":"AACE;EACE;;;AAGJ;AACA;AACA;AAIM;EACE","file":"ckeditor-custom.css"}
