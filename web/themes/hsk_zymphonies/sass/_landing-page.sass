@@ -7,8 +7,7 @@
 
   .page-node-type-layout-page
     .content_layout
-      float: none
-      width: 100%
+      +make-md-column(12)
 
   .block-block-content
     &.sponsoren-logos
@@ -23,3 +22,12 @@
           max-width: 200px
           max-height: 70px
           width: auto
+
+  .page-node-type-layout-page
+    &.node-bundesliga
+      .top-news
+        &.block-views-blockbundesliga-news-block-1
+          .view-content
+            +make-row()
+            .views-row
+              +make-md-column(4)

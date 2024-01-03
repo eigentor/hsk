@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.body
     - field.storage.node.field_image
     - image.style.bildblock_desktop
+    - image.style.top_news
     - node.type.article
     - taxonomy.vocabulary.tags
   content:
@@ -86,7 +87,7 @@ display:
           type: image
           settings:
             image_link: content
-            image_style: bildblock_desktop
+            image_style: top_news
             image_loading:
               attribute: lazy
           group_column: ''

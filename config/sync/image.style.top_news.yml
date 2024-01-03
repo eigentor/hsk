@@ -1,0 +1,15 @@
+uuid: 2dc8e462-3c24-456c-8cf5-254948cf4c82
+langcode: de
+status: true
+dependencies: {  }
+name: top_news
+label: Top-News
+effects:
+  d986aa84-88fd-4694-aba7-ef7900e5eef6:
+    uuid: d986aa84-88fd-4694-aba7-ef7900e5eef6
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 420
+      height: 280
+      anchor: center-center
