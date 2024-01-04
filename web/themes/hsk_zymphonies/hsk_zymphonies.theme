@@ -119,6 +119,12 @@ function hsk_zymphonies_theme_suggestions_block_alter(array &$suggestions, array
   }
 }
 
-function hsk_zymphonies_preprocess_paragraph(&$variables) {
-  $peter = 7;
+/**
+ * Implements hook_theme_suggestions_page_alter().
+ */
+function hsk_zymphonies_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $suggestions[] = 'page__' . $node->bundle();
+    $olli = 3;
+  }
 }
