@@ -4263,6 +4263,29 @@ nav#block-hsk-footer ul li a {
   }
 }
 /* End Media Query Tablet */
+.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos {
+  background: #eee;
+  padding: 0.5em 1em;
+  margin-bottom: 3em;
+}
+.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos .field__item {
+  margin-bottom: 1.5em;
+}
+.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos .image img {
+  max-width: 200px;
+  max-height: 70px;
+  width: auto;
+}
+.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .view-content .views-row {
+  margin-bottom: 2em;
+}
+.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .view-content .views-row .views-field-field-image {
+  margin-bottom: 0.5em;
+}
+.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .view-content .views-row .views-field-title h2 {
+  font-size: 1.35rem;
+}
+
 /*------------------------------------------- */
 /*------------------------------------------- */
 /*------------- Desktop narrow  --------------*/
@@ -4312,6 +4335,7 @@ nav#block-hsk-footer ul li a {
     min-height: 1px;
     padding-right: 15px;
     padding-left: 15px;
+    padding-right: 2em;
   }
 }
 @media only screen and (min-width: 992px) and (min-width: 992px) {
