@@ -1,0 +1,5 @@
+name: HSK Layouts
+description: Custom Layouts for HSK
+type: module
+core_version_requirement: ^9 || ^10
+package: HSK

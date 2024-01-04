@@ -3,7 +3,7 @@
         'name' => 'drupal/recommended-project',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '75275ea480814ca3d2136590ce04d022e5c41968',
+        'reference' => 'd554c3d6c6b0858faae766e5a47909448b9bbce7',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -700,6 +700,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'drupal/layout_custom_section_classes' => array(
+            'pretty_version' => '1.0.4',
+            'version' => '1.0.4.0',
+            'reference' => '1.0.4',
+            'type' => 'drupal-module',
+            'install_path' => __DIR__ . '/../../web/modules/contrib/layout_custom_section_classes',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'drupal/libraries' => array(
             'pretty_version' => '4.0.4',
             'version' => '4.0.4.0',
@@ -822,7 +831,7 @@
         'drupal/recommended-project' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '75275ea480814ca3d2136590ce04d022e5c41968',
+            'reference' => 'd554c3d6c6b0858faae766e5a47909448b9bbce7',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -4263,10 +4263,68 @@ nav#block-hsk-footer ul li a {
   }
 }
 /* End Media Query Tablet */
-.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos {
+.page-node-type-layout-page #block-tabs {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.page-node-type-layout-page #block-tabs:before, .page-node-type-layout-page #block-tabs:after {
+  display: table;
+  content: " ";
+}
+.page-node-type-layout-page #block-tabs:after {
+  clear: both;
+}
+@media (min-width: 768px) {
+  .page-node-type-layout-page #block-tabs {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .page-node-type-layout-page #block-tabs {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .page-node-type-layout-page #block-tabs {
+    width: 1170px;
+  }
+}
+.page-node-type-layout-page form.node-layout-page-layout-builder-form, .page-node-type-layout-page .messages {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.page-node-type-layout-page form.node-layout-page-layout-builder-form:before, .page-node-type-layout-page form.node-layout-page-layout-builder-form:after, .page-node-type-layout-page .messages:before, .page-node-type-layout-page .messages:after {
+  display: table;
+  content: " ";
+}
+.page-node-type-layout-page form.node-layout-page-layout-builder-form:after, .page-node-type-layout-page .messages:after {
+  clear: both;
+}
+@media (min-width: 768px) {
+  .page-node-type-layout-page form.node-layout-page-layout-builder-form, .page-node-type-layout-page .messages {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .page-node-type-layout-page form.node-layout-page-layout-builder-form, .page-node-type-layout-page .messages {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .page-node-type-layout-page form.node-layout-page-layout-builder-form, .page-node-type-layout-page .messages {
+    width: 1170px;
+  }
+}
+.page-node-type-layout-page.node-bundesliga .hsk-onecol.sponsoren-logos-container {
   background: #eee;
-  padding: 0.5em 1em;
   margin-bottom: 3em;
+}
+.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos {
+  padding: 0.5em 0;
 }
 .page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos .field__item {
   margin-bottom: 1.5em;

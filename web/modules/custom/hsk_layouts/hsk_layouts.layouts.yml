@@ -1,0 +1,10 @@
+hsk_one_column:
+  label: 'HSK one column'
+  category: 'HSK'
+  template: templates/hsk-one-column
+  default_region: main
+  icon_map:
+    - [ content ]
+  regions:
+    content:
+      label: Content

@@ -1,0 +1,28 @@
+{#
+/**
+ * @file
+ * Theme override to display a one-column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ */
+#}
+{%
+  set classes = [
+  'layout',
+  'layout--onecol',
+  'hsk-onecol'
+]
+%}
+{% if content %}
+  <div{{ attributes.addClass(classes) }}>
+    <div class="container">
+      <div class="row">
+        <div {{ region_attributes.content.addClass('layout__region', 'layout__region--content', 'col-md-12') }}>
+          {{ content.content }}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
