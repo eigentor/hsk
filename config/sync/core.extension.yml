@@ -47,6 +47,7 @@ module:
   hsk_comments: 0
   hsk_images: 0
   hsk_import_dwz: 0
+  hsk_layouts: 0
   hsk_news: 0
   hsk_pgn_formatter: 0
   image: 0
@@ -60,6 +61,7 @@ module:
   layout_builder: 0
   layout_builder_component_attributes: 0
   layout_builder_restrictions: 0
+  layout_custom_section_classes: 0
   layout_discovery: 0
   link: 0
   linkit: 0

@@ -1,0 +1,16 @@
+_core:
+  default_config_hash: 4HLMWJHuwpYh3u68pZa5cIAyfLKtENbpUqwnNJ2jmNE
+langcode: de
+allowed_section_attributes:
+  id: false
+  class: true
+  class_list: false
+  style: false
+  data: false
+allowed_section_region_attributes:
+  id: false
+  class_list: false
+  class: true
+  style: false
+  data: false
+class_list: {  }

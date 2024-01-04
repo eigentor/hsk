@@ -9,10 +9,10 @@ dependencies:
     - image.style.inline_full_width
     - node.type.layout_page
   module:
+    - hsk_layouts
     - image
     - layout_builder
     - layout_builder_restrictions
-    - layout_discovery
     - text
     - user
 third_party_settings:
@@ -21,7 +21,7 @@ third_party_settings:
     allow_custom: true
     sections:
       -
-        layout_id: layout_onecol
+        layout_id: hsk_one_column
         layout_settings:
           label: Headerbild
           context_mapping: {  }
@@ -50,9 +50,10 @@ third_party_settings:
             additional: {  }
         third_party_settings: {  }
       -
-        layout_id: layout_onecol
+        layout_id: hsk_one_column
         layout_settings:
-          label: ''
+          label: Body
+          context_mapping: {  }
         components:
           0a41ccf5-32eb-41d5-9283-30b21b54e7d4:
             uuid: 0a41ccf5-32eb-41d5-9283-30b21b54e7d4
@@ -80,7 +81,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
+            weight: 1
             additional: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
