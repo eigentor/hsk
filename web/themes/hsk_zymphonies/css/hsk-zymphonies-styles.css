@@ -4364,6 +4364,9 @@ nav#block-hsk-footer ul li a {
   }
 }
 @media only screen and (min-width: 992px) {
+  .page-node-type-layout-page .content_layout .field--name-field-main-text {
+    width: 75%;
+  }
   .block-block-content.sponsoren-logos .field--name-field-paragraphs {
     display: flex;
   }

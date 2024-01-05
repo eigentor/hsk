@@ -128,3 +128,16 @@ function hsk_zymphonies_theme_suggestions_page_alter(array &$suggestions, array 
     $olli = 3;
   }
 }
+
+/**
+ * implements template_preprocess_HOOK()
+ */
+function hsk_zymphonies_preprocess_views_view_field__bundesliga_news(&$variables) {
+  $field_name = '';
+  $field_name = $variables['field']->field;
+  if(!empty($field_name) && $field_name == 'field_tags') {
+    $node = $variables['row']->_entity;
+    dpm($node->field_tags->entity);
+  }
+
+}
