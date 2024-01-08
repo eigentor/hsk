@@ -37,14 +37,15 @@ class BundesligaTagsField extends FieldPluginBase {
 
     if ($node->bundle() == 'article') {
       if(!empty($node->field_tags->getValue())) {
+        $term_names = [];
         foreach($node->field_tags as $item) {
           $term = $item->entity;
-          if(in_array($term->get('tid')->value, ['26','24'])) {
+          if(in_array($term->get('tid')->value, ['26','24','3','25'])) {
             $myterm = $term;
-            $term_name = $myterm->get('name')->value;
-            $build = ['#markup' => $term_name];
+            $term_names[] = $myterm->get('name')->value;
           }
         }
+        $build = ['#markup' => implode(', ', $term_names)];
       }
     }
 
