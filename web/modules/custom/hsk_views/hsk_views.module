@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * Implements hook_views_data()
+ */
+function hsk_views_views_data() {
+  $data['views']['table']['group'] = t('HSK Global');
+  $data['views']['table']['join'] = [
+    '#global' => [],
+  ];
+
+  $data['views']['bundesliga_tags'] = [
+    'title' => t('Bundesliga tags'),
+    'help' => t('Tags related to bundesliga News'),
+    'field' => [
+      'id' => 'bundesliga_tags',
+    ],
+  ];
+  return $data;
+}
+
+

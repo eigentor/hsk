@@ -1,0 +1,5 @@
+name: HSK Views Extensions
+description: Plugins and Tweaks for Views
+type: module
+package: HSK
+core_version_requirement: ^9 || ^10
