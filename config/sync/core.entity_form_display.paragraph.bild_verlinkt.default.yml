@@ -3,6 +3,7 @@ langcode: de
 status: true
 dependencies:
   config:
+    - field.field.paragraph.bild_verlinkt.field_css_class
     - field.field.paragraph.bild_verlinkt.field_gallery_image
     - field.field.paragraph.bild_verlinkt.field_sli_link_heading
     - image.style.thumbnail
@@ -15,6 +16,14 @@ targetEntityType: paragraph
 bundle: bild_verlinkt
 mode: default
 content:
+  field_css_class:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_gallery_image:
     type: image_image
     weight: 0

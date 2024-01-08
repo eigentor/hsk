@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.paragraph.slideshow
+    - field.field.paragraph.bild_verlinkt.field_css_class
     - field.field.paragraph.bild_verlinkt.field_gallery_image
     - field.field.paragraph.bild_verlinkt.field_sli_link_heading
     - paragraphs.paragraphs_type.bild_verlinkt
@@ -27,4 +28,5 @@ content:
     weight: 3
     region: content
 hidden:
+  field_css_class: true
   field_gallery_image: true

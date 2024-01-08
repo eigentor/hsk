@@ -1,0 +1,19 @@
+uuid: 419fab00-0c64-46ac-a4af-9bba993529e3
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_css_class
+    - paragraphs.paragraphs_type.bild_verlinkt
+id: paragraph.bild_verlinkt.field_css_class
+field_name: field_css_class
+entity_type: paragraph
+bundle: bild_verlinkt
+label: CSS-Klasse
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
