@@ -50,6 +50,7 @@ module:
   hsk_layouts: 0
   hsk_news: 0
   hsk_pgn_formatter: 0
+  hsk_views: 0
   image: 0
   inline_entity_form: 0
   inline_responsive_images: 0

@@ -33,19 +33,31 @@ class BundesligaTagsField extends FieldPluginBase {
   public function render(ResultRow $values) {
     $node = $this->getEntity($values);
 
+    // return an empty array if we find no matching tags
     $build = [];
 
     if ($node->bundle() == 'article') {
-      if(!empty($node->field_tags->getValue())) {
-        $term_names = [];
-        foreach($node->field_tags as $item) {
-          $term = $item->entity;
-          if(in_array($term->get('tid')->value, ['26','24','3','25'])) {
-            $myterm = $term;
-            $term_names[] = $myterm->get('name')->value;
+      if ($node->hasField('field_tags')) {
+        // Get terms from field_tags
+        if (!empty($node->field_tags->getValue())) {
+          $term_names = [];
+          foreach ($node->field_tags as $item) {
+            $term = $item->entity;
+            // Extract tags that match "1. Bundesliga" or "2. Bundesliga"
+            if (in_array($term->get('tid')->value, ['26', '24'])) {
+              $myterm = $term;
+              $term_names[] = $myterm->get('name')->value;
+            }
           }
+          // Output the terms as unordered list.
+          $build = [
+            '#theme' => 'item_list',
+            '#list_type' => 'ul',
+            '#items' => $term_names,
+            '#attributes' => ['class' => 'tag-list'],
+            '#wrapper_attributes' => ['class' => 'container'],
+          ];
         }
-        $build = ['#markup' => implode(', ', $term_names)];
       }
     }
 
