@@ -55,7 +55,6 @@ class BundesligaTagsField extends FieldPluginBase {
             '#list_type' => 'ul',
             '#items' => $term_names,
             '#attributes' => ['class' => 'tag-list'],
-            '#wrapper_attributes' => ['class' => 'container'],
           ];
         }
       }

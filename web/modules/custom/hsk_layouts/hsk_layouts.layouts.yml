@@ -2,9 +2,21 @@ hsk_one_column:
   label: 'HSK one column'
   category: 'HSK'
   template: templates/hsk-one-column
-  default_region: main
+  default_region: content
   icon_map:
     - [ content ]
   regions:
     content:
       label: Content
+hsk_three_one:
+  label: 'HSK three one'
+  category: 'HSK'
+  template: templates/hsk-three-one
+  icon_map:
+    - [ content, content, content, sidebar ]
+  default_region: first
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
