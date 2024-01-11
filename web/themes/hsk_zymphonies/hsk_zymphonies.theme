@@ -137,7 +137,6 @@ function hsk_zymphonies_preprocess_views_view_field__bundesliga_news(&$variables
   $field_name = $variables['field']->field;
   if(!empty($field_name) && $field_name == 'field_tags') {
     $node = $variables['row']->_entity;
-    dpm($node->field_tags->entity);
   }
 
 }
