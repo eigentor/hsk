@@ -891,7 +891,7 @@ img {
 .node__submitted {
   font-size: 13.175px;
   font-size: 0.85rem;
-  color: #888;
+  color: #999;
   margin-bottom: 15px;
 }
 
@@ -1211,7 +1211,7 @@ input, button, select, textarea {
   background: none;
 }
 .sidebar ul.menu li a {
-  color: #888;
+  color: #999;
   padding: 7px 0 7px 4px;
   display: block;
   hyphens: auto;
@@ -1481,7 +1481,7 @@ input, button, select, textarea {
 .sidebar .view-events-list .more-link a {
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
 }
 
 .path-news .view-news .views-row {
@@ -1594,7 +1594,7 @@ input, button, select, textarea {
   margin-top: 0.45em;
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
   margin-left: 10px;
 }
 .path-termine .view-events-list .views-row .views-field-field-event-room .views-label-field-event-room {
@@ -2169,7 +2169,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .node .field--name-field-tags .field__item a {
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
   border: 1px solid #ddd;
   -webkit-border-radius: 7px;
   -moz-border-radius: 7px;
@@ -2188,7 +2188,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .node .node__links a {
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
 }
 .node h2, .node h3 {
   clear: both;
@@ -2327,7 +2327,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .page-node-type-article .field--name-field-new-txt-capt-main-img {
   font-size: 13.175px;
   font-size: 0.85rem;
-  color: #888;
+  color: #999;
   margin-bottom: 20px;
   margin-top: -5px;
 }
@@ -2633,7 +2633,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   content: "DWZ";
   position: absolute;
   top: -28px;
-  color: #888;
+  color: #999;
   font-size: 12.4px;
   font-size: 0.8rem;
   margin-left: 2px;
@@ -2886,7 +2886,7 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
     font-size: 13.175px;
     font-size: 0.85rem;
     margin-bottom: 2px;
-    color: #888;
+    color: #999;
     display: block;
     margin-bottom: 0;
   }
@@ -3019,7 +3019,7 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
 figure figcaption {
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
   line-height: 1.3;
   margin-top: 0.5em;
   margin-bottom: 1em;
@@ -3809,13 +3809,13 @@ nav#block-hsk-footer ul li a {
 .path-frontpage #block-views-block-events-list-block-1 .more-link a {
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
   padding-right: 30px;
 }
 .path-frontpage #block-views-block-events-list-block-1 a.more-link {
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
   padding-right: 30px;
 }
 .path-frontpage #block-views-block-events-list-block-1 .view-header {
@@ -3894,7 +3894,7 @@ nav#block-hsk-footer ul li a {
   margin-top: 0.3em;
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
   margin-left: 10px;
 }
 .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-event-room .views-label-field-event-room {
@@ -3909,13 +3909,13 @@ nav#block-hsk-footer ul li a {
 .path-frontpage #block-views-block-news-block-1 .more-link a {
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
   padding-right: 30px;
 }
 .path-frontpage #block-views-block-news-block-1 a.more-link {
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
   padding-right: 30px;
 }
 .path-frontpage #block-views-block-news-block-1 .views-row {
@@ -3944,7 +3944,7 @@ nav#block-hsk-footer ul li a {
 .path-frontpage #block-views-block-news-block-1 .views-row h3.title span.date {
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
   color: #999;
   display: block;
   margin-top: 0.4em;
@@ -3961,7 +3961,7 @@ nav#block-hsk-footer ul li a {
 .path-frontpage #block-views-block-news-block-1 .views-field-created {
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
 }
 .path-frontpage #block-views-block-news-block-1 .views-field-body p {
   margin-bottom: 0;
@@ -3969,7 +3969,7 @@ nav#block-hsk-footer ul li a {
 .path-frontpage #block-views-block-news-block-1 .views-field-view-node a {
   font-size: 12.4px;
   font-size: 0.8rem;
-  color: #888;
+  color: #999;
 }
 .path-frontpage .block-infoblock {
   clear: both;
@@ -4369,10 +4369,11 @@ nav#block-hsk-footer ul li a {
 .page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags ul li {
   display: inline-block;
   background: #eee;
-  color: #999;
-  height: 26px;
-  line-height: 18px;
-  padding: 0.2em 0.7em 0.2em 2em;
+  color: #888;
+  height: 20px;
+  font-size: 0.75rem;
+  line-height: 13px;
+  padding: 0.3em 0.9em 0.3em 2em;
   position: relative;
   margin-left: 0;
   margin-right: 1em;
@@ -4384,12 +4385,70 @@ nav#block-hsk-footer ul li a {
   bottom: 0;
   width: 0;
   height: 0;
-  border-left: 13px solid white;
-  border-top: 13px solid transparent;
-  border-bottom: 13px solid transparent;
+  border-left: 10px solid white;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
 }
 .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row {
-  margin-bottom: 2em;
+  margin-bottom: 3.5em;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row h2.title {
+  margin-bottom: 0.4em;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta {
+  margin-bottom: 0.4em;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .date {
+  font-size: 0.8rem;
+  color: #999;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .date:after {
+  content: "-";
+  margin-left: 0.15em;
+  margin-right: 0.15em;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .author a {
+  font-size: 0.8rem;
+  color: #999;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .tags {
+  margin-left: 1em;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .tags .item-list {
+  display: inline-block;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .tags ul {
+  margin: 0;
+  padding: 0;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .tags ul li {
+  display: inline-block;
+  background: #eee;
+  color: #888;
+  height: 20px;
+  font-size: 0.75rem;
+  line-height: 13px;
+  padding: 0.3em 0.9em 0.3em 2em;
+  position: relative;
+  margin-left: 0;
+  margin-right: 1em;
+  background: #d5d5d5;
+  color: white;
+  line-height: 12px;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .tags ul li:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 10px solid white;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .tags ul li:after {
+  border-left: 10px solid #eee;
 }
 
 /*------------------------------------------- */

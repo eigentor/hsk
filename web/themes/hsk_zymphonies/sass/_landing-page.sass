@@ -48,29 +48,37 @@
             margin: 0
             padding: 0
             li
-              display: inline-block
-              background: #eee
-              color: #999
-              height: 26px
-              line-height: 18px
-              padding: 0.2em 0.7em 0.2em 2em
-              position: relative
-              margin-left: 0
-              margin-right: 1em
-              &:after
-                content: ""
-                position: absolute
-                left: 0
-                bottom: 0
-                width: 0
-                height: 0
-                border-left: 13px solid white
-                border-top: 13px solid transparent
-                border-bottom: 13px solid transparent
+              +tag-flag
     .view-bundesliga-news
       &.view-display-id-block_2
         .views-row
-          margin-bottom: 2em
+          margin-bottom: 3.5em
+          h2.title
+            margin-bottom: 0.4em
+          .meta
+            margin-bottom: 0.4em
+            .date
+              font-size: 0.8rem
+              color: $light-grey-text
+              &:after
+                content: "-"
+                margin-left: 0.15em
+                margin-right: 0.15em
+            .author
+              a
+                font-size: 0.8rem
+                color: $light-grey-text
+            .tags
+              margin-left: 1em
+              .item-list
+                display: inline-block
+              ul
+                margin: 0
+                padding: 0
+                li
+                  +tag-flag-darker
+
+
 
 
 

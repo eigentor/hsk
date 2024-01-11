@@ -1137,7 +1137,8 @@ display:
         title: News
         description: ''
         weight: -49
-        expanded: false
+        enabled: true
+        expanded: true
         menu_name: main
         parent: ''
         context: '0'
