@@ -20,3 +20,15 @@ hsk_three_one:
       label: First
     second:
       label: Second
+hsk_two_one:
+  label: 'HSK two one'
+  category: 'HSK'
+  template: templates/hsk-two-one
+  icon_map:
+    - [ content, content, sidebar ]
+  default_region: first
+  regions:
+    first:
+      label: First
+    second:
+      label: Second

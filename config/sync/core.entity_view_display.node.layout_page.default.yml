@@ -50,24 +50,32 @@ third_party_settings:
             additional: {  }
         third_party_settings: {  }
       -
-        layout_id: hsk_one_column
+        layout_id: hsk_three_one
         layout_settings:
-          label: Body
+          label: ''
           context_mapping: {  }
+          custom_id: null
+          custom_classes: node-main-text
+          custom_class_choose: null
+          custom_styles: null
+          custom_data_attributes: null
+          regions:
+            first:
+              region_id: null
+              region_class_choose: null
+              region_classes: ''
+              region_styles: null
+              region_data: null
+            second:
+              region_id: null
+              region_class_choose: null
+              region_classes: ''
+              region_styles: null
+              region_data: null
         components:
-          0a41ccf5-32eb-41d5-9283-30b21b54e7d4:
-            uuid: 0a41ccf5-32eb-41d5-9283-30b21b54e7d4
-            region: content
-            configuration:
-              id: 'extra_field_block:node:layout_page:links'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 0
-            additional: {  }
           f63c9360-bb61-44d8-b283-89c933af3275:
             uuid: f63c9360-bb61-44d8-b283-89c933af3275
-            region: content
+            region: first
             configuration:
               id: 'field_block:node:layout_page:field_main_text'
               label: Text
@@ -82,6 +90,16 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 1
+            additional: {  }
+          0a41ccf5-32eb-41d5-9283-30b21b54e7d4:
+            uuid: 0a41ccf5-32eb-41d5-9283-30b21b54e7d4
+            region: first
+            configuration:
+              id: 'extra_field_block:node:layout_page:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
             additional: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
