@@ -1,0 +1,29 @@
+uuid: 62c5ddeb-a97c-424d-8289-c728148fe7d2
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.bildblock_desktop
+    - image.style.news_thumb_mobile
+  theme:
+    - hsk_zymphonies
+id: secondary_news
+label: 'Secondary News'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: bildblock_desktop
+    breakpoint_id: hsk_zymphonies.desktop
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: news_thumb_mobile
+    breakpoint_id: hsk_zymphonies.tablet
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: news_thumb_mobile
+    breakpoint_id: hsk_zymphonies.tablet_portrait
+    multiplier: 1x
+breakpoint_group: hsk_zymphonies
+fallback_image_style: bildblock_desktop

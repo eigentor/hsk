@@ -4263,8 +4263,12 @@ nav#block-hsk-footer ul li a {
   }
 }
 /* End Media Query Tablet */
+.page-node-type-layout-page {
+  overflow-x: hidden;
+}
 .page-node-type-layout-page .sidebar {
   margin-top: 0;
+  display: none;
 }
 .page-node-type-layout-page #block-tabs {
   padding-right: 15px;
@@ -4337,6 +4341,9 @@ nav#block-hsk-footer ul li a {
   padding-top: 4em;
   padding-bottom: 3em;
 }
+.page-node-type-layout-page.node-bundesliga .block-field-blocknodelayout-pagefield-image {
+  margin-bottom: 3em;
+}
 .page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos {
   padding: 2em 0;
   margin-bottom: 0;
@@ -4362,23 +4369,27 @@ nav#block-hsk-footer ul li a {
 .page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .view-content .views-row .views-field-title h2 {
   font-size: 1.35rem;
 }
-.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags ul {
+.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags .tags > .item-list {
+  display: inline-block;
+}
+.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags ul.tag-list {
   margin: 0;
   padding: 0;
 }
-.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags ul li {
+.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags ul.tag-list li {
   display: inline-block;
   background: #eee;
   color: #888;
   height: 20px;
   font-size: 0.75rem;
   line-height: 13px;
-  padding: 0.3em 0.9em 0.3em 2em;
+  padding: 0.3em 0.9em 0.3em 1.3em;
   position: relative;
   margin-left: 0;
   margin-right: 1em;
+  margin-right: 0.5em;
 }
-.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags ul li:after {
+.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags ul.tag-list li:after {
   content: "";
   position: absolute;
   left: 0;
@@ -4389,8 +4400,29 @@ nav#block-hsk-footer ul li a {
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
 }
+.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags .date {
+  margin-left: 0;
+  font-size: 0.8rem;
+  color: #999;
+}
+.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags .author {
+  margin-right: 0;
+}
+.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags .author:after {
+  content: "-";
+  margin-left: 0.4em;
+  margin-right: 0.1em;
+  color: #999;
+}
+.page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 .views-field-bundesliga-tags .author a {
+  font-size: 0.8rem;
+  color: #999;
+}
 .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row {
   margin-bottom: 3.5em;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .views-field-field-image {
+  margin-bottom: 0.5em;
 }
 .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row h2.title {
   margin-bottom: 0.4em;
@@ -4399,20 +4431,22 @@ nav#block-hsk-footer ul li a {
   margin-bottom: 0.4em;
 }
 .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .date {
+  margin-left: 0;
   font-size: 0.8rem;
   color: #999;
 }
-.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .date:after {
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .author {
+  margin-right: 0;
+}
+.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .author:after {
   content: "-";
-  margin-left: 0.15em;
-  margin-right: 0.15em;
+  margin-left: 0.4em;
+  margin-right: 0.1em;
+  color: #999;
 }
 .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .author a {
   font-size: 0.8rem;
   color: #999;
-}
-.page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .tags {
-  margin-left: 1em;
 }
 .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .tags .item-list {
   display: inline-block;
@@ -4428,7 +4462,7 @@ nav#block-hsk-footer ul li a {
   height: 20px;
   font-size: 0.75rem;
   line-height: 13px;
-  padding: 0.3em 0.9em 0.3em 2em;
+  padding: 0.3em 0.9em 0.3em 1.3em;
   position: relative;
   margin-left: 0;
   margin-right: 1em;
@@ -4471,6 +4505,9 @@ nav#block-hsk-footer ul li a {
   }
 }
 @media only screen and (min-width: 992px) {
+  .paragraph--type--bild-verlinkt.schach-bundesliga {
+    margin-top: 1em;
+  }
   .block-block-content.sponsoren-logos .field--name-field-paragraphs {
     display: flex;
   }
@@ -4520,15 +4557,14 @@ nav#block-hsk-footer ul li a {
   }
 }
 @media only screen and (min-width: 992px) {
-  .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .image-body {
+  .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row {
     display: flex;
   }
-  .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .image-body .image {
+  .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .views-field-field-image {
+    padding-top: 0.2em;
+    flex-shrink: 0;
     width: 300px;
     margin-right: 1.5em;
-  }
-  .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .image-body .image img {
-    max-width: none;
   }
 }
 

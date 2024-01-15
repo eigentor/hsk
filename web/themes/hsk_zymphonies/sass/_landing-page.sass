@@ -1,6 +1,8 @@
 .page-node-type-layout-page
+  overflow-x: hidden
   .sidebar
     margin-top: 0
+    display: none
   #block-tabs
     +hsk-container
   form.node-layout-page-layout-builder-form, .messages
@@ -19,6 +21,8 @@
         background: #eee
         padding-top: 4em
         padding-bottom: 3em
+    .block-field-blocknodelayout-pagefield-image
+      margin-bottom: 3em
     .block-block-content
       &.sponsoren-logos
         padding: 2em 0
@@ -44,32 +48,54 @@
               h2
                 font-size: 1.35rem
         .views-field-bundesliga-tags
-          ul
+          .tags
+            >.item-list
+              display: inline-block
+          ul.tag-list
             margin: 0
             padding: 0
             li
               +tag-flag
+              margin-right: 0.5em
+          .date
+            margin-left: 0
+            font-size: 0.8rem
+            color: $light-grey-text
+          .author
+            margin-right: 0
+            &:after
+              content: "-"
+              margin-left: 0.4em
+              margin-right: 0.1em
+              color: $light-grey-text
+            a
+              font-size: 0.8rem
+              color: $light-grey-text
     .view-bundesliga-news
       &.view-display-id-block_2
         .views-row
           margin-bottom: 3.5em
+          .views-field-field-image
+            margin-bottom: 0.5em
           h2.title
             margin-bottom: 0.4em
           .meta
             margin-bottom: 0.4em
             .date
+              margin-left: 0
               font-size: 0.8rem
               color: $light-grey-text
+            .author
+              margin-right: 0
               &:after
                 content: "-"
-                margin-left: 0.15em
-                margin-right: 0.15em
-            .author
+                margin-left: 0.4em
+                margin-right: 0.1em
+                color: $light-grey-text
               a
                 font-size: 0.8rem
                 color: $light-grey-text
             .tags
-              margin-left: 1em
               .item-list
                 display: inline-block
               ul
@@ -92,6 +118,9 @@
   .page-node-type-layout-page
     .content_layout
       +make-md-column(12)
+  .paragraph--type--bild-verlinkt
+    &.schach-bundesliga
+      margin-top: 1em
 
   .block-block-content
     &.sponsoren-logos
@@ -128,10 +157,9 @@
       .view-bundesliga-news
         &.view-display-id-block_2
           .views-row
-            .image-body
-              display: flex
-              .image
-                width: 300px
-                margin-right: 1.5em
-                img
-                  max-width: none
+            display: flex
+            .views-field-field-image
+              padding-top: 0.2em
+              flex-shrink: 0
+              width: 300px
+              margin-right: 1.5em
