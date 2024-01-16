@@ -8,7 +8,6 @@ dependencies:
     - field.storage.node.field_tags
     - image.style.top_news
     - node.type.article
-    - responsive_image.styles.secondary_news
     - responsive_image.styles.top_news
     - taxonomy.vocabulary.tags
   content:
@@ -1104,7 +1103,7 @@ display:
           click_sort_column: target_id
           type: responsive_image
           settings:
-            responsive_image_style: secondary_news
+            responsive_image_style: top_news
             image_link: content
             image_loading:
               attribute: lazy
