@@ -1663,7 +1663,7 @@ input, button, select, textarea {
     overflow: hidden;
   }
   .path-frontpage #block-views-block-header-slideshow-block-1 .view-header-slideshow .views-row {
-    max-height: 400px;
+    max-height: 500px;
   }
   .path-frontpage #block-views-block-header-slideshow-block-1 .view-header-slideshow .views-row .views-field-field-sl-text {
     position: absolute;
@@ -1687,7 +1687,7 @@ input, button, select, textarea {
     overflow: hidden;
   }
   .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row {
-    max-height: 400px;
+    max-height: 500px;
   }
   .path-frontpage #block-views-block-header-par-slideshow-block-1 .view-header-par-slideshow .views-row .views-field-field-sli-image .field-content {
     display: flex;
@@ -1735,14 +1735,14 @@ input, button, select, textarea {
     overflow: hidden;
   }
   .path-frontpage #block-headerslideshow .paragraph--type--slideshow-image {
-    max-height: 400px;
+    max-height: 500px;
   }
   .path-frontpage #block-headerslideshow .paragraph--type--slideshow-image .slide-image {
     display: flex;
   }
   .path-frontpage #block-headerslideshow .paragraph--type--slideshow-image .text-box {
     position: absolute;
-    bottom: 20px;
+    bottom: 30px;
     width: 100%;
     background: none;
     text-align: left;
@@ -1830,17 +1830,12 @@ input, button, select, textarea {
 /*------------------------------------------- */
 @media only screen and (min-width: 1200px) {
   .path-frontpage #block-views-block-header-slideshow-block-1 {
-    max-height: 400px;
-    max-width: 1600px;
-    margin: auto;
-  }
-  .path-frontpage #block-views-block-header-par-slideshow-block-1 {
-    max-height: 400px;
+    max-height: 500px;
     max-width: 1600px;
     margin: auto;
   }
   .path-frontpage #block-headerslideshow {
-    max-height: 400px;
+    max-height: 500px;
     max-width: 1600px;
     margin: auto;
   }
@@ -1856,7 +1851,7 @@ input, button, select, textarea {
     background: #888;
   }
   .path-frontpage #block-views-block-header-par-slideshow-block-1 {
-    max-height: 400px;
+    max-height: 500px;
     max-width: 1600px;
     margin: auto;
   }
