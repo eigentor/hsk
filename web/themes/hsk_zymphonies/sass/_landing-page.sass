@@ -25,15 +25,34 @@
       margin-bottom: 3em
     .block-block-content
       &.sponsoren-logos
-        padding: 2em 0
+        padding: 2em 0 0
         margin-bottom: 0
-        .field__item
-          margin-bottom: 1.5em
-        .image
-          img
-            max-width: 200px
-            max-height: 70px
-            width: auto
+        .field--name-field-paragraphs
+          display: flex
+          flex-wrap: wrap
+          .field__item
+            margin-right: 4em
+            margin-bottom: 3em
+            display: flex
+            align-items: center
+            .image
+              img
+                max-width: 240px
+                max-height: 70px
+                width: auto
+            .lotto-stiftung
+              .image
+                padding: 10px
+                padding-bottom: 1px
+                background: #fff
+            .sbr-consulting
+              .image
+                padding: 5px
+                padding-left: 7px
+                padding-bottom: 0
+                background: #fff
+                img
+                  max-height: 85px
     .top-news
       &.block-views-blockbundesliga-news-block-1
         >h2
@@ -130,11 +149,24 @@
           margin-right: 4em
           display: flex
           align-items: center
-      .image
-        img
-          max-width: 200px
-          max-height: 70px
-          width: auto
+          .image
+            img
+              max-width: 230px
+              max-height: 70px
+              width: auto
+          .lotto-stiftung
+            .image
+              padding: 10px
+              padding-bottom: 1px
+              background: #fff
+          .sbr-consulting
+            .image
+              padding: 5px
+              padding-left: 7px
+              padding-bottom: 0
+              background: #fff
+              img
+                max-height: 85px
 
   .page-node-type-layout-page
     &.node-bundesliga
@@ -161,5 +193,19 @@
             .views-field-field-image
               padding-top: 0.2em
               flex-shrink: 0
-              width: 300px
+              width: 280px
               margin-right: 1.5em
+
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*---------------- Desktop  ------------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
++breakpoint($breakpoint-desktop)
+  .page-node-type-layout-page
+    &.node-bundesliga
+      .view-bundesliga-news
+        &.view-display-id-block_2
+          .views-row
+            .views-field-field-image
+              width: 345px

@@ -4345,16 +4345,37 @@ nav#block-hsk-footer ul li a {
   margin-bottom: 3em;
 }
 .page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos {
-  padding: 2em 0;
+  padding: 2em 0 0;
   margin-bottom: 0;
 }
-.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos .field__item {
-  margin-bottom: 1.5em;
+.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos .field--name-field-paragraphs {
+  display: flex;
+  flex-wrap: wrap;
 }
-.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos .image img {
-  max-width: 200px;
+.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos .field--name-field-paragraphs .field__item {
+  margin-right: 4em;
+  margin-bottom: 3em;
+  display: flex;
+  align-items: center;
+}
+.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos .field--name-field-paragraphs .field__item .image img {
+  max-width: 240px;
   max-height: 70px;
   width: auto;
+}
+.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos .field--name-field-paragraphs .field__item .lotto-stiftung .image {
+  padding: 10px;
+  padding-bottom: 1px;
+  background: #fff;
+}
+.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos .field--name-field-paragraphs .field__item .sbr-consulting .image {
+  padding: 5px;
+  padding-left: 7px;
+  padding-bottom: 0;
+  background: #fff;
+}
+.page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos .field--name-field-paragraphs .field__item .sbr-consulting .image img {
+  max-height: 85px;
 }
 .page-node-type-layout-page.node-bundesliga .top-news.block-views-blockbundesliga-news-block-1 > h2 {
   font-size: 2rem;
@@ -4468,7 +4489,10 @@ nav#block-hsk-footer ul li a {
   margin-right: 1em;
   background: #d5d5d5;
   color: white;
+  height: 16px;
+  font-size: 0.7rem;
   line-height: 12px;
+  padding: 0.2em 0.8em 0.2em 1.1em;
 }
 .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .tags ul li:after {
   content: "";
@@ -4482,7 +4506,9 @@ nav#block-hsk-footer ul li a {
   border-bottom: 10px solid transparent;
 }
 .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .meta .tags ul li:after {
-  border-left: 10px solid #eee;
+  border-left: 8px solid #eee;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
 }
 
 /*------------------------------------------- */
@@ -4516,10 +4542,24 @@ nav#block-hsk-footer ul li a {
     display: flex;
     align-items: center;
   }
-  .block-block-content.sponsoren-logos .image img {
-    max-width: 200px;
+  .block-block-content.sponsoren-logos .field--name-field-paragraphs .field__item .image img {
+    max-width: 230px;
     max-height: 70px;
     width: auto;
+  }
+  .block-block-content.sponsoren-logos .field--name-field-paragraphs .field__item .lotto-stiftung .image {
+    padding: 10px;
+    padding-bottom: 1px;
+    background: #fff;
+  }
+  .block-block-content.sponsoren-logos .field--name-field-paragraphs .field__item .sbr-consulting .image {
+    padding: 5px;
+    padding-left: 7px;
+    padding-bottom: 0;
+    background: #fff;
+  }
+  .block-block-content.sponsoren-logos .field--name-field-paragraphs .field__item .sbr-consulting .image img {
+    max-height: 85px;
   }
   .page-node-type-layout-page.node-bundesliga .block-block-content.sponsoren-logos {
     padding: 2em 0;
@@ -4563,8 +4603,18 @@ nav#block-hsk-footer ul li a {
   .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .views-field-field-image {
     padding-top: 0.2em;
     flex-shrink: 0;
-    width: 300px;
+    width: 280px;
     margin-right: 1.5em;
+  }
+}
+/*------------------------------------------- */
+/*------------------------------------------- */
+/*---------------- Desktop  ------------------*/
+/*------------------------------------------- */
+/*------------------------------------------- */
+@media only screen and (min-width: 1200px) {
+  .page-node-type-layout-page.node-bundesliga .view-bundesliga-news.view-display-id-block_2 .views-row .views-field-field-image {
+    width: 345px;
   }
 }
 
