@@ -6,6 +6,7 @@ dependencies:
     - filter.format.basic_html
     - filter.format.full_html
     - filter.format.tables_only
+    - node.type.layout_page
   module:
     - comment
     - contextual
@@ -42,6 +43,7 @@ permissions:
   - 'clone turnier content'
   - 'create url aliases'
   - 'delete own files'
+  - 'edit any layout_page content'
   - 'override all published option'
   - 'post comments'
   - 'skip comment approval'
