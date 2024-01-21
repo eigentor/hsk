@@ -1131,6 +1131,18 @@ input, button, select, textarea {
   margin-bottom: 40px;
 }
 
+.full-width-bottom .region-content-full-width-bottom .field--name-field-paragraphs {
+  *zoom: 1;
+}
+.full-width-bottom .region-content-full-width-bottom .field--name-field-paragraphs:after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+}
+
 .no-sidebars .content_layout {
   position: relative;
   min-height: 1px;
@@ -3966,9 +3978,11 @@ nav#block-hsk-footer ul li a {
   font-size: 0.8rem;
   color: #999;
 }
+.path-frontpage .full-width-bottom {
+  background: #eee;
+}
 .path-frontpage .block-infoblock {
   clear: both;
-  background: #eee;
   padding-top: 62px;
   padding-top: 4rem;
   padding-bottom: 46.5px;
