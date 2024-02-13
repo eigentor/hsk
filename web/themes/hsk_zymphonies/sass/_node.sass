@@ -178,7 +178,7 @@
       h3, .box-text
         a:hover
           text-decoration: underline
-      i:before
+      i:before, span.icon:before
         font-family: 'Fontawesome'
         content: "\f091"
         +x-rem(font-size, 4)
@@ -191,10 +191,10 @@
         margin: auto
         line-height: 110px
       a:hover
-        i:before
+        i:before, span.icon:before
           color: #333
       &.vereinsmeisterschaft
-        i:before
+        i:before, span.icon:before
           background: $primary-color
           content: "\f135"
           +x-rem(font-size, 3.8)
@@ -203,30 +203,30 @@
         h3, h3 a
           color: $primary-color
       &.pokal
-        i:before
+        i:before, span.icon:before
           +x-rem(font-size, 3.5)
         h3, h3 a
           color: darken($grey-background, 10%)
       &.blitz
-        i:before
+        i:before, span.icon:before
           background: $blue
           content: "\f0e7"
         h3, h3 a
           color: darken($blue, 10%)
       &.schnellschach
-        i:before
+        i:before, span.icon:before
           content: "\f017"
         h3, h3 a
           color: darken($grey-background, 10%)
       &.tusi
-        i:before
+        i:before, span.icon:before
           content: "\f248"
           background: $blue
           +x-rem(font-size, 3.5)
         h3, h3 a
           color: darken($blue, 10%)
       &.thema
-        i:before
+        i:before, span.icon:before
           content: "\f02d"
           background: $primary-color
           +x-rem(font-size, 3.5)

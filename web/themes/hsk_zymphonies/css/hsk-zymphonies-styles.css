@@ -2359,7 +2359,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .page-node-type-page .node-turniere .content-box h3 a:hover, .page-node-type-page .node-turniere .content-box .box-text a:hover {
   text-decoration: underline;
 }
-.page-node-type-page .node-turniere .content-box i:before {
+.page-node-type-page .node-turniere .content-box i:before, .page-node-type-page .node-turniere .content-box span.icon:before {
   font-family: "Fontawesome";
   content: "\f091";
   font-size: 62px;
@@ -2377,10 +2377,10 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   margin: auto;
   line-height: 110px;
 }
-.page-node-type-page .node-turniere .content-box a:hover i:before {
+.page-node-type-page .node-turniere .content-box a:hover i:before, .page-node-type-page .node-turniere .content-box a:hover span.icon:before {
   color: #333;
 }
-.page-node-type-page .node-turniere .content-box.vereinsmeisterschaft i:before {
+.page-node-type-page .node-turniere .content-box.vereinsmeisterschaft i:before, .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft span.icon:before {
   background: #AB3131;
   content: "\f135";
   font-size: 58.9px;
@@ -2391,27 +2391,27 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft h3, .page-node-type-page .node-turniere .content-box.vereinsmeisterschaft h3 a {
   color: #AB3131;
 }
-.page-node-type-page .node-turniere .content-box.pokal i:before {
+.page-node-type-page .node-turniere .content-box.pokal i:before, .page-node-type-page .node-turniere .content-box.pokal span.icon:before {
   font-size: 54.25px;
   font-size: 3.5rem;
 }
 .page-node-type-page .node-turniere .content-box.pokal h3, .page-node-type-page .node-turniere .content-box.pokal h3 a {
   color: #6f6f6f;
 }
-.page-node-type-page .node-turniere .content-box.blitz i:before {
+.page-node-type-page .node-turniere .content-box.blitz i:before, .page-node-type-page .node-turniere .content-box.blitz span.icon:before {
   background: #6e7b99;
   content: "\f0e7";
 }
 .page-node-type-page .node-turniere .content-box.blitz h3, .page-node-type-page .node-turniere .content-box.blitz h3 a {
   color: #58637c;
 }
-.page-node-type-page .node-turniere .content-box.schnellschach i:before {
+.page-node-type-page .node-turniere .content-box.schnellschach i:before, .page-node-type-page .node-turniere .content-box.schnellschach span.icon:before {
   content: "\f017";
 }
 .page-node-type-page .node-turniere .content-box.schnellschach h3, .page-node-type-page .node-turniere .content-box.schnellschach h3 a {
   color: #6f6f6f;
 }
-.page-node-type-page .node-turniere .content-box.tusi i:before {
+.page-node-type-page .node-turniere .content-box.tusi i:before, .page-node-type-page .node-turniere .content-box.tusi span.icon:before {
   content: "\f248";
   background: #6e7b99;
   font-size: 54.25px;
@@ -2420,7 +2420,7 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .page-node-type-page .node-turniere .content-box.tusi h3, .page-node-type-page .node-turniere .content-box.tusi h3 a {
   color: #58637c;
 }
-.page-node-type-page .node-turniere .content-box.thema i:before {
+.page-node-type-page .node-turniere .content-box.thema i:before, .page-node-type-page .node-turniere .content-box.thema span.icon:before {
   content: "\f02d";
   background: #AB3131;
   font-size: 54.25px;

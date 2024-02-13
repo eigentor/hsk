@@ -17,7 +17,6 @@ matchers:
       metadata: 'by [node:author] | [node:created:medium]'
       bundles:
         article: article
-        event: event
         page: page
         team: team
         turnier: turnier
