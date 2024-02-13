@@ -30,7 +30,7 @@ filters:
   filter_htmlcorrector:
     id: filter_htmlcorrector
     provider: filter
-    status: true
+    status: false
     weight: -44
     settings: {  }
   editor_file_reference:
@@ -45,7 +45,7 @@ filters:
     status: false
     weight: -42
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <s> <sup> <sub> <a href hreflang data-entity-type data-entity-uuid title> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <p> <h1> <pre> <img src alt data-entity-type data-entity-uuid data-align data-caption data-responsive-image-style> <table class="center-table no-style"> <drupal-entity data-entity-type data-entity-uuid data-entity-embed-display data-entity-embed-display-settings data-align data-caption data-embed-button data-langcode alt title>'
+      allowed_html: ''
       filter_html_help: true
       filter_html_nofollow: false
   linkit:
@@ -86,6 +86,8 @@ filters:
       image_style_bildblock_mobile: '0'
       image_style_bildblock_tablet_portrait: '0'
       image_style_gallery_full: '0'
+      image_style_headerbild_inhaltsbreite: '0'
+      image_style_headerbild_inhaltsbreite_mobile: '0'
       image_style_header_slideshow: '0'
       image_style_header_slideshow_smartphone: '0'
       image_style_header_slideshow_tablet_portrait: '0'
@@ -96,6 +98,7 @@ filters:
       image_style_inline_full_width: '0'
       image_style_large: '0'
       image_style_linkit_result_thumbnail: '0'
+      image_style_logo: '0'
       image_style_max_1300x1300: '0'
       image_style_max_2600x2600: '0'
       image_style_max_325x325: '0'
@@ -108,6 +111,7 @@ filters:
       image_style_portrait_medium: '0'
       image_style_portrait_tiny: '0'
       image_style_thumbnail: '0'
+      image_style_top_news: '0'
   filter_responsive_image_style:
     id: filter_responsive_image_style
     provider: inline_responsive_images
@@ -115,12 +119,15 @@ filters:
     weight: -49
     settings:
       responsive_style_bildblock_klein: '0'
+      responsive_style_headerbild_inhaltsbreite: '0'
       responsive_style_header_slideshow: '0'
       responsive_style_infoblock: '0'
       responsive_style_inhaltsbild_volle_breite: '1'
       responsive_style_inhaltsbild_z_halbe_breite: '1'
       responsive_style_narrow: '0'
       responsive_style_news_thumb_startseite: '0'
+      responsive_style_secondary_news: '0'
+      responsive_style_top_news: '0'
       responsive_style_wide: '0'
   filter_html_escape:
     id: filter_html_escape
