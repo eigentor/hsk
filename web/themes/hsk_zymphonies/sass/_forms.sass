@@ -20,6 +20,19 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form
       width: auto
       margin-right: 5px
 
+form.webform-submission-contact-general-form
+  .form-item
+    margin-bottom: 1em
+    &.form-type-textarea
+      display: block
+      > label
+        display: block
+        padding-bottom: 0.6em
+    input
+      &.form-text, &.form-email
+        display: block
+        width: 100%
+
 .field--name-comment
   form.comment-form
     background: #eee
@@ -144,6 +157,21 @@ form.webform-submission-kontakt-add-form
     input
       &.form-text, &.form-email
         width: auto
+  form.webform-submission-contact-general-form
+    .form-item
+      display: flex
+      margin-bottom: 1.5em
+      &.form-type-textarea
+        display: block
+        > label
+          display: block
+          padding-bottom: 0.6em
+      > label
+        width: 165px
+      input
+        &.form-text, &.form-email
+          width: 100%
+
 
   .view-events-list
     .views-exposed-form
@@ -166,6 +194,10 @@ form.webform-submission-kontakt-add-form
 /*------------------------------------------- */
 /*------------------------------------------- */
 +breakpoint($breakpoint-desktop-narrow)
+  form.webform-submission-contact-general-form
+    .form-item
+      > label
+        width: 150px
 
 
 /* End Media Query Tablet */

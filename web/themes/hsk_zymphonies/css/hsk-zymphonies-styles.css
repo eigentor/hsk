@@ -1934,6 +1934,21 @@ form.webform-submission-anmeldung-als-vereinsmitglied-form input#edit-sepa-conse
   margin-right: 5px;
 }
 
+form.webform-submission-contact-general-form .form-item {
+  margin-bottom: 1em;
+}
+form.webform-submission-contact-general-form .form-item.form-type-textarea {
+  display: block;
+}
+form.webform-submission-contact-general-form .form-item.form-type-textarea > label {
+  display: block;
+  padding-bottom: 0.6em;
+}
+form.webform-submission-contact-general-form .form-item input.form-text, form.webform-submission-contact-general-form .form-item input.form-email {
+  display: block;
+  width: 100%;
+}
+
 .field--name-comment form.comment-form {
   background: #eee;
   border: 1px solid #ddd;
@@ -2069,6 +2084,23 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
   form.webform-submission-kontakt-add-form input.form-text, form.webform-submission-kontakt-add-form input.form-email {
     width: auto;
   }
+  form.webform-submission-contact-general-form .form-item {
+    display: flex;
+    margin-bottom: 1.5em;
+  }
+  form.webform-submission-contact-general-form .form-item.form-type-textarea {
+    display: block;
+  }
+  form.webform-submission-contact-general-form .form-item.form-type-textarea > label {
+    display: block;
+    padding-bottom: 0.6em;
+  }
+  form.webform-submission-contact-general-form .form-item > label {
+    width: 165px;
+  }
+  form.webform-submission-contact-general-form .form-item input.form-text, form.webform-submission-contact-general-form .form-item input.form-email {
+    width: 100%;
+  }
   .view-events-list .views-exposed-form {
     display: flex;
   }
@@ -2086,6 +2118,11 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 /*------------- Desktop narrow  --------------*/
 /*------------------------------------------- */
 /*------------------------------------------- */
+@media only screen and (min-width: 992px) {
+  form.webform-submission-contact-general-form .form-item > label {
+    width: 150px;
+  }
+}
 /* End Media Query Tablet */
 /*------------------------------------------- */
 /*------------------------------------------- */
