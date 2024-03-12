@@ -1610,7 +1610,8 @@ display:
         title: Termine
         description: ''
         weight: -48
-        expanded: false
+        enabled: true
+        expanded: true
         menu_name: main
         parent: ''
         context: '0'
