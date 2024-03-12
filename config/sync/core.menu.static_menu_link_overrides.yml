@@ -3,11 +3,11 @@ _core:
 langcode: de
 definitions:
   contact__site_page:
+    weight: -47
     menu_name: footer
     parent: ''
-    weight: -50
+    enabled: false
     expanded: false
-    enabled: true
   standard__front_page:
     menu_name: main
     parent: ''
