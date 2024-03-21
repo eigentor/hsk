@@ -6,11 +6,12 @@ definitions:
     weight: -47
     menu_name: footer
     parent: ''
-    enabled: false
     expanded: false
+    enabled: false
   standard__front_page:
     menu_name: main
     parent: ''
     weight: -50
     expanded: false
     enabled: false
+
