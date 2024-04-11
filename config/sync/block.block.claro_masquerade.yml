@@ -1,0 +1,21 @@
+uuid: b0349f83-0cbc-4655-8c68-386c52da7516
+langcode: de
+status: true
+dependencies:
+  module:
+    - masquerade
+  theme:
+    - claro
+id: claro_masquerade
+theme: claro
+region: content
+weight: 0
+provider: null
+plugin: masquerade
+settings:
+  id: masquerade
+  label: Masquerade
+  label_display: '0'
+  provider: masquerade
+  show_unmasquerade_link: false
+visibility: {  }

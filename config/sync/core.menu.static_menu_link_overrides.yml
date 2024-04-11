@@ -3,9 +3,9 @@ _core:
 langcode: de
 definitions:
   contact__site_page:
-    weight: -47
     menu_name: footer
     parent: ''
+    weight: -47
     expanded: false
     enabled: false
   standard__front_page:
@@ -14,4 +14,3 @@ definitions:
     weight: -50
     expanded: false
     enabled: false
-
