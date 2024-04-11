@@ -434,3 +434,20 @@ function block_class_update_20016() {
   $config->save();
 
 }
+
+/**
+ * Convert block_classes_stored from JSON to a sequence.
+ */
+function block_class_update_20017() {
+  $config = \Drupal::configFactory()->getEditable('block_class.settings');
+
+  $block_classes_stored = $config->get('block_classes_stored');
+  $block_classes_stored = Json::decode($block_classes_stored);
+
+  if (empty($block_classes_stored)) {
+    $block_classes_stored = [];
+  }
+
+  $config->set('block_classes_stored', array_values($block_classes_stored));
+  $config->save();
+}

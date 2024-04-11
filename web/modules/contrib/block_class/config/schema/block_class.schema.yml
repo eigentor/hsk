@@ -19,7 +19,9 @@ block_class.settings:
     allow_only_letters_and_numbers:
       type: boolean
     block_classes_stored:
-      type: string
+      type: sequence
+      sequence:
+        type: string
     enable_attributes:
       type: boolean
     enable_auto_complete:

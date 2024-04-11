@@ -27,7 +27,7 @@
         "drupal/backup_migrate": "^5.0",
         "drupal/better_exposed_filters": "*",
         "drupal/better_formats": "^1.0@beta",
-        "drupal/block_class": "*",
+        "drupal/block_class": "2.0.x-dev",
         "drupal/chosen": "^3.0",
         "drupal/classy": "^1.0",
         "drupal/colorbox": "*",

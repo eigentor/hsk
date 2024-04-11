@@ -262,22 +262,8 @@ class BlockClassController extends ControllerBase {
     $table .= '</thead>';
     $table .= '<tbody>';
 
-    $block_classes_stored = '';
-
     $config = $this->configFactory->getEditable('block_class.settings');
-
-    // Get config object.
-    if (!empty($config->get('block_classes_stored'))) {
-      $block_classes_stored = $config->get('block_classes_stored');
-    }
-
-    // Get the array.
-    $block_classes_stored = Json::decode($block_classes_stored);
-
-    if ($block_classes_stored != NULL) {
-      // Get the array values and id in the keys.
-      $block_classes_stored = array_values($block_classes_stored);
-    }
+    $block_classes_stored = $config->get('block_classes_stored');
 
     foreach ($block_classes_stored as $block_class) {
 
@@ -356,21 +342,8 @@ class BlockClassController extends ControllerBase {
    *   Json Response.
    */
   public function handleAutocomplete(Request $request) {
-
-    $block_classes_stored = '{}';
-
     $config = $this->configFactory->getEditable('block_class.settings');
-
-    // Get config object.
-    if (!empty($config->get('block_classes_stored'))) {
-      $block_classes_stored = $config->get('block_classes_stored');
-    }
-
-    // Get the array.
-    $block_classes_stored = Json::decode($block_classes_stored);
-
-    // Get the array values and id in the keys.
-    $block_classes_stored = array_values($block_classes_stored);
+    $block_classes_stored = $config->get('block_classes_stored');
 
     // Return in JSON Response.
     return new JsonResponse($block_classes_stored);

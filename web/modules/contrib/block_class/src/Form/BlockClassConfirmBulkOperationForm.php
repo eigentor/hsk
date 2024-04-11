@@ -438,7 +438,7 @@ class BlockClassConfirmBulkOperationForm extends ConfirmFormBase {
     $config = $this->configFactory->getEditable('block_class.settings');
 
     // Store in the config.
-    $config->set('block_classes_stored', '{}');
+    $config->set('block_classes_stored', []);
 
     // Save.
     $config->save();

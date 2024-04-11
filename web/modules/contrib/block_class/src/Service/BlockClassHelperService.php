@@ -186,25 +186,12 @@ class BlockClassHelperService {
       // Get the current classes stored.
       $block_classes_stored = $config->get('block_classes_stored');
 
-      // Get the array from JSON.
-      $block_classes_stored = Json::decode($block_classes_stored ?? '');
-
-      // Verify if is empty.
-      if (empty($block_classes_stored)) {
-        $block_classes_stored = [];
-      }
-
       // Get the current class and export to array.
       $current_block_classes = explode(' ', $block_classes ?? '');
 
-      // Use the key the same as value.
-      $current_block_classes = array_combine($current_block_classes, $current_block_classes);
-
       // Merge with the current one.
       $block_classes_to_store = array_merge($block_classes_stored, $current_block_classes);
-
-      // Get as JSON.
-      $block_classes_to_store = Json::encode($block_classes_to_store);
+      $block_classes_to_store = array_unique($block_classes_to_store);
 
       // Store in the config.
       $config->set('block_classes_stored', $block_classes_to_store);
@@ -945,7 +932,7 @@ class BlockClassHelperService {
   public function validateDynamicClasses(&$form, &$form_state, $config) {
 
     // Get the ThirdPartySettings.
-    $third_party_settings = $form_state->getValue('class')['third_party_settings'];
+    $third_party_settings = $form_state->getValue('class') ? $form_state->getValue('class')['third_party_settings'] : [];
 
     // Verify if there is attributes enabled.
     if (!empty($form_state->getValue('attributes')['third_party_settings'])) {

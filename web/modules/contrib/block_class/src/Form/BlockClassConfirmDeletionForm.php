@@ -52,7 +52,7 @@ class BlockClassConfirmDeletionForm extends ConfirmFormBase {
     // Block save.
     $block->save();
 
-    // Set a messsage.
+    // Set a message.
     \Drupal::messenger()->addStatus($this->t('Block Class deleted'));
 
     // Get the block class list path.
