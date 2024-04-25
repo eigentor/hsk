@@ -84,7 +84,18 @@ class TimeType extends FieldItemBase {
    */
   public function isEmpty() {
     $value = $this->get('value')->getValue() ?? '';
-    return trim($value) === '';
+
+    // If our value is really empty.
+    if (trim($value) === '') {
+      return TRUE;
+    }
+
+    // 86401 also is considered empty.
+    if (trim($value) === '86401') {
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
 }

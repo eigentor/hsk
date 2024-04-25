@@ -42,7 +42,7 @@ class DrupalEntity extends EmbedCKEditorPluginBase implements CKEditorPluginCssI
       'DrupalEntity_dialogTitleAdd' => t('Insert entity'),
       'DrupalEntity_dialogTitleEdit' => t('Edit entity'),
       'DrupalEntity_buttons' => $this->getButtons(),
-      'DrupalEntity_previewCsrfToken' => \Drupal::csrfToken()->get('X-Drupal-EmbedPreview-CSRF-Token'),
+      'DrupalEntity_previewCsrfToken' => $this->getEmbedPreviewCsrfToken(),
     ];
   }
 

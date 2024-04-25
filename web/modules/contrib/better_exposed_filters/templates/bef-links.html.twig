@@ -8,13 +8,12 @@
 {% for name, value in hiddens %}
 <input type="hidden" name="{{ name }}" value="{{ value }}" />
 {% endfor %}
-<div{{ attributes.addClass(classes) }}>
+<div{{ attributes.removeClass('form-select').addClass(classes) }}>
   {% set current_nesting_level = 0 %}
   {% for child in children %}
     {% set item = attribute(element, child) %}
     {% if child in selected %}
       {% set new_nesting_level = attribute(depth, child) %}
-      {% set item = item|merge({'#attributes': {'class': 'bef-link-active'}}) %}
     {% endif %}
     {% set new_nesting_level = attribute(depth, child) %}
     {% include '@better_exposed_filters/bef-nested-elements.html.twig' %}

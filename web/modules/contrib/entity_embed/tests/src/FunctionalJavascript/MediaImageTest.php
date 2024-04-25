@@ -112,7 +112,7 @@ class MediaImageTest extends EntityEmbedTestBase {
 
     $this->pressEditorButton('test_node');
     $this->assertSession()->waitForId('drupal-modal');
-
+    $this->assertSession()->waitForField('entity_id');
     // Test that node embed doesn't display alt and title fields.
     $this->assertSession()
       ->fieldExists('entity_id')
@@ -411,6 +411,7 @@ class MediaImageTest extends EntityEmbedTestBase {
     $this->assignNameToCkeditorIframe();
     $this->pressEditorButton('test_media_entity_embed');
     $this->assertSession()->waitForId('drupal-modal');
+    $this->assertSession()->waitForField('entity_id');
 
     // Embed media.
     $this->assertSession()

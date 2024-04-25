@@ -33,12 +33,23 @@ class TimeRangeFormatter extends FormatterBase {
   protected function viewValue(FieldItemInterface $item) {
     // The text value has no text format assigned to it, so the user input
     // should equal the output, including newlines.
-    $from = Time::createFromTimestamp($item->from);
-    $to = Time::createFromTimestamp($item->to);
     $time_format = $this->getSetting('time_format');
     $timerange_format = $this->getSetting('timerange_format');
-    $timerange_format = str_replace('start', $from->format($time_format), $timerange_format);
-    $timerange_format = str_replace('end', $to->format($time_format), $timerange_format);
+
+    $from = ($item->from == 86401) ? '' : Time::createFromTimestamp($item->from)->format($time_format);
+    $to = ($item->to == 86401) ? '' : Time::createFromTimestamp($item->to)->format($time_format);
+
+    if (empty($from) && !empty($to)) {
+      $timerange_format = $to;
+    }
+    elseif (!empty($from) && empty($to)) {
+      $timerange_format = $from;
+    }
+    else {
+      $timerange_format = str_replace('start', $from, $timerange_format);
+      $timerange_format = str_replace('end', $to, $timerange_format);
+    }
+
     return $timerange_format;
   }
 

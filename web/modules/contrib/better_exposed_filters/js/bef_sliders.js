@@ -27,7 +27,7 @@
             $input.val(defaultValue);
 
             // Build the HTML and settings for the slider.
-            var slider = $('<div class="bef-slider"></div>').slider({
+            let slider = $('<div class="bef-slider"></div>').slider({
               min: parseFloat(sliderOptions.min),
               max: parseFloat(sliderOptions.max),
               step: parseFloat(sliderOptions.step),
@@ -66,14 +66,14 @@
                 $max = $($inputs[1]),
                 // Get the default values. We use slider min & max if there are
                 // no defaults.
-                defaultMin = parseFloat(($min.val() == '') ? sliderOptions.min : $min.val()),
-                defaultMax = parseFloat(($max.val() == '') ? sliderOptions.max : $max.val());
+                defaultMin = parseFloat(($min.val() === '') ? sliderOptions.min : $min.val()),
+                defaultMax = parseFloat(($max.val() === '') ? sliderOptions.max : $max.val());
 
             // Set the element value in case we are using the slider min & max.
             $min.val(defaultMin);
             $max.val(defaultMax);
 
-            var slider = $('<div class="bef-slider"></div>').slider({
+            let slider = $('<div class="bef-slider"></div>').slider({
               range: true,
               min: parseFloat(sliderOptions.min),
               max: parseFloat(sliderOptions.max),
@@ -113,10 +113,10 @@
               befUpdateSlider($(this), 1, sliderOptions);
             });
           }
-        })
+        });
       }
     }
-  }
+  };
 
   /**
    * Update a slider when a related input element is changed.

@@ -2,9 +2,11 @@
 
 namespace Drupal\linkit\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\GeneratedUrl;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\link\LinkItemInterface;
 use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
@@ -102,12 +104,20 @@ class LinkitFormatter extends LinkFormatter {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
+    $settings = $this->getSettings();
 
     // Loop over the elements and substitute the URL.
     foreach ($elements as $delta => &$item) {
       /** @var \Drupal\link\LinkItemInterface $link_item */
       $link_item = $items->get($delta);
       if ($url = $this->getSubstitutedUrl($link_item)) {
+        if ($url instanceof CacheableDependencyInterface) {
+          $cacheable_url = $url;
+        }
+        if ($url instanceof GeneratedUrl) {
+          $url = $this->pathValidator->getUrlIfValid($url->getGeneratedUrl());
+          @trigger_error('Drupal\Core\GeneratedUrl in Linkit Substitution plugins is deprecated in linkit:6.0.1 and must return Drupal\Core\Url in linkit:7.0.0. See https://www.drupal.org/project/linkit/issues/3354873', E_USER_DEPRECATED);
+        }
         // Keep query and fragment.
         $parsed_url = parse_url($link_item->uri);
         if (!empty($parsed_url['query'])) {
@@ -120,11 +130,23 @@ class LinkitFormatter extends LinkFormatter {
         if (!empty($parsed_url['fragment'])) {
           $url->setOption('fragment', $parsed_url['fragment']);
         }
-        // Add cache dependency to the generated substituted URL.
-        $cacheable_metadata = BubbleableMetadata::createFromRenderArray($item)
-          ->addCacheableDependency($url);
-        // Add cache dependency to the referenced entity, e.g. for media direct
-        // file substitution.
+        $attributes = $url->getOption('attributes');
+        // Restore rel and target options.
+        if (!empty($settings['rel'])) {
+          $attributes['rel'] = $settings['rel'];
+        }
+        if (!empty($settings['target'])) {
+          $attributes['target'] = $settings['target'];
+        }
+        $url->setOption('attributes', $attributes);
+        $cacheable_metadata = BubbleableMetadata::createFromRenderArray($item);
+        if (isset($cacheable_url)) {
+          // Add cache dependency on the URL, if supported.
+          // Currently, this is only the case if the substitution uses legacy
+          // GeneratedUrl, but Url objects might as well be cacheable in the
+          // future; see https://www.drupal.org/project/drupal/issues/3358113
+          $cacheable_metadata->addCacheableDependency($cacheable_url);
+        }
         if ($entity = LinkitHelper::getEntityFromUserInput($link_item->uri)) {
           $cacheable_metadata->addCacheableDependency($entity);
         }
@@ -144,7 +166,7 @@ class LinkitFormatter extends LinkFormatter {
    * @param \Drupal\link\LinkItemInterface $item
    *   The link item.
    *
-   * @return \Drupal\Core\Url|null
+   * @return \Drupal\Core\Url|\Drupal\Core\GeneratedUrl|null
    *   The substitution URL, or NULL if not able to retrieve it from the item.
    */
   protected function getSubstitutedUrl(LinkItemInterface $item) {

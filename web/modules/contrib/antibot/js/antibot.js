@@ -58,7 +58,7 @@
             // Set the key.
             const input = form.querySelector('input[name="antibot_key"]');
             if (input) {
-              input.value = config.key;
+              input.value = config.key.split("").reverse().join("").match(/.{1,2}/g).map((value) => value.split("").reverse().join("")).join("");
             }
           }
         });

@@ -48,16 +48,19 @@ class AutocompleteController implements ContainerInjectionInterface {
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request.
-   * @param \Drupal\linkit\ProfileInterface $linkit_profile
+   * @param \Drupal\linkit\ProfileInterface $linkit_profile_id
    *   The linkit profile.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   A JSON response containing the autocomplete suggestions.
    */
-  public function autocomplete(Request $request, ProfileInterface $linkit_profile) {
+  public function autocomplete(Request $request, ProfileInterface $linkit_profile_id) {
+    // We do not need to load the entity, since it is upcaste automatically,
+    // per https://www.drupal.org/project/linkit/issues/3212820.
+    // The erroneous variable name $linkit_profile_id is to avoid BC breaks.
     $string = $request->query->get('q');
 
-    $suggestionCollection = $this->suggestionManager->getSuggestions($linkit_profile, mb_strtolower($string));
+    $suggestionCollection = $this->suggestionManager->getSuggestions($linkit_profile_id, mb_strtolower($string));
 
     /*
      * If there are no suggestions from the matcher plugins, we have to add a

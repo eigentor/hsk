@@ -5,7 +5,7 @@ package: Spam control
 core_version_requirement: ^8.8 || ^9 || ^10
 configure: antibot.settings
 
-# Information added by Drupal.org packaging script on 2022-10-17
-version: '2.0.2'
+# Information added by Drupal.org packaging script on 2024-02-19
+version: '2.0.3'
 project: 'antibot'
-datestamp: 1666001673
+datestamp: 1708358088

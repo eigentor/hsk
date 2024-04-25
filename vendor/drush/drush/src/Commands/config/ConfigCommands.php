@@ -26,6 +26,7 @@ use Drush\Exec\ExecTrait;
 use Drush\SiteAlias\SiteAliasManagerAwareInterface;
 use Drush\Utils\FsUtils;
 use Drush\Utils\StringUtils;
+use JetBrains\PhpStorm\Deprecated;
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Helper\Table;
@@ -242,7 +243,7 @@ final class ConfigCommands extends DrushCommands implements StdinAwareInterface,
         if (!$options['bg']) {
             $redispatch_options = Drush::redispatchOptions() + ['strict' => 0, 'partial' => true, 'source' => $temp_dir];
             $self = $this->siteAliasManager()->getSelf();
-            $process = $this->processManager()->drush($self, 'config-import', [], $redispatch_options);
+            $process = $this->processManager()->drush($self, ConfigImportCommands::IMPORT, [], $redispatch_options);
             $process->mustRun($process->showRealtime());
         }
     }
@@ -276,7 +277,7 @@ final class ConfigCommands extends DrushCommands implements StdinAwareInterface,
     }
 
     /**
-     * Display status of configuration (differences between the filesystem configuration and database configuration).
+     * Display status of configuration (differences between the filesystem and database).
      */
     #[CLI\Command(name: self::STATUS, aliases: ['cst', 'config-status'])]
     #[CLI\Option(name: 'state', description: 'A comma-separated list of states to filter results.')]
@@ -486,6 +487,7 @@ final class ConfigCommands extends DrushCommands implements StdinAwareInterface,
     /**
      * Validate that a config name is valid.
      */
+    #[Deprecated('Use CLI/ValidateConfigName Attribute instead')]
     #[CLI\Hook(type: HookManager::ARGUMENT_VALIDATOR, selector: self::VALIDATE_CONFIG_NAME)]
     public function validateConfigName(CommandData $commandData): ?CommandError
     {

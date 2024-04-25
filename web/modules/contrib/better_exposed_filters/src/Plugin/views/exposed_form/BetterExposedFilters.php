@@ -8,6 +8,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Render\ElementInfoManagerInterface;
 use Drupal\Core\Url;
 use Drupal\views\Plugin\views\exposed_form\InputRequired;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -54,6 +55,13 @@ class BetterExposedFilters extends InputRequired {
   protected $moduleHandler;
 
   /**
+   * The element info manager.
+   *
+   * @var \Drupal\Core\Render\ElementInfoManagerInterface
+   */
+  protected $elementInfo;
+
+  /**
    * BetterExposedFilters constructor.
    *
    * @param array $configuration
@@ -70,19 +78,32 @@ class BetterExposedFilters extends InputRequired {
    *   The better exposed filter widget manager for sort widgets.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   Manage drupal modules.
+   * @param \Drupal\Core\Render\ElementInfoManagerInterface $element_info
+   *   The element info manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, BetterExposedFiltersWidgetManager $filter_widget_manager, BetterExposedFiltersWidgetManager $pager_widget_manager, BetterExposedFiltersWidgetManager $sort_widget_manager, ModuleHandlerInterface $module_handler) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    BetterExposedFiltersWidgetManager $filter_widget_manager,
+    BetterExposedFiltersWidgetManager $pager_widget_manager,
+    BetterExposedFiltersWidgetManager $sort_widget_manager,
+    ModuleHandlerInterface $module_handler,
+    ElementInfoManagerInterface $element_info) {
+
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->filterWidgetManager = $filter_widget_manager;
     $this->pagerWidgetManager = $pager_widget_manager;
     $this->sortWidgetManager = $sort_widget_manager;
     $this->moduleHandler = $module_handler;
+    $this->elementInfo = $element_info;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    // @phpstan-ignore-next-line
     return new static(
       $configuration,
       $plugin_id,
@@ -90,7 +111,8 @@ class BetterExposedFilters extends InputRequired {
       $container->get('plugin.manager.better_exposed_filters_filter_widget'),
       $container->get('plugin.manager.better_exposed_filters_pager_widget'),
       $container->get('plugin.manager.better_exposed_filters_sort_widget'),
-      $container->get('module_handler')
+      $container->get('module_handler'),
+      $container->get('element_info'),
     );
   }
 
@@ -329,7 +351,7 @@ class BetterExposedFilters extends InputRequired {
      * Add options for exposed sorts.
      */
     // Add intro explaining BEF sorts.
-    $documentation_uri = Url::fromUri('http://drupal.org/node/1701012')->toString();
+    $documentation_uri = Url::fromUri('https://drupal.org/node/1701012')->toString();
     $form['bef']['sort']['bef_intro'] = [
       '#markup' => '<h3>' . $this->t('Exposed Sort Settings') . '</h3><p>' . $this->t('This section lets you select additional options for exposed sorts. Some options are only available in certain situations. If you do not see the options you expect, please see the <a href=":link">BEF settings documentation page</a> for more details.', [':link' => $documentation_uri]) . '</p>',
     ];
@@ -407,7 +429,7 @@ class BetterExposedFilters extends InputRequired {
     /*
      * Add options for exposed pager.
      */
-    $documentation_uri = Url::fromUri('http://drupal.org/node/1701012')->toString();
+    $documentation_uri = Url::fromUri('https://drupal.org/node/1701012')->toString();
     $form['bef']['pager']['bef_intro'] = [
       '#markup' => '<h3>' . $this->t('Exposed Pager Settings') . '</h3><p>' . $this->t('This section lets you select additional options for exposed pagers. Some options are only available in certain situations. If you do not see the options you expect, please see the <a href=":link">BEF settings documentation page</a> for more details.', [':link' => $documentation_uri]) . '</p>',
     ];
@@ -472,7 +494,7 @@ class BetterExposedFilters extends InputRequired {
     /*
      * Add options for exposed filters.
      */
-    $documentation_uri = Url::fromUri('http://drupal.org/node/1701012')->toString();
+    $documentation_uri = Url::fromUri('https://drupal.org/node/1701012')->toString();
     $form['bef']['filter']['bef_intro'] = [
       '#markup' => '<h3>' . $this->t('Exposed Filter Settings') . '</h3><p>' . $this->t('This section lets you select additional options for exposed filters. Some options are only available in certain situations. If you do not see the options you expect, please see the <a href=":link">BEF settings documentation page</a> for more details.', [':link' => $documentation_uri]) . '</p>',
     ];
@@ -744,7 +766,7 @@ class BetterExposedFilters extends InputRequired {
 
       if (!empty($bef_options['general']['autosubmit_exclude_textfield'])) {
         $supported_types = ['entity_autocomplete', 'textfield'];
-        foreach ($form as &$element) {
+        foreach ($form as $element) {
           $element_type = $element['#type'] ?? NULL;
           if (in_array($element_type, $supported_types)) {
             $element['#attributes']['data-bef-auto-submit-exclude'] = '';
@@ -830,7 +852,7 @@ class BetterExposedFilters extends InputRequired {
     }
 
     // If our form has no visible filters, hide the submit button.
-    $has_visible_filters = !empty(Element::getVisibleChildren($form)) ?: FALSE;
+    $has_visible_filters = !empty(Element::getVisibleChildren($form));
     $form['actions']['submit']['#access'] = $has_visible_filters;
 
     if ($bef_options['general']['reset_button_always_show']) {
@@ -899,7 +921,7 @@ class BetterExposedFilters extends InputRequired {
    */
   protected function addDefaultElementInfo(array &$element) {
     /** @var \Drupal\Core\Render\ElementInfoManager $element_info_manager */
-    $element_info = \Drupal::service('element_info');
+    $element_info = $this->elementInfo;
     if (isset($element['#type']) && empty($element['#defaults_loaded']) && ($info = $element_info->getInfo($element['#type']))) {
       $element['#process'] = $element['#process'] ?? [];
       $element['#pre_render'] = $element['#pre_render'] ?? [];

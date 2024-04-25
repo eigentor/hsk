@@ -11,8 +11,8 @@ use PhpParser\Error;
 use PhpParser\Node;
 use PhpParser\NodeFinder;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 use PhpParser\Node\Expr\ArrayDimFetch;
-use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Function_;
@@ -109,12 +109,18 @@ final class ThemeFunctionDeprecationAnalyzer {
       return [];
     }
 
-    $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+    $parser_factory = new ParserFactory();
+    if (method_exists($parser_factory, 'create')) {
+      $parser = $parser_factory->create(ParserFactory::PREFER_PHP7);
+    }
+    else {
+      $parser = $parser_factory->createForVersion(PhpVersion::fromString("7.4"));
+    }
     try {
       $ast = $parser->parse(file_get_contents($function_reflection->getFileName()));
     } catch (Error $error) {
       // The function cannot be evaluated because of a syntax error.
-      $deprecation_messages[] = new DeprecationMessage(sprintf('Parse error while processing the %s hook implementation.', $theme_function), $function_reflection->getFileName(), $node->getStartLine());
+      $deprecation_messages[] = new DeprecationMessage(sprintf('Parse error while processing the %s hook implementation.', $function), $function_reflection->getFileName(), $function_reflection->getStartLine());
     }
 
     if (!is_iterable($ast)) {
@@ -141,7 +147,7 @@ final class ThemeFunctionDeprecationAnalyzer {
     // }
     // @endcode
     $theme_function_nodes = $finder->find([$function_node], function(Node $node) {
-      return ($node instanceof ArrayItem && $node->key instanceof String_ && $node->key->value === 'function');
+      return (isset($node->key) && $node->key instanceof String_ && $node->key->value === 'function');
     });
     foreach ($theme_function_nodes as $node) {
       $theme_function = $node->value instanceof String_ ? sprintf('"%s"', $node->value->value) : 'an unknown';

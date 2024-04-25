@@ -34,12 +34,12 @@ class TimeRangeWidget extends WidgetBase {
       '#type' => 'time',
     ];
 
-    if (is_numeric($items[$delta]->from)) {
+    if (is_numeric($items[$delta]->from) && $items[$delta]->from != 86401) {
       $element['from']['#default_value'] = isset($items[$delta]->from) ? Time::createFromTimestamp($items[$delta]->from)
         ->formatForWidget() : NULL;
     }
 
-    if (is_numeric($items[$delta]->to)) {
+    if (is_numeric($items[$delta]->to) && $items[$delta]->to != 86401) {
       $element['to']['#default_value'] = isset($items[$delta]->to) ? Time::createFromTimestamp($items[$delta]->to)
         ->formatForWidget() : NULL;
     }

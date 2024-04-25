@@ -7,7 +7,7 @@ namespace Drupal\time_field;
  *
  * @package Drupal\time_field
  */
-class Time {
+final class Time {
 
   /**
    * Time hour.
@@ -161,11 +161,13 @@ class Time {
     if (!$string) {
       return new self();
     }
+
     $inputs = explode(':', $string);
     if (count($inputs) === 2) {
       $inputs[] = 0;
     }
-    list ($hour, $minute, $seconds) = $inputs;
+
+    [$hour, $minute, $seconds] = $inputs;
     return new self($hour, $minute, $seconds);
   }
 

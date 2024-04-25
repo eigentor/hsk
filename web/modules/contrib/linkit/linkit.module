@@ -91,7 +91,7 @@ function linkit_form_editor_link_dialog_alter(&$form, FormStateInterface $form_s
     '#description' => t('Start typing to find content.'),
     '#autocomplete_route_name' => 'linkit.autocomplete',
     '#autocomplete_route_parameters' => [
-      'linkit_profile' => $linkit_profile_id,
+      'linkit_profile_id' => $linkit_profile_id,
     ],
     "#weight" => -10,
     '#default_value' => $input['href'] ?? '',

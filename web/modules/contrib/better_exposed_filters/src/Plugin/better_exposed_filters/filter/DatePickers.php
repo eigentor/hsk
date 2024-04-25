@@ -107,7 +107,7 @@ class DatePickers extends FilterWidgetBase {
   /**
    * Convert Date API formatting to jQuery formatDate formatting.
    *
-   * @todo: To be honest, I'm not sure this is needed.  Can you set a
+   * @todo To be honest, I'm not sure this is needed.  Can you set a
    * Date API field to accept anything other than Y-m-d? Well, better
    * safe than sorry...
    *

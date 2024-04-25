@@ -120,18 +120,39 @@ class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface
 
             // Parse link href as url, extract query and fragment from it.
             $href_url = parse_url($element->getAttribute('href'));
-            if (!empty($href_url["fragment"])) {
-              $url->setOption('fragment', $href_url["fragment"]);
+            // Check object type of $url for backwards compatibility (#3354873)
+            // This check can be removed in the next major version of Linkit.
+            $implementing_class = get_class($url);
+            if ($implementing_class === 'Drupal\Core\GeneratedUrl') {
+              @trigger_error('Drupal\Core\GeneratedUrl in Linkit Substitution plugins is deprecated in linkit:6.0.1 and must return Drupal\Core\Url in linkit:7.0.0. See https://www.drupal.org/project/linkit/issues/3354873', E_USER_DEPRECATED);
+              $anchor = empty($href_url["fragment"]) ? '' : '#' . $href_url["fragment"];
+              $query = empty($href_url["query"]) ? '' : '?' . $href_url["query"];
+              /** @var \Drupal\Core\GeneratedUrl $url */
+              $element->setAttribute('href', $url->getGeneratedUrl() . $query . $anchor);
             }
-            if (!empty($href_url["query"])) {
-              $parsed_query = [];
-              parse_str($href_url['query'], $parsed_query);
-              if (!empty($parsed_query)) {
-                $url->setOption('query', $parsed_query);
+            else {
+              if (!empty($href_url["fragment"])) {
+                $url->setOption('fragment', $href_url["fragment"]);
               }
+              if (!empty($href_url["query"])) {
+                $parsed_query = [];
+                parse_str($href_url['query'], $parsed_query);
+                $url_query = $url->getOption('query');
+                // If something was NULL before, we need to keep it as NULL, but
+                // parse_str will convert that to an empty string. Restore those.
+                if ($url_query !== NULL) {
+                  foreach ($parsed_query as $key => $value) {
+                    if ($value === '' && array_key_exists($key, $url_query) && $url_query[$key] === NULL) {
+                      $parsed_query[$key] = NULL;
+                    }
+                  }
+                }
+                if (!empty($parsed_query)) {
+                  $url->setOption('query', $parsed_query);
+                }
+              }
+              $element->setAttribute('href', $url->toString());
             }
-
-            $element->setAttribute('href', $url->toString());
 
             // Set the appropriate title attribute.
             if ($this->settings['title'] && !$element->getAttribute('title')) {
@@ -142,13 +163,15 @@ class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface
               // Cache the linked entity access for the current user.
               $result->addCacheableDependency($access);
             }
-
-            // The processed text now depends on:
-            $result
-              // - the generated URL (which has undergone path & route processing)
-              ->addCacheableDependency($url)
-              // - the linked entity (whose URL and title may change)
-              ->addCacheableDependency($entity);
+            // Add cache awareness depending on substitution type.
+            if ($implementing_class === 'Drupal\Core\GeneratedUrl') {
+              // Add cache dependency if substitution uses legacy GeneratedUrl
+              // This can be removed in 7.0.0 per
+              // https://www.drupal.org/project/linkit/issues/3354873 .
+              $result->addCacheableDependency($url);
+            }
+            // The linked entity (whose URL and title may change).
+            $result->addCacheableDependency($entity);
           }
         }
         catch (\Exception $e) {

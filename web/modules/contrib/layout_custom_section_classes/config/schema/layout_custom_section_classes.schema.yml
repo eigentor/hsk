@@ -46,3 +46,51 @@ layout_custom_section_classes.settings:
       sequence:
         - type: string
           label: 'Class'
+
+layout_plugin.settings.*:
+  type: layout_plugin.settings
+  mapping:
+    custom_id:
+      type: string
+      label: 'ID'
+    custom_classes:
+      type: string
+      label: 'Class(es)'
+    custom_class_choose:
+      type: sequence
+      nullable: true
+      label: 'CSS classes to choose from'
+      sequence:
+        type: string
+        label: 'CSS class'
+    custom_styles:
+      type: string
+      label: 'Styles'
+    custom_data_attributes:
+      type: string
+      label: 'Data-* attributes'
+    regions:
+      type: config_entity
+      mapping:
+        content:
+          type: config_entity
+          mapping:
+            region_id:
+              type: string
+              label: 'ID'
+            region_class_choose:
+              type: sequence
+              nullable: true
+              label: 'CSS classes to choose from'
+              sequence:
+                type: string
+                label: 'CSS class'
+            region_classes:
+              type: string
+              label: 'Class(es)'
+            region_styles:
+              type: string
+              label: 'Styles'
+            region_data:
+              type: string
+              label: 'Data-* attributes'          

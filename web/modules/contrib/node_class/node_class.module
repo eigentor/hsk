@@ -45,7 +45,7 @@ function node_class_entity_base_field_info(EntityTypeInterface $entity_type) {
 }
 
 /**
- * Implements hook_preprocess_html().
+ * Implements hook_preprocess_node().
  */
 function node_class_preprocess_node(&$variables) {
   if (!empty($variables['node'])) {

@@ -28,8 +28,7 @@
           if ($(this).hasClass('bef-link--selected')) {
             // The previously selected link is selected again. Deselect it.
             $(this).removeClass('bef-link--selected');
-            let all = $links.find('a[name="' + links_name + '[All]"]').addClass('bef-link--selected');
-            if (!links_multiple || link_value == 'All') {
+            if (!links_multiple || link_value === 'All') {
               $filters.remove();
             }
             else {
@@ -37,7 +36,7 @@
             }
           }
           else {
-            if (!links_multiple || link_value == 'All') {
+            if (!links_multiple || link_value === 'All') {
               $links.find('.bef-link--selected').removeClass('bef-link--selected');
             }
             $(this).addClass('bef-link--selected');
@@ -50,7 +49,7 @@
           }
 
           // Submit the form.
-          $form.find('.form-submit').click();
+          $form.find('.form-submit').not('[data-drupal-selector*=edit-reset]').click();
         });
       });
     }

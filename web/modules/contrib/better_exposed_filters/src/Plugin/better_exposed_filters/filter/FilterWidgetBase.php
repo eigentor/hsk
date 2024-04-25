@@ -26,8 +26,8 @@ abstract class FilterWidgetBase extends BetterExposedFiltersWidgetBase implement
     $is_applicable = FALSE;
 
     // Sanity check to ensure we have a filter to work with.
-    if (!isset($filter)) {
-      return $is_applicable;
+    if (is_null($filter)) {
+      return FALSE;
     }
 
     // Check various filter types and determine what options are available.
@@ -58,6 +58,10 @@ abstract class FilterWidgetBase extends BetterExposedFiltersWidgetBase implement
     }
 
     if (is_a($filter, 'Drupal\search_api\Plugin\views\filter\SearchApiFulltext')) {
+      $is_applicable = TRUE;
+    }
+
+    if (is_a($filter, 'Drupal\facets_exposed_filters\Plugin\views\filter\FacetsFilter')) {
       $is_applicable = TRUE;
     }
 
@@ -113,7 +117,7 @@ abstract class FilterWidgetBase extends BetterExposedFiltersWidgetBase implement
         '#type' => 'textfield',
         '#title' => $this->t('Placeholder text'),
         '#description' => $this->t('Text to be shown in the text field until it is edited. Leave blank for no placeholder to be set.'),
-        '#default_value' => $this->t($this->configuration['advanced']['placeholder_text']),
+        '#default_value' => $this->configuration['advanced']['placeholder_text'],
       ];
     }
 
@@ -145,7 +149,7 @@ abstract class FilterWidgetBase extends BetterExposedFiltersWidgetBase implement
       ),
     ];
 
-    // Allow any filter to be moved into the secondary options element.
+    // Allow any filter to be moved into the secondary options' element.
     $form['advanced']['is_secondary'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('This is a secondary option'),
@@ -182,11 +186,11 @@ abstract class FilterWidgetBase extends BetterExposedFiltersWidgetBase implement
     // Check for placeholder text.
     if (!empty($this->configuration['advanced']['placeholder_text'])) {
       // @todo Add token replacement for placeholder text.
-      $form[$field_id]['#placeholder'] = $this->t($this->configuration['advanced']['placeholder_text']);
+      $form[$field_id]['#placeholder'] = $this->configuration['advanced']['placeholder_text'];
     }
 
     // Handle filter value rewrites.
-    if ($this->configuration['advanced']['rewrite']['filter_rewrite_values']) {
+    if (!empty($form[$field_id]['#options']) && $this->configuration['advanced']['rewrite']['filter_rewrite_values']) {
       // Reorder options based on rewrite values, if sort options is disabled.
       $form[$field_id]['#options'] = BetterExposedFiltersHelper::rewriteOptions($form[$field_id]['#options'], $this->configuration['advanced']['rewrite']['filter_rewrite_values'], !$this->configuration['advanced']['sort_options']);
       // @todo what is $selected?
@@ -211,7 +215,8 @@ abstract class FilterWidgetBase extends BetterExposedFiltersWidgetBase implement
     // If selected, collect our collapsible filter form element and put it in
     // a details element.
     if ($is_collapsible) {
-      $form[$field_id . '_collapsible'] = [
+      $details = [];
+      $details[$field_id . '_collapsible'] = [
         '#type' => 'details',
         '#title' => $exposed_label,
         '#description' => $exposed_description,
@@ -224,6 +229,9 @@ abstract class FilterWidgetBase extends BetterExposedFiltersWidgetBase implement
         // Move secondary elements.
         $this->addElementToGroup($form, $form_state, $field_id . '_collapsible', 'secondary');
       }
+      // Retain same weight as the original fields for details.
+      $pos = array_search($field_id, array_keys($form));
+      $form = array_merge(array_slice($form, 0, $pos), $details, array_slice($form, $pos));
     }
 
     // Add possible field wrapper to validate for "between" operator.
@@ -245,18 +253,21 @@ abstract class FilterWidgetBase extends BetterExposedFiltersWidgetBase implement
       // "Between" operator fields to validate for.
       $fields = ['min', 'max'];
 
-      // Check if the the element is apart of a wrapper.
+      // Check if the element is a part of a wrapper.
+      $wrapper_array = $form[$element];
       if ($element === $element_wrapper) {
-        $wrapper_array = $form[$element];
-        // Determine if wrapper element has min or max fields or if collapsible, if so then update type.
+        // Determine if wrapper element has min or max fields or if
+        // collapsible, if so then update type.
         if (array_intersect($fields, array_keys($wrapper_array[$field_id])) || $is_collapsible) {
           $form[$element] = [
             '#type' => 'container',
             $element => $wrapper_array,
           ];
         }
-      } else {
-        // Determine if element has min or max child fields, if so then update type.
+      }
+      else {
+        // Determine if element has min or max child fields,
+        // if so then update type.
         if (array_intersect($fields, array_keys($form[$field_id]))) {
           $form[$element] = [
             '#type' => 'container',
@@ -300,7 +311,7 @@ abstract class FilterWidgetBase extends BetterExposedFiltersWidgetBase implement
 
     // Ensure "- Any -" value does not get sorted.
     $any_option = FALSE;
-    if (empty($element['#required']) && $element['#required'] !== FALSE) {
+    if (empty($element['#required'])) {
       // We use array_slice to preserve they keys needed to determine the value
       // when using a filter (e.g. taxonomy terms).
       $any_option = array_slice($options, 0, 1, TRUE);

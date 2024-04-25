@@ -13,11 +13,11 @@ use Drupal\time_field\Time;
  * Usage example:
  *
  * @code
- * $form['time'] = array(
+ * $form['time'] = [
  *   '#type' => 'time',
  *   '#title' => $this->t('Time'),
- * '#required' => TRUE,
- * );
+ *   '#required' => TRUE,
+ * ];
  * @endcode
  *
  * @FormElement("time")
@@ -53,10 +53,10 @@ class TimeElement extends FormElement {
 
     if (!empty($input)) {
       $time = Time::createFromHtml5Format($input);
-      return $time->getTimestamp();
+      return (string) $time->getTimestamp();
     }
 
-    return NULL;
+    return 86401;
   }
 
   /**
@@ -79,7 +79,7 @@ class TimeElement extends FormElement {
     // In ajax request value is set to raw timestamp
     // perform a better solution here.
     $isValuePassedInTimestampFormat = preg_match('/^\d+$/', $element['#value']);
-    if ($isValuePassedInTimestampFormat) {
+    if ($isValuePassedInTimestampFormat && $element['#value'] != 86401) {
       $element['#value'] = Time::createFromTimestamp($element['#value'])
         ->formatForWidget($element['#show_seconds']);
     }

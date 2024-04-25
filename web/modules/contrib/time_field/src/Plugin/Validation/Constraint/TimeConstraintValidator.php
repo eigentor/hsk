@@ -7,7 +7,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * TimeConstraintValidator.
+ * Validation constraint for time_field.
+ *
+ * Validates that the submitted value can be converted into a valid time object.
  *
  * @package Drupal\time_field\Plugin\Validation\Constraint
  */

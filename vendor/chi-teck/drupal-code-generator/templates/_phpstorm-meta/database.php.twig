@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace PHPSTORM_META {
 
@@ -13,5 +15,6 @@ namespace PHPSTORM_META {
   expectedArguments(\Drupal\Core\Database\Query\SelectInterface::innerJoin(), 0, argumentsSet('database.tables'));
   expectedArguments(\Drupal\Core\Database\Query\SelectInterface::addJoin(), 1, argumentsSet('database.tables'));
   expectedArguments(\Drupal\Core\Database\Query\SelectInterface::orderBy(), 1, 'ASC', 'DESC');
+  expectedArguments(\Drupal\KernelTests\KernelTestBase::installSchema(), 1, argumentsSet('database.tables'));
 
 }

@@ -70,7 +70,18 @@ class TimeRangeType extends FieldItemBase {
   public function isEmpty() {
     $from = $this->get('from')->getValue() ?? '';
     $to = $this->get('to')->getValue() ?? '';
-    return trim($from) === '' || trim($to) === '';
+
+    // We check if both values are empty.
+    if (empty($from) && empty($to)) {
+      return TRUE;
+    }
+
+    // Also two times 86401 is considered empty.
+    if (trim($from) === '86401' && trim($to) === '86401') {
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
 }

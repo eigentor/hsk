@@ -181,7 +181,7 @@ class LinkitWidget extends LinkWidget {
     $element['uri']['#description'] = $this->t('Start typing to find content or paste a URL and click on the suggestion below.');
     $element['uri']['#autocomplete_route_name'] = 'linkit.autocomplete';
     $element['uri']['#autocomplete_route_parameters'] = [
-      'linkit_profile' => $this->getSetting('linkit_profile'),
+      'linkit_profile_id' => $this->getSetting('linkit_profile'),
     ];
 
     // Add a class to the title field.

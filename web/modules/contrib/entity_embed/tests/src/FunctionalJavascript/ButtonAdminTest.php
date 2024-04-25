@@ -47,6 +47,7 @@ class ButtonAdminTest extends WebDriverTestBase {
       ->getStorage('entity_view_mode')
       ->create([
         'id' => 'media.thumb',
+        'label' => 'Thumbnail',
         'targetEntityType' => 'media',
       ])
       ->save();

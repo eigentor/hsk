@@ -43,7 +43,7 @@ class BetterExposedFiltersHelper {
 
     $lines = explode("\n", trim($rewrite_settings));
     foreach ($lines as $line) {
-      list($search, $replace) = array_map('trim', explode('|', $line));
+      [$search, $replace] = array_map('trim', explode('|', $line));
       if (!empty($search)) {
         $rewrites[$search] = $replace;
 
@@ -149,7 +149,11 @@ class BetterExposedFiltersHelper {
     $flat_options = self::flattenOptions($options, TRUE);
 
     // Alphabetically sort our list of concatenated values.
-    asort($flat_options);
+    uasort($flat_options, function ($a, $b) {
+      $transliteration = \Drupal::transliteration();
+      return strnatcasecmp($transliteration->transliterate($a), $transliteration->transliterate($b));
+    });
+
     // Now use its keys to sort the original array.
     return array_replace(array_flip(array_keys($flat_options)), $options);
   }
@@ -198,7 +202,11 @@ class BetterExposedFiltersHelper {
     }
 
     // Alphabetically sort our list of concatenated values.
-    asort($flat_options);
+    uasort($flat_options, function ($a, $b) {
+      $transliteration = \Drupal::transliteration();
+      return strnatcasecmp($transliteration->transliterate($a), $transliteration->transliterate($b));
+    });
+
     // Now use its keys to sort the original array.
     return array_replace(array_flip(array_keys($flat_options)), $options);
   }

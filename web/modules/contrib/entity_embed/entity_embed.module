@@ -10,6 +10,9 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\embed\EmbedButtonInterface;
+use Drupal\embed\Entity\EmbedButton;
+use Drupal\entity_embed\Event\EmbedButtonEvent;
 
 /**
  * Implements hook_help().
@@ -280,7 +283,7 @@ function entity_embed_filter_format_edit_form_validate($form, FormStateInterface
         '%filters' => implode(', ', $error_filters),
       ]);
 
-      $form_state->setErrorByName('filters', $error_message);
+      $form_state->setErrorByName('filters][entity_embed][status', $error_message);
     }
   }
 }
@@ -297,4 +300,43 @@ function entity_embed_field_widget_single_element_form_alter(&$element, FormStat
     $items = $context['items'];
     $element['#attributes']['data-entity_embed-host-entity-langcode'] = $items->getEntity()->language()->getId();
   }
+}
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function entity_embed_library_info_alter(&$libraries, $extension) {
+  // Create the drupalSettings dynamically based on embed buttons for the
+  // admin library.
+  if ($extension === 'entity_embed' && isset($libraries['admin.entity_embed'])) {
+    $entity_embed_buttons = \Drupal::entityTypeManager()
+      ->getStorage('embed_button')
+      // @see \Drupal\entity_embed\Plugin\EmbedType\Entity
+      ->loadByProperties(['type_id' => 'entity']);
+    foreach ($entity_embed_buttons as $entity_embed_button) {
+      $libraries['admin.entity_embed']['drupalSettings']['embedButtons'][$entity_embed_button->id()] = [
+        'id' => $entity_embed_button->id(),
+        'icon' => $entity_embed_button->getIconUrl(),
+      ];
+
+    }
+    $libraries['admin.entity_embed']['drupalSettings']['modulePath'] = \Drupal::service('extension.list.module')->getPath('entity_embed');
+  }
+}
+
+/**
+ * Implements hook_ckeditor4to5upgrade_plugin_info_alter().
+ */
+function entity_embed_ckeditor4to5upgrade_plugin_info_alter(array &$plugin_definitions): void {
+  // Get the user set buttons and add them to the entity embed plugin definition
+  $buttons = [];
+  $embed_buttons = \Drupal::entityTypeManager()
+    ->getStorage('embed_button')
+    ->loadByProperties(['type_id' => 'entity']);
+
+  foreach ($embed_buttons as $embed_button) {
+    $buttons[] = $embed_button->id();
+  }
+
+  $plugin_definitions['entity_embed']['cke4_buttons'] = $buttons;
 }

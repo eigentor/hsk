@@ -121,10 +121,11 @@ function antibot_protect_form(array &$form) {
   }
 
   // Generate a key for this form.
-  $key = Crypt::hmacBase64($form['#form_id'], Settings::getHashSalt());
+  $key = _antibot_generate_key($form['#form_id']);
+  $shuffled_key = strrev(implode('', array_map('implode', array_map('array_reverse', array_chunk(str_split($key), 2)))));
 
   // Store the key in the form.
-  $form['#antibot_key'] = $key;
+  $form['#antibot_key'] = $shuffled_key;
 
   // Add a hidden value which will receive the key via JS.
   // The point of this is to add an additional layer of protection for remotely
@@ -166,6 +167,9 @@ function antibot_form_validation($form, FormStateInterface $form_state) {
   // Extract the submitted key.
   $submitted_key = $input['antibot_key'] ?? NULL;
 
+  // Get the expected key.
+  $expected_key = _antibot_generate_key($form['#form_id']);
+
   // Views exposed forms will initially load and submit without the key.
   if (($form['#form_id'] == 'views_exposed_form') && ($submitted_key === NULL)) {
     // We must allow this.
@@ -173,7 +177,7 @@ function antibot_form_validation($form, FormStateInterface $form_state) {
   }
 
   // Check if the key is missing or is not a match.
-  if (!$submitted_key || ($submitted_key != $form['#antibot_key'])) {
+  if (!$submitted_key || ($submitted_key != $expected_key)) {
     $form_state->setErrorByName('', t('Submission failed. Please reload the page, ensure JavaScript is enabled and try again.'));
   }
 }
@@ -187,4 +191,11 @@ function antibot_views_pre_render(ViewExecutable $view) {
   if (isset($view->exposed_raw_input['antibot_key'])) {
     unset($view->exposed_raw_input['antibot_key']);
   }
+}
+
+/**
+ * Helper function to generate a key for a given form.
+ */
+function _antibot_generate_key($form_id): string {
+  return Crypt::hmacBase64($form_id, Settings::getHashSalt());
 }

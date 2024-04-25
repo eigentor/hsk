@@ -1,5 +1,5 @@
 general:
-  version: 4.x
+  version: 6.x
   css:
     theme:
       css/better_exposed_filters.css: {}
@@ -9,7 +9,7 @@ general:
     - core/drupal
     - core/jquery
 auto_submit:
-  version: 4.x
+  version: 6.x
   js:
     js/auto_submit.js: {}
   dependencies:
@@ -17,7 +17,7 @@ auto_submit:
     - core/once
     - core/drupal.debounce
 select_all_none:
-  version: 4.x
+  version: 6.x
   js:
     js/bef_select_all_none.js: {}
   dependencies:
@@ -25,7 +25,7 @@ select_all_none:
     - core/jquery
     - core/once
 sliders:
-  version: 4.x
+  version: 6.x
   js:
     js/bef_sliders.js: {}
   dependencies:
@@ -36,7 +36,7 @@ sliders:
     - jquery_ui_touch_punch/touch-punch
     - jquery_ui_slider/slider
 datepickers:
-  version: 4.x
+  version: 6.x
   js:
     js/bef_datepickers.js: {}
   dependencies:
@@ -46,7 +46,7 @@ datepickers:
     - jquery_ui_touch_punch/touch-punch
     - jquery_ui_datepicker/datepicker
 links_use_ajax:
-  version: 4.x
+  version: 6.x
   js:
     js/bef_links_use_ajax.js: {}
   dependencies:

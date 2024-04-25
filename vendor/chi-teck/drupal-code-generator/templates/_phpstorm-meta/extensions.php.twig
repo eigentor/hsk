@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace PHPSTORM_META {
 
@@ -17,6 +19,8 @@ namespace PHPSTORM_META {
   expectedArguments(\Drupal\Core\Extension\ModuleHandlerInterface::invoke(), 0, argumentsSet('modules'));
   expectedArguments(\Drupal\Core\Extension\ModuleHandlerInterface::invokeDeprecated(), 1, argumentsSet('modules'));
   expectedArguments(\Drupal\Core\Extension\ModuleHandlerInterface::getName(), 0, argumentsSet('modules'));
+  expectedArguments(\Drupal\KernelTests\KernelTestBase::installSchema(), 0, argumentsSet('modules'));
+  expectedArguments(\Drupal\KernelTests\KernelTestBase::installConfig(), 0, argumentsSet('modules'));
 
   registerArgumentsSet('themes',
 {% for theme in themes %}
