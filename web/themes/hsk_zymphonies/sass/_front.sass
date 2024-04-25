@@ -95,11 +95,16 @@
         display: flex
         align-items: center
         margin-top: 0.3em
+        margin-left: 1em
         +small-grey-links
         margin-left: 10px
 
         .views-label-field-event-room
-          margin-right: 0.3em
+          margin-right: 0.4em
+          &:after
+            content: ":"
+        .field-content
+          min-width: 4em
 
   #block-views-block-news-block-1
     h2.title

@@ -12,6 +12,7 @@ dependencies:
     - contextual
     - file
     - filter
+    - help
     - locale
     - node
     - override_node_options
@@ -30,6 +31,7 @@ permissions:
   - 'access comments'
   - 'access content overview'
   - 'access contextual links'
+  - 'access help pages'
   - 'access site reports'
   - 'access toolbar'
   - 'access user profiles'

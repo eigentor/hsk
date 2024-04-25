@@ -6,5 +6,6 @@ dependencies:
     - paragraphs
 id: paragraph.infoblock
 label: Infoblock
+description: ''
 targetEntityType: paragraph
 cache: true

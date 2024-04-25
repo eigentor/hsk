@@ -6,5 +6,6 @@ dependencies:
     - user
 id: user.referenced_user
 label: 'Referenzierter User'
+description: ''
 targetEntityType: user
 cache: true

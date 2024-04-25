@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.page.body
     - field.field.node.page.field_gallery_above_body
     - field.field.node.page.field_gallery_below_body
+    - field.field.node.page.field_new_par_various
     - node.type.page
   module:
     - text
@@ -34,4 +35,5 @@ content:
 hidden:
   field_gallery_above_body: true
   field_gallery_below_body: true
+  field_new_par_various: true
   langcode: true

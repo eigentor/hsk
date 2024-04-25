@@ -11,6 +11,12 @@ name: 'Eingeschränktes HTML'
 format: restricted_html
 weight: 0
 filters:
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: true
+    weight: 0
+    settings: {  }
   filter_html:
     id: filter_html
     provider: filter
@@ -20,36 +26,6 @@ filters:
       allowed_html: '<br> <p> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <cite> <dl> <dt> <dd> <a hreflang href data-entity-type data-entity-uuid data-entity-substitution> <blockquote cite> <ul type> <ol type start> <strong> <em> <code> <li>'
       filter_html_help: true
       filter_html_nofollow: false
-  filter_autop:
-    id: filter_autop
-    provider: filter
-    status: true
-    weight: 0
-    settings: {  }
-  filter_url:
-    id: filter_url
-    provider: filter
-    status: true
-    weight: 0
-    settings:
-      filter_url_length: 72
-  filter_responsive_image_style:
-    id: filter_responsive_image_style
-    provider: inline_responsive_images
-    status: false
-    weight: 0
-    settings:
-      responsive_style_bildblock_klein: '0'
-      responsive_style_headerbild_inhaltsbreite: '0'
-      responsive_style_header_slideshow: '0'
-      responsive_style_infoblock: '0'
-      responsive_style_inhaltsbild_volle_breite: '0'
-      responsive_style_inhaltsbild_z_halbe_breite: '0'
-      responsive_style_narrow: '0'
-      responsive_style_news_thumb_startseite: '0'
-      responsive_style_secondary_news: '0'
-      responsive_style_top_news: '0'
-      responsive_style_wide: '0'
   filter_imagestyle:
     id: filter_imagestyle
     provider: inline_responsive_images
@@ -87,6 +63,23 @@ filters:
       image_style_portrait_tiny: '0'
       image_style_thumbnail: '0'
       image_style_top_news: '0'
+  filter_responsive_image_style:
+    id: filter_responsive_image_style
+    provider: inline_responsive_images
+    status: false
+    weight: 0
+    settings:
+      responsive_style_bildblock_klein: '0'
+      responsive_style_headerbild_inhaltsbreite: '0'
+      responsive_style_header_slideshow: '0'
+      responsive_style_infoblock: '0'
+      responsive_style_inhaltsbild_volle_breite: '0'
+      responsive_style_inhaltsbild_z_halbe_breite: '0'
+      responsive_style_narrow: '0'
+      responsive_style_news_thumb_startseite: '0'
+      responsive_style_secondary_news: '0'
+      responsive_style_top_news: '0'
+      responsive_style_wide: '0'
   filter_responsive_tables_filter:
     id: filter_responsive_tables_filter
     provider: responsive_tables_filter
@@ -95,3 +88,10 @@ filters:
     settings:
       tablesaw_type: stack
       tablesaw_persist: '1'
+  filter_url:
+    id: filter_url
+    provider: filter
+    status: true
+    weight: 0
+    settings:
+      filter_url_length: 72

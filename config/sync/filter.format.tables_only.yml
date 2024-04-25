@@ -9,6 +9,12 @@ name: Tabellen
 format: tables_only
 weight: 0
 filters:
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: true
+    weight: 0
+    settings: {  }
   filter_html:
     id: filter_html
     provider: filter
@@ -18,26 +24,6 @@ filters:
       allowed_html: '<br> <p> <h2> <h3> <h4> <strong> <em> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption>'
       filter_html_help: true
       filter_html_nofollow: false
-  filter_autop:
-    id: filter_autop
-    provider: filter
-    status: true
-    weight: 0
-    settings: {  }
-  filter_responsive_image_style:
-    id: filter_responsive_image_style
-    provider: inline_responsive_images
-    status: false
-    weight: 0
-    settings:
-      responsive_style_bildblock_klein: '0'
-      responsive_style_header_slideshow: '0'
-      responsive_style_infoblock: '0'
-      responsive_style_inhaltsbild_volle_breite: '0'
-      responsive_style_inhaltsbild_z_halbe_breite: '0'
-      responsive_style_narrow: '0'
-      responsive_style_news_thumb_startseite: '0'
-      responsive_style_wide: '0'
   filter_imagestyle:
     id: filter_imagestyle
     provider: inline_responsive_images
@@ -71,6 +57,20 @@ filters:
       image_style_portrait_medium: '0'
       image_style_portrait_tiny: '0'
       image_style_thumbnail: '0'
+  filter_responsive_image_style:
+    id: filter_responsive_image_style
+    provider: inline_responsive_images
+    status: false
+    weight: 0
+    settings:
+      responsive_style_bildblock_klein: '0'
+      responsive_style_header_slideshow: '0'
+      responsive_style_infoblock: '0'
+      responsive_style_inhaltsbild_volle_breite: '0'
+      responsive_style_inhaltsbild_z_halbe_breite: '0'
+      responsive_style_narrow: '0'
+      responsive_style_news_thumb_startseite: '0'
+      responsive_style_wide: '0'
   filter_responsive_tables_filter:
     id: filter_responsive_tables_filter
     provider: responsive_tables_filter

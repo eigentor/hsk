@@ -1,0 +1,62 @@
+uuid: 0e39fe03-5d27-4d25-87fc-d524e95676de
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_new_par_various
+    - node.type.page
+    - paragraphs.paragraphs_type.pgn_viewer
+    - paragraphs.paragraphs_type.text
+    - paragraphs.paragraphs_type.video
+  module:
+    - entity_reference_revisions
+id: node.page.field_new_par_various
+field_name: field_new_par_various
+entity_type: node
+bundle: page
+label: Inhaltselemente
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      text: text
+      pgn_viewer: pgn_viewer
+      video: video
+    negate: 0
+    target_bundles_drag_drop:
+      bild_verlinkt:
+        weight: 11
+        enabled: false
+      gallery_image:
+        weight: 8
+        enabled: false
+      image_gallery:
+        weight: 5
+        enabled: false
+      imageblock_small:
+        weight: 13
+        enabled: false
+      infoblock:
+        weight: 15
+        enabled: false
+      pgn_viewer:
+        weight: 6
+        enabled: true
+      slideshow:
+        weight: 11
+        enabled: false
+      slideshow_image:
+        weight: 12
+        enabled: false
+      text:
+        weight: 4
+        enabled: true
+      video:
+        weight: 14
+        enabled: true
+field_type: entity_reference_revisions

@@ -3936,13 +3936,20 @@ nav#block-hsk-footer ul li a {
   display: flex;
   align-items: center;
   margin-top: 0.3em;
+  margin-left: 1em;
   font-size: 12.4px;
   font-size: 0.8rem;
   color: #999;
   margin-left: 10px;
 }
 .path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-event-room .views-label-field-event-room {
-  margin-right: 0.3em;
+  margin-right: 0.4em;
+}
+.path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-event-room .views-label-field-event-room:after {
+  content: ":";
+}
+.path-frontpage #block-views-block-events-list-block-1 .views-row .views-field-field-event-room .field-content {
+  min-width: 4em;
 }
 .path-frontpage #block-views-block-news-block-1 h2.title {
   margin-bottom: 15px;

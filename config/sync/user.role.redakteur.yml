@@ -5,9 +5,11 @@ dependencies:
   config:
     - node.type.article
     - node.type.event
+    - node.type.page
   module:
     - comment
     - file
+    - help
     - node
     - override_node_options
     - quick_node_clone
@@ -21,6 +23,7 @@ is_admin: null
 permissions:
   - 'access administration pages'
   - 'access content overview'
+  - 'access help pages'
   - 'access toolbar'
   - 'clone event content'
   - 'create article content'
