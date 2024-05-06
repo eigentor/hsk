@@ -3,11 +3,14 @@ langcode: de
 status: true
 dependencies:
   config:
+    - block_content.type.basic
+    - block_content.type.page_section_paragraphs
     - filter.format.basic_html
     - filter.format.full_html
     - filter.format.tables_only
     - node.type.layout_page
   module:
+    - block_content
     - comment
     - contextual
     - file
@@ -45,7 +48,9 @@ permissions:
   - 'clone turnier content'
   - 'create url aliases'
   - 'delete own files'
+  - 'edit any basic block content'
   - 'edit any layout_page content'
+  - 'edit any page_section_paragraphs block content'
   - 'override all published option'
   - 'post comments'
   - 'skip comment approval'
