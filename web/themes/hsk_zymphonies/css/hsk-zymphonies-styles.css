@@ -1614,35 +1614,35 @@ input, button, select, textarea {
   margin-right: 0.3em;
 }
 
-.path-dwz-rangliste form#views-exposed-form-dwz-list-page-1 .js-form-item {
+.path-mitgliederliste form#views-exposed-form-dwz-list-page-1 .js-form-item {
   display: inline-block;
   margin-right: 10px;
 }
-.path-dwz-rangliste form#views-exposed-form-dwz-list-page-1 .js-form-item label {
+.path-mitgliederliste form#views-exposed-form-dwz-list-page-1 .js-form-item label {
   margin-right: 5px;
 }
-.path-dwz-rangliste form#views-exposed-form-dwz-list-page-1 #edit-actions {
+.path-mitgliederliste form#views-exposed-form-dwz-list-page-1 #edit-actions {
   display: inline-block;
 }
-.path-dwz-rangliste table th a {
+.path-mitgliederliste table th a {
   color: white;
 }
-.path-dwz-rangliste table th a:after {
+.path-mitgliederliste table th a:after {
   font-family: Fontawesome;
   content: "\f0d7";
   margin-left: 5px;
 }
-.path-dwz-rangliste table th a span.tablesort {
+.path-mitgliederliste table th a span.tablesort {
   display: none;
 }
-.path-dwz-rangliste table th#view-field-dwz-table-column a:after {
+.path-mitgliederliste table th#view-field-dwz-table-column a:after {
   margin-left: 5px;
 }
-.path-dwz-rangliste table th.views-field-nothing, .path-dwz-rangliste table td.views-field-nothing {
+.path-mitgliederliste table th.views-field-nothing, .path-mitgliederliste table td.views-field-nothing {
   display: none;
 }
 
-.user-logged-in.path-dwz-rangliste table th.views-field-nothing, .user-logged-in.path-dwz-rangliste table td.views-field-nothing {
+.user-logged-in.path-mitgliederliste table th.views-field-nothing, .user-logged-in.path-mitgliederliste table td.views-field-nothing {
   display: table-cell;
 }
 
