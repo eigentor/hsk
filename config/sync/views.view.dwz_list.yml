@@ -618,10 +618,10 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: dwz-rangliste
+      path: mitgliederliste
       menu:
         type: normal
-        title: DWZ-Rangliste
+        title: Mitgliederliste
         description: ''
         weight: 5
         expanded: false
