@@ -1,0 +1,12 @@
+name: Config Default Image
+type: module
+description: 'Image field formatter allowing to set a default image deployable through config management'
+package: Media
+core: 8.x
+core_version_requirement: ^8 || ^9 || ^10
+
+
+# Information added by Drupal.org packaging script on 2023-01-09
+version: '8.x-2.0-beta2'
+project: 'config_default_image'
+datestamp: 1673275248
