@@ -13,7 +13,7 @@ dependencies:
     - image.style.portrait
     - node.type.player
   module:
-    - image
+    - config_default_image
     - user
 id: node.player.entity_embed
 targetEntityType: node
@@ -29,11 +29,18 @@ content:
     weight: 1
     region: content
   field_player_image:
-    type: image
+    type: config_default_image
     label: visually_hidden
     settings:
-      image_link: ''
       image_style: portrait
+      image_link: ''
+      default_image:
+        path: /themes/hsk_zymphonies/images/default-profile-image.png
+        use_image_style: '1'
+        alt: 'Default profile image'
+        title: ''
+        width: null
+        height: null
       image_loading:
         attribute: lazy
     third_party_settings: {  }

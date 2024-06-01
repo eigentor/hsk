@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_new_par_various
     - node.type.page
+    - paragraphs.paragraphs_type.persons
     - paragraphs.paragraphs_type.pgn_viewer
     - paragraphs.paragraphs_type.text
     - paragraphs.paragraphs_type.video
@@ -27,6 +28,7 @@ settings:
       text: text
       pgn_viewer: pgn_viewer
       video: video
+      persons: persons
     negate: 0
     target_bundles_drag_drop:
       bild_verlinkt:
@@ -44,6 +46,9 @@ settings:
       infoblock:
         weight: 15
         enabled: false
+      persons:
+        weight: 17
+        enabled: true
       pgn_viewer:
         weight: 6
         enabled: true
