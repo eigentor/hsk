@@ -13,7 +13,7 @@ dependencies:
     - image.style.portrait_autor
     - node.type.player
   module:
-    - image
+    - config_default_image
     - text
     - user
 id: node.player.autor_info
@@ -29,11 +29,18 @@ content:
     weight: 1
     region: content
   field_player_image:
-    type: image
+    type: config_default_image
     label: visually_hidden
     settings:
-      image_link: ''
       image_style: portrait_autor
+      image_link: ''
+      default_image:
+        path: /themes/hsk_zymphonies/images/default-profile-image.png
+        alt: Standard-Profilbild
+        title: ''
+        use_image_style: 0
+        width: null
+        height: null
       image_loading:
         attribute: lazy
     third_party_settings: {  }

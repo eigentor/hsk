@@ -114,6 +114,26 @@
           display: none
         li:first-child
           padding-left: 0
+  .paragraph--type--persons
+    .field--name-field-persons
+      display: grid
+      grid-template-columns: 1fr 1fr
+      grid-gap: 40px 50px
+      article.node
+        text-align: center
+        .heading-container
+          display: flex
+          align-items: flex-end
+          justify-content: center
+          min-height: 4rem
+          margin-bottom: 0.3rem
+          h2.node-title
+            font-size: 1.3rem
+        .field--name-field-player-image
+          margin-bottom: 0.5em
+        .field--name-field-function-club
+          font-size: 1rem
+
 
 
 .page-node-type-article
@@ -461,6 +481,11 @@ div#sliding-popup
             width: 10%
           .author-comments
             width: 90%
+    .paragraph--type--persons
+      .field--name-field-persons
+        display: grid
+        grid-template-columns: 1fr 1fr 1fr
+        grid-gap: 40px 50px
 
   .page-node-type-article
     .field--name-field-image
@@ -661,6 +686,17 @@ figure
       .col-md-9
         float: none
         width: 100%
+
+  .node
+    .paragraph--type--persons
+      .field--name-field-persons
+        article.node
+          text-align: center
+          .heading-container
+            h2.node-title
+              font-size: 1.4rem
+          .field--name-field-function-club
+            font-size: 1.1rem
 
 
 

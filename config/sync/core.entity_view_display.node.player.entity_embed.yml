@@ -10,7 +10,7 @@ dependencies:
     - field.field.node.player.field_function_club
     - field.field.node.player.field_member_no_dsb
     - field.field.node.player.field_player_image
-    - image.style.portrait
+    - image.style.portrait_autor
     - node.type.player
   module:
     - config_default_image
@@ -32,12 +32,12 @@ content:
     type: config_default_image
     label: visually_hidden
     settings:
-      image_style: portrait
+      image_style: portrait_autor
       image_link: ''
       default_image:
         path: /themes/hsk_zymphonies/images/default-profile-image.png
         use_image_style: '1'
-        alt: 'Default profile image'
+        alt: Standard-Profilbild
         title: ''
         width: null
         height: null

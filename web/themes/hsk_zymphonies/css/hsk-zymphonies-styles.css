@@ -2308,6 +2308,30 @@ form.webform-submission-kontakt-add-form input.form-text, form.webform-submissio
 .node .field--name-comment .comment .links li:first-child {
   padding-left: 0;
 }
+.node .paragraph--type--persons .field--name-field-persons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 40px 50px;
+}
+.node .paragraph--type--persons .field--name-field-persons article.node {
+  text-align: center;
+}
+.node .paragraph--type--persons .field--name-field-persons article.node .heading-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 4rem;
+  margin-bottom: 0.3rem;
+}
+.node .paragraph--type--persons .field--name-field-persons article.node .heading-container h2.node-title {
+  font-size: 1.3rem;
+}
+.node .paragraph--type--persons .field--name-field-persons article.node .field--name-field-player-image {
+  margin-bottom: 0.5em;
+}
+.node .paragraph--type--persons .field--name-field-persons article.node .field--name-field-function-club {
+  font-size: 1rem;
+}
 
 .page-node-type-article article.node--type-article footer.comment-submitted {
   *zoom: 1;
@@ -2809,6 +2833,11 @@ div#sliding-popup .eu-cookie-compliance-banner #popup-buttons button:hover {
   .node .field--name-comment .comment .comment-wrap .author-comments {
     width: 90%;
   }
+  .node .paragraph--type--persons .field--name-field-persons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 40px 50px;
+  }
   .page-node-type-article .field--name-field-image {
     *zoom: 1;
   }
@@ -3159,6 +3188,15 @@ figure figcaption {
   .page-node-type-turnier.node-schnellschach .col-md-9, .page-node-type-turnier.node-monatsblitz .col-md-9, .page-node-type-turnier.node-vereinspokal .col-md-9, .page-node-type-turnier.node-seniorenschnellschach .col-md-9 {
     float: none;
     width: 100%;
+  }
+  .node .paragraph--type--persons .field--name-field-persons article.node {
+    text-align: center;
+  }
+  .node .paragraph--type--persons .field--name-field-persons article.node .heading-container h2.node-title {
+    font-size: 1.4rem;
+  }
+  .node .paragraph--type--persons .field--name-field-persons article.node .field--name-field-function-club {
+    font-size: 1.1rem;
   }
 }
 /* End Media Query Tablet */
