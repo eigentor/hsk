@@ -31,6 +31,7 @@
         "drupal/chosen": "^3.0",
         "drupal/classy": "^1.0",
         "drupal/colorbox": "*",
+        "drupal/config_default_image": "*",
         "drupal/content_access": "^2.0",
         "drupal/core-composer-scaffold": "^10.0",
         "drupal/core-recommended": "^10.0",

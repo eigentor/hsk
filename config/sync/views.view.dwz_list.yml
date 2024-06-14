@@ -9,7 +9,7 @@ dependencies:
     - node.type.player
     - system.menu.main
   module:
-    - image
+    - config_default_image
     - node
     - user
 id: dwz_list
@@ -26,7 +26,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: DWZ-Rangliste
+      title: Mitgliederliste
       fields:
         counter:
           id: counter
@@ -194,12 +194,19 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: image
+          type: config_default_image
           settings:
-            image_link: ''
             image_style: portrait_tiny
+            image_link: ''
             image_loading:
               attribute: lazy
+            default_image:
+              path: /themes/hsk_zymphonies/images/default-profile-image.png
+              use_image_style: 1
+              alt: Standard-Profilbild
+              title: ''
+              width: null
+              height: null
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -611,10 +618,10 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: dwz-rangliste
+      path: mitgliederliste
       menu:
         type: normal
-        title: DWZ-Rangliste
+        title: Mitgliederliste
         description: ''
         weight: 5
         expanded: false

@@ -20,6 +20,7 @@ module:
   colorbox: 0
   comment: 0
   config: 0
+  config_default_image: 0
   contact: 0
   content_access: 0
   contextual: 0

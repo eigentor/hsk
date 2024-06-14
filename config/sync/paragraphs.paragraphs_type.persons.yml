@@ -1,0 +1,10 @@
+uuid: 1566ca28-df28-40fa-b164-b96a7f62d906
+langcode: de
+status: true
+dependencies: {  }
+id: persons
+label: 'Personen mit Funktion'
+icon_uuid: null
+icon_default: null
+description: 'Es wird das Profilbild und die Funktion im Verein angezeigt.'
+behavior_plugins: {  }

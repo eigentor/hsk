@@ -1,0 +1,32 @@
+{
+  "name": "drupal/config_default_image",
+  "type": "drupal-module",
+  "description": "Image field formatter allowing to set a default image deployable through config management. It stores a file path into config, instead of a content uuid.",
+  "license": "GPL-2.0-or-later",
+  "require-dev": {
+    "vijaycs85/drupal-quality-checker": "^1.3"
+  },
+  "keywords": [
+    "Drupal",
+    "Image"
+  ],
+  "homepage": "https://www.drupal.org/project/config_default_image",
+  "authors": [
+    {
+      "name": "GaëlG",
+      "homepage": "https://www.drupal.org/u/ga%C3%ABlg",
+      "role": "Maintainer"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/config_default_image",
+    "source": "https://git.drupalcode.org/project/config_default_image"
+  },
+  "config": {
+    "allow-plugins": {
+      "phpro/grumphp": true,
+      "ergebnis/composer-normalize": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}
