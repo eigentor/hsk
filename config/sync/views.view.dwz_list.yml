@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_dwz
     - field.storage.node.field_player_image
-    - image.style.portrait_tiny
+    - image.style.portrait_autor
     - node.type.player
     - system.menu.main
   module:
@@ -196,7 +196,7 @@ display:
           click_sort_column: target_id
           type: config_default_image
           settings:
-            image_style: portrait_tiny
+            image_style: portrait_autor
             image_link: ''
             image_loading:
               attribute: lazy
