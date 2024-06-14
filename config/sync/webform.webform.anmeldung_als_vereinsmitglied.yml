@@ -294,7 +294,7 @@ handlers:
   mail_treasurer:
     id: email
     handler_id: mail_treasurer
-    label: 'E-Mail an Schatzmeister'
+    label: 'E-Mail an Vorstand'
     notes: ''
     status: true
     conditions: {  }
@@ -302,11 +302,11 @@ handlers:
     settings:
       states:
         - completed
-      to_mail: finanzen@schachklub-hannover.de
+      to_mail: vorstand@schachklub-hannover.de
       to_options: {  }
       bcc_mail: ''
       bcc_options: {  }
-      cc_mail: 'thomas@rufzeichen-online.de, c.lossin@gmx.net, lukahoffmann@aol.com, klaus.luetjen@web.de'
+      cc_mail: ''
       cc_options: {  }
       from_mail: info@schachklub-hannover.de
       from_options: {  }

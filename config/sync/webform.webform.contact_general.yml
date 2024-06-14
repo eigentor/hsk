@@ -230,7 +230,7 @@ handlers:
     settings:
       states:
         - completed
-      to_mail: 'info@rufzeichen-online.de, lukahoffmann@aol.com, maxwall@outlook.com, jul.stephan@hotmail.de, nolting-dennis@web.de, christian_polster@yahoo.com'
+      to_mail: info@schachklub-hannover.de
       to_options: {  }
       bcc_mail: ''
       bcc_options: {  }
