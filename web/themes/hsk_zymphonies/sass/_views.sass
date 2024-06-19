@@ -153,6 +153,25 @@
     margin-bottom: 20px
     label[for=edit-field-event-type-target-id]
       margin-right: 20px
+      font-size: 1.1rem
+      font-weight: 700
+    .chosen-container
+      border: 1px solid black
+      .chosen-choices
+        li
+          &.search-field
+            input[type="text"]
+              color: #777
+              font-size: 1rem
+          &.search-choice
+            //font-weight: 700
+      .chosen-results
+        li
+          color: #333
+          font-size: 1rem
+          &.highlighted, &:hover
+            color: white
+
 
   .view-events-list
     h3

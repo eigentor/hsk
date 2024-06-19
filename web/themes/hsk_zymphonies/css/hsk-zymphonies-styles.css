@@ -1531,6 +1531,22 @@ input, button, select, textarea {
 }
 .path-termine form.views-exposed-form label[for=edit-field-event-type-target-id] {
   margin-right: 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.path-termine form.views-exposed-form .chosen-container {
+  border: 1px solid black;
+}
+.path-termine form.views-exposed-form .chosen-container .chosen-choices li.search-field input[type=text] {
+  color: #777;
+  font-size: 1rem;
+}
+.path-termine form.views-exposed-form .chosen-container .chosen-results li {
+  color: #333;
+  font-size: 1rem;
+}
+.path-termine form.views-exposed-form .chosen-container .chosen-results li.highlighted, .path-termine form.views-exposed-form .chosen-container .chosen-results li:hover {
+  color: white;
 }
 .path-termine .view-events-list h3 {
   font-size: 19.375px;
